@@ -51,7 +51,6 @@ export default class SettingsScreen extends Component {
 function paddingBar(){
   if(Platform.OS === 'ios'){
     var iosVer = parseInt(DeviceInfo.osVersion.split(".",1));
-    console.log("iosVer: " + iosVer);
     if(iosVer>=11) return 0;
     return 0;
   }

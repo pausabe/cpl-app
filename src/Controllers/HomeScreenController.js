@@ -20,12 +20,11 @@ import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
 import { Reload_All_Data } from './Classes/Data/DataManager.js';
 import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test } from '../Tests/TestsManager';
-import { CommonActions } from '@react-navigation/native';
 
 export default class HomeScreenController extends Component {
 
   componentDidMount() {
-    this.props.navigation.setParams({
+    this.props.navigation.setOptions({
       calPres: this.calendarPressed.bind(this),
       Refresh_Date: this.Refresh_Date.bind(this),
     });

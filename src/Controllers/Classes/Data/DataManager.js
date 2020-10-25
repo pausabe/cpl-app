@@ -5,7 +5,8 @@ import GF from "../../../Globals/GlobalFunctions";
 import GLOBAL from '../../../Globals/Globals';
 import SOUL from '../SOUL/SOUL';
 import SettingsManager from '../SettingsManager';
-import { TEST_MODE_ON } from '../../../Tests/TestsManager';
+//import { TEST_MODE_ON } from '../../../Tests/TestsManager';
+const TEST_MODE_ON = false;
 
 /************
  * Class in charge of having all the data that will be shown in views. 
@@ -63,7 +64,7 @@ export function Reload_All_Data(date, Reload_Finished_Callback, online_updates =
     
       //Check and apply online changes. Finally will call Refresh_Data
       Check_For_Updates(online_updates).then((result) => {
-  
+
         console.log("[ONLINE_UPDATES Reload_All_Data] result: ", result);
   
         //Get the other G_VALUES, the LH_VALUES and the LD_VALUES
@@ -95,7 +96,7 @@ function Check_For_Updates(online_updates){
       //Get json with changes
       GetOnlineChanges(G_VALUES.onlineVersion).then((json_updates) => {
 
-        console.log("[ONLINE_UPDATES Check_For_Updates] json_updates:", json_updates);
+        //console.log("[ONLINE_UPDATES Check_For_Updates] json_updates:", json_updates);
 
         //Check json
         if (json_updates == undefined || json_updates == "") throw "Internet error"
@@ -165,6 +166,8 @@ function Refresh_Data() {
     G_VALUES.date.getMonth(),
     G_VALUES.date.getDate(),
     (current, tomorrow, pentacosta) => {
+      console.log("PAU_DEBUG 2");
+
       var celType = GF.getCelType(G_VALUES.diocesi, current);
       var tomorrowCelType = GF.getCelType(G_VALUES.diocesi, tomorrow);
 

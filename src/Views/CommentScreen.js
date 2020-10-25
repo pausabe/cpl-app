@@ -12,7 +12,6 @@ import GLOBAL from "../Globals/Globals";
 function paddingBar(){
   if(Platform.OS === 'ios'){
     var iosVer = parseInt(DeviceInfo.osVersion.split(".",1));
-    console.log("iosVer: " + iosVer);
     if(iosVer>=11) return 44;
     return 64;
   }

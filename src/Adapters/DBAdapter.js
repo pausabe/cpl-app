@@ -1,5 +1,8 @@
 import { Platform } from 'react-native';
 
+import * as FileSystem from 'expo-file-system';
+import { Asset } from 'expo-asset';
+
 import GLOBAL from '../Globals/Globals';
 import GF from '../Globals/GlobalFunctions';
 import * as SQLite from 'expo-sqlite';
@@ -8,48 +11,71 @@ export default class DBAdapter {
   constructor() {
   }
 
+  OpenDatabaseIfNotOpenedYet(){
+    let promise = new Promise((resolve) => {
+      if (this.database != null){
+        resolve(true);
+      }
+      else{
+        return FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
+          .then((directoryInfo) => {
+            if(directoryInfo.exists){
+              this.database = SQLite.openDatabase("cpl-app.db");
+              resolve(true);
+            }
+            else{
+              // Create directory
+              FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite/", {intermediates: true})
+              .then(() => {
+                // Save the database from assets folder to the device internal ("download")
+                FileSystem.downloadAsync(
+                  Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
+                  FileSystem.documentDirectory + "SQLite/cpl-app.db"
+                )
+                .then(({ uri }) => {
+                  console.log('Finished downloading to ', uri)
+                  this.database = SQLite.openDatabase("cpl-app.db");
+                  resolve(true);
+                })
+                .catch(error => {
+                  console.error("Error copying the database: ", error);
+                  resolve(false);
+                })
+              });
+            }
+          });
+      }
+    });
+    return promise 
+  }
+
   executeQuery(query, callback) {
-    let createFrom;
-    if (Platform.OS == "ios") { createFrom = "1"; } //ios platform
-    else { createFrom = `~${GLOBAL.DBName}` } //android platform
-
-    let db = SQLite.openDatabase(
-      { name: GLOBAL.DBName, createFromLocation: createFrom, readonly: "asdf" },
-      this.openCB,
-      this.errorCB);
-
-    db.transaction((tx) => {
-      tx.executeSql(query, [], (tx, results) => {
-        callback(results);
-      }, (err) => {
-        console.log("[executeQuery] error in query (" + query + "): ", err.message);
-        callback();
+    this.OpenDatabaseIfNotOpenedYet().then(() => {
+      this.database.transaction((tx) => {
+        tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+          callback(SQLResultSet);
+        }, (SQLTransaction, SQLError) => {
+          console.log("[executeQuery] error in query (" + query + "): ", SQLError);
+          callback();
+        });
       });
-    })
+    });
   }
 
   executeQuery_onlinechanges(query) {
 
     let promise = new Promise((resolve) => {
 
-      let createFrom;
-      if (Platform.OS == "ios") { createFrom = "1"; } //ios platform
-      else { createFrom = `~${GLOBAL.DBName}` } //android platform
-  
-      let db = SQLite.openDatabase(
-        { name: GLOBAL.DBName, createFromLocation: createFrom, readonly: false },
-        this.openCB,
-        this.errorCB);
-
-      db.transaction((tx) => {
-        tx.executeSql(query, [], (tx, results) => {
-          resolve(true)
-        }, (err) => {
-          console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", err.message);
-          resolve(false)
+      this.OpenDatabaseIfNotOpenedYet().then(() => {
+        this.database.transaction((tx) => {
+          tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+            resolve(true)
+          }, (SQLTransaction, SQLError) => {
+            console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", SQLError);
+            resolve(false)
+          });
         });
-      })
-
+      });
     });
   
     return promise
@@ -75,7 +101,7 @@ export default class DBAdapter {
           case 2:
 
 
-              console.log("[ONLINE_UPDATES Check_For_Updates] test:", JSON.parse(JSON.stringify(change.values)));
+              //console.log("[ONLINE_UPDATES Check_For_Updates] test:", JSON.parse(JSON.stringify(change.values)));
 
               var set_statement = ""
               var j = 0
@@ -90,7 +116,7 @@ export default class DBAdapter {
 
               sql = "UPDATE " + change.table_name + " SET " + set_statement + " WHERE id = " + change.row_id;
               
-              console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+              //console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
 
               promises.push(this.executeQuery_onlinechanges(sql))
 
@@ -118,7 +144,7 @@ export default class DBAdapter {
           
             sql = "INSERT INTO " + change_name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
               
-            console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+            //console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
 
             promises.push(this.executeQuery_onlinechanges(sql))
 
@@ -129,7 +155,7 @@ export default class DBAdapter {
 
             sql =  "DELETE FROM " + change.table_name + " WHERE id = " + change.row_id;
         
-            console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+            //console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
 
             promises.push(this.executeQuery_onlinechanges(sql))
 
@@ -143,8 +169,12 @@ export default class DBAdapter {
 
       // Check promises length
       if(promises.length == 0) resolve(false)
+
+      console.log("PAOLOO1");
       
       Promise.all(promises).then((res) => {
+
+        console.log("PAOLOO2");
 
         let total_res = true
         for (var i = 0; i < res.length; i++) {
@@ -187,6 +217,7 @@ export default class DBAdapter {
     console.log("QueryLog. QUERY ANY: " + query);
     this.executeQuery(query,
       result => {
+        console.log("PAU_DEBUG 1");
         this.getTomorrow(result.rows.item(0), year, month, day, callback);
       });
   }
