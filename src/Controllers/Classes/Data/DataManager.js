@@ -166,8 +166,6 @@ function Refresh_Data() {
     G_VALUES.date.getMonth(),
     G_VALUES.date.getDate(),
     (current, tomorrow, pentacosta) => {
-      console.log("PAU_DEBUG 2");
-
       var celType = GF.getCelType(G_VALUES.diocesi, current);
       var tomorrowCelType = GF.getCelType(G_VALUES.diocesi, tomorrow);
 

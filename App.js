@@ -85,7 +85,15 @@ function LHStackScreen() {
           headerTintColor: GLOBAL.itemsBarColor,
         })}
       />
-      <LHStack.Screen name="LHDisplay" component={LHDisplayScreen} />
+      <LHStack.Screen 
+        name="LHDisplay" 
+        component={LHDisplayScreen} 
+        options={({ navigation, route }) => ({
+          title: route.params.props.type,
+          headerStyle: { backgroundColor: GLOBAL.barColor },
+          headerTintColor: GLOBAL.itemsBarColor,
+        })}
+      />
     </LHStack.Navigator>
   );
 }
@@ -104,7 +112,15 @@ function LDStackScreen() {
           headerTintColor: GLOBAL.itemsBarColor,
         })}
       />
-      <LDStack.Screen name="LDDisplay" component={LDDisplayScreen} />
+      <LDStack.Screen 
+        name="LDDisplay" 
+        component={LDDisplayScreen} 
+        options={({ navigation, route }) => ({
+          title: route.params.props.type,
+          headerStyle: { backgroundColor: GLOBAL.barColor },
+          headerTintColor: GLOBAL.itemsBarColor,
+        })}
+      />
     </LDStack.Navigator>
   );
 }
@@ -119,6 +135,7 @@ export default function App() {
           showLabel: false,
           activeTintColor: "white",
           inactiveTintColor: "#8d8c8c",
+          lazy: false, // false means all tabs are rendered at the beginning
           style: {
             backgroundColor: GLOBAL.barColor,
           }

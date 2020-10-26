@@ -13,7 +13,7 @@ export default class SettingsScreen extends Component {
   refreshHome(){
     console.log("Refresh Home!");
     
-    this.props.navigation.state.params.Refresh_Date();
+    this.props.route.params.Refresh_Date();
   }
 
   UNSAFE_componentWillMount(){

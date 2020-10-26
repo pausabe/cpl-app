@@ -10,7 +10,7 @@ import GLOBAL from "../../../Globals/Globals";
 
 export default class LHDisplayScreen extends Component {
   UNSAFE_componentWillMount(){
-    this.screen_props = this.props.navigation.state.params.props;
+    this.screen_props = this.props.route.params.props;
     this.eventEmitter = this.screen_props.events;
     this.titols = this.getTitols();
     this.setState({type: this.screen_props.type})
@@ -26,32 +26,6 @@ export default class LHDisplayScreen extends Component {
       }, 1000);
     }*/
   }
-
-  static navigationOptions = ({ navigation }) => ({
-      headerTitle: <View style={{paddingLeft: 100}}>
-                      <Text style={{
-                        textAlign: 'center',
-                        color: GLOBAL.itemsBarColor,
-                        fontSize: 20,
-                        fontWeight: '600',
-                      }}>{navigation.state.params.props.type}</Text>
-                  </View>,
-      headerStyle: {
-        backgroundColor: GLOBAL.barColor,
-      },
-      /*headerRight: <TouchableOpacity
-                      style={{flex: 1, alignItems: 'center', justifyContent: 'center',}}
-                      onPress={() => {
-                        navigation.state.params.screen_props.emitShareCB();
-                      }}>
-                      <View style={{flex:1, paddingRight: 10, alignItems: 'center', justifyContent:'center'}}>
-                        <Icon
-                          name="ios-share"
-                          size={30}
-                          color="#FFFFFF"/>
-                      </View>
-                  </TouchableOpacity>,*/
-  });
 
   componentDidUpdate(){
     if(this.screen_props.superTestMode){

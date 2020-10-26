@@ -217,7 +217,6 @@ export default class DBAdapter {
     console.log("QueryLog. QUERY ANY: " + query);
     this.executeQuery(query,
       result => {
-        console.log("PAU_DEBUG 1");
         this.getTomorrow(result.rows.item(0), year, month, day, callback);
       });
   }
@@ -488,13 +487,13 @@ export default class DBAdapter {
               rows.push(result.rows.item(i));
         }
       }
-      console.log("[LDGetIndex] rows 1", rows); 
+      console.log("[LDGetIndex] rows 1"); 
     }
     else {
       for (let i = 0; i < result.rows.length; i++) {
         rows.push(result.rows.item(i));
       }
-      console.log("[LDGetIndex] rows 2", rows); 
+      console.log("[LDGetIndex] rows 2"); 
     }
     
     var index;

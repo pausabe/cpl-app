@@ -24,7 +24,7 @@ import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test } from '../Test
 export default class HomeScreenController extends Component {
 
   componentDidMount() {
-    this.props.navigation.setOptions({
+    this.props.navigation.setParams({
       calPres: this.calendarPressed.bind(this),
       Refresh_Date: this.Refresh_Date.bind(this),
     });
