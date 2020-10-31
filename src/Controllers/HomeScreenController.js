@@ -13,6 +13,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AsyncStorage } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
 import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
@@ -387,6 +388,8 @@ export default class HomeScreenController extends Component {
                     </View>
                   </View>
           </Modal>
+
+          <StatusBar style="light" />
 
         </SafeAreaView>
       );
