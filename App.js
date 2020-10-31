@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack'
-
 import GLOBAL from "./src/Globals/Globals";
-
 import HomeScreen from './src/Controllers/HomeScreenController';
 import SettingsScreen from './src/Views/SettingsScreen';
 import DonationScreen from './src/Views/DonationScreen';
@@ -17,119 +16,109 @@ import LDDisplayScreen from './src/Views/LDScreen/LDDisplayScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 Icon.loadFont();
 
-const styles = StyleSheet.create({
-  titleText: {
-    textAlign: 'center',
-    color: GLOBAL.itemsBarColor,
-    fontSize: 20,
-    fontWeight: '600',
-  },
-});
+const HomeStack = createStackNavigator();
+const LHStack = createStackNavigator();
+const LDStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+function getHeaderTitle(route) {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  switch (routeName) {
+    case 'Home':
+      return 'CPL';
+    case 'LH':
+      return 'Litúrgia de les Hores';
+    case 'LD':
+      return 'Missa';
+  }
+}
+
+function getHeaderLeft(route){
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  switch (routeName) {
+    case 'Home':
+      return (
+        <TouchableOpacity
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
+          onPress={() => route.state.routes[0].state.routes[0].params.calPres() }>
+          <View style={{ flex: 1, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
+            <Icon
+              name="ios-calendar"
+              size={30}
+              color="#FFFFFF" />
+          </View>
+        </TouchableOpacity>
+      )
+    case 'LH':
+      return null;
+    case 'LD':
+      return null;
+  }
+}
+
+function getHeaderRight(navigation, route){
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  switch (routeName) {
+    case 'Home':
+      return (
+        <TouchableOpacity 
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
+          onPress={() => navigation.navigate('Settings', { Refresh_Date: route.state.routes[0].state.routes[0].params.Refresh_Date })}>
+          <View style={{ flex: 1, paddingRight: 10, alignItems: 'center', justifyContent: 'center' }}>
+            <Icon
+              name="ios-settings"
+              size={30}
+              color="#FFFFFF" />
+          </View>
+        </TouchableOpacity>
+      )
+    case 'LH':
+      return null;
+    case 'LD':
+      return null;
+  }
+}
 
 /************ HOME ************/
-const HomeStack = createStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen 
         name="Home" 
         component={HomeScreen}
-        options={({ navigation, route }) => ({
-          title: "CPL",
-          headerStyle: { backgroundColor: GLOBAL.barColor },
-          headerTintColor: GLOBAL.itemsBarColor,
-          headerLeft: () => ( 
-            <TouchableOpacity
-              style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
-              onPress={() => route.params.calPres()}>
-              <View style={{ flex: 1, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
-                <Icon
-                  name="ios-calendar"
-                  size={30}
-                  color="#FFFFFF" />
-              </View>
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
-              onPress={() => navigation.navigate('Settings', { Refresh_Date: route.params.Refresh_Date })}>
-              <View style={{ flex: 1, paddingRight: 10, alignItems: 'center', justifyContent: 'center' }}>
-                <Icon
-                  name="ios-settings"
-                  size={30}
-                  color="#FFFFFF" />
-              </View>
-            </TouchableOpacity>
-          )
-        })}
       />
-      <HomeStack.Screen name="Settings" component={SettingsScreen} />
-      <HomeStack.Screen name="Donation" component={DonationScreen} />
-      <HomeStack.Screen name="Comment" component={CommentScreen} />
     </HomeStack.Navigator>
   );
 }
 
 /************ LH ************/
-const LHStack = createStackNavigator();
 function LHStackScreen() {
   return (
     <LHStack.Navigator>
       <LHStack.Screen 
         name="LH" 
         component={LHScreen} 
-        options={({ navigation, route }) => ({
-          title: "Litúrgia de les Hores",
-          headerStyle: { backgroundColor: GLOBAL.barColor },
-          headerTintColor: GLOBAL.itemsBarColor,
-        })}
-      />
-      <LHStack.Screen 
-        name="LHDisplay" 
-        component={LHDisplayScreen} 
-        options={({ navigation, route }) => ({
-          title: route.params.props.type,
-          headerStyle: { backgroundColor: GLOBAL.barColor },
-          headerTintColor: GLOBAL.itemsBarColor,
-        })}
       />
     </LHStack.Navigator>
   );
 }
 
 /************ LD ************/
-const LDStack = createStackNavigator();
 function LDStackScreen() {
   return (
     <LDStack.Navigator>
       <LDStack.Screen 
         name="LD" 
         component={LDScreen} 
-        options={({ navigation, route }) => ({
-          title: "Missa",
-          headerStyle: { backgroundColor: GLOBAL.barColor },
-          headerTintColor: GLOBAL.itemsBarColor,
-        })}
-      />
-      <LDStack.Screen 
-        name="LDDisplay" 
-        component={LDDisplayScreen} 
-        options={({ navigation, route }) => ({
-          title: route.params.props.type,
-          headerStyle: { backgroundColor: GLOBAL.barColor },
-          headerTintColor: GLOBAL.itemsBarColor,
-        })}
       />
     </LDStack.Navigator>
   );
 }
 
-const Tab = createBottomTabNavigator();
-
-export default function App() {
-  return (
-    <NavigationContainer>
+/************ TABS ************/
+function Tabs() {
+  return ( 
       <Tab.Navigator
         tabBarOptions={{
           showLabel: false,
@@ -139,41 +128,106 @@ export default function App() {
           style: {
             backgroundColor: GLOBAL.barColor,
           }
-        }}>
-        <Tab.Screen 
-          name="Home" 
-          component={HomeStackScreen} 
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon
-                name="ios-home"
-                size={size}
-                color={color} />
-            )
-          }}/>
-        <Tab.Screen 
-          name="LH" 
-          component={LHStackScreen} 
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon
-                name="ios-bookmark"
-                size={size}
-                color={color} />
-            )
-          }}/>
-        <Tab.Screen 
-          name="LD" 
-          component={LDStackScreen}  
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Icon
-                name="ios-book"
-                size={size}
-                color={color} />
-            )
-          }}/>
-      </Tab.Navigator>
+      }}>
+      <Tab.Screen 
+        name="Home" 
+        component={HomeStackScreen}
+        
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name="ios-home"
+              size={size}
+              color={color} />
+          )
+        }}/>
+      <Tab.Screen 
+        name="LH" 
+        component={LHStackScreen} 
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name="ios-bookmark"
+              size={size}
+              color={color} />
+          )
+        }}/>
+      <Tab.Screen 
+        name="LD" 
+        component={LDStackScreen}  
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              name="ios-book"
+              size={size}
+              color={color} />
+          )
+        }}/>
+    </Tab.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen 
+          name="Home"
+          component={Tabs}
+          options={({ navigation, route }) => ({
+            headerTitle: getHeaderTitle(route),
+            headerStyle: { backgroundColor: GLOBAL.barColor },
+            headerTintColor: GLOBAL.itemsBarColor,
+            headerLeft: () => getHeaderLeft(route),
+            headerRight: () => getHeaderRight(navigation, route)
+          })}
+        />
+        <Stack.Screen 
+          name="Settings" 
+          component={SettingsScreen}
+          options={({ navigation, route }) => ({
+            title: "Configuració",
+            headerStyle: { backgroundColor: GLOBAL.barColor },
+            headerTintColor: GLOBAL.itemsBarColor,
+          })}
+        />
+        <Stack.Screen 
+          name="Donation" 
+          component={DonationScreen} 
+          options={({ navigation, route }) => ({
+            title: "Donatiu lliure",
+            headerStyle: { backgroundColor: GLOBAL.barColor },
+            headerTintColor: GLOBAL.itemsBarColor,
+          })}
+        />
+        <Stack.Screen 
+          name="Comment" 
+          component={CommentScreen} 
+          options={({ navigation, route }) => ({
+            title: "Missatge",
+            headerStyle: { backgroundColor: GLOBAL.barColor },
+            headerTintColor: GLOBAL.itemsBarColor,
+          })}
+        />
+        <Stack.Screen 
+          name="LHDisplay" 
+          component={LHDisplayScreen} 
+          options={({ navigation, route }) => ({
+            title: route.params.props.type,
+            headerStyle: { backgroundColor: GLOBAL.barColor },
+            headerTintColor: GLOBAL.itemsBarColor,
+          })}
+        />
+        <Stack.Screen 
+          name="LDDisplay" 
+          component={LDDisplayScreen} 
+          options={({ navigation, route }) => ({
+            title: route.params.props.type,
+            headerStyle: { backgroundColor: GLOBAL.barColor },
+            headerTintColor: GLOBAL.itemsBarColor,
+          })}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

@@ -6,15 +6,12 @@ import {
   BackHandler,
   SafeAreaView,
   AppState,
-  Platform
+  Platform,
+  Modal,
+  StyleSheet
 } from 'react-native';
-//import SplashScreen from 'react-native-splash-screen';
-import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AsyncStorage } from 'react-native';
-/*import PopupDialog, {
-  DialogTitle,
-} from 'react-native-popup-dialog';*/
 import HomeScreen from '../Views/HomeScreen';
 import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
@@ -309,80 +306,37 @@ export default class HomeScreenController extends Component {
             lliureCB={this.onSwitchLliurePress.bind(this)}
             navigation={this.props.navigation} />
               <View>
-                
-              </View> 
-              
-
-        </SafeAreaView>
-      );
-    }
-  }
-}
-
-/*
-
-          <PopupDialog
-            visible={this.state.PopupDialog_ShowLate}
-            onTouchOutside={this.onTodayPress.bind(this)}
-            width={0.9}
-            height={250}
-            dialogStyle={{ backgroundColor: 'white' }}
-            dialogTitle={<DialogTitle titleTextStyle={{ fontSize: 19, color: 'black' }} title="És més tard de les 12 de la nit!" />} >
-            <View style={{ flex: 1, paddingHorizontal: 10, justifyContent: 'center' }}>
-              <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + G_VALUES.date.getDate() + " de " + GF.getMonthText(G_VALUES.date.getMonth()) + "."}</Text>
-              <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
-            </View>
-            <View style={{ justifyContent: 'flex-end', borderRadius: 15, paddingHorizontal: 10, paddingBottom: 10, flexDirection: 'row', backgroundColor: 'white' }}>
-              <View style={{ flex: 1, alignItems: 'center' }}>
-                <TouchableOpacity onPress={this.onYestPress.bind(this, yesterday)}>
-                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
-                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 1, alignItems: 'center' }}>
-                <TouchableOpacity onPress={this.onTodayPress.bind(this)}>
-                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
-                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{G_VALUES.date.getDate() + "/" + (G_VALUES.date.getMonth() + 1) + "/" + G_VALUES.date.getFullYear()}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </PopupDialog>
-
-          */
-
-
-/*
-{ Platform.OS == "ios" ?
-                  <PopupDialog
-                    visible={this.state.isDateTimePickerVisible}
-                    width={0.9}
-                    height={parseInt(Platform.Version, 10) >= 14? 460 : 300 }
-                    onTouchOutside={this.datePickerIOS_Cancel.bind(this)}
-                    dialogStyle={{ backgroundColor: 'white' }}
-                    dialogTitle={
-                      <DialogTitle title="Selecciona un dia" textStyle={{ fontSize: 19 }}/>} >
-                        <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
-                          <DateTimePicker
-                            mode="date"
-                            display="inline"
-                            onChange={this.datePickerChange.bind(this)}
-                            value={G_VALUES.date}
-                            minimumDate={GLOBALS.minDatePicker}
-                            maximumDate={GLOBALS.maxDatePicker}
-                          />
+              { Platform.OS == "ios" ?
+                  <Modal
+                    animationType="slide" // fade, none
+                    transparent={true}
+                    visible={this.state.isDateTimePickerVisible}>
+                      <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                          <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
+                            <DateTimePicker
+                              mode="date"
+                              display="spinner"
+                              onChange={this.datePickerChange.bind(this)}
+                              value={G_VALUES.date}
+                              minimumDate={GLOBALS.minDatePicker}
+                              maximumDate={GLOBALS.maxDatePicker}
+                            />
+                          </View>
+                          <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Cancel.bind(this)}>
+                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
+                            </TouchableOpacity >
+                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Today.bind(this)}>
+                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Accept.bind(this)}>
+                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
+                            </TouchableOpacity>
+                          </View>
                         </View>
-                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
-                          <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Cancel.bind(this)}>
-                              <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
-                          </TouchableOpacity >
-                          <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Today.bind(this)}>
-                              <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Accept.bind(this)}>
-                              <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
-                          </TouchableOpacity>
-                        </View>
-                    </PopupDialog>
+                      </View>
+                    </Modal>
                 :
                     <View>
                       {this.state.isDateTimePickerVisible &&
@@ -397,4 +351,62 @@ export default class HomeScreenController extends Component {
                       }
                     </View>
                 }
-*/
+
+              </View> 
+              
+              <Modal
+                animationType="slide" // fade, none
+                transparent={true}
+                visible={this.state.PopupDialog_ShowLate}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <View style={{  paddingHorizontal: 0, justifyContent: 'center' }}>
+                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + G_VALUES.date.getDate() + " de " + GF.getMonthText(G_VALUES.date.getMonth()) + "."}</Text>
+                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
+                        <Text />
+                        <Text />
+                        <Text />
+                      </View>
+                      <View style={{ justifyContent: 'flex-end', borderRadius: 15, paddingHorizontal: 10, paddingBottom: 10, flexDirection: 'row', backgroundColor: 'white' }}>
+                        <View style={{ flex: 1, alignItems: 'center' }}>
+                          <TouchableOpacity onPress={this.onYestPress.bind(this, yesterday)}>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
+                          </TouchableOpacity>
+                        </View>
+                        <View style={{ flex: 1, alignItems: 'center' }}>
+                          <TouchableOpacity onPress={this.onTodayPress.bind(this)}>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{G_VALUES.date.getDate() + "/" + (G_VALUES.date.getMonth() + 1) + "/" + G_VALUES.date.getFullYear()}</Text>
+                          </TouchableOpacity>
+                          </View>
+                      </View>
+                    </View>
+                  </View>
+          </Modal>
+
+        </SafeAreaView>
+      );
+    }
+  }
+}
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    }
+  }
+});
