@@ -1,4 +1,4 @@
-# Expo Installs
+# Third-party Installs
 ### React Navigation
 
     npm install @babel/core --save
@@ -47,7 +47,6 @@
 
     expo install @react-native-community/slider
 
-# Other
-### Clear Cache
+### Slider
 
-    expo r -c
+    expo install expo-splash-screen

@@ -1,26 +1,32 @@
 {
   "expo": {
-    "name": "cpl",
-    "slug": "cpl",
-    "version": "1.0.0",
+    "name": "CPL",
+    "slug": "CPLApp",
+    "version": "3.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/Assets/icon.png",
+    "githubUrl": "https://github.com/pausabe/cpl-app",
+    "backgroundColor": "#000000",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/Assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#006064"
     },
     "updates": {
+      "enabled": true,
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "cpl.cpl",
+      "buildNumber": 38,
       "supportsTablet": true
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "android": {
+      "package": "cpl.cpl",
+      "versionCode": 40
     }
   }
 }

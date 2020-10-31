@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AsyncStorage } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 import HomeScreen from '../Views/HomeScreen';
 import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
@@ -20,7 +21,8 @@ import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test } from '../Test
 
 export default class HomeScreenController extends Component {
 
-  componentDidMount() {
+  async componentDidMount() {
+    await SplashScreen.preventAutoHideAsync();
     this.props.navigation.setParams({
       calPres: this.calendarPressed.bind(this),
       Refresh_Date: this.Refresh_Date.bind(this),
@@ -87,7 +89,7 @@ export default class HomeScreenController extends Component {
     if (TEST_MODE_ON) {
 
       //Hide Splash Screen
-      //SplashScreen.hide();
+      //await SplashScreen.hideAsync();
 
       this.state = {
         testInformation: "Starting test"
@@ -129,7 +131,7 @@ export default class HomeScreenController extends Component {
     this.setState({ testInformation: informationText });
   }
 
-  Init_Everything() {
+  async Init_Everything() {
     //Set data to show on Home Screen
     this.setState({
       santPressed: false,
@@ -154,7 +156,7 @@ export default class HomeScreenController extends Component {
     });
 
     //Hide Splash Screen
-    //SplashScreen.hide();
+    await SplashScreen.hideAsync();
 
     //Set santPress variable to 0
     this.santPress = 0;
