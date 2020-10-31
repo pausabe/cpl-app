@@ -54,3 +54,15 @@
 ### Status Bar
 
     expo install expo-status-bar
+
+
+# Extra
+
+### Run in cache clean mode
+
+    expo r -c
+
+### Deploy
+
+    expo build:ios
+    expo build:android

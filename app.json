@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "CPL",
+    "description": "This application helps up to pray with biblical texts that the Lord Jesus himself used to pray. Currently it is only available in Catalan.",
     "slug": "CPLApp",
     "version": "3.0.0",
     "orientation": "portrait",
