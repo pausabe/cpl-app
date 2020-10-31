@@ -13,15 +13,14 @@
       "backgroundColor": "#006064"
     },
     "updates": {
-      "enabled": true,
-      "fallbackToCacheTimeout": 0
+      "enabled": false
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "bundleIdentifier": "cpl.cpl",
-      "buildNumber": 38,
+      "buildNumber": "38",
       "supportsTablet": true
     },
     "android": {

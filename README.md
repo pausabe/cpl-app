@@ -47,6 +47,10 @@
 
     expo install @react-native-community/slider
 
-### Slider
+### Splash Screen
 
     expo install expo-splash-screen
+
+### Status Bar
+
+    expo install expo-status-bar

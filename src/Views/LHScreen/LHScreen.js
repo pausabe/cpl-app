@@ -5,21 +5,19 @@ import {
   StyleSheet,
   ImageBackground,
 } from 'react-native';
-//import { NavigationEvents } from 'react-navigation';
-
 import LHButtons from './LHButtons';
-//import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 
 export default class LHScreen extends Component {
   constructor(props) {
     super(props);
   }
 
-  UNSAFE_componentWillMount() {
-    //this.eventEmitter = new EventEmitter();
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => this.forceUpdate());
   }
 
-  componentDidMount() {
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   LHButtonCB(type, superTestMode) {
@@ -35,7 +33,6 @@ export default class LHScreen extends Component {
         setNumSalmInv: this.setNumSalmInv.bind(this),
         setNumAntMare: this.setNumAntMare.bind(this),
         type: type,
-        //emitShareCB: this.emitShare.bind(this),
         events: this.eventEmitter
       },
     }
@@ -45,29 +42,6 @@ export default class LHScreen extends Component {
   nextDayTest() {
 
   }
-
-  /*emitShare(type) {
-    console.log("emitShare: " + type);
-    switch (type) {
-      case "Ofici":
-        this.eventEmitter.emit('shareButtonPressed_Ofici');
-        break;
-      case "Laudes":
-        this.eventEmitter.emit('shareButtonPressed_Laudes');
-        break;
-      case "Tèrcia":
-      case "Sexta":
-      case "Nona":
-        this.eventEmitter.emit('shareButtonPressed_Menor');
-        break;
-      case "Vespres":
-        this.eventEmitter.emit('shareButtonPressed_Vespres');
-        break;
-      case "Completes":
-        this.eventEmitter.emit('shareButtonPressed_Completes');
-        break;
-    }
-  }*/
 
   setNumSalmInv(numSalm) {
     G_VALUES.numSalmInv = numSalm;
@@ -82,12 +56,6 @@ export default class LHScreen extends Component {
     console.log("InfoLog. super error (bad text))");
     this.testing = false;*/
   }
-
-  /*
-          <NavigationEvents
-          onWillFocus={payload => this.forceUpdate()}
-        />
-        */
 
   render() {
     return (

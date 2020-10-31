@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-//import { NavigationEvents } from 'react-navigation';
 
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
@@ -25,6 +24,14 @@ export default class LDScreen extends Component {
   }
 
   componentDidMount() {
+  }
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => this.forceUpdate());
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   Refresh_Layout() {
@@ -92,12 +99,6 @@ export default class LDScreen extends Component {
           </View>
         )
       }
-
-      /*
-                <NavigationEvents
-            onWillFocus={payload => this.Refresh_Layout()}
-          />
-          */
 
       return (
         <View style={styles.container}>
