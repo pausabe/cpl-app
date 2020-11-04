@@ -358,12 +358,12 @@ export default class HomeScreen extends Component {
                     <View style={{ width: arrowWidth, justifyContent: 'center', alignItems: 'center' }}>
                       {this.props.santPressed ?
                         <Icon
-                          name="chevron-down-outline"
+                          name="md-arrow-dropdown"
                           size={25}
                           color={arrowColor} />
                         :
                         <Icon
-                          name="chevron-forward-outline"
+                          name="md-arrow-dropright"
                           size={25}
                           iconStyle={{ padding: 50 }}
                           color={arrowColor} />

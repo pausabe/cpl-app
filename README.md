@@ -66,3 +66,4 @@
 
     expo build:ios
     expo build:android
+    https://docs.expo.io/versions/latest/config/app/#properties

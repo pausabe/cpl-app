@@ -176,6 +176,7 @@ export default function App() {
           component={Tabs}
           options={({ navigation, route }) => ({
             headerTitle: getHeaderTitle(route),
+            headerTitleStyle: { alignSelf: 'center' },
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerLeft: () => getHeaderLeft(route),
@@ -222,7 +223,7 @@ export default function App() {
           name="LDDisplay" 
           component={LDDisplayScreen} 
           options={({ navigation, route }) => ({
-            title: route.params.props.type,
+            title: "Missa",
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
           })}
