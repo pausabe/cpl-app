@@ -55,6 +55,10 @@
 
     expo install expo-status-bar
 
+### Bottom tab Icons
+
+    npm install @react-navigation/material-bottom-tabs react-native-paper
+
 
 # Extra
 

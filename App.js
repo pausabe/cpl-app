@@ -15,11 +15,13 @@ import LDScreen from './src/Views/LDScreen/LDScreen';
 import LDDisplayScreen from './src/Views/LDScreen/LDDisplayScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 Icon.loadFont();
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
 const LDStack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function getHeaderTitle(route) {
@@ -120,47 +122,51 @@ function LDStackScreen() {
 function Tabs() {
   return ( 
       <Tab.Navigator
-        tabBarOptions={{
-          showLabel: false,
-          activeTintColor: "white",
-          inactiveTintColor: "#8d8c8c",
-          lazy: false, // false means all tabs are rendered at the beginning
-          style: {
-            backgroundColor: GLOBAL.barColor,
-          }
-      }}>
+        initialRouteName="Home"
+        activeColor="white"
+        inactiveColor="#D3D3D3"
+        labeled={false}
+        barStyle={{ backgroundColor: GLOBAL.barColor }}>
       <Tab.Screen 
         name="Home" 
         component={HomeStackScreen}
-        
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon
-              name="ios-home"
-              size={size}
-              color={color} />
+          tabBarIcon: ({ focused, color }) => (
+            <View>
+              {focused ?
+                <MaterialCommunityIcons name="home" color={color} size={26} />
+                :
+                <MaterialCommunityIcons name="home-outline" color={color} size={26} />
+              }
+            </View>
           )
         }}/>
       <Tab.Screen 
         name="LH" 
         component={LHStackScreen} 
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon
-              name="ios-bookmark"
-              size={size}
-              color={color} />
+          tabBarIcon: ({ focused, color }) => (
+            <View>
+              {focused ?
+                <MaterialCommunityIcons name="bookmark" color={color} size={26} />
+                :
+                <MaterialCommunityIcons name="bookmark-outline" color={color} size={26} />
+              }
+            </View>
           )
         }}/>
       <Tab.Screen 
         name="LD" 
         component={LDStackScreen}  
         options={{
-          tabBarIcon: ({ color, size }) => (
-            <Icon
-              name="ios-book"
-              size={size}
-              color={color} />
+          tabBarIcon: ({ focused, color }) => (
+            <View>
+              {focused ?
+                <MaterialCommunityIcons name="book-open" color={color} size={26} />
+                :
+                <MaterialCommunityIcons name="book-open-outline" color={color} size={26} />
+              }
+            </View>
           )
         }}/>
     </Tab.Navigator>
