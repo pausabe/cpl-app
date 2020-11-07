@@ -87,13 +87,20 @@
 
 ### Deploy
 #### Stores
+Si es fa servir el --no-publish, no puja la última versió del manifest (app.json).
+En altres paraules, puja el build pero amb versió de manifest que hi havia en l'ultima publicació
+Per publicar només standalone sense passar per OTA executar:
+    1. expo build:ios --release-channel standalone_channel // expo build:android --release-channel standalone_channel
+    2. Descarregar l'arxiu .ipa/.apk de expo.io
+    3. Pujar-lo als stores (ios utilitzar l'app Transporter)
 
-    expo build:ios --no-publish
-    expo build:android --no-publish
+Per publicar standalone + OTA
+    expo build:ios
+    expo build:android
 
 #### OTA
 Només per petits canvis
 
-    expo publish --release-channel channel_name -> https://expo.io/@pau.sabe/CPLApp?release-channel=test_channel
+    expo publish --release-channel test_channel -> https://expo.io/@pau.sabe/CPLApp?release-channel=test_channel
     expo publish
     

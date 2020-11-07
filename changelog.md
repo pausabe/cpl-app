@@ -183,6 +183,11 @@ v1.0(14.09.2017)[An8,Ap1] - [698ecf9] Errors ortogràfics i litúrgics corregits
 -----
 - RN Update to 0.63.2
 
+///////////
+New version name usage:
+APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
+///////////
+
 ### v3.0.0 (31.10.2020)[An40,Ap38]
 - [ios] Millora en la navegació entre pantalles
 - [ios] Canvis en el modal de selecció del dia
@@ -190,7 +195,8 @@ v1.0(14.09.2017)[An8,Ap1] - [698ecf9] Errors ortogràfics i litúrgics corregits
 - [ios] Migració del projecte a Expo
 
 ### v3.0.1 (06.11.2020)[An42,Ap40]
-- Icona nova
+- Afegida la possibilitat de rebre petites actualitzacions immediates, OTA
+- Icona lleugerament canviada
 -----
 - Testing Expo
 - Activació Expo OTA
@@ -203,11 +209,6 @@ v1.0(14.09.2017)[An8,Ap1] - [698ecf9] Errors ortogràfics i litúrgics corregits
 - Millores en els modals
 - Update database primer cop que obrim
 
-///////////
-New version name usage:
-APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
-///////////
-
 ### v3.0.3 (07.11.2020)[An43,Ap41]
 - 
 -----
@@ -217,3 +218,5 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - Introduït l'any 2021
 -----
 - Min/Max dies de forma dinàmica
+
+### v3.1.0 (07.11.2020)[An45,Ap45]

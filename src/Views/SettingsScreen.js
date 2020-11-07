@@ -24,6 +24,7 @@ export default class SettingsScreen extends Component {
   }
 
   render() {
+    console.log("paolo: ", Constants);
       if(!this.state || this.state && !this.state.options){
           return (
             <View style={styles.scrollContainer}>
@@ -42,7 +43,7 @@ export default class SettingsScreen extends Component {
             <View style={{padding: 5, paddingTop: 10,}}>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Text oficial de la Comissió Interdiocesana de Litúrgia de la Conferència Episcopal Tarraconense, aprovat pels bisbes de les diòcesis de parla catalana i confirmat per la Congregació per al Culte Diví i la Disciplina dels Sagraments: Prot. N. 312/15, 27 d'abril de 2016"}</Text>
               <View style={{height:15}}/>
-              <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de l'aplicació: "}{Constants.manifest.version}</Text>
+              <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de l'aplicació: "}{Platform.OS == "ios"? Constants.manifest.ios.buildNumber : Constants.manifest.android.versionCode}{"("}{Constants.manifest.version}{")"}</Text>
             </View>
             <View style={{height:10}}/>
           </ScrollView>
