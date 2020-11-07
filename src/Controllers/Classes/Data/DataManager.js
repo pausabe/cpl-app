@@ -52,7 +52,8 @@ export function Reload_All_Data(date, Reload_Finished_Callback, online_updates =
     SettingsManager.getSettingNumSalmInv((r) => G_VALUES.numSalmInv = r),
     SettingsManager.getSettingNumAntMare((r) => G_VALUES.numAntMare = r),
     SettingsManager.getSettingOnlineVersion((r) => G_VALUES.onlineVersion = r),
-  ]).then(() => {
+  ])
+  .then(() => {
     
     //Intialize DB Access
     DB_Access = new DBAdapter();
@@ -165,7 +166,11 @@ function Refresh_Data() {
     G_VALUES.date.getFullYear(),
     G_VALUES.date.getMonth(),
     G_VALUES.date.getDate(),
-    (current, tomorrow, pentacosta) => {
+    (current, tomorrow, pentacosta, minDate, maxDate) => {
+
+      G_VALUES.minDatePicker = minDate;
+      G_VALUES.maxDatePicker = maxDate;
+
       var celType = GF.getCelType(G_VALUES.diocesi, current);
       var tomorrowCelType = GF.getCelType(G_VALUES.diocesi, tomorrow);
 

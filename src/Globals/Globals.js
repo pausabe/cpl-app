@@ -25,9 +25,6 @@ module.exports = {
   N_OCTAVA: 'N_OCTAVA',
   N_ABANS: 'N_ABANS',
 
-  minDatePicker: new Date(2017, 0, 2),
-  maxDatePicker: new Date(2020, 11, 28),
-
   size1: 15,
   size2: 18,
   size3: 21,
@@ -41,8 +38,6 @@ module.exports = {
 
   late_prayer: 3,
   afternoon_hour: 18,
-
-  //DBName: '2.3.0.db',
 
   paddingBar: Platform.OS === 'ios' ? 0 : 54,
 

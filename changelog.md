@@ -212,3 +212,8 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - 
 -----
 - Testing canvis en la base de dades + OTA
+
+### v3.0.4 (07.11.2020)[An43,Ap41]
+- Introduït l'any 2021
+-----
+- Min/Max dies de forma dinàmica

@@ -334,8 +334,8 @@ export default class HomeScreenController extends Component {
                               display="inline" //spinner, compact, inline
                               onChange={this.datePickerChange.bind(this)}
                               value={G_VALUES.date}
-                              minimumDate={GLOBALS.minDatePicker}
-                              maximumDate={GLOBALS.maxDatePicker}
+                              minimumDate={G_VALUES.minDatePicker}
+                              maximumDate={G_VALUES.maxDatePicker}
                             />
                           </View>
                           <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
@@ -360,8 +360,8 @@ export default class HomeScreenController extends Component {
                             display={"default"} // default, spinner, calendar
                             onChange={this.datePickerChange.bind(this)}
                             value={G_VALUES.date}
-                            minimumDate={GLOBALS.minDatePicker}
-                            maximumDate={GLOBALS.maxDatePicker}
+                            minimumDate={G_VALUES.minDatePicker}
+                            maximumDate={G_VALUES.maxDatePicker}
                           />
                       }
                     </View>
