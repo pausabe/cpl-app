@@ -6,6 +6,9 @@ import { Asset } from 'expo-asset';
 import GLOBAL from '../Globals/Globals';
 import GF from '../Globals/GlobalFunctions';
 import * as SQLite from 'expo-sqlite';
+import { log } from 'react-native-reanimated';
+
+var _firstOpen = true;
 
 export default class DBAdapter {
   constructor() {
@@ -17,48 +20,91 @@ export default class DBAdapter {
         resolve(true);
       }
       else{
-        return FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
-          .then((directoryInfo) => {
-            if(directoryInfo.exists){
-              this.database = SQLite.openDatabase("cpl-app.db");
-              resolve(true);
-            }
-            else{
-              // Create directory
-              FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite/", {intermediates: true})
-              .then(() => {
-                // Save the database from assets folder to the device internal ("download")
-                FileSystem.downloadAsync(
-                  Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
-                  FileSystem.documentDirectory + "SQLite/cpl-app.db"
-                )
-                .then(({ uri }) => {
-                  console.log('Finished downloading to ', uri)
-                  this.database = SQLite.openDatabase("cpl-app.db");
-                  resolve(true);
-                })
-                .catch(error => {
-                  console.error("Error copying the database: ", error);
-                  resolve(false);
-                })
-              });
-            }
+        console.log("Database Path: " + FileSystem.documentDirectory);
+
+        if(_firstOpen){
+          _firstOpen = false;
+          this.DeleteDatabaseIfExists().then(() => {
+            this.CreateDirectoryIfNecessaryAndOpenDatabase()
+            .then((result) => resolve(result));
           });
+        }
+        else{
+          this.CreateDirectoryIfNecessaryAndOpenDatabase()
+          .then((result) => resolve(result));
+        }
+
       }
     });
     return promise 
   }
 
-  executeQuery(query, callback) {
-    this.OpenDatabaseIfNotOpenedYet().then(() => {
-      this.database.transaction((tx) => {
-        tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-          callback(SQLResultSet);
-        }, (SQLTransaction, SQLError) => {
-          console.log("[executeQuery] error in query (" + query + "): ", SQLError);
-          callback();
-        });
+  DeleteDatabaseIfExists(){
+    let promise = new Promise((resolve) => {
+      FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
+      .then((directoryInfo) => {
+        if(directoryInfo.exists){
+          console.log("DELETE database in: " + FileSystem.documentDirectory + "SQLite/cpl-app.db");
+          FileSystem.deleteAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db", {intermediates: true})
+          .then( () => resolve() );
+        }
+        else{
+          resolve();
+        }
       });
+    });
+    return promise;
+  }
+
+  CreateDirectoryIfNecessaryAndOpenDatabase(){
+    let promise = new Promise((resolve) => {
+      FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
+      .then((directoryInfo) => {
+
+        if(directoryInfo.exists){
+          this.database = SQLite.openDatabase("cpl-app.db");
+          resolve(true);
+        }
+        else{
+          FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite/", {intermediates: true})
+          .then(() => {
+            // Save the database from assets folder to the device internal ("download")
+            FileSystem.downloadAsync(
+              Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
+              FileSystem.documentDirectory + "SQLite/cpl-app.db"
+            )
+            .then(({ uri }) => {
+              console.log('Finished downloading to ', uri)
+              this.database = SQLite.openDatabase("cpl-app.db");
+              resolve(true);
+            })
+            .catch(error => {
+              console.error("Error copying the database: ", error);
+              resolve(false);
+            })
+          });
+        }
+        
+      });
+    });
+    return promise;
+  }
+
+  executeQuery(query, callback) {
+    this.OpenDatabaseIfNotOpenedYet().then((ok_status) => {
+      if(ok_status){
+        this.database.transaction((tx) => {
+          tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+            callback(SQLResultSet);
+          }, (SQLTransaction, SQLError) => {
+            console.log("[executeQuery] error in query (" + query + "): ", SQLError);
+            callback();
+          });
+        });
+      }
+      else{
+        callback();
+      }
     });
   }
 
@@ -66,15 +112,20 @@ export default class DBAdapter {
 
     let promise = new Promise((resolve) => {
 
-      this.OpenDatabaseIfNotOpenedYet().then(() => {
-        this.database.transaction((tx) => {
-          tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-            resolve(true)
-          }, (SQLTransaction, SQLError) => {
-            console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", SQLError);
-            resolve(false)
+      this.OpenDatabaseIfNotOpenedYet().then((ok_status) => {
+        if(ok_status){
+          this.database.transaction((tx) => {
+            tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+              resolve(true)
+            }, (SQLTransaction, SQLError) => {
+              console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", SQLError);
+              resolve(false)
+            });
           });
-        });
+        }
+        else{
+          resolve(false);
+        }
       });
     });
   

@@ -59,15 +59,41 @@
 
     npm install @react-navigation/material-bottom-tabs react-native-paper
 
+### Constants
 
-# Extra
+    expo install expo-constants
+
+
+# Docs
+### Expo Commands
+
+    https://docs.expo.io/workflow/expo-cli/
+
+### Run
+
+    expo start
 
 ### Run in cache clean mode
 
     expo r -c
 
-### Deploy
+### app.json properties
 
-    expo build:ios
-    expo build:android
     https://docs.expo.io/versions/latest/config/app/#properties
+
+### Upgrade
+
+    expo upgrade
+
+### Deploy
+#### Stores
+
+    expo build:ios --no-publish
+    expo build:android --no-publish
+
+#### OTA
+Només per petits canvis
+
+    expo publish --release-channel channel_name -> https://expo.io/@pau.sabe/CPLApp?release-channel=test_channel
+    expo publish
+    

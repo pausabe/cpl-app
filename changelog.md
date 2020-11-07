@@ -188,3 +188,27 @@ v1.0(14.09.2017)[An8,Ap1] - [698ecf9] Errors ortogràfics i litúrgics corregits
 - [ios] Canvis en el modal de selecció del dia
 -----
 - [ios] Migració del projecte a Expo
+
+### v3.0.1 (06.11.2020)[An42,Ap40]
+- Icona nova
+-----
+- Testing Expo
+- Activació Expo OTA
+- [android] Migració del projecte a Expo
+
+### v3.0.2 (07.11.2020)[An43,Ap41]
+- S'afegeix la versió de l'app als Settings
+-----
+- Testing del publish Standalone vs OTA 
+- Millores en els modals
+- Update database primer cop que obrim
+
+///////////
+New version name usage:
+APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
+///////////
+
+### v3.0.3 (07.11.2020)[An43,Ap41]
+- 
+-----
+- Testing canvis en la base de dades + OTA

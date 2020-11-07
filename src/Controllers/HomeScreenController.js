@@ -19,11 +19,17 @@ import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
 import { Reload_All_Data } from './Classes/Data/DataManager.js';
 import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test } from '../Tests/TestsManager';
+import { log } from 'react-native-reanimated';
 
 export default class HomeScreenController extends Component {
 
   async componentDidMount() {
-    await SplashScreen.preventAutoHideAsync();
+    try {
+      await SplashScreen.preventAutoHideAsync();
+    } catch (e) {
+        console.warn(e);
+        await SplashScreen.hideAsync();
+    }
     this.props.navigation.setParams({
       calPres: this.calendarPressed.bind(this),
       Refresh_Date: this.Refresh_Date.bind(this),
@@ -103,7 +109,7 @@ export default class HomeScreenController extends Component {
       this.state = {
         santPressed: false,
         isDateTimePickerVisible: false,
-        PopupDialog_ShowLate: this.Is_Late_Prayer(),
+        PopupDialog_ShowLate: false,
         ViewData: {
           ready: false,
           lloc: {
@@ -133,34 +139,36 @@ export default class HomeScreenController extends Component {
   }
 
   async Init_Everything() {
-    //Set data to show on Home Screen
-    this.setState({
-      santPressed: false,
-      ViewData: {
-        ready: true,
-        lloc: {
-          diocesiName: G_VALUES.diocesiName,
-          lloc: G_VALUES.lloc,
-        },
-        data: G_VALUES.date,
-        setmana: G_VALUES.setmana,
-        temps: G_VALUES.tempsespecific,
-        setCicle: G_VALUES.cicle,
-        anyABC: G_VALUES.ABC,
-        color: G_VALUES.litColor,
-        celebracio: {
-          type: G_VALUES.info_cel.typeCel,
-          titol: G_VALUES.info_cel.nomCel,
-          text: G_VALUES.info_cel.infoCel,
-        },
-      }
-    });
-
-    //Hide Splash Screen
-    await SplashScreen.hideAsync();
-
-    //Set santPress variable to 0
-    this.santPress = 0;
+    try {
+      //Set data to show on Home Screen
+      this.setState({
+        santPressed: false,
+        PopupDialog_ShowLate: this.Is_Late_Prayer(),
+        ViewData: {
+          ready: true,
+          lloc: {
+            diocesiName: G_VALUES.diocesiName,
+            lloc: G_VALUES.lloc,
+          },
+          data: G_VALUES.date,
+          setmana: G_VALUES.setmana,
+          temps: G_VALUES.tempsespecific,
+          setCicle: G_VALUES.cicle,
+          anyABC: G_VALUES.ABC,
+          color: G_VALUES.litColor,
+          celebracio: {
+            type: G_VALUES.info_cel.typeCel,
+            titol: G_VALUES.info_cel.nomCel,
+            text: G_VALUES.info_cel.infoCel,
+          },
+        }
+      }, async () => await SplashScreen.hideAsync());
+      
+      //Set santPress variable to 0
+      this.santPress = 0;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   Refresh_Date_Callback() {
@@ -285,6 +293,10 @@ export default class HomeScreenController extends Component {
     this.Refresh_Date(G_VALUES.date);
   }
 
+  onLatePrayerPressed(){
+    this.setState({ PopupDialog_ShowLate: true });
+  }
+
   render() {
     if (TEST_MODE_ON) {
       return (
@@ -311,15 +323,15 @@ export default class HomeScreenController extends Component {
               <View>
               { Platform.OS == "ios" ?
                   <Modal
-                    animationType="slide" // fade, none
+                    animationType="fade" // slide, fade, none
                     transparent={true}
                     visible={this.state.isDateTimePickerVisible}>
-                      <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
+                      <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={this.datePickerIOS_Cancel.bind(this)}>
+                        <TouchableOpacity activeOpacity={1} style={styles.DatePickerInsideModal}>
                           <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
                             <DateTimePicker
                               mode="date"
-                              display="spinner"
+                              display="inline" //spinner, compact, inline
                               onChange={this.datePickerChange.bind(this)}
                               value={G_VALUES.date}
                               minimumDate={GLOBALS.minDatePicker}
@@ -337,8 +349,8 @@ export default class HomeScreenController extends Component {
                                 <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
                             </TouchableOpacity>
                           </View>
-                        </View>
-                      </View>
+                        </TouchableOpacity>
+                      </TouchableOpacity>
                     </Modal>
                 :
                     <View>
@@ -357,37 +369,30 @@ export default class HomeScreenController extends Component {
 
               </View> 
               
-              <Modal
-                animationType="slide" // fade, none
-                transparent={true}
-                visible={this.state.PopupDialog_ShowLate}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <View style={{  paddingHorizontal: 0, justifyContent: 'center' }}>
+              <Modal animationType={"fade"} // slide, fade, none
+                      transparent={true}
+                      visible={this.state.PopupDialog_ShowLate} >
+                  <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={this.onTodayPress.bind(this)}>
+                    <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
+                      <View style={{ paddingTop: 15}}>
                         <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + G_VALUES.date.getDate() + " de " + GF.getMonthText(G_VALUES.date.getMonth()) + "."}</Text>
                         <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
-                        <Text />
-                        <Text />
-                        <Text />
                       </View>
-                      <View style={{ justifyContent: 'flex-end', borderRadius: 15, paddingHorizontal: 10, paddingBottom: 10, flexDirection: 'row', backgroundColor: 'white' }}>
-                        <View style={{ flex: 1, alignItems: 'center' }}>
-                          <TouchableOpacity onPress={this.onYestPress.bind(this, yesterday)}>
-                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
-                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
-                          </TouchableOpacity>
-                        </View>
-                        <View style={{ flex: 1, alignItems: 'center' }}>
-                          <TouchableOpacity onPress={this.onTodayPress.bind(this)}>
-                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
-                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{G_VALUES.date.getDate() + "/" + (G_VALUES.date.getMonth() + 1) + "/" + G_VALUES.date.getFullYear()}</Text>
-                          </TouchableOpacity>
-                          </View>
+
+                      <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>
+                        <TouchableOpacity onPress={this.onYestPress.bind(this, yesterday)} style={{ paddingRight: 20}}>
+                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
+                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this.onTodayPress.bind(this)}>
+                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
+                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{G_VALUES.date.getDate() + "/" + (G_VALUES.date.getMonth() + 1) + "/" + G_VALUES.date.getFullYear()}</Text>
+                        </TouchableOpacity>
                       </View>
-                    </View>
-                  </View>
-          </Modal>
+
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+              </Modal>
 
           <StatusBar style="light" />
 
@@ -398,16 +403,38 @@ export default class HomeScreenController extends Component {
 }
 
 const styles = StyleSheet.create({
-  centeredView: {
+  DatePickerWholeModal: {
     flex: 1,
     justifyContent: 'center',
-    marginTop: 22,
+    paddingTop: 10,
+    backgroundColor: 'rgba(0,0,0,0.4)'
   },
-  modalView: {
-    margin: 20,
+  DatePickerInsideModal: {
+    margin: 10,
+    marginHorizontal: 30,
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 10,
+    paddingBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    }
+  },
+  LatePrayerWholeModal: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 10,
+    backgroundColor: 'rgba(0,0,0,0.4)'
+  },
+  LatePrayerInsideModal: {
+    margin: 10,
+    marginHorizontal: 30,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 10,
+    paddingBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

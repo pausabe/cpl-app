@@ -446,6 +446,10 @@ export default class HomeScreen extends Component {
   }
 }
 
+function fontsize(){
+  return Platform.OS == 'iOS'? 20 : 18;
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -496,7 +500,7 @@ const styles = StyleSheet.create({
   diaLiturgicText: {
     textAlign: 'center',
     color: 'black',
-    fontSize: 20,
+    fontSize: fontsize(),
     fontWeight: '300'
   },
   infoText: {
