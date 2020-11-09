@@ -26,6 +26,9 @@ LD_VALUES = {}
 //Last refresh datetime
 LAST_REFRESH = new Date()
 
+//Intialize DB Access
+DB_Access = new DBAdapter();
+
 export function Reload_All_Data(date, Reload_Finished_Callback, online_updates = false) {
   // Set some variables
   this.Reload_Finished_Callback = Reload_Finished_Callback;
@@ -54,9 +57,6 @@ export function Reload_All_Data(date, Reload_Finished_Callback, online_updates =
     SettingsManager.getSettingOnlineVersion((r) => G_VALUES.onlineVersion = r),
   ])
   .then(() => {
-    
-    //Intialize DB Access
-    DB_Access = new DBAdapter();
 
     //Check for global parameter
     if(GLOBAL.enable_updates){

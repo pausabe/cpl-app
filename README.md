@@ -104,3 +104,5 @@ Només per petits canvis
     expo publish --release-channel test_channel -> https://expo.io/@pau.sabe/CPLApp?release-channel=test_channel
     expo publish
     
+
+Channels -> prod_channel / test_channel

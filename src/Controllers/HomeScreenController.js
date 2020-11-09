@@ -18,8 +18,9 @@ import HomeScreen from '../Views/HomeScreen';
 import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
 import { Reload_All_Data } from './Classes/Data/DataManager.js';
-import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test } from '../Tests/TestsManager';
+import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test, Alert } from '../Tests/TestsManager';
 import { log } from 'react-native-reanimated';
+import DBAdapter from '../Adapters/DBAdapter';
 
 export default class HomeScreenController extends Component {
 
@@ -296,6 +297,18 @@ export default class HomeScreenController extends Component {
   onLatePrayerPressed(){
     this.setState({ PopupDialog_ShowLate: true });
   }
+
+  /*testing(){
+    DB_Access.testing()
+    .then((result) => {
+      console.log(result);
+      this.setState({testingResult: result});
+    });
+  }
+  <TouchableOpacity>
+  <Text onPress={this.testing.bind(this)}>TESTING</Text>
+</TouchableOpacity>
+<Text>{"Result: "}{this.state.testingResult}</Text>*/
 
   render() {
     if (TEST_MODE_ON) {

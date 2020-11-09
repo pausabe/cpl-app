@@ -14,6 +14,22 @@ export default class DBAdapter {
   constructor() {
   }
 
+  /*testing(){
+    let promise = new Promise((resolve) => {
+
+      this.database._db.close();
+      _firstOpen = true;
+      this.OpenDatabaseIfNotOpenedYet()
+        .then((result) => { 
+          _firstOpen = false;
+          resolve("OK");
+        })
+        .catch((result) => resolve("NOOK"));
+      });
+
+    return promise 
+  }*/
+
   OpenDatabaseIfNotOpenedYet(){
     let promise = new Promise((resolve) => {
       if (this.database != null){
@@ -22,17 +38,18 @@ export default class DBAdapter {
       else{
         console.log("Database Path: " + FileSystem.documentDirectory);
 
-        if(_firstOpen){
+        //TODO: 
+        /*if(_firstOpen){
           _firstOpen = false;
           this.DeleteDatabaseIfExists().then(() => {
             this.CreateDirectoryIfNecessaryAndOpenDatabase()
             .then((result) => resolve(result));
           });
         }
-        else{
+        else{*/
           this.CreateDirectoryIfNecessaryAndOpenDatabase()
           .then((result) => resolve(result));
-        }
+        //}
 
       }
     });
@@ -71,8 +88,7 @@ export default class DBAdapter {
             // Save the database from assets folder to the device internal ("download")
             FileSystem.downloadAsync(
               Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
-              FileSystem.documentDirectory + "SQLite/cpl-app.db"
-            )
+              FileSystem.documentDirectory + "SQLite/cpl-app.db")
             .then(({ uri }) => {
               console.log('Finished downloading to ', uri)
               this.database = SQLite.openDatabase("cpl-app.db");

@@ -220,3 +220,29 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - Min/Max dies de forma dinàmica
 
 ### v3.1.0 (07.11.2020)[An45,Ap45]
+
+### v3.1.1 (08.11.2020)[An45,Ap45]
+- Es desactiven les actualitzacions automàtiques (OTA) després de detectar que no es podia obrir l'aplicació sense connexió a internet.
+- Corregit un error que no permetia veure les segones lectures de la missa
+-----
+- 
+
+### v3.1.2/3 (08.11.2020)[An45,Ap45]
+- 
+-----
+- Proves expo publish
+
+### v3.2.0/1 (08.11.2020)[An46,Ap46]
+- 
+-----
+- Proves expo publish
+
+### v3.3.0/1/2/3/4/5/6/7 (08.11.2020)[An47,Ap47]
+- 
+-----
+- Proves expo publish
+
+### v3.3.8 (08.11.2020)[An47,Ap47]
+- 
+-----
+- Workaround per poder obrir l'app offline

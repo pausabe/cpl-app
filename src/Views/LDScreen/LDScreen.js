@@ -27,7 +27,7 @@ export default class LDScreen extends Component {
   }
 
   componentDidMount() {
-    this._unsubscribe = this.props.navigation.addListener('focus', () => this.forceUpdate());
+    this._unsubscribe = this.props.navigation.addListener('focus', () => this.Refresh_Layout());
   }
 
   componentWillUnmount() {
