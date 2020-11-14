@@ -8,109 +8,144 @@ import GF from '../Globals/GlobalFunctions';
 import * as SQLite from 'expo-sqlite';
 import { log } from 'react-native-reanimated';
 
-var _firstOpen = true;
-
 export default class DBAdapter {
   constructor() {
   }
 
-  /*testing(){
-    let promise = new Promise((resolve) => {
-
-      this.database._db.close();
-      _firstOpen = true;
-      this.OpenDatabaseIfNotOpenedYet()
-        .then((result) => { 
-          _firstOpen = false;
-          resolve("OK");
-        })
-        .catch((result) => resolve("NOOK"));
-      });
-
-    return promise 
-  }*/
-
   OpenDatabaseIfNotOpenedYet(){
     let promise = new Promise((resolve) => {
       if (this.database != null){
-        resolve(true);
+        console.log("[DB-MANAGEMENT] Database already oppened");
+        resolve("OK");
       }
       else{
-        console.log("Database Path: " + FileSystem.documentDirectory);
+        console.log("[DB-MANAGEMENT] Necessary to open the database");
+        console.log("[DB-MANAGEMENT] FileSystem directory: " + FileSystem.documentDirectory);
 
-        //TODO: 
-        /*if(_firstOpen){
-          _firstOpen = false;
-          this.DeleteDatabaseIfExists().then(() => {
-            this.CreateDirectoryIfNecessaryAndOpenDatabase()
-            .then((result) => resolve(result));
+        // Pre-load the database.
+        // This will only be downloading the database from the cloud
+        // if it's a new publication. Otherwise, returns the local cache path.
+        Asset.loadAsync(require('../Assets/db/cpl-app.db'))
+          .then((localUri) => {
+
+            console.log("[DB-MANAGEMENT] localUri from Asset.loadAsync", localUri);
+            console.log("[DB-MANAGEMENT] DB downloaded", localUri[0].downloaded);
+            console.log("[DB-MANAGEMENT] DB localUri", localUri[0].localUri);
+            console.log("[DB-MANAGEMENT] DB uri", localUri[0].uri);
+
+            // Save the cached database into FileSystem/SQLite path
+            // in order to be able to execute: SQLite.openDatabase("cpl-app.db");
+            // If it's not the first time opening the app and there is already a database
+            // in the FileSystem/SQLite folder, we replace it.
+            this.SaveOrReplaceFileSystemDatabaseWithCachedOne(localUri[0].localUri)
+              .then((result) => {
+                console.log("[DB-MANAGEMENT] SaveOrReplaceFileSystemDatabaseWithCachedOne Result: ", result);
+                if(result == "OK"){
+                  console.log("[DB-MANAGEMENT] Having a correct result we can open the database.");
+                  this.database = SQLite.openDatabase("cpl-app.db");
+                }
+                resolve(result);
+              });
+
+
+          })
+          .catch((error) => {
+            console.log("[DB-MANAGEMENT] Error loading Asset: ", error);
+            resolve("loadAsync Error: " + error.toString())
           });
-        }
-        else{*/
-          this.CreateDirectoryIfNecessaryAndOpenDatabase()
-          .then((result) => resolve(result));
-        //}
-
+        
       }
     });
     return promise 
+  }
+
+  SaveOrReplaceFileSystemDatabaseWithCachedOne(cachedDatabasePath){
+    let promise = new Promise((resolve) => {
+
+      this.DeleteDatabaseIfExists()
+        .then(() => {
+
+          var fromPath = cachedDatabasePath;
+          var toPath = FileSystem.documentDirectory + "SQLite/cpl-app.db";
+
+          console.log("[DB-MANAGEMENT] fromPath: ", fromPath);
+          console.log("[DB-MANAGEMENT] toPath: ", toPath);
+
+          this.CreateSQLiteDirectoryIfNecessary()
+            .then(() => {
+
+              FileSystem.copyAsync({from: fromPath, to: toPath})
+              .then(() => {
+                console.log('[DB-MANAGEMENT] Finished copying correctly')
+                resolve("OK");
+              })
+              .catch(error => {
+                console.log("[DB-MANAGEMENT] Error copying the database: ", error);
+                resolve("FROM: " + fromPath + " | TO: " + toPath + " | Error: " + error.toString());
+              })
+
+            });
+
+        });
+
+    });
+    return promise;
   }
 
   DeleteDatabaseIfExists(){
     let promise = new Promise((resolve) => {
       FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
-      .then((directoryInfo) => {
-        if(directoryInfo.exists){
-          console.log("DELETE database in: " + FileSystem.documentDirectory + "SQLite/cpl-app.db");
-          FileSystem.deleteAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db", {intermediates: true})
-          .then( () => resolve() );
-        }
-        else{
-          resolve();
-        }
-      });
+        .then((directoryInfo) => {
+          if(directoryInfo.exists){
+            console.log("[DB-MANAGEMENT] There is already a database in the path. We must delete the current database located in: " + FileSystem.documentDirectory + "SQLite/cpl-app.db");
+            FileSystem.deleteAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db", {intermediates: true})
+              .then( () => {
+                console.log("[DB-MANAGEMENT] Delete finished.");
+                resolve();
+              });
+          }
+          else{
+            console.log("[DB-MANAGEMENT] There is no database in the path. No delete necessary.");
+            resolve();
+          }
+        });
     });
     return promise;
   }
 
-  CreateDirectoryIfNecessaryAndOpenDatabase(){
+  CreateSQLiteDirectoryIfNecessary(){
     let promise = new Promise((resolve) => {
       FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
-      .then((directoryInfo) => {
+        .then((directoryInfo) => {
 
-        if(directoryInfo.exists){
-          this.database = SQLite.openDatabase("cpl-app.db");
-          resolve(true);
-        }
-        else{
-          FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite/", {intermediates: true})
-          .then(() => {
-            // Save the database from assets folder to the device internal ("download")
-            FileSystem.downloadAsync(
-              Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
-              FileSystem.documentDirectory + "SQLite/cpl-app.db")
-            .then(({ uri }) => {
-              console.log('Finished downloading to ', uri)
-              this.database = SQLite.openDatabase("cpl-app.db");
-              resolve(true);
-            })
-            .catch(error => {
-              console.error("Error copying the database: ", error);
-              resolve(false);
-            })
-          });
-        }
-        
-      });
+          if(directoryInfo.exists){
+            console.log("[DB-MANAGEMENT] SQLite directory already exist. Not necessary to make a new one.");
+            resolve();
+          }
+          else{
+            console.log("[DB-MANAGEMENT] SQLite directory not exist. We neet to make a new one.");
+            FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite/", {intermediates: true})
+              .then(() => {
+                console.log("[DB-MANAGEMENT] Directory maker finished.");
+                resolve();
+              });
+          }
+          
+        });
     });
     return promise;
   }
 
-  executeQuery(query, callback) {
-    this.OpenDatabaseIfNotOpenedYet().then((ok_status) => {
-      if(ok_status){
+  executeQuery(query, callback, errorCallback) {
+    console.log("[DB-MANAGEMENT] executeQuery: ", query);
+    this.OpenDatabaseIfNotOpenedYet().then((resultMsg) => {
+      console.log("[DB-MANAGEMENT] resultMsg", resultMsg);
+      if(resultMsg == "OK"){
         this.database.transaction((tx) => {
+          console.log("[DB-MANAGEMENT] tx: ", tx);
+          console.log("[DB-MANAGEMENT] tx.executeSql: ", tx.executeSql);
           tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+            console.log("[DB-MANAGEMENT] SQLResultSet: ", SQLResultSet);
             callback(SQLResultSet);
           }, (SQLTransaction, SQLError) => {
             console.log("[executeQuery] error in query (" + query + "): ", SQLError);
@@ -119,7 +154,7 @@ export default class DBAdapter {
         });
       }
       else{
-        callback();
+        errorCallback(resultMsg);
       }
     });
   }
@@ -279,13 +314,14 @@ export default class DBAdapter {
     }
   }
 
-  getAnyLiturgic(year, month, day, callback) {
+  getAnyLiturgic(year, month, day, callback, errorCallback) {
     var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND mes = '${month + 1}' AND dia = '${day}'`;
     console.log("QueryLog. QUERY ANY: " + query);
     this.executeQuery(query,
       result => {
         this.getTomorrow(result.rows.item(0), year, month, day, callback);
-      });
+      }
+      ,errorCallback);
   }
 
   getTomorrow(r1, year, month, day, callback) {
@@ -294,6 +330,8 @@ export default class DBAdapter {
     year2 = tomorrow.getFullYear();
     month2 = tomorrow.getMonth();
     day2 = tomorrow.getDate();
+
+    console.log("year2", year2);
 
     var query = `SELECT * FROM anyliturgic WHERE any = '${year2}' AND mes = '${month2 + 1}' AND dia = '${day2}'`;
     console.log("QUERY AnyTomorrow: " + query);
@@ -305,7 +343,11 @@ export default class DBAdapter {
   }
 
   getPentacosta(r1, r2, year, callback) {
-    var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND temps = '${GLOBAL.P_SETMANES}' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`;
+    console.log("paolo temps 1: ", GLOBAL);
+    console.log("wtf: ", GLOBAL.DBAccess);
+    console.log("wtf: ", GLOBAL.P_SETMANES);
+    console.log("wtf: ", GLOBAL.afternoon_hour);
+    var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND temps = 'P_SETMANES' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`;
     console.log("QueryLog. getPentacosta: " + query);
     this.executeQuery(query,
       result => {
@@ -347,6 +389,7 @@ export default class DBAdapter {
     else if (lloc === 'Diòcesi') {
       auxDiocesiQuery = `'${auxDiocesi}' OR Diocesis = '${this.transformDiocesiName(auxDiocesiName, 'Catedral')}' OR Diocesis = '${this.transformDiocesiName(auxDiocesiName, 'Ciutat')}'`;
     }
+    console.log("paolo temps 2: " + temps);
     var query = `SELECT * FROM ${table} WHERE (Diocesis = ${auxDiocesiQuery} OR Diocesis = '-') AND dia = '${dia}' AND Temps = '${temps}'`;
 
     console.log("QueryLog. QUERY SOL_MEM: " + query);

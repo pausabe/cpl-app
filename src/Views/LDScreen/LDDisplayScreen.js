@@ -30,6 +30,12 @@ export default class LDDisplayScreen extends Component {
     constructor(props) {
         super(props);
 
+        console.log("G_VALUES", G_VALUES);
+        console.log("G_VALUES.textSize", G_VALUES.textSize);
+        console.log("GF", GF);
+        console.log("GF.convertTextSize", GF.convertTextSize);
+        console.log("GF.convertTextSize(G_VALUES.textSize)", GF.convertTextSize(G_VALUES.textSize));
+
         this.styles = {
             container: {
                 flex: 1,

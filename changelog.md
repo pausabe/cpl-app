@@ -246,3 +246,14 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - 
 -----
 - Workaround per poder obrir l'app offline
+
+### v3.3.9-14 (14.11.2020)[An47,Ap47]
+- 
+-----
+- Testing per solucionar el problema de la bd offline
+
+
+### v3.4.0 (14.11.2020)[An48,Ap48]
+- [android] Millores internes
+-----
+- 

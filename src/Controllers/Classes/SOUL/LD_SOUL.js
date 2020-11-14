@@ -1,11 +1,11 @@
 import DBAdapter from '../../../Adapters/DBAdapter';
 import GF from '../../../Globals/GlobalFunctions';
+import GLOBAL from '../../../Globals/Globals';
 
 export default class LD_SOUL {
     constructor(Set_Soul_CB) {
         console.log("PlaceLog. Constructor LD_SOUL");
 
-        this.acceso = new DBAdapter();
         this.makeQueryies(Set_Soul_CB);
     }
 
@@ -95,7 +95,7 @@ export default class LD_SOUL {
                 }
             }
             else {
-                this.acceso.getVispers(
+                GLOBAL.DBAccess.getVispers(
                     idSpecialVespers,
                     (result) => {
                         part_row_extra_visperas = {
@@ -169,7 +169,7 @@ export default class LD_SOUL {
                 //Dies festius -> IsSpecialDay
                 var specialResultId = this.IsSpecialDay(today_date, parImpar, ABC); //Returns -1 if not special day
 
-                this.acceso.getLDSantoral(
+                GLOBAL.DBAccess.getLDSantoral(
                     today_string,
                     specialResultId,
                     isFeria ? '-' : celType,
@@ -185,7 +185,7 @@ export default class LD_SOUL {
             else {
 
                 //Dies no festius -> LDDiumenges
-                this.acceso.getLDNormal(
+                GLOBAL.DBAccess.getLDNormal(
                     tempsespecific,
                     ABC,
                     diaDeLaSetmana,

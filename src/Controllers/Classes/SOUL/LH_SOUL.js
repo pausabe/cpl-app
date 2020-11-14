@@ -12,6 +12,8 @@ export default class LH_SOUL {
   constructor(Set_Soul_CB) {
     console.log("PlaceLog. Constructor LH_SOUL");
 
+    console.log("PAOLOOOOOOO", GLOBAL.DBAccess);
+
     this.queryRows = {
       salteriComuOfici: '', //1
       salteriComuInvitatori: '', //2
@@ -76,7 +78,6 @@ export default class LH_SOUL {
     this.firstAccessCel = true;
     this.countLit = 7;
     this.firstAccess = true;
-    this.acceso = new DBAdapter();
     this.makeQueryies(Set_Soul_CB);
   }
 
@@ -145,7 +146,7 @@ export default class LH_SOUL {
       G_VALUES.LT !== GLOBAL.N_OCTAVA) {
       c += 1;
       id = (parseInt(G_VALUES.cicle) - 1) * 7 + (G_VALUES.date.getDay() + 1);
-      this.acceso.getLiturgia("salteriComuOfici", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuOfici", id, (result) => {
         this.queryRows.salteriComuOfici = result;
         this.dataReceived(params);
       });
@@ -155,7 +156,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.O_ORDINARI) {
       c += 1;
       id = (parseInt(G_VALUES.cicle) - 1) * 7 + (G_VALUES.date.getDay() + 1);
-      this.acceso.getLiturgia("salteriComuInvitatori", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuInvitatori", id, (result) => {
         this.queryRows.salteriComuInvitatori = result;
         this.dataReceived(params);
       });
@@ -165,7 +166,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.O_ORDINARI) {
       c += 1;
       id = (parseInt(G_VALUES.setmana) - 1) * 7 + (G_VALUES.date.getDay() + 1);
-      this.acceso.getLiturgia("tempsOrdinariOfici", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsOrdinariOfici", id, (result) => {
         this.queryRows.tempsOrdinariOfici = result;
         this.dataReceived(params);
       });
@@ -175,7 +176,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.O_ORDINARI) {
       c += 1;
       id = parseInt(G_VALUES.setmana);
-      this.acceso.getLiturgia("tempsOrdinariOracions", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsOrdinariOracions", id, (result) => {
         this.queryRows.tempsOrdinariOracions = result;
         this.dataReceived(params);
       });
@@ -185,7 +186,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.O_ORDINARI) {
       c += 1;
       id = parseInt(G_VALUES.setmana) + 1;
-      this.acceso.getLiturgia("tempsOrdinariOracions", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsOrdinariOracions", id, (result) => {
         this.queryRows.tempsOrdinariOracionsVespres1 = result;
         this.dataReceived(params);
       });
@@ -195,7 +196,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.Q_CENDRA || G_VALUES.LT === GLOBAL.Q_SETMANES) {
       c += 1;
       id = 1;
-      this.acceso.getLiturgia("tempsQuaresmaComuFV", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaComuFV", id, (result) => {
         this.queryRows.tempsQuaresmaComuFV = result;
         this.dataReceived(params);
       });
@@ -205,7 +206,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.Q_CENDRA) {
       c += 1;
       id = G_VALUES.date.getDay() - 2; //dimecres = 1, dijous = 2, ...
-      this.acceso.getLiturgia("tempsQuaresmaCendra", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaCendra", id, (result) => {
         this.queryRows.tempsQuaresmaCendra = result;
         this.dataReceived(params);
       });
@@ -216,7 +217,7 @@ export default class LH_SOUL {
       c += 1;
       id = (parseInt(G_VALUES.setmana) - 1) * 7 + (G_VALUES.date.getDay() + 1);
       // console.log("super day: " + date + " -> " + id);
-      this.acceso.getLiturgia("tempsQuaresmaVSetmanes", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaVSetmanes", id, (result) => {
         this.queryRows.tempsQuaresmaVSetmanes = result;
         this.dataReceived(params);
       });
@@ -226,7 +227,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.Q_DIUM_RAMS || this.tomorrowCal === 'DR' || G_VALUES.LT === GLOBAL.Q_SET_SANTA) {
       c += 1;
       id = 1;
-      this.acceso.getLiturgia("tempsQuaresmaComuSS", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaComuSS", id, (result) => {
         this.queryRows.tempsQuaresmaComuSS = result; this.dataReceived(params);
       });
     }
@@ -235,7 +236,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.Q_DIUM_RAMS || this.tomorrowCal === 'DR') {
       c += 1;
       id = 1;
-      this.acceso.getLiturgia("tempsQuaresmaRams", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaRams", id, (result) => {
         this.queryRows.tempsQuaresmaRams = result; this.dataReceived(params);
       });
     }
@@ -244,7 +245,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.Q_SET_SANTA) {
       c += 1;
       id = G_VALUES.date.getDay(); //dilluns = 1, dimarts = 2, dimecres = 3 i dijous = 4
-      this.acceso.getLiturgia("tempsQuaresmaSetSanta", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaSetSanta", id, (result) => {
         this.queryRows.tempsQuaresmaSetSanta = result;
         this.dataReceived(params);
       });
@@ -254,7 +255,7 @@ export default class LH_SOUL {
     if (this.tomorrowCal === 'T' || G_VALUES.LT === GLOBAL.Q_TRIDU) {
       c += 1;
       id = G_VALUES.date.getDay() - 3; //dijous = 1, divendres = 2 i dissabte = 3
-      this.acceso.getLiturgia("tempsQuaresmaTridu", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaTridu", id, (result) => {
         this.queryRows.tempsQuaresmaTridu = result;
         this.dataReceived(params);
       });
@@ -264,7 +265,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.P_OCTAVA || G_VALUES.LT === GLOBAL.P_SETMANES) {
       c += 1;
       id = 1;
-      this.acceso.getLiturgia("tempsPasquaAA", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsPasquaAA", id, (result) => {
         this.queryRows.tempsPasquaAA = result;
         this.dataReceived(params);
       });
@@ -275,7 +276,7 @@ export default class LH_SOUL {
       c += 1;
       { G_VALUES.date.getDay() === 0 ? weekDayNormal = 7 : weekDayNormal = G_VALUES.date.getDay() }
       id = weekDayNormal;
-      this.acceso.getLiturgia("tempsPasquaOct", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsPasquaOct", id, (result) => {
         this.queryRows.tempsPasquaOct = result;
         this.dataReceived(params);
       });
@@ -285,7 +286,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.P_SETMANES) {
       c += 1;
       id = 1;
-      this.acceso.getLiturgia("tempsPasquaDA", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsPasquaDA", id, (result) => {
         this.queryRows.tempsPasquaDA = result;
         this.dataReceived(params);
       });
@@ -298,7 +299,7 @@ export default class LH_SOUL {
       if (id === 43) //diumenge de pentacosta (no està dins tempsPasquaSetmanes). Apaño perquè no peti
         id = 1;
 
-      this.acceso.getLiturgia("tempsPasquaSetmanes", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsPasquaSetmanes", id, (result) => {
         this.queryRows.tempsPasquaSetmanes = result;
         this.dataReceived(params);
       });
@@ -326,7 +327,7 @@ export default class LH_SOUL {
         default: id = 1;
       }
       //console.log("himne " + id);
-      this.acceso.getLiturgia("tempsAdventNadalComu", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsAdventNadalComu", id, (result) => {
         this.queryRows.tempsAdventNadalComu = result;
         this.dataReceived(params);
       });
@@ -345,7 +346,7 @@ export default class LH_SOUL {
       if (G_VALUES.LT === GLOBAL.O_ORDINARI && G_VALUES.dataTomorrow.LT === GLOBAL.A_SETMANES) id = 1;
       else id = (parseInt(auxCicle) - 1) * 7 + G_VALUES.date.getDay() + 2;
       // console.log("tempsAdventSetmanes ID " + id);
-      this.acceso.getLiturgia("tempsAdventSetmanes", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsAdventSetmanes", id, (result) => {
         this.queryRows.tempsAdventSetmanes = result;
         this.dataReceived(params);
       });
@@ -355,7 +356,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.A_SETMANES || G_VALUES.LT === GLOBAL.A_FERIES) {
       c += 1;
       id = parseInt(G_VALUES.cicle);
-      this.acceso.getLiturgia("tempsAdventSetmanesDium", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsAdventSetmanesDium", id, (result) => {
         this.queryRows.tempsAdventSetmanesDium = result;
         this.dataReceived(params);
       });
@@ -366,7 +367,7 @@ export default class LH_SOUL {
       c += 1;
       id = parseInt(G_VALUES.cicle) + 1;
       if (this.tomorrowCal === 'A') id = 1;
-      this.acceso.getLiturgia("tempsAdventSetmanesDium", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsAdventSetmanesDium", id, (result) => {
         this.queryRows.tempsAdventSetmanesDiumVespres1 = result;
         this.dataReceived(params);
       });
@@ -376,7 +377,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.A_FERIES) {
       c += 1;
       id = G_VALUES.date.getDate() - 16;
-      this.acceso.getLiturgia("tempsAdventFeries", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsAdventFeries", id, (result) => {
         this.queryRows.tempsAdventFeries = result;
         this.dataReceived(params);
       });
@@ -384,7 +385,7 @@ export default class LH_SOUL {
       if (auxDay !== 0) {
         //special antifonas
         c += 1;
-        this.acceso.getLiturgia("tempsAdventFeriesAnt", G_VALUES.date.getDay(), (result) => {
+        GLOBAL.DBAccess.getLiturgia("tempsAdventFeriesAnt", G_VALUES.date.getDay(), (result) => {
           this.queryRows.tempsAdventFeriesAnt = result;
           this.dataReceived(params);
         });
@@ -397,7 +398,7 @@ export default class LH_SOUL {
       id = G_VALUES.date.getDate() - 25;
       if (G_VALUES.date.getDate() === 1) id = 1; //poso 1 per posar algo, no importa. No llegirà res
       // console.log("im here");
-      this.acceso.getLiturgia("tempsNadalOctava", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsNadalOctava", id, (result) => {
         this.queryRows.tempsNadalOctava = result;
         // console.log("what? + " + result.ant1Ofici);
         this.dataReceived(params);
@@ -408,7 +409,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.N_ABANS) {
       c += 1;
       { G_VALUES.date.getDate() < 6 ? id = G_VALUES.date.getDate() - 1 : id = G_VALUES.date.getDate() - 2 }
-      this.acceso.getLiturgia("tempsNadalAbansEpifania", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsNadalAbansEpifania", id, (result) => {
         this.queryRows.tempsNadalAbansEpifania = result;
         this.dataReceived(params);
       });
@@ -418,7 +419,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.P_SETMANES) {
       c += 1;
       id = 1;
-      this.acceso.getLiturgia("salteriComuEspPasquaDium", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuEspPasquaDium", id, (result) => {
         this.queryRows.salteriComuEspPasquaDium = result;
         this.dataReceived(params);
       });
@@ -428,7 +429,7 @@ export default class LH_SOUL {
     if (true) {
       c += 1;
       id = -1;
-      this.acceso.getLiturgia("diversos", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("diversos", id, (result) => {
         this.queryRows.diversos = result;
         this.dataReceived(params);
       });
@@ -447,7 +448,7 @@ export default class LH_SOUL {
       }
       else if (params.idTSF === 2) cicleAux = 2;
       idLaudes = (cicleAux - 1) * 7 + (auxDay + 1);
-      this.acceso.getLiturgia("salteriComuLaudes", idLaudes, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuLaudes", idLaudes, (result) => {
         this.queryRows.salteriComuLaudes = result;
         this.dataReceived(params);
       });
@@ -457,7 +458,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.P_SETMANES) {
       c += 1;
       idLaudes = (parseInt(G_VALUES.cicle) - 1) * 6 + (G_VALUES.date.getDay());
-      this.acceso.getLiturgia("salteriComuEspPasqua", idLaudes, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuEspPasqua", idLaudes, (result) => {
         this.queryRows.salteriComuEspPasqua = result;
         this.dataReceived(params);
       });
@@ -469,7 +470,7 @@ export default class LH_SOUL {
       id = parseInt(G_VALUES.setmana) - 1;
       if (id === 7) //diumenge de pentacosta. Apaño perquè no peti
         id = 6;
-      this.acceso.getLiturgia("tempsPasquaSetmanesDium", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsPasquaSetmanesDium", id, (result) => {
         this.queryRows.tempsPasquaSetmanesDium = result;
         this.dataReceived(params);
       });
@@ -481,7 +482,7 @@ export default class LH_SOUL {
       id = parseInt(G_VALUES.setmana);
       if (id === 7 || id === 8) //diumenge de pentacosta. Apaño perquè no peti
         id = 6;
-      this.acceso.getLiturgia("tempsPasquaSetmanesDium", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsPasquaSetmanesDium", id, (result) => {
         this.queryRows.tempsPasquaSetmanesDiumVespres1 = result;
         this.dataReceived(params);
       });
@@ -491,7 +492,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.P_OCTAVA || G_VALUES.LT === GLOBAL.Q_DIUM_PASQUA) {
       c += 1;
       id = 1;
-      this.acceso.getLiturgia("tempsQuaresmaDiumPasq", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaDiumPasq", id, (result) => {
         this.queryRows.tempsQuaresmaDiumPasq = result;
         this.dataReceived(params);
       });
@@ -501,7 +502,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.Q_SETMANES) {
       c += 1;
       id = parseInt(G_VALUES.setmana);
-      this.acceso.getLiturgia("tempsQuaresmaVSetmanesDium", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaVSetmanesDium", id, (result) => {
         this.queryRows.tempsQuaresmaVSetmanesDium = result;
         this.dataReceived(params);
       });
@@ -513,7 +514,7 @@ export default class LH_SOUL {
       if (G_VALUES.LT === GLOBAL.Q_CENDRA) id = 1;
       else id = parseInt(G_VALUES.setmana) + 1;
       // console.log("hello?1");
-      this.acceso.getLiturgia("tempsQuaresmaVSetmanesDium", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsQuaresmaVSetmanesDium", id, (result) => {
         this.queryRows.tempsQuaresmaVSetmanesDiumVespres1 = result;
         this.dataReceived(params);
       });
@@ -530,7 +531,7 @@ export default class LH_SOUL {
       if (this.tomorrowCal === 'A') cicle = 1;
       id = (cicle - 1) * 7 + weekDayNormalVESPRES;
       //console.log("ID----------------------------> weekDayNormalVESPRES: " + weekDayNormalVESPRES + ", G_VALUES.cicle: " + parseInt(G_VALUES.cicle) +", id: " + id);
-      this.acceso.getLiturgia("salteriComuVespres", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuVespres", id, (result) => {
         this.queryRows.salteriComuVespres = result;
         this.dataReceived(params);
       });
@@ -547,7 +548,7 @@ export default class LH_SOUL {
         id = params.idTSF;
       }
       // console.log("OOOOOOOOOOO1 " + id);
-      this.acceso.getLiturgia("tempsSolemnitatsFestes", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsSolemnitatsFestes", id, (result) => {
         this.queryRows.tempsSolemnitatsFestes = result;
         this.dataReceived(params);
       });
@@ -565,7 +566,7 @@ export default class LH_SOUL {
       if (this.tomorrowCal === 'TSF') {
         id = this.idTSFTomorrow;
       }
-      this.acceso.getLiturgia("tempsSolemnitatsFestes", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("tempsSolemnitatsFestes", id, (result) => {
         this.queryRows.tempsSolemnitatsFestesVespres1 = result;
         this.dataReceived(params);
       });
@@ -575,7 +576,7 @@ export default class LH_SOUL {
     if (G_VALUES.LT !== GLOBAL.Q_TRIDU && G_VALUES.LT !== GLOBAL.P_OCTAVA) {
       c += 1;
       id = (parseInt(G_VALUES.cicle) - 1) * 7 + (G_VALUES.date.getDay() + 1);
-      this.acceso.getLiturgia("salteriComuHora", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuHora", id, (result) => {
         this.queryRows.salteriComuHora = result;
         this.dataReceived(params);
       });
@@ -594,7 +595,7 @@ export default class LH_SOUL {
       console.log("G_VALUES.LT", G_VALUES.LT);
       console.log("get day: " + G_VALUES.date.getDay());
       console.log("COMPLETES ID: " + id);
-      this.acceso.getLiturgia("salteriComuCompletes", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuCompletes", id, (result) => {
         this.queryRows.salteriComuCompletes = result;
         this.dataReceived(params);
       });
@@ -605,7 +606,7 @@ export default class LH_SOUL {
       c += 1;
       id = idTF;
       // console.log("salteriComuOficiTF");
-      this.acceso.getLiturgia("salteriComuOficiTF", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("salteriComuOficiTF", id, (result) => {
         this.queryRows.salteriComuOficiTF = result;
         this.queryRows.salteriComuOficiTF.com2 = '-';
         this.queryRows.salteriComuOficiTF.com3 = '-';
@@ -635,7 +636,7 @@ export default class LH_SOUL {
         console.log("Log#32. Avui no és dia movible");
         var day = GF.calculeDia(G_VALUES.date, G_VALUES.diocesi, G_VALUES.diaMogut, G_VALUES.diocesiMogut);
         console.log("Log#32. day: " + day);
-        this.acceso.getSolMem("santsSolemnitats", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
+        GLOBAL.DBAccess.getSolMem("santsSolemnitats", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
           this.queryRows.santsSolemnitats = result;
           console.log("Log#32. Avui result", result);
           this.getOficisComuns(params, result, false);
@@ -643,7 +644,7 @@ export default class LH_SOUL {
       }
       else {
         console.log("Log#32. Avui és dia movible");
-        this.acceso.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
+        GLOBAL.DBAccess.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
           this.queryRows.santsSolemnitats = result;
           console.log("Log#32. Avui result", result);
           this.getOficisComuns(params, result, false);
@@ -660,7 +661,7 @@ export default class LH_SOUL {
       if (idDM !== -1) {
         console.log("Log#32. [Extra] Demà hi ha dia movible");
         params.vespres1 = true;
-        this.acceso.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
+        GLOBAL.DBAccess.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
           this.queryRows.santsSolemnitatsFVespres1 = result;
           this.getOficisComuns(params, result, true);
         });
@@ -679,7 +680,7 @@ export default class LH_SOUL {
         }
         console.log("Log#32. [Extra] day (tomorrow) definitiu: " + day);
         params.vespres1 = true;
-        this.acceso.getSolMem("santsSolemnitats", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
+        GLOBAL.DBAccess.getSolMem("santsSolemnitats", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
           this.queryRows.santsSolemnitatsFVespres1 = result;
           this.getOficisComuns(params, result, true);
         });
@@ -693,7 +694,7 @@ export default class LH_SOUL {
       idDM = this.diesMov(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta, G_VALUES.celType);
 
       if (G_VALUES.celType === 'V' && idDM === -1) {
-        this.acceso.getV((result) => {
+        GLOBAL.DBAccess.getV((result) => {
           this.queryRows.santsMemories = result;
           this.getOficisComuns(params, result, false);
         });
@@ -701,13 +702,13 @@ export default class LH_SOUL {
       else {
         if (idDM === -1) {
           var day = GF.calculeDia(G_VALUES.date, G_VALUES.diocesi, G_VALUES.diaMogut, G_VALUES.diocesiMogut);
-          this.acceso.getSolMem("santsMemories", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
+          GLOBAL.DBAccess.getSolMem("santsMemories", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
             this.queryRows.santsMemories = result;
             this.getOficisComuns(params, result, false);
           });
         }
         else {
-          this.acceso.getSolMemDiesMov("santsMemories", idDM, (result) => {
+          GLOBAL.DBAccess.getSolMemDiesMov("santsMemories", idDM, (result) => {
             this.queryRows.santsMemories = result;
             this.getOficisComuns(params, result, false);
           });
@@ -720,7 +721,7 @@ export default class LH_SOUL {
       c += 1;
       id = params.idDE;
       if (this.tomorrowCal === 'DE') id = this.idDETomorrow;
-      this.acceso.getLiturgia("diesespecials", id, (result) => {
+      GLOBAL.DBAccess.getLiturgia("diesespecials", id, (result) => {
         this.queryRows.diesespecials = result;
         this.dataReceived(params);
       });
@@ -738,7 +739,7 @@ export default class LH_SOUL {
       if (categoria !== '0000') {
         console.log("InfoLog. Més un accéss extra per OficisComuns");
         //taula 36 (#??): -
-        this.acceso.getOC(categoria, (result, cat) => {
+        GLOBAL.DBAccess.getOC(categoria, (result, cat) => {
           if (params.vespres1 && isForVespres1) {
             this.queryRows.OficisComunsVespres1 = result;
             // console.log("oficis comuns log 1 - " + cat);

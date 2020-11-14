@@ -26,12 +26,10 @@ LD_VALUES = {}
 //Last refresh datetime
 LAST_REFRESH = new Date()
 
-//Intialize DB Access
-DB_Access = new DBAdapter();
-
-export function Reload_All_Data(date, Reload_Finished_Callback, online_updates = false) {
+export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_Callback_Error, online_updates = false) {
   // Set some variables
   this.Reload_Finished_Callback = Reload_Finished_Callback;
+  this.Reload_Finished_Callback_Error = Reload_Finished_Callback_Error;
   LAST_REFRESH = new Date()
 
   //Get G_VALUES saved locally
@@ -103,7 +101,7 @@ function Check_For_Updates(online_updates){
         if (json_updates == undefined || json_updates == "") throw "Internet error"
 
         //Ask DB_Access to make the changes (if there where any)
-        DB_Access.MakeChanges(json_updates).then((result) => {
+        GLOBAL.DBAccess.MakeChanges(json_updates).then((result) => {
 
           console.log("[ONLINE_UPDATES Check_For_Updates] result:", result);
 
@@ -162,7 +160,7 @@ function Refresh_Data() {
 
   console.log("[Refresh_Data]");
 
-  return DB_Access.getAnyLiturgic(
+  return GLOBAL.DBAccess.getAnyLiturgic(
     G_VALUES.date.getFullYear(),
     G_VALUES.date.getMonth(),
     G_VALUES.date.getDate(),
@@ -212,6 +210,7 @@ function Refresh_Data() {
       //Get all liturgia data
       new SOUL(Set_Soul_CB);
     }
+    ,this.Reload_Finished_Callback_Error
   );
 }
 

@@ -17,11 +17,10 @@ import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
 import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
-import { Reload_All_Data } from './Classes/Data/DataManager.js';
+import { Reload_All_Data, GetDBAccess } from './Classes/Data/DataManager.js';
 import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test, Alert } from '../Tests/TestsManager';
 import { log } from 'react-native-reanimated';
 import DBAdapter from '../Adapters/DBAdapter';
-
 export default class HomeScreenController extends Component {
 
   async componentDidMount() {
@@ -299,16 +298,17 @@ export default class HomeScreenController extends Component {
   }
 
   /*testing(){
-    DB_Access.testing()
-    .then((result) => {
-      console.log(result);
-      this.setState({testingResult: result});
-    });
+    console.log("test pressed");
+    Reload_All_Data(new Date(/*2019, 9, 23*//*), this.Init_Everything.bind(this), this.HandleGetDataError.bind(this), true);
   }
-  <TouchableOpacity>
-  <Text onPress={this.testing.bind(this)}>TESTING</Text>
-</TouchableOpacity>
-<Text>{"Result: "}{this.state.testingResult}</Text>*/
+            <TouchableOpacity>
+            <Text onPress={this.testing.bind(this)}>TESTING</Text>
+            <Text>{"Error: "}{this.state.getDataMsgError}</Text>
+          </TouchableOpacity>*/
+
+  HandleGetDataError(msgError){
+    this.setState({ getDataMsgError: msgError});
+  }
 
   render() {
     if (TEST_MODE_ON) {
@@ -325,6 +325,14 @@ export default class HomeScreenController extends Component {
     else {
       var yesterday = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth());
       yesterday.setDate(G_VALUES.date.getDate() - 1);
+      var date = G_VALUES.date;
+      var minDatePicker = G_VALUES.minDatePicker;
+      var maxDatePicker = G_VALUES.maxDatePicker;
+      
+     /*var yesterday = new Date(2020, 10, 8);
+     var date = new Date(2020, 10, 9);
+     var minDatePicker = new Date(2020, 10, 1);
+     var maxDatePicker = new Date(2020, 10, 20);*/
       return (
         <SafeAreaView style={{ flex: 1 }}>
           <HomeScreen
@@ -346,9 +354,9 @@ export default class HomeScreenController extends Component {
                               mode="date"
                               display="inline" //spinner, compact, inline
                               onChange={this.datePickerChange.bind(this)}
-                              value={G_VALUES.date}
-                              minimumDate={G_VALUES.minDatePicker}
-                              maximumDate={G_VALUES.maxDatePicker}
+                              value={date}
+                              minimumDate={minDatePicker}
+                              maximumDate={maxDatePicker}
                             />
                           </View>
                           <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
@@ -372,9 +380,9 @@ export default class HomeScreenController extends Component {
                             mode={"date"}
                             display={"default"} // default, spinner, calendar
                             onChange={this.datePickerChange.bind(this)}
-                            value={G_VALUES.date}
-                            minimumDate={G_VALUES.minDatePicker}
-                            maximumDate={G_VALUES.maxDatePicker}
+                            value={date}
+                            minimumDate={minDatePicker}
+                            maximumDate={maxDatePicker}
                           />
                       }
                     </View>
@@ -388,7 +396,7 @@ export default class HomeScreenController extends Component {
                   <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={this.onTodayPress.bind(this)}>
                     <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
                       <View style={{ paddingTop: 15}}>
-                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + G_VALUES.date.getDate() + " de " + GF.getMonthText(G_VALUES.date.getMonth()) + "."}</Text>
+                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + date.getDate() + " de " + GF.getMonthText(date.getMonth()) + "."}</Text>
                         <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
                       </View>
 
@@ -399,7 +407,7 @@ export default class HomeScreenController extends Component {
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.onTodayPress.bind(this)}>
                           <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{G_VALUES.date.getDate() + "/" + (G_VALUES.date.getMonth() + 1) + "/" + G_VALUES.date.getFullYear()}</Text>
+                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
                         </TouchableOpacity>
                       </View>
 

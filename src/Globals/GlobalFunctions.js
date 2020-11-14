@@ -1,4 +1,4 @@
-import GLOBAL from './Globals';
+import GLOBALS from './Globals';
 
 module.exports = {
   transformReadableDate(date){
@@ -122,37 +122,29 @@ module.exports = {
   },
 
   convertTextSize(value){
+    console.log("value", value);
+    console.log("GLOBALS.size1", GLOBALS.size1);
     switch (value) {
       case '1':
-        return GLOBAL.size1;
-        break;
+        return 15;//GLOBALS.size1;
       case '2':
-        return GLOBAL.size2;
-        break;
+        return 18;//GLOBALS.size2;
       case '3':
-        return GLOBAL.size3;
-        break;
+        return 21;//GLOBALS.size3;
       case '4':
-        return GLOBAL.size4;
-        break;
+        return 24;//GLOBALS.size4;
       case '5':
-        return GLOBAL.size5;
-        break;
+        return 27;//GLOBALS.size5;
       case '6':
-        return GLOBAL.size6;
-        break;
+        return 30;//GLOBALS.size6;
       case '7':
-        return GLOBAL.size7;
-        break;
+        return 33;//GLOBALS.size7;
       case '8':
-        return GLOBAL.size8;
-        break;
+        return 36;//GLOBALS.size8;
       case '9':
-        return GLOBAL.size9;
-        break;
+        return 39;//GLOBALS.size9;
       case '10':
-        return GLOBAL.size10;
-        break;
+        return 42;//GLOBALS.size10;
     }
   },
 
