@@ -237,15 +237,17 @@ export default class HomeScreen extends Component {
 
   Info_Liturgica(date_getday) {
     try {
+
+      var text_setmana = "";
+      if(this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.')
+        text_setmana = this.weekDayName(date_getday) + " de la setmana "
+      else if(G_VALUES.LT == GLOBAL.Q_CENDRA)
+      text_setmana = this.weekDayName(date_getday) + " de Cendra"
+
       return (
         <View style={styles.diaLiturgicContainer}>
           <Text style={styles.diaLiturgicText}>
-            {
-              this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.' ?
-                this.weekDayName(date_getday) + " de la setmana "
-                :
-                null
-            }
+            {text_setmana}
             {
               this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.' ?
                 this.liturgicPaint(this.romanize(this.props.ViewData.setmana), this.props.ViewData.color)
