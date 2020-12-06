@@ -241,8 +241,12 @@ export default class HomeScreen extends Component {
       var text_setmana = "";
       if(this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.')
         text_setmana = this.weekDayName(date_getday) + " de la setmana "
-      else if(G_VALUES.LT == GLOBAL.Q_CENDRA)
-      text_setmana = this.weekDayName(date_getday) + " de Cendra"
+      else if(G_VALUES.LT == GLOBAL.Q_CENDRA){
+        if(date_getday == 3)
+          text_setmana = this.weekDayName(date_getday) + " de Cendra"
+        else
+          text_setmana = this.weekDayName(date_getday) + " després de Cendra"
+      }
 
       return (
         <View style={styles.diaLiturgicContainer}>

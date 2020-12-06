@@ -122,8 +122,6 @@ module.exports = {
   },
 
   convertTextSize(value){
-    console.log("value", value);
-    console.log("GLOBALS.size1", GLOBALS.size1);
     switch (value) {
       case '1':
         return 15;//GLOBALS.size1;

@@ -199,6 +199,9 @@ export default class LD_SOUL {
     }
 
     IsSpecialChristmas(dia){
+
+        if(G_VALUES.LT == "O_ORDINAR")
+            return false;
     
         if(dia == '17-dic') return true
         if(dia == '18-dic') return true
