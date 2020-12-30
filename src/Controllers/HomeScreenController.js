@@ -313,114 +313,119 @@ export default class HomeScreenController extends Component {
   }
 
   render() {
-    if (TEST_MODE_ON) {
-      return (
-        <View style={{ flex: 1 }}>
-          <Text style={{ textAlign: 'center' }}>{"\nTEST INFORMATION\n"}</Text>
-          <Text style={{ textAlign: 'center' }}>{this.state.testInformation}{"\n\n"}</Text>
-          <TouchableOpacity style={{ backgroundColor: 'rgba(20,47,43,0.3)', marginHorizontal: 100, paddingVertical: 10 }} onPress={Force_Stop_Test.bind(this, this.Test_Information_Callback.bind(this))}>
-            <Text style={{ textAlign: 'center' }}>{"STOP TEST"}</Text>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-    else {
-      var yesterday = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth());
-      yesterday.setDate(G_VALUES.date.getDate() - 1);
-      var date = G_VALUES.date;
-      var minDatePicker = G_VALUES.minDatePicker;
-      var maxDatePicker = G_VALUES.maxDatePicker;
-      
-     /*var yesterday = new Date(2020, 10, 8);
-     var date = new Date(2020, 10, 9);
-     var minDatePicker = new Date(2020, 10, 1);
-     var maxDatePicker = new Date(2020, 10, 20);*/
-      return (
-        <SafeAreaView style={{ flex: 1 }}>
-          <HomeScreen
-            ViewData={this.state.ViewData}
-            santPressed={this.state.santPressed}
-            santCB={this.onSantPressCB.bind(this)}
-            lliureCB={this.onSwitchLliurePress.bind(this)}
-            navigation={this.props.navigation} />
-              <View>
-              { Platform.OS == "ios" ?
-                  <Modal
-                    animationType="fade" // slide, fade, none
-                    transparent={true}
-                    visible={this.state.isDateTimePickerVisible}>
-                      <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={this.datePickerIOS_Cancel.bind(this)}>
-                        <TouchableOpacity activeOpacity={1} style={styles.DatePickerInsideModal}>
-                          <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
+    try {
+      if (TEST_MODE_ON) {
+        return (
+          <View style={{ flex: 1 }}>
+            <Text style={{ textAlign: 'center' }}>{"\nTEST INFORMATION\n"}</Text>
+            <Text style={{ textAlign: 'center' }}>{this.state.testInformation}{"\n\n"}</Text>
+            <TouchableOpacity style={{ backgroundColor: 'rgba(20,47,43,0.3)', marginHorizontal: 100, paddingVertical: 10 }} onPress={Force_Stop_Test.bind(this, this.Test_Information_Callback.bind(this))}>
+              <Text style={{ textAlign: 'center' }}>{"STOP TEST"}</Text>
+            </TouchableOpacity>
+          </View>
+        );
+      }
+      else {
+        console.log("G_VALUES.date: ", G_VALUES.date);
+        var yesterday = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth());
+        yesterday.setDate(G_VALUES.date.getDate() - 1);
+        var date = G_VALUES.date;
+        var minDatePicker = G_VALUES.minDatePicker;
+        var maxDatePicker = G_VALUES.maxDatePicker;
+        
+       /*var yesterday = new Date(2020, 10, 8);
+       var date = new Date(2020, 10, 9);
+       var minDatePicker = new Date(2020, 10, 1);
+       var maxDatePicker = new Date(2020, 10, 20);*/
+        return (
+          <SafeAreaView style={{ flex: 1 }}>
+            <HomeScreen
+              ViewData={this.state.ViewData}
+              santPressed={this.state.santPressed}
+              santCB={this.onSantPressCB.bind(this)}
+              lliureCB={this.onSwitchLliurePress.bind(this)}
+              navigation={this.props.navigation} />
+                <View>
+                { Platform.OS == "ios" ?
+                    <Modal
+                      animationType="fade" // slide, fade, none
+                      transparent={true}
+                      visible={this.state.isDateTimePickerVisible}>
+                        <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={this.datePickerIOS_Cancel.bind(this)}>
+                          <TouchableOpacity activeOpacity={1} style={styles.DatePickerInsideModal}>
+                            <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
+                              <DateTimePicker
+                                mode="date"
+                                display="inline" //spinner, compact, inline
+                                onChange={this.datePickerChange.bind(this)}
+                                value={date}
+                                minimumDate={minDatePicker}
+                                maximumDate={maxDatePicker}
+                              />
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+                              <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Cancel.bind(this)}>
+                                  <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
+                              </TouchableOpacity >
+                              <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Today.bind(this)}>
+                                  <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
+                              </TouchableOpacity>
+                              <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Accept.bind(this)}>
+                                  <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
+                              </TouchableOpacity>
+                            </View>
+                          </TouchableOpacity>
+                        </TouchableOpacity>
+                      </Modal>
+                  :
+                      <View>
+                        {this.state.isDateTimePickerVisible &&
                             <DateTimePicker
-                              mode="date"
-                              display="inline" //spinner, compact, inline
+                              mode={"date"}
+                              display={"default"} // default, spinner, calendar
                               onChange={this.datePickerChange.bind(this)}
                               value={date}
                               minimumDate={minDatePicker}
                               maximumDate={maxDatePicker}
                             />
-                          </View>
-                          <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Cancel.bind(this)}>
-                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
-                            </TouchableOpacity >
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Today.bind(this)}>
-                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={this.datePickerIOS_Accept.bind(this)}>
-                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </TouchableOpacity>
+                        }
+                      </View>
+                  }
+  
+                </View> 
+                
+                <Modal animationType={"fade"} // slide, fade, none
+                        transparent={true}
+                        visible={this.state.PopupDialog_ShowLate} >
+                    <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={this.onTodayPress.bind(this)}>
+                      <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
+                        <View style={{ paddingTop: 15}}>
+                          <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + date.getDate() + " de " + GF.getMonthText(date.getMonth()) + "."}</Text>
+                          <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
+                        </View>
+  
+                        <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>
+                          <TouchableOpacity onPress={this.onYestPress.bind(this, yesterday)} style={{ paddingRight: 20}}>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={this.onTodayPress.bind(this)}>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
+                            <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
+                          </TouchableOpacity>
+                        </View>
+  
                       </TouchableOpacity>
-                    </Modal>
-                :
-                    <View>
-                      {this.state.isDateTimePickerVisible &&
-                          <DateTimePicker
-                            mode={"date"}
-                            display={"default"} // default, spinner, calendar
-                            onChange={this.datePickerChange.bind(this)}
-                            value={date}
-                            minimumDate={minDatePicker}
-                            maximumDate={maxDatePicker}
-                          />
-                      }
-                    </View>
-                }
-
-              </View> 
-              
-              <Modal animationType={"fade"} // slide, fade, none
-                      transparent={true}
-                      visible={this.state.PopupDialog_ShowLate} >
-                  <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={this.onTodayPress.bind(this)}>
-                    <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
-                      <View style={{ paddingTop: 15}}>
-                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + date.getDate() + " de " + GF.getMonthText(date.getMonth()) + "."}</Text>
-                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
-                      </View>
-
-                      <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={this.onYestPress.bind(this, yesterday)} style={{ paddingRight: 20}}>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this.onTodayPress.bind(this)}>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
-                        </TouchableOpacity>
-                      </View>
-
                     </TouchableOpacity>
-                  </TouchableOpacity>
-              </Modal>
-
-          <StatusBar style="light" />
-
-        </SafeAreaView>
-      );
+                </Modal>
+  
+            <StatusBar style="light" />
+  
+          </SafeAreaView>
+        );
+      }
+    } catch (error) {
+      console.log("EXCEPTION: ", error);
     }
   }
 }
