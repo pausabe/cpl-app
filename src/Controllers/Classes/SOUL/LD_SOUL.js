@@ -164,10 +164,18 @@ export default class LD_SOUL {
         }
         else {
 
-            if (celType == 'M' || celType == 'S' || celType == 'F' || isFeria) {
+            console.log("[PAU DEBUG] here? ");
+            var specialLliureResultId = this.IsSpecialLliureDay(today_date);  //Returns -1 if not special lliure day
+            console.log("[PAU DEBUG] celType: ", celType);
+            console.log("[PAU DEBUG] specialLliureResultId: ", specialLliureResultId);
+
+            if (celType == 'M' || celType == 'S' || celType == 'F' || isFeria || (celType == 'L' && specialLliureResultId != "-1")) {
 
                 //Dies festius -> IsSpecialDay
                 var specialResultId = this.IsSpecialDay(today_date, parImpar, ABC); //Returns -1 if not special day
+                console.log("[PAU DEBUG] IsSpecialDay: ", specialResultId);
+                if(specialResultId == "-1")
+                specialResultId = specialLliureResultId;
 
                 GLOBAL.DBAccess.getLDSantoral(
                     today_string,
@@ -466,5 +474,31 @@ export default class LD_SOUL {
         }
 
         return '-1';
+    }
+
+    IsSpecialLliureDay(today_date){
+
+        // Memòries lliures que tenen lectures dedicades
+        console.log("[PAU DEBUG] G_VALUES.lliures: ", G_VALUES.lliures);
+        console.log("[PAU DEBUG] today_date.getDate() : ", today_date.getDate());
+        console.log("[PAU DEBUG] today_date.getMonth() : ", today_date.getMonth());
+        if(G_VALUES.lliures){
+            // Pasqua 01-may -> 209 (Sant Josep obrer)
+            if (today_date.getDate() == 1 && today_date.getMonth() == 4) {
+                return '209';
+            }
+
+            // Ordinari 18-nov -> 210 ([-] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
+            if (today_date.getDate() == 18 && today_date.getMonth() == 10) {
+                return '210';
+            }
+
+            // Ordinari 19-nov -> 211 ([BaD] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
+            if (today_date.getDate() == 19 && today_date.getMonth() == 10) {
+                return '211';
+            }
+        }
+
+        return "-1";
     }
 }

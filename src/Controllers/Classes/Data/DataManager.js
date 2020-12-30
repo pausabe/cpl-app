@@ -32,6 +32,8 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
   this.Reload_Finished_Callback_Error = Reload_Finished_Callback_Error;
   LAST_REFRESH = new Date()
 
+  console.log("[PAU DEBUG] here2 ");
+
   //Get G_VALUES saved locally
   G_VALUES.date = date;
   Promise.all([
@@ -73,6 +75,8 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
 
     }
     else{
+
+      console.log("[PAU DEBUG] here3 ");
 
       Refresh_Data();
 
@@ -166,6 +170,8 @@ function Refresh_Data() {
     G_VALUES.date.getDate(),
     (current, tomorrow, pentacosta, minDate, maxDate) => {
 
+      console.log("[PAU DEBUG] here4 ");
+
       G_VALUES.minDatePicker = minDate;
       G_VALUES.maxDatePicker = maxDate;
 
@@ -208,6 +214,7 @@ function Refresh_Data() {
         Check_Lliure_Date();
 
       //Get all liturgia data
+      console.log("[PAU DEBUG] here5");
       new SOUL(Set_Soul_CB);
     }
     ,this.Reload_Finished_Callback_Error

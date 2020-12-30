@@ -82,6 +82,7 @@ export default class HomeScreenController extends Component {
     if (date === null || date === undefined)
       date = G_VALUES.date;
 
+    console.log("[PAU DEBUG] here1 ");
     Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this));
   }
 
@@ -288,8 +289,9 @@ export default class HomeScreenController extends Component {
     else {
       AsyncStorage.setItem("lliureDate", 'none');
     }
-
+    
     G_VALUES.lliures = value;
+    console.log("[PAU DEBUG] first G_VALUES.lliures: ", G_VALUES.lliures);
     this.Refresh_Date(G_VALUES.date);
   }
 
