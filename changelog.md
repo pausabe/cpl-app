@@ -257,3 +257,10 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - [android] Millores internes
 -----
 - 
+
+### v3.5.0 (14.11.2020)[An49,Ap49]
+- Millores internes
+-----
+- Nova base de dades
+- Solucionats errors amb els himnes de completes
+- Solució d'errors varis

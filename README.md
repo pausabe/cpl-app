@@ -87,6 +87,7 @@
 
 ### Deploy
 #### Stores
+// El que comento a continuació no funciona com voldria... Sempre s'ha de passar per OTA
 Si es fa servir el --no-publish, no puja la última versió del manifest (app.json).
 En altres paraules, puja el build pero amb versió de manifest que hi havia en l'ultima publicació
 Per publicar només standalone sense passar per OTA executar:
@@ -97,6 +98,10 @@ Per publicar només standalone sense passar per OTA executar:
 Per publicar standalone + OTA
     expo build:ios
     expo build:android
+
+// Nah... El que estic fent ultimament és sempre publicar així:
+    expo build:ios --release-channel prod_channel
+    expo build:android --release-channel prod_channel
 
 #### OTA
 Només per petits canvis
