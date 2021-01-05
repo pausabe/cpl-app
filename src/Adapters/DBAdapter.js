@@ -796,7 +796,7 @@ export default class DBAdapter {
 
   Log(message, param){
     try {
-      if(false){
+      if(true){
         if(param == undefined)
           console.log(message);
         else

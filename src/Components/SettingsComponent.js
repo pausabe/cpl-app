@@ -72,7 +72,7 @@ export default class SettingsComponent extends Component{
         let selectorProps = this._mergeProps({
             value: this.state.value,
             minimumTrackTintColor: GLOBAL.switchColor,
-            onValueChange: this._selectionCallback.bind(this)
+            onSlidingComplete: this._selectionCallback.bind(this)
         });
         return (
            <View style={{flex: 1, flexDirection: 'row',}}>
