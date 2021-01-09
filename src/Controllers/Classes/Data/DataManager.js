@@ -26,13 +26,13 @@ LD_VALUES = {}
 //Last refresh datetime
 LAST_REFRESH = new Date()
 
-export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_Callback_Error, online_updates = false) {
+export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_Callback_Error, online_updates) {
   // Set some variables
   this.Reload_Finished_Callback = Reload_Finished_Callback;
   this.Reload_Finished_Callback_Error = Reload_Finished_Callback_Error;
   LAST_REFRESH = new Date()
 
-  console.log("[PAU DEBUG] here2 ");
+  console.log("[PAU DEBUG] here2 ", online_updates);
 
   //Get G_VALUES saved locally
   G_VALUES.date = date;
@@ -54,17 +54,18 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
     SettingsManager.getSettingTextSize((r) => G_VALUES.textSize = r),
     SettingsManager.getSettingNumSalmInv((r) => G_VALUES.numSalmInv = r),
     SettingsManager.getSettingNumAntMare((r) => G_VALUES.numAntMare = r),
-    SettingsManager.getSettingOnlineVersion((r) => G_VALUES.onlineVersion = r),
+    GLOBAL.DBAccess.getOnlineVersion((r) => G_VALUES.onlineVersion = r),
   ])
   .then(() => {
 
-    //Check for global parameter
-    if(GLOBAL.enable_updates){
+    console.log("[ONLINE_UPDATES Reload_All_Data] G_VALUES.onlineVersion: ", G_VALUES.onlineVersion);
+    console.log("[ONLINE_UPDATES Reload_All_Data] online_updates: ", online_updates);
 
-      console.log("[ONLINE_UPDATES Reload_All_Data] online_updates: ", online_updates);
-    
+    //Check for global parameter
+    if(online_updates){
+
       //Check and apply online changes. Finally will call Refresh_Data
-      Check_For_Updates(online_updates).then((result) => {
+      Check_For_Updates().then((result) => {
 
         console.log("[ONLINE_UPDATES Reload_All_Data] result: ", result);
   
@@ -86,41 +87,42 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
 }
 
 //Resolves true if online_updates = false or it its true and all updates went ok
-function Check_For_Updates(online_updates){
+function Check_For_Updates(){
 
   let promise = new Promise((resolve) => {
 
-    //Check online_updates parameter
-    if(!online_updates) {
-      resolve(true)
+    if(G_VALUES.onlineVersion == undefined){
+      resolve(false);
     }
     else{
 
       //Get json with changes
       GetOnlineChanges(G_VALUES.onlineVersion).then((json_updates) => {
 
-        //console.log("[ONLINE_UPDATES Check_For_Updates] json_updates:", json_updates);
+        console.log("[ONLINE_UPDATES Check_For_Updates] json_updates:", json_updates);
 
         //Check json
         if (json_updates == undefined || json_updates == "") throw "Internet error"
 
         //Ask DB_Access to make the changes (if there where any)
-        GLOBAL.DBAccess.MakeChanges(json_updates).then((result) => {
+        GLOBAL.DBAccess.MakeChanges(json_updates).then((someChangedDoneCorrectly) => {
 
-          console.log("[ONLINE_UPDATES Check_For_Updates] result:", result);
+          console.log("[ONLINE_UPDATES Check_For_Updates] someChangedDoneCorrectly:", someChangedDoneCorrectly);
 
           //Check result
-          if(result){
+          if(someChangedDoneCorrectly){
 
-            //Update version
-            let last_version = json_updates[json_updates.length-1].id
-            SettingsManager.setSettingOnlineVersion(String(last_version)).then(() => {
+            resolve(true);
 
-              //OK 
-              resolve(true)
+            /*GLOBAL.DBAccess.SaveChangesInCacheDatabase().then(() => {
+              console.log("[ONLINE_UPDATES Check_For_Updates] after SaveChangesInCacheDatabase");
+              resolve(true);
+            })
+            .catch((error) => {
+              console.log("[EXCEPTION Check_For_Updates] 0", error);
+              resolve(true);
+            });*/
 
-            });
-            
           }
           else{
             resolve(false)
@@ -149,16 +151,61 @@ function Check_For_Updates(online_updates){
 function GetOnlineChanges(version) {
   
   console.log("[ONLINE_UPDATES GetOnlineChanges] version: ", version);
-  
-  return fetch(GLOBAL.server_url + '/api/sync/' + version, { headers: { 'Cache-Control': 'no-cache' } } )
-    .then((response) => response.json())
-    .then((responseJson) => {
-      return responseJson;
-    })
-    .catch((error) => {
-      console.log("[EXCEPTION GetOnlineChanges]", error);
-    });
+
+  var url = GLOBAL.server_url + version;
+  console.log("[ONLINE_UPDATES GetOnlineChanges] url: ", url);
+
+  return timeout(
+    2000,
+    /*timeoutTest(url, 3000)
+      .then((test) => { return test; })
+      .catch((error) => { console.log("[EXCEPTION GetOnlineChanges] TEST Fetch error:", error); })*/
+    fetch(url, { headers: { 'Cache-Control': 'no-cache' } } )
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log("[EXCEPTION GetOnlineChanges] Correct fetch");
+        return responseJson;
+      })
+      .catch((error) => {
+        console.log("[EXCEPTION GetOnlineChanges] Fetch error:", error);
+      })
+  );
 }
+
+function timeout(ms, promise) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error('TIMEOUT'))
+    }, ms)
+
+    promise
+      .then(value => {
+        clearTimeout(timer)
+        resolve(value)
+      })
+      .catch(reason => {
+        clearTimeout(timer)
+        reject(reason)
+      })
+  })
+}
+
+/*function timeoutTest(url, ms){
+  return new Promise((resolve, reject) => {
+    setTimeout(() => { 
+      fetch(url, { headers: { 'Cache-Control': 'no-cache' } } )
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.log("[EXCEPTION GetOnlineChanges] Correct fetch");
+          resolve(responseJson);
+        })
+        .catch((error) => {
+          console.log("[EXCEPTION GetOnlineChanges] Fetch error:", error);
+        })
+    }
+    ,ms);
+  })
+}*/
 
 function Refresh_Data() {
 

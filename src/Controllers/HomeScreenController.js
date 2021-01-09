@@ -83,7 +83,7 @@ export default class HomeScreenController extends Component {
       date = G_VALUES.date;
 
     console.log("[PAU DEBUG] here1 ");
-    Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this));
+    Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this), this.HandleGetDataError.bind(this), false);
   }
 
   calendarPressed() {
@@ -131,7 +131,8 @@ export default class HomeScreenController extends Component {
           santPressed: false,
         }
       }
-      Reload_All_Data(new Date(/*2019, 9, 23*/), this.Init_Everything.bind(this), true);
+      console.log("[ONLINE_UPDATES Reload_All_Data] GLOBAL.enable_updates: ", GLOBALS.enable_updates);
+      Reload_All_Data(new Date(/*2019, 9, 23*/), this.Init_Everything.bind(this), this.HandleGetDataError.bind(this), GLOBALS.enable_updates);
     }
   }
 
@@ -309,7 +310,7 @@ export default class HomeScreenController extends Component {
           </TouchableOpacity>*/
 
   HandleGetDataError(msgError){
-    this.setState({ getDataMsgError: msgError});
+    //this.setState({ getDataMsgError: msgError});
   }
 
   render() {

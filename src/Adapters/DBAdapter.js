@@ -13,7 +13,16 @@ export default class DBAdapter {
   }
 
   OpenDatabaseIfNotOpenedYet(){
-    let promise = new Promise((resolve) => {
+
+    console.log("[DB-MANAGEMENT] this.database == null?", this.database == null);
+    console.log("[DB-MANAGEMENT] this.openDatabasePromise == null?", this.openDatabasePromise == null);
+
+    // First check the case when the database is not opened yet
+    // but the opening process has started (we don't want to run the proces twice)
+    if(this.database == null && this.openDatabasePromise != null)
+      return this.openDatabasePromise
+
+    this.openDatabasePromise = new Promise((resolve) => {
       if (this.database != null){
         this.Log("[DB-MANAGEMENT] Database already oppened");
         resolve("OK");
@@ -29,24 +38,25 @@ export default class DBAdapter {
           .then((localUri) => {
 
             this.Log("[DB-MANAGEMENT] localUri from Asset.loadAsync", localUri);
-            this.Log("[DB-MANAGEMENT] DB downloaded", localUri[0].downloaded);
-            this.Log("[DB-MANAGEMENT] DB localUri", localUri[0].localUri);
-            this.Log("[DB-MANAGEMENT] DB uri", localUri[0].uri);
+            this.Log("[DB-MANAGEMENT] DB downloaded", localUri[0].downloaded); // True/False
+            this.Log("[DB-MANAGEMENT] DB localUri", localUri[0].localUri); // Mobile folder for cache assets
+            this.Log("[DB-MANAGEMENT] DB uri", localUri[0].uri); // Online (from expo publication)
+
+            this.databaseCachePath = localUri[0].localUri;
 
             // Save the cached database into FileSystem/SQLite path
             // in order to be able to execute: SQLite.openDatabase("cpl-app.db");
             // If it's not the first time opening the app and there is already a database
             // in the FileSystem/SQLite folder, we replace it.
-            this.SaveOrReplaceFileSystemDatabaseWithCachedOne(localUri[0].localUri)
+            this.SaveOrReplaceFileSystemDatabase(localUri[0].localUri, FileSystem.documentDirectory + "SQLite/cpl-app.db")
               .then((result) => {
-                this.Log("[DB-MANAGEMENT] SaveOrReplaceFileSystemDatabaseWithCachedOne Result: ", result);
+                this.Log("[DB-MANAGEMENT] SaveOrReplaceFileSystemDatabase Result: ", result);
                 if(result == "OK"){
                   this.Log("[DB-MANAGEMENT] Having a correct result we can open the database.");
                   this.database = SQLite.openDatabase("cpl-app.db");
                 }
                 resolve(result);
               });
-
 
           })
           .catch((error) => {
@@ -56,22 +66,19 @@ export default class DBAdapter {
         
       }
     });
-    return promise 
+    return this.openDatabasePromise 
   }
 
-  SaveOrReplaceFileSystemDatabaseWithCachedOne(cachedDatabasePath){
+  SaveOrReplaceFileSystemDatabase(fromPath, toPath){
     let promise = new Promise((resolve) => {
 
-      this.DeleteDatabaseIfExists()
+      this.DeleteDatabaseIfExists(toPath)
         .then(() => {
-
-          var fromPath = cachedDatabasePath;
-          var toPath = FileSystem.documentDirectory + "SQLite/cpl-app.db";
 
           this.Log("[DB-MANAGEMENT] fromPath: ", fromPath);
           this.Log("[DB-MANAGEMENT] toPath: ", toPath);
 
-          this.CreateSQLiteDirectoryIfNecessary()
+          this.CreateSQLiteDirectoryIfNecessary(toPath)
             .then(() => {
 
               FileSystem.copyAsync({from: fromPath, to: toPath})
@@ -92,16 +99,20 @@ export default class DBAdapter {
     return promise;
   }
 
-  DeleteDatabaseIfExists(){
+  DeleteDatabaseIfExists(filePath){
     let promise = new Promise((resolve) => {
-      FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
+      FileSystem.getInfoAsync(filePath)
         .then((directoryInfo) => {
           if(directoryInfo.exists){
-            this.Log("[DB-MANAGEMENT] There is already a database in the path. We must delete the current database located in: " + FileSystem.documentDirectory + "SQLite/cpl-app.db");
-            FileSystem.deleteAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db", {intermediates: true})
+            this.Log("[DB-MANAGEMENT] There is already a database in the path. We must delete the current database located in: " + filePath);
+            FileSystem.deleteAsync(filePath, {intermediates: true})
               .then( () => {
                 this.Log("[DB-MANAGEMENT] Delete finished.");
                 resolve();
+              })
+              .catch((error) => {
+                this.Log("[DB-MANAGEMENT deleteAsync error]", error);
+                resolve()
               });
           }
           else{
@@ -113,9 +124,14 @@ export default class DBAdapter {
     return promise;
   }
 
-  CreateSQLiteDirectoryIfNecessary(){
+  CreateSQLiteDirectoryIfNecessary(filePath){
+
+    var lastIndex = filePath.lastIndexOf("/");
+    var directoryPath = filePath.substring(0, lastIndex + 1);
+    this.Log("[DB-MANAGEMENT] directoryPath", directoryPath);
+
     let promise = new Promise((resolve) => {
-      FileSystem.getInfoAsync(FileSystem.documentDirectory + "SQLite/cpl-app.db")
+      FileSystem.getInfoAsync(directoryPath)
         .then((directoryInfo) => {
 
           if(directoryInfo.exists){
@@ -124,10 +140,14 @@ export default class DBAdapter {
           }
           else{
             this.Log("[DB-MANAGEMENT] SQLite directory not exist. We neet to make a new one.");
-            FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + "SQLite/", {intermediates: true})
+            FileSystem.makeDirectoryAsync(directoryPath, {intermediates: true})
               .then(() => {
                 this.Log("[DB-MANAGEMENT] Directory maker finished.");
                 resolve();
+              })
+              .catch((error) => {
+                this.Log("[DB-MANAGEMENT makeDirectoryAsync error]", error);
+                resolve()
               });
           }
           
@@ -135,6 +155,27 @@ export default class DBAdapter {
     });
     return promise;
   }
+
+  /*// After online changes we need to replace the cache database with the updated one
+  SaveChangesInCacheDatabase(){
+    let promise = new Promise((resolve) => {
+      if(this.databaseCachePath == null){
+        resolve();
+      }
+      else{
+        var oldDatabasePath = this.databaseCachePath;
+        var newDatabasePath = FileSystem.documentDirectory + "SQLite/cpl-app.db";
+
+        this.SaveOrReplaceFileSystemDatabase(newDatabasePath, oldDatabasePath)
+          .then((result) => {
+            this.Log("[DB-MANAGEMENT SaveChangesInCacheDatabase] SaveOrReplaceFileSystemDatabase Result: ", result);
+            resolve();
+        });
+        
+      }
+    });
+    return promise;
+  }*/
 
   executeQuery(query, callback, errorCallback) {
     this.Log("[DB-MANAGEMENT] executeQuery: ", query);
@@ -163,51 +204,68 @@ export default class DBAdapter {
 
     let promise = new Promise((resolve) => {
 
-      this.OpenDatabaseIfNotOpenedYet().then((ok_status) => {
-        if(ok_status){
-          this.database.transaction((tx) => {
-            tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-              resolve(true)
-            }, (SQLTransaction, SQLError) => {
-              this.Log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", SQLError);
-              resolve(false)
+      try {
+        this.OpenDatabaseIfNotOpenedYet().then((ok_status) => {
+          this.Log("[ONLINE_UPDATES executeQuery_onlinechanges] ok_status:", ok_status);
+          if(ok_status == "OK"){
+            this.database.transaction((tx) => {
+              tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+                resolve(true)
+              }, (SQLTransaction, SQLError) => {
+                this.Log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", SQLError);
+                resolve(false)
+              });
             });
-          });
-        }
-        else{
-          resolve(false);
-        }
-      });
+          }
+          else{
+            resolve(false);
+          }
+        });
+      } catch (error) {
+        console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error: ", error);
+      }
     });
   
     return promise
 
   }
 
+  getOnlineVersion(callback){
+    var onlineVersionPromise = new Promise((resolve) => {
+      this.executeQuery(`SELECT IFNULL(MAX(id), 0) As onlineVersion FROM _tables_log`,
+        result => resolve(result.rows.item(0).onlineVersion));
+    });
+
+    onlineVersionPromise.then(result => callback(result));
+
+    return onlineVersionPromise;
+  }
+
   MakeChanges(json_updates){
 
-    let promise = new Promise((resolve) => {
+    let promise = new Promise((resolve, reject) => {
 
-      this.Log("[ONLINE_UPDATES MakeChanges]");
+      this.Log("[ONLINE_UPDATES MakeChanges]", json_updates);
 
-      let promises = []
-      let sql
+      let promises = [];
+      let sql;
+
+      this.Log("[ONLINE_UPDATES MakeChanges] json_updates.length", json_updates.length);
 
       for (var i = 0; i < json_updates.length; i++) {
 
         var change = json_updates[i]
+        this.Log("[ONLINE_UPDATES MakeChanges] change", change);
 
         switch (change.action) {
           
           //UPDATE
-          case 2:
-
-
-              //this.Log("[ONLINE_UPDATES Check_For_Updates] test:", JSON.parse(JSON.stringify(change.values)));
+          case "2":
 
               var set_statement = ""
               var j = 0
               for (const key in change.values) {
+                this.Log("[ONLINE_UPDATES MakeChanges] change.values", change.values);
                 if (change.values.hasOwnProperty(key)) {
                   set_statement += key + " = '" + change.values[key] + "'"
                   if(j < (Object.keys(change.values).length - 1))
@@ -215,17 +273,17 @@ export default class DBAdapter {
                   j += 1
                 }
               } 
-
+              // UPDATE diversos SET 0 = '[object Object]' WHERE id = 1
               sql = "UPDATE " + change.table_name + " SET " + set_statement + " WHERE id = " + change.row_id;
               
-              //this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+              this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
 
               promises.push(this.executeQuery_onlinechanges(sql))
 
             break;
 
           //INSERT
-          case 1:
+          case "1":
 
             var aux = JSON.stringify(change.values)
             aux = aux.replace(/{/g, "")
@@ -246,18 +304,18 @@ export default class DBAdapter {
           
             sql = "INSERT INTO " + change_name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
               
-            //this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+            this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
 
             promises.push(this.executeQuery_onlinechanges(sql))
 
             break;
             
           //DELETE
-          case 3:
+          case "3":
 
             sql =  "DELETE FROM " + change.table_name + " WHERE id = " + change.row_id;
         
-            //this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+            this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
 
             promises.push(this.executeQuery_onlinechanges(sql))
 
@@ -270,31 +328,39 @@ export default class DBAdapter {
       this.Log("[ONLINE_UPDATES MakeChanges] promises.length: ", promises.length);
 
       // Check promises length
-      if(promises.length == 0) resolve(false)
-
-      this.Log("PAOLOO1");
-      
-      Promise.all(promises).then((res) => {
-
-        this.Log("PAOLOO2");
-
-        let total_res = true
-        for (var i = 0; i < res.length; i++) {
-          this.Log("[ONLINE_UPDATES MakeChanges] promise " + i + " result:", res[i]);
-          if (!res[i]){
-            total_res = false;
-          }
-        }
-
-        this.Log("[ONLINE_UPDATES MakeChanges] total_res: ", total_res);
-
-        resolve(total_res)
-
-      })
-      .catch((error) => {
-        this.Log("[EXCEPTION ONLINE_UPDATES MakeChanges]", error);
+      if(promises.length == 0) {
         resolve(false)
-      });
+      }
+      else{
+        this.Log("[ONLINE_UPDATES PAOLOO1");
+      
+        Promise.all(promises).then(res => {
+  
+          this.Log("[ONLINE_UPDATES PAOLOO2", res);
+
+          if(res == undefined){
+            reject(new Error("Something is not right"));
+          }
+          else{
+            let total_res = true
+            for (var i = 0; i < res.length; i++) {
+              this.Log("[ONLINE_UPDATES MakeChanges] promise " + i + " result:", res[i]);
+              if (!res[i]){
+                total_res = false;
+              }
+            }
+    
+            this.Log("[ONLINE_UPDATES MakeChanges] total_res: ", total_res);
+    
+            resolve(total_res)
+          }
+  
+        })
+        .catch((error) => {
+          this.Log("[EXCEPTION ONLINE_UPDATES MakeChanges]", error);
+          resolve(false)
+        });
+      }
 
     });
 
@@ -796,7 +862,7 @@ export default class DBAdapter {
 
   Log(message, param){
     try {
-      if(true){
+      if(true || message.includes("ONLINE_UPDATES")){
         if(param == undefined)
           console.log(message);
         else
