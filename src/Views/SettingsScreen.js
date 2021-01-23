@@ -44,6 +44,7 @@ export default class SettingsScreen extends Component {
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Text oficial de la Comissió Interdiocesana de Litúrgia de la Conferència Episcopal Tarraconense, aprovat pels bisbes de les diòcesis de parla catalana i confirmat per la Congregació per al Culte Diví i la Disciplina dels Sagraments: Prot. N. 312/15, 27 d'abril de 2016"}</Text>
               <View style={{height:15}}/>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de l'aplicació: ("}{Platform.OS == "ios"? Constants.manifest.ios.buildNumber : Constants.manifest.android.versionCode}{")"}{Constants.manifest.version}</Text>
+              <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de de la base de dades: "}{G_VALUES.databaseVersion}</Text>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"OTA("}{Constants.manifest.updates.fallbackToCacheTimeout}{"): "}{Constants.manifest.updates.enabled? "Sí" : "No"}</Text>
             </View>
             <View style={{height:10}}/>

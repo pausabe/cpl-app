@@ -54,11 +54,11 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
     SettingsManager.getSettingTextSize((r) => G_VALUES.textSize = r),
     SettingsManager.getSettingNumSalmInv((r) => G_VALUES.numSalmInv = r),
     SettingsManager.getSettingNumAntMare((r) => G_VALUES.numAntMare = r),
-    GLOBAL.DBAccess.getOnlineVersion((r) => G_VALUES.onlineVersion = r),
+    GLOBAL.DBAccess.getDatabaseVersion((r) => G_VALUES.databaseVersion = r),
   ])
   .then(() => {
 
-    console.log("[ONLINE_UPDATES Reload_All_Data] G_VALUES.onlineVersion: ", G_VALUES.onlineVersion);
+    console.log("[ONLINE_UPDATES Reload_All_Data] G_VALUES.databaseVersion: ", G_VALUES.databaseVersion);
     console.log("[ONLINE_UPDATES Reload_All_Data] online_updates: ", online_updates);
 
     //Check for global parameter
@@ -91,13 +91,13 @@ function Check_For_Updates(){
 
   let promise = new Promise((resolve) => {
 
-    if(G_VALUES.onlineVersion == undefined){
+    if(G_VALUES.databaseVersion == undefined){
       resolve(false);
     }
     else{
 
       //Get json with changes
-      GetOnlineChanges(G_VALUES.onlineVersion).then((json_updates) => {
+      GetOnlineChanges(G_VALUES.databaseVersion).then((json_updates) => {
 
         console.log("[ONLINE_UPDATES Check_For_Updates] json_updates:", json_updates);
 

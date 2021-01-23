@@ -190,7 +190,7 @@ export default class DBAdapter {
             callback(SQLResultSet);
           }, (SQLTransaction, SQLError) => {
             this.Log("[executeQuery] error in query (" + query + "): ", SQLError);
-            callback();
+            errorCallback();
           });
         });
       }
@@ -230,10 +230,11 @@ export default class DBAdapter {
 
   }
 
-  getOnlineVersion(callback){
+  getDatabaseVersion(callback){
     var onlineVersionPromise = new Promise((resolve) => {
-      this.executeQuery(`SELECT IFNULL(MAX(id), 0) As onlineVersion FROM _tables_log`,
-        result => resolve(result.rows.item(0).onlineVersion));
+      this.executeQuery(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`,
+        result => resolve(result.rows.item(0).databaseVersion),
+        () => resolve(0) );
     });
 
     onlineVersionPromise.then(result => callback(result));

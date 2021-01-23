@@ -48,6 +48,6 @@ module.exports = {
   paddingBar: Platform.OS === 'ios' ? 0 : 54,
 
   server_url: 'https://serveditorial.cpl.es/api/emp/read/',
-  enable_updates: true
+  enable_updates: false
 
 };
