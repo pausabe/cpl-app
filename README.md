@@ -1,3 +1,6 @@
+# Deploy project repository
+https://github.com/pausabe/deploy-cpl
+
 # Third-party Installs
 ### React Navigation
 
