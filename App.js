@@ -126,6 +126,7 @@ function Tabs() {
         activeColor="white"
         inactiveColor="#D3D3D3"
         labeled={false}
+        backBehavior="none"
         barStyle={{ backgroundColor: GLOBAL.barColor }}>
       <Tab.Screen 
         name="Home" 
