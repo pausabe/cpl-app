@@ -65,18 +65,28 @@ export default class CompletesSoul{
     llati = G_VALUES.llati;
     const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
     
+    // Default
+    if(llati === 'true') this.COMPLETES.himne = this.state.himneLlati2;
+    else this.COMPLETES.himne = this.state.himneCat2;
+
     // HIMNE
+    const himnePasquaLlati = "Iesu, redémptor sǽculi,\nVerbum Patris altíssimi,\nlux lucis invisíbilis,\ncustos tuórum pérvigil:\n\nTu fabricátor ómnium\ndiscrétor atque témporum,\nfessa labóre córpora\nnoctis quiéte récrea.\n\nQui frangis ima tártara,\ntu nos ab hoste líbera,\nne váleat sedúcere\ntuo redémptos sánguine,\n\nUt, dum graváti córpore\nbrevi manémus témpore,\nsic caro nostra dórmiat\nut mens sopórem nésciat.\n\nIesu, tibi sit glória,\nqui morte victa prǽnites,\ncum Patre et almo Spíritu,\nin sempitérna sǽcula. \nAmen.";
     const himnePasqua = "Jesús, oh Verb del Déu excels,\nde tots els segles Redemptor,\nsou llum de llum que brilla al cel\ni sou dels homes bon Pastor.\n\nVós que heu creat tot l'univers,\nl'espai i el temps amb savi dit,\nel cos cansat reanimeu\namb el descans d'aquesta nit.\n\nAmb cor humil us supliquem,\noh Crist, que sou el germà gran,\nque no pertorbi l'enemic\nels redimits amb vostra Sang.\n\nQue en el temps breu que dura el son,\n-sots vostres ales descansant-\nrecobri forces nostre cos\ni l'esperit vetlli, estimant.\n\nA vós, Jesús, glorifiquem\nque resplendiu vencent la mort,\namb l'etern Pare i l'Esperit,\nara i per segles sense fi.\nAmén";
     switch (G_VALUES.LT) {
       case GLOBAL.Q_SETMANES:
-        if(G_VALUES.LT === GLOBAL.Q_SETMANES && setmana !== '4'){
+        if(setmana == "1" || setmana == "3" || setmana == "5") {
           if(llati === 'true') this.COMPLETES.himne = this.state.himneLlati1;
           else this.COMPLETES.himne = this.state.himneCat1;
         }
-        else{
+        else if(setmana == "2" || setmana == "4"){
           if(llati === 'true') this.COMPLETES.himne = this.state.himneLlati2;
           else this.COMPLETES.himne = this.state.himneCat2;
         }
+        break;
+      case GLOBAL.Q_CENDRA:
+      case GLOBAL.Q_SET_SANTA:
+        if(llati === 'true') this.COMPLETES.himne = this.state.himneLlati2;
+        else this.COMPLETES.himne = this.state.himneCat2;
         break;
       case GLOBAL.A_SETMANES:
       case GLOBAL.N_OCTAVA:
@@ -105,7 +115,8 @@ export default class CompletesSoul{
         break;
       default:
         if(G_VALUES.tempsespecific === 'Pasqua'){
-          this.COMPLETES.himne = himnePasqua;
+          if(llati === 'true') this.COMPLETES.himne = himnePasquaLlati;
+          else this.COMPLETES.himne = himnePasqua;
         }
         else{
           if(llati === 'true') this.COMPLETES.himne = this.state.himneLlati2;
@@ -116,8 +127,6 @@ export default class CompletesSoul{
     console.log("G_VALUES.LT:", G_VALUES.LT);
     console.log("setmana:", setmana);
     console.log("selected himne:", this.COMPLETES.himne);
-
-
 
     this.COMPLETES.antifones = true;
     this.COMPLETES.ant1 = this.state.salteriComuCompletes.ant1;
