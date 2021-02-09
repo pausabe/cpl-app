@@ -264,3 +264,9 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - Nova base de dades
 - Solucionats errors amb els himnes de completes
 - Solució d'errors varis
+
+### v3.6.0 (09.02.2021)[50]
+- Solucionats errors amb els himnes de completes
+- [Android] Ara el botó de tirar endarrere sempre fa sortir de l'app si estàs a la pantalla principal
+-----
+- Preparat el sistema de deploy a través del web

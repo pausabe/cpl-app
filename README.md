@@ -88,8 +88,8 @@ https://github.com/pausabe/deploy-cpl
 
     expo upgrade
 
-### Deploy
-#### Stores (TODO)
+### Deploy (TODO)
+#### Stores
 // El que comento a continuació no funciona com voldria... Sempre s'ha de passar per OTA
 Si es fa servir el --no-publish, no puja la última versió del manifest (app.json).
 En altres paraules, puja el build pero amb versió de manifest que hi havia en l'ultima publicació
