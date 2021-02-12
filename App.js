@@ -197,6 +197,7 @@ export default function App() {
             title: "Configuració",
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
+            headerBackTitleVisible: false
           })}
         />
         <Stack.Screen 
@@ -206,6 +207,7 @@ export default function App() {
             title: "Donatiu lliure",
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
+            headerBackTitleVisible: false
           })}
         />
         <Stack.Screen 
@@ -215,6 +217,7 @@ export default function App() {
             title: "Missatge",
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
+            headerBackTitleVisible: false
           })}
         />
         <Stack.Screen 
@@ -224,6 +227,7 @@ export default function App() {
             title: route.params.props.type,
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
+            headerBackTitleVisible: false
           })}
         />
         <Stack.Screen 
@@ -233,6 +237,7 @@ export default function App() {
             title: "Missa",
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
+            headerBackTitleVisible: false
           })}
         />
       </Stack.Navigator>

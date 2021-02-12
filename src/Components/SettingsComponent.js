@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {View, Text, Switch, Picker, StyleSheet, Platform} from 'react-native';
+import {View, Text, Switch, StyleSheet, Platform} from 'react-native';
+import { Picker as SelectPicker } from '@react-native-picker/picker';
 import Slider from '@react-native-community/slider';
 
 import HR from './HRComponent';
@@ -97,7 +98,7 @@ export default class SettingsComponent extends Component{
               selectedValue: this.state.value,
               onValueChange: this._updateSelectionStateCallback.bind(this)
           });
-          return React.createElement(Picker, selectorProps,
+          return React.createElement(SelectPicker, selectorProps,
               this._generatePickerOptions()
           );
         }
@@ -107,7 +108,7 @@ export default class SettingsComponent extends Component{
               onValueChange: this._updateSelectionStateCallback.bind(this),
               style: styles.selectorPicker
           });
-          return React.createElement(Picker, selectorProps,
+          return React.createElement(SelectPicker, selectorProps,
               this._generatePickerOptions()
           );
         }
@@ -118,7 +119,7 @@ export default class SettingsComponent extends Component{
         let options = [];
         for(let key in this.options){
             options.push(
-                <Picker.Item label={this.options[key]} value={key} key={key}/>
+                <SelectPicker.Item label={this.options[key]} value={key} key={key}/>
             );
         }
         return options;

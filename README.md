@@ -66,6 +66,10 @@ https://github.com/pausabe/deploy-cpl
 
     expo install expo-constants
 
+### Safe Area
+
+    expo install react-native-safe-area-context
+
 
 # Docs
 ### Expo Commands
