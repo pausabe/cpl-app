@@ -34,7 +34,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/Assets/icon/androidForeground.png",
         "backgroundImage": "./src/Assets/icon/androidBackground.png"
-      }
+      },
+      "permissions": []
     }
   }
 }
