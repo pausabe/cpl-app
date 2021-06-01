@@ -270,3 +270,6 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - [Android] Ara el botó de tirar endarrere sempre fa sortir de l'app si estàs a la pantalla principal
 -----
 - Preparat el sistema de deploy a través del web
+
+### v3.7.0 (01.06.2021)[51]
+- Solucionada la restricció de permisos
