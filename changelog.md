@@ -273,3 +273,7 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 
 ### v3.7.0 (01.06.2021)[51]
 - Solucionada la restricció de permisos
+
+### v3.7.1 (03.06.2021)[51]
+------
+- Solucionat l'error del crash a iOs
