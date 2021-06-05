@@ -272,8 +272,17 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - Preparat el sistema de deploy a través del web
 
 ### v3.7.0 (01.06.2021)[51]
-- Solucionada la restricció de permisos
+- [Android] Solucionada la restricció de permisos
+-----
+- 
 
 ### v3.7.1 (03.06.2021)[51]
-------
-- Solucionat l'error del crash a iOs
+- Manteniment de l'aplicació
+- [ios]Solucionat l'error que no permetia entrar
+-----
+- Actualitzada la BD del projecte
+
+### v3.8.0 (03.06.2021)[52]
+- 
+-----
+- Publicació oficial després del drama
