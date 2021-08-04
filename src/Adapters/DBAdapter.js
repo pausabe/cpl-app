@@ -190,12 +190,17 @@ export default class DBAdapter {
             callback(SQLResultSet);
           }, (SQLTransaction, SQLError) => {
             this.Log("[executeQuery] error in query (" + query + "): ", SQLError);
-            errorCallback();
+            this.Log("errorCallback: " + errorCallback);
+            if(errorCallback != undefined) {
+              errorCallback();
+            }
           });
         });
       }
       else{
-        errorCallback(resultMsg);
+        if(errorCallback != undefined) {
+          errorCallback(resultMsg);
+        }
       }
     });
   }
