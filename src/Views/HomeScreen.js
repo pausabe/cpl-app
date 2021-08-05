@@ -12,6 +12,7 @@ import {
   Platform
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { AntDesign } from '@expo/vector-icons'; 
 import GLOBAL from "../Globals/Globals";
 
 export default class HomeScreen extends Component {
@@ -363,16 +364,9 @@ export default class HomeScreen extends Component {
                   {this.props.ViewData.celebracio.text !== '-' ?
                     <View style={{ width: arrowWidth, justifyContent: 'center', alignItems: 'center' }}>
                       {this.props.santPressed ?
-                        <Icon
-                          name="md-arrow-dropdown"
-                          size={25}
-                          color={arrowColor} />
+                        <AntDesign name="down" size={24} color="black" />
                         :
-                        <Icon
-                          name="md-arrow-dropright"
-                          size={25}
-                          iconStyle={{ padding: 50 }}
-                          color={arrowColor} />
+                        <AntDesign name="right" size={24} color="black" />
                       }
                     </View>
                     :
