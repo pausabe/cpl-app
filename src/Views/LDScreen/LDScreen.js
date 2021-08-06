@@ -101,7 +101,7 @@ export default class LDScreen extends Component {
       }
 
       return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             {
                <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
                {LD_VALUES.Vespers == undefined ?
@@ -120,7 +120,7 @@ export default class LDScreen extends Component {
                }
              </ImageBackground>
             }
-        </View>
+        </SafeAreaView>
       );
 
     } catch (error) {

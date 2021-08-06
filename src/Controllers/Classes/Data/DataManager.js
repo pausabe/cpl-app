@@ -62,6 +62,7 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
           aux_darkMode = false;
           break;
         case "Automàtic":
+          console.log("Appearance.getColorScheme(): " + Appearance.getColorScheme());
           if (Appearance.getColorScheme() === 'dark') {
             aux_darkMode = true;
           } else {

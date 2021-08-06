@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, Platform, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -143,7 +143,7 @@ function Tabs() {
           )
         }}/>
       <Tab.Screen 
-        name="LH" 
+        name="LH"
         component={LHStackScreen} 
         options={{
           tabBarIcon: ({ focused, color }) => (
@@ -157,7 +157,7 @@ function Tabs() {
           )
         }}/>
       <Tab.Screen 
-        name="LD" 
+        name="LD"
         component={LDStackScreen}  
         options={{
           tabBarIcon: ({ focused, color }) => (

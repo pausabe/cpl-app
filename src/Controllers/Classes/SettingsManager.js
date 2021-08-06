@@ -53,7 +53,7 @@ const defaultSettings = {
     dayStart: "0", //Values from 0 to 3 allowed, which means 00:00AM, 01:00AM, 02:00AM and 03:00AM
     salmInvitatori: salmInvitatori.SALM94,
     antMare: antMare.ANT1,
-    darkMode: darkModeOptions.SYSTEM
+    darkMode: darkModeOptions.OFF
 };
 
 export default class SettingsManager{
