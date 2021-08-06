@@ -30,90 +30,22 @@ export default class LDDisplayScreen extends Component {
     constructor(props) {
         super(props);
 
-        console.log("G_VALUES", G_VALUES);
-        console.log("G_VALUES.textSize", G_VALUES.textSize);
-        console.log("GF", GF);
-        console.log("GF.convertTextSize", GF.convertTextSize);
-        console.log("GF.convertTextSize(G_VALUES.textSize)", GF.convertTextSize(G_VALUES.textSize));
-
         this.styles = {
-            container: {
-                flex: 1,
-            },
-            black: {
-                color: '#000000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-            },
-            continueButton: {
-                color: 'grey',
-                fontSize: GF.convertTextSize(G_VALUES.textSize) - 3,
-            },
-            textContinueButton: {
-                color: 'grey',
-                fontSize: GF.convertTextSize(G_VALUES.textSize) > 17 ? 17 : GF.convertTextSize(G_VALUES.textSize) - 3,
-            },
-            texSalmInvButtonBold: {
-                color: 'grey',
-                fontSize: GF.convertTextSize(G_VALUES.textSize) > 17 ? 17 : GF.convertTextSize(G_VALUES.textSize) - 3,
-                fontWeight: 'bold',
-            },
-            blackJustified: {
-                color: '#000000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-                textAlign: Platform.OS == 'ios'? 'justify' : 'auto',
-            },
-            blackBold: {
-                color: '#000000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-                fontWeight: 'bold',
-            },
-            blackItalic: {
-                color: '#000000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-                fontStyle: 'italic'
-            },
-            blackSmallItalicRight: {
-                color: '#000000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize) - 2,
-                fontStyle: 'italic',
-                textAlign: 'right'
-            },
-            red: {
-                color: '#FF0000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-            },
-            redItalic: {
-                color: '#FF0000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-                fontStyle: 'italic'
-            },
-            redCenter: {
-                color: '#FF0000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-                textAlign: 'center'
-            },
-            redCenterBold: {
-                color: '#FF0000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize),
-                textAlign: 'center',
-                fontWeight: 'bold',
-            },
-            redSmallItalicRight: {
-                color: '#FF0000',
-                fontSize: GF.convertTextSize(G_VALUES.textSize) - 2,
-                fontStyle: 'italic',
-                textAlign: 'right'
-            },
-            textButton: {
-                color: 'grey',
-                fontSize: GF.convertTextSize(G_VALUES.textSize) > 17 ? 17 : GF.convertTextSize(G_VALUES.textSize) - 3,
-            },
-            textButtonBold: {
-                color: 'grey',
-                fontSize: GF.convertTextSize(G_VALUES.textSize) > 17 ? 17 : GF.convertTextSize(G_VALUES.textSize) - 3,
-                fontWeight: 'bold',
-            },
-        }
+            container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+        };
     }
 
     //CALLBACKS ----------------------------------------------------------------------------
@@ -128,7 +60,7 @@ export default class LDDisplayScreen extends Component {
 
             return (
                 <View style={this.styles.container}>
-                    <ScrollView automaticallyAdjustContentInsets={false} style={{ padding: 10, }}>
+                    <ScrollView automaticallyAdjustContentInsets={false} >
                         <View style={{ flex: 1 }}>
                             {this.state.VetllaPasquaLecturesSalms ?
                                 <View>
@@ -278,7 +210,7 @@ export default class LDDisplayScreen extends Component {
                     :
                     <TouchableOpacity onPress={() => this.setState({ VetllaPasquaEvangeli: true })}>
                         <View style={{ alignItems: 'center', paddingVertical: 10 }}>
-                            <Text style={this.styles.continueButton}>{"Continua amb l'Evangeli"}</Text>
+                            <Text style={this.styles.hiddenPrayerButton}>{"Continua amb l'Evangeli"}</Text>
                         </View>
                     </TouchableOpacity>
                 }
@@ -353,7 +285,7 @@ export default class LDDisplayScreen extends Component {
                     :
                     <TouchableOpacity onPress={() => this.setState({ Lect1: true })}>
                         <View style={{ alignItems: 'center', paddingVertical: 10 }}>
-                            <Text style={this.styles.continueButton}>{"Continua amb la primera lectura"}</Text>
+                            <Text style={this.styles.hiddenPrayerButton}>{"Continua amb la primera lectura"}</Text>
                         </View>
                     </TouchableOpacity>
                 }
@@ -396,7 +328,7 @@ export default class LDDisplayScreen extends Component {
                     :
                     <TouchableOpacity onPress={() => this.setState({ Salm: true })}>
                         <View style={{ alignItems: 'center', paddingVertical: 10 }}>
-                            <Text style={this.styles.continueButton}>{"Continua amb el Salm"}</Text>
+                            <Text style={this.styles.hiddenPrayerButton}>{"Continua amb el Salm"}</Text>
                         </View>
                     </TouchableOpacity>
                 }
@@ -425,7 +357,7 @@ export default class LDDisplayScreen extends Component {
                     :
                     <TouchableOpacity onPress={() => { this.Set_Continue_State(need_lect2) }}>
                         <View style={{ alignItems: 'center', paddingVertical: 10 }}>
-                            <Text style={this.styles.continueButton}>{"Continua amb " + (need_lect2 ? "la segona lectura" : "l'Evangeli")}</Text>
+                            <Text style={this.styles.hiddenPrayerButton}>{"Continua amb " + (need_lect2 ? "la segona lectura" : "l'Evangeli")}</Text>
                         </View>
                     </TouchableOpacity>
                 }
@@ -461,7 +393,7 @@ export default class LDDisplayScreen extends Component {
                     :
                     <TouchableOpacity onPress={() => this.setState({ Evangeli: true })}>
                         <View style={{ alignItems: 'center', paddingVertical: 10 }}>
-                            <Text style={this.styles.continueButton}>{"Continua amb l'Evangeli"}</Text>
+                            <Text style={this.styles.hiddenPrayerButton}>{"Continua amb l'Evangeli"}</Text>
                         </View>
                     </TouchableOpacity>
                 }
@@ -488,10 +420,10 @@ export default class LDDisplayScreen extends Component {
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
                             <TouchableOpacity onPress={this._onEvangeliPress.bind(this, 'normal')}>
-                                <Text style={this.state.evangeliType == "normal" ? this.styles.textButtonBold : this.styles.textButton}>{"Normal  "}</Text>
+                                <Text style={this.state.evangeliType == "normal" ? this.styles.prayerTabButtonBold : this.styles.prayerTabButton}>{"Normal  "}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this._onEvangeliPress.bind(this, 'alternative')}>
-                                <Text style={this.state.evangeliType == "normal" ? this.styles.textButton : this.styles.textButtonBold}>{"  Alternatiu (vespre)"}</Text>
+                                <Text style={this.state.evangeliType == "normal" ? this.styles.prayerTabButton : this.styles.prayerTabButtonBold}>{"  Alternatiu (vespre)"}</Text>
                             </TouchableOpacity>
                         </View>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}

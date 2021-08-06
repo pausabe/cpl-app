@@ -14,33 +14,15 @@ import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
 
 export default class LaudesDisplay extends Component {
   componentDidMount(){
-    //this.props.events.addListener('shareButtonPressed_Laudes', this.sharePressed.bind(this));
   }
 
   componentWillUnmount(){
-    //this.props.events.removeListener('shareButtonPressed_Laudes', this.sharePressed.bind(this));
   }
-
-  /*sharePressed(){
-    console.log("PlaceLog. Laudes Share Pressed");
-    Share.share({
-      message: this.shareText,
-      url: 'https://mescpl.cpl.es/donacions/',
-      title: 'Laudes',
-      subject: 'Laudes'
-    },
-    {
-      // Android only:
-      dialogTitle: 'Comparteix tot el text',
-    })
-  }*/
 
   constructor(props){
     super(props);
 
     console.log("PlaceLog. LaudesDisplay");
-
-    var textSize = G_VALUES.textSize;
 
     var auxNumSalmInv = G_VALUES.numSalmInv;
 
@@ -56,74 +38,27 @@ export default class LaudesDisplay extends Component {
     }
 
     this.styles = {
-      black: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      invitatoriButton: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize)-3,
-      },
-      texSalmInvButton: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize) > 17? 17 : GF.convertTextSize(textSize)-3,
-      },
-      texSalmInvButtonBold: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize) > 17? 17 : GF.convertTextSize(textSize)-3,
-        fontWeight: 'bold',
-      },
-      blackBold: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontWeight: 'bold',
-      },
-      blackItalic:{
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      blackSmallItalicRight: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      },
-      red: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      redItalic:{
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      redCenter: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center'
-      },
-      redCenterBold: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      redSmallItalicRight: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      }
-    }
+      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+    };
 
     this.LAUDES = LH_VALUES.laudes;
     this.superTestMode = props.superTestMode;
     this.testErrorCB = props.testErrorCB;
     this.setNumSalmInv = props.setNumSalmInv;
     this.titols = props.titols;
-
-    //this.shareText = "";
   }
 
   _onSalmInvPress(numSalm){
@@ -133,49 +68,41 @@ export default class LaudesDisplay extends Component {
   }
 
   salmInvitatori(numSalm, salm94, salm99, salm66, salm23){
-    var style94 = this.styles.texSalmInvButton;
-    var style99 = this.styles.texSalmInvButton;
-    var style66 = this.styles.texSalmInvButton;
-    var style23 = this.styles.texSalmInvButton;
+    var style94 = this.styles.prayerTabButton;
+    var style99 = this.styles.prayerTabButton;
+    var style66 = this.styles.prayerTabButton;
+    var style23 = this.styles.prayerTabButton;
 
     switch (numSalm) {
       case '94':
         titolSalm = "Salm 94\nInvitació a lloar Déu";
         refSalm = "Mentre repetim aquell «avui», exhortem-nos cada dia els uns als altres (He 3, 13)";
         salm = salm94;
-        style94 = this.styles.texSalmInvButtonBold;
+        style94 = this.styles.prayerTabButtonBold;
         break;
       case '99':
         titolSalm = "Salm 99\nInvitació a lloar Déu en el seu temple";
         refSalm = "El Senyor vol que els redimits cantin himnes de victòria (St. Atanasi)";
         salm = salm99;
-        style99 = this.styles.texSalmInvButtonBold;
+        style99 = this.styles.prayerTabButtonBold;
         break;
       case '66':
         titolSalm = "Salm 66\nInvitació als pobles a lloar Déu";
         refSalm = "Sapigueu que el missatge de la salvació de Déu ha estat enviat a tots els pobles (Fets 28, 28)";
         salm = salm66;
-        style66 = this.styles.texSalmInvButtonBold;
+        style66 = this.styles.prayerTabButtonBold;
         break;
       case '23':
         titolSalm = "Salm 23\nEntrada del Senyor al santuari";
         refSalm = "Les portes del cel s'obriren a Crist quan hi fou endut amb la seva humanitat (St. Ireneu)";
         salm = salm23;
-        style23 = this.styles.texSalmInvButtonBold;
+        style23 = this.styles.prayerTabButtonBold;
         break;
     }
 
     var estrofes = salm.split("\n\n");
     var antifona = GF.rs(this.LAUDES.antInvitatori, this.superTestMode, this.testErrorCB.bind(this));
     var gloriaString = "Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.";
-
-    /*this.shareText += "Ant. " + antifona + '\n\n' + titolSalm + '\n\n' + refSalm + '\n\n';
-    for(i = 0; i < estrofes.length; i++){
-      this.shareText += estrofes[i] + '\n\n';
-      this.shareText += "Ant. " + antifona + '\n\n';
-    }
-    this.shareText += gloriaString + '\n\n';
-    this.shareText += "Ant. " + antifona + '\n\n';*/
 
     return(
       <View>
@@ -283,10 +210,9 @@ export default class LaudesDisplay extends Component {
 
   render() {
     try {
-      //this.shareText = "";
 
       return (
-        <View>
+        <View style={this.styles.container}>
           {this.introduccio(G_VALUES.LT, G_VALUES.setmana, this.LAUDES.salm94,
                               this.LAUDES.salm99, this.LAUDES.salm66, this.LAUDES.salm23)}
           {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
@@ -373,7 +299,7 @@ export default class LaudesDisplay extends Component {
       <View>
         <TouchableOpacity onPress={() => this.setState({invitatori: !this.state.invitatori})}>
           <View style={{alignItems: 'center',paddingVertical: 10}}>
-            <Text style={this.styles.invitatoriButton}>{this.state.invitatori?"Amagar":"Començar amb"}{" l'invitatori"}</Text>
+            <Text style={this.styles.hiddenPrayerButton}>{this.state.invitatori?"Amagar":"Començar amb"}{" l'invitatori"}</Text>
           </View>
         </TouchableOpacity>
         {this.state.invitatori?

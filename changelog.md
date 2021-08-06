@@ -286,3 +286,8 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - 
 -----
 - Publicació oficial després del drama
+
+### v4.0.0 (05.08.2021)[53]
+- 
+-----
+- Expo updated to SDK v41

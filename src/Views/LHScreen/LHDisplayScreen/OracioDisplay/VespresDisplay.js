@@ -12,90 +12,36 @@ import GF from '../../../../Globals/GlobalFunctions';
 
 export default class VespresDisplay extends Component {
   componentDidMount(){
-    //this.props.events.addListener('shareButtonPressed_Vespres', this.sharePressed.bind(this));
   }
 
   componentWillUnmount(){
-    //this.props.events.removeListener('shareButtonPressed_Vespres', this.sharePressed.bind(this));
   }
-
-  /*sharePressed(){
-    console.log("PlaceLog. Vespres Share Pressed");
-    Share.share({
-      message: this.shareText,
-      url: 'https://mescpl.cpl.es/donacions/',
-      title: 'Vespres',
-      subject: 'Vespres'
-    },
-    {
-      // Android only:
-      dialogTitle: 'Comparteix tot el text',
-    })
-  }*/
 
   constructor(props){
     super(props);
 
     console.log("PlaceLog. VespresDisplay");
 
-    var textSize = G_VALUES.textSize;
-
     this.styles = {
-      black: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      blackBold: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontWeight: 'bold',
-      },
-      blackItalic:{
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      blackSmallItalicRight: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      },
-      red: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      redItalic:{
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      redCenter: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center'
-      },
-      redCenterBold: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      redSmallItalicRight: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      }
-    }
-
-    //this.shareText = "";
+      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+    };
   }
 
   render(){
     try {
-      //this.shareText = "";
-
       VESPRES = LH_VALUES.vespres;
       const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
 
@@ -103,13 +49,8 @@ export default class VespresDisplay extends Component {
       var aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
       var aux_isAleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA && G_VALUES.LT !== GLOBAL.Q_TRIDU;
 
-      /*this.shareText += 'V. ' + aux_sigueu + '\n';
-      this.shareText += 'R. ' + aux_senyor_veniu + '\n\n';
-      this.shareText += gloriaStringIntro + (aux_isAleluia? " Al·leluia" : "");
-      this.shareText += '\n\n';*/
-
       return (
-          <View>
+          <View style={this.styles.container}>
             <Text selectable={true} style={this.styles.red}>{'V. '}
               <Text selectable={true} style={this.styles.black}>{aux_sigueu}</Text>
             </Text>

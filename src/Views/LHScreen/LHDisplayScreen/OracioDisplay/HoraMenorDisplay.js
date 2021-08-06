@@ -12,95 +12,43 @@ import GF from '../../../../Globals/GlobalFunctions';
 
 export default class HoraMenorDisplay extends Component {
   componentDidMount(){
-    //this.props.events.addListener('shareButtonPressed_Menor', this.sharePressed.bind(this));
   }
 
   componentWillUnmount(){
-    //this.props.events.removeListener('shareButtonPressed_Menor', this.sharePressed.bind(this));
   }
-
-  /*sharePressed(){
-    console.log("PlaceLog. Hora menor Share Pressed");
-    Share.share({
-      message: this.shareText,
-      url: 'https://mescpl.cpl.es/donacions/',
-      title: 'Hora menor',
-      subject: 'Hora menor'
-    },
-    {
-      // Android only:
-      dialogTitle: 'Comparteix tot el text',
-    })
-  }*/
 
   constructor(props){
     super(props);
 
     console.log("PlaceLog. HoraMenorDisplay");
 
-    var textSize = G_VALUES.textSize;
-
     this.styles = {
-      black: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      blackBold: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontWeight: 'bold',
-      },
-      blackItalic:{
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      blackSmallItalicRight: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      },
-      red: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      redCenter: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center'
-      },
-      redCenterBold: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      redSmallItalicRight: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      }
-    }
+      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+    };
 
-    //this.shareText = "";
   }
 
   render() {
     try {
-      //this.shareText = "";
 
       const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
       var aux_isAleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA && G_VALUES.LT !== GLOBAL.Q_TRIDU; 
 
-      /*this.shareText += "V. Sigueu amb nosaltres, Déu nostre.\n";
-      this.shareText += "R. Senyor, veniu a ajudar-nos.\n\n";
-      this.shareText += gloriaStringIntro +  (aux_isAleluia? " Al·leluia" : "");
-      this.shareText += '\n\n';*/
-
       return (
-        <View>
+        <View style={this.styles.container}>
           <Text selectable={true} style={this.styles.red}>{'V. '}
             <Text selectable={true} style={this.styles.black}>{'Sigueu amb nosaltres, Déu nostre.'}</Text>
           </Text>
@@ -183,9 +131,6 @@ export default class HoraMenorDisplay extends Component {
   himne(LT, weekDay, setmana, HM){
     var aux_himne = GF.rs(this.props.HORA_MENOR.himne, this.props.superTestMode, this.props.testErrorCB.bind(this));
 
-    /*this.shareText += 'HIMNE\n\n';
-    this.shareText += aux_himne + '\n\n';*/
-
     return(<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
   }
 
@@ -207,26 +152,6 @@ export default class HoraMenorDisplay extends Component {
     var aux_has_com3 = this.props.HORA_MENOR.com3 !== '-';
     var aux_com3 = aux_has_com3? GF.rs(this.props.HORA_MENOR.com3, this.props.superTestMode, this.props.testErrorCB.bind(this)) : "";
     var aux_salm3 = this.salm(GF.rs(this.props.HORA_MENOR.salm3, this.props.superTestMode, this.props.testErrorCB.bind(this)));
-
-    /*this.shareText += 'SALMÒDIA\n\n';
-    this.shareText += (aux_antifones? ('Ant. 1. ' + aux_ant1) : ('Ant. ' + aux_ant)) + '\n\n';
-    this.shareText += aux_titol1 + '\n\n';
-    if(aux_has_com1) this.shareText += aux_com1 + '\n\n';
-    this.shareText += aux_salm1 + '\n\n';
-    this.shareText += aux_gloria1 + '\n\n';
-    this.shareText += (aux_antifones? ('Ant. 1. ' + aux_ant1 + '\n\n') : "");
-    this.shareText += (aux_antifones? ('Ant. 2. ' + aux_ant2 + '\n\n') : "");
-    this.shareText += aux_titol2 + '\n\n';
-    if(aux_has_com2) this.shareText += aux_com2 + '\n\n';
-    this.shareText += aux_salm2 + '\n\n';
-    this.shareText += aux_gloria2 + '\n\n';
-    this.shareText += (aux_antifones? ('Ant. 2. ' + aux_ant2 + '\n\n') : "");
-    this.shareText += (aux_antifones? ('Ant. 3. ' + aux_ant3 + '\n\n') : "");
-    this.shareText += aux_titol3 + '\n\n';
-    if(aux_has_com3) this.shareText += aux_com3 + '\n\n';
-    this.shareText += aux_salm3 + '\n\n';
-    this.shareText += aux_gloria3 + '\n\n';
-    this.shareText += (aux_antifones? ('Ant. 3. ' + aux_ant3) : ('Ant. ' + aux_ant)) + '\n\n';*/
 
     return(
       <View>
@@ -329,11 +254,6 @@ export default class HoraMenorDisplay extends Component {
     var aux_lecturaBreu = GF.rs(this.props.HORA_MENOR.lecturaBreu, this.props.superTestMode, this.props.testErrorCB.bind(this));
     var aux_respV = GF.rs(this.props.HORA_MENOR.respV, this.props.superTestMode, this.props.testErrorCB.bind(this));
     var aux_respR = GF.rs(this.props.HORA_MENOR.respR, this.props.superTestMode, this.props.testErrorCB.bind(this));
-
-    /*this.shareText += "LECTURA BREU\n\n";
-    this.shareText += aux_vers + '\n\n';
-    this.shareText += 'V. ' + aux_respV + '\n';
-    this.shareText += 'R. ' + aux_respR + '\n\n';*/
 
     return(
       <View>

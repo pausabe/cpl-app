@@ -14,33 +14,16 @@ import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
 
 export default class OficiDisplay extends Component {
   componentDidMount(){
-    //this.props.events.addListener('shareButtonPressed_Ofici', this.sharePressed.bind(this));
   }
 
   componentWillUnmount(){
-    //this.props.events.removeListener('shareButtonPressed_Ofici', this.sharePressed.bind(this));
   }
-
-  /*sharePressed(){
-    console.log("PlaceLog. Ofici Share Pressed");
-    Share.share({
-      message: this.shareText,
-      url: 'https://mescpl.cpl.es/donacions/',
-      title: 'Ofici de lectura',
-      subject: 'Ofici de lectura'
-    },
-    {
-      // Android only:
-      dialogTitle: 'Comparteix tot el text',
-    })
-  }*/
 
   constructor(props){
     super(props);
 
     console.log("PlaceLog. OficiDisplay");
 
-    var textSize = G_VALUES.textSize;
     var auxNumSalmInv = G_VALUES.numSalmInv;
 
     if(!GF.salmInvExists(auxNumSalmInv,props.titols)){
@@ -55,71 +38,21 @@ export default class OficiDisplay extends Component {
     }
 
     this.styles = {
-      black: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      invitatoriButton: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize)-3,
-      },
-      texSalmInvButton: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize) > 17? 17 : GF.convertTextSize(textSize)-3,
-      },
-      texSalmInvButtonBold: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize) > 17? 17 : GF.convertTextSize(textSize)-3,
-        fontWeight: 'bold',
-      },
-      blackJustified:{
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: Platform.OS == 'ios'? 'justify' : 'auto',
-      },
-      blackBold: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontWeight: 'bold',
-      },
-      blackItalic:{
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      blackSmallItalicRight: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      },
-      red: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      redItalic:{
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      redCenter: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center'
-      },
-      redCenterBold: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      redSmallItalicRight: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      }
-    }
+      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+    };
 
     this.OFICI = LH_VALUES.ofici;
     
@@ -127,17 +60,13 @@ export default class OficiDisplay extends Component {
     this.testErrorCB = props.testErrorCB;
     this.setNumSalmInv = props.setNumSalmInv;
     this.titols = props.titols;
-
-    //this.shareText = "";
   }
 
   render() {
     try {
-      //this.shareText = "";
-
       if(!this.OFICI.diumPasqua){
         return (
-          <View>
+          <View style={this.styles.container}>
             {this.introduccio(G_VALUES.LT, G_VALUES.setmana, this.OFICI.salm94,
                                 this.OFICI.salm99, this.OFICI.salm66, this.OFICI.salm23)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
@@ -196,10 +125,8 @@ export default class OficiDisplay extends Component {
         var aux_participen = "Els qui no participen en la solemne Vetlla pasqual n'escolliran almenys quatre lectures, amb els corresponents salms responsorials i oracions. Les lectures més adients són les que segueixen."
         var aux_comença = "L'Ofici comença directament per les lectures.";
 
-        //this.shareText += aux_vetlla + '\n' + aux_participen + '\n' + aux_comença + '\n\n';
-
         return (
-          <View>
+          <View style={this.styles.container}>
             <Text selectable={true} style={this.styles.redCenter}>{aux_vetlla}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.redCenter}>{aux_participen}</Text>
@@ -248,49 +175,41 @@ export default class OficiDisplay extends Component {
   }
 
   salmInvitatori(numSalm, salm94, salm99, salm66, salm23){
-    var style94 = this.styles.texSalmInvButton;
-    var style99 = this.styles.texSalmInvButton;
-    var style66 = this.styles.texSalmInvButton;
-    var style23 = this.styles.texSalmInvButton;
+    var style94 = this.styles.prayerTabButton;
+    var style99 = this.styles.prayerTabButton;
+    var style66 = this.styles.prayerTabButton;
+    var style23 = this.styles.prayerTabButton;
 
     switch (numSalm) {
       case '94':
         titolSalm = "Salm 94\nInvitació a lloar Déu";
         refSalm = "Mentre repetim aquell «avui», exhortem-nos cada dia els uns als altres (He 3, 13)";
         salm = salm94;
-        style94 = this.styles.texSalmInvButtonBold;
+        style94 = this.styles.prayerTabButtonBold;
         break;
       case '99':
         titolSalm = "Salm 99\nInvitació a lloar Déu en el seu temple";
         refSalm = "El Senyor vol que els redimits cantin himnes de victòria (St. Atanasi)";
         salm = salm99;
-        style99 = this.styles.texSalmInvButtonBold;
+        style99 = this.styles.prayerTabButtonBold;
         break;
       case '66':
         titolSalm = "Salm 66\nInvitació als pobles a lloar Déu";
         refSalm = "Sapigueu que el missatge de la salvació de Déu ha estat enviat a tots els pobles (Fets 28, 28)";
         salm = salm66;
-        style66 = this.styles.texSalmInvButtonBold;
+        style66 = this.styles.prayerTabButtonBold;
         break;
       case '23':
         titolSalm = "Salm 23\nEntrada del Senyor al santuari";
         refSalm = "Les portes del cel s'obriren a Crist quan hi fou endut amb la seva humanitat (St. Ireneu)";
         salm = salm23;
-        style23 = this.styles.texSalmInvButtonBold;
+        style23 = this.styles.prayerTabButtonBold;
         break;
     }
 
     var estrofes = salm.split("\n\n");
     var antifona = GF.rs(this.OFICI.antInvitatori, this.superTestMode, this.testErrorCB.bind(this));
     var gloriaString = "Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.";
-
-    /*this.shareText += "Ant. " + antifona + '\n\n' + titolSalm + '\n\n' + refSalm + '\n\n';
-    for(i = 0; i < estrofes.length; i++){
-      this.shareText += estrofes[i] + '\n\n';
-      this.shareText += "Ant. " + antifona + '\n\n';
-    }
-    this.shareText += gloriaString + '\n\n';
-    this.shareText += "Ant. " + antifona + '\n\n';*/
 
     return(
       <View>
@@ -418,7 +337,7 @@ export default class OficiDisplay extends Component {
       <View>
         <TouchableOpacity onPress={()=>this.setState({invitatori:!this.state.invitatori})}>
           <View style={{alignItems: 'center',paddingVertical: 10}}>
-            <Text style={this.styles.invitatoriButton}>{this.state.invitatori?"Amagar":"Començar amb"}{" l'invitatori"}</Text>
+            <Text style={this.styles.hiddenPrayerButton}>{this.state.invitatori?"Amagar":"Començar amb"}{" l'invitatori"}</Text>
           </View>
         </TouchableOpacity>
         {this.state.invitatori?
@@ -440,11 +359,6 @@ export default class OficiDisplay extends Component {
       var aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
       var aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
       var aux_isAleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA && G_VALUES.LT !== GLOBAL.Q_TRIDU;
-
-      /*this.shareText += 'V. ' + aux_sigueu + '\n';
-      this.shareText += 'R. ' + aux_senyor_veniu + '\n\n';
-      this.shareText += gloriaStringIntro + (aux_isAleluia? " Al·leluia" : "");
-      this.shareText += '\n\n';*/
 
       return(
         <View>
@@ -492,9 +406,6 @@ export default class OficiDisplay extends Component {
   himne(LT, weekDay, nit, setmana){
     var aux_himne = GF.rs(this.OFICI.himne, this.superTestMode, this.testErrorCB.bind(this));
 
-    /*this.shareText += 'HIMNE\n\n';
-    this.shareText += aux_himne + '\n\n';*/
-
     return(<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
   }
 
@@ -514,26 +425,6 @@ export default class OficiDisplay extends Component {
     var aux_has_com3 = this.OFICI.com3 !== '-';
     var aux_com3 = aux_has_com3? GF.rs(this.OFICI.com3, this.superTestMode, this.testErrorCB.bind(this)) : "";
     var aux_salm3 = this.salm(GF.rs(this.OFICI.salm3, this.superTestMode, this.testErrorCB.bind(this)));
-
-    /*this.shareText += 'SALMÒDIA\n\n';
-    this.shareText += 'Ant. 1. ' + aux_ant1 + '\n\n';
-    this.shareText += aux_titol1 + '\n\n';
-    if(aux_has_com1) this.shareText += aux_com1 + '\n\n';
-    this.shareText += aux_salm1 + '\n\n';
-    this.shareText += aux_gloria1 + '\n\n';
-    this.shareText += 'Ant. 1. ' + aux_ant1 + '\n\n';
-    this.shareText += 'Ant. 2. ' + aux_ant2 + '\n\n';
-    this.shareText += aux_titol2 + '\n\n';
-    if(aux_has_com2) this.shareText += aux_com2 + '\n\n';
-    this.shareText += aux_salm2 + '\n\n';
-    this.shareText += aux_gloria2 + '\n\n';
-    this.shareText += 'Ant. 2. ' + aux_ant2 + '\n\n';
-    this.shareText += 'Ant. 3. ' + aux_ant3 + '\n\n';
-    this.shareText += aux_titol3 + '\n\n';
-    if(aux_has_com3) this.shareText += aux_com3 + '\n\n';
-    this.shareText += aux_salm3 + '\n\n';
-    this.shareText += aux_gloria3 + '\n\n';
-    this.shareText += 'Ant. 3. ' + aux_ant3 + '\n\n';*/
 
     return(
       <View>
@@ -646,27 +537,6 @@ export default class OficiDisplay extends Component {
       var aux_resp2_3 = GF.rs(this.OFICI.resp2Part3, this.superTestMode, this.testErrorCB.bind(this));
       var aux_resp2_2 = GF.rs(this.OFICI.resp2Part2, this.superTestMode, this.testErrorCB.bind(this));
 
-      /*this.shareText += 'LECTURES\n\n';
-      this.shareText += 'Lectura primera\n\n';
-      this.shareText += aux_referencia1 + '\n\n';
-      if(aux_has_cita1) this.shareText += aux_cita1 + '\n\n';
-      this.shareText += aux_titol_lectura1 + '\n\n';
-      this.shareText += aux_lectura1 + '\n\n';
-      this.shareText += 'Responsori\n\n';
-      if(aux_has_citaResp1) this.shareText += aux_cita_resp1 + '\n\n';
-      this.shareText += 'R. ' + aux_resp1_1_2 + '\n';
-      this.shareText += 'V. ' + aux_resp1_3 + '\n';
-      this.shareText += 'R. ' + aux_resp1_2 + '\n\n';
-      this.shareText += 'Lectura segona\n\n';
-      this.shareText += aux_referencia2 + '\n\n';
-      this.shareText += aux_titol_lectura2 + '\n\n';
-      this.shareText += aux_lectura2 + '\n\n';
-      this.shareText += 'Responsori\n\n';
-      if(aux_has_vers2) this.shareText += aux_vers2 + '\n\n';
-      this.shareText += 'R. ' + aux_resp2_1_2 + '\n';
-      this.shareText += 'V. ' + aux_resp2_3 + '\n';
-      this.shareText += 'R. ' + aux_resp2_2 + '\n\n';*/
-
       return(
         <View>
           <Text selectable={true} style={this.styles.red}>{'Lectura primera'}</Text>
@@ -753,45 +623,6 @@ export default class OficiDisplay extends Component {
     var aux_cita4 = aux_has_cita4? GF.rs(this.OFICI.cita4, this.superTestMode, this.testErrorCB.bind(this)) : "";
     var aux_lectura4 = GF.rs(this.OFICI.lectura4, this.superTestMode, this.testErrorCB.bind(this));
 
-    /*this.shareText += 'Lectura primera\n\n';
-    this.shareText += aux_referencia1 + '\n\n';
-    if(aux_has_cita1) this.shareText += aux_cita1 + '\n\n';
-    this.shareText += aux_titol_lectura1 + '\n\n';
-    this.shareText += aux_lectura1 + '\n\n';
-    this.shareText += 'Ant. ' + aux_ant1 + '\n\n';
-    this.shareText += aux_titol1 + '\n\n';
-    this.shareText += aux_salm1 + '\n\n';
-    this.shareText += aux_gloria1 + '\n\n';
-    this.shareText += 'Ant. ' + aux_ant1 + '\n\n';
-    this.shareText += 'Preguem.\n' + aux_oracio1 + '\nR. Amén.\n\n';
-    this.shareText += 'Lectura segona\n\n';
-    this.shareText += aux_referencia2 + '\n\n';
-    if(aux_has_cita2) this.shareText += aux_cita2 + '\n\n';
-    this.shareText += aux_titol_lectura2 + '\n\n';
-    this.shareText += aux_lectura2 + '\n\n';
-    this.shareText += 'Ant. ' + aux_ant2 + '\n\n';
-    this.shareText += aux_titol2 + '\n\n';
-    this.shareText += aux_salm2 + '\n\n';
-    this.shareText += aux_gloria2 + '\n\n';
-    this.shareText += 'Ant. ' + aux_ant2 + '\n\n';
-    this.shareText += 'Preguem.\n' + aux_oracio2 + '\nR. Amén.\n\n';
-    this.shareText += 'Lectura tercera\n\n';
-    this.shareText += aux_referencia3 + '\n\n';
-    if(aux_has_cita3) this.shareText += aux_cita3 + '\n\n';
-    this.shareText += aux_titol_lectura3 + '\n\n';
-    this.shareText += aux_lectura3 + '\n\n';
-    this.shareText += 'Ant. ' + aux_ant3 + '\n\n';
-    this.shareText += aux_titol3 + '\n\n';
-    this.shareText += aux_salm3 + '\n\n';
-    this.shareText += aux_gloria3 + '\n\n';
-    this.shareText += 'Ant. ' + aux_ant3 + '\n\n';
-    this.shareText += 'Preguem.\n' + aux_oracio3 + '\nR. Amén.\n\n';
-    this.shareText += 'Lectura quarta\n\n';
-    this.shareText += aux_referencia4 + '\n\n';
-    if(aux_has_cita4) this.shareText += aux_cita4 + '\n\n';
-    this.shareText += aux_titol_lectura4 + '\n\n';
-    this.shareText += aux_lectura4 + '\n\n';*/
-
     return(
       <View>
         <Text selectable={true} style={this.styles.red}>{'Lectura primera'}</Text>
@@ -859,7 +690,7 @@ export default class OficiDisplay extends Component {
         <Text selectable={true} style={this.styles.blackJustified}>{aux_lectura3}</Text>
         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
         <Text selectable={true} style={this.styles.red}>{'Ant. '}
-          <Text selectable={true} style={this.styles.black}> aux_ant3}</Text>
+          <Text selectable={true} style={this.styles.black}>{aux_ant3}</Text>
         </Text>
         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
         <Text selectable={true} style={this.styles.redCenter}>{aux_titol3}</Text>

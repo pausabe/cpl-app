@@ -44,7 +44,7 @@ export default class LHDisplayScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView automaticallyAdjustContentInsets={false} style={{padding: 10,}}>
+        <ScrollView automaticallyAdjustContentInsets={false}>
           {this.liturgicComponent(this.state.type)}
         </ScrollView>
       </View>

@@ -121,6 +121,134 @@ module.exports = {
     }
   },
 
+  getStyle(typeCode, platformOS, textSizeConfigured, darkModeEnabled){
+    try {
+
+      //darkModeEnabled = true;
+
+      var backgroundColor = 'white';
+      var genericColor = 'black';
+      var accentColor = 'red';
+      var otherColor = 'grey';
+      if(darkModeEnabled != undefined && darkModeEnabled == true){
+        backgroundColor = 'black';
+        genericColor = 'white';
+        accentColor = '#FA8072';
+        otherColor = '#bfbfbf';
+      }
+
+      switch (typeCode){
+
+        //CONTAINER
+        case 'CONTAINER':
+          return {
+            flex: 1,
+            padding: 10,
+            backgroundColor: backgroundColor
+          };
+
+        //GENERIC
+        case 'GENERIC':
+          return {
+            color: genericColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+          };
+
+        case 'GENERIC_BOLD':
+          return {
+            color: genericColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+            fontWeight: 'bold',
+          };
+
+        case 'GENERIC_ITALIC':
+          return {
+            color: genericColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+            fontStyle: 'italic',
+          };
+
+        case 'GENERIC_SMALL_ITALIC_RIGHT':
+          return {
+            color: genericColor,
+            fontSize: this.convertTextSize(textSizeConfigured)-2,
+            fontStyle: 'italic',
+            textAlign: 'right'
+          };
+          
+        case 'GENERIC_JUSTIFIED':
+          return {
+            color: genericColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+            textAlign: platformOS == 'ios'? 'justify' : 'auto',
+          };
+
+        //ACCENT
+        case 'ACCENT':
+          return {
+            color: accentColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+          };
+          
+        case 'ACCENT_ITALIC':
+          return {
+            color: accentColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+            fontStyle: 'italic'
+          };
+
+        case 'ACCENT_CENTER':
+          return {
+            color: accentColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+            textAlign: 'center'
+          };
+
+        case 'ACCENT_CENTER_BOLD':
+          return {
+            color: accentColor,
+            fontSize: this.convertTextSize(textSizeConfigured),
+            textAlign: 'center',
+            fontWeight: 'bold',
+          };
+
+        case 'ACCENT_SMALL_ITALIC_RIGHT':
+          return {
+            color: accentColor,
+            fontSize: this.convertTextSize(textSizeConfigured)-2,
+            fontStyle: 'italic',
+            textAlign: 'right'
+          };
+
+        //OTHERS
+        case 'HIDDEN_PRAYER_BUTTON':
+          return {
+            color: otherColor,
+            fontSize: this.convertTextSize(textSizeConfigured)-3,
+          };
+
+        case 'PRAYER_TAB_BUTTON':
+          return {
+            color: otherColor,
+            fontSize: this.convertTextSize(textSizeConfigured) > 17? 17 : this.convertTextSize(textSizeConfigured)-3,
+          };
+          
+        case 'PRAYER_TAB_BUTTON_BOLD':
+          return {
+            color: otherColor,
+            fontSize: this.convertTextSize(textSizeConfigured) > 17? 17 : this.convertTextSize(textSizeConfigured)-3,
+            fontWeight: 'bold',
+          };
+        
+        default:
+          console.log("getTextStyle NOT FOUND!!!! -> " + typeCode);
+          break;
+    }
+    } catch (error) {
+      console.log("getTextStyle ERROR: ", error);
+    }
+  },
+
   convertTextSize(value){
     switch (value) {
       case '1':

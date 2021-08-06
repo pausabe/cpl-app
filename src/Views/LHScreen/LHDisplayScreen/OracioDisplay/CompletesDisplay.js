@@ -14,103 +14,44 @@ import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
 
 export default class CompletesDisplay extends Component {
   componentDidMount(){
-    //this.props.events.addListener('shareButtonPressed_Completes', this.sharePressed.bind(this));
   }
 
   componentWillUnmount(){
-    //this.props.events.removeListener('shareButtonPressed_Completes', this.sharePressed.bind(this));
   }
-
-  /*sharePressed(){
-    console.log("PlaceLog. Completes Share Pressed");
-    Share.share({
-      message: this.shareText,
-      url: 'https://mescpl.cpl.es/donacions/',
-      subject: 'Completes',
-      title: 'Completes'
-    },
-    {
-      // Android only:
-      dialogTitle: 'Comparteix tot el text',
-    })
-  }*/
 
   constructor(props){
     super(props);
 
     console.log("PlaceLog. CompletesDisplay");
 
-    var textSize = G_VALUES.textSize;
-
     this.styles = {
-      black: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      blackBold: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontWeight: 'bold',
-      },
-      blackItalic:{
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize),
-        fontStyle: 'italic'
-      },
-      blackSmallItalicRight: {
-        color: '#000000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      },
-      textAntMareButton: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize) > 17? 17 : GF.convertTextSize(textSize)-3,
-      },
-      textAntMareButtonBold: {
-        color: 'grey',
-        fontSize: GF.convertTextSize(textSize) > 17? 17 : GF.convertTextSize(textSize)-3,
-        fontWeight: 'bold',
-      },
-      red: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-      },
-      redCenter: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center'
-      },
-      redCenterBold: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize),
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      redSmallItalicRight: {
-        color: '#FF0000',
-        fontSize: GF.convertTextSize(textSize)-2,
-        fontStyle: 'italic',
-        textAlign: 'right'
-      },
-    }
+      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+    };
 
     var auxNumAntMare = G_VALUES.numAntMare;
-
-    //console.log("wtf1.1",auxNumAntMare);
-    //console.log("wtf1.2",G_VALUES.tempsespecific);
 
     if(G_VALUES.tempsespecific === 'Pasqua' && auxNumAntMare !== '5'){
       auxNumAntMare = '5';
       props.setNumAntMare('5');
       SettingsManager.setSettingNumAntMare('5');
-      //console.log("wtf2",auxNumAntMare);
     }
     else if(!(G_VALUES.tempsespecific === 'Pasqua') && auxNumAntMare === '5'){
       auxNumAntMare = '1';
       props.setNumAntMare('1');
       SettingsManager.setSettingNumAntMare('1');
-      //console.log("wtf3",auxNumAntMare);
     }
 
     this.state = {
@@ -122,7 +63,6 @@ export default class CompletesDisplay extends Component {
     this.testErrorCB = props.testErrorCB;
     this.setNumAntMare = props.setNumAntMare;
 
-    //this.shareText = "";
   }
 
   _onAntMarePress(numAntMare){
@@ -132,40 +72,34 @@ export default class CompletesDisplay extends Component {
   }
 
   antMareComp(numAntMare){
-    var ant1Style = this.styles.textAntMareButton;
-    var ant2Style = this.styles.textAntMareButton;
-    var ant3Style = this.styles.textAntMareButton;
-    var ant4Style = this.styles.textAntMareButton;
-    var ant5Style = this.styles.textAntMareButton;
+    var ant1Style = this.styles.prayerTabButton;
+    var ant2Style = this.styles.prayerTabButton;
+    var ant3Style = this.styles.prayerTabButton;
+    var ant4Style = this.styles.prayerTabButton;
+    var ant5Style = this.styles.prayerTabButton;
 
     switch (numAntMare) {
       case '1':
         antMare = GF.rs(this.COMPLETES.antMare1, this.superTestMode, this.testErrorCB.bind(this));
-        ant1Style = this.styles.textAntMareButtonBold;
+        ant1Style = this.styles.prayerTabButtonBold;
         break;
       case '2':
         antMare = GF.rs(this.COMPLETES.antMare2, this.superTestMode, this.testErrorCB.bind(this));
-        ant2Style = this.styles.textAntMareButtonBold;
+        ant2Style = this.styles.prayerTabButtonBold;
         break;
       case '3':
         antMare = GF.rs(this.COMPLETES.antMare3, this.superTestMode, this.testErrorCB.bind(this));
-        ant3Style = this.styles.textAntMareButtonBold;
+        ant3Style = this.styles.prayerTabButtonBold;
         break;
       case '4':
         antMare = GF.rs(this.COMPLETES.antMare4, this.superTestMode, this.testErrorCB.bind(this));
-        ant4Style = this.styles.textAntMareButtonBold;
+        ant4Style = this.styles.prayerTabButtonBold;
         break;
       case '5':
         antMare = GF.rs(this.COMPLETES.antMare5, this.superTestMode, this.testErrorCB.bind(this));
-        ant5Style = this.styles.textAntMareButtonBold;
+        ant5Style = this.styles.prayerTabButtonBold;
         break;
     }
-
-    /*this.shareText += antMare + '\n\n';
-
-    if(Platform.OS === 'ios'){
-      this.shareText += "_____\nCol·labora fent un donatiu:";
-    }*/
 
     return(
       <View>
@@ -209,8 +143,6 @@ export default class CompletesDisplay extends Component {
 
   render() {
     try {
-      //this.shareText = "";
-
       if(this.COMPLETES !== null){
         const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
         var is_special_initial_message = G_VALUES.LT === GLOBAL.Q_TRIDU && G_VALUES.date.getDay() === 6;
@@ -258,69 +190,8 @@ export default class CompletesDisplay extends Component {
         var aux_benediccio = 'Que el Senyor ens beneeixi i ens guardi de tot mal, i ens dugui a la vida eterna.';
         var aux_antifona_final = "Antífona final de la Mare de Déu";
 
-        /*if(is_special_initial_message)
-          this.shareText += aux_special_initial_message + '\n\n';
-        this.shareText += 'V. ' + aux_sigueu + '\n';
-        this.shareText += 'R. ' + aux_veniu + '\n\n';
-        this.shareText += gloriaStringIntro;
-        this.shareText += is_aleluia? " Al·leluia\n\n" : "\n\n";
-        this.shareText += aux_lloable + '\n\n' + aux_acte_pen + '\n\n';
-        this.shareText += 'HIMNE' + '\n\n';
-        this.shareText += aux_himne + '\n\n';
-        this.shareText += 'SALMÒDIA' + '\n\n';
-        if(is_dos_salms){
-          this.shareText += has_distint_ant? "Ant. 1. " : "Ant. ";
-          this.shareText += aux_ant1 + '\n\n';
-          this.shareText += aux_titol1 + '\n\n';
-          if(has_com1)
-            this.shareText += aux_com1 + '\n\n';
-          this.shareText += aux_salm1 + '\n\n';
-          this.shareText += aux_gloria1 + '\n\n';
-          this.shareText += has_distint_ant? "Ant. 1. " + aux_ant1 + '\n\n' : "";
-          this.shareText += has_distint_ant? "Ant. 2. " + aux_ant2 + '\n\n' : "";
-          this.shareText += aux_titol2 + '\n\n';
-          if(has_com2)
-            this.shareText += aux_com2 + '\n\n';
-          this.shareText += aux_salm2 + '\n\n';
-          this.shareText += aux_gloria2 + '\n\n';
-          this.shareText += has_distint_ant? "Ant. 2. " + aux_ant2 + '\n\n' : "Ant. " + aux_ant1 + '\n\n';
-        }
-        else{
-          this.shareText += "Ant. ";
-          this.shareText += aux_ant1 + '\n\n';
-          this.shareText += aux_titol1 + '\n\n';
-          if(has_com1)
-            this.shareText += aux_com1 + '\n\n';
-          this.shareText += aux_salm1 + '\n\n';
-          this.shareText += aux_gloria1 + '\n\n';
-          this.shareText += "Ant. " + aux_ant1 + '\n\n';
-        }
-        this.shareText += 'LECTURA BREU' + '\n\n';
-        this.shareText += aux_vers + '\n\n';
-        this.shareText += aux_lectura_breu + '\n\n';
-        this.shareText += 'RESPONSORI BREU' + '\n\n';
-        this.shareText += 'V. ' + aux_resp_1_2 + '\n';
-        this.shareText += 'R. ' + aux_resp_1_2 + '\n\n';
-        this.shareText += 'V. ' + aux_resp_3 + '\n';
-        this.shareText += 'R. ' + aux_resp_2 + '\n\n';
-        this.shareText += 'V. ' + aux_gloria_half + '\n';
-        this.shareText += 'R. ' + aux_resp_1_2 + '\n\n';
-        this.shareText += 'CÀNTIC DE SIMEÓ' + '\n\n';
-        this.shareText += 'Ant. ' + aux_ant_cantic + '\n\n';
-        this.shareText += aux_titol_cantic + '\n\n';
-        this.shareText += aux_cantic + '\n\n';
-        this.shareText += aux_gloria_cantic + '\n\n';
-        this.shareText += 'Ant. ' + aux_ant_cantic + '\n\n';
-        this.shareText += 'ORACIÓ' + '\n\n';
-        this.shareText += 'Preguem.' + '\n';
-        this.shareText += aux_oracio + '\n';
-        this.shareText += 'R. Amén' + '\n\n';
-        this.shareText += 'CONCLUSIÓ' + '\n\n';
-        this.shareText += 'V. ' + aux_benediccio + '\n' + 'R. Amén.' + '\n\n';
-        this.shareText += aux_antifona_final + '\n\n';*/
-
         return (
-          <View>
+          <View style={this.styles.container}>
             {is_special_initial_message?
               <View>
                 <Text selectable={true} style={this.styles.redCenter}>{aux_special_initial_message}</Text>
