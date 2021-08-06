@@ -1,9 +1,5 @@
 import * as React from 'react';
 import { TouchableOpacity, View, StyleSheet, Platform, SafeAreaView } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack'
 import GLOBAL from "./src/Globals/Globals";
 import HomeScreen from './src/Controllers/HomeScreenController';
 import SettingsScreen from './src/Views/SettingsScreen';
@@ -15,8 +11,11 @@ import LDScreen from './src/Views/LDScreen/LDScreen';
 import LDDisplayScreen from './src/Views/LDScreen/LDDisplayScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 Icon.loadFont();
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -126,6 +125,7 @@ function Tabs() {
         activeColor="white"
         inactiveColor="#D3D3D3"
         labeled={false}
+        lazy={false}
         backBehavior="none"
         barStyle={{ backgroundColor: GLOBAL.barColor }}>
       <Tab.Screen 
