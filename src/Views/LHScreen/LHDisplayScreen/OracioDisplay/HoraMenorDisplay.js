@@ -58,7 +58,7 @@ export default class HoraMenorDisplay extends Component {
           {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
           <Text selectable={true} style={this.styles.black}>{gloriaStringIntro}
           {aux_isAleluia?
-            <Text selectable={true} style={this.styles.black}>{" Al·leluia"}</Text> : null
+            <Text selectable={true} style={this.styles.black}>{" Al·leluia."}</Text> : null
           }
           </Text>
           {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}

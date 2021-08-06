@@ -60,7 +60,7 @@ export default class VespresDisplay extends Component {
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.black}>{gloriaStringIntro}
             {aux_isAleluia ?
-              <Text selectable={true} style={this.styles.black}>{' Al·leluia'}</Text> : null
+              <Text selectable={true} style={this.styles.black}>{' Al·leluia.'}</Text> : null
             }
             </Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
@@ -72,52 +72,52 @@ export default class VespresDisplay extends Component {
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>SALMÒDIA</Text>
+            <Text selectable={true} style={this.styles.red}>{'SALMÒDIA'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {this.salmodia(G_VALUES.LT, G_VALUES.setmana, G_VALUES.date.getDay(), VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>LECTURA BREU</Text>
+            <Text selectable={true} style={this.styles.red}>{'LECTURA BREU'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {this.lecturaBreu(G_VALUES.LT, VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>RESPONSORI BREU</Text>
+            <Text selectable={true} style={this.styles.red}>{'RESPONSORI BREU'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {this.responsori(G_VALUES.LT, G_VALUES.date.getDay(), VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>CÀNTIC DE MARIA</Text>
+            <Text selectable={true} style={this.styles.red}>{'CÀNTIC DE MARIA'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {this.cantic(G_VALUES.LT, G_VALUES.date.getDay(), this.props.ABC, VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>PREGÀRIES</Text>
+            <Text selectable={true} style={this.styles.red}>{'PREGÀRIES'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {this.pregaries(G_VALUES.LT, VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>ORACIÓ</Text>
+            <Text selectable={true} style={this.styles.red}>{'ORACIÓ'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {this.oracio(G_VALUES.LT, G_VALUES.date.getDay(), VESPRES)}
-            <Text selectable={true} style={this.styles.red}>R.
-              <Text selectable={true} style={this.styles.black}> Amén.</Text>
+            <Text selectable={true} style={this.styles.red}>{'R.'}
+              <Text selectable={true} style={this.styles.black}>{' Amén.'}</Text>
             </Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>CONCLUSIÓ</Text>
+            <Text selectable={true} style={this.styles.red}>{'CONCLUSIÓ'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>V.
-              <Text selectable={true} style={this.styles.black}> Que el Senyor ens beneeixi i ens guardi de tot mal, i ens dugui a la vida eterna.</Text>
+            <Text selectable={true} style={this.styles.red}>{'V.'}
+              <Text selectable={true} style={this.styles.black}>{' Que el Senyor ens beneeixi i ens guardi de tot mal, i ens dugui a la vida eterna.'}</Text>
             </Text>
-            <Text selectable={true} style={this.styles.red}>R.
-              <Text selectable={true} style={this.styles.black}> Amén.</Text>
+            <Text selectable={true} style={this.styles.red}>{'R.'}
+              <Text selectable={true} style={this.styles.black}>{' Amén.'}</Text>
             </Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {Platform.OS === 'android' ? null : <Text />}
@@ -150,9 +150,6 @@ export default class VespresDisplay extends Component {
 
   himne(LT, weekDay, setmana, VESPRES){
     var aux_himne = GF.rs(VESPRES.himne, this.props.superTestMode, this.props.testErrorCB.bind(this));
-
-    /*this.shareText += 'HIMNE\n\n';
-    this.shareText += aux_himne + '\n\n';*/
 
     return(<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
   }

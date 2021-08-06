@@ -321,11 +321,6 @@ export default class LaudesDisplay extends Component {
       var aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
       var aux_isAleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA && G_VALUES.LT !== GLOBAL.Q_TRIDU;
 
-      /*this.shareText += 'V. ' + aux_sigueu + '\n';
-      this.shareText += 'R. ' + aux_senyor_veniu + '\n\n';
-      this.shareText += gloriaStringIntro + (aux_isAleluia? " Al·leluia" : "");
-      this.shareText += '\n\n';*/
-
       return(
         <View>
           {this._invitatoriButton()}
@@ -338,7 +333,7 @@ export default class LaudesDisplay extends Component {
           {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
           <Text selectable={true} style={this.styles.black}>{gloriaStringIntro}
             {aux_isAleluia ?
-              <Text selectable={true} style={this.styles.black}>{' Al·leluia'}</Text> : null
+              <Text selectable={true} style={this.styles.black}>{' Al·leluia.'}</Text> : null
             }
           </Text>
         </View>

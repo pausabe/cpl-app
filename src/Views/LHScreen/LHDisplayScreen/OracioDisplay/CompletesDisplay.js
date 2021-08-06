@@ -211,7 +211,7 @@ export default class CompletesDisplay extends Component {
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.black}>{gloriaStringIntro}
             {is_aleluia ?
-              <Text selectable={true} style={this.styles.black}>{" Al·leluia"}</Text> : null
+              <Text selectable={true} style={this.styles.black}>{" Al·leluia."}</Text> : null
             }
             </Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
