@@ -84,9 +84,9 @@ function getHeaderRight(navigation, route){
 /************ HOME ************/
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator screenOptions={{headerShown: false}}>
       <HomeStack.Screen 
-        name="Home" 
+        name="Home"
         component={HomeScreen}
       />
     </HomeStack.Navigator>
@@ -96,7 +96,7 @@ function HomeStackScreen() {
 /************ LH ************/
 function LHStackScreen() {
   return (
-    <LHStack.Navigator>
+    <LHStack.Navigator screenOptions={{headerShown: false}}>
       <LHStack.Screen 
         name="LH" 
         component={LHScreen} 
@@ -108,7 +108,7 @@ function LHStackScreen() {
 /************ LD ************/
 function LDStackScreen() {
   return (
-    <LDStack.Navigator>
+    <LDStack.Navigator screenOptions={{headerShown: false}}>
       <LDStack.Screen 
         name="LD" 
         component={LDScreen} 
@@ -127,6 +127,7 @@ function Tabs() {
         labeled={false}
         lazy={false}
         backBehavior="none"
+        screenOptions={{headerShown: false}}
         barStyle={{ backgroundColor: GLOBAL.barColor }}>
       <Tab.Screen 
         name="Home" 
