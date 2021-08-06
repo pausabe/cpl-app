@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SettingsManager, {diocesis, lloc} from '../Controllers/Classes/SettingsManager';
+import SettingsManager, {darkModeOptions, diocesis, lloc} from '../Controllers/Classes/SettingsManager';
 import SettingsComponent from '../Components/SettingsComponent';
 
 //Id generating different keys for testing
@@ -13,6 +13,7 @@ export default class SettingsComponentAdapter{
         let options = [];
         options.push(await SettingsComponentAdapter.getSettingsComponentUseLatin(callback));
         options.push(await SettingsComponentAdapter.getSettingsComponentTextSize(callback));
+        options.push(await SettingsComponentAdapter.getSettingsComponentDarkMode(callback));
         options.push(await SettingsComponentAdapter.getSettingsComponentDiocesis(callback));
         options.push(await SettingsComponentAdapter.getSettingsComponentLloc(callback));
         return options;
@@ -39,6 +40,16 @@ export default class SettingsComponentAdapter{
         let component = (<SettingsComponent selectorComponent="slider" name="Mida del text" id="textSize" key="textSize"
             value={value} selectorProps={{minimumValue: 1, maximumValue: 10}} callback={(id, value) => {
                 SettingsManager.setSettingTextSize(Math.trunc(value)+"", this.refreshHome.bind(this,RH));
+            }}/>);
+        return component;
+    }
+
+    static async getSettingsComponentDarkMode(RH){
+        let value = await SettingsManager.getSettingDarkMode();
+        value = _getKeyFromValue(darkModeOptions, value);
+        let component = (<SettingsComponent selectorComponent="picker" name="Mode Obscur" id="darkMode" key="darkMode"
+            value={value} options={darkModeOptions} selectorProps={{mode: "dropdown"}} callback={(id, value) => {
+                SettingsManager.setSettingDarkMode(darkModeOptions[value], this.refreshHome.bind(this,RH));
             }}/>);
         return component;
     }

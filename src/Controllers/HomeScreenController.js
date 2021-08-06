@@ -8,7 +8,8 @@ import {
   AppState,
   Platform,
   Modal,
-  StyleSheet
+  StyleSheet,
+  Appearance
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { AsyncStorage } from 'react-native';
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
   DatePickerInsideModal: {
     margin: 10,
     marginHorizontal: 30,
-    backgroundColor: 'white',
+    backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white',
     borderRadius: 20,
     padding: 10,
     paddingBottom: 20,

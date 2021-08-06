@@ -46,7 +46,7 @@ function getHeaderLeft(route){
           onPress={() => route.state.routes[0].state.routes[0].params.calPres() }>
           <View style={{ flex: 1, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
             <Icon
-              name="ios-calendar"
+              name="calendar-sharp"
               size={30}
               color="#FFFFFF" />
           </View>
@@ -69,7 +69,7 @@ function getHeaderRight(navigation, route){
           onPress={() => navigation.navigate('Settings', { Refresh_Date: route.state.routes[0].state.routes[0].params.Refresh_Date })}>
           <View style={{ flex: 1, paddingRight: 10, alignItems: 'center', justifyContent: 'center' }}>
             <Icon
-              name="ios-settings"
+              name="settings-outline"
               size={30}
               color="#FFFFFF" />
           </View>

@@ -1,4 +1,4 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, Appearance } from 'react-native';
 
 import DBAdapter from '../../../Adapters/DBAdapter';
 import GF from "../../../Globals/GlobalFunctions";
@@ -30,7 +30,7 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
   // Set some variables
   this.Reload_Finished_Callback = Reload_Finished_Callback;
   this.Reload_Finished_Callback_Error = Reload_Finished_Callback_Error;
-  LAST_REFRESH = new Date()
+  LAST_REFRESH = new Date();
 
   console.log("[PAU DEBUG] here2 ", online_updates);
 
@@ -52,6 +52,26 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
     }),
     SettingsManager.getSettingUseLatin((r) => G_VALUES.llati = r),
     SettingsManager.getSettingTextSize((r) => G_VALUES.textSize = r),
+    SettingsManager.getSettingDarkMode((r) => {
+      var aux_darkMode = false;
+      switch (r) {
+        case "Activat":
+          aux_darkMode = true;
+          break;
+        case "Desactivat":
+          aux_darkMode = false;
+          break;
+        case "Automàtic":
+          if (Appearance.getColorScheme() === 'dark') {
+            aux_darkMode = true;
+          } else {
+            aux_darkMode = false;
+          }
+          break;
+      }
+      G_VALUES.darkModeEnabled = aux_darkMode;
+      console.log("G_VALUES.darkModeEnabled: " + G_VALUES.darkModeEnabled);
+    }),
     SettingsManager.getSettingNumSalmInv((r) => G_VALUES.numSalmInv = r),
     SettingsManager.getSettingNumAntMare((r) => G_VALUES.numAntMare = r),
     GLOBAL.DBAccess.getDatabaseVersion((r) => G_VALUES.databaseVersion = r),

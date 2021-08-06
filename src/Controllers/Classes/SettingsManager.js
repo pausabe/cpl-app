@@ -37,6 +37,12 @@ export const antMare = {
   ANT5: '5'
 }
 
+export const darkModeOptions = {
+    ON: 'Activat',
+    OFF: 'Desactivat',
+    SYSTEM: 'Automàtic'
+  }
+
 const defaultSettings = {
     showGlories: "false",
     prayLliures: "false",
@@ -46,7 +52,8 @@ const defaultSettings = {
     lloc: lloc.DIOCESI,
     dayStart: "0", //Values from 0 to 3 allowed, which means 00:00AM, 01:00AM, 02:00AM and 03:00AM
     salmInvitatori: salmInvitatori.SALM94,
-    antMare: antMare.ANT1
+    antMare: antMare.ANT1,
+    darkMode: darkModeOptions.SYSTEM
 };
 
 export default class SettingsManager{
@@ -106,6 +113,10 @@ export default class SettingsManager{
         return SettingsManager._getStorageValue("textSize", callback, defaultSettings.textSize);
     }
 
+    static getSettingDarkMode(callback){
+        return SettingsManager._getStorageValue("darkMode", callback, defaultSettings.darkMode);
+    }
+
     static getSettingDiocesis(callback){
         return SettingsManager._getStorageValue("diocesis", callback, defaultSettings.diocesis);
     }
@@ -148,6 +159,13 @@ export default class SettingsManager{
         return SettingsManager._setValueIfValid("textSize", value,
             (val) => !isNaN(val) && (parseFloat(val)*10)%10 == 0,
             callback);
+    }
+
+    static setSettingDarkMode(value, callback){
+        return SettingsManager._setValueIfValid("darkMode", value,
+            (val) => {
+                return findValueInObject(darkModeOptions, val);
+            }, callback);
     }
 
     static setSettingDiocesis(value, callback){
