@@ -25,7 +25,6 @@ export default class CompletesDisplay extends Component {
     console.log("PlaceLog. CompletesDisplay");
 
     this.styles = {
-      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
@@ -191,7 +190,7 @@ export default class CompletesDisplay extends Component {
         var aux_antifona_final = "Antífona final de la Mare de Déu";
 
         return (
-          <View style={this.styles.container}>
+          <View>
             {is_special_initial_message?
               <View>
                 <Text selectable={true} style={this.styles.redCenter}>{aux_special_initial_message}</Text>

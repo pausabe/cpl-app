@@ -63,7 +63,7 @@ export default class SettingsComponent extends Component{
     _generateSwitch(){
         let selectorProps = this._mergeProps({
             value: this.state.value,
-            trackColor:{true: GLOBAL.switchColor},
+            trackColor:{true: GLOBAL.switchColor, false: 'bababa'},
             onValueChange: this._updateSelectionStateCallback.bind(this),
         });
         return React.createElement(Switch, selectorProps);

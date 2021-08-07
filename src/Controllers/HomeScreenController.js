@@ -22,6 +22,7 @@ import { Reload_All_Data, GetDBAccess } from './Classes/Data/DataManager.js';
 import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test, Alert } from '../Tests/TestsManager';
 import { log } from 'react-native-reanimated';
 import DBAdapter from '../Adapters/DBAdapter';
+import SettingsManager from './Classes/SettingsManager';
 export default class HomeScreenController extends Component {
 
   async componentDidMount() {
@@ -46,8 +47,12 @@ export default class HomeScreenController extends Component {
 
   _handleAppStateChange(nextAppState){
 
+    console.log(nextAppState);
+
     // Check if the state is changing to active
     if(nextAppState == 'active'){
+
+      this.checkSystemDarkMode();
 
       // Get today
       var now = new Date()
@@ -69,6 +74,22 @@ export default class HomeScreenController extends Component {
       
     }
 
+  }
+
+  checkSystemDarkMode(){
+    try {
+      SettingsManager.getSettingDarkMode((r) => {
+        if(r === 'Automàtic'){
+            if (Appearance.getColorScheme() === 'dark') {
+              G_VALUES.darkModeEnabled = true;
+            } else {
+              G_VALUES.darkModeEnabled = false;
+            }
+          }
+        });
+    } catch (error) {
+      console.log("checkDarkMode error: ", error);
+    }
   }
 
   androidBack() {

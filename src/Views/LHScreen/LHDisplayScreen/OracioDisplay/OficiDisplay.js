@@ -38,7 +38,6 @@ export default class OficiDisplay extends Component {
     }
 
     this.styles = {
-      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
@@ -66,7 +65,7 @@ export default class OficiDisplay extends Component {
     try {
       if(!this.OFICI.diumPasqua){
         return (
-          <View style={this.styles.container}>
+          <View>
             {this.introduccio(G_VALUES.LT, G_VALUES.setmana, this.OFICI.salm94,
                                 this.OFICI.salm99, this.OFICI.salm66, this.OFICI.salm23)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
@@ -126,7 +125,7 @@ export default class OficiDisplay extends Component {
         var aux_comença = "L'Ofici comença directament per les lectures.";
 
         return (
-          <View style={this.styles.container}>
+          <View>
             <Text selectable={true} style={this.styles.redCenter}>{aux_vetlla}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.redCenter}>{aux_participen}</Text>

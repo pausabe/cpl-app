@@ -38,7 +38,6 @@ export default class LaudesDisplay extends Component {
     }
 
     this.styles = {
-      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
@@ -212,7 +211,7 @@ export default class LaudesDisplay extends Component {
     try {
 
       return (
-        <View style={this.styles.container}>
+        <View>
           {this.introduccio(G_VALUES.LT, G_VALUES.setmana, this.LAUDES.salm94,
                               this.LAUDES.salm99, this.LAUDES.salm66, this.LAUDES.salm23)}
           {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}

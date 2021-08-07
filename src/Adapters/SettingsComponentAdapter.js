@@ -47,7 +47,7 @@ export default class SettingsComponentAdapter{
     static async getSettingsComponentDarkMode(RH){
         let value = await SettingsManager.getSettingDarkMode();
         value = _getKeyFromValue(darkModeOptions, value);
-        let component = (<SettingsComponent selectorComponent="picker" name="Mode Obscur" id="darkMode" key="darkMode"
+        let component = (<SettingsComponent selectorComponent="picker" name="Mode obscur" id="darkMode" key="darkMode"
             value={value} options={darkModeOptions} selectorProps={{mode: "dropdown"}} callback={(id, value) => {
                 SettingsManager.setSettingDarkMode(darkModeOptions[value], this.refreshHome.bind(this,RH));
             }}/>);

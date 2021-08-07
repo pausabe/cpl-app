@@ -7,6 +7,7 @@ import Vespres from './OracioDisplay/VespresDisplay'
 import HoraMenor from './OracioDisplay/HoraMenorDisplay'
 import Completes from './OracioDisplay/CompletesDisplay'
 import GLOBAL from "../../../Globals/Globals";
+import GF from '../../../Globals/GlobalFunctions';
 
 export default class LHDisplayScreen extends Component {
   UNSAFE_componentWillMount(){
@@ -43,7 +44,7 @@ export default class LHDisplayScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled)}>
         <ScrollView automaticallyAdjustContentInsets={false}>
           {this.liturgicComponent(this.state.type)}
         </ScrollView>
@@ -160,9 +161,6 @@ export default class LHDisplayScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   normalText: {
     textAlign: 'center',
     color: '#000000',

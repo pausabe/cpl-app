@@ -23,7 +23,6 @@ export default class VespresDisplay extends Component {
     console.log("PlaceLog. VespresDisplay");
 
     this.styles = {
-      container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
@@ -50,7 +49,7 @@ export default class VespresDisplay extends Component {
       var aux_isAleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA && G_VALUES.LT !== GLOBAL.Q_TRIDU;
 
       return (
-          <View style={this.styles.container}>
+          <View>
             <Text selectable={true} style={this.styles.red}>{'V. '}
               <Text selectable={true} style={this.styles.black}>{aux_sigueu}</Text>
             </Text>

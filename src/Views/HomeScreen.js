@@ -343,7 +343,7 @@ export default class HomeScreen extends Component {
                     <Switch
                       onValueChange={this.onSwitchValueChange.bind(this)}
                       value={this.switchValue}
-                      trackColor={{true: GLOBAL.switchColor}}
+                      trackColor={{true: GLOBAL.switchColor, false: '#bababa'}}
                     />
                   </View>
                   : null
