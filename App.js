@@ -24,25 +24,31 @@ const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function getHeaderTitle(route) {
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
+  console.log("routeName: " + routeName);
   switch (routeName) {
-    case 'Home':
+    case 'Home-Tab':
       return 'CPL';
-    case 'LH':
+    case 'LH-Tab':
       return 'Litúrgia de les Hores';
-    case 'LD':
+    case 'LD-Tab':
       return 'Missa';
   }
 }
 
-function getHeaderLeft(route){
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+function getHeaderLeft(navigation, route){
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
+  console.log("routeName: " + routeName);
   switch (routeName) {
-    case 'Home':
+    case 'Home-Tab':
+      var params;
+      if(typeof navigation.getState().routes[0].state == "object"){
+        params = navigation.getState().routes[0].state.routes[0].state.routes[0].params;
+      }
       return (
         <TouchableOpacity
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
-          onPress={() => route.state.routes[0].state.routes[0].params.calPres() }>
+          onPress={() => params?.calPres() }>
           <View style={{ flex: 1, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
             <Icon
               name="calendar-sharp"
@@ -51,21 +57,26 @@ function getHeaderLeft(route){
           </View>
         </TouchableOpacity>
       )
-    case 'LH':
+    case 'LH-Tab':
       return null;
-    case 'LD':
+    case 'LD-Tab':
       return null;
   }
 }
 
 function getHeaderRight(navigation, route){
-  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
+  console.log("routeName: " + routeName);
   switch (routeName) {
-    case 'Home':
+    case 'Home-Tab':
+      var params;
+      if(typeof navigation.getState().routes[0].state == "object"){
+        params = navigation.getState().routes[0].state.routes[0].state.routes[0].params;
+      }
       return (
         <TouchableOpacity 
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
-          onPress={() => navigation.navigate('Settings', { Refresh_Date: route.state.routes[0].state.routes[0].params.Refresh_Date })}>
+          onPress={() => navigation.navigate('Settings', { Refresh_Date: params?.Refresh_Date })}>
           <View style={{ flex: 1, paddingRight: 10, alignItems: 'center', justifyContent: 'center' }}>
             <Icon
               name="settings-outline"
@@ -74,9 +85,9 @@ function getHeaderRight(navigation, route){
           </View>
         </TouchableOpacity>
       )
-    case 'LH':
+    case 'LH-Tab':
       return null;
-    case 'LD':
+    case 'LD-Tab':
       return null;
   }
 }
@@ -86,7 +97,7 @@ function HomeStackScreen() {
   return (
     <HomeStack.Navigator screenOptions={{headerShown: false}}>
       <HomeStack.Screen 
-        name="Home"
+        name="HomeStack"
         component={HomeScreen}
       />
     </HomeStack.Navigator>
@@ -98,7 +109,7 @@ function LHStackScreen() {
   return (
     <LHStack.Navigator screenOptions={{headerShown: false}}>
       <LHStack.Screen 
-        name="LH" 
+        name="LHStack" 
         component={LHScreen} 
       />
     </LHStack.Navigator>
@@ -110,7 +121,7 @@ function LDStackScreen() {
   return (
     <LDStack.Navigator screenOptions={{headerShown: false}}>
       <LDStack.Screen 
-        name="LD" 
+        name="LDStack" 
         component={LDScreen} 
       />
     </LDStack.Navigator>
@@ -130,7 +141,7 @@ function Tabs() {
         screenOptions={{headerShown: false}}
         barStyle={{ backgroundColor: GLOBAL.barColor }}>
       <Tab.Screen 
-        name="Home" 
+        name="Home-Tab" 
         component={HomeStackScreen}
         options={{
           tabBarIcon: ({ focused, color }) => (
@@ -144,7 +155,7 @@ function Tabs() {
           )
         }}/>
       <Tab.Screen 
-        name="LH"
+        name="LH-Tab"
         component={LHStackScreen} 
         options={{
           tabBarIcon: ({ focused, color }) => (
@@ -158,7 +169,7 @@ function Tabs() {
           )
         }}/>
       <Tab.Screen 
-        name="LD"
+        name="LD-Tab"
         component={LDStackScreen}  
         options={{
           tabBarIcon: ({ focused, color }) => (
@@ -187,7 +198,7 @@ export default function App() {
             headerTitleStyle: { alignSelf: 'center' },
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
-            headerLeft: () => getHeaderLeft(route),
+            headerLeft: () => getHeaderLeft(navigation, route),
             headerRight: () => getHeaderRight(navigation, route)
           })}
         />
@@ -225,7 +236,7 @@ export default function App() {
           name="LHDisplay" 
           component={LHDisplayScreen} 
           options={({ navigation, route }) => ({
-            title: route.params.props.type,
+            title: route.params?.props.type,
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerBackTitleVisible: false

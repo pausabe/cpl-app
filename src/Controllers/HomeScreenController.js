@@ -32,10 +32,16 @@ export default class HomeScreenController extends Component {
         console.warn(e);
         await SplashScreen.hideAsync();
     }
+    console.log("pau was here");
+    console.log("this.props:", this.props);
+    console.log("this.props.navigation:", this.props.navigation);
+    console.log("this.props.route.params:", this.props.route.params);
     this.props.navigation.setParams({
       calPres: this.calendarPressed.bind(this),
       Refresh_Date: this.Refresh_Date.bind(this),
     });
+    console.log("this.props.navigation:", this.props.navigation);
+    console.log("this.props.route.params:", this.props.route.params);
     BackHandler.addEventListener('hardwareBackPress', this.androidBack.bind(this));
     AppState.addEventListener('change', this._handleAppStateChange.bind(this));
   }
