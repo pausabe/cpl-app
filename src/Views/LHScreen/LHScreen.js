@@ -6,6 +6,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import LHButtons from './LHButtons';
+import GLOBALS from '../../Globals/Globals';
 
 export default class LHScreen extends Component {
   constructor(props) {
@@ -58,8 +59,9 @@ export default class LHScreen extends Component {
   }
 
   render() {
+    console.log("RENDER LHScreen");
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
           {
             <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
               <View style={styles.liturgiaContainer}>
@@ -80,10 +82,6 @@ export default class LHScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
   liturgiaContainer: {
     flex: 6,
     margin: 30,

@@ -124,8 +124,6 @@ module.exports = {
   getStyle(typeCode, platformOS, textSizeConfigured, darkModeEnabled){
     try {
 
-      //darkModeEnabled = true;
-
       var backgroundColor = 'white';
       var genericColor = 'black';
       var accentColor = 'red';
@@ -143,7 +141,6 @@ module.exports = {
         case 'CONTAINER':
           return {
             flex: 1,
-            padding: 10,
             backgroundColor: backgroundColor
           };
 

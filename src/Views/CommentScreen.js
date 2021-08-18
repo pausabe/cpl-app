@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  Platform
+  Platform,
+  ActivityIndicator
  } from 'react-native';
 import WebView from 'react-native-webview'
 import * as DeviceInfo from 'expo-device';

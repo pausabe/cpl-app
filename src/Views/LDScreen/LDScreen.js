@@ -83,6 +83,7 @@ export default class LDScreen extends Component {
 
   //RENDER -------------------------------------------------------------------------------
   render() {
+    console.log("RENDER LDScreen");
     try {
 
       if(this.state == null){
@@ -101,7 +102,7 @@ export default class LDScreen extends Component {
       }
 
       return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
             {
                <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
                {LD_VALUES.Vespers == undefined ?
@@ -250,11 +251,6 @@ export default class LDScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-    //backgroundColor: 'rgb(215, 215, 215)'
-  },
   liturgiaContainer: {
     flex: 6,
     marginVertical: 100,

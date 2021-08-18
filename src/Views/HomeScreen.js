@@ -196,6 +196,7 @@ export default class HomeScreen extends Component {
   }
 
   render() {
+    console.log("RENDER HomeScreen");
     try {
       var date_getdate = G_VALUES.date.getDate();
       var date_getmonth = G_VALUES.date.getMonth();
@@ -203,7 +204,7 @@ export default class HomeScreen extends Component {
       var date_getday = G_VALUES.date.getDay();
       this.switchValue = G_VALUES.lliures;
       return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
           <ImageBackground source={require('../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
             {this.Top_Info(date_getdate, date_getmonth, date_getfullyear)}
             {this.Info_Liturgica(date_getday)}
@@ -451,11 +452,6 @@ function fontsize(){
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 0,
-    backgroundColor: 'white'//GLOBAL.backgroundColor,
-  },
   backgroundImage: {
     flex: 1,
     backgroundColor: 'rgb(5, 169, 176)',

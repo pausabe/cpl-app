@@ -59,9 +59,9 @@ export default class LDDisplayScreen extends Component {
             console.log("this.state.DisplayVespers", this.state.DisplayVespers);
 
             return (
-                <View style={this.styles.container}>
+                <View style={GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled)}>
                     <ScrollView automaticallyAdjustContentInsets={false} >
-                        <View style={{ flex: 1 }}>
+                        <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
                             {this.state.VetllaPasquaLecturesSalms ?
                                 <View>
                                     <Text selectable={true} style={this.styles.redCenter}>{"Lectures de la Vetlla Pasqual"}</Text>

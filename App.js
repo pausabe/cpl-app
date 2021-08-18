@@ -13,14 +13,16 @@ import Icon from 'react-native-vector-icons/Ionicons';
 Icon.loadFont();
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+//import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
 const LDStack = createStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
+//const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function getHeaderTitle(route) {
@@ -95,7 +97,7 @@ function getHeaderRight(navigation, route){
 /************ HOME ************/
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator screenOptions={{headerShown: false}}>
+    <HomeStack.Navigator lazy={false} screenOptions={{headerShown: false}}>
       <HomeStack.Screen 
         name="HomeStack"
         component={HomeScreen}
@@ -107,7 +109,7 @@ function HomeStackScreen() {
 /************ LH ************/
 function LHStackScreen() {
   return (
-    <LHStack.Navigator screenOptions={{headerShown: false}}>
+    <LHStack.Navigator lazy={false} screenOptions={{headerShown: false}}>
       <LHStack.Screen 
         name="LHStack" 
         component={LHScreen} 
@@ -119,7 +121,7 @@ function LHStackScreen() {
 /************ LD ************/
 function LDStackScreen() {
   return (
-    <LDStack.Navigator screenOptions={{headerShown: false}}>
+    <LDStack.Navigator lazy={false} screenOptions={{headerShown: false}}>
       <LDStack.Screen 
         name="LDStack" 
         component={LDScreen} 
@@ -136,9 +138,18 @@ function Tabs() {
         activeColor="white"
         inactiveColor="#D3D3D3"
         labeled={false}
-        lazy={false}
         backBehavior="none"
-        screenOptions={{headerShown: false}}
+        lazy={false}
+        screenOptions={{
+          tabBarStyle: { backgroundColor: GLOBAL.barColor }, 
+          tabBarActiveBackgroundColor: GLOBAL.barColor, 
+          tabBarInactiveBackgroundColor: GLOBAL.barColor, 
+          tabBarShowLabel: false, 
+          lazy: false, 
+          headerShown: false, 
+          tabBarActiveTintColor: 'white', 
+          tabBarInactiveTintColor: '#D3D3D3',
+        }}
         barStyle={{ backgroundColor: GLOBAL.barColor }}>
       <Tab.Screen 
         name="Home-Tab" 
@@ -195,7 +206,7 @@ export default function App() {
           component={Tabs}
           options={({ navigation, route }) => ({
             headerTitle: getHeaderTitle(route),
-            headerTitleStyle: { alignSelf: 'center' },
+            headerTitleAlign: 'center',
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerLeft: () => getHeaderLeft(navigation, route),

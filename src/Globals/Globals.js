@@ -14,6 +14,7 @@ module.exports = {
   statusBarColor: '#00474a',
   hrColor: '#90A4AE',
   switchColor: '#007b80',
+  screensBackgroundColor: 'white',
 
   O_ORDINARI: 'O_ORDINAR',
   Q_CENDRA: 'Q_CENDRA',

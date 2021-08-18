@@ -46,7 +46,9 @@ export default class LHDisplayScreen extends Component {
     return (
       <View style={GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled)}>
         <ScrollView automaticallyAdjustContentInsets={false}>
-          {this.liturgicComponent(this.state.type)}
+          <View style={{paddingHorizontal: 10, paddingTop: 10}}>
+            {this.liturgicComponent(this.state.type)}
+          </View>
         </ScrollView>
       </View>
     )
