@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Platform, ScrollView, TouchableOpacity, Appearance } from 'react-native';
 import Constants from 'expo-constants';
 
 import HR from '../Components/HRComponent';
@@ -46,6 +46,7 @@ export default class SettingsScreen extends Component {
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de l'aplicació: ("}{Platform.OS == "ios"? Constants.manifest.ios.buildNumber : Constants.manifest.android.versionCode}{")"}{Constants.manifest.version}</Text>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de la base de dades: "}{G_VALUES.databaseVersion}</Text>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"OTA("}{Constants.manifest.releaseChannel}{"): "}{Constants.manifest.updates.enabled? "Sí" : "No"}</Text>
+              <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Esquema de color: "}{Appearance.getColorScheme()}</Text>
             </View>
             <View style={{height:10}}/>
           </ScrollView>

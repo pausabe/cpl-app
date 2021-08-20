@@ -97,7 +97,7 @@ function getHeaderRight(navigation, route){
 /************ HOME ************/
 function HomeStackScreen() {
   return (
-    <HomeStack.Navigator lazy={false} screenOptions={{headerShown: false}}>
+    <HomeStack.Navigator screenOptions={{lazy: false, headerShown: false}}>
       <HomeStack.Screen 
         name="HomeStack"
         component={HomeScreen}
@@ -109,7 +109,7 @@ function HomeStackScreen() {
 /************ LH ************/
 function LHStackScreen() {
   return (
-    <LHStack.Navigator lazy={false} screenOptions={{headerShown: false}}>
+    <LHStack.Navigator screenOptions={{lazy: false, headerShown: false}}>
       <LHStack.Screen 
         name="LHStack" 
         component={LHScreen} 
@@ -121,7 +121,7 @@ function LHStackScreen() {
 /************ LD ************/
 function LDStackScreen() {
   return (
-    <LDStack.Navigator lazy={false} screenOptions={{headerShown: false}}>
+    <LDStack.Navigator screenOptions={{lazy: false, headerShown: false}}>
       <LDStack.Screen 
         name="LDStack" 
         component={LDScreen} 
@@ -139,13 +139,12 @@ function Tabs() {
         inactiveColor="#D3D3D3"
         labeled={false}
         backBehavior="none"
-        lazy={false}
         screenOptions={{
           tabBarStyle: { backgroundColor: GLOBAL.barColor }, 
           tabBarActiveBackgroundColor: GLOBAL.barColor, 
           tabBarInactiveBackgroundColor: GLOBAL.barColor, 
-          tabBarShowLabel: false, 
-          lazy: false, 
+          tabBarShowLabel: false,
+          lazy: false,
           headerShown: false, 
           tabBarActiveTintColor: 'white', 
           tabBarInactiveTintColor: '#D3D3D3',
@@ -199,7 +198,7 @@ function Tabs() {
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={{ colors: { background: 'red' }}}>
       <Stack.Navigator>
         <Stack.Screen 
           name="Home"
@@ -207,6 +206,7 @@ export default function App() {
           options={({ navigation, route }) => ({
             headerTitle: getHeaderTitle(route),
             headerTitleAlign: 'center',
+            lazy: true,
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerLeft: () => getHeaderLeft(navigation, route),
@@ -218,6 +218,8 @@ export default function App() {
           component={SettingsScreen}
           options={({ navigation, route }) => ({
             title: "Configuració",
+            animationEnabled: Platform.OS === "ios",
+            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerBackTitleVisible: false
@@ -230,6 +232,8 @@ export default function App() {
             title: "Donatiu lliure",
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
+            animationEnabled: Platform.OS === "ios",
+            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
             headerBackTitleVisible: false
           })}
         />
@@ -238,6 +242,8 @@ export default function App() {
           component={CommentScreen} 
           options={({ navigation, route }) => ({
             title: "Missatge",
+            animationEnabled: Platform.OS === "ios",
+            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerBackTitleVisible: false
@@ -248,6 +254,8 @@ export default function App() {
           component={LHDisplayScreen} 
           options={({ navigation, route }) => ({
             title: route.params?.props.type,
+            animationEnabled: Platform.OS === "ios",
+            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerBackTitleVisible: false
@@ -258,6 +266,8 @@ export default function App() {
           component={LDDisplayScreen} 
           options={({ navigation, route }) => ({
             title: "Missa",
+            animationEnabled: Platform.OS === "ios",
+            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
             headerStyle: { backgroundColor: GLOBAL.barColor },
             headerTintColor: GLOBAL.itemsBarColor,
             headerBackTitleVisible: false

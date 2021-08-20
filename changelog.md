@@ -287,8 +287,9 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 -----
 - Publicació oficial després del drama
 
-### v4.1.0 (08.08.2021)[54]
+### v4.0.0 (20.08.2021)[55]
 - Afegit el mode obscur
 -----
 - Expo updated to SDK v42
 - Updates when starting the app (and not in background)
+- OTA updates now at starting the app

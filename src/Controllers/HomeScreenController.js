@@ -26,6 +26,7 @@ import SettingsManager from './Classes/SettingsManager';
 export default class HomeScreenController extends Component {
 
   async componentDidMount() {
+    console.log("componentDidMount");
     try {
       await SplashScreen.preventAutoHideAsync();
     } catch (e) {
@@ -44,11 +45,14 @@ export default class HomeScreenController extends Component {
     console.log("this.props.route.params:", this.props.route.params);
     BackHandler.addEventListener('hardwareBackPress', this.androidBack.bind(this));
     AppState.addEventListener('change', this._handleAppStateChange.bind(this));
+    Appearance.addChangeListener(this.AppearanceHasChanged.bind(this))
   }
 
   componentWillUnmount() {
+    console.log("componentWillUnmount");
     BackHandler.removeEventListener('hardwareBackPress', this.androidBack.bind(this));
     AppState.removeEventListener('change', this._handleAppStateChange.bind(this));
+    Appearance.removeChangeListener(this.AppearanceHasChanged.bind(this))
   }
 
   _handleAppStateChange(nextAppState){
@@ -58,7 +62,7 @@ export default class HomeScreenController extends Component {
     // Check if the state is changing to active
     if(nextAppState == 'active'){
 
-      this.checkSystemDarkMode();
+      //this.checkSystemDarkMode();
 
       // Get today
       var now = new Date()
@@ -82,16 +86,35 @@ export default class HomeScreenController extends Component {
 
   }
 
-  checkSystemDarkMode(){
+  AppearanceHasChanged(param){
+    try {
+      console.log("AppearanceHasChanged", param.colorScheme);
+      this.checkSystemDarkMode(param.colorScheme);
+    } catch (error) {
+      console.log("AppearanceHasChanged error: ", error);
+    }
+  }
+
+  checkSystemDarkMode(colorScheme){
     try {
       SettingsManager.getSettingDarkMode((r) => {
+        
+        console.log("colorScheme", colorScheme);
+        console.log("Appearance.getColorScheme(): ", Appearance.getColorScheme());
+        console.log("r", r);
+
         if(r === 'Automàtic'){
-            if (Appearance.getColorScheme() === 'dark') {
+            if (colorScheme === 'dark') {
+              if(G_VALUES.darkModeEnabled == false){
+              }
               G_VALUES.darkModeEnabled = true;
             } else {
+              if(G_VALUES.darkModeEnabled == true){
+              }
               G_VALUES.darkModeEnabled = false;
             }
           }
+          this.forceUpdate();
         });
     } catch (error) {
       console.log("checkDarkMode error: ", error);
@@ -381,7 +404,7 @@ export default class HomeScreenController extends Component {
                       transparent={true}
                       visible={this.state.isDateTimePickerVisible}>
                         <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={this.datePickerIOS_Cancel.bind(this)}>
-                          <TouchableOpacity activeOpacity={1} style={styles.DatePickerInsideModal}>
+                          <TouchableOpacity activeOpacity={1} style={{margin: 10, marginHorizontal: 30, backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white', borderRadius: 20, padding: 10, paddingBottom: 20, shadowColor: '#000', shadowOffset: {width: 0,height: 2,}}}>
                             <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
                               <DateTimePicker
                                 mode="date"
@@ -465,19 +488,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 10,
     backgroundColor: 'rgba(0,0,0,0.4)'
-  },
-  DatePickerInsideModal: {
-    margin: 10,
-    marginHorizontal: 30,
-    backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white',
-    borderRadius: 20,
-    padding: 10,
-    paddingBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    }
   },
   LatePrayerWholeModal: {
     flex: 1,
