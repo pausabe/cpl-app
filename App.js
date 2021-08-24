@@ -198,7 +198,7 @@ function Tabs() {
 
 export default function App() {
   return (
-    <NavigationContainer theme={{ colors: { background: 'red' }}}>
+    <NavigationContainer theme={{ colors: { background: 'transparent' }}}>
       <Stack.Navigator>
         <Stack.Screen 
           name="Home"
