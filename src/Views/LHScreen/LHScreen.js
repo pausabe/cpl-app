@@ -64,7 +64,7 @@ export default class LHScreen extends Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
           {
             <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-              {LH_VALUES.espers == undefined ?
+              {LH_VALUES.vespres == undefined ?
                  null :
                 <View style={styles.liturgiaContainer}>
                   <LHButtons

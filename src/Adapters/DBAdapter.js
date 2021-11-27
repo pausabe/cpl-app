@@ -1,198 +1,27 @@
 import { Platform } from 'react-native';
-
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
-
 import GLOBAL from '../Globals/Globals';
 import GF from '../Globals/GlobalFunctions';
-import * as SQLite from 'expo-sqlite';
 import { log } from 'react-native-reanimated';
+import { OpenDatabaseIfNotOpenedYet, CPLDataBase } from './OpenDatabaseHelper.js';
 
 export default class DBAdapter {
   constructor() {
   }
 
-  OpenDatabaseIfNotOpenedYet(){
-
-    console.log("[DB-MANAGEMENT] this.database == null?", this.database == null);
-    console.log("[DB-MANAGEMENT] this.openDatabasePromise == null?", this.openDatabasePromise == null);
-
-    // First check the case when the database is not opened yet
-    // but the opening process has started (we don't want to run the proces twice)
-    if(this.database == null && this.openDatabasePromise != null)
-      return this.openDatabasePromise
-
-    this.openDatabasePromise = new Promise((resolve) => {
-      if (this.database != null){
-        this.Log("[DB-MANAGEMENT] Database already oppened");
-        resolve("OK");
-      }
-      else{
-        this.Log("[DB-MANAGEMENT] Necessary to open the database");
-        this.Log("[DB-MANAGEMENT] FileSystem directory: " + FileSystem.documentDirectory);
-
-        // Pre-load the database.
-        // This will only be downloading the database from the cloud
-        // if it's a new publication. Otherwise, returns the local cache path.
-        Asset.loadAsync(require('../Assets/db/cpl-app.db'))
-          .then((localUri) => {
-
-            this.Log("[DB-MANAGEMENT] localUri from Asset.loadAsync", localUri);
-            this.Log("[DB-MANAGEMENT] DB downloaded", localUri[0].downloaded); // True/False
-            this.Log("[DB-MANAGEMENT] DB localUri", localUri[0].localUri); // Mobile folder for cache assets
-            this.Log("[DB-MANAGEMENT] DB uri", localUri[0].uri); // Online (from expo publication)
-
-            this.databaseCachePath = localUri[0].localUri;
-
-            // Save the cached database into FileSystem/SQLite path
-            // in order to be able to execute: SQLite.openDatabase("cpl-app.db");
-            // If it's not the first time opening the app and there is already a database
-            // in the FileSystem/SQLite folder, we replace it.
-            this.SaveOrReplaceFileSystemDatabase(localUri[0].localUri, FileSystem.documentDirectory + "SQLite/cpl-app.db")
-              .then((result) => {
-                this.Log("[DB-MANAGEMENT] SaveOrReplaceFileSystemDatabase Result: ", result);
-                if(result == "OK"){
-                  this.Log("[DB-MANAGEMENT] Having a correct result we can open the database.");
-                  this.database = SQLite.openDatabase("cpl-app.db");
-                }
-                resolve(result);
-              });
-
-          })
-          .catch((error) => {
-            this.Log("[DB-MANAGEMENT] Error loading Asset: ", error);
-            resolve("loadAsync Error: " + error.toString())
-          });
-        
-      }
-    });
-    return this.openDatabasePromise 
-  }
-
-  SaveOrReplaceFileSystemDatabase(fromPath, toPath){
-    let promise = new Promise((resolve) => {
-
-      this.DeleteDatabaseIfExists(toPath)
-        .then(() => {
-
-          this.Log("[DB-MANAGEMENT] fromPath: ", fromPath);
-          this.Log("[DB-MANAGEMENT] toPath: ", toPath);
-
-          this.CreateSQLiteDirectoryIfNecessary(toPath)
-            .then(() => {
-
-              FileSystem.copyAsync({from: fromPath, to: toPath})
-              .then(() => {
-                this.Log('[DB-MANAGEMENT] Finished copying correctly')
-                resolve("OK");
-              })
-              .catch(error => {
-                this.Log("[DB-MANAGEMENT] Error copying the database: ", error);
-                resolve("FROM: " + fromPath + " | TO: " + toPath + " | Error: " + error.toString());
-              })
-
-            });
-
-        });
-
-    });
-    return promise;
-  }
-
-  DeleteDatabaseIfExists(filePath){
-    let promise = new Promise((resolve) => {
-      FileSystem.getInfoAsync(filePath)
-        .then((directoryInfo) => {
-          if(directoryInfo.exists){
-            this.Log("[DB-MANAGEMENT] There is already a database in the path. We must delete the current database located in: " + filePath);
-            FileSystem.deleteAsync(filePath, {intermediates: true})
-              .then( () => {
-                this.Log("[DB-MANAGEMENT] Delete finished.");
-                resolve();
-              })
-              .catch((error) => {
-                this.Log("[DB-MANAGEMENT deleteAsync error]", error);
-                resolve()
-              });
-          }
-          else{
-            this.Log("[DB-MANAGEMENT] There is no database in the path. No delete necessary.");
-            resolve();
-          }
-        });
-    });
-    return promise;
-  }
-
-  CreateSQLiteDirectoryIfNecessary(filePath){
-
-    var lastIndex = filePath.lastIndexOf("/");
-    var directoryPath = filePath.substring(0, lastIndex + 1);
-    this.Log("[DB-MANAGEMENT] directoryPath", directoryPath);
-
-    let promise = new Promise((resolve) => {
-      FileSystem.getInfoAsync(directoryPath)
-        .then((directoryInfo) => {
-
-          if(directoryInfo.exists){
-            this.Log("[DB-MANAGEMENT] SQLite directory already exist. Not necessary to make a new one.");
-            resolve();
-          }
-          else{
-            this.Log("[DB-MANAGEMENT] SQLite directory not exist. We neet to make a new one.");
-            FileSystem.makeDirectoryAsync(directoryPath, {intermediates: true})
-              .then(() => {
-                this.Log("[DB-MANAGEMENT] Directory maker finished.");
-                resolve();
-              })
-              .catch((error) => {
-                this.Log("[DB-MANAGEMENT makeDirectoryAsync error]", error);
-                resolve()
-              });
-          }
-          
-        });
-    });
-    return promise;
-  }
-
-  /*// After online changes we need to replace the cache database with the updated one
-  SaveChangesInCacheDatabase(){
-    let promise = new Promise((resolve) => {
-      if(this.databaseCachePath == null){
-        resolve();
-      }
-      else{
-        var oldDatabasePath = this.databaseCachePath;
-        var newDatabasePath = FileSystem.documentDirectory + "SQLite/cpl-app.db";
-
-        this.SaveOrReplaceFileSystemDatabase(newDatabasePath, oldDatabasePath)
-          .then((result) => {
-            this.Log("[DB-MANAGEMENT SaveChangesInCacheDatabase] SaveOrReplaceFileSystemDatabase Result: ", result);
-            resolve();
-        });
-        
-      }
-    });
-    return promise;
-  }*/
-
   executeQuery(query, callback, errorCallback) {
-    this.Log("[DB-MANAGEMENT] executeQuery: ", query);
-    this.OpenDatabaseIfNotOpenedYet().then((resultMsg) => {
-      this.Log("[DB-MANAGEMENT] resultMsg", resultMsg);
-      if(resultMsg == "OK"){
-        this.database.transaction((tx) => {
-          this.Log("[DB-MANAGEMENT] tx: ", tx);
-          this.Log("[DB-MANAGEMENT] tx.executeSql: ", tx.executeSql);
+    console.log("[DB-MANAGEMENT] executeQuery: ", query);
+    OpenDatabaseIfNotOpenedYet().then(() => {
+      console.log("[DB-MANAGEMENT] CPLDataBase", CPLDataBase);
+      if(CPLDataBase != undefined){
+        CPLDataBase.transaction((tx) => {
           tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-            this.Log("[DB-MANAGEMENT] SQLResultSet: ", SQLResultSet);
+            console.log("[DB-MANAGEMENT] OK - SQLResultSet: ", SQLResultSet);
             callback(SQLResultSet);
           }, (SQLTransaction, SQLError) => {
-            this.Log("[executeQuery] error in query (" + query + "): ", SQLError);
-            this.Log("errorCallback: " + errorCallback);
+            console.log("[executeQuery] NOK - error in query (" + query + "): ", SQLError);
+            console.log("errorCallback: " + errorCallback);
             if(errorCallback != undefined) {
-              errorCallback();
+              errorCallback(SQLError);
             }
           });
         });
@@ -203,36 +32,6 @@ export default class DBAdapter {
         }
       }
     });
-  }
-
-  executeQuery_onlinechanges(query) {
-
-    let promise = new Promise((resolve) => {
-
-      try {
-        this.OpenDatabaseIfNotOpenedYet().then((ok_status) => {
-          this.Log("[ONLINE_UPDATES executeQuery_onlinechanges] ok_status:", ok_status);
-          if(ok_status == "OK"){
-            this.database.transaction((tx) => {
-              tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-                resolve(true)
-              }, (SQLTransaction, SQLError) => {
-                this.Log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", SQLError);
-                resolve(false)
-              });
-            });
-          }
-          else{
-            resolve(false);
-          }
-        });
-      } catch (error) {
-        console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error: ", error);
-      }
-    });
-  
-    return promise
-
   }
 
   getDatabaseVersion(callback){
@@ -247,136 +46,9 @@ export default class DBAdapter {
     return onlineVersionPromise;
   }
 
-  MakeChanges(json_updates){
-
-    let promise = new Promise((resolve, reject) => {
-
-      this.Log("[ONLINE_UPDATES MakeChanges]", json_updates);
-
-      let promises = [];
-      let sql;
-
-      this.Log("[ONLINE_UPDATES MakeChanges] json_updates.length", json_updates.length);
-
-      for (var i = 0; i < json_updates.length; i++) {
-
-        var change = json_updates[i]
-        this.Log("[ONLINE_UPDATES MakeChanges] change", change);
-
-        switch (change.action) {
-          
-          //UPDATE
-          case "2":
-
-              var set_statement = ""
-              var j = 0
-              for (const key in change.values) {
-                this.Log("[ONLINE_UPDATES MakeChanges] change.values", change.values);
-                if (change.values.hasOwnProperty(key)) {
-                  set_statement += key + " = '" + change.values[key] + "'"
-                  if(j < (Object.keys(change.values).length - 1))
-                    set_statement += ", "
-                  j += 1
-                }
-              } 
-              // UPDATE diversos SET 0 = '[object Object]' WHERE id = 1
-              sql = "UPDATE " + change.table_name + " SET " + set_statement + " WHERE id = " + change.row_id;
-              
-              this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
-
-              promises.push(this.executeQuery_onlinechanges(sql))
-
-            break;
-
-          //INSERT
-          case "1":
-
-            var aux = JSON.stringify(change.values)
-            aux = aux.replace(/{/g, "")
-            aux = aux.replace(/}/g, "")
-            aux = aux.replace(/\"/g, "")
-            var arr_aux = aux.split(",")
-
-            var ref_statement = ""
-            var val_statement = ""
-            for (var j = 0; j < arr_aux.length; j++){
-              ref_statement += arr_aux[j].split(":")[0] 
-              val_statement += ("'" + arr_aux[j].split(":")[1] + "'")
-              if(j < (arr_aux.length - 1)){
-                ref_statement += ", "
-                val_statement += ", "
-              }
-            }
-          
-            sql = "INSERT INTO " + change_name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
-              
-            this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
-
-            promises.push(this.executeQuery_onlinechanges(sql))
-
-            break;
-            
-          //DELETE
-          case "3":
-
-            sql =  "DELETE FROM " + change.table_name + " WHERE id = " + change.row_id;
-        
-            this.Log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
-
-            promises.push(this.executeQuery_onlinechanges(sql))
-
-            break;
-
-        }
-
-      }
-
-      this.Log("[ONLINE_UPDATES MakeChanges] promises.length: ", promises.length);
-
-      // Check promises length
-      if(promises.length == 0) {
-        resolve(false)
-      }
-      else{
-        this.Log("[ONLINE_UPDATES PAOLOO1");
-      
-        Promise.all(promises).then(res => {
-  
-          this.Log("[ONLINE_UPDATES PAOLOO2", res);
-
-          if(res == undefined){
-            reject(new Error("Something is not right"));
-          }
-          else{
-            let total_res = true
-            for (var i = 0; i < res.length; i++) {
-              this.Log("[ONLINE_UPDATES MakeChanges] promise " + i + " result:", res[i]);
-              if (!res[i]){
-                total_res = false;
-              }
-            }
-    
-            this.Log("[ONLINE_UPDATES MakeChanges] total_res: ", total_res);
-    
-            resolve(total_res)
-          }
-  
-        })
-        .catch((error) => {
-          this.Log("[EXCEPTION ONLINE_UPDATES MakeChanges]", error);
-          resolve(false)
-        });
-      }
-
-    });
-
-    return promise
-    
-  }
-
   getLiturgia(table, id, callback) {
     if (id !== -1) {
-      // if(table === 'tempsNadalOctava') this.Log(`tempsAdventSetmanesDium---> SELECT * FROM ${table} WHERE id = ${id}`);
+      // if(table === 'tempsNadalOctava') console.log(`tempsAdventSetmanesDium---> SELECT * FROM ${table} WHERE id = ${id}`);
       this.executeQuery(`SELECT * FROM ${table} WHERE id = ${id}`,
         result => callback(result.rows.item(0)));
     }
@@ -388,7 +60,7 @@ export default class DBAdapter {
 
   getAnyLiturgic(year, month, day, callback, errorCallback) {
     var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND mes = '${month + 1}' AND dia = '${day}'`;
-    this.Log("QueryLog. QUERY ANY: " + query);
+    console.log("QueryLog. QUERY ANY: " + query);
     this.executeQuery(query,
       result => {
         this.getTomorrow(result.rows.item(0), year, month, day, callback);
@@ -403,43 +75,43 @@ export default class DBAdapter {
     month2 = tomorrow.getMonth();
     day2 = tomorrow.getDate();
 
-    this.Log("year2", year2);
+    console.log("year2", year2);
 
     var query = `SELECT * FROM anyliturgic WHERE any = '${year2}' AND mes = '${month2 + 1}' AND dia = '${day2}'`;
-    this.Log("QUERY AnyTomorrow: " + query);
+    console.log("QUERY AnyTomorrow: " + query);
     this.executeQuery(query,
       result => {
-        // this.Log(">>Tomorrow: " + result.rows.item(0).dia + '/' + result.rows.item(0).mes);
+        // console.log(">>Tomorrow: " + result.rows.item(0).dia + '/' + result.rows.item(0).mes);
         this.getPentacosta(r1, result.rows.item(0), year, callback);
       });
   }
 
   getPentacosta(r1, r2, year, callback) {
-    this.Log("paolo temps 1: ", GLOBAL);
-    this.Log("wtf: ", GLOBAL.DBAccess);
-    this.Log("wtf: ", GLOBAL.P_SETMANES);
-    this.Log("wtf: ", GLOBAL.afternoon_hour);
+    console.log("paolo temps 1: ", GLOBAL);
+    console.log("wtf: ", GLOBAL.DBAccess);
+    console.log("wtf: ", GLOBAL.P_SETMANES);
+    console.log("wtf: ", GLOBAL.afternoon_hour);
     var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND temps = 'P_SETMANES' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`;
-    this.Log("QueryLog. getPentacosta: " + query);
+    console.log("QueryLog. getPentacosta: " + query);
     this.executeQuery(query,
       result => {
         var pentacosta = new Date(year, (result.rows.item(0).mes - 1), result.rows.item(0).dia);
-        this.Log(result.rows.item(0).dia + '/' + (result.rows.item(0).mes - 1) + '/' + year);        
-        this.Log("InfoLog. Pentacosta 1: " + pentacosta.getDate() + '/' + pentacosta.getMonth() + '/' + pentacosta.getFullYear());
+        console.log(result.rows.item(0).dia + '/' + (result.rows.item(0).mes - 1) + '/' + year);        
+        console.log("InfoLog. Pentacosta 1: " + pentacosta.getDate() + '/' + pentacosta.getMonth() + '/' + pentacosta.getFullYear());
         this.getMinMaxDates(r1, r2, pentacosta, callback);
       });
   }
 
   getMinMaxDates(r1, r2, r3, callback){
     var query = `SELECT MIN(CAST(any As INTEGER)) as minAny, (SELECT MIN(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT)) as minMes, (SELECT MIN(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MIN(CAST(anyliturgic2.mes As INTEGER)) as TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) as TEXT))) as minDia, MAX(any) as maxAny, (SELECT MAX(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any as INTEGER)) As TEXT)) as maxMes, (SELECT MAX(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MAX(CAST(anyliturgic2.mes as INTEGER)) As TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT))) as maxDia FROM anyliturgic`;
-    this.Log("QueryLog. getMinMaxDates: " + query);
+    console.log("QueryLog. getMinMaxDates: " + query);
     this.executeQuery(query,
       result => {
         var marginDays = 2;
         minDate = new Date(result.rows.item(0).minAny, (result.rows.item(0).minMes - 1), (result.rows.item(0).minDia + marginDays));
         maxDate = new Date(result.rows.item(0).maxAny, (result.rows.item(0).maxMes - 1), (result.rows.item(0).maxDia - marginDays));
-        this.Log("minDate " + minDate.getDate() + "/" + minDate.getMonth() + "/" + minDate.getFullYear() + " || ", minDate);
-        this.Log("maxDate " + maxDate.getDate() + "/" + maxDate.getMonth() + "/" + maxDate.getFullYear() + " || ", maxDate);
+        console.log("minDate " + minDate.getDate() + "/" + minDate.getMonth() + "/" + minDate.getFullYear() + " || ", minDate);
+        console.log("maxDate " + maxDate.getDate() + "/" + maxDate.getMonth() + "/" + maxDate.getFullYear() + " || ", maxDate);
         callback(r1, r2, r3, minDate, maxDate);
       });
   }
@@ -461,16 +133,16 @@ export default class DBAdapter {
     else if (lloc === 'Diòcesi') {
       auxDiocesiQuery = `'${auxDiocesi}' OR Diocesis = '${this.transformDiocesiName(auxDiocesiName, 'Catedral')}' OR Diocesis = '${this.transformDiocesiName(auxDiocesiName, 'Ciutat')}'`;
     }
-    this.Log("paolo temps 2: " + temps);
+    console.log("paolo temps 2: " + temps);
     var query = `SELECT * FROM ${table} WHERE (Diocesis = ${auxDiocesiQuery} OR Diocesis = '-') AND dia = '${dia}' AND Temps = '${temps}'`;
 
-    this.Log("QueryLog. QUERY SOL_MEM: " + query);
+    console.log("QueryLog. QUERY SOL_MEM: " + query);
 
     this.executeQuery(query,
       result => {
-        this.Log("InfoLog. SolMem Result size: " + result.rows.length);
+        console.log("InfoLog. SolMem Result size: " + result.rows.length);
         var index = this.findCorrect(result.rows, result.rows.length, auxDiocesi, auxDiocesiName, lloc);
-        this.Log("InfoLog. Index definitive: " + index);
+        console.log("InfoLog. Index definitive: " + index);
         callback(result.rows.item(index));
       });
   }
@@ -513,7 +185,7 @@ export default class DBAdapter {
   getSolMemDiesMov(table, id, callback) {
     var query = `SELECT * FROM ${table} WHERE id = '${id}'`;
 
-    this.Log("QueryLog. QUERY SOL_MEM-Dies_Mov: " + query);
+    console.log("QueryLog. QUERY SOL_MEM-Dies_Mov: " + query);
 
     this.executeQuery(query,
       result => callback(result.rows.item(0)));
@@ -528,15 +200,15 @@ export default class DBAdapter {
 
   getOC(categoria, callback) {
     var query = `SELECT * FROM OficisComuns WHERE Categoria = '${categoria}'`;
-    this.Log("QueryLog. QUERY getOC: " + query);
-    this.Log("InfoLog. Oficis comuns log -1 - " + categoria);
+    console.log("QueryLog. QUERY getOC: " + query);
+    console.log("InfoLog. Oficis comuns log -1 - " + categoria);
     this.executeQuery(query,
       result => callback(result.rows.item(0), categoria));
   }
 
   getVispers(idSpecialVespers, callback){
       var query = `SELECT * FROM LDSantoral WHERE id = '${idSpecialVespers}'`;
-      this.Log("QueryLog. QUERY getLDSantoral: " + query);
+      console.log("QueryLog. QUERY getLDSantoral: " + query);
       this.executeQuery(query,
         result => callback(result.rows.item(0))
       );
@@ -546,25 +218,25 @@ export default class DBAdapter {
         
     this.getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parImpar, (normal_result) => {
 
-      this.Log("Normal result", normal_result);
+      console.log("Normal result", normal_result);
 
       if (specialResultId == '-1') {
         //Normal santoral day
         var diocesis = GF.transformDiocesiName(G_VALUES.diocesiName, "Diòcesi")
         var query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${cicleABC}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${diaSetmana}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${parImpar}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE LDSantoral.Categoria = '${celType}'AND LDSantoral.tempsespecific = '${tempsEspecific}'AND LDSantoral.dia = '${day}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${diocesis}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
-        this.Log("QueryLog. QUERY getLDSantoral: " + query);
+        console.log("QueryLog. QUERY getLDSantoral: " + query);
         this.executeQuery(query,
           result => {
 
-            this.Log("InfoLog. getLDSantoral Result size: " + result.rows.length);
-            this.Log("Santoral result", result);
+            console.log("InfoLog. getLDSantoral Result size: " + result.rows.length);
+            console.log("Santoral result", result);
             
             if (result.rows.length == 0) {
               //Not in Santoral
               callback(normal_result);
             }
             else {
-              this.Log("LDSantoral ID: ", result.rows.item(0).Id);
+              console.log("LDSantoral ID: ", result.rows.item(0).Id);
               
               var data_return = result.rows.item(0);
 
@@ -602,7 +274,7 @@ export default class DBAdapter {
       else {
         //Special day
         var query = `SELECT * FROM LDSantoral WHERE id = '${specialResultId}'`;
-        this.Log("QueryLog. QUERY getLDSantoral: " + query);
+        console.log("QueryLog. QUERY getLDSantoral: " + query);
         this.executeQuery(query,
           result => {
 
@@ -646,10 +318,10 @@ export default class DBAdapter {
   getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parImpar, callback) {
 
     var query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${tempsEspecific}' AND DiadelaSetmana = '${diaSetmana}' AND NumSet = '${setmana}'`;
-    this.Log("QueryLog. QUERY getLDNormal: " + query);
+    console.log("QueryLog. QUERY getLDNormal: " + query);
     this.executeQuery(query,
       result => {
-        this.Log("InfoLog. getLDNormal Result size: " + result.rows.length);
+        console.log("InfoLog. getLDNormal Result size: " + result.rows.length);
         var i = this.LDGetIndexNormal(result, cicleABC, parImpar, diaSetmana);
         callback(result.rows.item(i));
       });
@@ -669,9 +341,9 @@ export default class DBAdapter {
     }
 
 
-    this.Log("[LDGetIndex] haveSomeDiaSetmana: " + haveSomeDiaSetmana); 
-    this.Log("[LDGetIndex] DiaIsTheSame: " + DiaIsTheSame); 
-    this.Log("[LDGetIndex] diaSetmana: " + diaSetmana); 
+    console.log("[LDGetIndex] haveSomeDiaSetmana: " + haveSomeDiaSetmana); 
+    console.log("[LDGetIndex] DiaIsTheSame: " + DiaIsTheSame); 
+    console.log("[LDGetIndex] diaSetmana: " + diaSetmana); 
     
 
     var rows = [];
@@ -683,19 +355,19 @@ export default class DBAdapter {
               rows.push(result.rows.item(i));
         }
       }
-      this.Log("[LDGetIndex] rows 1"); 
+      console.log("[LDGetIndex] rows 1"); 
     }
     else {
       for (let i = 0; i < result.rows.length; i++) {
         rows.push(result.rows.item(i));
       }
-      this.Log("[LDGetIndex] rows 2"); 
+      console.log("[LDGetIndex] rows 2"); 
     }
     
     var index;
     if (rows.length > 1) {
       if (rows[0].Cicle != '-' && rows[0].paroimpar == '-') {
-        this.Log("[LDGetIndex] here 1"); 
+        console.log("[LDGetIndex] here 1"); 
         //1) cicle != '-' and paroimpar != '-'
         for (var i = 0; i < rows.length; i++) {
           if (rows[i].Cicle == cicleABC) {
@@ -705,7 +377,7 @@ export default class DBAdapter {
         }
       }
       else if (rows[0].paroimpar != '-' && rows[0].Cicle == '-') {
-        this.Log("[LDGetIndex] here 2"); 
+        console.log("[LDGetIndex] here 2"); 
         //2) cicle == '-' and paroimpar != '-'
         for (var i = 0; i < rows.length; i++) {
           if (rows[i].paroimpar == parImpar) {
@@ -715,7 +387,7 @@ export default class DBAdapter {
         }
       }
       else if (rows[0].paroimpar != '-' && rows[0].Cicle != '-') {
-        this.Log("[LDGetIndex] here 3"); 
+        console.log("[LDGetIndex] here 3"); 
         //3) cicle != '-' and paroimpar != '-'
         for (var i = 0; i < rows.length; i++) {
           if (rows[i].Cicle == cicleABC && rows[i].paroimpar == parImpar) {
@@ -726,24 +398,24 @@ export default class DBAdapter {
       }
     }
     else if (rows.length == 1) {
-      this.Log("[LDGetIndex] here 4"); 
+      console.log("[LDGetIndex] here 4"); 
       //4) cicle == '-' and paroimpar == '-'
       index = 0;
     }
 
-    this.Log("[DEBUG] index: ", index);
-    this.Log("[DEBUG] result.rows.length: ", result.rows.length);
-    this.Log("[DEBUG] rows.length: ", rows.length);
+    console.log("[DEBUG] index: ", index);
+    console.log("[DEBUG] result.rows.length: ", result.rows.length);
+    console.log("[DEBUG] rows.length: ", rows.length);
     
 
     if (index == undefined) {
-      this.Log("Index not found");
+      console.log("Index not found");
       index = -1;
     }
     else {
       index += (result.rows.length - rows.length);
     }
-    this.Log("InfoLog. Index definitive: " + index);
+    console.log("InfoLog. Index definitive: " + index);
     return index;
   }
 
@@ -866,16 +538,172 @@ export default class DBAdapter {
     return ('BaD');
   }
 
-  Log(message, param){
-    try {
-      if(true || message.includes("ONLINE_UPDATES")){
-        if(param == undefined)
-          console.log(message);
-        else
-          console.log(message, param);
-      }
-    } catch (error) {
-    }
-  }
-
 }
+
+/*executeQuery_onlinechanges(query) {
+
+    let promise = new Promise((resolve) => {
+
+      try {
+        OpenDatabaseIfNotOpenedYet().then((ok_status) => {
+          console.log("[ONLINE_UPDATES executeQuery_onlinechanges] ok_status:", ok_status);
+          if(ok_status == "OK"){
+            this.database.transaction((tx) => {
+              tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+                resolve(true)
+              }, (SQLTransaction, SQLError) => {
+                console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error in query (" + query + "): ", SQLError);
+                resolve(false)
+              });
+            });
+          }
+          else{
+            resolve(false);
+          }
+        });
+      } catch (error) {
+        console.log("[ONLINE_UPDATES executeQuery_onlinechanges] error: ", error);
+      }
+    });
+  
+    return promise
+
+  }*/
+
+  /*MakeChanges(json_updates){
+
+    let promise = new Promise((resolve, reject) => {
+
+      console.log("[ONLINE_UPDATES MakeChanges]", json_updates);
+
+      let promises = [];
+      let sql;
+
+      console.log("[ONLINE_UPDATES MakeChanges] json_updates.length", json_updates.length);
+
+      for (var i = 0; i < json_updates.length; i++) {
+
+        var change = json_updates[i]
+        console.log("[ONLINE_UPDATES MakeChanges] change", change);
+
+        switch (change.action) {
+          
+          //UPDATE
+          case "2":
+
+              var set_statement = ""
+              var j = 0
+              for (const key in change.values) {
+                console.log("[ONLINE_UPDATES MakeChanges] change.values", change.values);
+                if (change.values.hasOwnProperty(key)) {
+                  set_statement += key + " = '" + change.values[key] + "'"
+                  if(j < (Object.keys(change.values).length - 1))
+                    set_statement += ", "
+                  j += 1
+                }
+              } 
+              // UPDATE diversos SET 0 = '[object Object]' WHERE id = 1
+              sql = "UPDATE " + change.table_name + " SET " + set_statement + " WHERE id = " + change.row_id;
+              
+              console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+
+              promises.push(this.executeQuery_onlinechanges(sql))
+
+            break;
+
+          //INSERT
+          case "1":
+
+            var aux = JSON.stringify(change.values)
+            aux = aux.replace(/{/g, "")
+            aux = aux.replace(/}/g, "")
+            aux = aux.replace(/\"/g, "")
+            var arr_aux = aux.split(",")
+
+            var ref_statement = ""
+            var val_statement = ""
+            for (var j = 0; j < arr_aux.length; j++){
+              ref_statement += arr_aux[j].split(":")[0] 
+              val_statement += ("'" + arr_aux[j].split(":")[1] + "'")
+              if(j < (arr_aux.length - 1)){
+                ref_statement += ", "
+                val_statement += ", "
+              }
+            }
+          
+            sql = "INSERT INTO " + change_name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
+              
+            console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+
+            promises.push(this.executeQuery_onlinechanges(sql))
+
+            break;
+            
+          //DELETE
+          case "3":
+
+            sql =  "DELETE FROM " + change.table_name + " WHERE id = " + change.row_id;
+        
+            console.log("[ONLINE_UPDATES MakeChanges] SQL: ", sql);
+
+            promises.push(this.executeQuery_onlinechanges(sql))
+
+            break;
+
+        }
+
+      }
+
+      console.log("[ONLINE_UPDATES MakeChanges] promises.length: ", promises.length);
+
+      // Check promises length
+      if(promises.length == 0) {
+        resolve(false)
+      }
+      else{
+        console.log("[ONLINE_UPDATES PAOLOO1");
+      
+        Promise.all(promises).then(res => {
+  
+          console.log("[ONLINE_UPDATES PAOLOO2", res);
+
+          if(res == undefined){
+            reject(new Error("Something is not right"));
+          }
+          else{
+            let total_res = true
+            for (var i = 0; i < res.length; i++) {
+              console.log("[ONLINE_UPDATES MakeChanges] promise " + i + " result:", res[i]);
+              if (!res[i]){
+                total_res = false;
+              }
+            }
+    
+            console.log("[ONLINE_UPDATES MakeChanges] total_res: ", total_res);
+    
+            resolve(total_res)
+          }
+  
+        })
+        .catch((error) => {
+          console.log("[EXCEPTION ONLINE_UPDATES MakeChanges]", error);
+          resolve(false)
+        });
+      }
+
+    });
+
+    return promise
+    
+  }*/
+
+/*async function openDatabase(){
+  if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
+    await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
+  }
+  await FileSystem.downloadAsync(
+    Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
+    FileSystem.documentDirectory + 'SQLite/cpl-app.db'
+  );
+  return SQLite.openDatabase('cpl-app.db');
+}*/

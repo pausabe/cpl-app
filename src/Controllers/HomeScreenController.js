@@ -23,6 +23,11 @@ import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test, Alert } from '
 import { log } from 'react-native-reanimated';
 import DBAdapter from '../Adapters/DBAdapter';
 import SettingsManager from './Classes/SettingsManager';
+
+
+import { CPLDataBase } from '../Adapters/OpenDatabaseHelper.js';
+
+
 export default class HomeScreenController extends Component {
 
   async componentDidMount() {
@@ -33,16 +38,16 @@ export default class HomeScreenController extends Component {
         console.warn(e);
         await SplashScreen.hideAsync();
     }
-    console.log("pau was here");
+    /*console.log("pau was here");
     console.log("this.props:", this.props);
     console.log("this.props.navigation:", this.props.navigation);
-    console.log("this.props.route.params:", this.props.route.params);
+    console.log("this.props.route.params:", this.props.route.params);*/
     this.props.navigation.setParams({
       calPres: this.calendarPressed.bind(this),
       Refresh_Date: this.Refresh_Date.bind(this),
     });
-    console.log("this.props.navigation:", this.props.navigation);
-    console.log("this.props.route.params:", this.props.route.params);
+    /*console.log("this.props.navigation:", this.props.navigation);
+    console.log("this.props.route.params:", this.props.route.params);*/
     BackHandler.addEventListener('hardwareBackPress', this.androidBack.bind(this));
     AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     Appearance.addChangeListener(this.AppearanceHasChanged.bind(this))
@@ -133,8 +138,7 @@ export default class HomeScreenController extends Component {
     if (date === null || date === undefined)
       date = G_VALUES.date;
 
-    console.log("[PAU DEBUG] here1 ");
-    Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this), this.HandleGetDataError.bind(this), false);
+    Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this), this.HandleGetDataError.bind(this)/*, false*/);
   }
 
   calendarPressed() {
@@ -182,7 +186,7 @@ export default class HomeScreenController extends Component {
           santPressed: false,
         }
       }
-      console.log("[ONLINE_UPDATES Reload_All_Data] GLOBAL.enable_updates: ", GLOBALS.enable_updates);
+      //console.log("[ONLINE_UPDATES Reload_All_Data] GLOBAL.enable_updates: ", GLOBALS.enable_updates);
       Reload_All_Data(new Date(/*2019, 9, 23*/), this.Init_Everything.bind(this), this.HandleGetDataError.bind(this), GLOBALS.enable_updates);
     }
   }
@@ -343,7 +347,6 @@ export default class HomeScreenController extends Component {
     }
     
     G_VALUES.lliures = value;
-    console.log("[PAU DEBUG] first G_VALUES.lliures: ", G_VALUES.lliures);
     this.Refresh_Date(G_VALUES.date);
   }
 
@@ -367,6 +370,63 @@ export default class HomeScreenController extends Component {
       RefreshErrorMessage: messageToShow }, 
       async () => await SplashScreen.hideAsync());
   }
+
+  /*Testing(){
+
+    var query1 = "select * from LDSantoral limit 1";
+    CPLDataBase.transaction((tx) => {
+      tx.executeSql(query1, [], (SQLTransaction, SQLResultSet) => {
+        console.log("[DB-MANAGEMENT] OK query: " + query1);
+      }, (SQLTransaction, SQLError) => {
+        console.log("[DB-MANAGEMENT] NO OK query: " + query1, SQLError);
+      });
+      var query2 = "select * from anyliturgic limit 1";
+      CPLDataBase.transaction((tx) => {
+        tx.executeSql(query2, [], (SQLTransaction, SQLResultSet) => {
+          console.log("[DB-MANAGEMENT] OK query: " + query2);
+        }, (SQLTransaction, SQLError) => {
+          console.log("[DB-MANAGEMENT] NO OK query: " + query2, SQLError);
+        });
+        var query3 = "select * from diversos limit 1";
+          CPLDataBase.transaction((tx) => {
+            tx.executeSql(query3, [], (SQLTransaction, SQLResultSet) => {
+              console.log("[DB-MANAGEMENT] OK query: " + query3);
+            }, (SQLTransaction, SQLError) => {
+              console.log("[DB-MANAGEMENT] NO OK query: " + query3, SQLError);
+            });
+          });
+      });
+    });
+
+    var query4 = "select * from santssolemnitats limit 1";
+    CPLDataBase.transaction((tx) => {
+      tx.executeSql(query4, [], (SQLTransaction, SQLResultSet) => {
+        console.log("[DB-MANAGEMENT] OK query: " + query4);
+      }, (SQLTransaction, SQLError) => {
+        console.log("[DB-MANAGEMENT] NO OK query: " + query4, SQLError);
+      });
+    });
+    var query5 = "select * from santsmemories limit 1";
+    CPLDataBase.transaction((tx) => {
+      tx.executeSql(query5, [], (SQLTransaction, SQLResultSet) => {
+        console.log("[DB-MANAGEMENT] OK query: " + query5);
+      }, (SQLTransaction, SQLError) => {
+        console.log("[DB-MANAGEMENT] NO OK query: " + query5, SQLError);
+      });
+    });
+    var query6 = "select * from asdf limit 1";
+    CPLDataBase.transaction((tx) => {
+      tx.executeSql(query6, [], (SQLTransaction, SQLResultSet) => {
+        console.log("[DB-MANAGEMENT] OK query: " + query6);
+      }, (SQLTransaction, SQLError) => {
+        console.log("[DB-MANAGEMENT] NO OK query: " + query6, SQLError);
+      });
+    });
+  }
+  
+  <TouchableOpacity onPress={this.Testing.bind(this)}>
+          <Text>TEST</Text>
+        </TouchableOpacity>*/
 
   HomeScreenViewWithError(){
     return(

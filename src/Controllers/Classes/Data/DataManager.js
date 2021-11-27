@@ -26,13 +26,13 @@ LD_VALUES = {}
 //Last refresh datetime
 LAST_REFRESH = new Date()
 
-export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_Callback_Error, online_updates) {
+export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_Callback_Error/*, online_updates*/) {
   // Set some variables
   this.Reload_Finished_Callback = Reload_Finished_Callback;
   this.Reload_Finished_Callback_Error = Reload_Finished_Callback_Error;
   LAST_REFRESH = new Date();
 
-  console.log("[PAU DEBUG] here2 ", online_updates);
+  //console.log("[PAU DEBUG] here2 ", online_updates);
 
   //Get G_VALUES saved locally
   G_VALUES.date = date;
@@ -79,11 +79,11 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
   ])
   .then(() => {
 
-    console.log("[ONLINE_UPDATES Reload_All_Data] G_VALUES.databaseVersion: ", G_VALUES.databaseVersion);
-    console.log("[ONLINE_UPDATES Reload_All_Data] online_updates: ", online_updates);
+    console.log("G_VALUES.databaseVersion: ", G_VALUES.databaseVersion);
+    //console.log("[ONLINE_UPDATES Reload_All_Data] online_updates: ", online_updates);
 
     //Check for global parameter
-    if(online_updates){
+    /*if(online_updates){
 
       //Check and apply online changes. Finally will call Refresh_Data
       Check_For_Updates().then((result) => {
@@ -96,19 +96,18 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
       });
 
     }
-    else{
+    else{*/
 
-      console.log("[PAU DEBUG] here3 ");
 
       Refresh_Data();
 
-    }
+    //}
 
   });
 }
 
 //Resolves true if online_updates = false or it its true and all updates went ok
-function Check_For_Updates(){
+/*function Check_For_Updates(){
 
   let promise = new Promise((resolve) => {
 
@@ -134,16 +133,6 @@ function Check_For_Updates(){
           if(someChangedDoneCorrectly){
 
             resolve(true);
-
-            /*GLOBAL.DBAccess.SaveChangesInCacheDatabase().then(() => {
-              console.log("[ONLINE_UPDATES Check_For_Updates] after SaveChangesInCacheDatabase");
-              resolve(true);
-            })
-            .catch((error) => {
-              console.log("[EXCEPTION Check_For_Updates] 0", error);
-              resolve(true);
-            });*/
-
           }
           else{
             resolve(false)
@@ -178,9 +167,6 @@ function GetOnlineChanges(version) {
 
   return timeout(
     2000,
-    /*timeoutTest(url, 3000)
-      .then((test) => { return test; })
-      .catch((error) => { console.log("[EXCEPTION GetOnlineChanges] TEST Fetch error:", error); })*/
     fetch(url, { headers: { 'Cache-Control': 'no-cache' } } )
       .then((response) => response.json())
       .then((responseJson) => {
@@ -209,23 +195,6 @@ function timeout(ms, promise) {
         reject(reason)
       })
   })
-}
-
-/*function timeoutTest(url, ms){
-  return new Promise((resolve, reject) => {
-    setTimeout(() => { 
-      fetch(url, { headers: { 'Cache-Control': 'no-cache' } } )
-        .then((response) => response.json())
-        .then((responseJson) => {
-          console.log("[EXCEPTION GetOnlineChanges] Correct fetch");
-          resolve(responseJson);
-        })
-        .catch((error) => {
-          console.log("[EXCEPTION GetOnlineChanges] Fetch error:", error);
-        })
-    }
-    ,ms);
-  })
 }*/
 
 function Refresh_Data() {
@@ -237,8 +206,6 @@ function Refresh_Data() {
     G_VALUES.date.getMonth(),
     G_VALUES.date.getDate(),
     (current, tomorrow, pentacosta, minDate, maxDate) => {
-
-      console.log("[PAU DEBUG] here4 ");
 
       G_VALUES.minDatePicker = minDate;
       G_VALUES.maxDatePicker = maxDate;
@@ -282,7 +249,6 @@ function Refresh_Data() {
         Check_Lliure_Date();
 
       //Get all liturgia data
-      console.log("[PAU DEBUG] here5");
       new SOUL(Set_Soul_CB);
     }
     ,this.Reload_Finished_Callback_Error
