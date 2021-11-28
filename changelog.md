@@ -297,3 +297,6 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 ### v4.1.0 (27.11.2021)[56]
 - Nou any 2022 litúrgic
 - [Android] Error que no deixava obrir l'aplicació corregit
+
+### v4.1.1 (28.11.2021)[56]
+- Missatge d'error quan hi ha hagut algun problema amb la base de dades

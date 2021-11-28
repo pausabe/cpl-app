@@ -361,36 +361,31 @@ export default class HomeScreenController extends Component {
           </TouchableOpacity>*/
 
   HandleGetDataError(msgError){
-    //this.setState({ getDataMsgError: msgError});
+    console.log("RefreshErrorMessage: ", msgError);
+    var messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
+    this.setState({ 
+      RefreshErrorMessage: messageToShow }, 
+      async () => await SplashScreen.hideAsync());
   }
 
-  render() {
-    try {
-      if (TEST_MODE_ON) {
-        return (
-          <View style={{ flex: 1 }}>
-            <Text style={{ textAlign: 'center' }}>{"\nTEST INFORMATION\n"}</Text>
-            <Text style={{ textAlign: 'center' }}>{this.state.testInformation}{"\n\n"}</Text>
-            <TouchableOpacity style={{ backgroundColor: 'rgba(20,47,43,0.3)', marginHorizontal: 100, paddingVertical: 10 }} onPress={Force_Stop_Test.bind(this, this.Test_Information_Callback.bind(this))}>
-              <Text style={{ textAlign: 'center' }}>{"STOP TEST"}</Text>
-            </TouchableOpacity>
-          </View>
-        );
-      }
-      else {
-        console.log("G_VALUES.date: ", G_VALUES.date);
+  HomeScreenViewWithError(){
+    return(
+      <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{fontSize: 19, color: 'black', textAlign: 'center' }}>{this.state.RefreshErrorMessage}</Text>
+      </View>
+    );
+  }
+
+  HomeScreenView(){
+    console.log("G_VALUES.date: ", G_VALUES.date);
         var yesterday = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth());
         yesterday.setDate(G_VALUES.date.getDate() - 1);
         var date = G_VALUES.date;
         var minDatePicker = G_VALUES.minDatePicker;
         var maxDatePicker = G_VALUES.maxDatePicker;
-        
-       /*var yesterday = new Date(2020, 10, 8);
-       var date = new Date(2020, 10, 9);
-       var minDatePicker = new Date(2020, 10, 1);
-       var maxDatePicker = new Date(2020, 10, 20);*/
-        return (
-          <SafeAreaView style={{ flex: 1 }}>
+    return (
+      <View style={{ flex: 1 }}>
+
             <HomeScreen
               ViewData={this.state.ViewData}
               santPressed={this.state.santPressed}
@@ -472,6 +467,32 @@ export default class HomeScreenController extends Component {
                 </Modal>
   
             <StatusBar style="light" />
+  
+      </View>
+    );
+  }
+
+  render() {
+    try {
+      if (TEST_MODE_ON) {
+        return (
+          <View style={{ flex: 1 }}>
+            <Text style={{ textAlign: 'center' }}>{"\nTEST INFORMATION\n"}</Text>
+            <Text style={{ textAlign: 'center' }}>{this.state.testInformation}{"\n\n"}</Text>
+            <TouchableOpacity style={{ backgroundColor: 'rgba(20,47,43,0.3)', marginHorizontal: 100, paddingVertical: 10 }} onPress={Force_Stop_Test.bind(this, this.Test_Information_Callback.bind(this))}>
+              <Text style={{ textAlign: 'center' }}>{"STOP TEST"}</Text>
+            </TouchableOpacity>
+          </View>
+        );
+      }
+      else {
+        return (
+          <SafeAreaView style={{ flex: 1 }}>
+
+            {this.state.RefreshErrorMessage == undefined || this.state.RefreshErrorMessage == ""? 
+              this.HomeScreenView()
+              :
+              this.HomeScreenViewWithError()}
   
           </SafeAreaView>
         );

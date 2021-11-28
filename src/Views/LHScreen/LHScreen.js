@@ -64,16 +64,19 @@ export default class LHScreen extends Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
           {
             <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-              <View style={styles.liturgiaContainer}>
-                <LHButtons
-                  oficiCB={this.LHButtonCB.bind(this, "Ofici", false)}
-                  laudesCB={this.LHButtonCB.bind(this, "Laudes", false)}
-                  terciaCB={this.LHButtonCB.bind(this, "Tèrcia", false)}
-                  sextaCB={this.LHButtonCB.bind(this, "Sexta", false)}
-                  nonaCB={this.LHButtonCB.bind(this, "Nona", false)}
-                  vespresCB={this.LHButtonCB.bind(this, "Vespres", false)}
-                  completesCB={this.LHButtonCB.bind(this, "Completes", false)} />
-              </View>
+              {LH_VALUES.vespres == undefined ?
+                null :
+                <View style={styles.liturgiaContainer}>
+                  <LHButtons
+                    oficiCB={this.LHButtonCB.bind(this, "Ofici", false)}
+                    laudesCB={this.LHButtonCB.bind(this, "Laudes", false)}
+                    terciaCB={this.LHButtonCB.bind(this, "Tèrcia", false)}
+                    sextaCB={this.LHButtonCB.bind(this, "Sexta", false)}
+                    nonaCB={this.LHButtonCB.bind(this, "Nona", false)}
+                    vespresCB={this.LHButtonCB.bind(this, "Vespres", false)}
+                    completesCB={this.LHButtonCB.bind(this, "Completes", false)} />
+                </View>
+              }
             </ImageBackground>
           }
       </SafeAreaView>
