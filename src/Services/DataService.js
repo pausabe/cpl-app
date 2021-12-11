@@ -76,7 +76,7 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
   ])
   .then(() => {
     if(online_updates){
-      UpdateDatabase().then((result) => {
+      UpdateDatabase(G_VALUES.databaseVersion).then(() => {
         Refresh_Data();
       });
     }
