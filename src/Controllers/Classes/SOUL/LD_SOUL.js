@@ -171,7 +171,7 @@ export default class LD_SOUL {
                 //Dies festius -> IsSpecialDay
                 var specialResultId = this.IsSpecialDay(today_date, parImpar, ABC); //Returns -1 if not special day
                 if(specialResultId == "-1")
-                specialResultId = specialLliureResultId;
+                    specialResultId = specialLliureResultId;
 
                 GLOBAL.DBAccess.getLDSantoral(
                     today_string,
@@ -323,19 +323,19 @@ export default class LD_SOUL {
         var trinitat = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 7);
         var cosSang = new Date(trinitat.getFullYear(), trinitat.getMonth(), trinitat.getDate() + 7);
         if (today_string == '23-jun' && !(today_date.getFullYear() == cosSang.getFullYear() && today_date.getMonth() == cosSang.getMonth() && today_date.getDate() == cosSang.getDate()))
-            return '036';
+            return SoulKeys.LDSantoral_NaixamentJoanBaptista;
 
         //(Dia abans) Sants Pere i Pau, apòstols (038)
         if (today_string == '28-jun')
-            return '038';
+            return SoulKeys.LDSantoral_SantsPerePau;
 
         //(Dia abans) Assumpció de la Benaurada Verge Maria (059)
         if (today_string == '14-ago')
-            return '059';
+            return SoulKeys.LDSantoral_AssumpcioBenauradaVergeMaria;
 
         //(Dia abans) Nadal (142)
         if (today_string == '24-dic')
-            return '142';
+            return SoulKeys.Nadal;
 
         //(Dia abans) Pentecosta A (191) B (192) C (193)
         var diaAbansPentecosta = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() - 1);
@@ -343,11 +343,11 @@ export default class LD_SOUL {
             today_date.getFullYear() === diaAbansPentecosta.getFullYear()) {
             switch (ABC) {
                 case 'A':
-                    return '191';
+                    return SoulKeys.LDSantoral_PentecostaA;
                 case 'B':
-                    return '192';
+                    return SoulKeys.LDSantoral_PentecostaB;
                 case 'C':
-                    return '193';
+                    return SoulKeys.LDSantoral_PentecostaC;
             }
         }
 
@@ -362,7 +362,7 @@ export default class LD_SOUL {
         var granSacerdot = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 4);
         if (today_date.getDate() === granSacerdot.getDate() && today_date.getMonth() === granSacerdot.getMonth() &&
             today_date.getFullYear() === granSacerdot.getFullYear()) {
-            return paroimpar == 'I' ? '031' : '032';
+            return paroimpar == 'I' ? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII;
         }
 
         //Dissabte de la tercera setmana després de Pentecosta (033)
@@ -372,7 +372,7 @@ export default class LD_SOUL {
             today_date.getFullYear() === corImmaculat.getFullYear()) {
             // No si aquest dia es 29 de juny (St Pere i St Pau) -> St st pere i st pau > cor immaculat
             if (!(today_date.getMonth() == 5 && today_date.getDate() == 29))
-                return '033';
+                return SoulKeys.LDSantoral_CorImmaculatBenauradaVergeMaria;
         }
 
         //Dissabte abans del primer diumenge de setembre (102)
@@ -390,7 +390,7 @@ export default class LD_SOUL {
         var cinta = new Date(today_date.getFullYear(), 8, dies);
         if (today_date.getDate() === cinta.getDate() && today_date.getMonth() === cinta.getMonth() &&
             today_date.getFullYear() === cinta.getFullYear()) {
-            return '102';
+            return SoulKeys.LDSantoral_MareDeuCinta;
         }
 
         //Dilluns després de Pentecosta I (111) II (112)
@@ -398,18 +398,18 @@ export default class LD_SOUL {
         var benaurada = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 1);
         if (today_date.getDate() === benaurada.getDate() && today_date.getMonth() === benaurada.getMonth() &&
             today_date.getFullYear() === benaurada.getFullYear()) {
-            return paroimpar == 'I' ? '111' : '112';
+            return paroimpar == 'I' ? SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaII;
         }
 
         //Diumenge dins l’Octava de Nadal A (146) B (149) C (152)
         if (today_date.getMonth() == 11 && today_date.getDay() == 0 && today_date.getDate() >= 26 && today_date.getDate() <= 31) {
             switch (ABC) {
                 case 'A':
-                    return '146';
+                    return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepA;
                 case 'B':
-                    return '149';
+                    return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepB;
                 case 'C':
-                    return '152';
+                    return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepC;
             }
         }
 
@@ -417,11 +417,11 @@ export default class LD_SOUL {
         if (today_date.getMonth() == 0 && today_date.getDay() == 0 && today_date.getDate() >= 7 && today_date.getDate() <= 13) {
             switch (ABC) {
                 case 'A':
-                    return '157';
+                    return SoulKeys.LDSantoral_BaptismeSenyorA;
                 case 'B':
-                    return '158';
+                    return SoulKeys.LDSantoral_BaptismeSenyorB;
                 case 'C':
-                    return '159';
+                    return SoulKeys.LDSantoral_BaptismeSenyorC;
             }
         }
 
@@ -431,11 +431,11 @@ export default class LD_SOUL {
             today_date.getFullYear() === trinitat.getFullYear()) {
             switch (ABC) {
                 case 'A':
-                    return '160';
+                    return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatA;
                 case 'B':
-                    return '161';
+                    return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatB;
                 case 'C':
-                    return '162';
+                    return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatC;
             }
         }
 
@@ -446,11 +446,11 @@ export default class LD_SOUL {
             today_date.getFullYear() === cosSang.getFullYear()) {                
             switch (ABC) {
                 case 'A':
-                    return '163';
+                    return SoulKeys.LDSantoral_SantissimCosSangCristA;
                 case 'B':
-                    return '164';
+                    return SoulKeys.LDSantoral_SantissimCosSangCristB;
                 case 'C':
-                    return '165';
+                    return SoulKeys.LDSantoral_SantissimCosSangCristC;
             }
         }
 
@@ -461,11 +461,11 @@ export default class LD_SOUL {
             today_date.getFullYear() === sagratCor.getFullYear()) {
             switch (ABC) {
                 case 'A':
-                    return '166';
+                    return SoulKeys.LDSantoral_SagratCorJesusA;
                 case 'B':
-                    return '167';
+                    return SoulKeys.LDSantoral_SagratCorJesusB;
                 case 'C':
-                    return '168';
+                    return SoulKeys.LDSantoral_SagratCorJesusC;
             }
         }
 
@@ -478,17 +478,17 @@ export default class LD_SOUL {
         if(G_VALUES.lliures){
             // Pasqua 01-may -> 209 (Sant Josep obrer)
             if (today_date.getDate() == 1 && today_date.getMonth() == 4) {
-                return '209';
+                return SoulKeys.LDSantoral_SantJosepObrer;
             }
 
             // Ordinari 18-nov -> 210 ([-] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
             if (today_date.getDate() == 18 && today_date.getMonth() == 10) {
-                return '210';
+                return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostols;
             }
 
             // Ordinari 19-nov -> 211 ([BaD] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
             if (today_date.getDate() == 19 && today_date.getMonth() == 10) {
-                return '211';
+                return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD;
             }
         }
 

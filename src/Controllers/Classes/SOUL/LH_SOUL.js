@@ -4,15 +4,12 @@ import VespresSoul from './VespresSoul';
 import HoraMenorSoul from './HoraMenorSoul';
 import CompletesSoul from './CompletesSoul';
 import CelebracioSoul from './CelebracioSoul';
-import DBAdapter from '../../../Adapters/DBAdapter';
 import GLOBAL from '../../../Globals/Globals';
 import GF from '../../../Globals/GlobalFunctions';
 
 export default class LH_SOUL {
   constructor(Set_Soul_CB) {
     console.log("PlaceLog. Constructor LH_SOUL");
-
-    console.log("PAOLOOOOOOO", GLOBAL.DBAccess);
 
     this.queryRows = {
       salteriComuOfici: '', //1
@@ -104,25 +101,15 @@ export default class LH_SOUL {
 
     idDE_aux = this.findDiesEspecials(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta, G_VALUES.diocesi);
     this.idDE = idDE_aux;
-    console.log("[DEBUG] 2: " + G_VALUES.celType);
-    console.log("InfoLog. idDE_aux: " + idDE_aux);
     if (idDE_aux === -1)
       idTSF_aux = this.findTempsSolemnitatsFestes(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta);
     else idTSF_aux = -1;
-    console.log("[DEBUG] 3: " + G_VALUES.celType);
     this.idTSF = idTSF_aux;
-    console.log("InfoLog. idTSF_aux: " + idTSF_aux);
     var idTF = this.findTF(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta);
-    console.log("InfoLog. idTF: " + idTF);
-    console.log("[DEBUG] 4: " + G_VALUES.celType);
 
     this.tomorrowCal = '-';
     this.tomorrowCal = this.tomorrowCalVespres1CEL(G_VALUES.dataTomorrow.date, G_VALUES.dataTomorrow.LT,
-      G_VALUES.dataTomorrow.setmana, G_VALUES.pentacosta, G_VALUES.diocesi);
-
-    console.log("[DEBUG] 5: " + G_VALUES.celType);
-
-    console.log("InfoLog. tomorrowCal: " + this.tomorrowCal);
+    G_VALUES.dataTomorrow.setmana, G_VALUES.pentacosta, G_VALUES.diocesi);
 
     params = {
       date: G_VALUES.date,
@@ -134,10 +121,7 @@ export default class LH_SOUL {
       idDE: idDE_aux,
       Set_Soul_CB: Set_Soul_CB,
     }
-
-    console.log("params: ", params);
     
-
     this.oficiComuCount = 0;
     var c = 0;
 
@@ -337,7 +321,6 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.A_SETMANES || this.tomorrowCal === 'A') {
       c += 1;
       //Week begins with saturday
-      //{date.getDay() === 6 ? auxDay = 1 : auxDay = date.getDay() + 2}
       auxCicle = G_VALUES.cicle;
       if (this.tomorrowCal === 'A') {
         auxCicle = 1;
@@ -345,7 +328,6 @@ export default class LH_SOUL {
       }
       if (G_VALUES.LT === GLOBAL.O_ORDINARI && G_VALUES.dataTomorrow.LT === GLOBAL.A_SETMANES) id = 1;
       else id = (parseInt(auxCicle) - 1) * 7 + G_VALUES.date.getDay() + 2;
-      // console.log("tempsAdventSetmanes ID " + id);
       GLOBAL.DBAccess.getLiturgia("tempsAdventSetmanes", id, (result) => {
         this.queryRows.tempsAdventSetmanes = result;
         this.dataReceived(params);
@@ -397,10 +379,8 @@ export default class LH_SOUL {
       c += 1;
       id = G_VALUES.date.getDate() - 25;
       if (G_VALUES.date.getDate() === 1) id = 1; //poso 1 per posar algo, no importa. No llegirà res
-      // console.log("im here");
       GLOBAL.DBAccess.getLiturgia("tempsNadalOctava", id, (result) => {
         this.queryRows.tempsNadalOctava = result;
-        // console.log("what? + " + result.ant1Ofici);
         this.dataReceived(params);
       });
     }
@@ -530,7 +510,6 @@ export default class LH_SOUL {
       }
       if (this.tomorrowCal === 'A') cicle = 1;
       id = (cicle - 1) * 7 + weekDayNormalVESPRES;
-      //console.log("ID----------------------------> weekDayNormalVESPRES: " + weekDayNormalVESPRES + ", G_VALUES.cicle: " + parseInt(G_VALUES.cicle) +", id: " + id);
       GLOBAL.DBAccess.getLiturgia("salteriComuVespres", id, (result) => {
         this.queryRows.salteriComuVespres = result;
         this.dataReceived(params);
@@ -538,16 +517,14 @@ export default class LH_SOUL {
     }
 
     //taula 30.1 (#31): -
-    if (/*this.tomorrowCal === 'TSF' ||*/ params.idTSF !== -1 || G_VALUES.LT === GLOBAL.Q_TRIDU || G_VALUES.LT === GLOBAL.N_OCTAVA) {
+    if (params.idTSF !== -1 || G_VALUES.LT === GLOBAL.Q_TRIDU || G_VALUES.LT === GLOBAL.N_OCTAVA) {
       c += 1;
-      // console.log("hereeee1");
       if (params.idTSF === -1 && G_VALUES.LT === GLOBAL.N_OCTAVA) {
-        id = 1; //Només necessito Nadal (1) per N_OCTAVA
+        id = SoulKeys.tempsSolemnitatsFestes_Nadal; //Només necessito Nadal (1) per N_OCTAVA
       }
       else {
         id = params.idTSF;
       }
-      // console.log("OOOOOOOOOOO1 " + id);
       GLOBAL.DBAccess.getLiturgia("tempsSolemnitatsFestes", id, (result) => {
         this.queryRows.tempsSolemnitatsFestes = result;
         this.dataReceived(params);
@@ -558,7 +535,7 @@ export default class LH_SOUL {
     if (this.tomorrowCal === 'TSF' || params.idTSF !== -1 || G_VALUES.LT === GLOBAL.Q_TRIDU || G_VALUES.LT === GLOBAL.N_OCTAVA) {
       c += 1;
       if (params.idTSF === -1 && G_VALUES.LT === GLOBAL.N_OCTAVA) {
-        id = 1; //Només necessito Nadal (1) per N_OCTAVA
+        id = SoulKeys.tempsSolemnitatsFestes_Nadal; //Només necessito Nadal (1) per N_OCTAVA
       }
       else {
         id = params.idTSF;
@@ -592,9 +569,6 @@ export default class LH_SOUL {
       if (G_VALUES.LT === GLOBAL.N_OCTAVA) id = 9;
       if (G_VALUES.LT === GLOBAL.Q_SET_SANTA && (G_VALUES.date.getDay() === 4 || G_VALUES.date.getDay() === 5 || G_VALUES.date.getDay() === 6)) id = 9;
       if (G_VALUES.LT === GLOBAL.Q_TRIDU) id = 9;
-      console.log("G_VALUES.LT", G_VALUES.LT);
-      console.log("get day: " + G_VALUES.date.getDay());
-      console.log("COMPLETES ID: " + id);
       GLOBAL.DBAccess.getLiturgia("salteriComuCompletes", id, (result) => {
         this.queryRows.salteriComuCompletes = result;
         this.dataReceived(params);
@@ -605,7 +579,6 @@ export default class LH_SOUL {
     if (idTF !== -1) {
       c += 1;
       id = idTF;
-      // console.log("salteriComuOficiTF");
       GLOBAL.DBAccess.getLiturgia("salteriComuOficiTF", id, (result) => {
         this.queryRows.salteriComuOficiTF = result;
         this.queryRows.salteriComuOficiTF.com2 = '-';
@@ -619,34 +592,20 @@ export default class LH_SOUL {
 
     //taula 34.1 (#32): - i //taula 36 (today)
     if (G_VALUES.LT !== GLOBAL.Q_DIUM_PASQUA && (((params.idTSF === -1 && params.idDE === -1) && (G_VALUES.celType === 'S' || G_VALUES.celType === 'F')))) {
-      console.log("Log#32. Inici: avui no és Q_DIUM_PASQUA i (avui no és TSF ni DE i avui és o S o F)");
-      console.log("G_VALUES.LT: " + G_VALUES.LT);
-      console.log("params.idTSF: " + params.idTSF);
-      console.log("params.idDE: " + params.idDE);
-      console.log("G_VALUES.celType: " + G_VALUES.celType);
-      
-      
-      
-      
+
       c += 1;
 
       idDM = this.diesMov(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta, G_VALUES.celType);
-      console.log("Log#32. idDM avui: " + idDM);
       if (idDM === -1) {
-        console.log("Log#32. Avui no és dia movible");
         var day = GF.calculeDia(G_VALUES.date, G_VALUES.diocesi, G_VALUES.diaMogut, G_VALUES.diocesiMogut);
-        console.log("Log#32. day: " + day);
         GLOBAL.DBAccess.getSolMem("santsSolemnitats", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
           this.queryRows.santsSolemnitats = result;
-          console.log("Log#32. Avui result", result);
           this.getOficisComuns(params, result, false);
         });
       }
       else {
-        console.log("Log#32. Avui és dia movible");
         GLOBAL.DBAccess.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
           this.queryRows.santsSolemnitats = result;
-          console.log("Log#32. Avui result", result);
           this.getOficisComuns(params, result, false);
         });
       }
@@ -655,11 +614,8 @@ export default class LH_SOUL {
     //taula 34.2 (#32): - i //taula 36 (tomorrow!)
     if (this.tomorrowCal === 'S') {
       c += 1;
-      console.log("Log#32. [Extra] Demà cal S i avui és diumenge de precedència menor a la S");
       idDM = this.diesMov(G_VALUES.dataTomorrow.date, G_VALUES.dataTomorrow.LT, G_VALUES.dataTomorrow.setmana, G_VALUES.pentacosta, G_VALUES.dataTomorrow.celType);
-      console.log("Log#32. [Extra] idDM de demà: " + idDM);
       if (idDM !== -1) {
-        console.log("Log#32. [Extra] Demà hi ha dia movible");
         params.vespres1 = true;
         GLOBAL.DBAccess.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
           this.queryRows.santsSolemnitatsFVespres1 = result;
@@ -667,18 +623,15 @@ export default class LH_SOUL {
         });
       }
       else {
-        console.log("Log#32. [Extra] Demà no hi ha dia movible");
         var day = '-';
         if (G_VALUES.dataTomorrow.diaMogut !== '-' && GF.isDiocesiMogut(G_VALUES.diocesi, G_VALUES.dataTomorrow.diocesiMogut)) {
           day = G_VALUES.dataTomorrow.diaMogut;
         }
 
         if (day === '-') {
-          console.log("Log#32. [Extra] Demà no hi ha mogut i cal fer uns ajustaments");
           var auxDay = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth(), (G_VALUES.date.getDate() + 1));
           day = GF.calculeDia(auxDay, G_VALUES.diocesi, '-', '-');
         }
-        console.log("Log#32. [Extra] day (tomorrow) definitiu: " + day);
         params.vespres1 = true;
         GLOBAL.DBAccess.getSolMem("santsSolemnitats", day, G_VALUES.diocesi, G_VALUES.lloc, G_VALUES.diocesiName, G_VALUES.tempsespecific, (result) => {
           this.queryRows.santsSolemnitatsFVespres1 = result;
@@ -742,11 +695,9 @@ export default class LH_SOUL {
         GLOBAL.DBAccess.getOC(categoria, (result, cat) => {
           if (params.vespres1 && isForVespres1) {
             this.queryRows.OficisComunsVespres1 = result;
-            // console.log("oficis comuns log 1 - " + cat);
           }
           else {
             this.queryRows.OficisComuns = result;
-            // console.log("oficis comuns log 2 - " + cat);
           }
           this.dataReceived(params);
         });
@@ -770,7 +721,6 @@ export default class LH_SOUL {
 
   dataReceived(params) {
     this.count -= 1;
-    //console.log("Count: " + this.count);
 
     if (this.count === 0) {
       if (this.firstAccessCel) {
@@ -837,12 +787,9 @@ export default class LH_SOUL {
       this.tomorrowCal === '-' || //demà no hi ha cap celebració
       this.tomorrowCal === 'F' || //demà hi ha Festa
 
-
       //TODO: treure això i fer-ho bé... apanyo pq no tinc temps
       (G_VALUES.date.getFullYear() == 2019 && G_VALUES.date.getMonth() == 3 && G_VALUES.date.getDate() == 30) ||
 
-
-      /*(this.dataTomorrow.diaMogut !== '-' && GF.isDiocesiMogut(diocesi, this.dataTomorrow.diocesiMogut)) ||*/ //demà és mogut
       (this.idTSF !== -1 && this.tomorrowCal !== 'TSF') || //quan dues TSF seguides es fa Vespres1 de la segona TSF. Basicamen evito el conflicte de les Vespres de Sagrada Familia quan cau en 31/12 i l'andemà és Mare de Déi 1/1 (únic conflicte possible entre TSF)
       (this.idDE !== -1 && this.tomorrowCal === '-') || //avui és DE i demà no hi ha celebració
       (G_VALUES.date.getDay() === 0 && this.tomorrowCal === 'S' && G_VALUES.LT !== GLOBAL.O_ORDINARI) //Amb això generalitzo que DiumengeOrdinari>S i potser no és així
@@ -963,8 +910,6 @@ export default class LH_SOUL {
 
       console.log("InfoLog. tomorrowCalVespres1CEL: No és dium de set 1 d'advent");
 
-      // console.log("date1 " + date);
-
       this.idDETomorrow = this.findDiesEspecials(date, LT, setmana, pentacosta, diocesi);
       if (this.idDETomorrow !== -1 && this.idDETomorrow !== 1)
         return 'DE';
@@ -998,7 +943,7 @@ export default class LH_SOUL {
         date.getFullYear() === corImmaculat.getFullYear()) {
         var precAux = 10;
         if (precAux < this.prec) this.prec = precAux;
-        return 252;
+        return SoulKeys.santsMemories_CorImmaculatBenauradaVergeMaria;
       }
     }
 
@@ -1020,12 +965,12 @@ export default class LH_SOUL {
       if (celType === 'M') {
         var precAux = 10;
         if (precAux < this.prec) this.prec = precAux;
-        return 472;
+        return SoulKeys.santsMemories_MareDeuCinta;
       }
       if (celType === 'S') {
         var precAux = 4;
         if (precAux < this.prec) this.prec = precAux;
-        return 77;
+        return SoulKeys.santsSolemnitats_MareDeuCinta;
       }
     }
 
@@ -1037,7 +982,7 @@ export default class LH_SOUL {
         date.getFullYear() === granSacerdot.getFullYear()) {
         var precAux = 8;
         if (precAux < this.prec) this.prec = precAux;
-        return 52;
+        return SoulKeys.santsSolemnitats_JesucristGranSacerdotSempre;
       }
     }
 
@@ -1049,7 +994,7 @@ export default class LH_SOUL {
         date.getFullYear() === benaurada.getFullYear()) {
         var precAux = 10;
         if (precAux < this.prec) this.prec = precAux;
-        return 484;
+        return SoulKeys.santsMemories_BenauradaVergeMariaMareEsglesia;
       }
     }
 
@@ -1062,235 +1007,233 @@ export default class LH_SOUL {
   findTF(date, LT, setmana, pentacosta) {
     //1- Dissabte I Advent
     if (LT === GLOBAL.A_SETMANES && setmana === '1' && date.getDay() === 6) {
-      return 1;
+      return SoulKeys.salteriComuOficiTF_DissabteIAdvent;
     }
 
     //2- Dissabte II Advent
     if (LT === GLOBAL.A_SETMANES && setmana === '2' && date.getDay() === 6) {
-      return 2;
+      return SoulKeys.salteriComuOficiTF_DissabteIIAdvent;
     }
 
     //3- Divendres IV Advent (si és el 23 de desembre)
     if (LT === GLOBAL.A_SETMANES && setmana === '4' && date.getDate() === 23 && date.getMonth() == 11 && date.getDay() == 5) {
-      return 3;
+      return SoulKeys.salteriComuOficiTF_DivendresIVAdvent23Desembre;
     }
 
     //4- Divendres IV Advent (si és el 24 de desembre)
     if (LT === GLOBAL.A_SETMANES && setmana === '4' && date.getDate() === 24 && date.getMonth() == 11 && date.getDay() == 5) {
-      return 4;
+      return SoulKeys.salteriComuOficiTF_DivendresIVAdvent24Desembre;
     }
 
     //5- Dissabte IV Advent (24 de desembre)
     if (LT === GLOBAL.A_SETMANES && setmana === '4' && date.getDate() === 24 && date.getMonth() == 11 && date.getDay() == 6) {
-      return 5;
+      return SoulKeys.salteriComuOficiTF_DissabteIVAdvent;
     }
 
     //6- Dissabte I Nadal (si és el 2 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '1' && date.getDate() === 2 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 6;
+      return SoulKeys.salteriComuOficiTF_DissabteINadal2Gener;
     }
 
     //7- Dissabte I Nadal (si és el 3 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '1' && date.getDate() === 3 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 7;
+      return SoulKeys.salteriComuOficiTF_DissabteINadal3Gener;
     }
 
     //8- Dissabte I Nadal (si és el 4 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '1' && date.getDate() === 4 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 8;
+      return SoulKeys.salteriComuOficiTF_DissabteINadal4Gener;
     }
 
     //9- Dissabte I Nadal (si és el 5 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '1' && date.getDate() === 5 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 9;
+      return SoulKeys.salteriComuOficiTF_DissabteINadal5Gener;
     }
 
     //10- Dissabte II Nadal (si és el 7 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '2' && date.getDate() === 7 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 10;
+      return SoulKeys.salteriComuOficiTF_DissabteIINadal7Gener;
     }
 
     //11- Dissabte II Nadal (si és el 8 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '2' && date.getDate() === 8 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 11;
+      return SoulKeys.salteriComuOficiTF_DissabteIINadal8Gener;
     }
 
     //12- Dissabte II Nadal (si és el 9 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '2' && date.getDate() === 9 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 12;
+      return SoulKeys.salteriComuOficiTF_DissabteIINadal9Gener;
     }
 
     //13- Dissabte II Nadal (si és el 10 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '2' && date.getDate() === 10 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 13;
+      return SoulKeys.salteriComuOficiTF_DissabteIINadal10Gener;
     }
 
     //14- Dissabte II Nadal (si és el 11 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '2' && date.getDate() === 11 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 14;
+      return SoulKeys.salteriComuOficiTF_DissabteIINadal11Gener;
     }
 
     //15- Dissabte II Nadal (si és el 12 de gener)
     if (LT === GLOBAL.N_ABANS && setmana === '2' && date.getDate() === 12 && date.getMonth() === 0 && date.getDay() == 6) {
-      return 15;
+      return SoulKeys.salteriComuOficiTF_DissabteIINadal12Gener;
     }
 
     //16- Divendres després de Cendra, Quaresma
     if (LT === GLOBAL.Q_CENDRA && date.getDay() === 5) {
-      return 16;
+      return SoulKeys.salteriComuOficiTF_DivendresDespresCendraQuaresma;
     }
 
     //17- Dissabte després de Cendra, Quaresma
     if (LT === GLOBAL.Q_CENDRA && date.getDay() === 6) {
-      return 17;
+      return SoulKeys.salteriComuOficiTF_DissabteDespresCendraQuaresma;
     }
 
     //18- Dissabte I Quaresma
     if (LT === GLOBAL.Q_SETMANES && setmana === '1' && date.getDay() === 6) {
-      return 18;
+      return SoulKeys.salteriComuOficiTF_DissabteIQuaresma;
     }
 
     //19- Dissabte II Quaresma
     if (LT === GLOBAL.Q_SETMANES && setmana === '2' && date.getDay() === 6) {
-      return 19;
+      return SoulKeys.salteriComuOficiTF_DissabteIIQuaresma;
     }
 
     //20- Divendres IV Quaresma
     if (LT === GLOBAL.Q_SETMANES && setmana === '4' && date.getDay() === 5) {
-      return 20;
+      return SoulKeys.salteriComuOficiTF_DivendresIVQuaresma;
     }
 
     //21- Dissabte IV Quaresma
     if (LT === GLOBAL.Q_SETMANES && setmana === '4' && date.getDay() === 6) {
-      return 21;
+      return SoulKeys.salteriComuOficiTF_DissabteIVQuaresma;
     }
 
     //22- Dissabte V Quaresma
     if (LT === GLOBAL.Q_SETMANES && setmana === '5' && date.getDay() === 6) {
-      return 22;
+      return SoulKeys.salteriComuOficiTF_DissabteVQuaresma;
     }
 
     //23- Dissabte II Pasqua
     if (LT === GLOBAL.P_SETMANES && setmana === '2' && date.getDay() === 6) {
-      return 23;
+      return SoulKeys.salteriComuOficiTF_DissabteIIPasqua;
     }
 
     //24- Divendres IV Pasqua
     if (LT === GLOBAL.P_SETMANES && setmana === '4' && date.getDay() === 5) {
-      return 24;
+      return SoulKeys.salteriComuOficiTF_DivendresIVPasqua;
     }
 
     //25- Dissabte IV Pasqua
     if (LT === GLOBAL.P_SETMANES && setmana === '4' && date.getDay() === 6) {
-      return 25;
+      return SoulKeys.salteriComuOficiTF_issabteIVPasqua;
     }
 
     //26- Dissabte V Pasqua
     if (LT === GLOBAL.P_SETMANES && setmana === '5' && date.getDay() === 6) {
-      return 26;
+      return SoulKeys.salteriComuOficiTF_DissabteVPasqua;
     }
 
     //27- Dissabte VI Pasqua
     if (LT === GLOBAL.P_SETMANES && setmana === '6' && date.getDay() === 6) {
-      return 27;
+      return SoulKeys.salteriComuOficiTF_DissabteVIPasqua;
     }
 
     return -1;
   }
-
+  
   /*
     Return id of #diesespecials or -1 if there isn't there
   */
   findDiesEspecials(date, LT, setmana, pentacosta, diocesi) {
     //1- Sagrada Família quan és el 30 de desembre
     if (this.isSagradaFamilia(date) && date.getDate() === 30) {
-      return 1;
+      return SoulKeys.diesespecials_SagradaFamilia30Desembre;
     }
 
     //2- Mare de Déu (1 gener) quan cau en diumenge
     if (date.getMonth() === 0 && date.getDate() === 1 && date.getDay() === 0) {
-      return 2;
+      return SoulKeys.diesespecials_DiumengeMaredeDeu1Gener;
     }
 
     var auxDay = new Date(date.getFullYear(), date.getMonth(), (date.getDate() - 7));
 
     //3- Diumenge II de Nadal, quan s’escau el dia 2 de gener
     if (this.isSagradaFamilia(auxDay) && date.getDate() === 2) {
-      return 3;
+      return SoulKeys.diesespecials_DiumengeIINadal2Gener;
     }
 
     //4- Diumenge II de Nadal, quan s’escau el dia 3 de gener
     if (this.isSagradaFamilia(auxDay) && date.getDate() === 3) {
-      return 4;
+      return SoulKeys.diesespecials_DiumengeIINadal3Gener;
     }
 
     //5- Diumenge II de Nadal, quan s’escau el dia 4 de gener
     if (this.isSagradaFamilia(auxDay) && date.getDate() === 4) {
-      return 5;
+      return SoulKeys.diesespecials_DiumengeIINadal4Gener;
     }
 
     //6- Diumenge II de Nadal, quan s’escau el dia 5 de gener
     if (this.isSagradaFamilia(auxDay) && date.getDate() === 5) {
-      return 6;
+      return SoulKeys.diesespecials_DiumengeIINadal5Gener;
     }
 
     //7- Baptisme del Senyor quan és 7 de gener
     if (this.isBaptisme(date) && date.getDate() === 7) {
-      return 7;
+      return SoulKeys.diesespecials_BaptismeSenyor7Gener;
     }
 
     //8- Presentació del Senyor (2 febrer) quan cau en diumenge
     if (date.getMonth() === 1 && date.getDate() === 2 && date.getDay() === 0) {
-      return 8;
+      return SoulKeys.diesespecials_DiumengePresentacioSenyor2febrer;
     }
 
     //9- Transfiguració del Senyor (6 agost) quan cau en diumenge
     if (date.getMonth() === 7 && date.getDate() === 6 && date.getDay() === 0) {
-      return 9;
+      return SoulKeys.diesespecials_DiumengeTransfiguracioSenyor6;
     }
 
     //10- Exaltació Santa Creu (14 de setembre) quan cau en diumenge
     if (date.getMonth() === 8 && date.getDate() === 14 && date.getDay() === 0) {
-      return 10;
+      return SoulKeys.diesespecials_DiumengeExaltacioSantaCreu14Setembre;
     }
 
     //11- Dedic. Sant Joan del Laterà (9 de novembre) quan cau en diumenge
     if (date.getMonth() === 10 && date.getDate() === 9 && date.getDay() === 0) {
-      return 11;
+      return SoulKeys.diesespecials_DiumengeDedicacioSantJoanLatera9Novembre;
     }
 
-    // console.log("here1. " + diocesi + " " + date);
     //12- Santa Eulàlia (12 de febrer) quan cau en diumenge i és temps de durant l’any
     if ((diocesi === 'BaV' || diocesi === 'BaC') && date.getMonth() === 1 &&
       date.getDate() === 12 && date.getDay() === 0 && LT === GLOBAL.O_ORDINARI) {
-      // console.log("not here");
-      return 12;
+      return SoulKeys.diesespecials_DiumengeTempsDurantAnySantaEulalia12Febrer;
     }
 
     //13- Sant Joan (24 de juny) quan cau en diumenge
     if (date.getMonth() === 5 && date.getDate() === 24 && date.getDay() === 0) {
-      return 13;
+      return SoulKeys.diesespecials_DiumengeSantJoan24Juny;
     }
 
     //14- Sants Pere i Pau (29 de juny) quan cau en diumenge
     if (date.getMonth() === 5 && date.getDate() === 29 && date.getDay() === 0) {
-      return 14;
+      return SoulKeys.diesespecials_DiumengeSantsPerePau29Juny;
     }
 
     //15- Sant Jaume (25 de juliol) quan cau en diumenge
     if (date.getMonth() === 6 && date.getDate() === 25 && date.getDay() === 0) {
-      return 15;
+      return SoulKeys.diesespecials_DiumengeSantJaume25Juliol;
     }
 
     //16- Assumpció Maria (15 d’agost) quan cau en diumenge
     if (date.getMonth() === 7 && date.getDate() === 15 && date.getDay() === 0) {
-      return 16;
+      return SoulKeys.diesespecials_DiumengeAssumpcioMaria15Agost;
     }
 
     //17- Sta. Tecla (23 setembre) quan cau en diumenge
     if ((diocesi === 'TaV' || diocesi === 'TaD') && date.getMonth() === 8 &&
       date.getDate() === 23 && date.getDay() === 0) {
-      return 17;
+      return SoulKeys.diesespecials_DiumengeSantaTecla23Setembre;
     }
 
     //18- Mare de Déu de la Mercè (24 de setembre) quan cau en diumenge
@@ -1298,83 +1241,82 @@ export default class LH_SOUL {
       diocesi === 'GiD' || diocesi === 'LlD' || diocesi === 'SoD' || diocesi === 'TaD'
       || diocesi === 'ToD' || diocesi === 'UrD' || diocesi === 'ViD') &&
       date.getMonth() === 8 && date.getDate() === 24 && date.getDay() === 0) {
-      return 18;
+        return SoulKeys.diesespecials_DiumengeMareDeuMercè24Setembre;
     }
 
     //19- Tots Sants (1 de novembre) quan cau en diumenge
     if (date.getMonth() === 10 && date.getDate() === 1 && date.getDay() === 0) {
-      return 19;
+      return SoulKeys.diesespecials_DiumengeTotsSants1Novembre;
     }
 
     //20- Diumenge IV d’Advent, dia 18
     if (LT === GLOBAL.A_FERIES && setmana === '4' && date.getDate() === 18 && date.getDay() === 0) {
-      return 20;
+      return SoulKeys.diesespecials_DiumengeIVAdvent18;
     }
 
     //21- Diumenge IV d’Advent, dia 19
     if (LT === GLOBAL.A_FERIES && setmana === '4' && date.getDate() === 19 && date.getDay() === 0) {
-      return 21;
+      return SoulKeys.diesespecials_DiumengeIVAdvent19;
     }
 
     //22- Diumenge IV d’Advent, dia 20
     if (LT === GLOBAL.A_FERIES && setmana === '4' && date.getDate() === 20 && date.getDay() === 0) {
-      return 22;
+      return SoulKeys.diesespecials_DiumengeIVAdvent20;
     }
 
     //23- Diumenge IV d’Advent, dia 21
     if (LT === GLOBAL.A_FERIES && setmana === '4' && date.getDate() === 21 && date.getDay() === 0) {
-      return 23;
+      return SoulKeys.diesespecials_DiumengeIVAdvent21;
     }
 
     //24- Diumenge IV d’Advent, dia 22
     if (LT === GLOBAL.A_FERIES && setmana === '4' && date.getDate() === 22 && date.getDay() === 0) {
-      return 24;
+      return SoulKeys.diesespecials_DiumengeIVAdvent22;
     }
 
     //25- Diumenge IV d’Advent, dia 23
-    //console.log("log: "  + LT);
     if (LT === GLOBAL.A_FERIES && setmana === '4' && date.getDate() === 23 && date.getDay() === 0) {
-      return 25;
+      return SoulKeys.diesespecials_DiumengeIVAdvent23;
     }
 
     //26- Diumenge IV d’Advent, dia 24
     if (LT === GLOBAL.A_FERIES && setmana === '4' && date.getDate() === 24 && date.getDay() === 0) {
-      return 26;
+      return SoulKeys.diesespecials_DiumengeIVAdvent24;
     }
 
     //27- Diumenge III d'Advent, quan és fèria
     if (LT === GLOBAL.A_FERIES && setmana === '3' && date.getDay() === 0) {
-      return 27;
+      return SoulKeys.diesespecials_DiumengeIIIAdventFeria;
     }
 
     //28- Quan el dia 24 de desembre (fèria) s’escau en dilluns
     if (date.getMonth() === 11 && date.getDate() === 24 && date.getDay() === 1) {
-      return 28;
+      return SoulKeys.diesespecials_24DesembreDilluns;
     }
 
     //29- Quan el dia 24 de desembre (fèria) s’escau en dimarts
     if (date.getMonth() === 11 && date.getDate() === 24 && date.getDay() === 2) {
-      return 29;
+      return SoulKeys.diesespecials_24DesembreDimarts;
     }
 
     //30- Quan el dia 24 de desembre (fèria) s’escau en dimecres 
     if (date.getMonth() === 11 && date.getDate() === 24 && date.getDay() === 3) {
-      return 30;
+      return SoulKeys.diesespecials_24DesembreDimecres;
     }
 
     //31- Quan el dia 24 de desembre (fèria) s’escau en dijous
     if (date.getMonth() === 11 && date.getDate() === 24 && date.getDay() === 4) {
-      return 31;
+      return SoulKeys.diesespecials_24DesembreDijous;
     }
 
     //32- Quan el dia 24 de desembre (fèria) s’escau en divendres
     if (date.getMonth() === 11 && date.getDate() === 24 && date.getDay() === 5) {
-      return 32;
+      return SoulKeys.diesespecials_24DesembreDivendres;
     }
 
     //33- Quan el dia 24 de desembre (fèria) s’escau en dissabte
     if (date.getMonth() === 11 && date.getDate() === 24 && date.getDay() === 6) {
-      return 33;
+      return SoulKeys.diesespecials_24DesembreDissabte;
     }
 
     return -1;
@@ -1389,67 +1331,64 @@ export default class LH_SOUL {
 
     //1- Nadal
     if (date.getDate() === 25 && date.getMonth() === 11) {
-      return 1;
+      return SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
 
     //2- Sagrada Família
     if (this.isSagradaFamilia(date)) {
-      return 2;
+      return SoulKeys.tempsSolemnitatsFestes_SagradaFamilia;
     }
 
     //3- Mare de Déu
     if (date.getDate() === 1 && date.getMonth() === 0) {
-      return 3;
+      return SoulKeys.tempsSolemnitatsFestes_MareDéu;
     }
 
     //4- Epifania
     if (date.getDate() === 6 && date.getMonth() === 0) {
-      return 4;
+      return SoulKeys.tempsSolemnitatsFestes_Epifania;
     }
 
     //5- Baptisme
     if (this.isBaptisme(date)) {
-      return 5;
+      return SoulKeys.tempsSolemnitatsFestes_Baptisme;
     }
 
     //6- Ascensió
     if (date.getDay() === 0 && LT === GLOBAL.P_SETMANES && setmana === '7') {
-      return 6;
+      return SoulKeys.tempsSolemnitatsFestes_Ascensio;
     }
 
     //7- Diumenge pentacosta
-    //console.log('PENTACOSTA: ' + pentacosta.getDate()+'/'+pentacosta.getMonth()+'/'+pentacosta.getFullYear());
     if (date.getDate() === pentacosta.getDate() && date.getMonth() === pentacosta.getMonth() &&
       date.getFullYear() === pentacosta.getFullYear()) {
-      return 7;
+        return SoulKeys.tempsSolemnitatsFestes_DiumengePentacosta;
     }
 
     //8- Santíssima trinitat
     var trinitat = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 7);
-    console.log('PENTACOSTA: ' + pentacosta.getDate()+'/'+pentacosta.getMonth()+'/'+pentacosta.getFullYear());
-    console.log('TRINITAT: ' + trinitat.getDate()+'/'+trinitat.getMonth()+'/'+trinitat.getFullYear());
     if (date.getDate() === trinitat.getDate() && date.getMonth() === trinitat.getMonth() &&
       date.getFullYear() === trinitat.getFullYear()) {
-      return 8;
+        return SoulKeys.tempsSolemnitatsFestes_SantissimaTrinitat;
     }
 
     //9- Santíssim cos i sang de crist
     var cosSang = new Date(trinitat.getFullYear(), trinitat.getMonth(), trinitat.getDate() + 7);
     if (date.getDate() === cosSang.getDate() && date.getMonth() === cosSang.getMonth() &&
       date.getFullYear() === cosSang.getFullYear()) {
-      return 9;
+        return SoulKeys.tempsSolemnitatsFestes_SantissimCosSangCrist;
     }
 
     //10- Sagrat cor de Jesús
     var sagratCor = new Date(cosSang.getFullYear(), cosSang.getMonth(), cosSang.getDate() + 5);
     if (date.getDate() === sagratCor.getDate() && date.getMonth() === sagratCor.getMonth() &&
       date.getFullYear() === sagratCor.getFullYear()) {
-      return 10;
+        return SoulKeys.tempsSolemnitatsFestes_SagratCorJesus;
     }
 
     //11- Nostre senyor Jesucrist
     if (date.getDay() === 0 && LT === GLOBAL.O_ORDINARI && setmana === '34') {
-      return 11;
+      return SoulKeys.tempsSolemnitatsFestes_NostreSenyorJesucrist;
     }
 
     return -1;
