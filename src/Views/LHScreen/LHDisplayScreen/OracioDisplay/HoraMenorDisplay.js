@@ -19,9 +19,6 @@ export default class HoraMenorDisplay extends Component {
 
   constructor(props){
     super(props);
-
-    console.log("PlaceLog. HoraMenorDisplay");
-
     this.styles = {
       black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
       blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),

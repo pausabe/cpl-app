@@ -54,7 +54,7 @@ export default class LHScreen extends Component {
 
   testErrorCallBack() {
     /*this.setState({testInfo: "something went wrong (bad text)"});
-    console.log("InfoLog. super error (bad text))");
+    console.log("Super error (bad text))");
     this.testing = false;*/
   }
 

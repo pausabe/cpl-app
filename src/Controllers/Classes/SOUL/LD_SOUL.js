@@ -1,11 +1,10 @@
 import DBAdapter from '../../../Adapters/DBAdapter';
 import GF from '../../../Globals/GlobalFunctions';
 import GLOBAL from '../../../Globals/Globals';
+import SoulKeys from './SoulKeys';
 
 export default class LD_SOUL {
     constructor(Set_Soul_CB) {
-        console.log("PlaceLog. Constructor LD_SOUL");
-
         this.makeQueryies(Set_Soul_CB);
     }
 
@@ -15,8 +14,6 @@ export default class LD_SOUL {
             var today_string = GF.calculeDia(today_date, G_VALUES.diocesi, G_VALUES.diaMogut, G_VALUES.diocesiMogut);
 
             var idSpecialVespers = this.GetSpecialVespers(today_date, today_string, G_VALUES.ABC);
-
-            console.log("idSpecialVespers: ", idSpecialVespers);
             
             var part_row_extra_visperas = {
                 Vespers: false,
@@ -41,8 +38,6 @@ export default class LD_SOUL {
                         G_VALUES.dataTomorrow.setmana,
                         G_VALUES.dataTomorrow.LT,
                         (result) => {
-                            console.log("tomorrow result:", result);
-
                             part_row_extra_visperas = {
                                 Vespers: true,
                                 VetllaPasqua: false,
@@ -155,9 +150,6 @@ export default class LD_SOUL {
 
         //var isFeria = (celType == '-' && (LT == 'A_FERIES' || LT == 'N_OCTAVA' || LT == 'N_ABANS'));
         var isFeria = this.IsSpecialChristmas(today_string);
-
-        console.log("isFeria", isFeria);
-
         if (G_VALUES.dataTomorrow.LT == "Q_DIUM_PASQUA") {
             var vetlla_pasqual_data = this.GetVetllaPasqual(ABC);
             Set_Soul_CB(vetlla_pasqual_data);

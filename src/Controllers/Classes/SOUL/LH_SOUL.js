@@ -6,11 +6,10 @@ import CompletesSoul from './CompletesSoul';
 import CelebracioSoul from './CelebracioSoul';
 import GLOBAL from '../../../Globals/Globals';
 import GF from '../../../Globals/GlobalFunctions';
+import SoulKeys from './SoulKeys';
 
 export default class LH_SOUL {
   constructor(Set_Soul_CB) {
-    console.log("PlaceLog. Constructor LH_SOUL");
-
     this.queryRows = {
       salteriComuOfici: '', //1
       salteriComuInvitatori: '', //2
@@ -79,8 +78,6 @@ export default class LH_SOUL {
   }
 
   makeQueryies(Set_Soul_CB) {
-    console.log("PlaceLog. makeQueryies SOUL");
-
     this.prec = 22;
     if (G_VALUES.date.getDay() === 0) {//diumenge
       this.prec = 9;
@@ -94,11 +91,6 @@ export default class LH_SOUL {
         this.prec = 2;
       }
     }
-    console.log("InfoLog. Precedència inicial: " + this.prec);
-
-    console.log("[DEBUG] 1: " + G_VALUES.celType);
-    
-
     idDE_aux = this.findDiesEspecials(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta, G_VALUES.diocesi);
     this.idDE = idDE_aux;
     if (idDE_aux === -1)
@@ -681,16 +673,12 @@ export default class LH_SOUL {
     }
 
     this.count = c; //number of queryies
-    console.log("InfoLog. " + c + " accessos.");
   }
 
   getOficisComuns(params, result, isForVespres1) {
     if (result) {
       categoria = result.Categoria;
-      console.log("InfoLog. Categoria: " + "." + categoria + ". [" + isForVespres1 + "]", params);
-
       if (categoria !== '0000') {
-        console.log("InfoLog. Més un accéss extra per OficisComuns");
         //taula 36 (#??): -
         GLOBAL.DBAccess.getOC(categoria, (result, cat) => {
           if (params.vespres1 && isForVespres1) {
@@ -780,9 +768,6 @@ export default class LH_SOUL {
 
   calls(Set_Soul_CB) {
     this.setSomeInfo();
-
-    console.log("PlaceLog. Calls");
-
     if (
       this.tomorrowCal === '-' || //demà no hi ha cap celebració
       this.tomorrowCal === 'F' || //demà hi ha Festa
@@ -794,18 +779,15 @@ export default class LH_SOUL {
       (this.idDE !== -1 && this.tomorrowCal === '-') || //avui és DE i demà no hi ha celebració
       (G_VALUES.date.getDay() === 0 && this.tomorrowCal === 'S' && G_VALUES.LT !== GLOBAL.O_ORDINARI) //Amb això generalitzo que DiumengeOrdinari>S i potser no és així
     ) {
-      console.log("InfoLog. Calls vespres1 - 1");
       this.LITURGIA.vespres1 = false;
       vespresCelDEF = this.CEL.VESPRES;
       
     }
     else if (this.tomorrowCal === 'T') { //demà és divendres Sant
-      console.log("InfoLog. Calls vespres1 - 2");
       this.LITURGIA.vespres1 = false;
       vespresCelDEF = this.CEL.VESPRES1;
     }
     else {
-      console.log("InfoLog. Calls vespres1 - 3");
       this.LITURGIA.vespres1 = true;
       vespresCelDEF = this.CEL.VESPRES1;
     }
@@ -894,40 +876,22 @@ export default class LH_SOUL {
   }
 
   tomorrowCalVespres1CEL(date, LT, setmana, pentacosta, diocesi) {
-    console.log("PlaceLog. tomorrowCalVespres1CEL. G_VALUES.dataTomorrow.celType: " + G_VALUES.dataTomorrow.celType);
-    // console.log("InfoLog. pentacosta: " + pentacosta);
     if (LT !== GLOBAL.Q_DIUM_PASQUA) {
-      console.log("InfoLog. tomorrowCalVespres1CEL: No és dium pasqua");
       if (LT === GLOBAL.Q_DIUM_RAMS) return 'DR';
-
-      console.log("InfoLog. tomorrowCalVespres1CEL: No és dium rams");
-
       if (date.getDay() === 5 && LT === GLOBAL.Q_TRIDU) return 'T';
-
-      console.log("InfoLog. tomorrowCalVespres1CEL: No és tridu");
-
       if (date.getDay() === 0 && setmana === '1' && LT === GLOBAL.A_SETMANES) return 'A';
-
-      console.log("InfoLog. tomorrowCalVespres1CEL: No és dium de set 1 d'advent");
 
       this.idDETomorrow = this.findDiesEspecials(date, LT, setmana, pentacosta, diocesi);
       if (this.idDETomorrow !== -1 && this.idDETomorrow !== 1)
         return 'DE';
 
-      console.log("InfoLog. tomorrowCalVespres1CEL: No és dia especial");
-
       this.idTSFTomorrow = this.findTempsSolemnitatsFestes(date, LT, setmana, pentacosta);
-      console.log("InfoLog. tomorrowCalVespres1CEL: TOMORROW IS: " + this.idTSFTomorrow);
       if (this.idTSFTomorrow !== -1) {
         return 'TSF';
       }
 
-      console.log("InfoLog. tomorrowCalVespres1CEL: No és TSF.. per tan és S (si demà realment és S)");
-
       if (G_VALUES.dataTomorrow.celType === 'S') return 'S';
     }
-    console.log("InfoLog. tomorrowCalVespres1CEL: És dium pasqua o demà no és re (ni S)");
-
     return '-';
   }
 
@@ -977,7 +941,6 @@ export default class LH_SOUL {
     //santsSolemnitats F - Dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
     if (celType === 'F') {
       var granSacerdot = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 4);
-      console.log("InfoLog. granSacerdot: " + granSacerdot);
       if (date.getDate() === granSacerdot.getDate() && date.getMonth() === granSacerdot.getMonth() &&
         date.getFullYear() === granSacerdot.getFullYear()) {
         var precAux = 8;
@@ -989,7 +952,6 @@ export default class LH_SOUL {
     //santsMemories M - Dilluns despres de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
     if (celType === 'M') {
       var benaurada = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 1);
-      console.log("benaurada: " + benaurada);
       if (date.getDate() === benaurada.getDate() && date.getMonth() === benaurada.getMonth() &&
         date.getFullYear() === benaurada.getFullYear()) {
         var precAux = 10;
@@ -1326,9 +1288,6 @@ export default class LH_SOUL {
     Return id of #tempsSolemnitatsFestes or -1 if there isnt there
   */
   findTempsSolemnitatsFestes(date, LT, setmana, pentacosta) {
-    console.log("PlaceLog. findTempsSolemnitatsFestes ", date);
-    console.log("InfoLog. pentacosta: " + pentacosta);
-
     //1- Nadal
     if (date.getDate() === 25 && date.getMonth() === 11) {
       return SoulKeys.tempsSolemnitatsFestes_Nadal;

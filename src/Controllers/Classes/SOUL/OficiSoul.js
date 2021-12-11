@@ -3,15 +3,12 @@ import GF from '../../../Globals/GlobalFunctions';
 
 export default class OficiSoul {
   constructor(TABLES, CEL, Set_Soul_CB, SOUL) {
-    console.log("PlaceLog. Constructor OficiSoul");
     this.makePrayer(TABLES, CEL, Set_Soul_CB, SOUL);
   }
 
   makePrayer(TABLES, CEL, Set_Soul_CB, SOUL){
     var llati = G_VALUES.llati;
     var date = G_VALUES.date;
-
-    console.log("PlaceLog. MakePrayer OficiSoul");
 
         this.state = {
           salteriComuOfici: TABLES.salteriComuOfici,

@@ -24,7 +24,6 @@ export default class SettingsScreen extends Component {
   }
 
   render() {
-    console.log("paolo: ", Constants);
       if(!this.state || this.state && !this.state.options){
           return (
             <View style={styles.scrollContainer}>

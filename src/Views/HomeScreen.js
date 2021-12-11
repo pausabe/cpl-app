@@ -196,7 +196,6 @@ export default class HomeScreen extends Component {
   }
 
   render() {
-    console.log("RENDER HomeScreen");
     try {
       var date_getdate = G_VALUES.date.getDate();
       var date_getmonth = G_VALUES.date.getMonth();

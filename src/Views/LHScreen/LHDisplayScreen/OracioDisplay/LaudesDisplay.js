@@ -21,9 +21,6 @@ export default class LaudesDisplay extends Component {
 
   constructor(props){
     super(props);
-
-    console.log("PlaceLog. LaudesDisplay");
-
     var auxNumSalmInv = G_VALUES.numSalmInv;
 
     if(!GF.salmInvExists(auxNumSalmInv,props.titols)){
@@ -624,7 +621,6 @@ export default class LaudesDisplay extends Component {
       else return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
 
     if(numEnter !== numGuio*3+3){//every prayer have 3 spaces and intro have 3 more
-      console.log("InfoLog. incorrect spaces in pregaries");
       return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
     }
     else{

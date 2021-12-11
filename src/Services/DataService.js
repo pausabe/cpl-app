@@ -68,7 +68,6 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
           break;
       }
       G_VALUES.darkModeEnabled = aux_darkMode;
-      console.log("G_VALUES.darkModeEnabled: " + G_VALUES.darkModeEnabled);
     }),
     SettingsManager.getSettingNumSalmInv((r) => G_VALUES.numSalmInv = r),
     SettingsManager.getSettingNumAntMare((r) => G_VALUES.numAntMare = r),
@@ -87,9 +86,6 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
 }
 
 function Refresh_Data() {
-
-  console.log("[Refresh_Data]");
-
   return GLOBAL.DBAccess.getAnyLiturgic(
     G_VALUES.date.getFullYear(),
     G_VALUES.date.getMonth(),

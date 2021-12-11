@@ -21,9 +21,6 @@ export default class OficiDisplay extends Component {
 
   constructor(props){
     super(props);
-
-    console.log("PlaceLog. OficiDisplay");
-
     var auxNumSalmInv = G_VALUES.numSalmInv;
 
     if(!GF.salmInvExists(auxNumSalmInv,props.titols)){

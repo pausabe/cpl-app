@@ -436,12 +436,11 @@ export default class HomeScreenController extends Component {
   }
 
   HomeScreenView(){
-    console.log("G_VALUES.date: ", G_VALUES.date);
-        var yesterday = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth());
-        yesterday.setDate(G_VALUES.date.getDate() - 1);
-        var date = G_VALUES.date;
-        var minDatePicker = G_VALUES.minDatePicker;
-        var maxDatePicker = G_VALUES.maxDatePicker;
+    var yesterday = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth());
+    yesterday.setDate(G_VALUES.date.getDate() - 1);
+    var date = G_VALUES.date;
+    var minDatePicker = G_VALUES.minDatePicker;
+    var maxDatePicker = G_VALUES.maxDatePicker;
     return (
       <View style={{ flex: 1 }}>
 

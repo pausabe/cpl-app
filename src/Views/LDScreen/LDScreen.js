@@ -37,9 +37,6 @@ export default class LDScreen extends Component {
   Refresh_Layout() {
 
     try {
-
-      console.log("[DEBUG] Refresh_Layout ", LD_VALUES.VetllaPasqua);
-
       this.CURRENT_VESPERS_SELECTOR = (!LD_VALUES.VetllaPasqua && LD_VALUES.Vespers && G_VALUES.date.getHours() >= GLOBALS.afternoon_hour && LD_VALUES.Lectura2Vespers != '-')? VESPERS_SELECTOR_TYPES.VESPERS : VESPERS_SELECTOR_TYPES.NORMAL;
 
       this.setState({

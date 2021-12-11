@@ -27,7 +27,6 @@ const Stack = createStackNavigator();
 
 function getHeaderTitle(route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
-  console.log("routeName: " + routeName);
   switch (routeName) {
     case 'Home-Tab':
       return 'CPL';
@@ -40,7 +39,6 @@ function getHeaderTitle(route) {
 
 function getHeaderLeft(navigation, route){
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
-  console.log("routeName: " + routeName);
   switch (routeName) {
     case 'Home-Tab':
       var params;
@@ -68,7 +66,6 @@ function getHeaderLeft(navigation, route){
 
 function getHeaderRight(navigation, route){
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
-  console.log("routeName: " + routeName);
   switch (routeName) {
     case 'Home-Tab':
       var params;

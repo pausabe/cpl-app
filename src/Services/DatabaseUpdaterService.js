@@ -1,52 +1,52 @@
-
+import { Asset } from 'expo-asset';
 import { CPLDataBase } from './DatabaseOpenerService';
-import { Timeout } from '../Utils/Timeout'
 
-//Resolves true when all changes went ok or false otherwise
+const vervoseDatabaseUpdater = true;
+
 export function UpdateDatabase(currentDatabaseVersion){
     return new Promise((resolve) => {
         if(currentDatabaseVersion == undefined){
             resolve();
         }
         else{
-            GetOnlineChanges(currentDatabaseVersion).then((json_updates) => {
+            GetUpdates(currentDatabaseVersion).then((json_updates) => {
                 if (json_updates == undefined || json_updates == "") {
                     resolve();
                 }
                 else{
-                    MakeChanges(json_updates).then((someChangedDoneCorrectly) => {
-                        resolve(someChangedDoneCorrectly);
+                    MakeChanges(json_updates).then(() => {
+                        resolve();
                     })
                     .catch((error) => {
-                        console.log("[EXCEPTION Check_For_Updates] 1", error);
+                        LogError("1", "UpdateDatabase", error);
                         resolve()
                     });
                 }
             })
             .catch((error) => {
-                console.log("[EXCEPTION Check_For_Updates] 2", error);
+                LogError("2", "UpdateDatabase", error);
                 resolve()
             });
         }
     });
 }
 
-function GetOnlineChanges(version) {
-    // TODO: rethink
-    return "";
-    /*var url = GLOBAL.server_url + version;
-    return Timeout(
-        2000,
-        fetch(url, { headers: { 'Cache-Control': 'no-cache' } } )
-        .then((response) => response.json())
-        .then((responseJson) => {
-            console.log("[EXCEPTION GetOnlineChanges] Correct fetch");
-            return responseJson;
-        })
-        .catch((error) => {
-            console.log("[EXCEPTION GetOnlineChanges] Fetch error:", error);
-        })
-    );*/
+function GetUpdates(currentDatabaseVersion) {
+    return new Promise((resolve, reject) => {
+        // Refresh the script from expo OTA updates
+        //Asset.fromModule(require('../Assets/DatabaseUpdateScript/UpdateScript.json'));
+
+        // Get the data from the file
+        var dataJson = require('../Assets/DatabaseUpdateScript/UpdateScript.json');
+
+        // Get only the new (diff between database version and updates count)
+        var scriptsVersion = dataJson.length;
+        Log("scriptsVersion = " + scriptsVersion, "UpdateDatabase");
+        Log("currentDatabaseVersion = " + currentDatabaseVersion, "UpdateDatabase");
+        // TODO:
+
+        resolve(dataJson);
+    });
 }
   
 function MakeChanges(json_updates){
@@ -55,9 +55,11 @@ function MakeChanges(json_updates){
         let sql;
         for (var i = 0; i < json_updates.length; i++) {
             var change = json_updates[i]
+            //Log("change = ", "MakeChanges", change);
             switch (change.action) {
                 //UPDATE
-                case "2":
+                case 2:
+                    Log("UPDATE", "MakeChanges");
                     var set_statement = ""
                     var j = 0
                     for (const key in change.values) {
@@ -74,7 +76,7 @@ function MakeChanges(json_updates){
                 break;
 
                 //INSERT
-                case "1":
+                case 1:
                     var aux = JSON.stringify(change.values)
                     aux = aux.replace(/{/g, "")
                     aux = aux.replace(/}/g, "")
@@ -95,13 +97,14 @@ function MakeChanges(json_updates){
                 break;
                     
                 //DELETE
-                case "3":
+                case 3:
                     sql =  "DELETE FROM " + change.table_name + " WHERE id = " + change.row_id;
                     promises.push(ExecuteQuery(sql))
                 break;
             }
         }
-        console.log("[ONLINE_UPDATES MakeChanges] promises.length: ", promises.length);
+        Log("promises.length = " + promises.length, "MakeChanges");
+        Log("json_updates.length = " + json_updates.length, "MakeChanges");
         if(promises.length != json_updates.length) {
             resolve(false);
         }
@@ -113,7 +116,7 @@ function MakeChanges(json_updates){
                 else{
                     let total_res = true;
                     for (var i = 0; i < res.length; i++) {
-                        console.log("[ONLINE_UPDATES MakeChanges] promise " + i + " result:", res[i]);
+                        Log("promise " + i + " result:", "MakeChanges", res[i]);
                         if (!res[i]){
                             total_res = false;
                         }
@@ -122,7 +125,7 @@ function MakeChanges(json_updates){
                 }
             })
             .catch((error) => {
-                console.log("[EXCEPTION ONLINE_UPDATES MakeChanges]", error);
+                LogError(error, "MakeChanges");
                 resolve(false);
             });
         }
@@ -136,13 +139,35 @@ function ExecuteQuery(query) {
                 tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
                     resolve(true)
                 }, (SQLTransaction, SQLError) => {
-                    console.log("[ONLINE_UPDATES ExecuteQuery] error in query (" + query + "): ", SQLError);
+                    LogError("error in query (" + query + ")", "ExecuteQuery", SQLError);
                     resolve(false)
                 });
             });
         } 
         catch (error) {
-            console.log("[ONLINE_UPDATES ExecuteQuery] error: ", error);
+            LogError(error, "ExecuteQuery");
         }
     });
+}
+
+function Log(text, function_name, parameter){
+    if(vervoseDatabaseUpdater){
+        logText = "[DatebaseUpdaterService " + function_name + "] " + text;
+        if(parameter == undefined){
+            console.log(logText);
+        }
+        else{
+            console.log(logText, parameter);
+        }
+    }
+}
+
+function LogError(text, function_name, parameter){
+    logText = "[DatebaseUpdaterService " + function_name + "] ERROR: " + text;
+        if(parameter == undefined){
+            console.log(logText);
+        }
+        else{
+            console.log(logText, parameter);
+        }
 }

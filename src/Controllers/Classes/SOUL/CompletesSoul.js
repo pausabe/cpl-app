@@ -5,14 +5,12 @@ import GLOBAL from '../../../Globals/Globals';
 
 export default class CompletesSoul{
   constructor(TABLES, Set_Soul_CB, SOUL) {
-    console.log("PlaceLog. Constructor CompletesSoul");
     this.makePrayer(TABLES, Set_Soul_CB, SOUL);
   }
 
   makePrayer(TABLES, Set_Soul_CB, SOUL){
     var date = G_VALUES.date;
 
-    console.log("PlaceLog. MakePrayer CompletesSoul");
     this.state = {
       salteriComuCompletes: TABLES.salteriComuCompletes,
       diversos: TABLES.diversos,
@@ -123,10 +121,6 @@ export default class CompletesSoul{
           else this.COMPLETES.himne = this.state.himneCat2;
         }
     }
-
-    console.log("G_VALUES.LT:", G_VALUES.LT);
-    console.log("setmana:", setmana);
-    console.log("selected himne:", this.COMPLETES.himne);
 
     this.COMPLETES.antifones = true;
     this.COMPLETES.ant1 = this.state.salteriComuCompletes.ant1;

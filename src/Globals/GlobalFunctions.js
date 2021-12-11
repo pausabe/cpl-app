@@ -289,11 +289,8 @@ module.exports = {
       var length = text.length;
       var lastChar = text.charAt(length-1);
       if(lastChar === ' ' || lastChar === '\n') return text.slice(0,length-1);
-      // console.log("InfoLog (good text): _" + text + "_");
     }
     else{
-      // console.log("InfoLog. rs NOT possible. Something went wrong!");
-      // console.log("InfoLog (bad text): _" + text + "_");
     }
     return text;
   },
@@ -871,7 +868,6 @@ module.exports = {
   },
 
   bisbeId(diocesiName){
-    console.log("diocesiName",diocesiName);
     switch (diocesiName) {
       case "Barcelona":
         return(39);

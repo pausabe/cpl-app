@@ -1,116 +1,116 @@
-class SoulKeys {
-    static LDSantoral_JesucristGranSacerdotPerSempreI = 31;
-    static LDSantoral_JesucristGranSacerdotPerSempreII = 32;
-    static LDSantoral_CorImmaculatBenauradaVergeMaria= 33;
-    static LDSantoral_NaixamentJoanBaptista = 36;
-    static LDSantoral_SantsPerePau = 38;
-    static LDSantoral_AssumpcioBenauradaVergeMaria  = 59;
-    static LDSantoral_MareDeuCinta = 102;
-    static LDSantoral_BenauradaVergeMariaMareEsglesiaI = 111;
-    static LDSantoral_BenauradaVergeMariaMareEsglesiaI = 112;
-    static LDSantoral_Nadal = 142;
-    static LDSantoral_SagradaFamiliaJesusMariaJosepA = 146;
-    static LDSantoral_SagradaFamiliaJesusMariaJosepB = 149;
-    static LDSantoral_SagradaFamiliaJesusMariaJosepC = 152;
-    static LDSantoral_BaptismeSenyorA = 157;
-    static LDSantoral_BaptismeSenyorB = 158;
-    static LDSantoral_BaptismeSenyorC = 159;
-    static LDSantoral_SolemnitatSantissimaTrinitatA = 160;
-    static LDSantoral_SolemnitatSantissimaTrinitatB = 161;
-    static LDSantoral_SolemnitatSantissimaTrinitatC = 162;
-    static LDSantoral_SantissimCosSangCristA = 163;
-    static LDSantoral_SantissimCosSangCristB = 164;
-    static LDSantoral_SantissimCosSangCristC = 165;
-    static LDSantoral_SagratCorJesusA = 166;
-    static LDSantoral_SagratCorJesusB = 167;
-    static LDSantoral_SagratCorJesusC = 168;
-    static LDSantoral_PentecostaA = 191;
-    static LDSantoral_PentecostaB = 192;
-    static LDSantoral_PentecostaC = 193;
-    static LDSantoral_SantJosepObrer = 209;
-    static LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD = 210;
-    static LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD = 211;
+module.exports = {
+    LDSantoral_JesucristGranSacerdotPerSempreI: 31,
+    LDSantoral_JesucristGranSacerdotPerSempreII: 32,
+    LDSantoral_CorImmaculatBenauradaVergeMaria: 33,
+    LDSantoral_NaixamentJoanBaptista: 36,
+    LDSantoral_SantsPerePau: 38,
+    LDSantoral_AssumpcioBenauradaVergeMaria: 59,
+    LDSantoral_MareDeuCinta: 102,
+    LDSantoral_BenauradaVergeMariaMareEsglesiaI: 111,
+    LDSantoral_BenauradaVergeMariaMareEsglesiaI: 112,
+    LDSantoral_Nadal: 142,
+    LDSantoral_SagradaFamiliaJesusMariaJosepA: 146,
+    LDSantoral_SagradaFamiliaJesusMariaJosepB: 149,
+    LDSantoral_SagradaFamiliaJesusMariaJosepC: 152,
+    LDSantoral_BaptismeSenyorA: 157,
+    LDSantoral_BaptismeSenyorB: 158,
+    LDSantoral_BaptismeSenyorC: 159,
+    LDSantoral_SolemnitatSantissimaTrinitatA: 160,
+    LDSantoral_SolemnitatSantissimaTrinitatB: 161,
+    LDSantoral_SolemnitatSantissimaTrinitatC: 162,
+    LDSantoral_SantissimCosSangCristA: 163,
+    LDSantoral_SantissimCosSangCristB: 164,
+    LDSantoral_SantissimCosSangCristC: 165,
+    LDSantoral_SagratCorJesusA: 166,
+    LDSantoral_SagratCorJesusB: 167,
+    LDSantoral_SagratCorJesusC: 168,
+    LDSantoral_PentecostaA: 191,
+    LDSantoral_PentecostaB: 192,
+    LDSantoral_PentecostaC: 193,
+    LDSantoral_SantJosepObrer: 209,
+    LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD: 210,
+    LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD: 211,
 
-    static tempsSolemnitatsFestes_Nadal = 1;
+    tempsSolemnitatsFestes_Nadal: 1,
 
-    static santsMemories_CorImmaculatBenauradaVergeMaria = 252;
-    static santsMemories_MareDeuCinta = 472;
-    static santsMemories_BenauradaVergeMariaMareEsglesia = 484;
+    santsMemories_CorImmaculatBenauradaVergeMaria: 252,
+    santsMemories_MareDeuCinta: 472,
+    santsMemories_BenauradaVergeMariaMareEsglesia: 484,
 
-    static santsSolemnitats_MareDeuCinta = 77;
-    static santsSolemnitats_JesucristGranSacerdotSempre = 52;
+    santsSolemnitats_MareDeuCinta: 77,
+    santsSolemnitats_JesucristGranSacerdotSempre: 52,
 
-    static salteriComuOficiTF_DissabteIAdvent = 1;
-    static salteriComuOficiTF_DissabteIIAdvent= 2;
-    static salteriComuOficiTF_DivendresIVAdvent23Desembre = 3;
-    static salteriComuOficiTF_DivendresIVAdvent24Desembre = 4;
-    static salteriComuOficiTF_DissabteIVAdvent = 5;
-    static salteriComuOficiTF_DissabteINadal2Gener = 6;
-    static salteriComuOficiTF_DissabteINadal3Gener = 7;
-    static salteriComuOficiTF_DissabteINadal4Gener = 8;
-    static salteriComuOficiTF_DissabteINadal5Gener = 9;
-    static salteriComuOficiTF_DissabteIINadal7Gener = 10;
-    static salteriComuOficiTF_DissabteIINadal8Gener = 11;
-    static salteriComuOficiTF_DissabteIINadal9Gener = 12;
-    static salteriComuOficiTF_DissabteIINadal10Gener = 13;
-    static salteriComuOficiTF_DissabteIINadal11Gener = 14;
-    static salteriComuOficiTF_DissabteIINadal12Gener = 15;
-    static salteriComuOficiTF_DivendresDespresCendraQuaresma = 16;
-    static salteriComuOficiTF_DissabteDespresCendraQuaresma = 17;
-    static salteriComuOficiTF_DissabteIQuaresma = 18;
-    static salteriComuOficiTF_DissabteIIQuaresma = 19;
-    static salteriComuOficiTF_DivendresIVQuaresma = 20;
-    static salteriComuOficiTF_DissabteIVQuaresma = 21;
-    static salteriComuOficiTF_DissabteVQuaresma = 22;
-    static salteriComuOficiTF_DissabteIIPasqua = 23;
-    static salteriComuOficiTF_DivendresIVPasqua = 24;
-    static salteriComuOficiTF_issabteIVPasqua = 25;
-    static salteriComuOficiTF_DissabteVPasqua = 26;
-    static salteriComuOficiTF_DissabteVIPasqua = 27;
+    salteriComuOficiTF_DissabteIAdvent: 1,
+    salteriComuOficiTF_DissabteIIAdvent: 2,
+    salteriComuOficiTF_DivendresIVAdvent23Desembre: 3,
+    salteriComuOficiTF_DivendresIVAdvent24Desembre: 4,
+    salteriComuOficiTF_DissabteIVAdvent: 5,
+    salteriComuOficiTF_DissabteINadal2Gener: 6,
+    salteriComuOficiTF_DissabteINadal3Gener: 7,
+    salteriComuOficiTF_DissabteINadal4Gener: 8,
+    salteriComuOficiTF_DissabteINadal5Gener: 9,
+    salteriComuOficiTF_DissabteIINadal7Gener: 10,
+    salteriComuOficiTF_DissabteIINadal8Gener: 11,
+    salteriComuOficiTF_DissabteIINadal9Gener: 12,
+    salteriComuOficiTF_DissabteIINadal10Gener: 13,
+    salteriComuOficiTF_DissabteIINadal11Gener: 14,
+    salteriComuOficiTF_DissabteIINadal12Gener: 15,
+    salteriComuOficiTF_DivendresDespresCendraQuaresma: 16,
+    salteriComuOficiTF_DissabteDespresCendraQuaresma: 17,
+    salteriComuOficiTF_DissabteIQuaresma: 18,
+    salteriComuOficiTF_DissabteIIQuaresma: 19,
+    salteriComuOficiTF_DivendresIVQuaresma: 20,
+    salteriComuOficiTF_DissabteIVQuaresma: 21,
+    salteriComuOficiTF_DissabteVQuaresma: 22,
+    salteriComuOficiTF_DissabteIIPasqua: 23,
+    salteriComuOficiTF_DivendresIVPasqua: 24,
+    salteriComuOficiTF_issabteIVPasqua: 25,
+    salteriComuOficiTF_DissabteVPasqua: 26,
+    salteriComuOficiTF_DissabteVIPasqua: 27,
 
-    static diesespecials_SagradaFamilia30Desembre = 1;
-    static diesespecials_DiumengeMaredeDeu1Gener = 2;
-    static diesespecials_DiumengeIINadal2Gener = 3;
-    static diesespecials_DiumengeIINadal3Gener = 4;
-    static diesespecials_DiumengeIINadal4Gener = 5;
-    static diesespecials_DiumengeIINadal5Gener = 6;
-    static diesespecials_BaptismeSenyor7Gener = 7;
-    static diesespecials_DiumengePresentacioSenyor2febrer = 8;
-    static diesespecials_DiumengeTransfiguracioSenyor6 = 9;
-    static diesespecials_DiumengeExaltacioSantaCreu14Setembre = 10;
-    static diesespecials_DiumengeDedicacioSantJoanLatera9Novembre = 11;
-    static diesespecials_DiumengeTempsDurantAnySantaEulalia12Febrer = 12;
-    static diesespecials_DiumengeSantJoan24Juny = 13;
-    static diesespecials_DiumengeSantsPerePau29Juny = 14;
-    static diesespecials_DiumengeSantJaume25Juliol = 15;
-    static diesespecials_DiumengeAssumpcioMaria15Agost = 16;
-    static diesespecials_DiumengeSantaTecla23Setembre = 17;
-    static diesespecials_DiumengeMareDeuMercè24Setembre = 18;
-    static diesespecials_DiumengeTotsSants1Novembre = 19;
-    static diesespecials_DiumengeIVAdvent18 = 20;
-    static diesespecials_DiumengeIVAdvent19 = 21;
-    static diesespecials_DiumengeIVAdvent20 = 22;
-    static diesespecials_DiumengeIVAdvent21 = 23;
-    static diesespecials_DiumengeIVAdvent22 = 24;
-    static diesespecials_DiumengeIVAdvent23 = 25;
-    static diesespecials_DiumengeIVAdvent24 = 26;
-    static diesespecials_DiumengeIIIAdventFeria = 27;
-    static diesespecials_24DesembreDilluns = 28;
-    static diesespecials_24DesembreDimarts = 29;
-    static diesespecials_24DesembreDimecres = 30;
-    static diesespecials_24DesembreDijous = 31;
-    static diesespecials_24DesembreDivendres= 32;
-    static diesespecials_24DesembreDissabte = 33;
+    diesespecials_SagradaFamilia30Desembre: 1,
+    diesespecials_DiumengeMaredeDeu1Gener: 2,
+    diesespecials_DiumengeIINadal2Gener: 3,
+    diesespecials_DiumengeIINadal3Gener: 4,
+    diesespecials_DiumengeIINadal4Gener: 5,
+    diesespecials_DiumengeIINadal5Gener: 6,
+    diesespecials_BaptismeSenyor7Gener: 7,
+    diesespecials_DiumengePresentacioSenyor2febrer: 8,
+    diesespecials_DiumengeTransfiguracioSenyor6: 9,
+    diesespecials_DiumengeExaltacioSantaCreu14Setembre: 10,
+    diesespecials_DiumengeDedicacioSantJoanLatera9Novembre: 11,
+    diesespecials_DiumengeTempsDurantAnySantaEulalia12Febrer: 12,
+    diesespecials_DiumengeSantJoan24Juny: 13,
+    diesespecials_DiumengeSantsPerePau29Juny: 14,
+    diesespecials_DiumengeSantJaume25Juliol: 15,
+    diesespecials_DiumengeAssumpcioMaria15Agost: 16,
+    diesespecials_DiumengeSantaTecla23Setembre: 17,
+    diesespecials_DiumengeMareDeuMercè24Setembre: 18,
+    diesespecials_DiumengeTotsSants1Novembre: 19,
+    diesespecials_DiumengeIVAdvent18: 20,
+    diesespecials_DiumengeIVAdvent19: 21,
+    diesespecials_DiumengeIVAdvent20: 22,
+    diesespecials_DiumengeIVAdvent21: 23,
+    diesespecials_DiumengeIVAdvent22: 24,
+    diesespecials_DiumengeIVAdvent23: 25,
+    diesespecials_DiumengeIVAdvent24: 26,
+    diesespecials_DiumengeIIIAdventFeria: 27,
+    diesespecials_24DesembreDilluns: 28,
+    diesespecials_24DesembreDimarts: 29,
+    diesespecials_24DesembreDimecres: 30,
+    diesespecials_24DesembreDijous: 31,
+    diesespecials_24DesembreDivendres: 32,
+    diesespecials_24DesembreDissabte: 33,
 
-    static tempsSolemnitatsFestes_Nadal = 1;
-    static tempsSolemnitatsFestes_SagradaFamilia = 2;
-    static tempsSolemnitatsFestes_MareDéu = 3;
-    static tempsSolemnitatsFestes_Epifania = 4;
-    static tempsSolemnitatsFestes_Baptisme = 5;
-    static tempsSolemnitatsFestes_Ascensio = 6;
-    static tempsSolemnitatsFestes_DiumengePentacosta = 7;
-    static tempsSolemnitatsFestes_SantissimaTrinitat = 8;
-    static tempsSolemnitatsFestes_SantissimCosSangCrist = 9;
-    static tempsSolemnitatsFestes_SagratCorJesus = 10;
-    static tempsSolemnitatsFestes_NostreSenyorJesucrist = 11;
+    tempsSolemnitatsFestes_Nadal: 1,
+    tempsSolemnitatsFestes_SagradaFamilia: 2,
+    tempsSolemnitatsFestes_MareDéu: 3,
+    tempsSolemnitatsFestes_Epifania: 4,
+    tempsSolemnitatsFestes_Baptisme: 5,
+    tempsSolemnitatsFestes_Ascensio: 6,
+    tempsSolemnitatsFestes_DiumengePentacosta: 7,
+    tempsSolemnitatsFestes_SantissimaTrinitat: 8,
+    tempsSolemnitatsFestes_SantissimCosSangCrist: 9,
+    tempsSolemnitatsFestes_SagratCorJesus: 10,
+    tempsSolemnitatsFestes_NostreSenyorJesucrist: 11
 }

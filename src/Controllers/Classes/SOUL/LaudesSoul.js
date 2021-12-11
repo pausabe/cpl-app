@@ -10,7 +10,6 @@ import GF from '../../../Globals/GlobalFunctions';
 
 export default class LaudesSoul {
   constructor(TABLES, CEL, Set_Soul_CB, SOUL) {
-    console.log("PlaceLog. Constructor LaudesSoul");
     this.makePrayer(TABLES, CEL, Set_Soul_CB, SOUL);
   }
 
@@ -19,7 +18,6 @@ export default class LaudesSoul {
     var date = G_VALUES.date;
     var diocesiName = G_VALUES.diocesiName;
 
-    console.log("PlaceLog. MakePrayer LaudesSoul");
     this.state = {
       salteriComuLaudes: TABLES.salteriComuLaudes,
       salteriComuInvitatori: TABLES.salteriComuInvitatori,

@@ -11,7 +11,6 @@ export default class HoraMenorSoul {
     var llati = G_VALUES.llati;
     var date = G_VALUES.date;
 
-    console.log("PlaceLog. MakePrayer HoraMenorSoul: " + llati);
     this.state = {
       salteriComuHora: TABLES.salteriComuHora,
       tempsOrdinariOracions: TABLES.tempsOrdinariOracions,

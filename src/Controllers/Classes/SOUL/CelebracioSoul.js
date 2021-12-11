@@ -6,7 +6,6 @@ export default class CelebracioSoul {
   }
 
   makePrayer(TABLES, idTSF, idDE, Set_Soul_CB, SOUL, tomorrowCal){
-    console.log("PlaceLog. MakePrayer CelebracioSoul");
     date = G_VALUES.date;
     celType = G_VALUES.celType;
     diocesi = G_VALUES.diocesi;
@@ -292,7 +291,6 @@ export default class CelebracioSoul {
       this.INFO_CEL.typeCel = celType;
     }
 
-    console.log("tomorrowCal: " + tomorrowCal + " celType: " + celType);
     if(tomorrowCal === '-'){
       if(idDE === -1){
         if(idTSF === -1){
@@ -327,7 +325,6 @@ export default class CelebracioSoul {
       if(idTSF !== -1) celType = 'TSF';
       else if(idDE !== -1) celType = 'DE';
 
-      // console.log("tomorrowCal! "+celType + ", " + tomorrowCal);
       switch (tomorrowCal) {
         case "S":
           this.createCel(TABLES, "SF", celType, 'NF');
@@ -373,8 +370,6 @@ export default class CelebracioSoul {
   }
 
   createCel(TABLES, type, tomCal, F){
-    console.log("PlaceLog. CelbracioSoul - createCel: " + type+", "+tomCal);
-
     diocesi = G_VALUES.diocesi;
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
@@ -561,7 +556,6 @@ export default class CelebracioSoul {
   makeDP(TABLES, type, tomCal){
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
-    console.log("PlaceLog. making Diumenge de Pasqua");
     //::::::>>>>>DP<<<<<::::::
     //::::::DP-INFO_CEL::::::
     this.INFO_CEL.nomCel = 'Diumenge de Pasqua',
@@ -747,7 +741,6 @@ export default class CelebracioSoul {
   makeVespres1TSF(TABLES, type, tomCal){
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
-    console.log("PlaceLog. makeVespres1TSF");
 
     //::::::>>>>>TSF<<<<<::::::
     //::::::TSF-INFO_CEL::::::
@@ -794,7 +787,6 @@ export default class CelebracioSoul {
   makeTSF(TABLES, type, tomCal){
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
-    console.log("PlaceLog. makeTSF");
     //::::::>>>>>TSF<<<<<::::::
     //::::::TSF-INFO_CEL::::::
     this.INFO_CEL.nomCel = TABLES.tempsSolemnitatsFestes.nomMemoria;
@@ -1002,7 +994,6 @@ export default class CelebracioSoul {
   makeDE(TABLES, type, tomCal){
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
-    console.log("PlaceLog. makeDE");
     //::::::>>>>>DE<<<<<::::::
     //::::::DE-INFO_CEL::::::
     this.INFO_CEL.nomCel = TABLES.diesespecials.nomMemoria;
@@ -1201,7 +1192,6 @@ export default class CelebracioSoul {
   }
 
   makeVespres1DE(TABLES, type, tomCal){
-    console.log("PlaceLog. makeVespres1DE");
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
 
@@ -1240,7 +1230,6 @@ export default class CelebracioSoul {
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
 
-    console.log("PlaceLog. makeSF");
     //::::::>>>>>SF<<<<<::::::
     //::::::SF-INFO_CEL::::::
     this.INFO_CEL.nomCel = TABLES.santsSolemnitats.nomMemoria;
@@ -1582,7 +1571,6 @@ export default class CelebracioSoul {
 
 
     if(!(F === 'F' && G_VALUES.date.getDay() === 6)){
-      console.log("PlaceLog. making vespres 2 celebracioSoul: " + F);
       //::::::SF-VESPRES2::::::
       //SF-VESPRES2 -> HIMNE
       if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){
@@ -1668,7 +1656,6 @@ export default class CelebracioSoul {
   }
 
   makeVespres1SF(TABLES, type, tomCal){
-    console.log("PlaceLog. makeVespres1SF");
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
 
@@ -1765,7 +1752,6 @@ export default class CelebracioSoul {
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
 
-    console.log("PlaceLog. makeML");
     //::::::>>>>>ML<<<<<::::::
     //::::::INFO_CEL::::::
     this.INFO_CEL.nomCel = TABLES.santsMemories.nomMemoria;
@@ -2185,7 +2171,6 @@ export default class CelebracioSoul {
   makeDR(TABLES, type, tomCal){
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
-    console.log("PlaceLog. makeDR");
     if(llati === 'true') this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaRams.ant1Vespres1;
@@ -2214,7 +2199,6 @@ export default class CelebracioSoul {
   makeT(TABLES, type, tomCal){
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
-    console.log("PlaceLog. makeT");
     if(llati === 'true') this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresllati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaTridu.ant1Vespres;
@@ -2244,7 +2228,6 @@ export default class CelebracioSoul {
   makeA(TABLES, type, tomCal){
     llati = G_VALUES.llati;
     anyABC = G_VALUES.ABC;
-    console.log("PlaceLog. makeA");
     if(llati === 'true')
       this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresCat;

@@ -54,7 +54,6 @@ export default class DBAdapter {
 
   getAnyLiturgic(year, month, day, callback, errorCallback) {
     var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND mes = '${month + 1}' AND dia = '${day}'`;
-    console.log("QueryLog. QUERY ANY: " + query);
     this.executeQuery(query,
       result => {
         this.getTomorrow(result.rows.item(0), year, month, day, callback);
@@ -69,43 +68,30 @@ export default class DBAdapter {
     month2 = tomorrow.getMonth();
     day2 = tomorrow.getDate();
 
-    console.log("year2", year2);
-
     var query = `SELECT * FROM anyliturgic WHERE any = '${year2}' AND mes = '${month2 + 1}' AND dia = '${day2}'`;
-    console.log("QUERY AnyTomorrow: " + query);
     this.executeQuery(query,
       result => {
-        // console.log(">>Tomorrow: " + result.rows.item(0).dia + '/' + result.rows.item(0).mes);
         this.getPentacosta(r1, result.rows.item(0), year, callback);
       });
   }
 
   getPentacosta(r1, r2, year, callback) {
-    console.log("paolo temps 1: ", GLOBAL);
-    console.log("wtf: ", GLOBAL.DBAccess);
-    console.log("wtf: ", GLOBAL.P_SETMANES);
-    console.log("wtf: ", GLOBAL.afternoon_hour);
     var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND temps = 'P_SETMANES' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`;
-    console.log("QueryLog. getPentacosta: " + query);
     this.executeQuery(query,
       result => {
         var pentacosta = new Date(year, (result.rows.item(0).mes - 1), result.rows.item(0).dia);
         console.log(result.rows.item(0).dia + '/' + (result.rows.item(0).mes - 1) + '/' + year);        
-        console.log("InfoLog. Pentacosta 1: " + pentacosta.getDate() + '/' + pentacosta.getMonth() + '/' + pentacosta.getFullYear());
         this.getMinMaxDates(r1, r2, pentacosta, callback);
       });
   }
 
   getMinMaxDates(r1, r2, r3, callback){
     var query = `SELECT MIN(CAST(any As INTEGER)) as minAny, (SELECT MIN(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT)) as minMes, (SELECT MIN(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MIN(CAST(anyliturgic2.mes As INTEGER)) as TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) as TEXT))) as minDia, MAX(any) as maxAny, (SELECT MAX(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any as INTEGER)) As TEXT)) as maxMes, (SELECT MAX(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MAX(CAST(anyliturgic2.mes as INTEGER)) As TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT))) as maxDia FROM anyliturgic`;
-    console.log("QueryLog. getMinMaxDates: " + query);
     this.executeQuery(query,
       result => {
         var marginDays = 2;
         minDate = new Date(result.rows.item(0).minAny, (result.rows.item(0).minMes - 1), (result.rows.item(0).minDia + marginDays));
         maxDate = new Date(result.rows.item(0).maxAny, (result.rows.item(0).maxMes - 1), (result.rows.item(0).maxDia - marginDays));
-        console.log("minDate " + minDate.getDate() + "/" + minDate.getMonth() + "/" + minDate.getFullYear() + " || ", minDate);
-        console.log("maxDate " + maxDate.getDate() + "/" + maxDate.getMonth() + "/" + maxDate.getFullYear() + " || ", maxDate);
         callback(r1, r2, r3, minDate, maxDate);
       });
   }
@@ -127,16 +113,11 @@ export default class DBAdapter {
     else if (lloc === 'Diòcesi') {
       auxDiocesiQuery = `'${auxDiocesi}' OR Diocesis = '${this.transformDiocesiName(auxDiocesiName, 'Catedral')}' OR Diocesis = '${this.transformDiocesiName(auxDiocesiName, 'Ciutat')}'`;
     }
-    console.log("paolo temps 2: " + temps);
     var query = `SELECT * FROM ${table} WHERE (Diocesis = ${auxDiocesiQuery} OR Diocesis = '-') AND dia = '${dia}' AND Temps = '${temps}'`;
-
-    console.log("QueryLog. QUERY SOL_MEM: " + query);
 
     this.executeQuery(query,
       result => {
-        console.log("InfoLog. SolMem Result size: " + result.rows.length);
         var index = this.findCorrect(result.rows, result.rows.length, auxDiocesi, auxDiocesiName, lloc);
-        console.log("InfoLog. Index definitive: " + index);
         callback(result.rows.item(index));
       });
   }
@@ -179,8 +160,6 @@ export default class DBAdapter {
   getSolMemDiesMov(table, id, callback) {
     var query = `SELECT * FROM ${table} WHERE id = '${id}'`;
 
-    console.log("QueryLog. QUERY SOL_MEM-Dies_Mov: " + query);
-
     this.executeQuery(query,
       result => callback(result.rows.item(0)));
   }
@@ -194,15 +173,12 @@ export default class DBAdapter {
 
   getOC(categoria, callback) {
     var query = `SELECT * FROM OficisComuns WHERE Categoria = '${categoria}'`;
-    console.log("QueryLog. QUERY getOC: " + query);
-    console.log("InfoLog. Oficis comuns log -1 - " + categoria);
     this.executeQuery(query,
       result => callback(result.rows.item(0), categoria));
   }
 
   getVispers(idSpecialVespers, callback){
       var query = `SELECT * FROM LDSantoral WHERE id = '${idSpecialVespers}'`;
-      console.log("QueryLog. QUERY getLDSantoral: " + query);
       this.executeQuery(query,
         result => callback(result.rows.item(0))
       );
@@ -218,13 +194,8 @@ export default class DBAdapter {
         //Normal santoral day
         var diocesis = GF.transformDiocesiName(G_VALUES.diocesiName, "Diòcesi")
         var query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${cicleABC}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${diaSetmana}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${parImpar}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE LDSantoral.Categoria = '${celType}'AND LDSantoral.tempsespecific = '${tempsEspecific}'AND LDSantoral.dia = '${day}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${diocesis}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
-        console.log("QueryLog. QUERY getLDSantoral: " + query);
         this.executeQuery(query,
           result => {
-
-            console.log("InfoLog. getLDSantoral Result size: " + result.rows.length);
-            console.log("Santoral result", result);
-            
             if (result.rows.length == 0) {
               //Not in Santoral
               callback(normal_result);
@@ -268,7 +239,6 @@ export default class DBAdapter {
       else {
         //Special day
         var query = `SELECT * FROM LDSantoral WHERE id = '${specialResultId}'`;
-        console.log("QueryLog. QUERY getLDSantoral: " + query);
         this.executeQuery(query,
           result => {
 
@@ -312,10 +282,8 @@ export default class DBAdapter {
   getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parImpar, callback) {
 
     var query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${tempsEspecific}' AND DiadelaSetmana = '${diaSetmana}' AND NumSet = '${setmana}'`;
-    console.log("QueryLog. QUERY getLDNormal: " + query);
     this.executeQuery(query,
       result => {
-        console.log("InfoLog. getLDNormal Result size: " + result.rows.length);
         var i = this.LDGetIndexNormal(result, cicleABC, parImpar, diaSetmana);
         callback(result.rows.item(i));
       });
@@ -394,7 +362,6 @@ export default class DBAdapter {
     else {
       index += (result.rows.length - rows.length);
     }
-    console.log("InfoLog. Index definitive: " + index);
     return index;
   }
 

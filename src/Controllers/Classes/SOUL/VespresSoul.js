@@ -5,7 +5,6 @@ import GF from '../../../Globals/GlobalFunctions';
 
 export default class VespresSoul {
   constructor(TABLES, CEL, Set_Soul_CB, SOUL) {
-    console.log("PlaceLog. Constructor VesprsSoul");
     this.makePrayer(TABLES, CEL, Set_Soul_CB, SOUL)
   }
 
@@ -13,9 +12,6 @@ export default class VespresSoul {
     var llati = G_VALUES.llati;
     var date = G_VALUES.date;
     var diocesiName = G_VALUES.diocesiName;
-
-      console.log("PlaceLog. MakePrayer VespresSoul");
-
       this.state = {
         salteriComuVespres: TABLES.salteriComuVespres,
         tempsOrdinariOracions: TABLES.tempsOrdinariOracions,
