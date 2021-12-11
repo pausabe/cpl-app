@@ -65,7 +65,7 @@ export default class LHScreen extends Component {
           {
             <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
               {LH_VALUES.vespres == undefined ?
-                 null :
+                null :
                 <View style={styles.liturgiaContainer}>
                   <LHButtons
                     oficiCB={this.LHButtonCB.bind(this, "Ofici", false)}

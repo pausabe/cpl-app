@@ -293,3 +293,13 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 - Expo updated to SDK v42
 - Updates when starting the app (and not in background)
 - OTA updates now at starting the app
+
+### v4.1.0 (27.11.2021)[56]
+- Nou any 2022 litúrgic
+- [Android] Error que no deixava obrir l'aplicació corregit
+
+### v4.1.1 (28.11.2021)[56]
+- Missatge d'error quan hi ha hagut algun problema amb la base de dades
+
+### v4.2.0 (11.12.2021)[57]
+- Canvis a la base de dades

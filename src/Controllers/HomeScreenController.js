@@ -364,7 +364,7 @@ export default class HomeScreenController extends Component {
 
   HandleGetDataError(msgError){
     console.log("RefreshErrorMessage: ", msgError);
-    var messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.";
+    var messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
     this.setState({ 
       RefreshErrorMessage: messageToShow }, 
       async () => await SplashScreen.hideAsync());

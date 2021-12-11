@@ -49,3 +49,11 @@ https://github.com/pausabe/deploy-cpl
 
     prod_channel
     test_channel
+
+#### Instructions
+
+    Due some errors database cannot be updated using OTA updates.
+    Therefore, 
+    - Update only database changes: use Deploy website
+    - Update only code changes: use expo build and upload the build to the stores
+    - Update code & database: use expo build with a new release-channel name (prod_channel_4.1)
