@@ -1,21 +1,16 @@
-import { Platform } from 'react-native';
 import GLOBAL from '../Globals/Globals';
 import GF from '../Globals/GlobalFunctions';
-import { log } from 'react-native-reanimated';
-import { OpenDatabaseIfNotOpenedYet, CPLDataBase } from './OpenDatabaseHelper.js';
+import { OpenDatabaseIfNotOpenedYet, CPLDataBase } from '../Services/DatabaseOpenerService';
 
 export default class DBAdapter {
   constructor() {
   }
 
   executeQuery(query, callback, errorCallback) {
-    console.log("[DB-MANAGEMENT] executeQuery: ", query);
     OpenDatabaseIfNotOpenedYet().then(() => {
-      console.log("[DB-MANAGEMENT] CPLDataBase", CPLDataBase);
       if(CPLDataBase != undefined){
         CPLDataBase.transaction((tx) => {
           tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-            console.log("[DB-MANAGEMENT] OK - SQLResultSet: ", SQLResultSet);
             callback(SQLResultSet);
           }, (SQLTransaction, SQLError) => {
             console.log("[executeQuery] NOK - error in query (" + query + "): ", SQLError);
@@ -48,7 +43,6 @@ export default class DBAdapter {
 
   getLiturgia(table, id, callback) {
     if (id !== -1) {
-      // if(table === 'tempsNadalOctava') console.log(`tempsAdventSetmanesDium---> SELECT * FROM ${table} WHERE id = ${id}`);
       this.executeQuery(`SELECT * FROM ${table} WHERE id = ${id}`,
         result => callback(result.rows.item(0)));
     }
@@ -339,11 +333,6 @@ export default class DBAdapter {
         break;
       }
     }
-
-
-    console.log("[LDGetIndex] haveSomeDiaSetmana: " + haveSomeDiaSetmana); 
-    console.log("[LDGetIndex] DiaIsTheSame: " + DiaIsTheSame); 
-    console.log("[LDGetIndex] diaSetmana: " + diaSetmana); 
     
 
     var rows = [];
@@ -355,19 +344,16 @@ export default class DBAdapter {
               rows.push(result.rows.item(i));
         }
       }
-      console.log("[LDGetIndex] rows 1"); 
     }
     else {
       for (let i = 0; i < result.rows.length; i++) {
         rows.push(result.rows.item(i));
       }
-      console.log("[LDGetIndex] rows 2"); 
     }
     
     var index;
     if (rows.length > 1) {
       if (rows[0].Cicle != '-' && rows[0].paroimpar == '-') {
-        console.log("[LDGetIndex] here 1"); 
         //1) cicle != '-' and paroimpar != '-'
         for (var i = 0; i < rows.length; i++) {
           if (rows[i].Cicle == cicleABC) {
@@ -377,7 +363,6 @@ export default class DBAdapter {
         }
       }
       else if (rows[0].paroimpar != '-' && rows[0].Cicle == '-') {
-        console.log("[LDGetIndex] here 2"); 
         //2) cicle == '-' and paroimpar != '-'
         for (var i = 0; i < rows.length; i++) {
           if (rows[i].paroimpar == parImpar) {
@@ -387,7 +372,6 @@ export default class DBAdapter {
         }
       }
       else if (rows[0].paroimpar != '-' && rows[0].Cicle != '-') {
-        console.log("[LDGetIndex] here 3"); 
         //3) cicle != '-' and paroimpar != '-'
         for (var i = 0; i < rows.length; i++) {
           if (rows[i].Cicle == cicleABC && rows[i].paroimpar == parImpar) {
@@ -398,14 +382,9 @@ export default class DBAdapter {
       }
     }
     else if (rows.length == 1) {
-      console.log("[LDGetIndex] here 4"); 
       //4) cicle == '-' and paroimpar == '-'
       index = 0;
     }
-
-    console.log("[DEBUG] index: ", index);
-    console.log("[DEBUG] result.rows.length: ", result.rows.length);
-    console.log("[DEBUG] rows.length: ", rows.length);
     
 
     if (index == undefined) {

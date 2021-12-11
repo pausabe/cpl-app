@@ -18,14 +18,14 @@ import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
 import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
-import { Reload_All_Data, GetDBAccess } from './Classes/Data/DataManager.js';
+import { Reload_All_Data, GetDBAccess } from '../Services/DataService.js';
 import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test, Alert } from '../Tests/TestsManager';
 import { log } from 'react-native-reanimated';
 import DBAdapter from '../Adapters/DBAdapter';
 import SettingsManager from './Classes/SettingsManager';
 
 
-import { CPLDataBase } from '../Adapters/OpenDatabaseHelper.js';
+import { CPLDataBase } from '../Services/DatabaseOpenerService.js';
 
 
 export default class HomeScreenController extends Component {
@@ -138,7 +138,7 @@ export default class HomeScreenController extends Component {
     if (date === null || date === undefined)
       date = G_VALUES.date;
 
-    Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this), this.HandleGetDataError.bind(this)/*, false*/);
+    Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this), this.HandleGetDataError.bind(this), false);
   }
 
   calendarPressed() {
@@ -186,7 +186,6 @@ export default class HomeScreenController extends Component {
           santPressed: false,
         }
       }
-      //console.log("[ONLINE_UPDATES Reload_All_Data] GLOBAL.enable_updates: ", GLOBALS.enable_updates);
       Reload_All_Data(new Date(/*2019, 9, 23*/), this.Init_Everything.bind(this), this.HandleGetDataError.bind(this), GLOBALS.enable_updates);
     }
   }

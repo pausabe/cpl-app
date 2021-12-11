@@ -1,4 +1,4 @@
-import { Reload_All_Data } from '../Controllers/Classes/Data/DataManager.js';
+import { Reload_All_Data } from '../Services/DataService.js';
 import GF from "../Globals/GlobalFunctions";
 
 /********************** TEST VARIABLES **********************/

@@ -1,11 +1,10 @@
 import { AsyncStorage, Appearance } from 'react-native';
+import GF from "../Globals/GlobalFunctions";
+import GLOBAL from '../Globals/Globals';
+import SOUL from '../Controllers/Classes/SOUL/SOUL';
+import SettingsManager from '../Controllers/Classes/SettingsManager';
+import { UpdateDatabase } from './DatabaseUpdaterService';
 
-import DBAdapter from '../../../Adapters/DBAdapter';
-import GF from "../../../Globals/GlobalFunctions";
-import GLOBAL from '../../../Globals/Globals';
-import SOUL from '../SOUL/SOUL';
-import SettingsManager from '../SettingsManager';
-//import { TEST_MODE_ON } from '../../../Tests/TestsManager';
 const TEST_MODE_ON = false;
 
 /************
@@ -26,13 +25,11 @@ LD_VALUES = {}
 //Last refresh datetime
 LAST_REFRESH = new Date()
 
-export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_Callback_Error/*, online_updates*/) {
+export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_Callback_Error, online_updates) {
   // Set some variables
   this.Reload_Finished_Callback = Reload_Finished_Callback;
   this.Reload_Finished_Callback_Error = Reload_Finished_Callback_Error;
   LAST_REFRESH = new Date();
-
-  //console.log("[PAU DEBUG] here2 ", online_updates);
 
   //Get G_VALUES saved locally
   G_VALUES.date = date;
@@ -78,124 +75,16 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
     GLOBAL.DBAccess.getDatabaseVersion((r) => G_VALUES.databaseVersion = r),
   ])
   .then(() => {
-
-    console.log("G_VALUES.databaseVersion: ", G_VALUES.databaseVersion);
-    //console.log("[ONLINE_UPDATES Reload_All_Data] online_updates: ", online_updates);
-
-    //Check for global parameter
-    /*if(online_updates){
-
-      //Check and apply online changes. Finally will call Refresh_Data
-      Check_For_Updates().then((result) => {
-
-        console.log("[ONLINE_UPDATES Reload_All_Data] result: ", result);
-  
-        //Get the other G_VALUES, the LH_VALUES and the LD_VALUES
+    if(online_updates){
+      UpdateDatabase().then((result) => {
         Refresh_Data();
-  
       });
-
-    }
-    else{*/
-
-
-      Refresh_Data();
-
-    //}
-
-  });
-}
-
-//Resolves true if online_updates = false or it its true and all updates went ok
-/*function Check_For_Updates(){
-
-  let promise = new Promise((resolve) => {
-
-    if(G_VALUES.databaseVersion == undefined){
-      resolve(false);
     }
     else{
-
-      //Get json with changes
-      GetOnlineChanges(G_VALUES.databaseVersion).then((json_updates) => {
-
-        console.log("[ONLINE_UPDATES Check_For_Updates] json_updates:", json_updates);
-
-        //Check json
-        if (json_updates == undefined || json_updates == "") throw "Internet error"
-
-        //Ask DB_Access to make the changes (if there where any)
-        GLOBAL.DBAccess.MakeChanges(json_updates).then((someChangedDoneCorrectly) => {
-
-          console.log("[ONLINE_UPDATES Check_For_Updates] someChangedDoneCorrectly:", someChangedDoneCorrectly);
-
-          //Check result
-          if(someChangedDoneCorrectly){
-
-            resolve(true);
-          }
-          else{
-            resolve(false)
-          }
-
-        })
-        .catch((error) => {
-          console.log("[EXCEPTION Check_For_Updates] 1", error);
-          resolve(false)
-        });
-
-      })
-      .catch((error) => {
-        console.log("[EXCEPTION Check_For_Updates] 2", error);
-        resolve(false)
-      });
-
+      Refresh_Data();
     }
-
   });
-
-  return promise
-  
 }
-
-function GetOnlineChanges(version) {
-  
-  console.log("[ONLINE_UPDATES GetOnlineChanges] version: ", version);
-
-  var url = GLOBAL.server_url + version;
-  console.log("[ONLINE_UPDATES GetOnlineChanges] url: ", url);
-
-  return timeout(
-    2000,
-    fetch(url, { headers: { 'Cache-Control': 'no-cache' } } )
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log("[EXCEPTION GetOnlineChanges] Correct fetch");
-        return responseJson;
-      })
-      .catch((error) => {
-        console.log("[EXCEPTION GetOnlineChanges] Fetch error:", error);
-      })
-  );
-}
-
-function timeout(ms, promise) {
-  return new Promise((resolve, reject) => {
-    const timer = setTimeout(() => {
-      reject(new Error('TIMEOUT'))
-    }, ms)
-
-    promise
-      .then(value => {
-        clearTimeout(timer)
-        resolve(value)
-      })
-      .catch(reason => {
-        clearTimeout(timer)
-        reject(reason)
-      })
-  })
-}*/
 
 function Refresh_Data() {
 

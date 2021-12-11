@@ -6,8 +6,6 @@ export var CPLDataBase = undefined;
 
 export function OpenDatabaseIfNotOpenedYet(){
     return new Promise((resolve) => {
-
-        console.log("[DB-MANAGEMENT] CPLDataBase == undefined? " + CPLDataBase == undefined);
     
         if(CPLDataBase == undefined){
           openDatabase(FileSystem.documentDirectory + "SQLite/cpl-app.db")
@@ -19,7 +17,20 @@ export function OpenDatabaseIfNotOpenedYet(){
         else{
           resolve();
         }
-        
+    });
+}
+
+async function openDatabase(filesystemDatabasePath) {
+    if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
+      await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
+    }
+    await FileSystem.downloadAsync(
+      Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
+      filesystemDatabasePath
+    );
+    return SQLite.openDatabase('cpl-app.db');
+  }
+
 
         /*if(CPLDataBase == undefined){
 
@@ -70,24 +81,8 @@ export function OpenDatabaseIfNotOpenedYet(){
         else{
             resolve();
         }*/
-    });
-}
 
-async function openDatabase(filesystemDatabasePath) {
-    console.log("openDatabase 1");
-    if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
-      await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
-    }
-    console.log("openDatabase 2");
-    await FileSystem.downloadAsync(
-      Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
-      filesystemDatabasePath
-    );
-    console.log("openDatabase 3");
-    return SQLite.openDatabase('cpl-app.db');
-  }
-
-function SaveOrReplaceFileSystemDatabase(fromPath, toPath){
+/*function SaveOrReplaceFileSystemDatabase(fromPath, toPath){
     return new Promise((resolve) => {
       DeleteDatabaseIfExists(toPath)
         .then(() => {
@@ -109,9 +104,9 @@ function SaveOrReplaceFileSystemDatabase(fromPath, toPath){
             });
         });
     });
-  }
+  }*/
 
-  function DeleteDatabaseIfExists(filePath){
+  /*function DeleteDatabaseIfExists(filePath){
     return new Promise((resolve) => {
       FileSystem.getInfoAsync(filePath)
         .then((directoryInfo) => {
@@ -133,9 +128,9 @@ function SaveOrReplaceFileSystemDatabase(fromPath, toPath){
           }
         });
     });
-  }
+  }*/
 
-  function CreateSQLiteDirectoryIfNecessary(filePath){
+  /*function CreateSQLiteDirectoryIfNecessary(filePath){
 
     var lastIndex = filePath.lastIndexOf("/");
     var directoryPath = filePath.substring(0, lastIndex + 1);
@@ -164,4 +159,4 @@ function SaveOrReplaceFileSystemDatabase(fromPath, toPath){
           
         });
     });
-  }
+  }*/
