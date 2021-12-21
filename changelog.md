@@ -303,3 +303,6 @@ APP_MAIN_VERSION.STORE_UPDATE.OTA_UPDATE
 
 ### v4.2.0 (11.12.2021)[57]
 - Canvis a la base de dades
+
+### v4.2.1 (21.12.2021)[57]
+- S'ha corregit la precedència d'alguna festivitat
