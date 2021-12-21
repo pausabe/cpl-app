@@ -180,13 +180,13 @@ export default class DBAdapter {
   executeQuery(query, callback, errorCallback) {
     this.Log("[DB-MANAGEMENT] executeQuery: ", query);
     this.OpenDatabaseIfNotOpenedYet().then((resultMsg) => {
-      this.Log("[DB-MANAGEMENT] resultMsg", resultMsg);
+      //this.Log("[DB-MANAGEMENT] resultMsg", resultMsg);
       if(resultMsg == "OK"){
         this.database.transaction((tx) => {
-          this.Log("[DB-MANAGEMENT] tx: ", tx);
-          this.Log("[DB-MANAGEMENT] tx.executeSql: ", tx.executeSql);
+          //this.Log("[DB-MANAGEMENT] tx: ", tx);
+          //this.Log("[DB-MANAGEMENT] tx.executeSql: ", tx.executeSql);
           tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-            this.Log("[DB-MANAGEMENT] SQLResultSet: ", SQLResultSet);
+            //this.Log("[DB-MANAGEMENT] SQLResultSet: ", SQLResultSet);
             callback(SQLResultSet);
           }, (SQLTransaction, SQLError) => {
             this.Log("[executeQuery] error in query (" + query + "): ", SQLError);
