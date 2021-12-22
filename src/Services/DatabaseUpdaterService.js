@@ -1,5 +1,6 @@
-import { Asset } from 'expo-asset';
-import { CPLDataBase } from './DatabaseOpenerService';
+import Asset from 'expo-asset';
+import CPLDataBase from './DatabaseOpenerService';
+import * as Logger from '../Utils/Logger';
 
 const vervoseDatabaseUpdater = true;
 
@@ -18,13 +19,13 @@ export function UpdateDatabase(currentDatabaseVersion){
                         resolve();
                     })
                     .catch((error) => {
-                        LogError("1", "UpdateDatabase", error);
+                        Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "1", error);
                         resolve()
                     });
                 }
             })
             .catch((error) => {
-                LogError("2", "UpdateDatabase", error);
+                Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "2", error);
                 resolve()
             });
         }
@@ -41,8 +42,9 @@ function GetUpdates(currentDatabaseVersion) {
 
         // Get only the new (diff between database version and updates count)
         var scriptsVersion = dataJson.length;
-        Log("scriptsVersion = " + scriptsVersion, "UpdateDatabase");
-        Log("currentDatabaseVersion = " + currentDatabaseVersion, "UpdateDatabase");
+        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "UpdateDatabase", "scriptsVersion = " + scriptsVersion);
+        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "UpdateDatabase", "currentDatabaseVersion = " + currentDatabaseVersion);
+
         // TODO:
 
         resolve(dataJson);
@@ -59,7 +61,7 @@ function MakeChanges(json_updates){
             switch (change.action) {
                 //UPDATE
                 case 2:
-                    Log("UPDATE", "MakeChanges");
+                    Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "UPDATE");
                     var set_statement = ""
                     var j = 0
                     for (const key in change.values) {
@@ -103,8 +105,9 @@ function MakeChanges(json_updates){
                 break;
             }
         }
-        Log("promises.length = " + promises.length, "MakeChanges");
-        Log("json_updates.length = " + json_updates.length, "MakeChanges");
+        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "promises.length = " + promises.length);
+        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "json_updates.length = " + json_updates.length);
+
         if(promises.length != json_updates.length) {
             resolve(false);
         }
@@ -116,7 +119,7 @@ function MakeChanges(json_updates){
                 else{
                     let total_res = true;
                     for (var i = 0; i < res.length; i++) {
-                        Log("promise " + i + " result:", "MakeChanges", res[i]);
+                        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "promise " + i + " result:", res[i]);
                         if (!res[i]){
                             total_res = false;
                         }
@@ -125,7 +128,7 @@ function MakeChanges(json_updates){
                 }
             })
             .catch((error) => {
-                LogError(error, "MakeChanges");
+                Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "", error);
                 resolve(false);
             });
         }
@@ -139,35 +142,13 @@ function ExecuteQuery(query) {
                 tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
                     resolve(true)
                 }, (SQLTransaction, SQLError) => {
-                    LogError("error in query (" + query + ")", "ExecuteQuery", SQLError);
+                    Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "ExecuteQuery","error in query (" + query + ")", SQLError);
                     resolve(false)
                 });
             });
         } 
         catch (error) {
-            LogError(error, "ExecuteQuery");
+            Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "ExecuteQuery", "", error);
         }
     });
-}
-
-function Log(text, function_name, parameter){
-    if(vervoseDatabaseUpdater){
-        logText = "[DatebaseUpdaterService " + function_name + "] " + text;
-        if(parameter == undefined){
-            console.log(logText);
-        }
-        else{
-            console.log(logText, parameter);
-        }
-    }
-}
-
-function LogError(text, function_name, parameter){
-    logText = "[DatebaseUpdaterService " + function_name + "] ERROR: " + text;
-        if(parameter == undefined){
-            console.log(logText);
-        }
-        else{
-            console.log(logText, parameter);
-        }
 }
