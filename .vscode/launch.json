@@ -1,12 +1,16 @@
 {
     "version": "0.2.0",
     "configurations": [
+    
         {
             "name": "Attach to packager",
             "cwd": "${workspaceFolder}",
             "type": "reactnative",
             "request": "attach",
-            "port": "19001"
+            "port": "19001",
+            "program": "${workspaceRoot}/.vscode/launchReactNative.js",
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/.vscode/.react"
         }
     ]
 }

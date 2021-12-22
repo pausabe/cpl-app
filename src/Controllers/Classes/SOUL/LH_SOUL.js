@@ -698,12 +698,15 @@ export default class LH_SOUL {
     }
     else {
       console.log("InfoLog. Error OC. No result from DB");
-      params.HS.error();
       this.creatingEmptyCEL();
-      this.LITURGIA.info_cel.nomCel = '-';
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
-      this.calls(params.HS);
+      console.log("here");
+      info_cel = {
+        nomCel: '-',
+        infoCel: '-',
+        typeCel: '-'
+      }
+      this.LITURGIA.info_cel = info_cel;
+      this.calls(params.Set_Soul_CB);
     }
   }
 
@@ -886,6 +889,15 @@ export default class LH_SOUL {
         return 'DE';
 
       this.idTSFTomorrow = this.findTempsSolemnitatsFestes(date, LT, setmana, pentacosta);
+ 
+      // By precedence we dont want tomorrow TFS if today is more important
+      // TODO: check if tempsSolemnitatsFestes is ordered by precedence correctly
+      let idTFSToday = this.findTempsSolemnitatsFestes(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta);
+      if(idTFSToday != -1 && idTFSToday < this.idTSFTomorrow){
+        console.log("tomorrow is: " + this.idTSFTomorrow + " but today is more important: " + idTFSToday);
+        this.idTSFTomorrow = -1;
+      }
+
       if (this.idTSFTomorrow !== -1) {
         return 'TSF';
       }
@@ -1354,9 +1366,9 @@ export default class LH_SOUL {
   }
 
   isSagradaFamilia(today) {
-    if (today.getMonth() !== 11) return false;
-    if (today.getDay() !== 0) return false;
-    if (today.getDate() < 26 || today.getDate() > 31) return false;
+    if (today.getMonth() !== 11) return false; // Dicember
+    if (today.getDay() !== 0) return false; // Sunday
+    if (today.getDate() < 26 || today.getDate() > 31) return false; // Between [26 & 31]
     return true;
   }
 

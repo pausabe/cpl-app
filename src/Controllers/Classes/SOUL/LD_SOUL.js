@@ -21,8 +21,11 @@ export default class LD_SOUL {
             }
 
             if (idSpecialVespers == '-1') {
-                //Saturday or tomorrow is Solemnitat
-                if (today_date.getDay() === 6 || G_VALUES.dataTomorrow.celType == 'S') {
+                //Saturday && today is not Nadal or tomorrow is Solemnitat
+                // TODO: realment no hauria de ser només per Nadal o Mare de Déu sinó per una gestió de precedències... S'hauria de gestionar
+                if ((today_date.getDay() === 6 && !this.isNadal(today_date) && !this.isMaredeDeu(today_date)) ||
+                     G_VALUES.dataTomorrow.celType == 'S') {
+
                     var tomorrow_date = new Date(today_date.getFullYear(), today_date.getMonth(), today_date.getDate() + 1);
                     var tomorrow_string = GF.calculeDia(tomorrow_date, G_VALUES.diocesi, G_VALUES.dataTomorrow.diaMogut, G_VALUES.dataTomorrow.diocesiMogut);
 
@@ -192,6 +195,16 @@ export default class LD_SOUL {
                     });
             }
         }
+    }
+
+    isNadal(date){
+        if(date.getDate() === 25 && date.getMonth() === 11) return true;
+        return false;
+    }
+
+    isMaredeDeu(date){
+        if(date.getMonth() === 0 && date.getDate() === 1) return true;
+        return false;
     }
 
     IsSpecialChristmas(dia){
@@ -481,6 +494,11 @@ export default class LD_SOUL {
             // Ordinari 19-nov -> 211 ([BaD] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
             if (today_date.getDate() == 19 && today_date.getMonth() == 10) {
                 return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD;
+            }
+
+            // Nadal 03-ene -> 219 ([-] Santíssim Nom de Jesús)
+            if (today_date.getDate() == 3 && today_date.getMonth() == 0) {
+                return '219';
             }
         }
 
