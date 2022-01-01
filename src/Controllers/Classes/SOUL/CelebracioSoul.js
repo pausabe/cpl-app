@@ -1384,7 +1384,6 @@ export default class CelebracioSoul {
       this.LAUDES.ant3 = TABLES.santsSolemnitats.ant3Laudes;
     else if(TABLES.OficisComuns !== null) this.LAUDES.ant3 = TABLES.OficisComuns.ant3Laudes;
     if(TABLES.OficisComuns !== null){
-      // console.log("TABLES.OficisComuns:");
       this.LAUDES.titol1 = TABLES.OficisComuns.titol1Laudes;
       this.LAUDES.com1 = '-';
       this.LAUDES.salm1 = TABLES.OficisComuns.Salm1Laudes;
@@ -1436,14 +1435,11 @@ export default class CelebracioSoul {
     this.TERCIA.antifones = false;
     if(TABLES.santsSolemnitats.antMenorTercia !== '-'){
       this.TERCIA.ant = TABLES.santsSolemnitats.antMenorTercia;
-      // console.log("antifona LOG1: " + this.TERCIA.ant);
     }
     else if(TABLES.OficisComuns !== null) {
       this.TERCIA.ant = TABLES.OficisComuns.antMenorTer;
-      // console.log("antifona LOG2: " + this.TERCIA.ant);
     }
     else{
-      // console.log("antifona LOG3: -");
     }
     //S1
     this.TERCIA.titol1 = TABLES.santsSolemnitats.titolSalm1;
@@ -1487,11 +1483,9 @@ export default class CelebracioSoul {
     if(TABLES.santsSolemnitats.antMenorSexta !== '-')
       this.SEXTA.ant = TABLES.santsSolemnitats.antMenorSexta;
     else if(TABLES.OficisComuns !== null) {
-      // console.log("hello log1 - " + TABLES.OficisComuns.antMenorSextA);
       this.SEXTA.ant = TABLES.OficisComuns.antMenorSextA;
     }
     else{
-      // console.log("hello log2");
     }
     //S1
     this.SEXTA.titol1 = TABLES.santsSolemnitats.titolSalm1;
@@ -1683,7 +1677,6 @@ export default class CelebracioSoul {
     if(TABLES.santsSolemnitatsFVespres1.text1Vespres1 !== '-')
       this.VESPRES1.salm1 = TABLES.santsSolemnitatsFVespres1.text1Vespres1;
     else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.salm1 = TABLES.OficisComunsVespres1.text1Vespres1;
-    // console.log("super log: " + TABLES.santsSolemnitatsFVespres1);
     if(TABLES.santsSolemnitatsFVespres1.gloria1Vespres1 !== '-')
       this.VESPRES1.gloria1 = TABLES.santsSolemnitatsFVespres1.gloria1Vespres1;
     else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.gloria1 = TABLES.OficisComunsVespres1.gloria1Vespres1;
@@ -1745,7 +1738,6 @@ export default class CelebracioSoul {
     if(TABLES.santsSolemnitatsFVespres1.oraFiVespres1 !== '-')
       this.VESPRES1.oracio = TABLES.santsSolemnitatsFVespres1.oraFiVespres1;
     // else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.oracio = TABLES.OficisComunsVespres1.oraFiVespres1;
-    //console.log("SHIT",this.VESPRES1.oracio);
   }
 
   makeML(TABLES, type, tomCal){

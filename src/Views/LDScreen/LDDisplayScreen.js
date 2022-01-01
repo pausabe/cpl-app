@@ -3,8 +3,7 @@ import { View, ScrollView, Text, StyleSheet, Platform, TouchableOpacity } from '
 
 import GF from '../../Globals/GlobalFunctions';
 import HR from '../../Components/HRComponent';
-import Icon from 'react-native-vector-icons/Ionicons';
-import GLOBAL from "../../Globals/Globals";
+import * as Logger from '../../Utils/Logger';
 
 export default class LDDisplayScreen extends Component {
     //PREVIEWS --------------------------------------------------------------------------
@@ -56,8 +55,6 @@ export default class LDDisplayScreen extends Component {
     //RENDER -------------------------------------------------------------------------------
     render() {
         try {
-            console.log("this.state.DisplayVespers", this.state.DisplayVespers);
-
             return (
                 <View style={GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled)}>
                     <ScrollView automaticallyAdjustContentInsets={false} >
@@ -95,7 +92,7 @@ export default class LDDisplayScreen extends Component {
             )
         }
         catch (error) {
-            console.log("Error: ", error);
+            Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
             return null;
         }
     }

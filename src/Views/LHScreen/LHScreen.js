@@ -54,12 +54,10 @@ export default class LHScreen extends Component {
 
   testErrorCallBack() {
     /*this.setState({testInfo: "something went wrong (bad text)"});
-    console.log("Super error (bad text))");
     this.testing = false;*/
   }
 
   render() {
-    console.log("RENDER LHScreen");
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
           {

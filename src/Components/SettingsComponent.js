@@ -115,7 +115,6 @@ export default class SettingsComponent extends Component{
     }
 
     _generatePickerOptions(){
-        //console.log("Generating options...");
         let options = [];
         for(let key in this.options){
             options.push(

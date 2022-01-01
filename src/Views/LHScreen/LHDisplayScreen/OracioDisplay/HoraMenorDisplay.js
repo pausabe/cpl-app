@@ -9,6 +9,7 @@ import {
 import HR from '../../../../Components/HRComponent';
 import GLOBAL from '../../../../Globals/Globals';
 import GF from '../../../../Globals/GlobalFunctions';
+import * as Logger from '../../../../Utils/Logger';
 
 export default class HoraMenorDisplay extends Component {
   componentDidMount(){
@@ -101,8 +102,8 @@ export default class HoraMenorDisplay extends Component {
         </View>
       );
     }
-    catch (e) {
-      console.log(e);
+    catch (error) {
+      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
       if(this.props.superTestMode) this.props.testErrorCB();
       return null;
     }

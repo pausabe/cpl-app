@@ -133,7 +133,6 @@ export default class LaudesSoul {
         antInvitatori = this.state.tempsPasquaAA.antInvitatori;
         break;
       case GLOBAL.P_SETMANES:
-        //console.log("Psetmanes: " + setmana);
         if(setmana === '7'){
           antInvitatori = this.state.tempsPasquaDA.antInvitatori;
         }

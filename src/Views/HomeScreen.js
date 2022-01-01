@@ -1,3 +1,4 @@
+import * as Logger from '../Utils/Logger';
 import React, { Component } from 'react';
 import {
   View,
@@ -30,32 +31,27 @@ export default class HomeScreen extends Component {
       return t;
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "tempsName", "", error);
       return null;
     }
   }
 
   liturgicPaint(string, color) {
     try {
-      switch (color) {
-        case 'B':
-          return (<Text style={{ color: 'white' }}>{string}</Text>);
-          break;
-        case 'V':
-          return (<Text style={{ color: 'rgb(0, 120, 0)' }}>{string}</Text>);
-          break;
-        case 'R':
-          return (<Text style={{ color: 'rgb(230, 15, 15)' }}>{string}</Text>);
-          break;
-        case 'M':
-          return (<Text style={{ color: 'rgb(120, 50, 140)' }}>{string}</Text>);
-          break;
-        default:
-          return (<Text style={{ color: '#c0392b' }}>{string}</Text>);
+      if (color === 'B') {
+        return (<Text style={{color: 'white'}}>{string}</Text>);
+      } else if (color === 'V') {
+        return (<Text style={{color: 'rgb(0, 120, 0)'}}>{string}</Text>);
+      } else if (color === 'R') {
+        return (<Text style={{color: 'rgb(230, 15, 15)'}}>{string}</Text>);
+      } else if (color === 'M') {
+        return (<Text style={{color: 'rgb(120, 50, 140)'}}>{string}</Text>);
+      } else {
+        return (<Text style={{color: '#c0392b'}}>{string}</Text>);
       }
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "liturgicPaint", "", error);
       return null;
     }
   }
@@ -64,39 +60,40 @@ export default class HomeScreen extends Component {
     try {
       if (!+num)
         return false;
-      var digits = String(+num).split(""),
-        key = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM",
-          "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC",
-          "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
-        roman = "",
-        i = 3;
+      let digits = String(+num).split(""),
+          key = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM",
+            "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC",
+            "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
+          roman = "",
+          i = 3;
       while (i--)
         roman = (key[+digits.pop() + (i * 10)] || "") + roman;
       return Array(+digits.join("") + 1).join("M") + roman;
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "romanize", "", error);
       return null;
     }
   }
 
   transfromCelTypeName(CT, t) {
     try {
-      memLliureColor = '#333333';
-      if ((this.props.ViewData.celebracio.type === 'L' || this.props.ViewData.celebracio.type === 'V') && !G_VALUES.lliures) memLliureColor = '#595959';
+      let memLliureColor = '#333333';
+      if ((this.props.ViewData.celebracio.type === 'L'
+          || this.props.ViewData.celebracio.type === 'V')
+          && !G_VALUES.lliures) {
+        memLliureColor = '#595959';
+      }
 
       switch (CT) {
         case 'F':
           return (<Text style={styles.celebracioType}>{"Festa"}</Text>);
-          break;
         case 'S':
           return (<Text style={styles.celebracioType}>{"Solemnitat"}</Text>);
-          break;
         case 'M':
           if (t === 'Quaresma')
             return (<Text style={styles.celebracioType}>{"Commemoració"}</Text>);
           return (<Text style={styles.celebracioType}>{"Memòria obligatòria"}</Text>);
-          break;
         case 'V':
         case 'L':
           if (t === 'Quaresma')
@@ -114,12 +111,11 @@ export default class HomeScreen extends Component {
             fontWeight: '300'
           }}>
             {"Memòria lliure"}</Text>);
-          break;
       }
       return null;
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "transfromCelTypeName", "", error);
       return null;
     }
   }
@@ -129,29 +125,22 @@ export default class HomeScreen extends Component {
       switch (num) {
         case 0:
           return ("Diumenge");
-          break;
         case 1:
           return ("Dilluns");
-          break;
         case 2:
           return ("Dimarts");
-          break;
         case 3:
           return ("Dimecres");
-          break;
         case 4:
           return ("Dijous");
-          break;
         case 5:
           return ("Divendres");
-          break;
         case 6:
           return ("Dissabte");
-          break;
       }
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "weekDayName", "", error);
       return null;
     }
   }
@@ -163,44 +152,41 @@ export default class HomeScreen extends Component {
       this.props.lliureCB(this.switchValue);
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "onSwitchValueChange", "", error);
     }
   }
 
   On_Give_Press() {
     try {
-      console.log("Give pressed");
-
-      if(Platform.OS == "ios"){
-        Linking.openURL('https://mescpl.cpl.es/donacions/')
+      if(Platform.OS === "ios"){
+        Linking.openURL('https://mescpl.cpl.es/donacions/');
       }
       else{
         this.props.navigation.navigate('Donation');
       }
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "On_Give_Press", "", error);
       return null;
     }
   }
 
   On_Comment_Press() {
     try {
-      console.log("Comment pressed");
       this.props.navigation.navigate('Comment');
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "On_Comment_Press", "", error);
       return null;
     }
   }
 
   render() {
     try {
-      var date_getdate = G_VALUES.date.getDate();
-      var date_getmonth = G_VALUES.date.getMonth();
-      var date_getfullyear = G_VALUES.date.getFullYear();
-      var date_getday = G_VALUES.date.getDay();
+      const date_getdate = G_VALUES.date.getDate();
+      const date_getmonth = G_VALUES.date.getMonth();
+      const date_getfullyear = G_VALUES.date.getFullYear();
+      const date_getday = G_VALUES.date.getDay();
       this.switchValue = G_VALUES.lliures;
       return (
         <SafeAreaView style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
@@ -213,7 +199,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
       return null;
     }
   }
@@ -231,7 +217,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Top_Info", "", error);
       return null;
     }
   }
@@ -239,11 +225,11 @@ export default class HomeScreen extends Component {
   Info_Liturgica(date_getday) {
     try {
 
-      var text_setmana = "";
+      let text_setmana = "";
       if(this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.')
         text_setmana = this.weekDayName(date_getday) + " de la setmana "
-      else if(G_VALUES.LT == GLOBAL.Q_CENDRA){
-        if(date_getday == 3)
+      else if(G_VALUES.LT === GLOBAL.Q_CENDRA){
+        if(date_getday === 3)
           text_setmana = this.weekDayName(date_getday) + " de Cendra"
         else
           text_setmana = this.weekDayName(date_getday) + " després de Cendra"
@@ -294,29 +280,20 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Info_Liturgica", "", error);
       return null;
     }
   }
 
   Cel_Info() {
     try {
-      arrowWidth = 35;
-      auxPadding = 10;
+      let arrowWidth = 35;
+      let auxPadding = 10;
       if ((this.props.ViewData.celebracio.type === 'L' || this.props.ViewData.celebracio.type === 'V')) {
         arrowWidth = 65;
         auxPadding = 0;
       }
-
-      santTextColor = 'black';
-      arrowColor = 'black';
-      santContainerOpa = 0.8;
-      if ((this.props.ViewData.celebracio.type === 'L' || this.props.ViewData.celebracio.type === 'V') && !G_VALUES.lliures) {
-        santTextColor = '#404040';
-        arrowColor = '#595959';
-        santContainerOpa = 0.75;
-      }
-
+      let santTextColor = 'black';
       return (
         <View style={styles.cel_container}>
 
@@ -372,7 +349,7 @@ export default class HomeScreen extends Component {
                     :
                     <View>
                       {(this.props.ViewData.celebracio.type === 'L' || this.props.ViewData.celebracio.type === 'V') ?
-                        <View style={{ width: 45 }}></View>
+                        <View style={{width: 45}}/>
                         : null
                       }
                     </View>
@@ -405,7 +382,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Cel_Info", "", error);
       return null;
     }
   }
@@ -414,7 +391,7 @@ export default class HomeScreen extends Component {
     try {
       return (
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 20}}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end', paddingRight: 10, justifyContent: 'flex-start', }}>
+          <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: 10, justifyContent: 'flex-start', }}>
             <TouchableOpacity style={styles.two_buttons} onPress={this.On_Comment_Press.bind(this)}>
               <Icon
                 name="ios-mail"
@@ -424,7 +401,7 @@ export default class HomeScreen extends Component {
               <Text style={{ textAlign: 'center', marginTop: -10, color: 'rgb(50, 50, 50)', fontSize: 12 }}>{"Missatge"}</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start', paddingLeft: 10, justifyContent: 'flex-start', }}>
+          <View style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 10, justifyContent: 'flex-start', }}>
             <TouchableOpacity style={styles.two_buttons} onPress={this.On_Give_Press.bind(this)}>
               <Icon
                 name="ios-card"
@@ -440,14 +417,14 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      console.log("[Error]", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Two_Buttons", "", error);
       return null;
     }
   }
 }
 
 function fontsize(){
-  return Platform.OS == 'iOS'? 20 : 18;
+  return Platform.OS === 'iOS'? 20 : 18;
 }
 
 const styles = StyleSheet.create({

@@ -20,49 +20,34 @@ import GLOBALS from "../Globals/Globals";
 import GF from "../Globals/GlobalFunctions";
 import { Reload_All_Data, GetDBAccess } from '../Services/DataService.js';
 import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test, Alert } from '../Tests/TestsManager';
-import { log } from 'react-native-reanimated';
-import DBAdapter from '../Adapters/DBAdapter';
+import * as Logger from '../Utils/Logger';
 import SettingsManager from './Classes/SettingsManager';
-
-
-import { CPLDataBase } from '../Services/DatabaseOpenerService.js';
-
 
 export default class HomeScreenController extends Component {
 
   async componentDidMount() {
-    console.log("componentDidMount");
     try {
-      await SplashScreen.preventAutoHideAsync();
+      //TODO: refactor -> await SplashScreen.preventAutoHideAsync();
     } catch (e) {
         console.warn(e);
         await SplashScreen.hideAsync();
     }
-    /*console.log("pau was here");
-    console.log("this.props:", this.props);
-    console.log("this.props.navigation:", this.props.navigation);
-    console.log("this.props.route.params:", this.props.route.params);*/
     this.props.navigation.setParams({
-      calPres: this.calendarPressed.bind(this),
-      Refresh_Date: this.Refresh_Date.bind(this),
+      // TODO: refactor calPres: this.calendarPressed.bind(this),
+      // TODO: refactor Refresh_Date: this.Refresh_Date.bind(this),
     });
-    /*console.log("this.props.navigation:", this.props.navigation);
-    console.log("this.props.route.params:", this.props.route.params);*/
     BackHandler.addEventListener('hardwareBackPress', this.androidBack.bind(this));
     AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     Appearance.addChangeListener(this.AppearanceHasChanged.bind(this))
   }
 
   componentWillUnmount() {
-    console.log("componentWillUnmount");
     BackHandler.removeEventListener('hardwareBackPress', this.androidBack.bind(this));
     AppState.removeEventListener('change', this._handleAppStateChange.bind(this));
     Appearance.removeChangeListener(this.AppearanceHasChanged.bind(this))
   }
 
   _handleAppStateChange(nextAppState){
-
-    console.log(nextAppState);
 
     // Check if the state is changing to active
     if(nextAppState == 'active'){
@@ -93,21 +78,15 @@ export default class HomeScreenController extends Component {
 
   AppearanceHasChanged(param){
     try {
-      console.log("AppearanceHasChanged", param.colorScheme);
       this.checkSystemDarkMode(param.colorScheme);
     } catch (error) {
-      console.log("AppearanceHasChanged error: ", error);
+      Logger.LogError(Logger.LogKeys.HomeScreenController, "AppearanceHasChanged", "", error);
     }
   }
 
   checkSystemDarkMode(colorScheme){
     try {
       SettingsManager.getSettingDarkMode((r) => {
-        
-        console.log("colorScheme", colorScheme);
-        console.log("Appearance.getColorScheme(): ", Appearance.getColorScheme());
-        console.log("r", r);
-
         if(r === 'Automàtic'){
             if (colorScheme === 'dark') {
               if(G_VALUES.darkModeEnabled == false){
@@ -122,7 +101,7 @@ export default class HomeScreenController extends Component {
           this.forceUpdate();
         });
     } catch (error) {
-      console.log("checkDarkMode error: ", error);
+      Logger.LogError(Logger.LogKeys.HomeScreenController, "checkSystemDarkMode", "", error);
     }
   }
 
@@ -223,7 +202,7 @@ export default class HomeScreenController extends Component {
       //Set santPress variable to 0
       this.santPress = 0;
     } catch (error) {
-      console.log(error);
+      Logger.LogError(Logger.LogKeys.HomeScreenController, "Init_Everything", "", error);
     }
   }
 
@@ -354,7 +333,6 @@ export default class HomeScreenController extends Component {
   }
 
   /*testing(){
-    console.log("test pressed");
     Reload_All_Data(new Date(/*2019, 9, 23*//*), this.Init_Everything.bind(this), this.HandleGetDataError.bind(this), true);
   }
             <TouchableOpacity>
@@ -363,69 +341,12 @@ export default class HomeScreenController extends Component {
           </TouchableOpacity>*/
 
   HandleGetDataError(msgError){
-    console.log("RefreshErrorMessage: ", msgError);
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", msgError);
     var messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
     this.setState({ 
       RefreshErrorMessage: messageToShow }, 
       async () => await SplashScreen.hideAsync());
   }
-
-  /*Testing(){
-
-    var query1 = "select * from LDSantoral limit 1";
-    CPLDataBase.transaction((tx) => {
-      tx.executeSql(query1, [], (SQLTransaction, SQLResultSet) => {
-        console.log("[DB-MANAGEMENT] OK query: " + query1);
-      }, (SQLTransaction, SQLError) => {
-        console.log("[DB-MANAGEMENT] NO OK query: " + query1, SQLError);
-      });
-      var query2 = "select * from anyliturgic limit 1";
-      CPLDataBase.transaction((tx) => {
-        tx.executeSql(query2, [], (SQLTransaction, SQLResultSet) => {
-          console.log("[DB-MANAGEMENT] OK query: " + query2);
-        }, (SQLTransaction, SQLError) => {
-          console.log("[DB-MANAGEMENT] NO OK query: " + query2, SQLError);
-        });
-        var query3 = "select * from diversos limit 1";
-          CPLDataBase.transaction((tx) => {
-            tx.executeSql(query3, [], (SQLTransaction, SQLResultSet) => {
-              console.log("[DB-MANAGEMENT] OK query: " + query3);
-            }, (SQLTransaction, SQLError) => {
-              console.log("[DB-MANAGEMENT] NO OK query: " + query3, SQLError);
-            });
-          });
-      });
-    });
-
-    var query4 = "select * from santssolemnitats limit 1";
-    CPLDataBase.transaction((tx) => {
-      tx.executeSql(query4, [], (SQLTransaction, SQLResultSet) => {
-        console.log("[DB-MANAGEMENT] OK query: " + query4);
-      }, (SQLTransaction, SQLError) => {
-        console.log("[DB-MANAGEMENT] NO OK query: " + query4, SQLError);
-      });
-    });
-    var query5 = "select * from santsmemories limit 1";
-    CPLDataBase.transaction((tx) => {
-      tx.executeSql(query5, [], (SQLTransaction, SQLResultSet) => {
-        console.log("[DB-MANAGEMENT] OK query: " + query5);
-      }, (SQLTransaction, SQLError) => {
-        console.log("[DB-MANAGEMENT] NO OK query: " + query5, SQLError);
-      });
-    });
-    var query6 = "select * from asdf limit 1";
-    CPLDataBase.transaction((tx) => {
-      tx.executeSql(query6, [], (SQLTransaction, SQLResultSet) => {
-        console.log("[DB-MANAGEMENT] OK query: " + query6);
-      }, (SQLTransaction, SQLError) => {
-        console.log("[DB-MANAGEMENT] NO OK query: " + query6, SQLError);
-      });
-    });
-  }
-  
-  <TouchableOpacity onPress={this.Testing.bind(this)}>
-          <Text>TEST</Text>
-        </TouchableOpacity>*/
 
   HomeScreenViewWithError(){
     return(
@@ -556,7 +477,7 @@ export default class HomeScreenController extends Component {
         );
       }
     } catch (error) {
-      console.log("EXCEPTION: ", error);
+      Logger.LogError(Logger.LogKeys.HomeScreenController, "render", "", error);
     }
   }
 }

@@ -11,6 +11,7 @@ import HR from '../../../../Components/HRComponent';
 import GLOBAL from '../../../../Globals/Globals';
 import GF from '../../../../Globals/GlobalFunctions';
 import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
+import * as Logger from '../../../../Utils/Logger';
 
 export default class LaudesDisplay extends Component {
   componentDidMount(){
@@ -267,8 +268,8 @@ export default class LaudesDisplay extends Component {
         </View>
       );
     }
-    catch (e) {
-      console.log(e);
+    catch (error) {
+      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
       if(this.superTestMode) this.testErrorCB();
       return null;
     }
@@ -625,8 +626,6 @@ export default class LaudesDisplay extends Component {
     }
     else{
       var introPregs = allPregs.split(":")[0];
-      // console.log("introPregs: " + introPregs);
-      // console.log("allPregs:\n" + allPregs);
       if(allPregs.search(introPregs+':') !== -1){
         var pregsNoIntro = allPregs.replace(introPregs+':','');
         if(pregsNoIntro !== ''){
@@ -636,7 +635,7 @@ export default class LaudesDisplay extends Component {
         }
       }
       else{
-        console.log("InfoLog. something incorrect. Pregaries 1");
+        Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 1");
         return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
       }
 
@@ -645,7 +644,7 @@ export default class LaudesDisplay extends Component {
         var pregaries = pregsNoIntro.replace(respPregs+'\n\n','');
       }
       else{
-        console.log("InfoLog. something incorrect. Pregaries 2");
+        Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 2");
         return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
       }
 
@@ -653,7 +652,7 @@ export default class LaudesDisplay extends Component {
         pregaries = pregaries.replace(": Pare nostre.",':');
       }
       else{
-        console.log("InfoLog. something incorrect. Pregaries 3");
+        Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 3");
         return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
       }
 
@@ -662,7 +661,7 @@ export default class LaudesDisplay extends Component {
         pregaries = pregaries.replace('\n\n'+pregsFinalPart,'');
       }
       else{
-        console.log("InfoLog. something incorrect. Pregaries 4");
+        Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 4");
         return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
       }
     }

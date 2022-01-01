@@ -1,4 +1,4 @@
-import GLOBAL from '../Globals/Globals';
+import * as Logger from '../Utils/Logger';
 import GF from '../Globals/GlobalFunctions';
 import { OpenDatabaseIfNotOpenedYet, CPLDataBase } from '../Services/DatabaseOpenerService';
 
@@ -13,8 +13,7 @@ export default class DBAdapter {
           tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
             callback(SQLResultSet);
           }, (SQLTransaction, SQLError) => {
-            console.log("[executeQuery] NOK - error in query (" + query + "): ", SQLError);
-            console.log("errorCallback: " + errorCallback);
+            Logger.LogError(Logger.LogKeys.DatabaseAdapter, "executeQuery", "error in query (" + query + "): ", SQLError);
             if(errorCallback != undefined) {
               errorCallback(SQLError);
             }
@@ -79,8 +78,7 @@ export default class DBAdapter {
     var query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND temps = 'P_SETMANES' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`;
     this.executeQuery(query,
       result => {
-        var pentacosta = new Date(year, (result.rows.item(0).mes - 1), result.rows.item(0).dia);
-        console.log(result.rows.item(0).dia + '/' + (result.rows.item(0).mes - 1) + '/' + year);        
+        var pentacosta = new Date(year, (result.rows.item(0).mes - 1), result.rows.item(0).dia);        
         this.getMinMaxDates(r1, r2, pentacosta, callback);
       });
   }
@@ -188,8 +186,6 @@ export default class DBAdapter {
         
     this.getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parImpar, (normal_result) => {
 
-      console.log("Normal result", normal_result);
-
       if (specialResultId == '-1') {
         //Normal santoral day
         var diocesis = GF.transformDiocesiName(G_VALUES.diocesiName, "Diòcesi")
@@ -201,7 +197,6 @@ export default class DBAdapter {
               callback(normal_result);
             }
             else {
-              console.log("LDSantoral ID: ", result.rows.item(0).Id);
               
               var data_return = result.rows.item(0);
 
@@ -356,7 +351,7 @@ export default class DBAdapter {
     
 
     if (index == undefined) {
-      console.log("Index not found");
+      Logger.Log(Logger.LogKeys.DatabaseAdapter, "LDGetIndexNormal", "No index found");
       index = -1;
     }
     else {

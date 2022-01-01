@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-
+import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
 import GLOBALS from '../../Globals/Globals';
@@ -44,7 +44,7 @@ export default class LDScreen extends Component {
       });
   
     } catch (error) {
-      console.log("[Exception] ", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Refresh_Layout", "", error);
       this.setState( { renderError: true } )
     }
    
@@ -75,12 +75,10 @@ export default class LDScreen extends Component {
   }
 
   emitShare() {
-    console.log("emitShare");
   }
 
   //RENDER -------------------------------------------------------------------------------
   render() {
-    console.log("RENDER LDScreen");
     try {
 
       if(this.state == null){
@@ -122,7 +120,7 @@ export default class LDScreen extends Component {
       );
 
     } catch (error) {
-      console.log("[DEBUG] catch. error: ", error)
+      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
       return null
     }
   }
@@ -163,7 +161,7 @@ export default class LDScreen extends Component {
       }
     }
     catch (error) {
-      console.log("Error: ", error);
+      Logger.LogError(Logger.LogKeys.Screens, "VespersSelector", "", error);
       return null;
     }
   }
@@ -174,7 +172,7 @@ export default class LDScreen extends Component {
       this.setState({ need_lectura2: LD_VALUES.Lectura2 != '-' })
     }
     catch (error) {
-      console.log("Error: ", error);
+      Logger.LogError(Logger.LogKeys.Screens, "OnNormalPressed", "", error);
       return null;
     }
   }
@@ -185,7 +183,7 @@ export default class LDScreen extends Component {
       this.setState({ need_lectura2: LD_VALUES.Lectura2Vespers != '-' })
     }
     catch (error) {
-      console.log("Error: ", error);
+      Logger.LogError(Logger.LogKeys.Screens, "OnVespersPressed", "", error);
       return null;
     }
   }
@@ -241,7 +239,7 @@ export default class LDScreen extends Component {
       )
     }
     catch (error) {
-      console.log("Error: ", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Buttons", "", error);
       return null;
     }
   }

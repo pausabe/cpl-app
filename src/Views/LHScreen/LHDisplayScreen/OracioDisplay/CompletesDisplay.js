@@ -12,6 +12,7 @@ import HR from '../../../../Components/HRComponent';
 import GLOBAL from '../../../../Globals/Globals';
 import GF from '../../../../Globals/GlobalFunctions';
 import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
+import * as Logger from '../../../../Utils/Logger';
 
 export default class CompletesDisplay extends Component {
   componentDidMount(){
@@ -140,7 +141,6 @@ export default class CompletesDisplay extends Component {
 
   render() {
     try {
-      console.log("RENDER Completes");
       if(this.COMPLETES !== null){
         const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
         var is_special_initial_message = G_VALUES.LT === GLOBAL.Q_TRIDU && G_VALUES.date.getDay() === 6;
@@ -411,12 +411,11 @@ export default class CompletesDisplay extends Component {
         );
       }
       else{
-        console.log("wierd error....... this.props:",this.props);
-        console.log("G_VALUES.LITURGIA.completes doesen't exists");
+        Logger.LogError(Logger.LogKeys.Screens, "render", "wierd error....... this.props:",this.props);
         return null;
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
       if(this.superTestMode) this.testErrorCB();
       return(null);
     }

@@ -445,7 +445,6 @@ export default class VespresSoul {
           gloria3 = "1";
     }
 
-    //console.log("CEL.ant1 " + CEL.ant1);
     if(CEL.ant1 === '-')
       this.VESPRES.ant1 = ant1;
     else this.VESPRES.ant1 = CEL.ant1;

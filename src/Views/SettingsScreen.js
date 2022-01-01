@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Platform, ScrollView, TouchableOpacity, Appearance } from 'react-native';
 import Constants from 'expo-constants';
-
+import * as Logger from '../Utils/Logger';
 import HR from '../Components/HRComponent';
 import SettingsComponentAdapter from "../Adapters/SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
@@ -11,16 +11,14 @@ export default class SettingsScreen extends Component {
     super(props);
   }
 
-  refreshHome(){
-    console.log("Refresh Home!");
-    
-    this.props.route.params.Refresh_Date();
+  refreshHome(){    
+    // TODO: refactor this.props.route.params.Refresh_Date();
   }
 
   UNSAFE_componentWillMount(){
       SettingsComponentAdapter.getSettingsOptions(this.refreshHome.bind(this)).then(result =>{
           this.setState({options: result});
-      }).catch(error => console.log("InfoLog. " + error));
+      }).catch(error =>  Logger.LogError(Logger.LogKeys.Screens, "UNSAFE_componentWillMount", "", error));
   }
 
   render() {

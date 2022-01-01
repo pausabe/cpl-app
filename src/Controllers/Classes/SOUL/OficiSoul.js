@@ -404,7 +404,6 @@ export default class OficiSoul {
         gloria3 = this.state.salteriComuOfici.gloria3;
 
         if(weekDay == 0){
-          //console.log("WHAT: " + this.state.tempsAdventSetmanesDium);
             ant1 = this.state.tempsAdventSetmanesDium.Ant1Ofici; //TODO: change the field! A to a
             ant2 = this.state.tempsAdventSetmanesDium.Ant2Ofici; //TODO: change the field! A to a
             ant3 = this.state.tempsAdventSetmanesDium.Ant3Ofici; //TODO: change the field! A to a

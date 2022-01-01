@@ -1,31 +1,30 @@
-import Asset from 'expo-asset';
-import CPLDataBase from './DatabaseOpenerService';
+import { CPLDataBase } from './DatabaseOpenerService';
 import * as Logger from '../Utils/Logger';
-
-const vervoseDatabaseUpdater = true;
 
 export function UpdateDatabase(currentDatabaseVersion){
     return new Promise((resolve) => {
-        if(currentDatabaseVersion == undefined){
+        if(currentDatabaseVersion === undefined){
             resolve();
         }
         else{
             GetUpdates(currentDatabaseVersion).then((json_updates) => {
-                if (json_updates == undefined || json_updates == "") {
+                if (json_updates === undefined || json_updates === "") {
                     resolve();
                 }
                 else{
-                    MakeChanges(json_updates).then(() => {
+                    resolve();
+                    // TODO: refactor
+                    /*MakeChanges(json_updates).then(() => {
                         resolve();
                     })
                     .catch((error) => {
-                        Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "1", error);
+                        Logger.LogError(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "1", error);
                         resolve()
-                    });
+                    });*/
                 }
             })
             .catch((error) => {
-                Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "2", error);
+                Logger.LogError(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "2", error);
                 resolve()
             });
         }
@@ -33,17 +32,17 @@ export function UpdateDatabase(currentDatabaseVersion){
 }
 
 function GetUpdates(currentDatabaseVersion) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         // Refresh the script from expo OTA updates
         //Asset.fromModule(require('../Assets/DatabaseUpdateScript/UpdateScript.json'));
 
         // Get the data from the file
-        var dataJson = require('../Assets/DatabaseUpdateScript/UpdateScript.json');
+        const dataJson = require('../Assets/DatabaseUpdateScript/UpdateScript.json');
 
         // Get only the new (diff between database version and updates count)
-        var scriptsVersion = dataJson.length;
-        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "UpdateDatabase", "scriptsVersion = " + scriptsVersion);
-        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "UpdateDatabase", "currentDatabaseVersion = " + currentDatabaseVersion);
+        const scriptsVersion = dataJson.length;
+        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "scriptsVersion = " + scriptsVersion);
+        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "currentDatabaseVersion = " + currentDatabaseVersion);
 
         // TODO:
 
@@ -55,15 +54,14 @@ function MakeChanges(json_updates){
     return new Promise((resolve, reject) => {
         let promises = [];
         let sql;
-        for (var i = 0; i < json_updates.length; i++) {
-            var change = json_updates[i]
-            //Log("change = ", "MakeChanges", change);
+        for (let i = 0; i < json_updates.length; i++) {
+            const change = json_updates[i];
+            let j = 0;
             switch (change.action) {
                 //UPDATE
                 case 2:
-                    Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "UPDATE");
-                    var set_statement = ""
-                    var j = 0
+                    Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "UPDATE");
+                    let set_statement = "";
                     for (const key in change.values) {
                         if (change.values.hasOwnProperty(key)) {
                             set_statement += key + " = '" + change.values[key] + "'"
@@ -79,14 +77,14 @@ function MakeChanges(json_updates){
 
                 //INSERT
                 case 1:
-                    var aux = JSON.stringify(change.values)
+                    let aux = JSON.stringify(change.values);
                     aux = aux.replace(/{/g, "")
                     aux = aux.replace(/}/g, "")
-                    aux = aux.replace(/\"/g, "")
-                    var arr_aux = aux.split(",")
-                    var ref_statement = ""
-                    var val_statement = ""
-                    for (var j = 0; j < arr_aux.length; j++){
+                    aux = aux.replace(/"/g, "")
+                    const arr_aux = aux.split(",");
+                    let ref_statement = "";
+                    let val_statement = "";
+                    for (j = 0; j < arr_aux.length; j++){
                         ref_statement += arr_aux[j].split(":")[0] 
                         val_statement += ("'" + arr_aux[j].split(":")[1] + "'")
                         if(j < (arr_aux.length - 1)){
@@ -94,7 +92,7 @@ function MakeChanges(json_updates){
                             val_statement += ", "
                         }
                     }
-                    sql = "INSERT INTO " + change_name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
+                    sql = "INSERT INTO " + change.name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
                     promises.push(ExecuteQuery(sql))
                 break;
                     
@@ -105,21 +103,21 @@ function MakeChanges(json_updates){
                 break;
             }
         }
-        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "promises.length = " + promises.length);
-        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "json_updates.length = " + json_updates.length);
+        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "promises.length = " + promises.length);
+        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "json_updates.length = " + json_updates.length);
 
-        if(promises.length != json_updates.length) {
+        if(promises.length !== json_updates.length) {
             resolve(false);
         }
         else{
             Promise.all(promises).then(res => {
-                if(res == undefined){
+                if(res === undefined){
                     reject(new Error("Something is not right"));
                 }
                 else{
                     let total_res = true;
-                    for (var i = 0; i < res.length; i++) {
-                        Logger.Log(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "promise " + i + " result:", res[i]);
+                    for (let i = 0; i < res.length; i++) {
+                        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "promise " + i + " result:", res[i]);
                         if (!res[i]){
                             total_res = false;
                         }
@@ -128,7 +126,7 @@ function MakeChanges(json_updates){
                 }
             })
             .catch((error) => {
-                Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "MakeChanges", "", error);
+                Logger.LogError(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "", error);
                 resolve(false);
             });
         }
@@ -139,16 +137,16 @@ function ExecuteQuery(query) {
     return new Promise((resolve) => {
         try {
             CPLDataBase.transaction((tx) => {
-                tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
+                tx.executeSql(query, [], () => {
                     resolve(true)
                 }, (SQLTransaction, SQLError) => {
-                    Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "ExecuteQuery","error in query (" + query + ")", SQLError);
+                    Logger.LogError(Logger.LogKeys.DatabaseUpdaterService, "ExecuteQuery","error in query (" + query + ")", SQLError);
                     resolve(false)
                 });
             });
         } 
         catch (error) {
-            Logger.LogError(Logger.LogKeys.DatebaseUpdaterService, "ExecuteQuery", "", error);
+            Logger.LogError(Logger.LogKeys.DatabaseUpdaterService, "ExecuteQuery", "", error);
         }
     });
 }

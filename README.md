@@ -35,7 +35,18 @@ https://github.com/pausabe/deploy-cpl
 
     expo upgrade
 
-### Deploy
+# Debug
+
+- Enable debug in device (cmd + D > Debug Remote JS)
+- Configure IDE debugger bundle to 127.0.0.1:19000
+- Use Google Chrome to open the Developer Tools
+- Instructions:
+  1. expo start
+  2. Press Debug button with the IDE debugger bundle config
+  3. Run ios/android
+  4. If not working the first time, refresh the app
+
+# Deploy
 #### Stores + OTA (big changes)
 
     expo build:ios --release-channel channel_name

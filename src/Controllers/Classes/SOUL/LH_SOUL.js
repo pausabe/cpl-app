@@ -1,3 +1,4 @@
+import * as Logger from '../../../Utils/Logger';
 import OficiSoul from './OficiSoul';
 import LaudesSoul from './LaudesSoul';
 import VespresSoul from './VespresSoul';
@@ -192,7 +193,6 @@ export default class LH_SOUL {
     if (G_VALUES.LT === GLOBAL.Q_SETMANES) {
       c += 1;
       id = (parseInt(G_VALUES.setmana) - 1) * 7 + (G_VALUES.date.getDay() + 1);
-      // console.log("super day: " + date + " -> " + id);
       GLOBAL.DBAccess.getLiturgia("tempsQuaresmaVSetmanes", id, (result) => {
         this.queryRows.tempsQuaresmaVSetmanes = result;
         this.dataReceived(params);
@@ -302,7 +302,6 @@ export default class LH_SOUL {
           break;
         default: id = 1;
       }
-      //console.log("himne " + id);
       GLOBAL.DBAccess.getLiturgia("tempsAdventNadalComu", id, (result) => {
         this.queryRows.tempsAdventNadalComu = result;
         this.dataReceived(params);
@@ -485,7 +484,6 @@ export default class LH_SOUL {
       c += 1;
       if (G_VALUES.LT === GLOBAL.Q_CENDRA) id = 1;
       else id = parseInt(G_VALUES.setmana) + 1;
-      // console.log("hello?1");
       GLOBAL.DBAccess.getLiturgia("tempsQuaresmaVSetmanesDium", id, (result) => {
         this.queryRows.tempsQuaresmaVSetmanesDiumVespres1 = result;
         this.dataReceived(params);
@@ -697,9 +695,8 @@ export default class LH_SOUL {
 
     }
     else {
-      console.log("InfoLog. Error OC. No result from DB");
+      Logger.LogError(Logger.LogKeys.HomeScreenController, "getOficisComuns", "InfoLog. Error OC. No result from DB");
       this.creatingEmptyCEL();
-      console.log("here");
       info_cel = {
         nomCel: '-',
         infoCel: '-',
@@ -891,10 +888,9 @@ export default class LH_SOUL {
       this.idTSFTomorrow = this.findTempsSolemnitatsFestes(date, LT, setmana, pentacosta);
  
       // By precedence we dont want tomorrow TFS if today is more important
-      // TODO: check if tempsSolemnitatsFestes is ordered by precedence correctly
       let idTFSToday = this.findTempsSolemnitatsFestes(G_VALUES.date, G_VALUES.LT, G_VALUES.setmana, G_VALUES.pentacosta);
       if(idTFSToday != -1 && idTFSToday < this.idTSFTomorrow){
-        console.log("tomorrow is: " + this.idTSFTomorrow + " but today is more important: " + idTFSToday);
+        Logger.Log(Logger.LogKeys.HomeScreenController, "tomorrowCalVespres1CEL", "tomorrow is: " + this.idTSFTomorrow + " but today is more important: " + idTFSToday);
         this.idTSFTomorrow = -1;
       }
 
@@ -914,7 +910,6 @@ export default class LH_SOUL {
     //santsMemories M - Dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
     if (celType === 'M') {
       var corImmaculat = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 20);
-      console.log("corImmaculat: " + corImmaculat);
       if (date.getDate() === corImmaculat.getDate() && date.getMonth() === corImmaculat.getMonth() &&
         date.getFullYear() === corImmaculat.getFullYear()) {
         var precAux = 10;

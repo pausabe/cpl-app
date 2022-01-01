@@ -125,7 +125,6 @@ function Set_Liturgia_State() {
 }
 
 function State_Saved_Callback(info_text) {
-  console.log("State info: " + info_text);
 }
 
 export function Force_Stop_Test(Test_Information_Callback) {
@@ -161,7 +160,6 @@ function writeState(stateArr, idt, fdt, iDt, fDt, cb, lastW) {
         })
     })
     .catch((err) => {
-      console.log('FileLog. Error: ' + err.message);
       cb("File not saved... Error: " + err.message);
     });*/
 }
@@ -170,7 +168,6 @@ function _transformData(SA) {
   var TD = "";
   var x;
   for (x in SA) {
-    console.log("FileLog. Part: " + FILE_PART + ". Saving data to file. Day: " + x + '/' + SA.length);
     TD += '>>>>>' + SA[x].date.day + '/' + SA[x].date.month + '/' + SA[x].date.year + '-' + SA[x].diocesi;
     TD += '\n>>>[Ofici,' + SA[x].date.day + '/' + SA[x].date.month + '/' + SA[x].date.year + '-' + SA[x].diocesi + ']OFICI';
     TD += '\n';
@@ -613,7 +610,6 @@ function _transformData(SA) {
     
     TD += '\n::---------------------------------------------------::\n';
   }
-  console.log("FileLog. TD.length: " + TD.length);
   return TD;
 }
 

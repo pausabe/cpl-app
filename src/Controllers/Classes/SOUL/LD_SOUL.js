@@ -1,4 +1,4 @@
-import DBAdapter from '../../../Adapters/DBAdapter';
+import * as Logger from '../../../Utils/Logger';
 import GF from '../../../Globals/GlobalFunctions';
 import GLOBAL from '../../../Globals/Globals';
 import SoulKeys from './SoulKeys';
@@ -134,7 +134,7 @@ export default class LD_SOUL {
             }
         }
         catch (error) {
-            console.log("Error: ", error);
+            Logger.LogError(Logger.LogKeys.Soul, "makeQueryies", "", error);
         }
     }
 

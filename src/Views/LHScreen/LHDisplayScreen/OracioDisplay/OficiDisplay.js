@@ -11,6 +11,7 @@ import HR from '../../../../Components/HRComponent';
 import GLOBAL from '../../../../Globals/Globals';
 import GF from '../../../../Globals/GlobalFunctions';
 import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
+import * as Logger from '../../../../Utils/Logger';
 
 export default class OficiDisplay extends Component {
   componentDidMount(){
@@ -157,8 +158,8 @@ export default class OficiDisplay extends Component {
         );
       }
     }
-    catch (e) {
-      console.log(e);
+    catch (error) {
+      Logger.LogError(Logger.LogKeys.Screens, "remder", "", error);
       if(this.superTestMode) this.testErrorCB();
       return null;
     }
@@ -576,8 +577,8 @@ export default class OficiDisplay extends Component {
         </View>
       )
     }
-    catch (e) {
-      console.log("Error", e);
+    catch (error) {
+      Logger.LogError(Logger.LogKeys.Screens, "lectures", "", error);
       return null;
     }
   }

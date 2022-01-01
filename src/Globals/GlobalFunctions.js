@@ -1,4 +1,4 @@
-import GLOBALS from './Globals';
+import * as Logger from '../Utils/Logger';
 
 module.exports = {
   transformReadableDate(date){
@@ -238,11 +238,11 @@ module.exports = {
           };
         
         default:
-          console.log("getTextStyle NOT FOUND!!!! -> " + typeCode);
+          Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", "getTextStyle NOT FOUND!!!! -> " + typeCode);
           break;
     }
     } catch (error) {
-      console.log("getTextStyle ERROR: ", error);
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", "", error);
     }
   },
 
@@ -278,9 +278,7 @@ module.exports = {
 
   rs(text, superTestMode, error){
     if(superTestMode) {
-      //console.log("testLogTest (text): _" + text + "_");
       if(!text||text===undefined||text===''||text==='-'||text===' '||text===':'){
-        // console.log("testLogTest (bad text): _" + text + "_");
         error();
         return text;
       }
@@ -305,7 +303,7 @@ module.exports = {
       return text;
       
     } catch (error) {
-      console.log("Something went wrong triming the text '" + text + "': ", error);
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "trim", "Something went wrong triming the text '" + text + "': ", error);
       return text
     }
 
@@ -328,7 +326,7 @@ module.exports = {
         result = r1 + ' ' + r2.charAt(0).toLowerCase() + r2.slice(1);
     }
     else{
-      console.log("InfoLog. respTogether NOT possible. Something went wrong!");
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "respTogether", "InfoLog. respTogether NOT possible. Something went wrong!", error);
     }
 
     return result;
