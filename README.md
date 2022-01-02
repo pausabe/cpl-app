@@ -4,7 +4,7 @@ https://github.com/pausabe/deploy-cpl
 # Necessary Tools
 ### expo-cli v4.9.1
 
-    npm install --quiet -g expo-cli@4.9.1
+    npm install expo-cli@4.9.1
 
 ### Dependencies
 
