@@ -13,7 +13,7 @@ export function UpdateDatabase(currentDatabaseVersion){
                 }
                 else{
                     resolve();
-                    // TODO: refactor
+                    // TODO:
                     /*MakeChanges(json_updates).then(() => {
                         resolve();
                     })

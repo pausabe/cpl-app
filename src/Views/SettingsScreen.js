@@ -12,7 +12,7 @@ export default class SettingsScreen extends Component {
   }
 
   refreshHome(){    
-    // TODO: refactor this.props.route.params.Refresh_Date();
+    this.props.route.params.Refresh_Date();
   }
 
   UNSAFE_componentWillMount(){

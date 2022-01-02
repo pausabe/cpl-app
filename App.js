@@ -45,11 +45,10 @@ function getHeaderLeft(navigation, route){
       if(typeof navigation.getState().routes[0].state == "object"){
         params = navigation.getState().routes[0].state.routes[0].state.routes[0].params;
       }
-      //onPress={() => params?.calPres() }
       return (
         <TouchableOpacity
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
-          >
+          onPress={() => params?.calPres() }>
           <View style={{ flex: 1, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
             <Icon
               name="calendar-sharp"
@@ -73,11 +72,10 @@ function getHeaderRight(navigation, route){
       if(typeof navigation.getState().routes[0].state == "object"){
         params = navigation.getState().routes[0].state.routes[0].state.routes[0].params;
       }
-      // TODO: refactor onPress={() => navigation.navigate('Settings', { Refresh_Date: params?.Refresh_Date })}
       return (
         <TouchableOpacity 
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
-          >
+          onPress={() => navigation.navigate('Settings', { Refresh_Date: params?.Refresh_Date })}>
           <View style={{ flex: 1, paddingRight: 10, alignItems: 'center', justifyContent: 'center' }}>
             <Icon
               name="settings-outline"

@@ -27,14 +27,16 @@ export default class HomeScreenController extends Component {
 
   async componentDidMount() {
     try {
-      //TODO: refactor -> await SplashScreen.preventAutoHideAsync();
+      if(!__DEV__){
+        await SplashScreen.preventAutoHideAsync();
+      }
     } catch (e) {
         console.warn(e);
         await SplashScreen.hideAsync();
     }
     this.props.navigation.setParams({
-      // TODO: refactor calPres: this.calendarPressed.bind(this),
-      // TODO: refactor Refresh_Date: this.Refresh_Date.bind(this),
+      calPres: this.calendarPressed.bind(this),
+      Refresh_Date: this.Refresh_Date.bind(this),
     });
     BackHandler.addEventListener('hardwareBackPress', this.androidBack.bind(this));
     AppState.addEventListener('change', this._handleAppStateChange.bind(this));
