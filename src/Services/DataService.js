@@ -70,11 +70,10 @@ export function Reload_All_Data(date, Reload_Finished_Callback, Reload_Finished_
     }),
     SettingsManager.getSettingNumSalmInv((r) => G_VALUES.numSalmInv = r),
     SettingsManager.getSettingNumAntMare((r) => G_VALUES.numAntMare = r),
-    GLOBAL.DBAccess.getDatabaseVersion((r) => G_VALUES.databaseVersion = r),
   ])
   .then(() => {
     if(online_updates){
-      UpdateDatabase(G_VALUES.databaseVersion).then(() => {
+      UpdateDatabase().then(() => {
         Refresh_Data();
       });
     }

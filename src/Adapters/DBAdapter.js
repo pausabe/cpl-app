@@ -29,15 +29,15 @@ export default class DBAdapter {
   }
 
   getDatabaseVersion(callback){
-    var onlineVersionPromise = new Promise((resolve) => {
+    return new Promise((resolve) => {
       this.executeQuery(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`,
-        result => resolve(result.rows.item(0).databaseVersion),
-        () => resolve(0) );
+          result => {
+            const databaseVersion = result.rows.item(0).databaseVersion;
+            G_VALUES.databaseVersion = databaseVersion;
+            resolve(databaseVersion);
+          },
+          () => resolve(0));
     });
-
-    onlineVersionPromise.then(result => callback(result));
-
-    return onlineVersionPromise;
   }
 
   getLiturgia(table, id, callback) {

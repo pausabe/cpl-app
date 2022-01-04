@@ -5,10 +5,17 @@ import * as Logger from '../Utils/Logger';
 import HR from '../Components/HRComponent';
 import SettingsComponentAdapter from "../Adapters/SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
+import {SessionLogs} from "../Utils/Logger";
+
+let versionPressedTimes;
 
 export default class SettingsScreen extends Component {
   constructor(props){
-    super(props);
+      super(props);
+      versionPressedTimes = 0;
+      this.state = {
+          logsVisible: false
+      };
   }
 
   refreshHome(){    
@@ -21,11 +28,18 @@ export default class SettingsScreen extends Component {
       }).catch(error =>  Logger.LogError(Logger.LogKeys.Screens, "UNSAFE_componentWillMount", "", error));
   }
 
+  HandleVersionPressed(){
+      versionPressedTimes++;
+      if(versionPressedTimes === 10){
+          this.setState({logsVisible: true});
+      }
+  }
+
   render() {
       if(!this.state || this.state && !this.state.options){
           return (
             <View style={styles.scrollContainer}>
-              <ScrollView automaticallyAdjustContentInsets={false} style={styles.itemList}></ScrollView>
+              <ScrollView automaticallyAdjustContentInsets={false} style={styles.itemList}/>
             </View>
           );
       }
@@ -40,10 +54,17 @@ export default class SettingsScreen extends Component {
             <View style={{padding: 5, paddingTop: 10,}}>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Text oficial de la Comissió Interdiocesana de Litúrgia de la Conferència Episcopal Tarraconense, aprovat pels bisbes de les diòcesis de parla catalana i confirmat per la Congregació per al Culte Diví i la Disciplina dels Sagraments: Prot. N. 312/15, 27 d'abril de 2016"}</Text>
               <View style={{height:15}}/>
-              <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de l'aplicació: ("}{Platform.OS == "ios"? Constants.manifest.ios.buildNumber : Constants.manifest.android.versionCode}{")"}{Constants.manifest.version}</Text>
+              <Text onPress={this.HandleVersionPressed.bind(this)} style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de l'aplicació: ("}{Platform.OS === "ios"? Constants.manifest.ios.buildNumber : Constants.manifest.android.versionCode}{")"}{Constants.manifest.version}</Text>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Versió de la base de dades: "}{G_VALUES.databaseVersion}</Text>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"OTA("}{Constants.manifest.releaseChannel}{"): "}{Constants.manifest.updates.enabled? "Sí" : "No"}</Text>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Esquema de color: "}{Appearance.getColorScheme()}</Text>
+                {this.state.logsVisible &&
+                    <Text
+                        selectable={true}
+                        style={{textAlign: 'center', color: 'grey', fontSize: 11}}>
+                        {"Logs: " + "\n"}{SessionLogs}
+                    </Text>
+                }
             </View>
             <View style={{height:10}}/>
           </ScrollView>
