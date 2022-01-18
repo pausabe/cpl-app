@@ -100,6 +100,7 @@ function GetDeleteQuery(change) {
 
 async function FakeUpdate(){
     // This is necessary to update properly the updates count
+    Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "FakeUpdate", "Faking update");
     const query = "INSERT INTO _tables_log(table_name, row_id, action, date) VALUES('', 0, -1, date())";
     await ExecuteQuery(query);
 }

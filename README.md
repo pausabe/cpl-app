@@ -36,8 +36,8 @@ https://github.com/pausabe/deploy-cpl
 #### Only OTA (little changes)
     expo publish --release-channel channel_name
 #### Channel Names
-    prod_channel
-    test_channel
+    prod_channel_X.Y
+    test_channel_X.Y
 #### Instructions
 Due some errors, the database cannot be updated using OTA updates.
 Therefore, when we...
