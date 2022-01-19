@@ -25,13 +25,17 @@ function log(logKey, message, param, limit){
     try {
         if(LogsEnabled){
             message = message.substring(0, limit === undefined? MessageCharacterLimit : limit);
+            const time = new Date().getHours().toString() + "." +
+                new Date().getMinutes().toString() + "." +
+                new Date().getSeconds().toString();
+            var finalMessageNoParam = time + " " + logKey + message;
             if(param === undefined){
-                SessionLogs += logKey + message + "\n";
-                console.log(logKey + message);
+                SessionLogs += finalMessageNoParam + "\n";
+                console.log(finalMessageNoParam);
             }
             else{
-                SessionLogs += logKey + message + param.toString() + "\n";
-                console.log(logKey + message, param);
+                SessionLogs += finalMessageNoParam + param.toString() + "\n";
+                console.log(finalMessageNoParam, param);
             }
         }
     }catch (e) {

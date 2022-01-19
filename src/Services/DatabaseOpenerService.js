@@ -6,7 +6,7 @@ export var CPLDataBase = undefined;
 
 export function OpenDatabaseIfNotOpenedYet(){
   return new Promise((resolve) => {
-      if(CPLDataBase == undefined){
+      if(CPLDataBase === undefined){
         openDatabase(FileSystem.documentDirectory + "SQLite/cpl-app.db")
         .then((database) => {
             CPLDataBase = database;
@@ -23,9 +23,5 @@ async function openDatabase(filesystemDatabasePath) {
   if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
     await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
   }
-  await FileSystem.downloadAsync(
-    Asset.fromModule(require('../Assets/db/cpl-app.db')).uri,
-    filesystemDatabasePath
-  );
   return SQLite.openDatabase('cpl-app.db');
 }

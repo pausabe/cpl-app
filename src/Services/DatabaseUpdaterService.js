@@ -65,7 +65,7 @@ function GetUpdateQuery(change) {
     let set_statement = "";
     for (const key in change.values) {
         if (change.values.hasOwnProperty(key)) {
-            set_statement += key + " = '" + change.values[key] + "'"
+            set_statement += key + " = '" + change.values[key].replace("'", "''") + "'"
             if(j < (Object.keys(change.values).length - 1))
                 set_statement += ", "
             j += 1
@@ -85,7 +85,7 @@ function GetInsertUpdate(change) {
     let val_statement = "";
     for (j = 0; j < arr_aux.length; j++){
         ref_statement += arr_aux[j].split(":")[0]
-        val_statement += ("'" + arr_aux[j].split(":")[1] + "'")
+        val_statement += ("'" + arr_aux[j].split(":")[1].replace("'", "''") + "'")
         if(j < (arr_aux.length - 1)){
             ref_statement += ", "
             val_statement += ", "
