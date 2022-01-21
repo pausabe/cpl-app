@@ -1,14 +1,17 @@
-import GLOBAL from '../../../Globals/Globals';
+import GLOBAL from '../../../Globals/GlobalKeys';
+
+let GlobalData;
 
 export default class CelebracioSoul {
-  constructor(TABLES, idTSF, idDE, Set_Soul_CB, SOUL, tomorrowCal) {
+  constructor(TABLES, idTSF, idDE, Set_Soul_CB, SOUL, tomorrowCal, globalData) {
+    GlobalData = globalData;
     this.makePrayer(TABLES, idTSF, idDE, Set_Soul_CB, SOUL, tomorrowCal);
   }
 
   makePrayer(TABLES, idTSF, idDE, Set_Soul_CB, SOUL, tomorrowCal){
-    date = G_VALUES.date;
-    celType = G_VALUES.celType;
-    diocesi = G_VALUES.diocesi;
+    let date = GlobalData.date;
+    let celType = GlobalData.celType;
+    let diocesi = GlobalData.diocesi;
 
     this.INFO_CEL = {
       nomCel: '-',
@@ -285,7 +288,7 @@ export default class CelebracioSoul {
       antMare: '-',
     }
 
-    if((celType === 'L' || celType == 'V') && !G_VALUES.lliures){
+    if((celType === 'L' || celType == 'V') && !GlobalData.lliures){
       this.INFO_CEL.nomCel = TABLES.santsMemories.nomMemoria;
       this.INFO_CEL.infoCel = TABLES.santsMemories.infoMemoria;
       this.INFO_CEL.typeCel = celType;
@@ -296,7 +299,7 @@ export default class CelebracioSoul {
         if(idTSF === -1){
           switch (celType) {
             case "S":
-              if(G_VALUES.LT === GLOBAL.Q_DIUM_PASQUA)
+              if(GlobalData.LT === GLOBAL.Q_DIUM_PASQUA)
                 this.createCel(TABLES, "DP", '.', 'NF');
               else this.createCel(TABLES, "SF", '.', 'NF');
               break;
@@ -305,7 +308,7 @@ export default class CelebracioSoul {
               break;
             case "L":
             case "V":
-              if(date.getDay() !== 0 && G_VALUES.lliures === true)
+              if(date.getDay() !== 0 && GlobalData.lliures === true)
                 this.createCel(TABLES, "ML", '.', 'NF');
               break;
             case "M":
@@ -347,8 +350,8 @@ export default class CelebracioSoul {
         }
     }
 
-    if(this.INFO_CEL.typeCel === '.') this.INFO_CEL.typeCel = G_VALUES.celType;
-    if(G_VALUES.LT === GLOBAL.Q_TRIDU && G_VALUES.date.getDay() === 6)
+    if(this.INFO_CEL.typeCel === '.') this.INFO_CEL.typeCel = GlobalData.celType;
+    if(GlobalData.LT === GLOBAL.Q_TRIDU && GlobalData.date.getDay() === 6)
       this.INFO_CEL.nomCelTom = "dium-pasqua";
 
     CEL = {
@@ -370,9 +373,9 @@ export default class CelebracioSoul {
   }
 
   createCel(TABLES, type, tomCal, F){
-    diocesi = G_VALUES.diocesi;
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    diocesi = GlobalData.diocesi;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
 
     switch (type) {
       case "DP":
@@ -400,7 +403,7 @@ export default class CelebracioSoul {
               break;
             case 'L':
             case 'V':
-              if(G_VALUES.lliures === true) this.makeML(TABLES, type, tomCal);
+              if(GlobalData.lliures === true) this.makeML(TABLES, type, tomCal);
               break;
           }
           this.makeVespres1TSF(TABLES, type, tomCal);
@@ -428,7 +431,7 @@ export default class CelebracioSoul {
               break;
             case 'L':
             case 'V':
-              if(G_VALUES.lliures === true) this.makeML(TABLES, type, tomCal);
+              if(GlobalData.lliures === true) this.makeML(TABLES, type, tomCal);
               break;
           }
           this.makeDR(TABLES, type, tomCal);
@@ -456,7 +459,7 @@ export default class CelebracioSoul {
               break;
             case 'L':
             case 'V':
-              if(G_VALUES.lliures === true) this.makeML(TABLES, type, tomCal);
+              if(GlobalData.lliures === true) this.makeML(TABLES, type, tomCal);
               break;
           }
           this.makeT(TABLES, type, tomCal);
@@ -484,7 +487,7 @@ export default class CelebracioSoul {
                break;
              case 'L':
              case 'V':
-               if(G_VALUES.lliures === true) this.makeML(TABLES, type, tomCal);
+               if(GlobalData.lliures === true) this.makeML(TABLES, type, tomCal);
                break;
            }
            this.makeA(TABLES, type, tomCal);
@@ -509,7 +512,7 @@ export default class CelebracioSoul {
               break;
             case 'L':
             case 'V':
-              if(G_VALUES.lliures === true) this.makeML(TABLES, type, tomCal);
+              if(GlobalData.lliures === true) this.makeML(TABLES, type, tomCal);
               break;
           }
           this.makeVespres1DE(TABLES, type, tomCal);
@@ -525,7 +528,7 @@ export default class CelebracioSoul {
           switch (tomCal) {
             case 'F':
             case 'S': //TODO: HARDCODED això (i l'if dabaix) ho he afegit pq al 2019 vagi bé la Mare de Déu de Montserrat. Caldria comprovar si això està bé
-              if(tomCal == 'F' || (tomCal == 'S' && (G_VALUES.date.getFullYear() == 2019 && G_VALUES.date.getMonth() == 3 && G_VALUES.date.getDate() == 30))){
+              if(tomCal == 'F' || (tomCal == 'S' && (GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30))){
                 this.makeSF(TABLES, type,tomCal, F);
               }
               break;
@@ -540,7 +543,7 @@ export default class CelebracioSoul {
               break;
             case 'L':
             case 'V':
-              if(G_VALUES.lliures === true) this.makeML(TABLES, type, tomCal);
+              if(GlobalData.lliures === true) this.makeML(TABLES, type, tomCal);
               break;
           }
           this.makeVespres1SF(TABLES, type, tomCal);
@@ -554,8 +557,8 @@ export default class CelebracioSoul {
   }
 
   makeDP(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
     //::::::>>>>>DP<<<<<::::::
     //::::::DP-INFO_CEL::::::
     this.INFO_CEL.nomCel = 'Diumenge de Pasqua',
@@ -739,8 +742,8 @@ export default class CelebracioSoul {
   }
 
   makeVespres1TSF(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
 
     //::::::>>>>>TSF<<<<<::::::
     //::::::TSF-INFO_CEL::::::
@@ -785,8 +788,8 @@ export default class CelebracioSoul {
   }
 
   makeTSF(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
     //::::::>>>>>TSF<<<<<::::::
     //::::::TSF-INFO_CEL::::::
     this.INFO_CEL.nomCel = TABLES.tempsSolemnitatsFestes.nomMemoria;
@@ -992,8 +995,8 @@ export default class CelebracioSoul {
   }
 
   makeDE(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
     //::::::>>>>>DE<<<<<::::::
     //::::::DE-INFO_CEL::::::
     this.INFO_CEL.nomCel = TABLES.diesespecials.nomMemoria;
@@ -1192,8 +1195,8 @@ export default class CelebracioSoul {
   }
 
   makeVespres1DE(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
 
     this.INFO_CEL.nomCelTom = TABLES.diesespecials.nomMemoria;
 
@@ -1227,8 +1230,8 @@ export default class CelebracioSoul {
   }
 
   makeSF(TABLES, type, tomCal, F){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
 
     //::::::>>>>>SF<<<<<::::::
     //::::::SF-INFO_CEL::::::
@@ -1564,7 +1567,7 @@ export default class CelebracioSoul {
     // else if(TABLES.OficisComuns !== null) this.NONA.oracio = TABLES.OficisComuns.oraFiMenor;
 
 
-    if(!(F === 'F' && G_VALUES.date.getDay() === 6)){
+    if(!(F === 'F' && GlobalData.date.getDay() === 6)){
       //::::::SF-VESPRES2::::::
       //SF-VESPRES2 -> HIMNE
       if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){
@@ -1650,8 +1653,8 @@ export default class CelebracioSoul {
   }
 
   makeVespres1SF(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
 
     this.INFO_CEL.nomCelTom = TABLES.santsSolemnitatsFVespres1.nomMemoria;
 
@@ -1741,8 +1744,8 @@ export default class CelebracioSoul {
   }
 
   makeML(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
 
     //::::::>>>>>ML<<<<<::::::
     //::::::INFO_CEL::::::
@@ -2075,7 +2078,7 @@ export default class CelebracioSoul {
     this.NONA.oracio = TABLES.santsMemories.OracioNona;
 
 
-    if(G_VALUES.date.getDay() !== 6){
+    if(GlobalData.date.getDay() !== 6){
       //:::::::ML-VESPRES:::::::
       //ML-VESPRES -> HIMNE
       if(TABLES.santsMemories.himneVespresLlati !== '-'){
@@ -2161,8 +2164,8 @@ export default class CelebracioSoul {
   }
 
   makeDR(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
     if(llati === 'true') this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaRams.ant1Vespres1;
@@ -2189,8 +2192,8 @@ export default class CelebracioSoul {
   }
 
   makeT(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
     if(llati === 'true') this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresllati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaTridu.ant1Vespres;
@@ -2218,8 +2221,8 @@ export default class CelebracioSoul {
   }
 
   makeA(TABLES, type, tomCal){
-    llati = G_VALUES.llati;
-    anyABC = G_VALUES.ABC;
+    llati = GlobalData.llati;
+    anyABC = GlobalData.ABC;
     if(llati === 'true')
       this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresCat;

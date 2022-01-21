@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
-
 import GF from '../../Globals/GlobalFunctions';
 import HR from '../../Components/HRComponent';
 import * as Logger from '../../Utils/Logger';
+import { MassLiturgyData, GlobalData } from '../../Services/DataService';
 
 export default class LDDisplayScreen extends Component {
     //PREVIEWS --------------------------------------------------------------------------
@@ -30,20 +30,20 @@ export default class LDDisplayScreen extends Component {
         super(props);
 
         this.styles = {
-            container: GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-            prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+            container: GF.getStyle("CONTAINER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            black: GF.getStyle("GENERIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            red: GF.getStyle("ACCENT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
         };
     }
 
@@ -56,7 +56,7 @@ export default class LDDisplayScreen extends Component {
     render() {
         try {
             return (
-                <View style={GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled)}>
+                <View style={GF.getStyle("CONTAINER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled)}>
                     <ScrollView automaticallyAdjustContentInsets={false} >
                         <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
                             {this.state.VetllaPasquaLecturesSalms ?
@@ -100,89 +100,89 @@ export default class LDDisplayScreen extends Component {
     Render_VetllaPasquaLecturesSalms() {
         return (
             <View style={{ flex: 1 }}>
-                <Text selectable={true} style={this.styles.red}>{"Lectura primera "}{GF.trim(LD_VALUES.Lectura1)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura primera "}{GF.trim(MassLiturgyData.Lectura1)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.Lectura1Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.Lectura1Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Lectura1Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Lectura1Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.Lectura1Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.Lectura1Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(LD_VALUES.Salm1)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgyData.Salm1)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Salm1Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Salm1Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura segona "}{GF.trim(LD_VALUES.Lectura2)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura segona "}{GF.trim(MassLiturgyData.Lectura2)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.Lectura2Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.Lectura2Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Lectura2Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Lectura2Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.Lectura2Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.Lectura2Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(LD_VALUES.Salm2)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgyData.Salm2)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Salm2Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Salm2Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura tercera "}{GF.trim(LD_VALUES.Lectura3)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura tercera "}{GF.trim(MassLiturgyData.Lectura3)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.Lectura3Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.Lectura3Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Lectura3Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Lectura3Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.Lectura3Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.Lectura3Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(LD_VALUES.Salm3)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgyData.Salm3)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Salm3Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Salm3Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura quarta "}{GF.trim(LD_VALUES.Lectura4)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura quarta "}{GF.trim(MassLiturgyData.Lectura4)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.Lectura4Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.Lectura4Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Lectura4Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Lectura4Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.Lectura4Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.Lectura4Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(LD_VALUES.Salm4)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgyData.Salm4)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Salm4Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Salm4Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura cinquena "}{GF.trim(LD_VALUES.Lectura5)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura cinquena "}{GF.trim(MassLiturgyData.Lectura5)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.Lectura5Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.Lectura5Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Lectura5Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Lectura5Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.Lectura5Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.Lectura5Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(LD_VALUES.Salm5)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgyData.Salm5)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Salm5Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Salm5Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura sisena "}{GF.trim(LD_VALUES.Lectura6)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura sisena "}{GF.trim(MassLiturgyData.Lectura6)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.Lectura6Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.Lectura6Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Lectura6Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Lectura6Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.Lectura6Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.Lectura6Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(LD_VALUES.Salm6)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgyData.Salm6)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Salm6Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Salm6Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura setena "}{GF.trim(LD_VALUES.Lectura7)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura setena "}{GF.trim(MassLiturgyData.Lectura7)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.Lectura7Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.Lectura7Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Lectura7Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Lectura7Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.Lectura7Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.Lectura7Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(LD_VALUES.Salm7)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgyData.Salm7)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.Salm7Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.Salm7Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
                 <Text selectable={true} style={this.styles.red}>{"Glòria"}</Text>
@@ -190,13 +190,13 @@ export default class LDDisplayScreen extends Component {
                 {this.GloriaText()}
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
-                <Text selectable={true} style={this.styles.red}>{"Lectura de l'apòstol "}{GF.trim(LD_VALUES.LecturaApostol)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura de l'apòstol "}{GF.trim(MassLiturgyData.LecturaApostol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.LecturaApostolCita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.LecturaApostolCita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.LecturaApostolTitol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.LecturaApostolTitol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.LecturaApostolText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.LecturaApostolText)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
                 {this.state.VetllaPasquaEvangeli ?
@@ -220,17 +220,17 @@ export default class LDDisplayScreen extends Component {
             <View style={{ flex: 1 }}>
                 <Text selectable={true} style={this.styles.red}>{"Evangeli"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{GF.trim(LD_VALUES.Alleluia)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{GF.trim(MassLiturgyData.Alleluia)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.AlleluiaText)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.AlleluiaText)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{GF.trim(LD_VALUES.Evangeli)}</Text>
+                <Text selectable={true} style={this.styles.red}>{GF.trim(MassLiturgyData.Evangeli)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(LD_VALUES.EvangeliCita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgyData.EvangeliCita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(LD_VALUES.EvangeliTitol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgyData.EvangeliTitol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(LD_VALUES.EvangeliText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgyData.EvangeliText)}</Text>
             </View>
         )
     }
@@ -241,7 +241,7 @@ export default class LDDisplayScreen extends Component {
         var evangeliTitolRams = "";
         var evangeliTextRams = "";
 
-        switch (G_VALUES.ABC) {
+        switch (GlobalData.ABC) {
             case "A":
                 evangeliRams = "Mt 21,1-11";
                 evangeliCitaRams = "Beneït el qui ve en nom del Senyor";
@@ -291,7 +291,7 @@ export default class LDDisplayScreen extends Component {
     }
 
     Render_1Lect() {
-        var displayGloria = (this.state.DisplayVespers && LD_VALUES.GloriaVespers == '1' || (!this.state.DisplayVespers && LD_VALUES.Gloria == '1'));
+        var displayGloria = (this.state.DisplayVespers && MassLiturgyData.GloriaVespers == '1' || (!this.state.DisplayVespers && MassLiturgyData.Gloria == '1'));
 
         return (
             <View style={{ flex: 1 }}>
@@ -309,13 +309,13 @@ export default class LDDisplayScreen extends Component {
                 }
                 <Text selectable={true} style={this.styles.red}>{"Lectura primera"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura1Vespers) : GF.trim(LD_VALUES.Lectura1)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura1Vespers) : GF.trim(MassLiturgyData.Lectura1)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura1CitaVespers) : GF.trim(LD_VALUES.Lectura1Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura1CitaVespers) : GF.trim(MassLiturgyData.Lectura1Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura1TitolVespers) : GF.trim(LD_VALUES.Lectura1Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura1TitolVespers) : GF.trim(MassLiturgyData.Lectura1Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura1TextVespers) : GF.trim(LD_VALUES.Lectura1Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura1TextVespers) : GF.trim(MassLiturgyData.Lectura1Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 {this.state.Salm ?
                     <View>
@@ -342,9 +342,9 @@ export default class LDDisplayScreen extends Component {
             <View style={{ flex: 1 }}>
                 <Text selectable={true} style={this.styles.red}>{"Salm responsorial"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.SalmVespers) : GF.trim(LD_VALUES.Salm)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.SalmVespers) : GF.trim(MassLiturgyData.Salm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.SalmTextVespers) : GF.trim(LD_VALUES.SalmText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.SalmTextVespers) : GF.trim(MassLiturgyData.SalmText)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 {(need_lect2 && this.state.Lect2) || (!need_lect2 && this.state.Evangeli) ?
                     <View>
@@ -374,13 +374,13 @@ export default class LDDisplayScreen extends Component {
             <View style={{ flex: 1 }}>
                 <Text selectable={true} style={this.styles.red}>{"Lectura segona"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura2Vespers) : GF.trim(LD_VALUES.Lectura2)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura2Vespers) : GF.trim(MassLiturgyData.Lectura2)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura2CitaVespers) : GF.trim(LD_VALUES.Lectura2Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura2CitaVespers) : GF.trim(MassLiturgyData.Lectura2Cita)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura2TitolVespers) : GF.trim(LD_VALUES.Lectura2Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura2TitolVespers) : GF.trim(MassLiturgyData.Lectura2Titol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.Lectura2TextVespers) : GF.trim(LD_VALUES.Lectura2Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.Lectura2TextVespers) : GF.trim(MassLiturgyData.Lectura2Text)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 {this.state.Evangeli ?
                     <View>
@@ -399,21 +399,21 @@ export default class LDDisplayScreen extends Component {
     }
 
     Render_Evangeli() {
-        var displayCredo = (this.state.DisplayVespers && LD_VALUES.credoVespers == '1' || (!this.state.DisplayVespers && LD_VALUES.credo == '1'));
-        var aleluia_text = (this.state.DisplayVespers ? LD_VALUES.AlleluiaVespers != '-'? LD_VALUES.AlleluiaVespers : "" : LD_VALUES.Alleluia != '-'? LD_VALUES.Alleluia : "")
+        var displayCredo = (this.state.DisplayVespers && MassLiturgyData.credoVespers == '1' || (!this.state.DisplayVespers && MassLiturgyData.credo == '1'));
+        var aleluia_text = (this.state.DisplayVespers ? MassLiturgyData.AlleluiaVespers != '-'? MassLiturgyData.AlleluiaVespers : "" : MassLiturgyData.Alleluia != '-'? MassLiturgyData.Alleluia : "")
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{"Evangeli"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                {(G_VALUES.tempsespecific != "Quaresma" && G_VALUES.tempsespecific != "Tridu Pasqual") ?
+                {(GlobalData.tempsespecific != "Quaresma" && GlobalData.tempsespecific != "Tridu Pasqual") ?
                     <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{aleluia_text}</Text>
                     :
                     <Text selectable={true} style={this.styles.red}>{"Vers abans de l'evangeli"}</Text>
                 }
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.AlleluiaTextVespers) : GF.trim(LD_VALUES.AlleluiaText)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.AlleluiaTextVespers) : GF.trim(MassLiturgyData.AlleluiaText)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
-                {G_VALUES.LT == "Q_DIUM_PASQUA" ?
+                {GlobalData.LT == "Q_DIUM_PASQUA" ?
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
                             <TouchableOpacity onPress={this._onEvangeliPress.bind(this, 'normal')}>
@@ -458,10 +458,10 @@ export default class LDDisplayScreen extends Component {
     }
 
     NormalEvangeli() {
-        var cita = this.state.DisplayVespers ? GF.trim(LD_VALUES.EvangeliCitaVespers) : GF.trim(LD_VALUES.EvangeliCita);
+        var cita = this.state.DisplayVespers ? GF.trim(MassLiturgyData.EvangeliCitaVespers) : GF.trim(MassLiturgyData.EvangeliCita);
         return (
             <View style={{ flex: 1 }}>
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.EvangeliVespers) : GF.trim(LD_VALUES.Evangeli)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.EvangeliVespers) : GF.trim(MassLiturgyData.Evangeli)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 {cita == undefined || cita == '-' ?
                     null
@@ -471,9 +471,9 @@ export default class LDDisplayScreen extends Component {
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                     </View>
                 }
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.EvangeliTitolVespers) : GF.trim(LD_VALUES.EvangeliTitol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.EvangeliTitolVespers) : GF.trim(MassLiturgyData.EvangeliTitol)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(LD_VALUES.EvangeliTextVespers) : GF.trim(LD_VALUES.EvangeliText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgyData.EvangeliTextVespers) : GF.trim(MassLiturgyData.EvangeliText)}</Text>
             </View>
         )
     }

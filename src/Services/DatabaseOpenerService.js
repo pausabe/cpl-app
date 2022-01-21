@@ -1,10 +1,9 @@
 import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
 import * as SQLite from 'expo-sqlite';
 
 export var CPLDataBase = undefined;
 
-export function OpenDatabaseIfNotOpenedYet(){
+export function OpenDatabase(){
   return new Promise((resolve) => {
       if(CPLDataBase === undefined){
         openDatabase(FileSystem.documentDirectory + "SQLite/cpl-app.db")

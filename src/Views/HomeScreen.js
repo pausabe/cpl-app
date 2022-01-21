@@ -14,12 +14,13 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons'; 
-import GLOBAL from "../Globals/Globals";
+import GLOBAL from "../Globals/GlobalKeys";
+import { GlobalData } from '../Services/DataService';
 
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.switchValue = G_VALUES.lliures;
+    this.switchValue = GlobalData.lliures;
   }
 
   tempsName(t) {
@@ -81,7 +82,7 @@ export default class HomeScreen extends Component {
       let memLliureColor = '#333333';
       if ((this.props.ViewData.celebracio.type === 'L'
           || this.props.ViewData.celebracio.type === 'V')
-          && !G_VALUES.lliures) {
+          && !GlobalData.lliures) {
         memLliureColor = '#595959';
       }
 
@@ -183,11 +184,11 @@ export default class HomeScreen extends Component {
 
   render() {
     try {
-      const date_getdate = G_VALUES.date.getDate();
-      const date_getmonth = G_VALUES.date.getMonth();
-      const date_getfullyear = G_VALUES.date.getFullYear();
-      const date_getday = G_VALUES.date.getDay();
-      this.switchValue = G_VALUES.lliures;
+      const date_getdate = GlobalData.date.getDate();
+      const date_getmonth = GlobalData.date.getMonth();
+      const date_getfullyear = GlobalData.date.getFullYear();
+      const date_getday = GlobalData.date.getDay();
+      this.switchValue = GlobalData.lliures;
       return (
         <SafeAreaView style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
           <ImageBackground source={require('../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
@@ -228,7 +229,7 @@ export default class HomeScreen extends Component {
       let text_setmana = "";
       if(this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.')
         text_setmana = this.weekDayName(date_getday) + " de la setmana "
-      else if(G_VALUES.LT === GLOBAL.Q_CENDRA){
+      else if(GlobalData.LT === GLOBAL.Q_CENDRA){
         if(date_getday === 3)
           text_setmana = this.weekDayName(date_getday) + " de Cendra"
         else

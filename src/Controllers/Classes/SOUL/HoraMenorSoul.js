@@ -1,15 +1,16 @@
-import { Platform } from 'react-native';
+import GLOBAL from '../../../Globals/GlobalKeys';
 
-import GLOBAL from '../../../Globals/Globals';
+let GlobalData;
 
 export default class HoraMenorSoul {
-  constructor(TABLES, CEL, Set_Soul_CB, SOUL) {
+  constructor(TABLES, CEL, Set_Soul_CB, SOUL, globalData) {
+    GlobalData = globalData;
     this.makePrayer(TABLES, CEL, Set_Soul_CB, SOUL);
   }
 
   makePrayer(TABLES, CEL, Set_Soul_CB, SOUL){
-    var llati = G_VALUES.llati;
-    var date = G_VALUES.date;
+    var llati = GlobalData.llati;
+    var date = GlobalData.date;
 
     this.state = {
       salteriComuHora: TABLES.salteriComuHora,
@@ -124,24 +125,24 @@ export default class HoraMenorSoul {
       SOUL.setSoul(Set_Soul_CB, "nona", CEL.NONA);
     }
     else{
-      this.himne(G_VALUES.LT, date.getDay(), G_VALUES.setmana, "Tèrcia", CEL.TERCIA, llati, date);
-      this.salmodia(G_VALUES.LT, G_VALUES.setmana, date.getDay(), "Tèrcia", CEL.TERCIA, date);
-      this.lecturaBreuResp(G_VALUES.LT, "Tèrcia", CEL.TERCIA, date);
-      this.oracio(G_VALUES.LT, date.getDay(), "Tèrcia", CEL.TERCIA, date);
+      this.himne(GlobalData.LT, date.getDay(), GlobalData.setmana, "Tèrcia", CEL.TERCIA, llati, date);
+      this.salmodia(GlobalData.LT, GlobalData.setmana, date.getDay(), "Tèrcia", CEL.TERCIA, date);
+      this.lecturaBreuResp(GlobalData.LT, "Tèrcia", CEL.TERCIA, date);
+      this.oracio(GlobalData.LT, date.getDay(), "Tèrcia", CEL.TERCIA, date);
 
       SOUL.setSoul(Set_Soul_CB, "tercia", this.TERCIA);
 
-      this.himne(G_VALUES.LT, date.getDay(), G_VALUES.setmana, "Sexta", CEL.SEXTA, llati, date);
-      this.salmodia(G_VALUES.LT, G_VALUES.setmana, date.getDay(), "Sexta", CEL.SEXTA, date);
-      this.lecturaBreuResp(G_VALUES.LT, "Sexta", CEL.SEXTA, date);
-      this.oracio(G_VALUES.LT, date.getDay(), "Sexta", CEL.SEXTA, date);
+      this.himne(GlobalData.LT, date.getDay(), GlobalData.setmana, "Sexta", CEL.SEXTA, llati, date);
+      this.salmodia(GlobalData.LT, GlobalData.setmana, date.getDay(), "Sexta", CEL.SEXTA, date);
+      this.lecturaBreuResp(GlobalData.LT, "Sexta", CEL.SEXTA, date);
+      this.oracio(GlobalData.LT, date.getDay(), "Sexta", CEL.SEXTA, date);
 
       SOUL.setSoul(Set_Soul_CB, "sexta", this.SEXTA);
 
-      this.himne(G_VALUES.LT, date.getDay(), G_VALUES.setmana, "Nona", CEL.NONA, llati, date);
-      this.salmodia(G_VALUES.LT, G_VALUES.setmana, date.getDay(), "Nona", CEL.NONA, date);
-      this.lecturaBreuResp(G_VALUES.LT, "Nona", CEL.NONA, date);
-      this.oracio(G_VALUES.LT, date.getDay(), "Nona", CEL.NONA, date);
+      this.himne(GlobalData.LT, date.getDay(), GlobalData.setmana, "Nona", CEL.NONA, llati, date);
+      this.salmodia(GlobalData.LT, GlobalData.setmana, date.getDay(), "Nona", CEL.NONA, date);
+      this.lecturaBreuResp(GlobalData.LT, "Nona", CEL.NONA, date);
+      this.oracio(GlobalData.LT, date.getDay(), "Nona", CEL.NONA, date);
 
       SOUL.setSoul(Set_Soul_CB, "nona", this.NONA);
     }

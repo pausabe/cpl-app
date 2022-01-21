@@ -10,7 +10,8 @@ import {
 import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
-import GLOBALS from '../../Globals/Globals';
+import GLOBALS from '../../Globals/GlobalKeys';
+import { MassLiturgyData, GlobalData } from '../../Services/DataService';
 
 const VESPERS_SELECTOR_TYPES = {
   NORMAL: 'normal',
@@ -37,10 +38,10 @@ export default class LDScreen extends Component {
   Refresh_Layout() {
 
     try {
-      this.CURRENT_VESPERS_SELECTOR = (!LD_VALUES.VetllaPasqua && LD_VALUES.Vespers && G_VALUES.date.getHours() >= GLOBALS.afternoon_hour && LD_VALUES.Lectura2Vespers != '-')? VESPERS_SELECTOR_TYPES.VESPERS : VESPERS_SELECTOR_TYPES.NORMAL;
+      this.CURRENT_VESPERS_SELECTOR = (!MassLiturgyData.VetllaPasqua && MassLiturgyData.Vespers && GlobalData.date.getHours() >= GLOBALS.afternoon_hour && MassLiturgyData.Lectura2Vespers != '-')? VESPERS_SELECTOR_TYPES.VESPERS : VESPERS_SELECTOR_TYPES.NORMAL;
 
       this.setState({
-        need_lectura2: (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.NORMAL && LD_VALUES.Lectura2 != '-') || (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.VESPERS && LD_VALUES.Lectura2Vespers != '-')
+        need_lectura2: (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.NORMAL && MassLiturgyData.Lectura2 != '-') || (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.VESPERS && MassLiturgyData.Lectura2Vespers != '-')
       });
   
     } catch (error) {
@@ -100,10 +101,10 @@ export default class LDScreen extends Component {
         <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
             {
                <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-               {LD_VALUES.Vespers == undefined ?
+               {MassLiturgyData.Vespers == undefined ?
                  null :
                  <View style={{ flex: 1, }}>
-                   {LD_VALUES.Vespers ?
+                   {MassLiturgyData.Vespers ?
                      <View style={styles.liturgiaContainerVespers}>
                        {this.VespersSelector()}
                      </View>
@@ -127,7 +128,7 @@ export default class LDScreen extends Component {
 
   VespersSelector() {
     try {
-      if (LD_VALUES.Vespers) {
+      if (MassLiturgyData.Vespers) {
         return (
           <View style={styles.buttons_containerVespers}>
             <TouchableOpacity style={this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.VESPERS ? styles.buttonContainer : styles.buttonContainerPressedLeft} onPress={this.OnNormalPressed.bind(this)}>
@@ -136,16 +137,16 @@ export default class LDScreen extends Component {
             <TouchableOpacity style={this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.VESPERS ? styles.buttonContainerPressedRight : styles.buttonContainer} onPress={this.OnVespersPressed.bind(this)}>
               <Text style={styles.buttonText}>{"Vespertina"}</Text>
               <View style={{ padding: 1, paddingHorizontal: 5 }}>
-                {G_VALUES.info_cel.nomCelTom !== '-' ?
+                {GlobalData.info_cel.nomCelTom !== '-' ?
                   <View>
-                    {G_VALUES.info_cel.nomCelTom !== 'dium-pasqua' ?
-                      <Text numberOfLines={1} style={styles.redCenter}>{G_VALUES.info_cel.nomCelTom}</Text>
+                    {GlobalData.info_cel.nomCelTom !== 'dium-pasqua' ?
+                      <Text numberOfLines={1} style={styles.redCenter}>{GlobalData.info_cel.nomCelTom}</Text>
                       : null
                     }
                   </View>
                   :
                   <View>
-                    {G_VALUES.date.getDay() === 6 ?
+                    {GlobalData.date.getDay() === 6 ?
                       <Text numberOfLines={1} style={styles.redCenter}>{"Missa de Diumenge"}</Text>
                       : null
                     }
@@ -169,7 +170,7 @@ export default class LDScreen extends Component {
   OnNormalPressed() {
     try {
       this.CURRENT_VESPERS_SELECTOR = VESPERS_SELECTOR_TYPES.NORMAL;
-      this.setState({ need_lectura2: LD_VALUES.Lectura2 != '-' })
+      this.setState({ need_lectura2: MassLiturgyData.Lectura2 != '-' })
     }
     catch (error) {
       Logger.LogError(Logger.LogKeys.Screens, "OnNormalPressed", "", error);
@@ -180,7 +181,7 @@ export default class LDScreen extends Component {
   OnVespersPressed() {
     try {
       this.CURRENT_VESPERS_SELECTOR = VESPERS_SELECTOR_TYPES.VESPERS;
-      this.setState({ need_lectura2: LD_VALUES.Lectura2Vespers != '-' })
+      this.setState({ need_lectura2: MassLiturgyData.Lectura2Vespers != '-' })
     }
     catch (error) {
       Logger.LogError(Logger.LogKeys.Screens, "OnVespersPressed", "", error);
@@ -192,7 +193,7 @@ export default class LDScreen extends Component {
     try {
       return (
         <View style={styles.buttons_container}>
-          {LD_VALUES.VetllaPasqua ?
+          {MassLiturgyData.VetllaPasqua ?
             <View style={{ flex: 1 }}>
               <TouchableOpacity style={styles.buttonContainer} onPress={this.On_Button_Pressed.bind(this, "VetllaPasquaLecturesSalms", need_lectura2)}>
                 <Text style={styles.buttonText}>{"Lectures i salms"}</Text>
@@ -205,7 +206,7 @@ export default class LDScreen extends Component {
             </View>
             :
             <View style={{ flex: 1 }}>
-              {G_VALUES.LT == 'Q_DIUM_RAMS' ?
+              {GlobalData.LT == 'Q_DIUM_RAMS' ?
                 <View style={{ flex: 1 }}>
                   <TouchableOpacity style={styles.buttonContainer} onPress={this.On_Button_Pressed.bind(this, "Rams", need_lectura2)}>
                     <Text style={styles.buttonText}>{"Benedicció dels Rams"}</Text>

@@ -7,9 +7,10 @@ import {
   Share
 } from 'react-native';
 import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Globals/Globals';
+import GLOBAL from '../../../../Globals/GlobalKeys';
 import GF from '../../../../Globals/GlobalFunctions';
 import * as Logger from '../../../../Utils/Logger';
+import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
 
 export default class VespresDisplay extends Component {
   componentDidMount(){
@@ -21,30 +22,30 @@ export default class VespresDisplay extends Component {
   constructor(props){
     super(props);
     this.styles = {
-      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
     };
   }
 
   render(){
     try {
-      VESPRES = LH_VALUES.vespres;
+      VESPRES = HoursLiturgyData.vespres;
       const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
 
       var aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
       var aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
-      var aux_isAleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA && G_VALUES.LT !== GLOBAL.Q_TRIDU;
+      var aux_isAleluia = GlobalData.LT !== GLOBAL.Q_CENDRA && GlobalData.LT !== GLOBAL.Q_SETMANES && GlobalData.LT !== GLOBAL.Q_DIUM_RAMS && GlobalData.LT !== GLOBAL.Q_SET_SANTA && GlobalData.LT !== GLOBAL.Q_TRIDU;
 
       return (
           <View>
@@ -65,43 +66,43 @@ export default class VespresDisplay extends Component {
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'HIMNE'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.himne(G_VALUES.LT, G_VALUES.date.getDay(), G_VALUES.setmana, VESPRES)}
+            {this.himne(GlobalData.LT, GlobalData.date.getDay(), GlobalData.setmana, VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'SALMÒDIA'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.salmodia(G_VALUES.LT, G_VALUES.setmana, G_VALUES.date.getDay(), VESPRES)}
+            {this.salmodia(GlobalData.LT, GlobalData.setmana, GlobalData.date.getDay(), VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'LECTURA BREU'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.lecturaBreu(G_VALUES.LT, VESPRES)}
+            {this.lecturaBreu(GlobalData.LT, VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'RESPONSORI BREU'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.responsori(G_VALUES.LT, G_VALUES.date.getDay(), VESPRES)}
+            {this.responsori(GlobalData.LT, GlobalData.date.getDay(), VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'CÀNTIC DE MARIA'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.cantic(G_VALUES.LT, G_VALUES.date.getDay(), this.props.ABC, VESPRES)}
+            {this.cantic(GlobalData.LT, GlobalData.date.getDay(), this.props.ABC, VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'PREGÀRIES'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.pregaries(G_VALUES.LT, VESPRES)}
+            {this.pregaries(GlobalData.LT, VESPRES)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'ORACIÓ'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.oracio(G_VALUES.LT, G_VALUES.date.getDay(), VESPRES)}
+            {this.oracio(GlobalData.LT, GlobalData.date.getDay(), VESPRES)}
             <Text selectable={true} style={this.styles.red}>{'R.'}
               <Text selectable={true} style={this.styles.black}>{' Amén.'}</Text>
             </Text>

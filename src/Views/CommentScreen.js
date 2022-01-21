@@ -8,7 +8,7 @@ import {
  } from 'react-native';
 import WebView from 'react-native-webview'
 import * as DeviceInfo from 'expo-device';
-import GLOBAL from "../Globals/Globals";
+import GLOBAL from "../Globals/GlobalKeys";
 
 function paddingBar(){
   if(Platform.OS === 'ios'){

@@ -1,19 +1,21 @@
 import * as Logger from '../../../Utils/Logger';
 import GF from '../../../Globals/GlobalFunctions';
-import GLOBAL from '../../../Globals/Globals';
 import SoulKeys from './SoulKeys';
+import * as DatabaseDataService from '../../../Services/DatabaseDataService';
+
+let GlobalData;
 
 export default class LD_SOUL {
-    constructor(Set_Soul_CB) {
-        this.makeQueryies(Set_Soul_CB);
+    constructor(globalData) {
+        GlobalData = globalData;
     }
 
     makeQueryies(Set_Soul_CB) {
         try {
-            var today_date = G_VALUES.date;
-            var today_string = GF.calculeDia(today_date, G_VALUES.diocesi, G_VALUES.diaMogut, G_VALUES.diocesiMogut);
+            var today_date = GlobalData.date;
+            var today_string = GF.calculeDia(today_date, GlobalData.diocesi, GlobalData.diaMogut, GlobalData.diocesiMogut);
 
-            var idSpecialVespers = this.GetSpecialVespers(today_date, today_string, G_VALUES.ABC);
+            var idSpecialVespers = this.GetSpecialVespers(today_date, today_string, GlobalData.ABC);
             
             var part_row_extra_visperas = {
                 Vespers: false,
@@ -24,22 +26,22 @@ export default class LD_SOUL {
                 //Saturday && today is not Nadal or tomorrow is Solemnitat
                 // TODO: realment no hauria de ser només per Nadal o Mare de Déu sinó per una gestió de precedències... S'hauria de gestionar
                 if ((today_date.getDay() === 6 && !this.isNadal(today_date) && !this.isMaredeDeu(today_date)) ||
-                     G_VALUES.dataTomorrow.celType == 'S') {
+                     GlobalData.dataTomorrow.celType == 'S') {
 
                     var tomorrow_date = new Date(today_date.getFullYear(), today_date.getMonth(), today_date.getDate() + 1);
-                    var tomorrow_string = GF.calculeDia(tomorrow_date, G_VALUES.diocesi, G_VALUES.dataTomorrow.diaMogut, G_VALUES.dataTomorrow.diocesiMogut);
+                    var tomorrow_string = GF.calculeDia(tomorrow_date, GlobalData.diocesi, GlobalData.dataTomorrow.diaMogut, GlobalData.dataTomorrow.diocesiMogut);
 
                     this.GetLiturgia(
                         tomorrow_date,
                         tomorrow_string,
                         {},
-                        G_VALUES.dataTomorrow.celType,
-                        G_VALUES.dataTomorrow.tempsespecific,
-                        G_VALUES.dataTomorrow.ABC,
-                        G_VALUES.dataTomorrow.diaDeLaSetmana,
-                        G_VALUES.dataTomorrow.parImpar,
-                        G_VALUES.dataTomorrow.setmana,
-                        G_VALUES.dataTomorrow.LT,
+                        GlobalData.dataTomorrow.celType,
+                        GlobalData.dataTomorrow.tempsespecific,
+                        GlobalData.dataTomorrow.ABC,
+                        GlobalData.dataTomorrow.diaDeLaSetmana,
+                        GlobalData.dataTomorrow.parImpar,
+                        GlobalData.dataTomorrow.setmana,
+                        GlobalData.dataTomorrow.LT,
                         (result) => {
                             part_row_extra_visperas = {
                                 Vespers: true,
@@ -67,13 +69,13 @@ export default class LD_SOUL {
                                 today_date,
                                 today_string,
                                 part_row_extra_visperas,
-                                G_VALUES.celType,
-                                G_VALUES.tempsespecific,
-                                G_VALUES.ABC,
-                                G_VALUES.diaDeLaSetmana,
-                                G_VALUES.parImpar,
-                                G_VALUES.setmana,
-                                G_VALUES.LT,
+                                GlobalData.celType,
+                                GlobalData.tempsespecific,
+                                GlobalData.ABC,
+                                GlobalData.diaDeLaSetmana,
+                                GlobalData.parImpar,
+                                GlobalData.setmana,
+                                GlobalData.LT,
                                 Set_Soul_CB);
                         });
                 }
@@ -82,18 +84,18 @@ export default class LD_SOUL {
                         today_date,
                         today_string,
                         part_row_extra_visperas,
-                        G_VALUES.celType,
-                        G_VALUES.tempsespecific,
-                        G_VALUES.ABC,
-                        G_VALUES.diaDeLaSetmana,
-                        G_VALUES.parImpar,
-                        G_VALUES.setmana,
-                        G_VALUES.LT,
+                        GlobalData.celType,
+                        GlobalData.tempsespecific,
+                        GlobalData.ABC,
+                        GlobalData.diaDeLaSetmana,
+                        GlobalData.parImpar,
+                        GlobalData.setmana,
+                        GlobalData.LT,
                         Set_Soul_CB);
                 }
             }
             else {
-                GLOBAL.DBAccess.getVispers(
+                DatabaseDataService.getVispers(
                     idSpecialVespers,
                     (result) => {
                         part_row_extra_visperas = {
@@ -122,13 +124,13 @@ export default class LD_SOUL {
                             today_date,
                             today_string,
                             part_row_extra_visperas,
-                            G_VALUES.celType,
-                            G_VALUES.tempsespecific,
-                            G_VALUES.ABC,
-                            G_VALUES.diaDeLaSetmana,
-                            G_VALUES.parImpar,
-                            G_VALUES.setmana,
-                            G_VALUES.LT,
+                            GlobalData.celType,
+                            GlobalData.tempsespecific,
+                            GlobalData.ABC,
+                            GlobalData.diaDeLaSetmana,
+                            GlobalData.parImpar,
+                            GlobalData.setmana,
+                            GlobalData.LT,
                             Set_Soul_CB);
                     });
             }
@@ -153,7 +155,7 @@ export default class LD_SOUL {
 
         //var isFeria = (celType == '-' && (LT == 'A_FERIES' || LT == 'N_OCTAVA' || LT == 'N_ABANS'));
         var isFeria = this.IsSpecialChristmas(today_string);
-        if (G_VALUES.dataTomorrow.LT == "Q_DIUM_PASQUA") {
+        if (GlobalData.dataTomorrow.LT == "Q_DIUM_PASQUA") {
             var vetlla_pasqual_data = this.GetVetllaPasqual(ABC);
             Set_Soul_CB(vetlla_pasqual_data);
         }
@@ -168,7 +170,7 @@ export default class LD_SOUL {
                 if(specialResultId == "-1")
                     specialResultId = specialLliureResultId;
 
-                GLOBAL.DBAccess.getLDSantoral(
+                DatabaseDataService.getLDSantoral(
                     today_string,
                     specialResultId,
                     isFeria ? '-' : celType,
@@ -177,6 +179,7 @@ export default class LD_SOUL {
                     diaDeLaSetmana,
                     parImpar,
                     setmana,
+                    GlobalData.diocesiName,
                     (result) => {
                         Set_Soul_CB((result != undefined && Object.entries(part_row_extra_visperas).length > 0) ? Object.assign(result, part_row_extra_visperas) : result);
                     });
@@ -184,7 +187,7 @@ export default class LD_SOUL {
             else {
 
                 //Dies no festius -> LDDiumenges
-                GLOBAL.DBAccess.getLDNormal(
+                DatabaseDataService.getLDNormal(
                     tempsespecific,
                     ABC,
                     diaDeLaSetmana,
@@ -209,7 +212,7 @@ export default class LD_SOUL {
 
     IsSpecialChristmas(dia){
 
-        if(G_VALUES.LT == "O_ORDINAR")
+        if(GlobalData.LT == "O_ORDINAR")
             return false;
     
         if(dia == '17-dic') return true
@@ -325,7 +328,7 @@ export default class LD_SOUL {
     GetSpecialVespers(today_date, today_string, ABC) {
         //(Dia abans) Naixement de sant Joan Baptista (036)
         //No si cau en Santissim cos i sang de crist (Corpus > sant joan)
-        var trinitat = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 7);
+        var trinitat = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 7);
         var cosSang = new Date(trinitat.getFullYear(), trinitat.getMonth(), trinitat.getDate() + 7);
         if (today_string == '23-jun' && !(today_date.getFullYear() == cosSang.getFullYear() && today_date.getMonth() == cosSang.getMonth() && today_date.getDate() == cosSang.getDate()))
             return SoulKeys.LDSantoral_NaixamentJoanBaptista;
@@ -343,7 +346,7 @@ export default class LD_SOUL {
             return SoulKeys.Nadal;
 
         //(Dia abans) Pentecosta A (191) B (192) C (193)
-        var diaAbansPentecosta = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() - 1);
+        var diaAbansPentecosta = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() - 1);
         if (today_date.getDate() === diaAbansPentecosta.getDate() && today_date.getMonth() === diaAbansPentecosta.getMonth() &&
             today_date.getFullYear() === diaAbansPentecosta.getFullYear()) {
             switch (ABC) {
@@ -364,7 +367,7 @@ export default class LD_SOUL {
 
         //Dijous després de Pentecosta I (0031) II (032)
         //santsSolemnitats F - Dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
-        var granSacerdot = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 4);
+        var granSacerdot = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 4);
         if (today_date.getDate() === granSacerdot.getDate() && today_date.getMonth() === granSacerdot.getMonth() &&
             today_date.getFullYear() === granSacerdot.getFullYear()) {
             return paroimpar == 'I' ? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII;
@@ -372,7 +375,7 @@ export default class LD_SOUL {
 
         //Dissabte de la tercera setmana després de Pentecosta (033)
         //santsMemories M - Dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
-        var corImmaculat = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 20);
+        var corImmaculat = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 20);
         if (today_date.getDate() === corImmaculat.getDate() && today_date.getMonth() === corImmaculat.getMonth() &&
             today_date.getFullYear() === corImmaculat.getFullYear()) {
             // No si aquest dia es 29 de juny (St Pere i St Pau) -> St st pere i st pau > cor immaculat
@@ -400,7 +403,7 @@ export default class LD_SOUL {
 
         //Dilluns després de Pentecosta I (111) II (112)
         //santsMemories M - Dilluns despres de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
-        var benaurada = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 1);
+        var benaurada = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 1);
         if (today_date.getDate() === benaurada.getDate() && today_date.getMonth() === benaurada.getMonth() &&
             today_date.getFullYear() === benaurada.getFullYear()) {
             return paroimpar == 'I' ? SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaII;
@@ -431,7 +434,7 @@ export default class LD_SOUL {
         }
 
         //Diumenge després de Pentecosta A (160) B (161) C (162)
-        var trinitat = new Date(G_VALUES.pentacosta.getFullYear(), G_VALUES.pentacosta.getMonth(), G_VALUES.pentacosta.getDate() + 7);
+        var trinitat = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 7);
         if (today_date.getDate() === trinitat.getDate() && today_date.getMonth() === trinitat.getMonth() &&
             today_date.getFullYear() === trinitat.getFullYear()) {
             switch (ABC) {
@@ -480,7 +483,7 @@ export default class LD_SOUL {
     IsSpecialLliureDay(today_date){
 
         // Memòries lliures que tenen lectures dedicades
-        if(G_VALUES.lliures){
+        if(GlobalData.lliures){
             // Pasqua 01-may -> 209 (Sant Josep obrer)
             if (today_date.getDate() == 1 && today_date.getMonth() == 4) {
                 return SoulKeys.LDSantoral_SantJosepObrer;

@@ -6,7 +6,8 @@ import {
   ImageBackground,
 } from 'react-native';
 import LHButtons from './LHButtons';
-import GLOBALS from '../../Globals/Globals';
+import GLOBALS from '../../Globals/GlobalKeys';
+import { HoursLiturgyData, GlobalData } from '../../Services/DataService';
 
 export default class LHScreen extends Component {
   constructor(props) {
@@ -45,11 +46,11 @@ export default class LHScreen extends Component {
   }
 
   setNumSalmInv(numSalm) {
-    G_VALUES.numSalmInv = numSalm;
+    GlobalData.numSalmInv = numSalm;
   }
 
   setNumAntMare(numAntMare) {
-    G_VALUES.numAntMare = numAntMare;
+    GlobalData.numAntMare = numAntMare;
   }
 
   testErrorCallBack() {
@@ -62,7 +63,7 @@ export default class LHScreen extends Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
           {
             <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-              {LH_VALUES.vespres == undefined ?
+              {HoursLiturgyData.vespres == undefined ?
                 null :
                 <View style={styles.liturgiaContainer}>
                   <LHButtons

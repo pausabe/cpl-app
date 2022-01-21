@@ -3,13 +3,19 @@ const MessageCharacterLimit = 500;
 export let SessionLogs = "";
 
 export const LogKeys = {
+    Debug: { name: "Debug", enabled: true },
     DatabaseUpdaterService: { name: "DatabaseUpdaterService", enabled: true },
     DatabaseAdapter: { name: "DatabaseAdapter", enabled: false },
     HomeScreenController: { name: "HomeScreenController", enabled: true },
     Soul: { name: "Soul", enabled: true },
     GlobalFunctions: { name: "GlobalFunctions", enabled: true },
     Screens: { name: "Screens", enabled: true },
+    DataService: { name: "DataService", enabled: true }
 };
+
+export function Debug(message, param){
+    Log(LogKeys.Debug, "", message, param);
+}
 
 export function Log(logKey, methodName, message, param, limit){
     if(logKey.enabled){
@@ -28,8 +34,9 @@ function log(logKey, message, param, limit){
             const time = new Date().getHours().toString() + "." +
                 new Date().getMinutes().toString() + "." +
                 new Date().getSeconds().toString();
-            var finalMessageNoParam = time + " " + logKey + message;
+            let finalMessageNoParam = time + " " + logKey + message + " | ";
             if(param === undefined){
+                finalMessageNoParam += "NP";
                 SessionLogs += finalMessageNoParam + "\n";
                 console.log(finalMessageNoParam);
             }

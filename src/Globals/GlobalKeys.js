@@ -1,12 +1,5 @@
 import { Platform } from 'react-native';
 
-import DBAdapter from '../Adapters/DBAdapter';
-
-const normalTextSize = 17;
-const smallTextSize = 15;
-
-const DBAdapterInstance = new DBAdapter();
-
 module.exports = {
   barColor: '#006064',
   dataPicker: '#007b80', //Simbòlic, el canvi s'ha de fer a res/values/styles.xml
@@ -44,11 +37,8 @@ module.exports = {
   late_prayer: 3,
   afternoon_hour: 18,
 
-  DBAccess: DBAdapterInstance,
-
   paddingBar: Platform.OS === 'ios' ? 0 : 54,
 
-  server_url: 'https://serveditorial.cpl.es/api/emp/read/',
-  enable_updates: true
+  server_url: 'https://serveditorial.cpl.es/api/emp/read/'
 
 };

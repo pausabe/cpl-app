@@ -3,12 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  Button,
-  Platform
+  TouchableOpacity
 } from 'react-native';
-
 import HR from '../../Components/HRComponent';
+import { GlobalData } from '../../Services/DataService';
 
 export default class LHButtons extends Component {
   render() {
@@ -64,18 +62,18 @@ export default class LHButtons extends Component {
             :
             <Text style={styles.buttonText}>{"Vespres"}</Text>
           }
-          {G_VALUES.primVespres ?
+          {GlobalData.primVespres ?
             <View style={{ padding: 5, paddingHorizontal: 15 }}>
-              {G_VALUES.info_cel.nomCelTom !== '-' ?
+              {GlobalData.info_cel.nomCelTom !== '-' ?
                 <View>
-                  {G_VALUES.info_cel.nomCelTom !== 'dium-pasqua' ?
-                    <Text numberOfLines={1} style={styles.redCenter}>{G_VALUES.info_cel.nomCelTom}</Text>
+                  {GlobalData.info_cel.nomCelTom !== 'dium-pasqua' ?
+                    <Text numberOfLines={1} style={styles.redCenter}>{GlobalData.info_cel.nomCelTom}</Text>
                     : null
                   }
                 </View>
                 :
                 <View>
-                  {G_VALUES.date.getDay() === 6 ?
+                  {GlobalData.date.getDay() === 6 ?
                     <Text style={styles.redCenter}>{"Primeres vespres de diumenge"}</Text>
                     :
                     <Text style={styles.redCenter}>{"Primeres vespres"}</Text>

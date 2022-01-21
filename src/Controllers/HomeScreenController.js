@@ -16,14 +16,47 @@ import { AsyncStorage } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
-import GLOBALS from "../Globals/Globals";
+import GLOBALS from "../Globals/GlobalKeys";
 import GF from "../Globals/GlobalFunctions";
-import { Reload_All_Data, GetDBAccess } from '../Services/DataService.js';
-import { TEST_MODE_ON, Reload_All_Data_TestMode, Force_Stop_Test, Alert } from '../Tests/TestsManager';
+import { ReloadAllData } from '../Services/DataService.js';
 import * as Logger from '../Utils/Logger';
 import SettingsManager from './Classes/SettingsManager';
+import { GlobalData, LAST_REFRESH } from '../Services/DataService';
 
 export default class HomeScreenController extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      santPressed: false,
+      isDateTimePickerVisible: false,
+      PopupDialog_ShowLate: false,
+      ViewData: {
+        ready: false,
+        lloc: {
+          diocesiName: '',
+          lloc: '',
+        },
+        setmana: '',
+        temps: '',
+        setCicle: '',
+        anyABC: '',
+        color: '',
+        celebracio: {
+          typeText: '',
+          titol: '',
+          text: '',
+        },
+        primVespres: false,
+        santPressed: false,
+      }
+    }
+
+    ReloadAllData(new Date(/*2019, 9, 23*/), true)
+        .then(() => this.InitEverything())
+        .catch((errorMsg) => this.HandleGetDataError(errorMsg));
+  }
 
   async componentDidMount() {
     try {
@@ -52,15 +85,13 @@ export default class HomeScreenController extends Component {
   _handleAppStateChange(nextAppState){
 
     // Check if the state is changing to active
-    if(nextAppState == 'active'){
-
-      //this.checkSystemDarkMode();
+    if(nextAppState === 'active'){
 
       // Get today
-      var now = new Date()
-      
+      const now = new Date();
+
       // Refresh the date if today is different than the last refresh date
-      if(now.getDate() != LAST_REFRESH.getDate() || now.getMonth() != LAST_REFRESH.getMonth() || now.getFullYear() != LAST_REFRESH.getFullYear()){
+      if(now.getDate() !== LAST_REFRESH.getDate() || now.getMonth() !== LAST_REFRESH.getMonth() || now.getFullYear() !== LAST_REFRESH.getFullYear()){
 
         // Navigate to Home Screen
         this.props.navigation.popToTop()
@@ -71,11 +102,8 @@ export default class HomeScreenController extends Component {
 
         // Check late prayer
         this.setState({ PopupDialog_ShowLate: this.Is_Late_Prayer() });
-
       }
-      
     }
-
   }
 
   AppearanceHasChanged(param){
@@ -91,13 +119,13 @@ export default class HomeScreenController extends Component {
       SettingsManager.getSettingDarkMode((r) => {
         if(r === 'Automàtic'){
             if (colorScheme === 'dark') {
-              if(G_VALUES.darkModeEnabled == false){
+              if(GlobalData.darkModeEnabled === false){
               }
-              G_VALUES.darkModeEnabled = true;
+              GlobalData.darkModeEnabled = true;
             } else {
-              if(G_VALUES.darkModeEnabled == true){
+              if(GlobalData.darkModeEnabled === true){
               }
-              G_VALUES.darkModeEnabled = false;
+              GlobalData.darkModeEnabled = false;
             }
           }
           this.forceUpdate();
@@ -117,9 +145,11 @@ export default class HomeScreenController extends Component {
 
   Refresh_Date(date) {
     if (date === null || date === undefined)
-      date = G_VALUES.date;
+      date = GlobalData.date;
 
-    Reload_All_Data(new Date(date), this.Refresh_Date_Callback.bind(this), this.HandleGetDataError.bind(this), false);
+    ReloadAllData(new Date(/*2019, 9, 23*/), false)
+        .then(() => this.RefreshDateCallback())
+        .catch((error) => this.HandleGetDataError(error));
   }
 
   calendarPressed() {
@@ -127,55 +157,7 @@ export default class HomeScreenController extends Component {
     this.setState({ isDateTimePickerVisible: true });
   }
 
-  constructor(props) {
-    super(props);
-
-    if (TEST_MODE_ON) {
-
-      //Hide Splash Screen
-      //await SplashScreen.hideAsync();
-
-      this.state = {
-        testInformation: "Starting test"
-      }
-
-      //First initialization
-      Reload_All_Data_TestMode(this.Test_Information_Callback.bind(this));
-    }
-    else {      
-      this.state = {
-        santPressed: false,
-        isDateTimePickerVisible: false,
-        PopupDialog_ShowLate: false,
-        ViewData: {
-          ready: false,
-          lloc: {
-            diocesiName: '',
-            lloc: '',
-          },
-          setmana: '',
-          temps: '',
-          setCicle: '',
-          anyABC: '',
-          color: '',
-          celebracio: {
-            typeText: '',
-            titol: '',
-            text: '',
-          },
-          primVespres: false,
-          santPressed: false,
-        }
-      }
-      Reload_All_Data(new Date(/*2019, 9, 23*/), this.Init_Everything.bind(this), this.HandleGetDataError.bind(this), GLOBALS.enable_updates);
-    }
-  }
-
-  Test_Information_Callback(informationText) {
-    this.setState({ testInformation: informationText });
-  }
-
-  async Init_Everything() {
+  async InitEverything() {
     try {
       //Set data to show on Home Screen
       this.setState({
@@ -184,19 +166,19 @@ export default class HomeScreenController extends Component {
         ViewData: {
           ready: true,
           lloc: {
-            diocesiName: G_VALUES.diocesiName,
-            lloc: G_VALUES.lloc,
+            diocesiName: GlobalData.diocesiName,
+            lloc: GlobalData.lloc,
           },
-          data: G_VALUES.date,
-          setmana: G_VALUES.setmana,
-          temps: G_VALUES.tempsespecific,
-          setCicle: G_VALUES.cicle,
-          anyABC: G_VALUES.ABC,
-          color: G_VALUES.litColor,
+          data: GlobalData.date,
+          setmana: GlobalData.setmana,
+          temps: GlobalData.tempsespecific,
+          setCicle: GlobalData.cicle,
+          anyABC: GlobalData.ABC,
+          color: GlobalData.litColor,
           celebracio: {
-            type: G_VALUES.info_cel.typeCel,
-            titol: G_VALUES.info_cel.nomCel,
-            text: G_VALUES.info_cel.infoCel,
+            type: GlobalData.info_cel.typeCel,
+            titol: GlobalData.info_cel.nomCel,
+            text: GlobalData.info_cel.infoCel,
           },
         }
       }, async () => await SplashScreen.hideAsync());
@@ -204,31 +186,30 @@ export default class HomeScreenController extends Component {
       //Set santPress variable to 0
       this.santPress = 0;
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.HomeScreenController, "Init_Everything", "", error);
+      Logger.LogError(Logger.LogKeys.HomeScreenController, "InitEverything", "", error);
     }
   }
 
-  Refresh_Date_Callback() {
-
+  RefreshDateCallback() {
     //Set data to show on Home Screen
     this.setState({
       santPressed: false,
       ViewData: {
         ready: true,
         lloc: {
-          diocesiName: G_VALUES.diocesiName,
-          lloc: G_VALUES.lloc,
+          diocesiName: GlobalData.diocesiName,
+          lloc: GlobalData.lloc,
         },
-        data: G_VALUES.date, 
-        setmana: G_VALUES.setmana,
-        temps: G_VALUES.tempsespecific,
-        setCicle: G_VALUES.cicle,
-        anyABC: G_VALUES.ABC,
-        color: G_VALUES.litColor,
+        data: GlobalData.date,
+        setmana: GlobalData.setmana,
+        temps: GlobalData.tempsespecific,
+        setCicle: GlobalData.cicle,
+        anyABC: GlobalData.ABC,
+        color: GlobalData.litColor,
         celebracio: {
-          type: G_VALUES.info_cel.typeCel,
-          titol: G_VALUES.info_cel.nomCel,
-          text: G_VALUES.info_cel.infoCel,
+          type: GlobalData.info_cel.typeCel,
+          titol: GlobalData.info_cel.nomCel,
+          text: GlobalData.info_cel.infoCel,
         },
       }
     });
@@ -238,11 +219,8 @@ export default class HomeScreenController extends Component {
   }
 
   Is_Late_Prayer() {
-    var h = new Date().getHours();
-    if (h >= 0 && h < GLOBALS.late_prayer)
-      return true;
-
-    return false;
+    const h = new Date().getHours();
+    return h >= 0 && h < GLOBALS.late_prayer;
   }
 
   eventManager(args) {
@@ -252,7 +230,7 @@ export default class HomeScreenController extends Component {
       case 'pickerPressed':
         break;
       case 'okPicker':
-        if (args.newDate !== G_VALUES.date) {
+        if (args.newDate !== GlobalData.date) {
           this.props(rgs.newDate);
         }
         break;
@@ -260,13 +238,13 @@ export default class HomeScreenController extends Component {
   }
 
   datePickerChange(event, date) {
-    if (Platform.OS == "ios") { 
+    if (Platform.OS === "ios") {
         this.last_datePickerIOS_selected = date
     }
     else {
       this.setState({ isDateTimePickerVisible: false });
 
-      if (date !== G_VALUES.date) {
+      if (date !== GlobalData.date) {
         this.showThisDate(date)
       }
     }
@@ -275,7 +253,7 @@ export default class HomeScreenController extends Component {
   datePickerIOS_Accept() {
     this.setState({ isDateTimePickerVisible: false });
 
-    if (this.last_datePickerIOS_selected !== G_VALUES.date) {
+    if (this.last_datePickerIOS_selected !== GlobalData.date) {
       this.showThisDate(this.last_datePickerIOS_selected)
     }
   }
@@ -287,8 +265,8 @@ export default class HomeScreenController extends Component {
   datePickerIOS_Today() {
     this.setState({ isDateTimePickerVisible: false });
 
-    var now = new Date();
-    if (now !== G_VALUES.date) {
+    const now = new Date();
+    if (now !== GlobalData.date) {
       this.showThisDate(now)
     }
   }
@@ -298,7 +276,7 @@ export default class HomeScreenController extends Component {
   }
 
   onSantPressCB() {
-    if (G_VALUES.info_cel.infoCel !== '-') {
+    if (GlobalData.info_cel.infoCel !== '-') {
 
       if (this.santPress === 0) this.santPress = 1;
       else if (this.santPress === 1) this.santPress = 2;
@@ -317,34 +295,26 @@ export default class HomeScreenController extends Component {
 
   onSwitchLliurePress(value) {
     if (value) {
-      stringData = G_VALUES.date.getDate() + ':' +
-        G_VALUES.date.getMonth() + ':' +
-        G_VALUES.date.getFullYear();
+      const stringData = GlobalData.date.getDate() + ':' +
+        GlobalData.date.getMonth() + ':' +
+        GlobalData.date.getFullYear();
       AsyncStorage.setItem("lliureDate", stringData);
     }
     else {
       AsyncStorage.setItem("lliureDate", 'none');
     }
     
-    G_VALUES.lliures = value;
-    this.Refresh_Date(G_VALUES.date);
+    GlobalData.lliures = value;
+    this.Refresh_Date(GlobalData.date);
   }
 
   onLatePrayerPressed(){
     this.setState({ PopupDialog_ShowLate: true });
   }
 
-  /*testing(){
-    Reload_All_Data(new Date(/*2019, 9, 23*//*), this.Init_Everything.bind(this), this.HandleGetDataError.bind(this), true);
-  }
-            <TouchableOpacity>
-            <Text onPress={this.testing.bind(this)}>TESTING</Text>
-            <Text>{"Error: "}{this.state.getDataMsgError}</Text>
-          </TouchableOpacity>*/
-
-  HandleGetDataError(msgError){
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", msgError);
-    var messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
+  HandleGetDataError(error){
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", "", error);
+    const messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
     this.setState({ 
       RefreshErrorMessage: messageToShow }, 
       async () => await SplashScreen.hideAsync());
@@ -359,11 +329,15 @@ export default class HomeScreenController extends Component {
   }
 
   HomeScreenView(){
-    var yesterday = new Date(G_VALUES.date.getFullYear(), G_VALUES.date.getMonth());
-    yesterday.setDate(G_VALUES.date.getDate() - 1);
-    var date = G_VALUES.date;
-    var minDatePicker = G_VALUES.minDatePicker;
-    var maxDatePicker = G_VALUES.maxDatePicker;
+    if(GlobalData.date === undefined){
+      return null;
+    }
+    Logger.Log(Logger.LogKeys.HomeScreenController, "HomeScreenView", "GlobalData", GlobalData.date);
+    const yesterday = new Date(GlobalData.date.getFullYear(), GlobalData.date.getMonth());
+    yesterday.setDate(GlobalData.date.getDate() - 1);
+    const date = GlobalData.date;
+    const minDatePicker = GlobalData.minDatePicker;
+    const maxDatePicker = GlobalData.maxDatePicker;
     return (
       <View style={{ flex: 1 }}>
 
@@ -374,7 +348,7 @@ export default class HomeScreenController extends Component {
               lliureCB={this.onSwitchLliurePress.bind(this)}
               navigation={this.props.navigation} />
                 <View>
-                { Platform.OS == "ios" ?
+                { Platform.OS === "ios" ?
                     <Modal
                       animationType="fade" // slide, fade, none
                       transparent={true}
@@ -455,31 +429,19 @@ export default class HomeScreenController extends Component {
 
   render() {
     try {
-      if (TEST_MODE_ON) {
-        return (
-          <View style={{ flex: 1 }}>
-            <Text style={{ textAlign: 'center' }}>{"\nTEST INFORMATION\n"}</Text>
-            <Text style={{ textAlign: 'center' }}>{this.state.testInformation}{"\n\n"}</Text>
-            <TouchableOpacity style={{ backgroundColor: 'rgba(20,47,43,0.3)', marginHorizontal: 100, paddingVertical: 10 }} onPress={Force_Stop_Test.bind(this, this.Test_Information_Callback.bind(this))}>
-              <Text style={{ textAlign: 'center' }}>{"STOP TEST"}</Text>
-            </TouchableOpacity>
-          </View>
-        );
-      }
-      else {
-        return (
-          <SafeAreaView style={{ flex: 1 }}>
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
 
-            {this.state.RefreshErrorMessage == undefined || this.state.RefreshErrorMessage == ""? 
-              this.HomeScreenView()
-              :
-              this.HomeScreenViewWithError()}
-  
-          </SafeAreaView>
-        );
-      }
+          {this.state.RefreshErrorMessage === undefined || this.state.RefreshErrorMessage === ""?
+            this.HomeScreenView()
+            :
+            this.HomeScreenViewWithError()}
+
+        </SafeAreaView>
+      );
     } catch (error) {
       Logger.LogError(Logger.LogKeys.HomeScreenController, "render", "", error);
+      return null;
     }
   }
 }

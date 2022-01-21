@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TouchableOpacity, View, StyleSheet, Platform, SafeAreaView } from 'react-native';
-import GLOBAL from "./src/Globals/Globals";
+import GLOBAL from "./src/Globals/GlobalKeys";
 import HomeScreen from './src/Controllers/HomeScreenController';
 import SettingsScreen from './src/Views/SettingsScreen';
 import DonationScreen from './src/Views/DonationScreen';

@@ -1,25 +1,22 @@
 import { CPLDataBase } from './DatabaseOpenerService';
 import * as Logger from '../Utils/Logger';
-import GLOBAL from "../Globals/Globals";
 import dataJson from "../Assets/DatabaseUpdateScript/UpdateScript.json";
+import {getDatabaseVersion} from './DatabaseDataService';
 
 export async function UpdateDatabase(){
-    try {
-        const currentDatabaseVersion = await GLOBAL.DBAccess.getDatabaseVersion();
-        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "currentDatabaseVersion: " + currentDatabaseVersion);
-        let json_updates = await GetUpdates(currentDatabaseVersion);
-        await MakeChanges(json_updates);
-        const databaseVersionAfter = await GLOBAL.DBAccess.getDatabaseVersion();
-        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "databaseVersionAfter: " + databaseVersionAfter);
-    }catch (error){
-        Logger.LogError(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "", error);
-    }
+    const currentDatabaseVersion = await getDatabaseVersion();
+    Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "currentDatabaseVersion: " + currentDatabaseVersion);
+    let json_updates = await GetUpdates(currentDatabaseVersion);
+    await MakeChanges(json_updates);
+    const databaseVersionAfter = await getDatabaseVersion();
+    Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "databaseVersionAfter: " + databaseVersionAfter);
+    return databaseVersionAfter;
 }
 
 function GetUpdates(currentDatabaseVersion) {
     if(currentDatabaseVersion !== undefined){
         // Refresh the script from expo OTA updates
-        //TODO: Asset.fromModule(require('../Assets/DatabaseUpdateScript/UpdateScript.json'));
+        //TODO: com es qe funciona sense fer aixo? Asset.fromModule(require('../Assets/DatabaseUpdateScript/UpdateScript.json'));
 
         const totalUpdates = require('../Assets/DatabaseUpdateScript/UpdateScript.json');
         Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "GetUpdates", "totalUpdates: " + totalUpdates.length);

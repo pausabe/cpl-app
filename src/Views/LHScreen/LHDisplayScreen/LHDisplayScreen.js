@@ -6,7 +6,7 @@ import Laudes from './OracioDisplay/LaudesDisplay'
 import Vespres from './OracioDisplay/VespresDisplay'
 import HoraMenor from './OracioDisplay/HoraMenorDisplay'
 import Completes from './OracioDisplay/CompletesDisplay'
-import GLOBAL from "../../../Globals/Globals";
+import {GlobalData, HoursLiturgyData} from '../../../Services/DataService';
 import GF from '../../../Globals/GlobalFunctions';
 
 export default class LHDisplayScreen extends Component {
@@ -44,7 +44,7 @@ export default class LHDisplayScreen extends Component {
 
   render() {
     return (
-      <View style={GF.getStyle("CONTAINER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled)}>
+      <View style={GF.getStyle("CONTAINER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled)}>
         <ScrollView automaticallyAdjustContentInsets={false}>
           <View style={{paddingHorizontal: 10, paddingTop: 10}}>
             {this.liturgicComponent(this.state.type)}
@@ -67,15 +67,15 @@ export default class LHDisplayScreen extends Component {
   getTitols(){
     var titols = [];
 
-    titols.push(LH_VALUES.ofici.titol1);
-    titols.push(LH_VALUES.ofici.titol2);
-    titols.push(LH_VALUES.ofici.titol3);
-    titols.push(LH_VALUES.laudes.titol1);
-    titols.push(LH_VALUES.laudes.titol3);
-    titols.push(LH_VALUES.vespres.titol1);
-    titols.push(LH_VALUES.vespres.titol2);
-    titols.push(LH_VALUES.completes.titol1);
-    titols.push(LH_VALUES.completes.titol2);
+    titols.push(HoursLiturgyData.ofici.titol1);
+    titols.push(HoursLiturgyData.ofici.titol2);
+    titols.push(HoursLiturgyData.ofici.titol3);
+    titols.push(HoursLiturgyData.laudes.titol1);
+    titols.push(HoursLiturgyData.laudes.titol3);
+    titols.push(HoursLiturgyData.vespres.titol1);
+    titols.push(HoursLiturgyData.vespres.titol2);
+    titols.push(HoursLiturgyData.completes.titol1);
+    titols.push(HoursLiturgyData.completes.titol2);
 
     return titols;
   }
@@ -117,7 +117,7 @@ export default class LHDisplayScreen extends Component {
             return(
             <HoraMenor
               HM = {type}
-              HORA_MENOR = {LH_VALUES.tercia}
+              HORA_MENOR = {HoursLiturgyData.tercia}
               superTestMode = {this.screen_props.superTestMode}
               testErrorCB={this.testErrorCB.bind(this)}
               events={this.eventEmitter}/>
@@ -128,7 +128,7 @@ export default class LHDisplayScreen extends Component {
             return(
               <HoraMenor
                 HM = {type}
-                HORA_MENOR = {LH_VALUES.sexta}
+                HORA_MENOR = {HoursLiturgyData.sexta}
                 superTestMode = {this.screen_props.superTestMode}
                 testErrorCB={this.testErrorCB.bind(this)}
                 events={this.eventEmitter}/>
@@ -139,7 +139,7 @@ export default class LHDisplayScreen extends Component {
             return(
               <HoraMenor
                 HM = {type}
-                HORA_MENOR = {LH_VALUES.nona}
+                HORA_MENOR = {HoursLiturgyData.nona}
                 superTestMode = {this.screen_props.superTestMode}
                 testErrorCB={this.testErrorCB.bind(this)}
                 events={this.eventEmitter}/>

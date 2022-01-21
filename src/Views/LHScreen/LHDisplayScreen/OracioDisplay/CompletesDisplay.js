@@ -4,15 +4,14 @@ import {
   Text,
   View,
   Platform,
-  TouchableOpacity,
-  Share,
-  Appearance
+  TouchableOpacity
 } from 'react-native';
 import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Globals/Globals';
+import GLOBAL from '../../../../Globals/GlobalKeys';
 import GF from '../../../../Globals/GlobalFunctions';
 import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
 import * as Logger from '../../../../Utils/Logger';
+import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
 
 export default class CompletesDisplay extends Component {
   componentDidMount(){
@@ -24,29 +23,29 @@ export default class CompletesDisplay extends Component {
   constructor(props){
     super(props);
     this.styles = {
-      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
     };
 
-    var auxNumAntMare = G_VALUES.numAntMare;
+    var auxNumAntMare = GlobalData.numAntMare;
 
-    if(G_VALUES.tempsespecific === 'Pasqua' && auxNumAntMare !== '5'){
+    if(GlobalData.tempsespecific === 'Pasqua' && auxNumAntMare !== '5'){
       auxNumAntMare = '5';
       props.setNumAntMare('5');
       SettingsManager.setSettingNumAntMare('5');
     }
-    else if(!(G_VALUES.tempsespecific === 'Pasqua') && auxNumAntMare === '5'){
+    else if(!(GlobalData.tempsespecific === 'Pasqua') && auxNumAntMare === '5'){
       auxNumAntMare = '1';
       props.setNumAntMare('1');
       SettingsManager.setSettingNumAntMare('1');
@@ -56,7 +55,7 @@ export default class CompletesDisplay extends Component {
       numAntMare: auxNumAntMare
     }
 
-    this.COMPLETES = LH_VALUES.completes;
+    this.COMPLETES = HoursLiturgyData.completes;
     this.superTestMode = props.superTestMode;
     this.testErrorCB = props.testErrorCB;
     this.setNumAntMare = props.setNumAntMare;
@@ -103,28 +102,28 @@ export default class CompletesDisplay extends Component {
       <View>
         <View style={{alignItems: 'center'}}>
           <View style={{flexDirection: 'row',paddingVertical: 10}}>
-            {!(G_VALUES.tempsespecific === 'Pasqua')?
+            {!(GlobalData.tempsespecific === 'Pasqua')?
               <TouchableOpacity onPress={this._onAntMarePress.bind(this,'1')}>
                 <Text style={ant1Style}>{"Ant. 1  "}</Text>
               </TouchableOpacity>
             :
               null
             }
-            {!(G_VALUES.tempsespecific === 'Pasqua')?
+            {!(GlobalData.tempsespecific === 'Pasqua')?
               <TouchableOpacity onPress={this._onAntMarePress.bind(this,'2')}>
                 <Text style={ant2Style}>{"  Ant. 2  "}</Text>
               </TouchableOpacity>
             :
               null
             }
-            {!(G_VALUES.tempsespecific === 'Pasqua')?
+            {!(GlobalData.tempsespecific === 'Pasqua')?
               <TouchableOpacity onPress={this._onAntMarePress.bind(this,'3')}>
                 <Text style={ant3Style}>{"  Ant. 3  "}</Text>
               </TouchableOpacity>
             :
               null
             }
-            {!(G_VALUES.tempsespecific === 'Pasqua')?
+            {!(GlobalData.tempsespecific === 'Pasqua')?
               <TouchableOpacity onPress={this._onAntMarePress.bind(this,'4')}>
                 <Text style={ant4Style}>{"  Ant. 4"}</Text>
               </TouchableOpacity>
@@ -143,13 +142,13 @@ export default class CompletesDisplay extends Component {
     try {
       if(this.COMPLETES !== null){
         const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
-        var is_special_initial_message = G_VALUES.LT === GLOBAL.Q_TRIDU && G_VALUES.date.getDay() === 6;
+        var is_special_initial_message = GlobalData.LT === GLOBAL.Q_TRIDU && GlobalData.date.getDay() === 6;
         var aux_special_initial_message = "Avui, només han de dir aquestes Completes els qui no participen en la Vetlla pasqual.";
         var aux_sigueu = "Sigueu amb nosaltres, Déu nostre.";
         var aux_veniu = "Senyor, veniu a ajudar-nos.";
-        var is_aleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES
-          && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA
-          && G_VALUES.LT !== GLOBAL.Q_TRIDU;
+        var is_aleluia = GlobalData.LT !== GLOBAL.Q_CENDRA && GlobalData.LT !== GLOBAL.Q_SETMANES
+          && GlobalData.LT !== GLOBAL.Q_DIUM_RAMS && GlobalData.LT !== GLOBAL.Q_SET_SANTA
+          && GlobalData.LT !== GLOBAL.Q_TRIDU;
         var aux_lloable = "És lloable que aquí es faci examen de consciència.";
         var aux_acte_pen = this.COMPLETES.actePen;
         var aux_himne = GF.rs(this.COMPLETES.himne, this.superTestMode, this.testErrorCB.bind(this));

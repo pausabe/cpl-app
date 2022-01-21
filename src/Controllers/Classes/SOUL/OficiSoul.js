@@ -1,14 +1,17 @@
-import GLOBAL from '../../../Globals/Globals';
+import GLOBAL from '../../../Globals/GlobalKeys';
 import GF from '../../../Globals/GlobalFunctions';
 
+let GlobalData;
+
 export default class OficiSoul {
-  constructor(TABLES, CEL, Set_Soul_CB, SOUL) {
+  constructor(TABLES, CEL, Set_Soul_CB, SOUL, globalData) {
+    GlobalData = globalData;
     this.makePrayer(TABLES, CEL, Set_Soul_CB, SOUL);
   }
 
   makePrayer(TABLES, CEL, Set_Soul_CB, SOUL){
-    var llati = G_VALUES.llati;
-    var date = G_VALUES.date;
+    var llati = GlobalData.llati;
+    var date = GlobalData.date;
 
         this.state = {
           salteriComuOfici: TABLES.salteriComuOfici,
@@ -92,13 +95,13 @@ export default class OficiSoul {
       this.OFICI.himneOhDeu = this.state.ohDeu;
     }
     else {
-      this.introduccio(G_VALUES.LT, G_VALUES.setmana, CEL, date);
-      this.himne(G_VALUES.LT, date.getDay(), G_VALUES.setmana, CEL, llati, date);
-      this.salmodia(G_VALUES.LT, G_VALUES.setmana, date.getDay(), G_VALUES.cicle, CEL, date);
-      this.vers(G_VALUES.LT, CEL, date);
-      this.lectures(G_VALUES.LT, CEL, date);
-      this.himneOhDeu(G_VALUES.LT, date.getDay(), CEL, date);
-      this.oracio(G_VALUES.LT, date.getDay(), CEL, date);
+      this.introduccio(GlobalData.LT, GlobalData.setmana, CEL, date);
+      this.himne(GlobalData.LT, date.getDay(), GlobalData.setmana, CEL, llati, date);
+      this.salmodia(GlobalData.LT, GlobalData.setmana, date.getDay(), GlobalData.cicle, CEL, date);
+      this.vers(GlobalData.LT, CEL, date);
+      this.lectures(GlobalData.LT, CEL, date);
+      this.himneOhDeu(GlobalData.LT, date.getDay(), CEL, date);
+      this.oracio(GlobalData.LT, date.getDay(), CEL, date);
     }
 
     SOUL.setSoul(Set_Soul_CB, "ofici", this.OFICI);

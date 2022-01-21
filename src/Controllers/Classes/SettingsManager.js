@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import GLOBAL from "../../Globals/Globals";
+import GLOBAL from "../../Globals/GlobalKeys";
 
 export const diocesis = {
     ANDORRA: "Andorra",

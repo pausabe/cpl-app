@@ -4,14 +4,14 @@ import {
   Text,
   View,
   Platform,
-  TouchableOpacity,
-  Share
+  TouchableOpacity
 } from 'react-native';
 import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Globals/Globals';
+import GLOBAL from '../../../../Globals/GlobalKeys';
 import GF from '../../../../Globals/GlobalFunctions';
 import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
 import * as Logger from '../../../../Utils/Logger';
+import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
 
 export default class OficiDisplay extends Component {
   componentDidMount(){
@@ -22,7 +22,7 @@ export default class OficiDisplay extends Component {
 
   constructor(props){
     super(props);
-    var auxNumSalmInv = G_VALUES.numSalmInv;
+    var auxNumSalmInv = GlobalData.numSalmInv;
 
     if(!GF.salmInvExists(auxNumSalmInv,props.titols)){
       auxNumSalmInv = '94';
@@ -36,22 +36,22 @@ export default class OficiDisplay extends Component {
     }
 
     this.styles = {
-      black: GF.getStyle("GENERIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      red: GF.getStyle("ACCENT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
-      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, G_VALUES.textSize, G_VALUES.darkModeEnabled),
+      black: GF.getStyle("GENERIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      red: GF.getStyle("ACCENT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
     };
 
-    this.OFICI = LH_VALUES.ofici;
+    this.OFICI = HoursLiturgyData.ofici;
     
     this.superTestMode = props.superTestMode;
     this.testErrorCB = props.testErrorCB;
@@ -64,40 +64,40 @@ export default class OficiDisplay extends Component {
       if(!this.OFICI.diumPasqua){
         return (
           <View>
-            {this.introduccio(G_VALUES.LT, G_VALUES.setmana, this.OFICI.salm94,
+            {this.introduccio(GlobalData.LT, GlobalData.setmana, this.OFICI.salm94,
                                 this.OFICI.salm99, this.OFICI.salm66, this.OFICI.salm23)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>{"HIMNE"}{(G_VALUES.LT===GLOBAL.O_ORDINARI && GF.isDarkHimn())? " (nit)" : " (dia)"}</Text>
+            <Text selectable={true} style={this.styles.red}>{"HIMNE"}{(GlobalData.LT===GLOBAL.O_ORDINARI && GF.isDarkHimn())? " (nit)" : " (dia)"}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.himne(G_VALUES.LT, G_VALUES.date.getDay(), false, G_VALUES.setmana)}
+            {this.himne(GlobalData.LT, GlobalData.date.getDay(), false, GlobalData.setmana)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'SALMÒDIA'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.salmodia(G_VALUES.LT, G_VALUES.setmana, G_VALUES.date.getDay(), G_VALUES.cicle)}
+            {this.salmodia(GlobalData.LT, GlobalData.setmana, GlobalData.date.getDay(), GlobalData.cicle)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'VERS'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.vers(G_VALUES.LT)}
+            {this.vers(GlobalData.LT)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'LECTURES'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.lectures(G_VALUES.LT)}
-            {this.himneOhDeu(G_VALUES.LT, G_VALUES.date.getDay())}
+            {this.lectures(GlobalData.LT)}
+            {this.himneOhDeu(GlobalData.LT, GlobalData.date.getDay())}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'ORACIÓ'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.blackBold}>{'Preguem.'}</Text>
-            {this.oracio(G_VALUES.LT, G_VALUES.date.getDay())}
+            {this.oracio(GlobalData.LT, GlobalData.date.getDay())}
             <Text selectable={true} style={this.styles.red}>{'R. '}
               <Text selectable={true} style={this.styles.black}>{'Amén.'}</Text>
             </Text>
@@ -132,15 +132,15 @@ export default class OficiDisplay extends Component {
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            {this.lecturesDiumPasqua(G_VALUES.LT)}
-            {this.himneOhDeu(G_VALUES.LT, G_VALUES.date.getDay())}
+            {this.lecturesDiumPasqua(GlobalData.LT)}
+            {this.himneOhDeu(GlobalData.LT, GlobalData.date.getDay())}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.red}>{'ORACIÓ'}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <Text selectable={true} style={this.styles.blackBold}>{'Preguem.'}</Text>
-            {this.oracio(G_VALUES.LT, G_VALUES.date.getDay())}
+            {this.oracio(GlobalData.LT, GlobalData.date.getDay())}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
@@ -355,7 +355,7 @@ export default class OficiDisplay extends Component {
 
       var aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
       var aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
-      var aux_isAleluia = G_VALUES.LT !== GLOBAL.Q_CENDRA && G_VALUES.LT !== GLOBAL.Q_SETMANES && G_VALUES.LT !== GLOBAL.Q_DIUM_RAMS && G_VALUES.LT !== GLOBAL.Q_SET_SANTA && G_VALUES.LT !== GLOBAL.Q_TRIDU;
+      var aux_isAleluia = GlobalData.LT !== GLOBAL.Q_CENDRA && GlobalData.LT !== GLOBAL.Q_SETMANES && GlobalData.LT !== GLOBAL.Q_DIUM_RAMS && GlobalData.LT !== GLOBAL.Q_SET_SANTA && GlobalData.LT !== GLOBAL.Q_TRIDU;
 
       return(
         <View>
