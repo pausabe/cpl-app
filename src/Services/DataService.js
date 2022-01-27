@@ -2,10 +2,8 @@ import {Appearance, AsyncStorage} from 'react-native';
 import GF from "../Globals/GlobalFunctions";
 import {SetSoul} from '../Controllers/Classes/SOUL/SOUL';
 import SettingsManager from '../Controllers/Classes/SettingsManager';
-import {OpenDatabase} from './DatabaseOpenerService';
 import {UpdateDatabase} from './DatabaseUpdaterService';
 import * as DatabaseDataService from './DatabaseDataService';
-import * as Logger from '../Utils/Logger';
 
 export let GlobalData = {}
 export let HoursLiturgyData = {}
@@ -14,7 +12,6 @@ export let LAST_REFRESH = new Date()
 
 export async function ReloadAllData(date, updateDatabase) {
     LAST_REFRESH = new Date();
-    await OpenDatabase();
     await SetGlobalValuesFromSettings(date);
     if(updateDatabase){
         GlobalData.databaseVersion = await UpdateDatabase();

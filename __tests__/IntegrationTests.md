@@ -1,0 +1,12 @@
+- Splash after loading
+- Change day using the calendar tool
+- Late hour check and popup
+- Basic navigation to all the views
+    - Settings
+    - Liturgy of the Hours and its prayers
+    - Liturgy of the Mass and its prayers
+    - Feedback web page
+    - Give web page
+- Festivity description
+- Optional festivity
+- Everything in Android and iOs

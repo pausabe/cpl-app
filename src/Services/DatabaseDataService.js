@@ -1,26 +1,6 @@
 import * as Logger from '../Utils/Logger';
 import GF from '../Globals/GlobalFunctions';
-import { CPLDataBase } from './DatabaseOpenerService';
-
-export function executeQuery(query, callback, errorCallback) {
-  if(CPLDataBase !== undefined){
-    CPLDataBase.transaction((tx) => {
-      tx.executeSql(query, [], (SQLTransaction, SQLResultSet) => {
-        callback(SQLResultSet);
-      }, (SQLTransaction, SQLError) => {
-        Logger.LogError(Logger.LogKeys.DatabaseAdapter, "executeQuery", "error in query (" + query + "): ", SQLError);
-        if(errorCallback !== undefined) {
-          errorCallback(SQLError);
-        }
-      });
-    });
-  }
-  else{
-    if(errorCallback !== undefined) {
-      errorCallback();
-    }
-  }
-}
+import {executeQuery} from "./DatabaseManagerService";
 
 export function getDatabaseVersion(){
   return new Promise((resolve) => {
@@ -453,7 +433,7 @@ function LDGetIndexNormal(result, cicleABC, parImpar, diaSetmana) {
   }
 
   if (index === undefined) {
-    Logger.Log(Logger.LogKeys.DatabaseAdapter, "LDGetIndexNormal", "No index found");
+    Logger.Log(Logger.LogKeys.DatabaseDataService, "LDGetIndexNormal", "No index found");
     index = -1;
   }
   else {

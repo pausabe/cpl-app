@@ -332,7 +332,6 @@ export default class HomeScreenController extends Component {
     if(GlobalData.date === undefined){
       return null;
     }
-    Logger.Log(Logger.LogKeys.HomeScreenController, "HomeScreenView", "GlobalData", GlobalData.date);
     const yesterday = new Date(GlobalData.date.getFullYear(), GlobalData.date.getMonth());
     yesterday.setDate(GlobalData.date.getDate() - 1);
     const date = GlobalData.date;

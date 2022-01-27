@@ -1,14 +1,14 @@
-import { CPLDataBase } from './DatabaseOpenerService';
+import * as DatabaseManagerService from './DatabaseManagerService';
 import * as Logger from '../Utils/Logger';
 import dataJson from "../Assets/DatabaseUpdateScript/UpdateScript.json";
-import {getDatabaseVersion} from './DatabaseDataService';
+import  * as DatabaseDataService from './DatabaseDataService';
 
 export async function UpdateDatabase(){
-    const currentDatabaseVersion = await getDatabaseVersion();
+    const currentDatabaseVersion = await DatabaseDataService.getDatabaseVersion();
     Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "currentDatabaseVersion: " + currentDatabaseVersion);
     let json_updates = await GetUpdates(currentDatabaseVersion);
     await MakeChanges(json_updates);
-    const databaseVersionAfter = await getDatabaseVersion();
+    const databaseVersionAfter = await DatabaseDataService.getDatabaseVersion();
     Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "databaseVersionAfter: " + databaseVersionAfter);
     return databaseVersionAfter;
 }
@@ -33,7 +33,7 @@ async function MakeChanges(changes){
             const change = changes[i];
             const query = GetQueryChange(change);
             Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "query: " + query, undefined, 20);
-            const executionResult = await ExecuteQuery(query);
+            const executionResult = await DatabaseManagerService.executeQueryAsync(query);
             if(!executionResult){
                 await FakeUpdate();
             }
@@ -99,23 +99,5 @@ async function FakeUpdate(){
     // This is necessary to update properly the updates count
     Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "FakeUpdate", "Faking update");
     const query = "INSERT INTO _tables_log(table_name, row_id, action, date) VALUES('', 0, -1, date())";
-    await ExecuteQuery(query);
-}
-
-function ExecuteQuery(query) {
-    return new Promise((resolve) => {
-        if(CPLDataBase === undefined){
-            resolve(false);
-        }
-        else{
-            CPLDataBase.transaction((tx) => {
-                tx.executeSql(query, [], () => {
-                    resolve(true)
-                }, (SQLTransaction, SQLError) => {
-                    Logger.LogError(Logger.LogKeys.DatabaseUpdaterService, "ExecuteQuery","error in query (" + query + ")", SQLError);
-                    resolve(false)
-                });
-            });
-        }
-    });
+    await DatabaseManagerService.executeQueryAsync(query);
 }

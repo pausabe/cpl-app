@@ -4,8 +4,9 @@ export let SessionLogs = "";
 
 export const LogKeys = {
     Debug: { name: "Debug", enabled: true },
+    DatabaseManagerService: { name: "DatabaseDataService", enabled: true },
     DatabaseUpdaterService: { name: "DatabaseUpdaterService", enabled: true },
-    DatabaseAdapter: { name: "DatabaseAdapter", enabled: false },
+    DatabaseDataService: { name: "DatabaseDataService", enabled: false },
     HomeScreenController: { name: "HomeScreenController", enabled: true },
     Soul: { name: "Soul", enabled: true },
     GlobalFunctions: { name: "GlobalFunctions", enabled: true },

@@ -55,5 +55,5 @@ Therefore, when we...
   1. Download the latest database from Deploy website
   2. Copy the database into src/Assets/db/
   3. Build the project (ios -> ipa | android -> apk)
-  4. On the Deploy website, press 'Update Database' button (it will copy the latest uploaded database into the cpl-app project. It's necessary because the project pull we make before every deploy doesn't pull the database and we must have the same as the one in the new Build)
+  4. On the Deploy website, press 'Update' button (it will copy the latest uploaded database into the cpl-app project. It's necessary because the project pull we make before every deploy doesn't pull the database and we must have the same as the one in the new Build)
   5. Upload the Builds into the stores
