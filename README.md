@@ -44,7 +44,7 @@ Therefore, when we...
 - Update only database changes -> Use the Deploy website
   1. Download the latest database from the Deploy website
   2. Make the changes in the database
-  3. Upload the changes database in the Deploy website
+  3. Upload the database changes in the Deploy website
 
 - Update only code changes -> Use Expo build and upload the build to the stores
   1. Make the code changes
