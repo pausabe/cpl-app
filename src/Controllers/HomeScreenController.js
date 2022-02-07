@@ -12,7 +12,6 @@ import {
   Appearance
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { AsyncStorage } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
@@ -22,6 +21,14 @@ import { ReloadAllData } from '../Services/DataService.js';
 import * as Logger from '../Utils/Logger';
 import SettingsManager from './Classes/SettingsManager';
 import { GlobalData, LAST_REFRESH } from '../Services/DataService';
+import * as StorageService from '../Services/StorageService';
+import StorageKeys from "../Services/StorageKeys";
+import { LogBox } from 'react-native';
+
+// Ignoring params.calPres warning
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 export default class HomeScreenController extends Component {
 
@@ -144,10 +151,11 @@ export default class HomeScreenController extends Component {
   }
 
   Refresh_Date(date) {
-    if (date === null || date === undefined)
+    if (date === null || date === undefined){
       date = GlobalData.date;
+    }
 
-    ReloadAllData(new Date(/*2019, 9, 23*/), false)
+    ReloadAllData(date, false)
         .then(() => this.RefreshDateCallback())
         .catch((error) => this.HandleGetDataError(error));
   }
@@ -272,6 +280,7 @@ export default class HomeScreenController extends Component {
   }
 
   showThisDate(date) {
+    Logger.Log(Logger.LogKeys.HomeScreenController, "showThisDate", "date: ", date);
     this.Refresh_Date(date);
   }
 
@@ -298,10 +307,10 @@ export default class HomeScreenController extends Component {
       const stringData = GlobalData.date.getDate() + ':' +
         GlobalData.date.getMonth() + ':' +
         GlobalData.date.getFullYear();
-      AsyncStorage.setItem("lliureDate", stringData);
+      StorageService.StoreData(StorageKeys.OptionalFestivity, stringData);
     }
     else {
-      AsyncStorage.setItem("lliureDate", 'none');
+      StorageService.StoreData(StorageKeys.OptionalFestivity, 'none');
     }
     
     GlobalData.lliures = value;

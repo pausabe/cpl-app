@@ -54,6 +54,7 @@ Therefore, when we...
 - Update code & database -> Use expo build with a new release-channel name (prod_channel_4.1)
   1. Download the latest database from Deploy website
   2. Copy the database into src/Assets/db/
-  3. Build the project (ios -> ipa | android -> apk)
-  4. On the Deploy website, press 'Update' button (it will copy the latest uploaded database into the cpl-app project. It's necessary because the project pull we make before every deploy doesn't pull the database and we must have the same as the one in the new Build)
-  5. Upload the Builds into the stores
+  3. Update the version name and build number of the manifest
+  4. Build the project (ios -> ipa | android -> apk)
+  5. On the Deploy website, press 'Update' button (it will copy the latest uploaded database into the cpl-app project. It's necessary because the project pull we make before every deploy doesn't pull the database and we must have the same as the one in the new Build)
+  6. Upload the Builds into the stores

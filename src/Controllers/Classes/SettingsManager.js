@@ -1,5 +1,4 @@
-import { AsyncStorage } from 'react-native';
-import GLOBAL from "../../Globals/GlobalKeys";
+import * as StorageService from '../../Services/StorageService';
 
 export const diocesis = {
     ANDORRA: "Andorra",
@@ -64,7 +63,7 @@ export default class SettingsManager{
     * Returns an asynchronous Promise with the callback set when callback is a Function, if not, returns just the Promise.
     */
     static _getStorageValue(key, callback, defaultValue){
-        let getPromise = AsyncStorage.getItem(key);
+        let getPromise = StorageService.GetData(key);
         let settingsPromise = new Promise((resolve, reject) => {
             getPromise.then(
                 value => {
@@ -81,7 +80,7 @@ export default class SettingsManager{
     }
 
     static _setStorageValue(key, value, callback){
-        let savePromise = AsyncStorage.setItem(key, value);
+        let savePromise = StorageService.StoreData(key, value);
         if(callback) savePromise.then(callback);
         return savePromise;
     }
@@ -90,10 +89,9 @@ export default class SettingsManager{
         if(!(validateFunc instanceof Function) || validateFunc(value)){
             return SettingsManager._setStorageValue(key, value, callback);
         }else{
-            let wrongValuePromise = new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 reject(new Error("Invalid value"));
             });
-            return wrongValuePromise;
         }
     }
 

@@ -16,8 +16,6 @@ export async function UpdateDatabase(){
 function GetUpdates(currentDatabaseVersion) {
     if(currentDatabaseVersion !== undefined){
         // Refresh the script from expo OTA updates
-        //TODO: com es qe funciona sense fer aixo? Asset.fromModule(require('../Assets/DatabaseUpdateScript/UpdateScript.json'));
-
         const totalUpdates = require('../Assets/DatabaseUpdateScript/UpdateScript.json');
         Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "GetUpdates", "totalUpdates: " + totalUpdates.length);
         const necessaryUpdatesToExecute = dataJson.slice(currentDatabaseVersion)

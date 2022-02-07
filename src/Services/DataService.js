@@ -1,9 +1,11 @@
-import {Appearance, AsyncStorage} from 'react-native';
+import {Appearance} from 'react-native';
 import GF from "../Globals/GlobalFunctions";
 import {SetSoul} from '../Controllers/Classes/SOUL/SOUL';
 import SettingsManager from '../Controllers/Classes/SettingsManager';
 import {UpdateDatabase} from './DatabaseUpdaterService';
 import * as DatabaseDataService from './DatabaseDataService';
+import * as StorageService from './StorageService';
+import StorageKeys from './StorageKeys';
 
 export let GlobalData = {}
 export let HoursLiturgyData = {}
@@ -113,11 +115,10 @@ function SetGlobalValuesFromDatabase() {
 
 function Check_Lliure_Date() {
     return new Promise((resolve) =>{
-        AsyncStorage.getItem("lliureDate")
+        StorageService.GetData(StorageKeys.OptionalFestivity)
             .then((value) => {
                 if (!value){
-                    //TODO: treat promise
-                    AsyncStorage.setItem('lliureDate', 'none');
+                    StorageService.StoreData(StorageKeys.OptionalFestivity, 'none');
                 }
                 if (value && value !== 'none') {
                     let dataArr = value.split(':');
