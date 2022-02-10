@@ -8,5 +8,10 @@
     - Feedback web page
     - Give web page
 - Festivity description
-- Optional festivity
+- Optional festivity with persistence
+- Updates
+  - Only code changes with OTA
+  - Only database changes with deploy website
+  - Standalone with code and database changes
+  - Update from old version to the new one
 - Everything in Android and iOs
