@@ -70,32 +70,33 @@ async function createDirectory(){
 }
 
 async function UpdateDatabaseFile(){
-    const savedAppVersion = await GetSavedAppVersion();
+    await DeleteDatabaseIfNecessari();
+    await PlaceDatabaseIfNecessary();
+}
+
+async function DeleteDatabaseIfNecessari() {
+    const neverSavedValue = -1;
+    const savedAppVersion = await GetSavedAppVersion(neverSavedValue);
     const actualAppVersion = GetActualAppVersion();
-
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `saved (${savedAppVersion}) vs actual (${actualAppVersion}) -> ${actualAppVersion > savedAppVersion? 'Deleting current database' : 'No need to delete'}`);
-
-    if(actualAppVersion > savedAppVersion){
+    const valueNeverSavedBefore = savedAppVersion === neverSavedValue;
+    const isNewAppVersion = actualAppVersion > savedAppVersion;
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "DeleteDatabaseIfNecessari", `Saved (${savedAppVersion}) vs Actual (${actualAppVersion}) -> ${valueNeverSavedBefore || isNewAppVersion? 'Deleting current database' : 'No need to delete'}`);
+    if(valueNeverSavedBefore || isNewAppVersion){
         await StorageService.StoreData(StorageKeys.CurrentAppVersion, actualAppVersion);
         await DeleteFile(FileSystem.documentDirectory + 'SQLite/cpl-app.db');
     }
+}
 
+async function PlaceDatabaseIfNecessary(){
     let thereIsADatabaseInPlace = (await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/cpl-app.db')).exists;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", thereIsADatabaseInPlace? "There is a Database -> no need to place" : "No database -> we need to place");
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "PlaceDatabaseIfNecessary", thereIsADatabaseInPlace? "There is a Database -> no need to place" : "No database -> we need to place");
     if (!thereIsADatabaseInPlace){
         await PlaceDatabase(FileSystem.documentDirectory + 'SQLite/cpl-app.db');
     }
 }
 
-async function GetSavedAppVersion(){
-    const neverSavedValue = -1;
-    let savedAppVersion = await StorageService.GetData(StorageKeys.CurrentAppVersion, neverSavedValue);
-    if(savedAppVersion === neverSavedValue){
-        Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetSavedAppVersion",  "Value never saved before");
-        savedAppVersion = GetActualAppVersion();
-        await StorageService.StoreData(StorageKeys.CurrentAppVersion, savedAppVersion);
-    }
-    return parseInt(savedAppVersion);
+async function GetSavedAppVersion(neverSavedValue){
+    return parseInt(await StorageService.GetData(StorageKeys.CurrentAppVersion, neverSavedValue));
 }
 
 async function DeleteFile(filePath) {
