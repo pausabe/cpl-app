@@ -1,6 +1,5 @@
 import * as DatabaseManagerService from './DatabaseManagerService';
 import * as Logger from '../Utils/Logger';
-import dataJson from "../Assets/DatabaseUpdateScript/UpdateScript.json";
 import  * as DatabaseDataService from './DatabaseDataService';
 
 export async function UpdateDatabase(){
@@ -15,10 +14,9 @@ export async function UpdateDatabase(){
 
 function GetUpdates(currentDatabaseVersion) {
     if(currentDatabaseVersion !== undefined){
-        // Refresh the script from expo OTA updates
         const totalUpdates = require('../Assets/DatabaseUpdateScript/UpdateScript.json');
         Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "GetUpdates", "totalUpdates: " + totalUpdates.length);
-        const necessaryUpdatesToExecute = dataJson.slice(currentDatabaseVersion)
+        const necessaryUpdatesToExecute = totalUpdates.slice(currentDatabaseVersion)
         Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "GetUpdates", "necessaryUpdatesToExecute: " + necessaryUpdatesToExecute.length);
         return necessaryUpdatesToExecute;
     }
@@ -30,9 +28,17 @@ async function MakeChanges(changes){
         for (let i = 0; i < changes.length; i++) {
             const change = changes[i];
             const query = GetQueryChange(change);
-            Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "query: " + query, undefined, 20);
-            const executionResult = await DatabaseManagerService.executeQueryAsync(query);
-            if(!executionResult){
+            if(query !== ""){
+                Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "query: " + query, undefined, 40);
+                try {
+                    await DatabaseManagerService.executeQueryAsync(query);
+                }
+                catch {
+                    await FakeUpdate();
+                }
+            }
+            else{
+                Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "MakeChanges", "Empty query, we fake the update");
                 await FakeUpdate();
             }
         }
@@ -41,12 +47,20 @@ async function MakeChanges(changes){
 
 function GetQueryChange(change) {
     let query = "";
+    const emptyValues = change.values === undefined || Object.entries(change.values).length === 0;
+    if(emptyValues){
+        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "GetQueryChange", "Values empty, we will fake the update");
+    }
     switch (change.action) {
         case 1:
-            query = GetInsertUpdate(change);
+            if(!emptyValues){
+                query = GetInsertQuery(change);
+            }
             break;
         case 2:
-            query = GetUpdateQuery(change);
+            if(!emptyValues){
+                query = GetUpdateQuery(change);
+            }
             break;
         case 3:
             query = GetDeleteQuery(change);
@@ -69,7 +83,7 @@ function GetUpdateQuery(change) {
     return "UPDATE " + change.table_name + " SET " + set_statement + " WHERE id = " + change.row_id;
 }
 
-function GetInsertUpdate(change) {
+function GetInsertQuery(change) {
     let j = 0;
     let aux = JSON.stringify(change.values);
     aux = aux.replace(/{/g, "")
@@ -96,6 +110,9 @@ function GetDeleteQuery(change) {
 async function FakeUpdate(){
     // This is necessary to update properly the updates count
     Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "FakeUpdate", "Faking update");
-    const query = "INSERT INTO _tables_log(table_name, row_id, action, date) VALUES('', 0, -1, date())";
-    await DatabaseManagerService.executeQueryAsync(query);
+    await DatabaseManagerService.executeQueryAsync(GetFakeQuery());
+}
+
+function GetFakeQuery(){
+    return "INSERT INTO _tables_log(table_name, row_id, action, date) VALUES('', 0, -1, date())";
 }

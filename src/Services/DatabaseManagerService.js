@@ -123,7 +123,7 @@ function _executeQuery(query){
                 [],
                 (SQLTransaction, SQLResultSet) => resolve(SQLResultSet),
                 (SQLTransaction, SQLError) => {
-                    Logger.LogError(Logger.LogKeys.DatabaseManagerService, "executeQuery", "error in query (" + query + "): ", SQLError);
+                    Logger.LogError(Logger.LogKeys.DatabaseManagerService, "_executeQuery", "error in query (" + query + "): ", SQLError);
                     reject(SQLError);
                 });
         });
