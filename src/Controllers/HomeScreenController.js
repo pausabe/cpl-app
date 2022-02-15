@@ -189,7 +189,9 @@ export default class HomeScreenController extends Component {
             text: GlobalData.info_cel.infoCel,
           },
         }
-      }, async () => await SplashScreen.hideAsync());
+      }, async () =>
+        setTimeout(async() => await SplashScreen.hideAsync(), 250)
+      );
       
       //Set santPress variable to 0
       this.santPress = 0;
