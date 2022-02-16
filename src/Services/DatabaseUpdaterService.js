@@ -9,6 +9,7 @@ export async function UpdateDatabase(){
     await MakeChanges(json_updates);
     const databaseVersionAfter = await DatabaseDataService.getDatabaseVersion();
     Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "UpdateDatabase", "databaseVersionAfter: " + databaseVersionAfter);
+    await FakeMissingUpdates(currentDatabaseVersion - databaseVersionAfter);
     return databaseVersionAfter;
 }
 
@@ -45,10 +46,19 @@ async function MakeChanges(changes){
     }
 }
 
+async function FakeMissingUpdates(missingUpdates) {
+    if(missingUpdates > 0){
+        Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "FakeMissingUpdates", missingUpdates + " missing updates. We fake them");
+        for (let i = 0; i < missingUpdates; i++) {
+            await FakeUpdate();
+        }
+    }
+}
+
 function GetQueryChange(change) {
     let query = "";
     const emptyValues = change.values === undefined || Object.entries(change.values).length === 0;
-    if(emptyValues){
+    if(emptyValues && (change.action === 1 || change.action === 2)){
         Logger.Log(Logger.LogKeys.DatabaseUpdaterService, "GetQueryChange", "Values empty, we will fake the update");
     }
     switch (change.action) {

@@ -6,7 +6,7 @@ export function getDatabaseVersion(){
   return new Promise((resolve) => {
     executeQuery(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`,
         result => {
-          const databaseVersion = result.rows.item(0).databaseVersion;
+          const databaseVersion = parseInt(result.rows.item(0).databaseVersion);
           resolve(databaseVersion);
         },
         () => resolve(0));
