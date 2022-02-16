@@ -100,7 +100,7 @@ function GetInsertQuery(change) {
             val_statement += ", "
         }
     }
-    return "INSERT INTO " + change.name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
+    return "INSERT INTO " + change.table_name + "(" + ref_statement + ") VALUES (" + val_statement + ")";
 }
 
 function GetDeleteQuery(change) {
