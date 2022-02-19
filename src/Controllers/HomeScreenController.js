@@ -123,15 +123,15 @@ export default class HomeScreenController extends Component {
 
   checkSystemDarkMode(colorScheme){
     try {
+      // It's not always getting the correct color scheme when reopening the app on ios. So I get it from the getColorSheme function
+      colorScheme = Appearance.getColorScheme();
+
       SettingsManager.getSettingDarkMode((r) => {
         if(r === 'Automàtic'){
             if (colorScheme === 'dark') {
-              if(GlobalData.darkModeEnabled === false){
-              }
               GlobalData.darkModeEnabled = true;
-            } else {
-              if(GlobalData.darkModeEnabled === true){
-              }
+            }
+            else {
               GlobalData.darkModeEnabled = false;
             }
           }

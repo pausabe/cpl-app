@@ -1,3 +1,7 @@
+### v4.15.1 (18.02.2022)[70]
+- Replacing database when some table is missing
+- [iOs] Fixing automatic dark mode in some cases
+
 ### v4.15.0 (16.02.2022)[70]
 - Beta of the new way to update the database
 
