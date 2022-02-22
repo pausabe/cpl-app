@@ -1,11 +1,8 @@
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 import * as Logger from "../Utils/Logger";
-import StorageKeys from './StorageKeys';
-import * as StorageService from './StorageService';
-import {Platform} from "react-native";
-import Constants from "expo-constants";
 import {Asset} from "expo-asset";
+import {FileSystemService} from "./FileSystemService";
 
 let CPLDataBase = undefined;
 
@@ -22,7 +19,7 @@ export function executeQueryAsync(query){
 // TODO: refactor
 export function executeQuery(query, callback, errorCallback) {
     if(CPLDataBase === undefined) {
-        openDatabase()
+        OpenDatabase()
             .then((result) => {
                 _executeQuery(query)
                     .then((result) => {
@@ -57,62 +54,44 @@ export function executeQuery(query, callback, errorCallback) {
     }
 }
 
-async function openDatabase() {
-    await createDirectory();
+async function OpenDatabase() {
+    await CreateDirectory();
     await UpdateDatabaseFile();
-    CPLDataBase = SQLite.openDatabase('cpl-app.db');
+    const databaseName = `${await GetCurrentDatabaseMD5()}.db`;
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseMD5", `Opening database '${databaseName}'`);
+    CPLDataBase = SQLite.openDatabase(databaseName);
 }
 
-async function createDirectory(){
+async function CreateDirectory(){
     if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
         await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
     }
 }
 
 async function UpdateDatabaseFile(){
-    await DeleteDatabaseIfNecessari();
-    await PlaceDatabaseIfNecessary();
-}
-
-async function DeleteDatabaseIfNecessari() {
-    const neverSavedValue = -1;
-    const savedAppVersion = await GetSavedAppVersion(neverSavedValue);
-    const actualAppVersion = GetActualAppVersion();
-    const valueNeverSavedBefore = savedAppVersion === neverSavedValue;
-    const isNewAppVersion = actualAppVersion > savedAppVersion;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "DeleteDatabaseIfNecessari", `Saved (${savedAppVersion}) vs Actual (${actualAppVersion}) -> ${valueNeverSavedBefore || isNewAppVersion? 'Deleting current database' : 'No need to delete'}`);
-    if(valueNeverSavedBefore || isNewAppVersion){
-        await StorageService.StoreData(StorageKeys.CurrentAppVersion, actualAppVersion);
-        await DeleteFile(FileSystem.documentDirectory + 'SQLite/cpl-app.db');
+    const currentMD5 = await GetCurrentDatabaseMD5();
+    const databaseCandidateToBeTheNewOneAsset = await Asset.loadAsync(require('../Assets/db/cpl-app.db'));
+    const databaseCandidateToBeTheNewOneInfo = await FileSystem.getInfoAsync(databaseCandidateToBeTheNewOneAsset[0].localUri, { md5: true });
+    const isNecessaryToUpdateTheDatabase = currentMD5 !== databaseCandidateToBeTheNewOneInfo.md5;
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `${isNecessaryToUpdateTheDatabase? "Deleting and copying" : "Not necessary to delete and copy"}`);
+    if(isNecessaryToUpdateTheDatabase){
+        // We delete all possible files just in case. It should only be one database
+        await FileSystemService.DeleteFilesInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
+        await FileSystemService.CopyFile(databaseCandidateToBeTheNewOneInfo.uri, `${FileSystem.documentDirectory}SQLite/${databaseCandidateToBeTheNewOneInfo.md5}.db`);
     }
 }
 
-async function PlaceDatabaseIfNecessary(){
-    let thereIsADatabaseInPlace = (await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/cpl-app.db')).exists;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "PlaceDatabaseIfNecessary", thereIsADatabaseInPlace? "There is a Database -> no need to place" : "No database -> we need to place");
-    if (!thereIsADatabaseInPlace){
-        await PlaceDatabase(FileSystem.documentDirectory + 'SQLite/cpl-app.db');
+async function GetCurrentDatabaseMD5(){
+    let currentDatabaseMD5 = "";
+    const listOfDatabaseFiles = await FileSystemService.GetFileUrisInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
+    if(listOfDatabaseFiles.length > 0){
+        // It should be just one database
+        const currentDatabaseUri = listOfDatabaseFiles[0];
+        const currentDatabaseInfo = await FileSystem.getInfoAsync(currentDatabaseUri, { md5: true });
+        currentDatabaseMD5 = currentDatabaseInfo.md5;
     }
-}
-
-async function GetSavedAppVersion(neverSavedValue){
-    return parseInt(await StorageService.GetData(StorageKeys.CurrentAppVersion, neverSavedValue));
-}
-
-async function DeleteFile(filePath) {
-    if((await FileSystem.getInfoAsync(filePath)).exists){
-        await FileSystem.deleteAsync(filePath);
-    }
-}
-
-function GetActualAppVersion() {
-    return parseInt(Platform.OS === "ios"? Constants.manifest.ios.buildNumber : Constants.manifest.android.versionCode);
-}
-
-async function PlaceDatabase(databaseFilePath){
-    const databaseAsset = await Asset.loadAsync(require('../Assets/db/cpl-app.db'));
-    const databaseAssetPath = databaseAsset[0].localUri;
-    await FileSystem.copyAsync({from: databaseAssetPath, to: databaseFilePath});
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseMD5", `currentDatabaseMD5: ${currentDatabaseMD5}`);
+    return currentDatabaseMD5;
 }
 
 function _executeQuery(query){

@@ -12,7 +12,8 @@ export const LogKeys = {
     GlobalFunctions: { name: "GlobalFunctions", enabled: true },
     Screens: { name: "Screens", enabled: true },
     DataService: { name: "DataService", enabled: true },
-    StorageService: { name: "StorageService", enabled: true }
+    StorageService: { name: "StorageService", enabled: true },
+    FileSystemService: { name: "FileSystemService", enabled: true }
 };
 
 export function Debug(message, param){

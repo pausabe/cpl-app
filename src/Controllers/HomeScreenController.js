@@ -60,7 +60,7 @@ export default class HomeScreenController extends Component {
       }
     }
 
-    ReloadAllData(new Date(/*2019, 9, 23*/), true)
+    ReloadAllData(new Date(/*2019, 9, 23*/))
         .then(() => this.InitEverything())
         .catch((errorMsg) => this.HandleGetDataError(errorMsg));
   }
@@ -155,7 +155,7 @@ export default class HomeScreenController extends Component {
       date = GlobalData.date;
     }
 
-    ReloadAllData(date, false)
+    ReloadAllData(date)
         .then(() => this.RefreshDateCallback())
         .catch((error) => this.HandleGetDataError(error));
   }

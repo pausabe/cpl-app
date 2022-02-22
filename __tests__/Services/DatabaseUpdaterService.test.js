@@ -15,7 +15,7 @@ jest.mock(
 
 describe('Database Updater user cases', () => {
     test('Simple update', async () => {
-        await DatabaseUpdaterService.UpdateDatabase();
+        //await DatabaseUpdaterService.UpdateDatabase();
         // TODO: check expected queries created
     });
 });
