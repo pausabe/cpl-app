@@ -22,3 +22,6 @@ https://github.com/pausabe/deploy-cpl
     https://docs.expo.io/versions/latest/config/app/#properties
 ### Upgrade
     expo upgrade
+
+# Version Numbers
+BreakingChanges.BuildNumber.OTARelease

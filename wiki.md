@@ -16,9 +16,9 @@
 #### Only OTA (little changes)
     expo publish --release-channel channel_name
 
-#### Channel Names
-    prod_channel
-    test_channel
+#### Channel Names (X => build number)
+    prod_channel_X
+    test_channel_X
 
 #### Instructions
 // TODO: change these instruction
