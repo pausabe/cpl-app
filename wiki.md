@@ -17,10 +17,11 @@
     expo publish --release-channel channel_name
 
 #### Channel Names
-    prod_channel_X.Y
-    test_channel_X.Y
+    prod_channel
+    test_channel
 
 #### Instructions
+// TODO: change these instruction
 Due some errors, the database cannot be updated using OTA updates.
 Therefore, when we...
 - Update only database changes -> Use the Deploy website

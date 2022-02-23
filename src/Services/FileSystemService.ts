@@ -38,7 +38,6 @@ export class FileSystemService{
                 listOfFiles.push(`${directoryPath}${fileUri}`);
             }
         }
-        Logger.Log(Logger.LogKeys.FileSystemService, "GetFileUrisInDirectory", `Returning ${listOfFiles.length} File Uri for the directory '...${StringManagement.SafeSubstring(directoryPath, 20)}' and the extension '${fileExtension}'`);
         return listOfFiles;
     }
 }

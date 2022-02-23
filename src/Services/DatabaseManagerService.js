@@ -3,6 +3,7 @@ import * as SQLite from 'expo-sqlite';
 import * as Logger from "../Utils/Logger";
 import {Asset} from "expo-asset";
 import {FileSystemService} from "./FileSystemService";
+import {StringManagement} from "../Utils/StringManagement";
 
 let CPLDataBase = undefined;
 
@@ -73,7 +74,7 @@ async function UpdateDatabaseFile(){
     const databaseCandidateToBeTheNewOneAsset = await Asset.loadAsync(require('../Assets/db/cpl-app.db'));
     const databaseCandidateToBeTheNewOneInfo = await FileSystem.getInfoAsync(databaseCandidateToBeTheNewOneAsset[0].localUri, { md5: true });
     const isNecessaryToUpdateTheDatabase = currentMD5 !== databaseCandidateToBeTheNewOneInfo.md5;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `${isNecessaryToUpdateTheDatabase? "Deleting and copying" : "Not necessary to delete and copy"}`);
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `currentMD5 (${currentMD5}) vs candidateMD5 (${databaseCandidateToBeTheNewOneInfo.md5}) => ${isNecessaryToUpdateTheDatabase? "Deleting and copying" : "Not necessary to delete and copy"}`);
     if(isNecessaryToUpdateTheDatabase){
         // We delete all possible files just in case. It should only be one database
         await FileSystemService.DeleteFilesInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
@@ -84,13 +85,13 @@ async function UpdateDatabaseFile(){
 async function GetCurrentDatabaseMD5(){
     let currentDatabaseMD5 = "";
     const listOfDatabaseFiles = await FileSystemService.GetFileUrisInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseMD5", `To get the current MD5 we have ${listOfDatabaseFiles.length} Uris`);
     if(listOfDatabaseFiles.length > 0){
         // It should be just one database
         const currentDatabaseUri = listOfDatabaseFiles[0];
         const currentDatabaseInfo = await FileSystem.getInfoAsync(currentDatabaseUri, { md5: true });
         currentDatabaseMD5 = currentDatabaseInfo.md5;
     }
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseMD5", `currentDatabaseMD5: ${currentDatabaseMD5}`);
     return currentDatabaseMD5;
 }
 
