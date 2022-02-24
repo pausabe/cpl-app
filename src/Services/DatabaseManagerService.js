@@ -59,7 +59,7 @@ async function OpenDatabase() {
     await CreateDirectory();
     await UpdateDatabaseFile();
     const databaseName = `${await GetCurrentDatabaseMD5()}.db`;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseMD5", `Opening database '${databaseName}'`);
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseInfo", `Opening database '${databaseName}'`);
     CPLDataBase = SQLite.openDatabase(databaseName);
 }
 
@@ -70,11 +70,12 @@ async function CreateDirectory(){
 }
 
 async function UpdateDatabaseFile(){
-    const currentMD5 = await GetCurrentDatabaseMD5();
+    const currentDatabaseMD5 = await GetCurrentDatabaseMD5();
     const databaseCandidateToBeTheNewOneAsset = await Asset.loadAsync(require('../Assets/db/cpl-app.db'));
     const databaseCandidateToBeTheNewOneInfo = await FileSystem.getInfoAsync(databaseCandidateToBeTheNewOneAsset[0].localUri, { md5: true });
-    const isNecessaryToUpdateTheDatabase = currentMD5 !== databaseCandidateToBeTheNewOneInfo.md5;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `currentMD5 (${currentMD5}) vs candidateMD5 (${databaseCandidateToBeTheNewOneInfo.md5}) => ${isNecessaryToUpdateTheDatabase? "Deleting and copying" : "Not necessary to delete and copy"}`);
+    const currentDatabaseFileName = await GetCurrentDatabaseFileName();
+    const isNecessaryToUpdateTheDatabase = currentDatabaseMD5 !== currentDatabaseFileName || currentDatabaseMD5 !== databaseCandidateToBeTheNewOneInfo.md5;
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `currentDatabaseFileName = '${currentDatabaseFileName}' | currentMD5 (${currentDatabaseMD5}) vs candidateMD5 (${databaseCandidateToBeTheNewOneInfo.md5}) => ${isNecessaryToUpdateTheDatabase? "Deleting and copying" : "Not necessary to delete and copy"}`);
     if(isNecessaryToUpdateTheDatabase){
         // We delete all possible files just in case. It should only be one database
         await FileSystemService.DeleteFilesInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
@@ -85,7 +86,6 @@ async function UpdateDatabaseFile(){
 async function GetCurrentDatabaseMD5(){
     let currentDatabaseMD5 = "";
     const listOfDatabaseFiles = await FileSystemService.GetFileUrisInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseMD5", `To get the current MD5 we have ${listOfDatabaseFiles.length} Uris`);
     if(listOfDatabaseFiles.length > 0){
         // It should be just one database
         const currentDatabaseUri = listOfDatabaseFiles[0];
@@ -93,6 +93,24 @@ async function GetCurrentDatabaseMD5(){
         currentDatabaseMD5 = currentDatabaseInfo.md5;
     }
     return currentDatabaseMD5;
+}
+
+async function GetCurrentDatabaseFileName(){
+    let currentDatabaseFileName = "";
+    const listOfDatabaseFiles = await FileSystemService.GetFileUrisInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
+    if(listOfDatabaseFiles.length > 0){
+        // It should be just one database
+        const currentDatabaseUri = listOfDatabaseFiles[0];
+        currentDatabaseFileName = UriToFileName(currentDatabaseUri);
+    }
+    return currentDatabaseFileName;
+}
+
+function UriToFileName(uri){
+    if(!uri){
+        return "";
+    }
+    return uri.split("/").pop().replace(".db", "");
 }
 
 function _executeQuery(query){
