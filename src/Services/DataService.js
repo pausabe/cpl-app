@@ -6,17 +6,26 @@ import * as DatabaseDataService from './DatabaseDataService';
 import * as StorageService from './StorageService';
 import StorageKeys from './StorageKeys';
 import {getDatabaseVersion} from "./DatabaseDataService";
+import * as Logger from "../Utils/Logger";
 
 export let GlobalData = {}
 export let HoursLiturgyData = {}
 export let MassLiturgyData = {}
 export let LAST_REFRESH = new Date()
 
-export async function ReloadAllData(date) {
+export async function ReloadAllData(date) { //2.5
+    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `Init Reload`);
+    let logDate = new Date();
     LAST_REFRESH = new Date();
-    await SetGlobalValuesFromSettings(date);
-    GlobalData.databaseVersion = await getDatabaseVersion();
-    await SetGlobalValuesFromDatabase();
+    await SetGlobalValuesFromSettings(date); // 0.5s
+    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `SetGlobalValuesFromSettings DONE. Seconds passed: `, (new Date() - logDate) / 1000);
+    logDate = new Date();
+    GlobalData.databaseVersion = await getDatabaseVersion(); //0.7s
+    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `getDatabaseVersion DONE. Time passed: `, (new Date() - logDate) / 1000);
+    logDate = new Date();
+    await SetGlobalValuesFromDatabase(); // 1.3s
+    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `SetGlobalValuesFromDatabase DONE. Time passed: `, (new Date() - logDate) / 1000);
+    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `Total time passed: `, (new Date() - LAST_REFRESH) / 1000);
 }
 
 function SetGlobalValuesFromSettings(date){

@@ -3,7 +3,6 @@ import * as SQLite from 'expo-sqlite';
 import * as Logger from "../Utils/Logger";
 import {Asset} from "expo-asset";
 import {FileSystemService} from "./FileSystemService";
-import {StringManagement} from "../Utils/StringManagement";
 
 let CPLDataBase = undefined;
 
@@ -57,42 +56,41 @@ export function executeQuery(query, callback, errorCallback) {
 
 async function OpenDatabase() {
     await CreateDirectory();
-    await UpdateDatabaseFile();
-    const databaseName = `${await GetCurrentDatabaseMD5()}.db`;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "GetCurrentDatabaseInfo", `Opening database '${databaseName}'`);
+    const databaseName = await UpdateDatabaseFile();
+
+    if(!await DatabaseExists(databaseName)) {
+        throw 'There is no database to open';
+    }
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "OpenDatabase", `Opening database '${databaseName}'`);
     CPLDataBase = SQLite.openDatabase(databaseName);
 }
 
+async function DatabaseExists(databaseName){
+    return databaseName && (await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/' + databaseName)).exists;
+}
+
 async function CreateDirectory(){
-    if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
+    if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/')).exists) {
         await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
     }
 }
 
 async function UpdateDatabaseFile(){
-    const currentDatabaseMD5 = await GetCurrentDatabaseMD5();
-    const databaseCandidateToBeTheNewOneAsset = await Asset.loadAsync(require('../Assets/db/cpl-app.db'));
-    const databaseCandidateToBeTheNewOneInfo = await FileSystem.getInfoAsync(databaseCandidateToBeTheNewOneAsset[0].localUri, { md5: true });
     const currentDatabaseFileName = await GetCurrentDatabaseFileName();
-    const isNecessaryToUpdateTheDatabase = currentDatabaseMD5 !== currentDatabaseFileName || currentDatabaseMD5 !== databaseCandidateToBeTheNewOneInfo.md5;
-    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `currentDatabaseFileName = '${currentDatabaseFileName}' | currentMD5 (${currentDatabaseMD5}) vs candidateMD5 (${databaseCandidateToBeTheNewOneInfo.md5}) => ${isNecessaryToUpdateTheDatabase? "Deleting and copying" : "Not necessary to delete and copy"}`);
+    const databaseCandidateToBeTheNewOneAsset = (await Asset.loadAsync(require('../Assets/db/cpl-app.db')))[0];
+    const candidateDatabaseFileName = DatabaseNameFromUri(databaseCandidateToBeTheNewOneAsset.localUri);
+    console.log(databaseCandidateToBeTheNewOneAsset.localUri)
+    const isNecessaryToUpdateTheDatabase = currentDatabaseFileName !== candidateDatabaseFileName;
+
+    Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `currentName = '${currentDatabaseFileName}' vs candidateName = '${candidateDatabaseFileName}' => ${isNecessaryToUpdateTheDatabase? "We need to update" : "No necessary to update"}`);
+
     if(isNecessaryToUpdateTheDatabase){
         // We delete all possible files just in case. It should only be one database
         await FileSystemService.DeleteFilesInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
-        await FileSystemService.CopyFile(databaseCandidateToBeTheNewOneInfo.uri, `${FileSystem.documentDirectory}SQLite/${databaseCandidateToBeTheNewOneInfo.md5}.db`);
+        await FileSystemService.CopyFile(databaseCandidateToBeTheNewOneAsset.localUri, `${FileSystem.documentDirectory}SQLite/${candidateDatabaseFileName}`);
+        return candidateDatabaseFileName;
     }
-}
-
-async function GetCurrentDatabaseMD5(){
-    let currentDatabaseMD5 = "";
-    const listOfDatabaseFiles = await FileSystemService.GetFileUrisInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
-    if(listOfDatabaseFiles.length > 0){
-        // It should be just one database
-        const currentDatabaseUri = listOfDatabaseFiles[0];
-        const currentDatabaseInfo = await FileSystem.getInfoAsync(currentDatabaseUri, { md5: true });
-        currentDatabaseMD5 = currentDatabaseInfo.md5;
-    }
-    return currentDatabaseMD5;
+    return currentDatabaseFileName;
 }
 
 async function GetCurrentDatabaseFileName(){
@@ -101,16 +99,16 @@ async function GetCurrentDatabaseFileName(){
     if(listOfDatabaseFiles.length > 0){
         // It should be just one database
         const currentDatabaseUri = listOfDatabaseFiles[0];
-        currentDatabaseFileName = UriToFileName(currentDatabaseUri);
+        currentDatabaseFileName = DatabaseNameFromUri(currentDatabaseUri);
     }
     return currentDatabaseFileName;
 }
 
-function UriToFileName(uri){
+function DatabaseNameFromUri(uri){
     if(!uri){
         return "";
     }
-    return uri.split("/").pop().replace(".db", "");
+    return uri.split("/").pop();
 }
 
 function _executeQuery(query){
