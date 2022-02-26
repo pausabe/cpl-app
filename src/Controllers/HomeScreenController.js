@@ -190,7 +190,7 @@ export default class HomeScreenController extends Component {
           },
         }
       }, async () =>
-        setTimeout(async() => await SplashScreen.hideAsync(), 250)
+          setTimeout(async() => await SplashScreen.hideAsync(), this.Is_Late_Prayer()? 0 : 250)
       );
       
       //Set santPress variable to 0

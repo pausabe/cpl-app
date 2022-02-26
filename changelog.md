@@ -1,4 +1,4 @@
-### v4.15.1 (18.02.2022)[70]
+### v4.74.1 (18.02.2022)[70]
 - Replacing database when some table is missing
 - [iOs] Fixing automatic dark mode in some cases
 
