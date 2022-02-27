@@ -3,7 +3,7 @@
     "name": "CPL",
     "description": "This application helps up to pray with biblical texts that the Lord Jesus himself used to pray. Currently it is only available in Catalan.",
     "slug": "CPLApp",
-    "version": "4.74.1",
+    "version": "4.75.0",
     "orientation": "portrait",
     "icon": "./src/Assets/icon/icon.png",
     "githubUrl": "https://github.com/pausabe/cpl-app",
@@ -16,20 +16,20 @@
     },
     "updates": {
       "enabled": true,
-      "fallbackToCacheTimeout": 10000
+      "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "bundleIdentifier": "cpl.cpl",
-      "buildNumber": "74",
+      "buildNumber": "75",
       "supportsTablet": true,
       "userInterfaceStyle": "automatic"
     },
     "android": {
       "package": "cpl.cpl",
-      "versionCode": 74,
+      "versionCode": 75,
       "userInterfaceStyle": "automatic",
       "icon": "./src/Assets/icon/icon.png",
       "adaptiveIcon": {
