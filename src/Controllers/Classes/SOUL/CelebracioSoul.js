@@ -528,7 +528,9 @@ export default class CelebracioSoul {
           switch (tomCal) {
             case 'F':
             case 'S': //TODO: HARDCODED això (i l'if dabaix) ho he afegit pq al 2019 vagi bé la Mare de Déu de Montserrat. Caldria comprovar si això està bé
-              if(tomCal == 'F' || (tomCal == 'S' && (GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30))){
+              if(tomCal == 'F' ||
+                  (tomCal == 'S' &&
+                      (GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30))){
                 this.makeSF(TABLES, type,tomCal, F);
               }
               break;
@@ -1566,8 +1568,7 @@ export default class CelebracioSoul {
       this.NONA.oracio = TABLES.santsSolemnitats.oraFiMenor;
     // else if(TABLES.OficisComuns !== null) this.NONA.oracio = TABLES.OficisComuns.oraFiMenor;
 
-
-    if(!(F === 'F' && GlobalData.date.getDay() === 6)){
+    if(!(F === 'F' && GlobalData.date.getDay() === 6) && !(type === 'SF' && GlobalData.date.getDay() === 6 && GlobalData.LT === GLOBAL.Q_SETMANES)){
       //::::::SF-VESPRES2::::::
       //SF-VESPRES2 -> HIMNE
       if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){

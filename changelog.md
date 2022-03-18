@@ -1,4 +1,7 @@
-### v4.75.0 (18.02.2022)[70]
+### v4.76.1 (18.03.2022)[76]
+- Fixing bug when some solemnity was in Saturday and during Lent
+
+### v4.76.0 (27.02.2022)[76]
 - Replacing database when some table is missing
 - [iOs] Fixing automatic dark mode in some cases
 

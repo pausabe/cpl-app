@@ -7,6 +7,7 @@ import * as StorageService from './StorageService';
 import StorageKeys from './StorageKeys';
 import {getDatabaseVersion} from "./DatabaseDataService";
 import * as Logger from "../Utils/Logger";
+import GLOBAL from '../Globals/GlobalKeys';
 
 export let GlobalData = {}
 export let HoursLiturgyData = {}
@@ -142,5 +143,8 @@ function Check_Lliure_Date() {
 }
 
 function primVespres() {
-    return (GlobalData.date.getDay() === 6 && GlobalData.celType !== 'S') || HoursLiturgyData.vespres1;
+    return (GlobalData.date.getDay() === 6 &&
+                (GlobalData.celType !== 'S' || GlobalData.celType === 'S' && GlobalData.LT === GLOBAL.Q_SETMANES))
+        ||
+            HoursLiturgyData.vespres1;
 }
