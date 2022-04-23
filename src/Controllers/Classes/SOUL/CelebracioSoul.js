@@ -527,10 +527,11 @@ export default class CelebracioSoul {
         else{
           switch (tomCal) {
             case 'F':
-            case 'S': //TODO: HARDCODED això (i l'if dabaix) ho he afegit pq al 2019 vagi bé la Mare de Déu de Montserrat. Caldria comprovar si això està bé
+            case 'S': //TODO: HARDCODED This "case" and the "if" below are there to fix Montserrat's Day. Fix properly (fa que surti la solm. MD Montserrat a Home i LH)
               if(tomCal == 'F' ||
                   (tomCal == 'S' &&
-                      (GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30))){
+                      ((GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30) ||
+                      (GlobalData.date.getFullYear() == 2022 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 27)))){
                 this.makeSF(TABLES, type,tomCal, F);
               }
               break;

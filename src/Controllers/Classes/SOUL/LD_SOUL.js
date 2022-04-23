@@ -24,9 +24,16 @@ export default class LD_SOUL {
 
             if (idSpecialVespers == '-1') {
                 //Saturday && today is not Nadal or tomorrow is Solemnitat
+
                 // TODO: realment no hauria de ser només per Nadal o Mare de Déu sinó per una gestió de precedències... S'hauria de gestionar
-                if ((today_date.getDay() === 6 && !this.isNadal(today_date) && !this.isMaredeDeu(today_date)) ||
-                     GlobalData.dataTomorrow.celType == 'S') {
+                // TODO: HARDCODED These conditions below is there to fix Montserrat's Day. Fix properly (fa que no es mostri las vespres de LD de St Jordi)
+                var hardcoded_dont_show_vispers =
+                    ((GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30) ||
+                    (GlobalData.date.getFullYear() == 2022 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 27));
+
+                if (hardcoded_dont_show_vispers === false &&
+                    ((today_date.getDay() === 6 && !this.isNadal(today_date) && !this.isMaredeDeu(today_date)) ||
+                     GlobalData.dataTomorrow.celType == 'S')) {
 
                     var tomorrow_date = new Date(today_date.getFullYear(), today_date.getMonth(), today_date.getDate() + 1);
                     var tomorrow_string = GF.calculeDia(tomorrow_date, GlobalData.diocesi, GlobalData.dataTomorrow.diaMogut, GlobalData.dataTomorrow.diocesiMogut);

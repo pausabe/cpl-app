@@ -776,8 +776,9 @@ export default class LH_SOUL {
       this.tomorrowCal === '-' || //demà no hi ha cap celebració
       this.tomorrowCal === 'F' || //demà hi ha Festa
 
-      //TODO: treure això i fer-ho bé... apanyo pq no tinc temps
+      // TODO: HARDCODED These conditions below is there to fix Montserrat's Day. Fix properly (fa que les vespres siguin de Montserrat i no de St Jordi)
       (GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30) ||
+      (GlobalData.date.getFullYear() == 2022 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 27) ||
 
       (this.idTSF !== -1 && this.tomorrowCal !== 'TSF') || //quan dues TSF seguides es fa Vespres1 de la segona TSF. Basicamen evito el conflicte de les Vespres de Sagrada Familia quan cau en 31/12 i l'andemà és Mare de Déi 1/1 (únic conflicte possible entre TSF)
       (this.idDE !== -1 && this.tomorrowCal === '-') || //avui és DE i demà no hi ha celebració

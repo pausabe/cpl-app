@@ -1,5 +1,8 @@
+### v4.76.2 (23.04.2022)[76]
+- Fixed bug related with Mare de Déu de Montserrat
+
 ### v4.76.1 (18.03.2022)[76]
-- Fixing bug when some solemnity was in Saturday and during Lent
+- Fixed bug when some solemnity was in Saturday and during Lent
 
 ### v4.76.0 (27.02.2022)[76]
 - Replacing database when some table is missing

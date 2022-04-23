@@ -32,9 +32,10 @@ Therefore, when we...
 - Update only code changes -> Use Expo build and upload the build to the stores
     1. Make the code changes
     2. Make sure that we have the correct database under /cpl-app/src/Assets/db/ (it must be the one used to publish the current version)
-    3. Change the version number X.X.(X+1)
-    4. Publish using the OTA updates using the correct release-channel (it must be the one used to publish the current version)
-    5. Push the code changes into the master branch
+    3. Change the version number X.X.(X+1) in app.json
+    4. Add the changes in the changelog
+    5. Publish using the OTA updates using the correct release-channel (it must be the one used to publish the current version)
+    6. Push the code changes into the master branch
 
 - Update code & database -> Use expo build with a new release-channel name (prod_channel_47)
     1. Download the latest database from Deploy website
