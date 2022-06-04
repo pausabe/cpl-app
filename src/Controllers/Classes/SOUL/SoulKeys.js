@@ -7,7 +7,7 @@ module.exports = {
     LDSantoral_AssumpcioBenauradaVergeMaria: 59,
     LDSantoral_MareDeuCinta: 102,
     LDSantoral_BenauradaVergeMariaMareEsglesiaI: 111,
-    LDSantoral_BenauradaVergeMariaMareEsglesiaI: 112,
+    LDSantoral_BenauradaVergeMariaMareEsglesiaII: 112,
     LDSantoral_Nadal: 142,
     LDSantoral_SagradaFamiliaJesusMariaJosepA: 146,
     LDSantoral_SagradaFamiliaJesusMariaJosepB: 149,
@@ -28,8 +28,9 @@ module.exports = {
     LDSantoral_PentecostaB: 192,
     LDSantoral_PentecostaC: 193,
     LDSantoral_SantJosepObrer: 209,
-    LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD: 210,
+    LDSantoral_DedicacioBasiliquesSantsPerePauApostols: 210,
     LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD: 211,
+    LDSantoral_SantissimNomDeJesus: 219,
 
     tempsSolemnitatsFestes_Nadal: 1,
 
@@ -85,7 +86,7 @@ module.exports = {
     diesespecials_DiumengeSantJaume25Juliol: 15,
     diesespecials_DiumengeAssumpcioMaria15Agost: 16,
     diesespecials_DiumengeSantaTecla23Setembre: 17,
-    diesespecials_DiumengeMareDeuMercè24Setembre: 18,
+    diesespecials_DiumengeMareDeuMerce24Setembre: 18,
     diesespecials_DiumengeTotsSants1Novembre: 19,
     diesespecials_DiumengeIVAdvent18: 20,
     diesespecials_DiumengeIVAdvent19: 21,
@@ -104,7 +105,7 @@ module.exports = {
 
     tempsSolemnitatsFestes_Nadal: 1,
     tempsSolemnitatsFestes_SagradaFamilia: 2,
-    tempsSolemnitatsFestes_MareDéu: 3,
+    tempsSolemnitatsFestes_MareDeu: 3,
     tempsSolemnitatsFestes_Epifania: 4,
     tempsSolemnitatsFestes_Baptisme: 5,
     tempsSolemnitatsFestes_Ascensio: 6,

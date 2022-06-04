@@ -161,21 +161,20 @@ export default class LD_SOUL {
         Set_Soul_CB) {
 
         //var isFeria = (celType == '-' && (LT == 'A_FERIES' || LT == 'N_OCTAVA' || LT == 'N_ABANS'));
-        var isFeria = this.IsSpecialChristmas(today_string);
-        if (GlobalData.dataTomorrow.LT == "Q_DIUM_PASQUA") {
-            var vetlla_pasqual_data = this.GetVetllaPasqual(ABC);
+        const isFeria = this.IsSpecialChristmas(today_string);
+        if (GlobalData.dataTomorrow.LT === "Q_DIUM_PASQUA") {
+            const vetlla_pasqual_data = this.GetVetllaPasqual(ABC);
             Set_Soul_CB(vetlla_pasqual_data);
         }
         else {
+            const specialLliureResultId = this.IsSpecialLliureDay(today_date);  //Returns -1 if not special lliure day
 
-            var specialLliureResultId = this.IsSpecialLliureDay(today_date);  //Returns -1 if not special lliure day
-
-            if (celType == 'M' || celType == 'S' || celType == 'F' || isFeria || (celType == 'L' && specialLliureResultId != "-1")) {
-
+            if (celType === 'M' || celType === 'S' || celType === 'F' || isFeria || (celType === 'L' && specialLliureResultId !== "-1")) {
                 //Dies festius -> IsSpecialDay
-                var specialResultId = this.IsSpecialDay(today_date, parImpar, ABC); //Returns -1 if not special day
-                if(specialResultId == "-1")
+                let specialResultId = this.IsSpecialDay(today_date, parImpar, ABC); //Returns -1 if not special day
+                if(specialResultId === "-1"){
                     specialResultId = specialLliureResultId;
+                }
 
                 DatabaseDataService.getLDSantoral(
                     today_string,
@@ -188,11 +187,11 @@ export default class LD_SOUL {
                     setmana,
                     GlobalData.diocesiName,
                     (result) => {
-                        Set_Soul_CB((result != undefined && Object.entries(part_row_extra_visperas).length > 0) ? Object.assign(result, part_row_extra_visperas) : result);
+                        const setSoulResult = (result !== undefined && Object.entries(part_row_extra_visperas).length > 0) ? Object.assign(result, part_row_extra_visperas) : result;
+                        Set_Soul_CB(setSoulResult);
                     });
             }
             else {
-
                 //Dies no festius -> LDDiumenges
                 DatabaseDataService.getLDNormal(
                     tempsespecific,
@@ -332,6 +331,7 @@ export default class LD_SOUL {
         return Object.assign(globalPart, differentPart);
     }
 
+    // Returns the special day ID from table "LDSantoral" if there was any
     GetSpecialVespers(today_date, today_string, ABC) {
         //(Dia abans) Naixement de sant Joan Baptista (036)
         //No si cau en Santissim cos i sang de crist (Corpus > sant joan)
@@ -350,7 +350,7 @@ export default class LD_SOUL {
 
         //(Dia abans) Nadal (142)
         if (today_string == '24-dic')
-            return SoulKeys.Nadal;
+            return SoulKeys.LDSantoral_Nadal;
 
         //(Dia abans) Pentecosta A (191) B (192) C (193)
         var diaAbansPentecosta = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() - 1);
@@ -369,8 +369,8 @@ export default class LD_SOUL {
         return '-1';
     }
 
+    // Returns the special day ID from table "LDSantoral" if there was any
     IsSpecialDay(today_date, paroimpar, ABC) {
-        //TODO: I should not repeat the same code of LH_SOUL.js
 
         //Dijous després de Pentecosta I (0031) II (032)
         //santsSolemnitats F - Dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
@@ -508,7 +508,7 @@ export default class LD_SOUL {
 
             // Nadal 03-ene -> 219 ([-] Santíssim Nom de Jesús)
             if (today_date.getDate() == 3 && today_date.getMonth() == 0) {
-                return '219';
+                return SoulKeys.LDSantoral_SantissimNomDeJesus;
             }
         }
 

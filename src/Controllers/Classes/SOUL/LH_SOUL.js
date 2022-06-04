@@ -1215,7 +1215,7 @@ export default class LH_SOUL {
       diocesi === 'GiD' || diocesi === 'LlD' || diocesi === 'SoD' || diocesi === 'TaD'
       || diocesi === 'ToD' || diocesi === 'UrD' || diocesi === 'ViD') &&
       date.getMonth() === 8 && date.getDate() === 24 && date.getDay() === 0) {
-        return SoulKeys.diesespecials_DiumengeMareDeuMercè24Setembre;
+        return SoulKeys.diesespecials_DiumengeMareDeuMerce24Setembre;
     }
 
     //19- Tots Sants (1 de novembre) quan cau en diumenge
@@ -1312,7 +1312,7 @@ export default class LH_SOUL {
 
     //3- Mare de Déu
     if (date.getDate() === 1 && date.getMonth() === 0) {
-      return SoulKeys.tempsSolemnitatsFestes_MareDéu;
+      return SoulKeys.tempsSolemnitatsFestes_MareDeu;
     }
 
     //4- Epifania

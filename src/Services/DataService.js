@@ -14,14 +14,14 @@ export let HoursLiturgyData = {}
 export let MassLiturgyData = {}
 export let LAST_REFRESH = new Date()
 
-export async function ReloadAllData(date) { //2.5
+export async function ReloadAllData(date) { // 2.5
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `Init Reload`);
     let logDate = new Date();
     LAST_REFRESH = new Date();
     await SetGlobalValuesFromSettings(date); // 0.5s
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `SetGlobalValuesFromSettings DONE. Seconds passed: `, (new Date() - logDate) / 1000);
     logDate = new Date();
-    GlobalData.databaseVersion = await getDatabaseVersion(); //0.7s
+    GlobalData.databaseVersion = await getDatabaseVersion(); // 0.7s
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', `getDatabaseVersion DONE. Time passed: `, (new Date() - logDate) / 1000);
     logDate = new Date();
     await SetGlobalValuesFromDatabase(); // 1.3s
@@ -104,7 +104,6 @@ function SetGlobalValuesFromDatabase() {
                     parImpar: tomorrow.paroimpar,
                     diaDeLaSetmana: tomorrow.DiadelaSetmana
                 };
-
                 Check_Lliure_Date()
                     .then(() => SetSoul(GlobalData)
                         .then((result) => {
@@ -114,6 +113,7 @@ function SetGlobalValuesFromDatabase() {
                             MassLiturgyData = result.liturgia_diaria;
                             resolve();
                         })
+                        .catch((error) => reject(error))
                     );
             }
             ,(error) => reject(error)
