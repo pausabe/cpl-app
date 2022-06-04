@@ -1,3 +1,6 @@
+### v4.76.3 (04.06.2022)[76]
+- Fixed bugs related with getting the Ids from special tables
+
 ### v4.76.2 (23.04.2022)[76]
 - Fixed bug related with Mare de Déu de Montserrat
 
