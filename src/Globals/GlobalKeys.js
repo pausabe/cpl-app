@@ -41,4 +41,4 @@ module.exports = {
 
   server_url: 'https://serveditorial.cpl.es/api/emp/read/'
 
-};
+}

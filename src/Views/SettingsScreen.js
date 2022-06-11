@@ -7,6 +7,7 @@ import SettingsComponentAdapter from "../Adapters/SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
 import {SessionLogs} from "../Utils/Logger";
 import {GlobalData} from "../Services/DataService";
+import { getUpdateLogs } from 'expo-custom-updater'
 
 let logsPressedTimes;
 
@@ -60,11 +61,15 @@ export default class SettingsScreen extends Component {
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"OTA("}{Constants.manifest.releaseChannel}{"): "}{Constants.manifest.updates.enabled? "Sí" : "No"}</Text>
               <Text style={{textAlign:'center', color:'grey', fontSize:11}}>{"Esquema de color: "}{Appearance.getColorScheme()}</Text>
                 {this.state.logsVisible &&
-                    <Text
-                        selectable={true}
-                        style={{textAlign: 'left', color: 'grey', fontSize: 11}}>
-                        {"Logs: " + "\n"}{SessionLogs}
-                    </Text>
+                    <View>
+                        <Text
+                            selectable={true}
+                            style={{textAlign: 'left', color: 'grey', fontSize: 11}}>
+                            {"Logs: " + "\n"}{SessionLogs}{"\nUpdate Logs\n"}{}
+                        </Text>
+                        {getUpdateLogs().map((log) => <Text selectable={true}
+                                                            style={{textAlign: 'left', color: 'grey', fontSize: 11}}>{log}</Text>)}
+                    </View>
                 }
             </View>
             <View style={{height:10}}/>
