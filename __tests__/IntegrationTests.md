@@ -9,6 +9,7 @@
     - Give web page
 - Festivity description
 - Optional festivity with persistence
+- Dark/Light Appearance changing
 - Updates
   - Only code changes with OTA
   - Only database changes with deploy website

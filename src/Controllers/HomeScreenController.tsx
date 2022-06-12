@@ -91,14 +91,14 @@ function HideSplash(){
   if(!SplashScreenHidden &&
       (dataLoaded || thereWereSomeErrorLoadingTheData)){
     SplashScreenHidden = true;
-    SplashScreen.hideAsync()
+    SplashScreen.hideAsync();
   }
 }
 
 function SetViewWithTheInitialDataLoaded(setState){
   if(FirstLoad){
     FirstLoad = false;
-    ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState);
+    ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true);
   }
 }
 
@@ -117,7 +117,6 @@ function HandleAppStateChange(nextAppState, navigation?, setState?){
       navigation.navigate('Home')
 
       // Refresh data (also will check late)
-      console.log("refreshing after app state change")
       ChangeDate(now, setState);
     }
   }
@@ -161,11 +160,10 @@ function ChangeDate(date, setState) {
   ReloadAllDataAndRefreshView(date, setState);
 }
 
-function ReloadAllDataAndRefreshView(date, setState){
+function ReloadAllDataAndRefreshView(date, setState, checkLatePopup?){
   ReloadAllData(date)
       .then(() => {
-        console.log("refresh because the first load of the data")
-        setState(GetInitialState());
+        setState(GetInitialState(checkLatePopup !== undefined));
       })
       .catch((errorMessage) => HandleGetDataError(errorMessage, setState))
 }
@@ -175,7 +173,7 @@ function HandleCalendarPressed(setState) {
   setState(CurrentState.UpdateDateTimePickerVisibility(true));
 }
 
-function GetInitialState(){
+function GetInitialState(checkLatePopup){
   let initialState = new HomeScreenState();
   try {
     if(GlobalData !== undefined && GlobalData !== {}) {
@@ -194,7 +192,7 @@ function GetInitialState(){
                   GlobalData.info_cel.nomCel,
                   GlobalData.info_cel.infoCel)
           ),
-          IsLatePrayer(),
+          checkLatePopup? IsLatePrayer() : false,
           false,
           false,
           "");

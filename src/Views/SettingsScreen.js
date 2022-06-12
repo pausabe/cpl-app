@@ -65,14 +65,14 @@ export default class SettingsScreen extends Component {
                         <Text
                             selectable={true}
                             style={{textAlign: 'left', color: 'grey', fontSize: 11}}>
-                            {"Logs: " + "\n"}{SessionLogs}{"\nUpdate Logs\n"}{}
+                            {"Logs: " + "\n"}{SessionLogs}{"\nUpdate Logs:"}{}
                         </Text>
-                        {getUpdateLogs().map((log) => <Text selectable={true}
-                                                            style={{textAlign: 'left', color: 'grey', fontSize: 11}}>{log}</Text>)}
+                        <Text selectable={true}
+                               style={{textAlign: 'left', color: 'grey', fontSize: 11}}>{getUpdateLogs().join("\n")}</Text>
                     </View>
                 }
             </View>
-            <View style={{height:10}}/>
+            <View style={{height:20}}/>
           </ScrollView>
         </View>
       );
