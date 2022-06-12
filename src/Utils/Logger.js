@@ -4,16 +4,16 @@ export let SessionLogs = "";
 
 export const LogKeys = {
     Debug: { name: "Debug", enabled: true },
-    DatabaseManagerService: { name: "DatabaseManagerService", enabled: true },
+    DatabaseManagerService: { name: "DatabaseManagerService", enabled: false },
     DatabaseUpdaterService: { name: "DatabaseUpdaterService", enabled: true },
-    DatabaseDataService: { name: "DatabaseDataService", enabled: true },
+    DatabaseDataService: { name: "DatabaseDataService", enabled: false },
     HomeScreenController: { name: "HomeScreenController", enabled: true },
     Soul: { name: "Soul", enabled: true },
     GlobalFunctions: { name: "GlobalFunctions", enabled: true },
     Screens: { name: "Screens", enabled: true },
     DataService: { name: "DataService", enabled: true },
     StorageService: { name: "StorageService", enabled: true },
-    FileSystemService: { name: "FileSystemService", enabled: true }
+    FileSystemService: { name: "FileSystemService", enabled: false }
 };
 
 export function Debug(message, param){

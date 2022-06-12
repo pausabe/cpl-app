@@ -12,16 +12,15 @@ import LDDisplayScreen from './src/Views/LDScreen/LDDisplayScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 Icon.loadFont();
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-//import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
+import {useCustomUpdater} from "expo-custom-updater";
+import * as Logger from "./src/Utils/Logger";
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
 const LDStack = createStackNavigator();
-//const Tab = createMaterialBottomTabNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -193,84 +192,106 @@ function Tabs() {
   );
 }
 
+function NavigationContainerView(){
+    return (
+        <NavigationContainer theme={{ colors: { background: 'transparent' }}}>
+            <Stack.Navigator>
+                <Stack.Screen
+                    name="Home"
+                    component={Tabs}
+                    options={({ navigation, route }) => ({
+                        headerTitle: getHeaderTitle(route),
+                        headerTitleAlign: 'center',
+                        lazy: true,
+                        headerStyle: { backgroundColor: GLOBAL.barColor },
+                        headerTintColor: GLOBAL.itemsBarColor,
+                        headerLeft: () => getHeaderLeft(navigation, route),
+                        headerRight: () => getHeaderRight(navigation, route)
+                    })}
+                />
+                <Stack.Screen
+                    name="Settings"
+                    component={SettingsScreen}
+                    options={({ navigation, route }) => ({
+                        title: "Configuració",
+                        animationEnabled: Platform.OS === "ios",
+                        presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
+                        headerStyle: { backgroundColor: GLOBAL.barColor },
+                        headerTintColor: GLOBAL.itemsBarColor,
+                        headerBackTitleVisible: false
+                    })}
+                />
+                <Stack.Screen
+                    name="Donation"
+                    component={DonationScreen}
+                    options={({ navigation, route }) => ({
+                        title: "Donatiu lliure",
+                        headerStyle: { backgroundColor: GLOBAL.barColor },
+                        headerTintColor: GLOBAL.itemsBarColor,
+                        animationEnabled: Platform.OS === "ios",
+                        presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
+                        headerBackTitleVisible: false
+                    })}
+                />
+                <Stack.Screen
+                    name="Comment"
+                    component={CommentScreen}
+                    options={({ navigation, route }) => ({
+                        title: "Missatge",
+                        animationEnabled: Platform.OS === "ios",
+                        presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
+                        headerStyle: { backgroundColor: GLOBAL.barColor },
+                        headerTintColor: GLOBAL.itemsBarColor,
+                        headerBackTitleVisible: false
+                    })}
+                />
+                <Stack.Screen
+                    name="LHDisplay"
+                    component={LHDisplayScreen}
+                    options={({ navigation, route }) => ({
+                        title: route.params?.props.type,
+                        animationEnabled: Platform.OS === "ios",
+                        presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
+                        headerStyle: { backgroundColor: GLOBAL.barColor },
+                        headerTintColor: GLOBAL.itemsBarColor,
+                        headerBackTitleVisible: false
+                    })}
+                />
+                <Stack.Screen
+                    name="LDDisplay"
+                    component={LDDisplayScreen}
+                    options={({ navigation, route }) => ({
+                        title: "Missa",
+                        animationEnabled: Platform.OS === "ios",
+                        presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
+                        headerStyle: { backgroundColor: GLOBAL.barColor },
+                        headerTintColor: GLOBAL.itemsBarColor,
+                        headerBackTitleVisible: false
+                    })}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+}
+
+function SetShowSpinner(spinnerVisibility) {
+    Logger.Log(Logger.LogKeys.HomeScreenController, "SetShowSpinner", "spinnerVisibility: ", spinnerVisibility);
+}
+
+function SetShowUpdateIsDownloading() {
+    Logger.Log(Logger.LogKeys.HomeScreenController, "SetShowUpdateIsDownloading", "");
+}
+
+function ConfigureUpdates(){
+    useCustomUpdater({
+        beforeCheckCallback: () => SetShowSpinner(true),
+        beforeDownloadCallback: () => SetShowUpdateIsDownloading(),
+        afterCheckCallback: () => SetShowSpinner(false),
+        showDebugInConsole: false
+    });
+}
+
 export default function App() {
-  return (
-    <NavigationContainer theme={{ colors: { background: 'transparent' }}}>
-      <Stack.Navigator>
-        <Stack.Screen 
-          name="Home"
-          component={Tabs}
-          options={({ navigation, route }) => ({
-            headerTitle: getHeaderTitle(route),
-            headerTitleAlign: 'center',
-            lazy: true,
-            headerStyle: { backgroundColor: GLOBAL.barColor },
-            headerTintColor: GLOBAL.itemsBarColor,
-            headerLeft: () => getHeaderLeft(navigation, route),
-            headerRight: () => getHeaderRight(navigation, route)
-          })}
-        />
-        <Stack.Screen 
-          name="Settings" 
-          component={SettingsScreen}
-          options={({ navigation, route }) => ({
-            title: "Configuració",
-            animationEnabled: Platform.OS === "ios",
-            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
-            headerStyle: { backgroundColor: GLOBAL.barColor },
-            headerTintColor: GLOBAL.itemsBarColor,
-            headerBackTitleVisible: false
-          })}
-        />
-        <Stack.Screen 
-          name="Donation" 
-          component={DonationScreen} 
-          options={({ navigation, route }) => ({
-            title: "Donatiu lliure",
-            headerStyle: { backgroundColor: GLOBAL.barColor },
-            headerTintColor: GLOBAL.itemsBarColor,
-            animationEnabled: Platform.OS === "ios",
-            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
-            headerBackTitleVisible: false
-          })}
-        />
-        <Stack.Screen 
-          name="Comment" 
-          component={CommentScreen} 
-          options={({ navigation, route }) => ({
-            title: "Missatge",
-            animationEnabled: Platform.OS === "ios",
-            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
-            headerStyle: { backgroundColor: GLOBAL.barColor },
-            headerTintColor: GLOBAL.itemsBarColor,
-            headerBackTitleVisible: false
-          })}
-        />
-        <Stack.Screen 
-          name="LHDisplay" 
-          component={LHDisplayScreen} 
-          options={({ navigation, route }) => ({
-            title: route.params?.props.type,
-            animationEnabled: Platform.OS === "ios",
-            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
-            headerStyle: { backgroundColor: GLOBAL.barColor },
-            headerTintColor: GLOBAL.itemsBarColor,
-            headerBackTitleVisible: false
-          })}
-        />
-        <Stack.Screen 
-          name="LDDisplay" 
-          component={LDDisplayScreen} 
-          options={({ navigation, route }) => ({
-            title: "Missa",
-            animationEnabled: Platform.OS === "ios",
-            presentation: Platform.OS === "ios"? 'Modal' : 'transparentModal',
-            headerStyle: { backgroundColor: GLOBAL.barColor },
-            headerTintColor: GLOBAL.itemsBarColor,
-            headerBackTitleVisible: false
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    ConfigureUpdates();
+    return NavigationContainerView();
 }

@@ -79,7 +79,6 @@ async function UpdateDatabaseFile(){
     const currentDatabaseFileName = await GetCurrentDatabaseFileName();
     const databaseCandidateToBeTheNewOneAsset = (await Asset.loadAsync(require('../Assets/db/cpl-app.db')))[0];
     const candidateDatabaseFileName = DatabaseNameFromUri(databaseCandidateToBeTheNewOneAsset.localUri);
-    console.log(databaseCandidateToBeTheNewOneAsset.localUri)
     const isNecessaryToUpdateTheDatabase = currentDatabaseFileName !== candidateDatabaseFileName;
 
     Logger.Log(Logger.LogKeys.DatabaseManagerService, "UpdateDatabaseFile", `currentName = '${currentDatabaseFileName}' vs candidateName = '${candidateDatabaseFileName}' => ${isNecessaryToUpdateTheDatabase? "We need to update" : "No necessary to update"}`);

@@ -23,61 +23,21 @@ import SettingsManager from './Classes/SettingsManager';
 import { GlobalData, LAST_REFRESH } from '../Services/DataService';
 import * as StorageService from '../Services/StorageService';
 import StorageKeys from "../Services/StorageKeys";
-import { LogBox } from 'react-native';
-import { useCustomUpdater } from 'expo-custom-updater';
 import HomeScreenState, {CelebrationData, GlobalDataToShowClass, PlaceData} from './HomeScreenState';
-
-// Ignoring params.calPres warning
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
 
 let LastDatePickerIOSSelected;
 let CurrentState;
+let FirstLoad = true;
+let SplashScreenHidden = false;
 
 export default function HomeScreenController(props) {
   try {
-
-    // TODO: remove logs
-    console.log("------------------------ REFRESHING VIEW ------------------------ ");
-
-    const [state, setState] = useState(new HomeScreenState());
+    const [state, setState] = useState();
     CurrentState = state;
-
-    // TODO: maybe this should only be executed once (maybe in App.js)
-    configureUpdates();
-
-    //const appState = useRef(AppState.currentState);
-
-    useEffect(() => {
-      if (!__DEV__) {
-        SplashScreen.preventAutoHideAsync();
-      }
-      AppState.addEventListener('change', (status) => _handleAppStateChange(status, props.navigation, setState));
-      props.navigation.setParams({
-        calPres: () => calendarPressed(setState),
-        Refresh_Date: () => calendarPressed(setState),
-      });
-      BackHandler.addEventListener('hardwareBackPress', androidBack.bind(setState));
-      Appearance.addChangeListener(AppearanceHasChanged);
-
-      return () => {
-        BackHandler.removeEventListener('hardwareBackPress', androidBack.bind(setState));
-        AppState.removeEventListener('change', _handleAppStateChange);
-        Appearance.removeChangeListener(AppearanceHasChanged)
-      }
-    }, []);
-
-    useEffect(() => ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState), []);
-
-    return (
-        <SafeAreaView style={{flex: 1}}>
-          {CurrentState.ObtainDataErrorMessage === undefined || CurrentState.ObtainDataErrorMessage === "" ?
-              homeScreenView(props.navigation, setState)
-              :
-              homeScreenViewWithError(CurrentState.ObtainDataErrorMessage)}
-        </SafeAreaView>
-    );
+    HideSplash();
+    useEffect(() => InitialEffect(props, setState), []);
+    SetViewWithTheInitialDataLoaded(setState);
+    return GetView(props, CurrentState, setState);
   }
   catch (error) {
     Logger.LogError(Logger.LogKeys.HomeScreenController, "HomeScreenController", "", error);
@@ -85,16 +45,64 @@ export default function HomeScreenController(props) {
   }
 }
 
-function configureUpdates(){
-  useCustomUpdater({
-    beforeCheckCallback: () => setShowSpinner(true),
-    beforeDownloadCallback: () => setShowUpdateIsDownloading(),
-    afterCheckCallback: () => setShowSpinner(false),
-    showDebugInConsole: true
-  });
+function GetView(props, CurrentState, setState){
+  if(CurrentState === undefined){
+    return null;
+  }
+  else{
+    return (
+        <SafeAreaView style={{flex: 1}}>
+          {CurrentState.ObtainDataErrorMessage === undefined || CurrentState.ObtainDataErrorMessage === "" ?
+              HomeScreenView(props.navigation, setState)
+              :
+              HomeScreenViewWithError(CurrentState.ObtainDataErrorMessage)}
+        </SafeAreaView>
+    );
+  }
 }
 
-function _handleAppStateChange(nextAppState, navigation?, setState?){
+function InitialEffect(props, setState){
+  if (!__DEV__) {
+    SplashScreen.preventAutoHideAsync();
+  }
+
+  props.navigation.setParams({
+    calPres: () => HandleCalendarPressed(setState),
+    Refresh_Date: () => HandleCalendarPressed(setState),
+  });
+
+  let appStateSubscription = AppState.addEventListener('change', (status) => HandleAppStateChange(status, props.navigation, setState));
+  let backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', HandleAndroidBack.bind(setState));
+  let appearanceSubscription = Appearance.addChangeListener(AppearanceHasChanged);
+
+  return () => {
+    backHandlerSubscription.remove();
+    appStateSubscription.remove();
+    appearanceSubscription.remove();
+  }
+}
+
+function HideSplash(){
+  let dataLoaded = CurrentState !== undefined;
+  let thereWereSomeErrorLoadingTheData =
+      CurrentState !== undefined &&
+      (CurrentState.ObtainDataErrorMessage !== undefined &&
+          CurrentState.ObtainDataErrorMessage !== "")
+  if(!SplashScreenHidden &&
+      (dataLoaded || thereWereSomeErrorLoadingTheData)){
+    SplashScreenHidden = true;
+    SplashScreen.hideAsync()
+  }
+}
+
+function SetViewWithTheInitialDataLoaded(setState){
+  if(FirstLoad){
+    FirstLoad = false;
+    ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState);
+  }
+}
+
+function HandleAppStateChange(nextAppState, navigation?, setState?){
   // Check if the state is changing to active
   if(nextAppState === 'active'){
 
@@ -109,7 +117,8 @@ function _handleAppStateChange(nextAppState, navigation?, setState?){
       navigation.navigate('Home')
 
       // Refresh data (also will check late)
-      ChangeDate(now, setState)
+      console.log("refreshing after app state change")
+      ChangeDate(now, setState);
     }
   }
 }
@@ -117,14 +126,14 @@ function _handleAppStateChange(nextAppState, navigation?, setState?){
 async function AppearanceHasChanged(param) {
   try {
     Logger.Log(Logger.LogKeys.HomeScreenController, "AppearanceHasChanged", param.colorScheme);
-    await checkSystemDarkMode(param.colorScheme);
+    await CheckSystemDarkMode(param.colorScheme);
   }
   catch (error) {
     Logger.LogError(Logger.LogKeys.HomeScreenController, "AppearanceHasChanged", "", error);
   }
 }
 
-async function checkSystemDarkMode(colorScheme) {
+async function CheckSystemDarkMode(colorScheme) {
   try {
     // It's not always getting the correct color scheme when reopening the app on ios. So I get it from the getColorSheme function
     colorScheme = Appearance.getColorScheme();
@@ -133,15 +142,14 @@ async function checkSystemDarkMode(colorScheme) {
       if (r === 'Automàtic') {
         GlobalData.darkModeEnabled = colorScheme === 'dark';
       }
-      this.forceUpdate(); // TODO: meh?
     });
   } catch (error) {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "checkSystemDarkMode", "", error);
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "CheckSystemDarkMode", "", error);
   }
 }
 
-function androidBack(setState) {
-  if (CurrentState.CelebrationIsVisible && CurrentState.ViewData.celebracio.text !== '-') {
+function HandleAndroidBack(setState) {
+  if (CurrentState.CelebrationIsVisible && CurrentState.GlobalDataToShow.celebracio.text !== '-') {
     setState(CurrentState.UpdateCelebrationVisibility(false))
   }
 }
@@ -156,17 +164,18 @@ function ChangeDate(date, setState) {
 function ReloadAllDataAndRefreshView(date, setState){
   ReloadAllData(date)
       .then(() => {
-        setState(getInitialState());
+        console.log("refresh because the first load of the data")
+        setState(GetInitialState());
       })
-      .catch((errorMessage) => handleGetDataError(errorMessage, setState))
+      .catch((errorMessage) => HandleGetDataError(errorMessage, setState))
 }
 
-function calendarPressed(setState) {
+function HandleCalendarPressed(setState) {
   LastDatePickerIOSSelected = undefined;
   setState(CurrentState.UpdateDateTimePickerVisibility(true));
 }
 
-function getInitialState(){
+function GetInitialState(){
   let initialState = new HomeScreenState();
   try {
     if(GlobalData !== undefined && GlobalData !== {}) {
@@ -192,66 +201,65 @@ function getInitialState(){
     }
   }
   catch (error) {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "getInitialState", "", error);
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "GetInitialState", "", error);
   }
   return initialState;
 }
 
 function IsLatePrayer() {
-  const h = new Date().getHours();
-  return h >= 0 && h < GLOBALS.late_prayer;
+  const hour = new Date().getHours();
+  return hour >= 0 && hour < GLOBALS.late_prayer;
 }
 
-function datePickerChange(event, date, setState) {
+function DatePickerChange(event, date, setState) {
   if (Platform.OS === "ios") {
-    LastDatePickerIOSSelected = date
+    LastDatePickerIOSSelected = date;
   }
   else {
     setState(CurrentState.UpdateDateTimePickerVisibility(false));
-
     if (date !== GlobalData.date) {
-      showThisDate(date, setState);
+      ShowDate(date, setState);
     }
   }
 }
 
-function datePickerIOS_Accept(setState) {
+function HandleDatePickerIOSAccept(setState) {
   if (LastDatePickerIOSSelected !== GlobalData.date) {
-    showThisDate(LastDatePickerIOSSelected, setState)
+    ShowDate(LastDatePickerIOSSelected, setState)
   }
 }
 
-function datePickerIOS_Cancel(setState) {
+function HandleDatePickerIOSCancel(setState) {
   setState(CurrentState.UpdateDateTimePickerVisibility(false));
 }
 
-function datePickerIOS_Today(setState) {
+function HandleDatePickerIOSToday(setState) {
   const now = new Date();
   if (now !== GlobalData.date) {
-    showThisDate(now, setState)
+    ShowDate(now, setState)
   }
 }
 
-function showThisDate(date, setState) {
-  Logger.Log(Logger.LogKeys.HomeScreenController, "showThisDate", "date: ", date);
+function ShowDate(date, setState) {
+  Logger.Log(Logger.LogKeys.HomeScreenController, "ShowDate", "date: ", date);
   ChangeDate(date, setState);
 }
 
-function onSantPressCB(setState) {
+function HandleOnSantPressedCallback(setState) {
   if (GlobalData.info_cel.infoCel !== '-') {
     setState(CurrentState.UpdateCelebrationVisibility(!CurrentState.CelebrationIsVisible));
   }
 }
 
-function onYestPress(yesterday, setState) {
-  showThisDate(yesterday, setState);
+function HandleOnYesterdayPressed(yesterday, setState) {
+  ShowDate(yesterday, setState);
 }
 
-function onTodayPress(setState) {
+function HandleOnTodayPressed(setState) {
   setState(CurrentState.UpdateLatePopupVisibility(false));
 }
 
-async function onSwitchLliurePress(freePrayerEnabled, setState) {
+async function HandleOnSwitchFreePrayerPressed(freePrayerEnabled, setState) {
   if (freePrayerEnabled) {
     const stringData = GlobalData.date.getDate() + ':' +
         GlobalData.date.getMonth() + ':' +
@@ -261,18 +269,17 @@ async function onSwitchLliurePress(freePrayerEnabled, setState) {
   else {
     await StorageService.StoreData(StorageKeys.OptionalFestivity, 'none');
   }
-
   GlobalData.lliures = freePrayerEnabled;
   ChangeDate(GlobalData.date, setState);
 }
 
-function handleGetDataError(error, setObtainDataErrorMessage){
+function HandleGetDataError(error, setState){
   Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", "", error);
   const messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
-  setObtainDataErrorMessage(messageToShow, async () => await SplashScreen.hideAsync());
+  setState(CurrentState.UpdateObtainDataErrorMessage(messageToShow));
 }
 
-function homeScreenViewWithError(currentObtainDataErrorMessage){
+function HomeScreenViewWithError(currentObtainDataErrorMessage){
   return(
       <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{fontSize: 19, color: 'black', textAlign: 'center' }}>{currentObtainDataErrorMessage}</Text>
@@ -280,7 +287,7 @@ function homeScreenViewWithError(currentObtainDataErrorMessage){
   );
 }
 
-function homeScreenView(navigation, setState){
+function HomeScreenView(navigation, setState){
   if(GlobalData.date === undefined){
     return null;
   }
@@ -295,35 +302,35 @@ function homeScreenView(navigation, setState){
         <HomeScreen
             ViewData={CurrentState.GlobalDataToShow}
             santPressed={CurrentState.CelebrationIsVisible}
-            santCB={() => onSantPressCB(setState)}
-            lliureCB={(freePrayerEnabled) => onSwitchLliurePress(freePrayerEnabled, setState)}
+            santCB={() => HandleOnSantPressedCallback(setState)}
+            lliureCB={(freePrayerEnabled) => HandleOnSwitchFreePrayerPressed(freePrayerEnabled, setState)}
             navigation={navigation} />
         <View>
           { Platform.OS === "ios" ?
               <Modal
                   animationType="fade" // slide, fade, none
                   transparent={true}
-                  visible={CurrentState.DateTimePickerIsVisible}>
-                <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={() => datePickerIOS_Cancel(setState)}>
+                  visible={CurrentState.DateTimePickerIsVisible === true}>
+                <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={() => HandleDatePickerIOSCancel(setState)}>
                   <TouchableOpacity activeOpacity={1} style={{margin: 10, marginHorizontal: 30, backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white', borderRadius: 20, padding: 10, paddingBottom: 20, shadowColor: '#000', shadowOffset: {width: 0,height: 2,}}}>
                     <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
                       <DateTimePicker
                           mode="date"
                           display="inline" //spinner, compact, inline
-                          onChange={datePickerChange.bind(setState)}
+                          onChange={DatePickerChange.bind(setState)}
                           value={date}
                           minimumDate={minDatePicker}
                           maximumDate={maxDatePicker}
                       />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
-                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Cancel(setState)}>
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSCancel(setState)}>
                         <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
                       </TouchableOpacity >
-                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Today(setState)}>
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSToday(setState)}>
                         <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Accept(setState)}>
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSAccept(setState)}>
                         <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
                       </TouchableOpacity>
                     </View>
@@ -332,11 +339,11 @@ function homeScreenView(navigation, setState){
               </Modal>
               :
               <View>
-                {CurrentState.DateTimePickerIsVisible &&
+                {CurrentState.DateTimePickerIsVisible === true &&
                     <DateTimePicker
                         mode={"date"}
                         display={"default"} // default, spinner, calendar
-                        onChange={(event, date) => datePickerChange(event, date, setState)}
+                        onChange={(event, date) => DatePickerChange(event, date, setState)}
                         value={date}
                         minimumDate={minDatePicker}
                         maximumDate={maxDatePicker}
@@ -349,8 +356,8 @@ function homeScreenView(navigation, setState){
 
         <Modal animationType={"fade"} // slide, fade, none
                transparent={true}
-               visible={CurrentState.LatePopupIsVisible} >
-          <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => onTodayPress(setState)}>
+               visible={CurrentState.LatePopupIsVisible === true} >
+          <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => HandleOnTodayPressed(setState)}>
             <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
               <View style={{ paddingTop: 15}}>
                 <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + date.getDate() + " de " + GF.getMonthText(date.getMonth()) + "."}</Text>
@@ -358,11 +365,11 @@ function homeScreenView(navigation, setState){
               </View>
 
               <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>
-                <TouchableOpacity onPress={() => onYestPress(yesterday, setState)} style={{ paddingRight: 20}}>
+                <TouchableOpacity onPress={() => HandleOnYesterdayPressed(yesterday, setState)} style={{ paddingRight: 20}}>
                   <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
                   <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => onTodayPress(setState)}>
+                <TouchableOpacity onPress={() => HandleOnTodayPressed(setState)}>
                   <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
                   <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
                 </TouchableOpacity>
@@ -376,14 +383,6 @@ function homeScreenView(navigation, setState){
 
       </View>
   );
-}
-
-function setShowSpinner(spinnerVisibility) {
-  Logger.Log(Logger.LogKeys.HomeScreenController, "setShowSpinner", "spinnerVisibility: ", spinnerVisibility);
-}
-
-function setShowUpdateIsDownloading() {
-  Logger.Log(Logger.LogKeys.HomeScreenController, "setShowUpdateIsDownloading", "");
 }
 
 const styles = StyleSheet.create({
