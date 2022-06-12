@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -32,37 +32,38 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-let last_datePickerIOS_selected;
-let santPress = 0; // TODO: is this necessary?
+let LastDatePickerIOSSelected;
 let CurrentState;
 
 export default function HomeScreenController(props) {
   try {
 
-    console.log("REFRESHING VIEW");
+    // TODO: remove logs
+    console.log("------------------------ REFRESHING VIEW ------------------------ ");
 
     const [state, setState] = useState(new HomeScreenState());
     CurrentState = state;
 
+    // TODO: maybe this should only be executed once (maybe in App.js)
     configureUpdates();
+
+    //const appState = useRef(AppState.currentState);
 
     useEffect(() => {
       if (!__DEV__) {
         SplashScreen.preventAutoHideAsync();
       }
+      AppState.addEventListener('change', (status) => _handleAppStateChange(status, props.navigation, setState));
       props.navigation.setParams({
         calPres: () => calendarPressed(setState),
         Refresh_Date: () => calendarPressed(setState),
       });
-      BackHandler.addEventListener('hardwareBackPress', androidBack.bind(CurrentState));
-
-      // TODO: appstate not working. compare with Updates
+      BackHandler.addEventListener('hardwareBackPress', androidBack.bind(setState));
       Appearance.addChangeListener(AppearanceHasChanged);
-      AppState.addEventListener('change', (status) => _handleAppStateChange(status, props.navigation, CurrentState));
 
       return () => {
-        // TODO: BackHandler.removeEventListener('hardwareBackPress', androidBack);
-        // TODO: AppState.removeEventListener('change', _handleAppStateChange);
+        BackHandler.removeEventListener('hardwareBackPress', androidBack.bind(setState));
+        AppState.removeEventListener('change', _handleAppStateChange);
         Appearance.removeChangeListener(AppearanceHasChanged)
       }
     }, []);
@@ -84,8 +85,7 @@ export default function HomeScreenController(props) {
   }
 }
 
- function configureUpdates(){
-  // TODO: si this being configured every render? should only be the first time...
+function configureUpdates(){
   useCustomUpdater({
     beforeCheckCallback: () => setShowSpinner(true),
     beforeDownloadCallback: () => setShowUpdateIsDownloading(),
@@ -94,8 +94,7 @@ export default function HomeScreenController(props) {
   });
 }
 
-function _handleAppStateChange(nextAppState, navigation, setState){
-
+function _handleAppStateChange(nextAppState, navigation?, setState?){
   // Check if the state is changing to active
   if(nextAppState === 'active'){
 
@@ -163,7 +162,7 @@ function ReloadAllDataAndRefreshView(date, setState){
 }
 
 function calendarPressed(setState) {
-  last_datePickerIOS_selected = undefined;
+  LastDatePickerIOSSelected = undefined;
   setState(CurrentState.UpdateDateTimePickerVisibility(true));
 }
 
@@ -205,7 +204,7 @@ function IsLatePrayer() {
 
 function datePickerChange(event, date, setState) {
   if (Platform.OS === "ios") {
-      last_datePickerIOS_selected = date
+    LastDatePickerIOSSelected = date
   }
   else {
     setState(CurrentState.UpdateDateTimePickerVisibility(false));
@@ -217,8 +216,8 @@ function datePickerChange(event, date, setState) {
 }
 
 function datePickerIOS_Accept(setState) {
-  if (last_datePickerIOS_selected !== GlobalData.date) {
-    showThisDate(last_datePickerIOS_selected, setState)
+  if (LastDatePickerIOSSelected !== GlobalData.date) {
+    showThisDate(LastDatePickerIOSSelected, setState)
   }
 }
 
@@ -240,8 +239,6 @@ function showThisDate(date, setState) {
 
 function onSantPressCB(setState) {
   if (GlobalData.info_cel.infoCel !== '-') {
-    if (santPress === 0) santPress = 1;
-    else if (santPress === 1) santPress = 2;
     setState(CurrentState.UpdateCelebrationVisibility(!CurrentState.CelebrationIsVisible));
   }
 }
@@ -277,9 +274,9 @@ function handleGetDataError(error, setObtainDataErrorMessage){
 
 function homeScreenViewWithError(currentObtainDataErrorMessage){
   return(
-    <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{fontSize: 19, color: 'black', textAlign: 'center' }}>{currentObtainDataErrorMessage}</Text>
-    </View>
+      <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{fontSize: 19, color: 'black', textAlign: 'center' }}>{currentObtainDataErrorMessage}</Text>
+      </View>
   );
 }
 
@@ -293,91 +290,91 @@ function homeScreenView(navigation, setState){
   const minDatePicker = GlobalData.minDatePicker;
   const maxDatePicker = GlobalData.maxDatePicker;
   return (
-    <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
 
-          <HomeScreen
+        <HomeScreen
             ViewData={CurrentState.GlobalDataToShow}
             santPressed={CurrentState.CelebrationIsVisible}
             santCB={() => onSantPressCB(setState)}
             lliureCB={(freePrayerEnabled) => onSwitchLliurePress(freePrayerEnabled, setState)}
             navigation={navigation} />
-              <View>
-              { Platform.OS === "ios" ?
-                  <Modal
-                    animationType="fade" // slide, fade, none
-                    transparent={true}
-                    visible={CurrentState.DateTimePickerIsVisible}>
-                      <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={() => datePickerIOS_Cancel(setState)}>
-                        <TouchableOpacity activeOpacity={1} style={{margin: 10, marginHorizontal: 30, backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white', borderRadius: 20, padding: 10, paddingBottom: 20, shadowColor: '#000', shadowOffset: {width: 0,height: 2,}}}>
-                          <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
-                            <DateTimePicker
-                              mode="date"
-                              display="inline" //spinner, compact, inline
-                              onChange={datePickerChange.bind(setState)}
-                              value={date}
-                              minimumDate={minDatePicker}
-                              maximumDate={maxDatePicker}
-                            />
-                          </View>
-                          <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Cancel(setState)}>
-                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
-                            </TouchableOpacity >
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Today(setState)}>
-                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Accept(setState)}>
-                                <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </TouchableOpacity>
-                      </TouchableOpacity>
-                    </Modal>
-                :
-                    <View>
-                      {CurrentState.DateTimePickerIsVisible &&
-                          <DateTimePicker
-                            mode={"date"}
-                            display={"default"} // default, spinner, calendar
-                            onChange={(event, date) => datePickerChange(event, date, setState)}
-                            value={date}
-                            minimumDate={minDatePicker}
-                            maximumDate={maxDatePicker}
-                          />
-                      }
+        <View>
+          { Platform.OS === "ios" ?
+              <Modal
+                  animationType="fade" // slide, fade, none
+                  transparent={true}
+                  visible={CurrentState.DateTimePickerIsVisible}>
+                <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={() => datePickerIOS_Cancel(setState)}>
+                  <TouchableOpacity activeOpacity={1} style={{margin: 10, marginHorizontal: 30, backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white', borderRadius: 20, padding: 10, paddingBottom: 20, shadowColor: '#000', shadowOffset: {width: 0,height: 2,}}}>
+                    <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
+                      <DateTimePicker
+                          mode="date"
+                          display="inline" //spinner, compact, inline
+                          onChange={datePickerChange.bind(setState)}
+                          value={date}
+                          minimumDate={minDatePicker}
+                          maximumDate={maxDatePicker}
+                      />
                     </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Cancel(setState)}>
+                        <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
+                      </TouchableOpacity >
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Today(setState)}>
+                        <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => datePickerIOS_Accept(setState)}>
+                        <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              </Modal>
+              :
+              <View>
+                {CurrentState.DateTimePickerIsVisible &&
+                    <DateTimePicker
+                        mode={"date"}
+                        display={"default"} // default, spinner, calendar
+                        onChange={(event, date) => datePickerChange(event, date, setState)}
+                        value={date}
+                        minimumDate={minDatePicker}
+                        maximumDate={maxDatePicker}
+                    />
                 }
+              </View>
+          }
 
+        </View>
+
+        <Modal animationType={"fade"} // slide, fade, none
+               transparent={true}
+               visible={CurrentState.LatePopupIsVisible} >
+          <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => onTodayPress(setState)}>
+            <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
+              <View style={{ paddingTop: 15}}>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + date.getDate() + " de " + GF.getMonthText(date.getMonth()) + "."}</Text>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
               </View>
 
-              <Modal animationType={"fade"} // slide, fade, none
-                      transparent={true}
-                      visible={CurrentState.LatePopupIsVisible} >
-                  <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => onTodayPress(setState)}>
-                    <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
-                      <View style={{ paddingTop: 15}}>
-                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + date.getDate() + " de " + GF.getMonthText(date.getMonth()) + "."}</Text>
-                        <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
-                      </View>
+              <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>
+                <TouchableOpacity onPress={() => onYestPress(yesterday, setState)} style={{ paddingRight: 20}}>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => onTodayPress(setState)}>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
+                </TouchableOpacity>
+              </View>
 
-                      <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>
-                        <TouchableOpacity onPress={() => onYestPress(yesterday, setState)} style={{ paddingRight: 20}}>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => onTodayPress(setState)}>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
-                          <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
-                        </TouchableOpacity>
-                      </View>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </Modal>
 
-                    </TouchableOpacity>
-                  </TouchableOpacity>
-              </Modal>
+        <StatusBar style="light" />
 
-          <StatusBar style="light" />
-
-    </View>
+      </View>
   );
 }
 

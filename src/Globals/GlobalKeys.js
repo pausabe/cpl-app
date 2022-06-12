@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-module.exports = {
+let GlobalKeys = {
   barColor: '#006064',
   dataPicker: '#007b80', //Simbòlic, el canvi s'ha de fer a res/values/styles.xml
   itemsBarColor: '#FFFFFF',
@@ -42,3 +42,5 @@ module.exports = {
   server_url: 'https://serveditorial.cpl.es/api/emp/read/'
 
 }
+
+export default GlobalKeys;

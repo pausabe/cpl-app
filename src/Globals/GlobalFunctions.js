@@ -1,6 +1,7 @@
 import * as Logger from '../Utils/Logger';
+import GlobalKeys from "./GlobalKeys";
 
-module.exports = {
+let GlobalFunctions = {
   transformReadableDate(date){
     year = date.getFullYear();
     month = date.getMonth();
@@ -971,4 +972,6 @@ module.exports = {
     result = dia + "-" + mes;
     return result;
   }
-};
+}
+
+export default GlobalFunctions;
