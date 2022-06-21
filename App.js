@@ -1,27 +1,24 @@
-import {useCustomUpdater} from "expo-custom-updater";
+import {useCustomUpdater} from "./src/Services/UpdaterService";
 import NavigationController from "./src/Controllers/NavigationController";
 import * as Logger from "./src/Utils/Logger";
+import {useState} from "react";
 
-function ConfigureUpdates(){
+function ConfigureUpdates(setIsNecessaryToUpdate){
     useCustomUpdater({
-        beforeCheckCallback: () => SetShowSpinner(true),
-        beforeDownloadCallback: () => SetShowUpdateIsDownloading(),
-        afterCheckCallback: () => SetShowSpinner(false),
-        showDebugInConsole: false
+        beforeDownloadCallback: () => StartingToDownloadTheUpdate(setIsNecessaryToUpdate),
+        minMsFromCheckingUpdatesAndReloading: 7000
     });
 }
 
-function SetShowSpinner(spinnerVisibility) {
-    Logger.Log(Logger.LogKeys.HomeScreenController, "SetShowSpinner", "spinnerVisibility: ", spinnerVisibility);
-}
-
-function SetShowUpdateIsDownloading() {
-    Logger.Log(Logger.LogKeys.HomeScreenController, "SetShowUpdateIsDownloading", "");
+function StartingToDownloadTheUpdate(setIsNecessaryToUpdate) {
+    Logger.Log(Logger.LogKeys.HomeScreenController, "StartingToDownloadTheUpdate", "");
+    setIsNecessaryToUpdate(true);
 }
 
 export default function App() {
-    ConfigureUpdates();
+    const [isNecessaryToUpdate, setIsNecessaryToUpdate] = useState(false);
+    ConfigureUpdates(setIsNecessaryToUpdate);
     return (
-        <NavigationController />
+        <NavigationController IsNecessaryToUpdate={isNecessaryToUpdate} />
     );
 }

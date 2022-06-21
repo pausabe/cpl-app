@@ -7,7 +7,7 @@ import SettingsComponentAdapter from "../Adapters/SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
 import {SessionLogs} from "../Utils/Logger";
 import {GlobalData} from "../Services/DataService";
-import { getUpdateLogs } from 'expo-custom-updater'
+import {getUpdateLogs} from "../Services/UpdaterService";
 
 let logsPressedTimes;
 
@@ -20,8 +20,8 @@ export default class SettingsScreen extends Component {
       };
   }
 
-  refreshHome(){    
-    this.props.route.params.Refresh_Date();
+  refreshHome(){
+      this.props.route.params.Refresh_Date();
   }
 
   UNSAFE_componentWillMount(){
@@ -65,10 +65,8 @@ export default class SettingsScreen extends Component {
                         <Text
                             selectable={true}
                             style={{textAlign: 'left', color: 'grey', fontSize: 11}}>
-                            {"Logs: " + "\n"}{SessionLogs}{"\nUpdate Logs:"}{}
+                            {"Logs: " + "\n"}{SessionLogs}
                         </Text>
-                        <Text selectable={true}
-                               style={{textAlign: 'left', color: 'grey', fontSize: 11}}>{getUpdateLogs().join("\n")}</Text>
                     </View>
                 }
             </View>
