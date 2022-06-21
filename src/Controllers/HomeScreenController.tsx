@@ -34,9 +34,9 @@ export default function HomeScreenController(props) {
   try {
     const [state, setState] = useState();
     CurrentState = state;
-    HideSplash();
     useEffect(() => InitialEffect(props, setState), []);
     SetViewWithTheInitialDataLoaded(setState);
+    HideSplashIfItsTime();
     return GetView(props, CurrentState, setState);
   }
   catch (error) {
@@ -68,7 +68,7 @@ function InitialEffect(props, setState){
 
   props.navigation.setParams({
     calPres: () => HandleCalendarPressed(setState),
-    Refresh_Date: () => HandleCalendarPressed(setState),
+    Refresh_Date: () => ReloadAllDataAndRefreshView(GlobalData.date, setState),
   });
 
   let appStateSubscription = AppState.addEventListener('change', (status) => HandleAppStateChange(status, props.navigation, setState));
@@ -82,7 +82,7 @@ function InitialEffect(props, setState){
   }
 }
 
-function HideSplash(){
+function HideSplashIfItsTime(){
   let dataLoaded = CurrentState !== undefined;
   let thereWereSomeErrorLoadingTheData =
       CurrentState !== undefined &&
@@ -90,8 +90,10 @@ function HideSplash(){
           CurrentState.ObtainDataErrorMessage !== "")
   if(!SplashScreenHidden &&
       (dataLoaded || thereWereSomeErrorLoadingTheData)){
-    SplashScreenHidden = true;
-    SplashScreen.hideAsync();
+    setTimeout(async () => {
+      SplashScreenHidden = true;
+      await SplashScreen.hideAsync();
+    }, 500)
   }
 }
 
