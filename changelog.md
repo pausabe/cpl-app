@@ -1,3 +1,8 @@
+### v5.78.0 (21.06.2022)[78]
+- Now the updates are mandatory and user will be notified about them
+---
+- Expo updated to SDK v45
+
 ### v4.76.3 (04.06.2022)[76]
 - Fixed bugs related with getting the Ids from special tables
 
