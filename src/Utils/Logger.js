@@ -13,7 +13,8 @@ export const LogKeys = {
     Screens: { name: "Screens", enabled: true },
     DataService: { name: "DataService", enabled: true },
     StorageService: { name: "StorageService", enabled: true },
-    FileSystemService: { name: "FileSystemService", enabled: true }
+    FileSystemService: { name: "FileSystemService", enabled: true },
+    UpdaterService: { name: "UpdaterService", enabled: true }
 };
 
 export function Debug(message, param){

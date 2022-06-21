@@ -8,7 +8,6 @@ import StorageKeys from './StorageKeys';
 import {getDatabaseVersion} from "./DatabaseDataService";
 import * as Logger from "../Utils/Logger";
 import GLOBAL from '../Globals/GlobalKeys';
-import {useCustomUpdater} from "expo-custom-updater";
 
 export let GlobalData = {}
 export let HoursLiturgyData = {}
