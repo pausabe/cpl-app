@@ -7,9 +7,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Globals/GlobalKeys';
-import GF from '../../../../Globals/GlobalFunctions';
-import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
+import GLOBAL from '../../../../Utils/GlobalKeys';
+import GF from '../../../../Utils/GlobalFunctions';
+import SettingsService from '../../../../Services/SettingsService';
 import * as Logger from '../../../../Utils/Logger';
 import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
 
@@ -27,7 +27,7 @@ export default class OficiDisplay extends Component {
     if(!GF.salmInvExists(auxNumSalmInv,props.titols)){
       auxNumSalmInv = '94';
       props.setNumSalmInv('94');
-      SettingsManager.setSettingNumSalmInv('94');
+      SettingsService.setSettingNumSalmInv('94');
     }
 
     this.state = {
@@ -168,7 +168,7 @@ export default class OficiDisplay extends Component {
   _onSalmInvPress(numSalm){
     this.setState({ numSalmInv: numSalm });
     this.setNumSalmInv(numSalm);
-    SettingsManager.setSettingNumSalmInv(numSalm);
+    SettingsService.setSettingNumSalmInv(numSalm);
   }
 
   salmInvitatori(numSalm, salm94, salm99, salm66, salm23){

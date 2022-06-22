@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons'; 
-import GLOBAL from "../Globals/GlobalKeys";
+import GLOBAL from "../Utils/GlobalKeys";
 import { GlobalData } from '../Services/DataService';
 
 export default class HomeScreen extends Component {
@@ -191,7 +191,7 @@ export default class HomeScreen extends Component {
       this.switchValue = GlobalData.lliures;
       return (
         <SafeAreaView style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
-          <ImageBackground source={require('../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
+          <ImageBackground source={require('../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
             {this.Top_Info(date_getdate, date_getmonth, date_getfullyear)}
             {this.Info_Liturgica(date_getday)}
             {this.Cel_Info()}

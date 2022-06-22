@@ -7,8 +7,8 @@ import {
   Share
 } from 'react-native';
 import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Globals/GlobalKeys';
-import GF from '../../../../Globals/GlobalFunctions';
+import GLOBAL from '../../../../Utils/GlobalKeys';
+import GF from '../../../../Utils/GlobalFunctions';
 import * as Logger from '../../../../Utils/Logger';
 import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
 

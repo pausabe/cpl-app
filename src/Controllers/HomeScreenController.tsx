@@ -15,14 +15,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
-import GLOBALS from '../Globals/GlobalKeys';
-import GF from '../Globals/GlobalFunctions';
-import { ReloadAllData } from '../Services/DataService.js';
+import GLOBALS from '../Utils/GlobalKeys';
+import GF from '../Utils/GlobalFunctions';
 import * as Logger from '../Utils/Logger';
-import SettingsManager from './Classes/SettingsManager';
-import { GlobalData, LAST_REFRESH } from '../Services/DataService';
-import * as StorageService from '../Services/StorageService';
-import StorageKeys from "../Services/StorageKeys";
+import SettingsService from '../Services/SettingsService';
+import { ReloadAllData, GlobalData, LAST_REFRESH } from '../Services/DataService';
+import * as StorageService from '../Services/Storage/StorageService';
+import StorageKeys from "../Services/Storage/StorageKeys";
 import HomeScreenState, {CelebrationData, GlobalDataToShowClass, PlaceData} from './HomeScreenState';
 
 let LastDatePickerIOSSelected;
@@ -140,7 +139,7 @@ async function CheckSystemDarkMode(colorScheme) {
     // It's not always getting the correct color scheme when reopening the app on ios. So I get it from the getColorSheme function
     colorScheme = Appearance.getColorScheme();
 
-    await SettingsManager.getSettingDarkMode((r) => {
+    await SettingsService.getSettingDarkMode((r) => {
       if (r === 'Automàtic') {
         GlobalData.darkModeEnabled = colorScheme === 'dark';
       }

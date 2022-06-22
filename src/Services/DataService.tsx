@@ -1,13 +1,13 @@
 import {Appearance} from 'react-native';
-import GF from "../Globals/GlobalFunctions";
-import {SetSoul} from '../Controllers/Classes/SOUL/SOUL';
-import SettingsManager from '../Controllers/Classes/SettingsManager';
+import GF from "../Utils/GlobalFunctions";
+import {SetupLiturgy} from './Liturgy/LiturgyService';
+import SettingsService from './SettingsService';
 import * as DatabaseDataService from './DatabaseDataService';
-import * as StorageService from './StorageService';
-import StorageKeys from './StorageKeys';
+import * as StorageService from './Storage/StorageService';
+import StorageKeys from './Storage/StorageKeys';
 import {getDatabaseVersion} from "./DatabaseDataService";
 import * as Logger from "../Utils/Logger";
-import GLOBAL from '../Globals/GlobalKeys';
+import GLOBAL from '../Utils/GlobalKeys';
 
 export let GlobalData = {}
 export let HoursLiturgyData = {}
@@ -32,16 +32,16 @@ export async function ReloadAllData(date) { // 2.5
 function SetGlobalValuesFromSettings(date){
     GlobalData.date = date;
     return Promise.all([
-        SettingsManager.getSettingLloc((r) => {
+        SettingsService.getSettingLloc((r) => {
             GlobalData.lloc = r;
         }),
-        SettingsManager.getSettingDiocesis((r) => {
+        SettingsService.getSettingDiocesis((r) => {
             GlobalData.diocesi = GF.transformDiocesiName(r, GlobalData.lloc);
             GlobalData.diocesiName = r;
         }),
-        SettingsManager.getSettingUseLatin((r) => GlobalData.llati = r),
-        SettingsManager.getSettingTextSize((r) => GlobalData.textSize = r),
-        SettingsManager.getSettingDarkMode((r) => {
+        SettingsService.getSettingUseLatin((r) => GlobalData.llati = r),
+        SettingsService.getSettingTextSize((r) => GlobalData.textSize = r),
+        SettingsService.getSettingDarkMode((r) => {
             let aux_darkMode = false;
             switch (r) {
                 case "Activat":
@@ -56,8 +56,8 @@ function SetGlobalValuesFromSettings(date){
             }
             GlobalData.darkModeEnabled = aux_darkMode;
         }),
-        SettingsManager.getSettingNumSalmInv((r) => GlobalData.numSalmInv = r),
-        SettingsManager.getSettingNumAntMare((r) => GlobalData.numAntMare = r),
+        SettingsService.getSettingNumSalmInv((r) => GlobalData.numSalmInv = r),
+        SettingsService.getSettingNumAntMare((r) => GlobalData.numAntMare = r),
     ])
 }
 
@@ -105,12 +105,12 @@ function SetGlobalValuesFromDatabase() {
                     diaDeLaSetmana: tomorrow.DiadelaSetmana
                 };
                 Check_Lliure_Date()
-                    .then(() => SetSoul(GlobalData)
+                    .then(() => SetupLiturgy(GlobalData)
                         .then((result) => {
-                            HoursLiturgyData = result.liturgia_hores;
-                            GlobalData.info_cel = result.info_cel;
                             GlobalData.primVespres = primVespres();
-                            MassLiturgyData = result.liturgia_diaria;
+                            GlobalData.info_cel = result.CelebrationInformation;
+                            HoursLiturgyData = result.HoursLiturgy;
+                            MassLiturgyData = result.MassLiturgy;
                             resolve();
                         })
                         .catch((error) => reject(error))

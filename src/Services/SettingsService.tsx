@@ -1,4 +1,4 @@
-import * as StorageService from '../../Services/StorageService';
+import * as StorageService from './Storage/StorageService';
 
 export const diocesis = {
     ANDORRA: "Andorra",
@@ -55,10 +55,10 @@ const defaultSettings = {
     darkMode: darkModeOptions.SYSTEM
 };
 
-export default class SettingsManager{
+export default class SettingsService {
 
     /**
-    * The undescore means that the method is "private", DO NOT USE outside of SettingsManager
+    * The undescore means that the method is "private", DO NOT USE outside of SettingsService
     *
     * Returns an asynchronous Promise with the callback set when callback is a Function, if not, returns just the Promise.
     */
@@ -87,7 +87,7 @@ export default class SettingsManager{
 
     static _setValueIfValid(key, value, validateFunc, callback){
         if(!(validateFunc instanceof Function) || validateFunc(value)){
-            return SettingsManager._setStorageValue(key, value, callback);
+            return SettingsService._setStorageValue(key, value, callback);
         }else{
             return new Promise((resolve, reject) => {
                 reject(new Error("Invalid value"));
@@ -96,105 +96,105 @@ export default class SettingsManager{
     }
 
     static getSettingShowGlories(callback){
-        return SettingsManager._getStorageValue("showGlories", callback, defaultSettings.showGlories);
+        return SettingsService._getStorageValue("showGlories", callback, defaultSettings.showGlories);
     }
 
     static getSettingPrayLliures(callback){
-        return SettingsManager._getStorageValue("prayLliures", callback, defaultSettings.prayLliures);
+        return SettingsService._getStorageValue("prayLliures", callback, defaultSettings.prayLliures);
     }
 
     static getSettingUseLatin(callback){
-        return SettingsManager._getStorageValue("useLatin", callback, defaultSettings.useLatin);
+        return SettingsService._getStorageValue("useLatin", callback, defaultSettings.useLatin);
     }
 
     static getSettingTextSize(callback){
-        return SettingsManager._getStorageValue("textSize", callback, defaultSettings.textSize);
+        return SettingsService._getStorageValue("textSize", callback, defaultSettings.textSize);
     }
 
     static getSettingDarkMode(callback){
-        return SettingsManager._getStorageValue("darkMode", callback, defaultSettings.darkMode);
+        return SettingsService._getStorageValue("darkMode", callback, defaultSettings.darkMode);
     }
 
     static getSettingDiocesis(callback){
-        return SettingsManager._getStorageValue("diocesis", callback, defaultSettings.diocesis);
+        return SettingsService._getStorageValue("diocesis", callback, defaultSettings.diocesis);
     }
 
     static getSettingLloc(callback){
-        return SettingsManager._getStorageValue("lloc", callback, defaultSettings.lloc);
+        return SettingsService._getStorageValue("lloc", callback, defaultSettings.lloc);
     }
 
     static getSettingDayStart(callback){
-        return SettingsManager._getStorageValue("dayStart", callback, defaultSettings.dayStart);
+        return SettingsService._getStorageValue("dayStart", callback, defaultSettings.dayStart);
     }
 
     static getSettingNumSalmInv(callback){
-        return SettingsManager._getStorageValue("salmInvitatori", callback, defaultSettings.salmInvitatori);
+        return SettingsService._getStorageValue("salmInvitatori", callback, defaultSettings.salmInvitatori);
     }
 
     static getSettingNumAntMare(callback){
-        return SettingsManager._getStorageValue("antMare", callback, defaultSettings.antMare);
+        return SettingsService._getStorageValue("antMare", callback, defaultSettings.antMare);
     }
 
     static setSettingShowGlories(value, callback){
-        return SettingsManager._setValueIfValid("showGlories", value,
+        return SettingsService._setValueIfValid("showGlories", value,
             (val) => val === "true" || val === "false",
             callback);
     }
 
     static setSettingUseLatin(value, callback){
-        return SettingsManager._setValueIfValid("useLatin", value,
+        return SettingsService._setValueIfValid("useLatin", value,
             (val) => val === "true" || val === "false",
             callback);
     }
 
     static setSettingPrayLliures(value, callback){
-        return SettingsManager._setValueIfValid("prayLliures", value,
+        return SettingsService._setValueIfValid("prayLliures", value,
             (val) => val === "true" || val === "false",
             callback);
     }
 
     static setSettingTextSize(value, callback){
-        return SettingsManager._setValueIfValid("textSize", value,
+        return SettingsService._setValueIfValid("textSize", value,
             (val) => !isNaN(val) && (parseFloat(val)*10)%10 == 0,
             callback);
     }
 
     static setSettingDarkMode(value, callback){
-        return SettingsManager._setValueIfValid("darkMode", value,
+        return SettingsService._setValueIfValid("darkMode", value,
             (val) => {
                 return findValueInObject(darkModeOptions, val);
             }, callback);
     }
 
     static setSettingDiocesis(value, callback){
-        return SettingsManager._setValueIfValid("diocesis", value,
+        return SettingsService._setValueIfValid("diocesis", value,
             (val) => {
                 return findValueInObject(diocesis, val);
             }, callback);
     }
 
     static setSettingLloc(value, callback){
-        return SettingsManager._setValueIfValid("lloc", value,
+        return SettingsService._setValueIfValid("lloc", value,
             (val) => {
                 return findValueInObject(lloc, val);
             }, callback);
     }
 
     static setSettingDayStart(value, callback){
-        return SettingsManager._setValueIfValid("dayStart", value,
+        return SettingsService._setValueIfValid("dayStart", value,
             (val) => val == "0" || val == "1" || val == "2" || val == "3",
             callback);
     }
 
     static setSettingNumSalmInv(value){
-        return SettingsManager._setValueIfValid("salmInvitatori", value,
+        return SettingsService._setValueIfValid("salmInvitatori", value,
             (val) => {
                 return findValueInObject(salmInvitatori, val);
             });
     }
 
     static setSettingNumAntMare(value){
-        return SettingsManager._setValueIfValid("antMare", value,
+        return SettingsService._setValueIfValid("antMare", value,
             (val) => {
                 return findValueInObject(antMare, val);
             });

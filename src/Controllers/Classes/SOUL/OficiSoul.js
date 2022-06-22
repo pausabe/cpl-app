@@ -1,5 +1,5 @@
-import GLOBAL from '../../../Globals/GlobalKeys';
-import GF from '../../../Globals/GlobalFunctions';
+import GLOBAL from '../../../Utils/GlobalKeys';
+import GF from '../../../Utils/GlobalFunctions';
 
 let GlobalData;
 

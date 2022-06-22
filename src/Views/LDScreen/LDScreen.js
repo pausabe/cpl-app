@@ -10,7 +10,7 @@ import {
 import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
-import GLOBALS from '../../Globals/GlobalKeys';
+import GLOBALS from '../../Utils/GlobalKeys';
 import { MassLiturgyData, GlobalData } from '../../Services/DataService';
 
 const VESPERS_SELECTOR_TYPES = {
@@ -100,7 +100,7 @@ export default class LDScreen extends Component {
       return (
         <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
             {
-               <ImageBackground source={require('../../Globals/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
+               <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
                {MassLiturgyData.Vespers == undefined ?
                  null :
                  <View style={{ flex: 1, }}>

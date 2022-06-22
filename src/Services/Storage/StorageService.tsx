@@ -1,4 +1,4 @@
-import * as Logger from "../Utils/Logger";
+import * as Logger from "../../Utils/Logger";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function StoreData(storageKey, value){

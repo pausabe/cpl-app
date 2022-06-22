@@ -18,7 +18,7 @@ export const LogKeys = {
 };
 
 export function Debug(message, param){
-    Log(LogKeys.Debug, "", message, param);
+    Log(LogKeys.Debug, "", message, param, MessageCharacterLimit);
 }
 
 export function Log(logKey, methodName, message, param, limit){

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Platform, ScrollView, TouchableOpacity, Appearance } from 'react-native';
 import Constants from 'expo-constants';
-import * as Logger from '../Utils/Logger';
-import HR from '../Components/HRComponent';
-import SettingsComponentAdapter from "../Adapters/SettingsComponentAdapter";
+import * as Logger from '../../Utils/Logger';
+import HR from '../../Components/HRComponent';
+import SettingsComponentAdapter from "./SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
-import {SessionLogs} from "../Utils/Logger";
-import {GlobalData} from "../Services/DataService";
-import {getUpdateLogs} from "../Services/UpdaterService";
+import {SessionLogs} from "../../Utils/Logger";
+import {GlobalData} from "../../Services/DataService";
 
 let logsPressedTimes;
 

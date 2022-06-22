@@ -1,4 +1,4 @@
-import GLOBAL from '../../../Globals/GlobalKeys';
+import GLOBAL from '../../../Utils/GlobalKeys';
 
 let GlobalData;
 

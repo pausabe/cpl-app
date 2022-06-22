@@ -1,14 +1,14 @@
-import * as Logger from '../../../Utils/Logger';
-import OficiSoul from './OficiSoul';
-import LaudesSoul from './LaudesSoul';
-import VespresSoul from './VespresSoul';
-import HoraMenorSoul from './HoraMenorSoul';
-import CompletesSoul from './CompletesSoul';
-import CelebracioSoul from './CelebracioSoul';
-import GLOBAL from '../../../Globals/GlobalKeys';
-import GF from '../../../Globals/GlobalFunctions';
-import SoulKeys from './SoulKeys';
-import * as DatabaseDataService from '../../../Services/DatabaseDataService';
+import * as Logger from '../../Utils/Logger';
+import OficiSoul from '../../Controllers/Classes/SOUL/OficiSoul';
+import LaudesSoul from '../../Controllers/Classes/SOUL/LaudesSoul';
+import VespresSoul from '../../Controllers/Classes/SOUL/VespresSoul';
+import HoraMenorSoul from '../../Controllers/Classes/SOUL/HoraMenorSoul';
+import CompletesSoul from '../../Controllers/Classes/SOUL/CompletesSoul';
+import CelebracioSoul from '../../Controllers/Classes/SOUL/CelebracioSoul';
+import GLOBAL from '../../Utils/GlobalKeys';
+import GF from '../../Utils/GlobalFunctions';
+import SoulKeys from '../../Controllers/Classes/SOUL/SoulKeys';
+import * as DatabaseDataService from '../DatabaseDataService';
 
 let GlobalData;
 

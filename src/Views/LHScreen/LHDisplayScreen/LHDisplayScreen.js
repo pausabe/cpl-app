@@ -7,7 +7,7 @@ import Vespres from './OracioDisplay/VespresDisplay'
 import HoraMenor from './OracioDisplay/HoraMenorDisplay'
 import Completes from './OracioDisplay/CompletesDisplay'
 import {GlobalData, HoursLiturgyData} from '../../../Services/DataService';
-import GF from '../../../Globals/GlobalFunctions';
+import GF from '../../../Utils/GlobalFunctions';
 
 export default class LHDisplayScreen extends Component {
   UNSAFE_componentWillMount(){

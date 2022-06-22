@@ -9,9 +9,9 @@ import {
     StyleSheet,
     ActivityIndicator
 } from 'react-native';
-import GLOBAL from "../Globals/GlobalKeys";
+import GLOBAL from "../Utils/GlobalKeys";
 import HomeScreen from '../Controllers/HomeScreenController';
-import SettingsScreen from '../Views/SettingsScreen';
+import SettingsScreen from '../Views/Settings/SettingsScreen';
 import DonationScreen from '../Views/DonationScreen';
 import CommentScreen from '../Views/CommentScreen';
 import LHScreen from '../Views/LHScreen/LHScreen';

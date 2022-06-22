@@ -4,7 +4,7 @@ import { Picker as SelectPicker } from '@react-native-picker/picker';
 import Slider from '@react-native-community/slider';
 
 import HR from './HRComponent';
-import GLOBAL from "../Globals/GlobalKeys";
+import GLOBAL from "../Utils/GlobalKeys";
 
 export default class SettingsComponent extends Component{
 

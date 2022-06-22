@@ -1,5 +1,5 @@
 import * as Logger from '../Utils/Logger';
-import GF from '../Globals/GlobalFunctions';
+import GF from '../Utils/GlobalFunctions';
 import {executeQuery} from "./DatabaseManagerService";
 
 export function getDatabaseVersion(){

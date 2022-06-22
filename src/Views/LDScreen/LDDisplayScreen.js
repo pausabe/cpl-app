@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
-import GF from '../../Globals/GlobalFunctions';
+import GF from '../../Utils/GlobalFunctions';
 import HR from '../../Components/HRComponent';
 import * as Logger from '../../Utils/Logger';
 import { MassLiturgyData, GlobalData } from '../../Services/DataService';

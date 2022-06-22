@@ -7,9 +7,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Globals/GlobalKeys';
-import GF from '../../../../Globals/GlobalFunctions';
-import SettingsManager from '../../../../Controllers/Classes/SettingsManager';
+import GLOBAL from '../../../../Utils/GlobalKeys';
+import GF from '../../../../Utils/GlobalFunctions';
+import SettingsService from '../../../../Services/SettingsService';
 import * as Logger from '../../../../Utils/Logger';
 import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
 
@@ -43,12 +43,12 @@ export default class CompletesDisplay extends Component {
     if(GlobalData.tempsespecific === 'Pasqua' && auxNumAntMare !== '5'){
       auxNumAntMare = '5';
       props.setNumAntMare('5');
-      SettingsManager.setSettingNumAntMare('5');
+      SettingsService.setSettingNumAntMare('5');
     }
     else if(!(GlobalData.tempsespecific === 'Pasqua') && auxNumAntMare === '5'){
       auxNumAntMare = '1';
       props.setNumAntMare('1');
-      SettingsManager.setSettingNumAntMare('1');
+      SettingsService.setSettingNumAntMare('1');
     }
 
     this.state = {
@@ -65,7 +65,7 @@ export default class CompletesDisplay extends Component {
   _onAntMarePress(numAntMare){
     this.setState({numAntMare: numAntMare});
     this.setNumAntMare(numAntMare);
-    SettingsManager.setSettingNumAntMare(numAntMare);
+    SettingsService.setSettingNumAntMare(numAntMare);
   }
 
   antMareComp(numAntMare){

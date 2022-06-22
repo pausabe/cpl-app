@@ -1,13 +1,8 @@
-import * as Logger from '../Utils/Logger';
-import GlobalKeys from "./GlobalKeys";
+import * as Logger from './Logger';
+
+// TODO: refactor this...
 
 let GlobalFunctions = {
-  transformReadableDate(date){
-    year = date.getFullYear();
-    month = date.getMonth();
-    day = date.getDate();
-    return day+"/"+month+"/"+year;
-  },
 
   getPrecNum(prec){
     switch (prec) {
@@ -528,79 +523,6 @@ let GlobalFunctions = {
     return(celType);
   },
 
-  getTestDiocesiByIndex(index){
-    switch (index) {
-      case 0:
-        return 'Andorra';
-      case 1:
-        return 'BaD';
-      case 2:
-        return 'BaV';
-      case 3:
-        return 'BaC';
-      case 4:
-        return 'GiD';
-      case 5:
-        return 'GiV';
-      case 6:
-        return 'GiC';
-      case 7:
-        return 'LlD';
-      case 8:
-        return 'LlV';
-      case 9:
-        return 'LlC';
-      case 10:
-        return 'MaD';
-      case 11:
-        return 'MaV';
-      case 12:
-        return 'MaC';
-      case 13:
-        return 'SFD';
-      case 14:
-        return 'SFV';
-      case 15:
-        return 'SFC';
-      case 16:
-        return 'SoD';
-      case 17:
-        return 'SoV';
-      case 18:
-        return 'SoC';
-      case 19:
-        return 'TaD';
-      case 20:
-        return 'TaV';
-      case 21:
-        return 'TaC';
-      case 22:
-        return 'TeD';
-      case 23:
-        return 'TeV';
-      case 24:
-        return 'TeC';
-      case 25:
-        return 'ToD';
-      case 26:
-        return 'ToV';
-      case 27:
-        return 'ToC';
-      case 28:
-        return 'UrD';
-      case 29:
-        return 'UrV';
-      case 30:
-        return 'UrC';
-      case 31:
-        return 'ViD';
-      case 32:
-        return 'ViV';
-      case 33:
-        return 'ViC';
-      }
-  },
-
   getTestNameDiocesiByIndex(index){
     switch (index) {
       case 0:
@@ -671,79 +593,6 @@ let GlobalFunctions = {
         return 'Vic';
       case 33:
         return 'Vic';
-      }
-  },
-
-  getTestLlocByIndex(index){
-    switch (index) {
-      case 0:
-        return 'Diòcesi';
-      case 1:
-        return 'Diòcesi';
-      case 2:
-        return 'Ciutat';
-      case 3:
-        return 'Catedral';
-      case 4:
-        return 'Diòcesi';
-      case 5:
-        return 'Ciutat';
-      case 6:
-        return 'Catedral';
-      case 7:
-        return 'Diòcesi';
-      case 8:
-        return 'Ciutat';
-      case 9:
-        return 'Catedral';
-      case 10:
-        return 'Diòcesi';
-      case 11:
-        return 'Ciutat';
-      case 12:
-        return 'Catedral';
-      case 13:
-        return 'Diòcesi';
-      case 14:
-        return 'Ciutat';
-      case 15:
-        return 'Catedral';
-      case 16:
-        return 'Diòcesi';
-      case 17:
-        return 'Ciutat';
-      case 18:
-        return 'Catedral';
-      case 19:
-        return 'Diòcesi';
-      case 20:
-        return 'Ciutat';
-      case 21:
-        return 'Catedral';
-      case 22:
-        return 'Diòcesi';
-      case 23:
-        return 'Ciutat';
-      case 24:
-        return 'Catedral';
-      case 25:
-        return 'Diòcesi';
-      case 26:
-        return 'Ciutat';
-      case 27:
-        return 'Catedral';
-      case 28:
-        return 'Diòcesi';
-      case 29:
-        return 'Ciutat';
-      case 30:
-        return 'Catedral';
-      case 31:
-        return 'Diòcesi';
-      case 32:
-        return 'Ciutat';
-      case 33:
-        return 'Catedral';
       }
   },
 
