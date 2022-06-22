@@ -1,4 +1,4 @@
-### v5.78.0 (21.06.2022)[78]
+### v5.78.4 (21.06.2022)[78]
 - Now the updates are mandatory and user will be notified about them
 ---
 - Expo updated to SDK v45
