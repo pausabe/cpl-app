@@ -90,10 +90,11 @@ function HideSplashIfItsTime(){
           CurrentState.ObtainDataErrorMessage !== "")
   if(!SplashScreenHidden &&
       (dataLoaded || thereWereSomeErrorLoadingTheData)){
+    // Letting some extra time to finish rendering everything
     setTimeout(async () => {
       SplashScreenHidden = true;
-      await SplashScreen.hideAsync();
-    }, 500)
+      await SplashScreen.hideAsync()
+    }, IsLatePrayer() && Platform.OS === "ios"? 0 : 500) // When IsLatePrayer there is some kind of conflict with the Modal, the Splash, the Timeout and the iOS... So, in that case, 0 timeout
   }
 }
 
