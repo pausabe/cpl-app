@@ -9,7 +9,10 @@ export function getDatabaseVersion(){
           const databaseVersion = parseInt(result.rows.item(0).databaseVersion);
           resolve(databaseVersion);
         },
-        () => resolve(0));
+        (error) => {
+          Logger.Log(Logger.LogKeys.DatabaseDataService, "getDatabaseVersion", "Error trying to get the database version", error);
+          resolve(0);
+        });
   });
 }
 
