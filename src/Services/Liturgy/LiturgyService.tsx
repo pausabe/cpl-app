@@ -7,6 +7,12 @@ export async function SetupLiturgy(globalData): Promise<Liturgy> {
 
   let liturgyMasters = await ObtainLiturgyMasters(globalData);
 
+  // TODO: let variousLiturgyParts = await ObtainVariousLiturgyParts();
+  /*id = -1;
+    DatabaseDataService.getLiturgia("diversos", id, (result) => {
+      queryRows.diversos = result;
+      dataReceived(params);
+    });*/
   let hoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, globalData);
   //let massLiturgy = await ObtainMassLiturgy(globalData);
 
