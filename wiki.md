@@ -38,7 +38,7 @@ Therefore, when we...
     6. Push the code changes into the master branch
 
 - Update code & database (SDK upgrades not included) -> Use expo build with a new release-channel name (prod_channel_47)
-    1. Download the latest database from Deploy website
+    1. Download the latest database from Deploy website (make sure _tables_log registers amount is equal to current published database version. Could not be when I rerun the Deploy website)
     2. Copy the database into src/Assets/db/
     3. Update the version name and build number of the manifest (ending in 0, X.X.0)
     4. Build the project (ios -> ipa | android -> apk)
