@@ -1,6 +1,6 @@
 import * as Logger from '../Utils/Logger';
 import GF from '../Utils/GlobalFunctions';
-import {executeQuery} from "./DatabaseManagerService";
+import {executeQuery, executeQueryAsync} from "./DatabaseManagerService";
 
 export function getDatabaseVersion(){
   return new Promise((resolve) => {
@@ -25,6 +25,11 @@ export function getLiturgia(table, id, callback) {
     executeQuery(`SELECT * FROM ${table}`,
       result => callback(result.rows));
   }
+}
+
+export async function ObtainMasterRowFromDatabase(master: string, rowId: number){
+    const result = await executeQueryAsync(`SELECT * FROM ${master} WHERE id = ${rowId}`);
+    return result.rows.item(0);
 }
 
 export function getAnyLiturgic(year, month, day, callback, errorCallback) {

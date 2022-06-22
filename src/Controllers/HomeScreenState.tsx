@@ -5,6 +5,7 @@ export default class HomeScreenState {
         celebrationIsVisible?: boolean,
         dateTimePickerIsVisible?: boolean,
         obtainDataErrorMessage?: string) {
+        this.Initialized = true;
         this.GlobalDataToShow = globalDataToShow;
         this.LatePopupIsVisible = latePopupIsVisible;
         this.CelebrationIsVisible = celebrationIsVisible;
@@ -37,6 +38,7 @@ export default class HomeScreenState {
         return this.GetClone();
     }
 
+    private Initialized: boolean = false;
     private GlobalDataToShow: GlobalDataToShowClass;
     private LatePopupIsVisible: boolean;
     private CelebrationIsVisible: boolean;

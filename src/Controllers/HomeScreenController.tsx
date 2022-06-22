@@ -31,7 +31,7 @@ let SplashScreenHidden = false;
 
 export default function HomeScreenController(props) {
   try {
-    const [state, setState] = useState();
+    const [state, setState] = useState(new HomeScreenState());
     CurrentState = state;
     useEffect(() => InitialEffect(props, setState), []);
     SetViewWithTheInitialDataLoaded(setState);
@@ -45,13 +45,14 @@ export default function HomeScreenController(props) {
 }
 
 function GetView(props, CurrentState, setState){
-  if(CurrentState === undefined){
+  const thereIsSomeError = CurrentState.ObtainDataErrorMessage === undefined || CurrentState.ObtainDataErrorMessage === "";
+  if(!CurrentState.Initialized || thereIsSomeError){
     return null;
   }
   else{
     return (
         <SafeAreaView style={{flex: 1}}>
-          {CurrentState.ObtainDataErrorMessage === undefined || CurrentState.ObtainDataErrorMessage === "" ?
+          { thereIsSomeError?
               HomeScreenView(props.navigation, setState)
               :
               HomeScreenViewWithError(CurrentState.ObtainDataErrorMessage)}
@@ -281,8 +282,8 @@ function HandleGetDataError(error, setState){
 
 function HomeScreenViewWithError(currentObtainDataErrorMessage){
   return(
-      <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{fontSize: 19, color: 'black', textAlign: 'center' }}>{currentObtainDataErrorMessage}</Text>
+      <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 15 }}>
+        <Text style={{ fontSize: 17, color: 'black', textAlign: 'center' }}>{currentObtainDataErrorMessage}</Text>
       </View>
   );
 }

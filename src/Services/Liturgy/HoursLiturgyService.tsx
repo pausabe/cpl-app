@@ -9,852 +9,324 @@ import GLOBAL from '../../Utils/GlobalKeys';
 import GF from '../../Utils/GlobalFunctions';
 import SoulKeys from '../../Controllers/Classes/SOUL/SoulKeys';
 import * as DatabaseDataService from '../DatabaseDataService';
+import HoursLiturgy from "../../Models/HoursLiturgyModel";
 
 let GlobalData;
+let queryRows = {
+  salteriComuOfici: '', //1
+  salteriComuInvitatori: '', //2
+  tempsOrdinariOfici: '', //3
+  tempsOrdinariOracions: '', //4.1
+  tempsOrdinariOracionsVespres1: '', //4.2
+  tempsQuaresmaComuFV: '', //5
+  tempsQuaresmaCendra: '', //6
+  tempsQuaresmaVSetmanes: '', //7
+  tempsQuaresmaComuSS: '', //8
+  tempsQuaresmaRams: '', //9
+  tempsQuaresmaSetSanta: '', //10
+  tempsQuaresmaTridu: '', //11
+  tempsPasquaAA: '', //12
+  tempsPasquaOct: '', //13
+  tempsPasquaDA: '', //14
+  tempsPasquaSetmanes: '', //15
+  tempsAdventNadalComu: '', //16
+  tempsAdventSetmanes: '', //17
+  tempsAdventSetmanesDium: '', //18.1
+  tempsAdventSetmanesDiumVespres1: '', //18.2
+  tempsAdventFeries: '', //19.1
+  tempsAdventFeriesAnt: '', //19.2
+  tempsNadalOctava: '', //20
+  tempsNadalAbansEpifania: '', //21
+  salteriComuEspPasquaDium: '', //22
+  diversos: '', //23
+  salteriComuLaudes: '', //24
+  salteriComuEspPasqua: '', //25
+  tempsPasquaSetmanesDium: '', //26.1
+  tempsPasquaSetmanesDiumVespres1: '', //26.2
+  tempsQuaresmaDiumPasq: '', //27
+  tempsQuaresmaVSetmanesDium: '', //28.1
+  tempsQuaresmaVSetmanesDiumVespres1: '', //28.2
+  salteriComuVespres: '', //29
+  tempsSolemnitatsFestes: '', //30.1
+  tempsSolemnitatsFestesVespres1: '', //30.2
+  salteriComuHora: '', //31
+  salteriComuCompletes: '', //32
+  salteriComuOficiTF: '', //33
+  santsSolemnitats: '', //34.1
+  santsSolemnitatsFVespres1: '', //34.2
+  santsMemories: '', //35
+  OficisComuns: null, //36.1
+  OficisComunsVespres1: null,
+  diesespecials: '', //37
+}
+let LITURGIA = { //8
+  info_cel: null,
+  info_celTom: null,
+  ofici: null,
+  laudes: null,
+  vespres1: false,
+  vespres: null,
+  tercia: null,
+  sexta: null,
+  nona: null,
+  completes: null,
+}
+let INFO_CEL;
+let OFICI;
+let LAUDES;
+let TERCIA;
+let SEXTA;
+let NONA;
+let VESPRES;
+let VESPRES1;
+let COMPLETES;
+let countLit = 7;
+let idDE;
+let idTSF;
+let oficiComuCount;
+let id;
+let prec;
+let tomorrowCal;
+let weekDayNormal;
+let auxCicle;
+let idDM;
+let cicleAux;
+let idLaudes;
+let auxDay;
+let weekDayNormalVESPRES;
+let idTSFTomorrow;
+let idDETomorrow;
+let categoria;
+let info_cel;
+let count;
+let celbracioSoul;
+let oficiSoul;
+let laudesSoul;
+let vespresSoul;
+let horaMenorSoul;
+let completesSoul;
+let vespresCelDEF;
+let CEL;
 
-export default class LH_SOUL {
-  constructor(globalData) {
-    GlobalData = globalData;
+export function ObtainHoursLiturgy(globalData) : Promise<HoursLiturgy> {
+  GlobalData = globalData;
 
-    this.queryRows = {
-      salteriComuOfici: '', //1
-      salteriComuInvitatori: '', //2
-      tempsOrdinariOfici: '', //3
-      tempsOrdinariOracions: '', //4.1
-      tempsOrdinariOracionsVespres1: '', //4.2
-      tempsQuaresmaComuFV: '', //5
-      tempsQuaresmaCendra: '', //6
-      tempsQuaresmaVSetmanes: '', //7
-      tempsQuaresmaComuSS: '', //8
-      tempsQuaresmaRams: '', //9
-      tempsQuaresmaSetSanta: '', //10
-      tempsQuaresmaTridu: '', //11
-      tempsPasquaAA: '', //12
-      tempsPasquaOct: '', //13
-      tempsPasquaDA: '', //14
-      tempsPasquaSetmanes: '', //15
-      tempsAdventNadalComu: '', //16
-      tempsAdventSetmanes: '', //17
-      tempsAdventSetmanesDium: '', //18.1
-      tempsAdventSetmanesDiumVespres1: '', //18.2
-      tempsAdventFeries: '', //19.1
-      tempsAdventFeriesAnt: '', //19.2
-      tempsNadalOctava: '', //20
-      tempsNadalAbansEpifania: '', //21
-      salteriComuEspPasquaDium: '', //22
-      diversos: '', //23
-      salteriComuLaudes: '', //24
-      salteriComuEspPasqua: '', //25
-      tempsPasquaSetmanesDium: '', //26.1
-      tempsPasquaSetmanesDiumVespres1: '', //26.2
-      tempsQuaresmaDiumPasq: '', //27
-      tempsQuaresmaVSetmanesDium: '', //28.1
-      tempsQuaresmaVSetmanesDiumVespres1: '', //28.2
-      salteriComuVespres: '', //29
-      tempsSolemnitatsFestes: '', //30.1
-      tempsSolemnitatsFestesVespres1: '', //30.2
-      salteriComuHora: '', //31
-      salteriComuCompletes: '', //32
-      salteriComuOficiTF: '', //33
-      santsSolemnitats: '', //34.1
-      santsSolemnitatsFVespres1: '', //34.2
-      santsMemories: '', //35
-      OficisComuns: null, //36.1
-      OficisComunsVespres1: null,
-      diesespecials: '', //37
+  prec = 22;
+  if (GlobalData.date.getDay() === 0) {//diumenge
+    prec = 9;
+    if (GlobalData.LT === GLOBAL.A_SETMANES ||
+      GlobalData.LT === GLOBAL.A_FERIES ||
+      GlobalData.LT === GLOBAL.Q_CENDRA ||
+      GlobalData.LT === GLOBAL.Q_SETMANES ||
+      GlobalData.LT === GLOBAL.Q_SET_SANTA ||
+      GlobalData.LT === GLOBAL.P_OCTAVA ||
+      GlobalData.LT === GLOBAL.P_SETMANES) {
+      prec = 2;
     }
+  }
+  let idDE_aux = findDiesEspecials(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta, GlobalData.diocesi);
+  idDE = idDE_aux;
+  let idTSF_aux;
+  if (idDE_aux === -1)
+    idTSF_aux = findTempsSolemnitatsFestes(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
+  else idTSF_aux = -1;
+  idTSF = idTSF_aux;
+  const idTF = findTF(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
 
-    this.LITURGIA = { //8
-      info_cel: null,
-      info_celTom: null,
-      ofici: null,
-      laudes: null,
-      vespres1: false,
-      vespres: null,
-      tercia: null,
-      sexta: null,
-      nona: null,
-      completes: null,
-    }
+  tomorrowCal = '-';
+  tomorrowCal = tomorrowCalVespres1CEL(GlobalData.dataTomorrow.date, GlobalData.dataTomorrow.LT,
+  GlobalData.dataTomorrow.setmana, GlobalData.pentacosta, GlobalData.diocesi);
 
-    this.firstAccessCel = true;
-    this.countLit = 7;
-    this.firstAccess = true;
+  let params = {
+    date: GlobalData.date,
+    vespres1: false,
+    celType: GlobalData.celType,
+    diocesi: GlobalData.diocesi,
+    llati: GlobalData.llati,
+    idTSF: idTSF_aux,
+    idDE: idDE_aux,
+    Set_Soul_CB: Set_Soul_CB,
   }
 
-  makeQueryies(Set_Soul_CB) {
-    this.prec = 22;
-    if (GlobalData.date.getDay() === 0) {//diumenge
-      this.prec = 9;
-      if (GlobalData.LT === GLOBAL.A_SETMANES ||
-        GlobalData.LT === GLOBAL.A_FERIES ||
-        GlobalData.LT === GLOBAL.Q_CENDRA ||
-        GlobalData.LT === GLOBAL.Q_SETMANES ||
-        GlobalData.LT === GLOBAL.Q_SET_SANTA ||
-        GlobalData.LT === GLOBAL.P_OCTAVA ||
-        GlobalData.LT === GLOBAL.P_SETMANES) {
-        this.prec = 2;
-      }
-    }
-    idDE_aux = this.findDiesEspecials(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta, GlobalData.diocesi);
-    this.idDE = idDE_aux;
-    if (idDE_aux === -1)
-      idTSF_aux = this.findTempsSolemnitatsFestes(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
-    else idTSF_aux = -1;
-    this.idTSF = idTSF_aux;
-    var idTF = this.findTF(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
 
-    this.tomorrowCal = '-';
-    this.tomorrowCal = this.tomorrowCalVespres1CEL(GlobalData.dataTomorrow.date, GlobalData.dataTomorrow.LT,
-    GlobalData.dataTomorrow.setmana, GlobalData.pentacosta, GlobalData.diocesi);
+}
 
-    params = {
-      date: GlobalData.date,
-      vespres1: false,
-      celType: GlobalData.celType,
-      diocesi: GlobalData.diocesi,
-      llati: GlobalData.llati,
-      idTSF: idTSF_aux,
-      idDE: idDE_aux,
-      Set_Soul_CB: Set_Soul_CB,
-    }
-    
-    this.oficiComuCount = 0;
-    var c = 0;
-
-    //taula 1 (#2): Ofici(1)
-    if (GlobalData.LT !== GLOBAL.Q_TRIDU && GlobalData.LT !== GLOBAL.P_OCTAVA &&
-      GlobalData.LT !== GLOBAL.N_OCTAVA) {
-      c += 1;
-      id = (parseInt(GlobalData.cicle) - 1) * 7 + (GlobalData.date.getDay() + 1);
-      DatabaseDataService.getLiturgia("salteriComuOfici", id, (result) => {
-        this.queryRows.salteriComuOfici = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 2 (#1): Ofici(2), Laudes(1)
-    if (GlobalData.LT === GLOBAL.O_ORDINARI) {
-      c += 1;
-      id = (parseInt(GlobalData.cicle) - 1) * 7 + (GlobalData.date.getDay() + 1);
-      DatabaseDataService.getLiturgia("salteriComuInvitatori", id, (result) => {
-        this.queryRows.salteriComuInvitatori = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 3 (#10): Ofici(3)
-    if (GlobalData.LT === GLOBAL.O_ORDINARI) {
-      c += 1;
-      id = (parseInt(GlobalData.setmana) - 1) * 7 + (GlobalData.date.getDay() + 1);
-      DatabaseDataService.getLiturgia("tempsOrdinariOfici", id, (result) => {
-        this.queryRows.tempsOrdinariOfici = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 4.1 (#9): Ofici(4), Laudes(2), Vespres(1), HoraMenor(1)
-    if (GlobalData.LT === GLOBAL.O_ORDINARI) {
-      c += 1;
-      id = parseInt(GlobalData.setmana);
-      DatabaseDataService.getLiturgia("tempsOrdinariOracions", id, (result) => {
-        this.queryRows.tempsOrdinariOracions = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 4.2 (#9): Ofici(4), Laudes(2), Vespres(1), HoraMenor(1)
-    if (GlobalData.LT === GLOBAL.O_ORDINARI) {
-      c += 1;
-      id = parseInt(GlobalData.setmana) + 1;
-      DatabaseDataService.getLiturgia("tempsOrdinariOracions", id, (result) => {
-        this.queryRows.tempsOrdinariOracionsVespres1 = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 5 (#11): Ofici(5), Laudes(3), Vespres(2), HoraMenor(2)
-    if (GlobalData.LT === GLOBAL.Q_CENDRA || GlobalData.LT === GLOBAL.Q_SETMANES) {
-      c += 1;
-      id = 1;
-      DatabaseDataService.getLiturgia("tempsQuaresmaComuFV", id, (result) => {
-        this.queryRows.tempsQuaresmaComuFV = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 6 (#12): Ofici(6), Laudes(4), Vespres(3), HoraMenor(3)
-    if (GlobalData.LT === GLOBAL.Q_CENDRA) {
-      c += 1;
-      id = GlobalData.date.getDay() - 2; //dimecres = 1, dijous = 2, ...
-      DatabaseDataService.getLiturgia("tempsQuaresmaCendra", id, (result) => {
-        this.queryRows.tempsQuaresmaCendra = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 7 (#14): Ofici(7), Laudes(5), Vespres(4), HoraMenor(4)
-    if (GlobalData.LT === GLOBAL.Q_SETMANES) {
-      c += 1;
-      id = (parseInt(GlobalData.setmana) - 1) * 7 + (GlobalData.date.getDay() + 1);
-      DatabaseDataService.getLiturgia("tempsQuaresmaVSetmanes", id, (result) => {
-        this.queryRows.tempsQuaresmaVSetmanes = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 8 (#15): Ofici(8), Laudes(6), Vespres(5), HoraMenor(5)
-    if (GlobalData.LT === GLOBAL.Q_DIUM_RAMS || this.tomorrowCal === 'DR' || GlobalData.LT === GLOBAL.Q_SET_SANTA) {
-      c += 1;
-      id = 1;
-      DatabaseDataService.getLiturgia("tempsQuaresmaComuSS", id, (result) => {
-        this.queryRows.tempsQuaresmaComuSS = result; this.dataReceived(params);
-      });
-    }
-
-    //taula 9 (#16): Ofici(9), Laudes(7), Vespres(6), HoraMenor(6)
-    if (GlobalData.LT === GLOBAL.Q_DIUM_RAMS || this.tomorrowCal === 'DR') {
-      c += 1;
-      id = 1;
-      DatabaseDataService.getLiturgia("tempsQuaresmaRams", id, (result) => {
-        this.queryRows.tempsQuaresmaRams = result; this.dataReceived(params);
-      });
-    }
-
-    //taula 10 (#17): Ofici(10), Laudes(8), Vespres(7), HoraMenor(7)
-    if (GlobalData.LT === GLOBAL.Q_SET_SANTA) {
-      c += 1;
-      id = GlobalData.date.getDay(); //dilluns = 1, dimarts = 2, dimecres = 3 i dijous = 4
-      DatabaseDataService.getLiturgia("tempsQuaresmaSetSanta", id, (result) => {
-        this.queryRows.tempsQuaresmaSetSanta = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 11 (#18): Ofici(11), Laudes(9), Vespres(8), HoraMenor(8)
-    if (this.tomorrowCal === 'T' || GlobalData.LT === GLOBAL.Q_TRIDU) {
-      c += 1;
-      id = GlobalData.date.getDay() - 3; //dijous = 1, divendres = 2 i dissabte = 3
-      DatabaseDataService.getLiturgia("tempsQuaresmaTridu", id, (result) => {
-        this.queryRows.tempsQuaresmaTridu = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 12 (#20): Ofici(12), Laudes(10), Vespres(9), HoraMenor(9)
-    if (GlobalData.LT === GLOBAL.P_OCTAVA || GlobalData.LT === GLOBAL.P_SETMANES) {
-      c += 1;
-      id = 1;
-      DatabaseDataService.getLiturgia("tempsPasquaAA", id, (result) => {
-        this.queryRows.tempsPasquaAA = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 13 (#21): Ofici(13), Laudes(11), Vespres(10), HoraMenor(10)
-    if (GlobalData.LT === GLOBAL.P_OCTAVA) {
-      c += 1;
-      { GlobalData.date.getDay() === 0 ? weekDayNormal = 7 : weekDayNormal = GlobalData.date.getDay() }
-      id = weekDayNormal;
-      DatabaseDataService.getLiturgia("tempsPasquaOct", id, (result) => {
-        this.queryRows.tempsPasquaOct = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 14 (#22): Ofici(14), Laudes(12), Vespres(11), HoraMenor(11)
-    if (GlobalData.LT === GLOBAL.P_SETMANES) {
-      c += 1;
-      id = 1;
-      DatabaseDataService.getLiturgia("tempsPasquaDA", id, (result) => {
-        this.queryRows.tempsPasquaDA = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 15 (#23): Ofici(15), Laudes(13), Vespres(12), HoraMenor(12)
-    if (GlobalData.LT === GLOBAL.P_SETMANES) {
-      c += 1;
-      id = (parseInt(GlobalData.setmana) - 2) * 7 + (GlobalData.date.getDay() + 1);
-      if (id === 43) //diumenge de pentacosta (no està dins tempsPasquaSetmanes). Apaño perquè no peti
-        id = 1;
-
-      DatabaseDataService.getLiturgia("tempsPasquaSetmanes", id, (result) => {
-        this.queryRows.tempsPasquaSetmanes = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 16 (#25): Ofici(16), Laudes(14), Vespres(13), HoraMenor(13)
-    if (GlobalData.LT === GLOBAL.A_SETMANES || GlobalData.LT === GLOBAL.A_FERIES ||
-      GlobalData.LT === GLOBAL.N_OCTAVA || GlobalData.LT === GLOBAL.N_ABANS ||
-      this.tomorrowCal === 'A') {
-      c += 1;
-      switch (GlobalData.LT) {
-        case GLOBAL.A_SETMANES:
-          id = 1;
-          break;
-        case GLOBAL.A_FERIES:
-          id = 2;
-          break;
-        case GLOBAL.N_OCTAVA:
-          id = 3;
-          break;
-        case GLOBAL.N_ABANS:
-          if (GlobalData.date.getDate() < 6) { id = 3; }
-          else { id = 4; }
-          break;
-        default: id = 1;
-      }
-      DatabaseDataService.getLiturgia("tempsAdventNadalComu", id, (result) => {
-        this.queryRows.tempsAdventNadalComu = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 17 (#26): Ofici(17), Laudes(15), Vespres(14), HoraMenor(14)
-    if (GlobalData.LT === GLOBAL.A_SETMANES || this.tomorrowCal === 'A') {
-      c += 1;
-      //Week begins with saturday
-      auxCicle = GlobalData.cicle;
-      if (this.tomorrowCal === 'A') {
-        auxCicle = 1;
-        auxDay = 1;
-      }
-      if (GlobalData.LT === GLOBAL.O_ORDINARI && GlobalData.dataTomorrow.LT === GLOBAL.A_SETMANES) id = 1;
-      else id = (parseInt(auxCicle) - 1) * 7 + GlobalData.date.getDay() + 2;
-      DatabaseDataService.getLiturgia("tempsAdventSetmanes", id, (result) => {
-        this.queryRows.tempsAdventSetmanes = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 18.1 (#27): Ofici(18), Laudes(16), Vespres(15), HoraMenor(15)
-    if (GlobalData.LT === GLOBAL.A_SETMANES || GlobalData.LT === GLOBAL.A_FERIES) {
-      c += 1;
-      id = parseInt(GlobalData.cicle);
-      DatabaseDataService.getLiturgia("tempsAdventSetmanesDium", id, (result) => {
-        this.queryRows.tempsAdventSetmanesDium = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 18.2 (#27): Ofici(18), Laudes(16), Vespres(15), HoraMenor(15)
-    if (GlobalData.LT === GLOBAL.A_SETMANES || GlobalData.LT === GLOBAL.A_FERIES || this.tomorrowCal === 'A') {
-      c += 1;
-      id = parseInt(GlobalData.cicle) + 1;
-      if (this.tomorrowCal === 'A') id = 1;
-      DatabaseDataService.getLiturgia("tempsAdventSetmanesDium", id, (result) => {
-        this.queryRows.tempsAdventSetmanesDiumVespres1 = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 19 (#28): Ofici(19), Laudes(17), Vespres(16), HoraMenor(16)
-    if (GlobalData.LT === GLOBAL.A_FERIES) {
-      c += 1;
-      id = GlobalData.date.getDate() - 16;
-      DatabaseDataService.getLiturgia("tempsAdventFeries", id, (result) => {
-        this.queryRows.tempsAdventFeries = result;
-        this.dataReceived(params);
-      });
-
-      if (auxDay !== 0) {
-        //special antifonas
-        c += 1;
-        DatabaseDataService.getLiturgia("tempsAdventFeriesAnt", GlobalData.date.getDay(), (result) => {
-          this.queryRows.tempsAdventFeriesAnt = result;
-          this.dataReceived(params);
-        });
-      }
-    }
-
-    //taula 20 (#29): Ofici(20), Laudes(18), Vespres(17), HoraMenor(17)
-    if (GlobalData.LT === GLOBAL.N_OCTAVA && GlobalData.date.getDate() !== 25) {
-      c += 1;
-      id = GlobalData.date.getDate() - 25;
-      if (GlobalData.date.getDate() === 1) id = 1; //poso 1 per posar algo, no importa. No llegirà res
-      DatabaseDataService.getLiturgia("tempsNadalOctava", id, (result) => {
-        this.queryRows.tempsNadalOctava = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 21 (#30): Ofici(21), Laudes(19), Vespres(18), HoraMenor(18)
-    if (GlobalData.LT === GLOBAL.N_ABANS) {
-      c += 1;
-      { GlobalData.date.getDate() < 6 ? id = GlobalData.date.getDate() - 1 : id = GlobalData.date.getDate() - 2 }
-      DatabaseDataService.getLiturgia("tempsNadalAbansEpifania", id, (result) => {
-        this.queryRows.tempsNadalAbansEpifania = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 22 (#7): Ofici(22)
-    if (GlobalData.LT === GLOBAL.P_SETMANES) {
-      c += 1;
-      id = 1;
-      DatabaseDataService.getLiturgia("salteriComuEspPasquaDium", id, (result) => {
-        this.queryRows.salteriComuEspPasquaDium = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 23 (#?): Ofici(23), Laudes(20), Vespres(19), HoraMenor(19), Completes(1)
-    if (true) {
-      c += 1;
-      id = -1;
-      DatabaseDataService.getLiturgia("diversos", id, (result) => {
-        this.queryRows.diversos = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 24 (#3): Laudes(21)
-    if (GlobalData.LT !== GLOBAL.Q_TRIDU && GlobalData.LT !== GLOBAL.P_OCTAVA) {
-      c += 1;
-      cicleAux = parseInt(GlobalData.cicle);
-      auxDay = GlobalData.date.getDay();
-      if (params.idTSF !== -1 || GlobalData.celType === 'S' || GlobalData.celType === 'F' ||
-        (GlobalData.date.getMonth() === 11 && (GlobalData.date.getDate() === 29 || GlobalData.date.getDate() === 30 || GlobalData.date.getDate() === 31)) ||
-        (GlobalData.date.getMonth() === 0 && GlobalData.date.getDate() === 6)) {
-        cicleAux = 1;
-        auxDay = 0;
-      }
-      else if (params.idTSF === 2) cicleAux = 2;
-      idLaudes = (cicleAux - 1) * 7 + (auxDay + 1);
-      DatabaseDataService.getLiturgia("salteriComuLaudes", idLaudes, (result) => {
-        this.queryRows.salteriComuLaudes = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 25 (#8): Laudes(22), Vespres(20)
-    if (GlobalData.LT === GLOBAL.P_SETMANES) {
-      c += 1;
-      idLaudes = (parseInt(GlobalData.cicle) - 1) * 6 + (GlobalData.date.getDay());
-      DatabaseDataService.getLiturgia("salteriComuEspPasqua", idLaudes, (result) => {
-        this.queryRows.salteriComuEspPasqua = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 26.1 (#24): Laudes(23), Vespres(21)
-    if (GlobalData.LT === GLOBAL.P_SETMANES) {
-      c += 1;
-      id = parseInt(GlobalData.setmana) - 1;
-      if (id === 7) //diumenge de pentacosta. Apaño perquè no peti
-        id = 6;
-      DatabaseDataService.getLiturgia("tempsPasquaSetmanesDium", id, (result) => {
-        this.queryRows.tempsPasquaSetmanesDium = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 26.2 (#24): Laudes(23), Vespres(21)
-    if (GlobalData.LT === GLOBAL.P_SETMANES) {
-      c += 1;
-      id = parseInt(GlobalData.setmana);
-      if (id === 7 || id === 8) //diumenge de pentacosta. Apaño perquè no peti
-        id = 6;
-      DatabaseDataService.getLiturgia("tempsPasquaSetmanesDium", id, (result) => {
-        this.queryRows.tempsPasquaSetmanesDiumVespres1 = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 27 (#19): Laudes(24), Vespres(22)
-    if (GlobalData.LT === GLOBAL.P_OCTAVA || GlobalData.LT === GLOBAL.Q_DIUM_PASQUA) {
-      c += 1;
-      id = 1;
-      DatabaseDataService.getLiturgia("tempsQuaresmaDiumPasq", id, (result) => {
-        this.queryRows.tempsQuaresmaDiumPasq = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 28.1 (#13): Laudes(26), Vespres(23)
-    if (GlobalData.LT === GLOBAL.Q_SETMANES) {
-      c += 1;
-      id = parseInt(GlobalData.setmana);
-      DatabaseDataService.getLiturgia("tempsQuaresmaVSetmanesDium", id, (result) => {
-        this.queryRows.tempsQuaresmaVSetmanesDium = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 28.2 (#13): Laudes(26), Vespres(23)
-    if (GlobalData.LT === GLOBAL.Q_SETMANES || GlobalData.LT === GLOBAL.Q_CENDRA) {
-      c += 1;
-      if (GlobalData.LT === GLOBAL.Q_CENDRA) id = 1;
-      else id = parseInt(GlobalData.setmana) + 1;
-      DatabaseDataService.getLiturgia("tempsQuaresmaVSetmanesDium", id, (result) => {
-        this.queryRows.tempsQuaresmaVSetmanesDiumVespres1 = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 29 (#5): Vespres(24)
-    if (GlobalData.LT !== GLOBAL.Q_TRIDU && GlobalData.LT !== GLOBAL.P_OCTAVA) {
-      c += 1;
-      { GlobalData.date.getDay() === 6 ? weekDayNormalVESPRES = 1 : weekDayNormalVESPRES = GlobalData.date.getDay() + 2 }
-      var cicle = parseInt(GlobalData.cicle);
-      if (GlobalData.date.getDay() === 6) {
-        { cicle === 4 ? cicle = 1 : cicle += 1 }
-      }
-      if (this.tomorrowCal === 'A') cicle = 1;
-      id = (cicle - 1) * 7 + weekDayNormalVESPRES;
-      DatabaseDataService.getLiturgia("salteriComuVespres", id, (result) => {
-        this.queryRows.salteriComuVespres = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 30.1 (#31): -
-    if (params.idTSF !== -1 || GlobalData.LT === GLOBAL.Q_TRIDU || GlobalData.LT === GLOBAL.N_OCTAVA) {
-      c += 1;
-      if (params.idTSF === -1 && GlobalData.LT === GLOBAL.N_OCTAVA) {
-        id = SoulKeys.tempsSolemnitatsFestes_Nadal; //Només necessito Nadal (1) per N_OCTAVA
-      }
-      else {
-        id = params.idTSF;
-      }
-      DatabaseDataService.getLiturgia("tempsSolemnitatsFestes", id, (result) => {
-        this.queryRows.tempsSolemnitatsFestes = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 30.2 (#31): -
-    if (this.tomorrowCal === 'TSF' || params.idTSF !== -1 || GlobalData.LT === GLOBAL.Q_TRIDU || GlobalData.LT === GLOBAL.N_OCTAVA) {
-      c += 1;
-      if (params.idTSF === -1 && GlobalData.LT === GLOBAL.N_OCTAVA) {
-        id = SoulKeys.tempsSolemnitatsFestes_Nadal; //Només necessito Nadal (1) per N_OCTAVA
-      }
-      else {
-        id = params.idTSF;
-      }
-      if (this.tomorrowCal === 'TSF') {
-        id = this.idTSFTomorrow;
-      }
-      DatabaseDataService.getLiturgia("tempsSolemnitatsFestes", id, (result) => {
-        this.queryRows.tempsSolemnitatsFestesVespres1 = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 31 (#4): HoraMenor(20)
-    if (GlobalData.LT !== GLOBAL.Q_TRIDU && GlobalData.LT !== GLOBAL.P_OCTAVA) {
-      c += 1;
-      id = (parseInt(GlobalData.cicle) - 1) * 7 + (GlobalData.date.getDay() + 1);
-      DatabaseDataService.getLiturgia("salteriComuHora", id, (result) => {
-        this.queryRows.salteriComuHora = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 32 (#6): Completes(2)
-    if (true) {
-      c += 1;
-      { GlobalData.date.getDay() === 6 ? id = 1 : id = GlobalData.date.getDay() + 2 }
-      if ((GlobalData.dataTomorrow.LT === GLOBAL.Q_DIUM_PASQUA || this.tomorrowCal === 'TSF' || this.tomorrowCal === 'S') && !(GlobalData.date.getDay() === 6 || GlobalData.date.getDay() === 0)) id = 8;
-      if ((GlobalData.celType === 'S' || this.idTSF !== -1) && !(GlobalData.date.getDay() === 6 || GlobalData.date.getDay() === 0)) id = 9;
-      if (GlobalData.LT === GLOBAL.P_OCTAVA) id = 2;
-      if (GlobalData.LT === GLOBAL.N_OCTAVA) id = 9;
-      if (GlobalData.LT === GLOBAL.Q_SET_SANTA && (GlobalData.date.getDay() === 4 || GlobalData.date.getDay() === 5 || GlobalData.date.getDay() === 6)) id = 9;
-      if (GlobalData.LT === GLOBAL.Q_TRIDU) id = 9;
-      DatabaseDataService.getLiturgia("salteriComuCompletes", id, (result) => {
-        this.queryRows.salteriComuCompletes = result;
-        this.dataReceived(params);
-      });
-    }
-
-    //taula 33 (#??): Ofici(24)
-    if (idTF !== -1) {
-      c += 1;
-      id = idTF;
-      DatabaseDataService.getLiturgia("salteriComuOficiTF", id, (result) => {
-        this.queryRows.salteriComuOficiTF = result;
-        this.queryRows.salteriComuOficiTF.com2 = '-';
-        this.queryRows.salteriComuOficiTF.com3 = '-';
-        this.dataReceived(params);
-      });
-    }
-    else {
-      this.queryRows.salteriComuOficiTF = '';
-    }
-
-    //taula 34.1 (#32): - i //taula 36 (today)
-    if (GlobalData.LT !== GLOBAL.Q_DIUM_PASQUA && (((params.idTSF === -1 && params.idDE === -1) && (GlobalData.celType === 'S' || GlobalData.celType === 'F')))) {
-
-      c += 1;
-
-      idDM = this.diesMov(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta, GlobalData.celType);
-      if (idDM === -1) {
-        var day = GF.calculeDia(GlobalData.date, GlobalData.diocesi, GlobalData.diaMogut, GlobalData.diocesiMogut);
-        DatabaseDataService.getSolMem("santsSolemnitats", day, GlobalData.diocesi, GlobalData.lloc, GlobalData.diocesiName, GlobalData.tempsespecific, (result) => {
-          this.queryRows.santsSolemnitats = result;
-          this.getOficisComuns(params, result, false);
-        });
-      }
-      else {
-        DatabaseDataService.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
-          this.queryRows.santsSolemnitats = result;
-          this.getOficisComuns(params, result, false);
-        });
-      }
-    }
-
-    //taula 34.2 (#32): - i //taula 36 (tomorrow!)
-    if (this.tomorrowCal === 'S') {
-      c += 1;
-      idDM = this.diesMov(GlobalData.dataTomorrow.date, GlobalData.dataTomorrow.LT, GlobalData.dataTomorrow.setmana, GlobalData.pentacosta, GlobalData.dataTomorrow.celType);
-      if (idDM !== -1) {
-        params.vespres1 = true;
-        DatabaseDataService.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
-          this.queryRows.santsSolemnitatsFVespres1 = result;
-          this.getOficisComuns(params, result, true);
-        });
-      }
-      else {
-        var day = '-';
-        if (GlobalData.dataTomorrow.diaMogut !== '-' && GF.isDiocesiMogut(GlobalData.diocesi, GlobalData.dataTomorrow.diocesiMogut)) {
-          day = GlobalData.dataTomorrow.diaMogut;
-        }
-
-        if (day === '-') {
-          var auxDay = new Date(GlobalData.date.getFullYear(), GlobalData.date.getMonth(), (GlobalData.date.getDate() + 1));
-          day = GF.calculeDia(auxDay, GlobalData.diocesi, '-', '-');
-        }
-        params.vespres1 = true;
-        DatabaseDataService.getSolMem("santsSolemnitats", day, GlobalData.diocesi, GlobalData.lloc, GlobalData.diocesiName, GlobalData.tempsespecific, (result) => {
-          this.queryRows.santsSolemnitatsFVespres1 = result;
-          this.getOficisComuns(params, result, true);
-        });
-      }
-    }
-
-    //taula 35 (#31): -  i //taula 36
-    if (params.idTSF === -1 && (GlobalData.celType === 'M' || GlobalData.celType === 'L' || GlobalData.celType === 'V')) {
-      c += 1;
-
-      idDM = this.diesMov(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta, GlobalData.celType);
-
-      if (GlobalData.celType === 'V' && idDM === -1) {
-        DatabaseDataService.getV((result) => {
-          this.queryRows.santsMemories = result;
-          this.getOficisComuns(params, result, false);
-        });
-      }
-      else {
-        if (idDM === -1) {
-          var day = GF.calculeDia(GlobalData.date, GlobalData.diocesi, GlobalData.diaMogut, GlobalData.diocesiMogut);
-          DatabaseDataService.getSolMem("santsMemories", day, GlobalData.diocesi, GlobalData.lloc, GlobalData.diocesiName, GlobalData.tempsespecific, (result) => {
-            this.queryRows.santsMemories = result;
-            this.getOficisComuns(params, result, false);
-          });
+function getOficisComuns(params, result, isForVespres1) {
+  if (result) {
+    categoria = result.Categoria;
+    if (categoria !== '0000') {
+      //taula 36 (#??): -
+      DatabaseDataService.getOC(categoria, (result, cat) => {
+        if (params.vespres1 && isForVespres1) {
+          queryRows.OficisComunsVespres1 = result;
         }
         else {
-          DatabaseDataService.getSolMemDiesMov("santsMemories", idDM, (result) => {
-            this.queryRows.santsMemories = result;
-            this.getOficisComuns(params, result, false);
-          });
+          queryRows.OficisComuns = result;
         }
-      }
-    }
-
-    //taula 37 (#?): -
-    if (this.tomorrowCal === 'DE' || params.idDE !== -1) {
-      c += 1;
-      id = params.idDE;
-      if (this.tomorrowCal === 'DE') id = this.idDETomorrow;
-      DatabaseDataService.getLiturgia("diesespecials", id, (result) => {
-        this.queryRows.diesespecials = result;
-        this.dataReceived(params);
+        dataReceived(params);
       });
     }
 
-    this.count = c; //number of queryies
+    else {
+      dataReceived(params);
+    }
+
   }
+  else {
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "getOficisComuns", "InfoLog. Error OC. No result from DB");
+    creatingEmptyCEL();
+    info_cel = {
+      nomCel: '-',
+      infoCel: '-',
+      typeCel: '-'
+    }
+    LITURGIA.info_cel = info_cel;
+    calls(params.Set_Soul_CB);
+  }
+}
 
-  getOficisComuns(params, result, isForVespres1) {
-    if (result) {
-      categoria = result.Categoria;
-      if (categoria !== '0000') {
-        //taula 36 (#??): -
-        DatabaseDataService.getOC(categoria, (result, cat) => {
-          if (params.vespres1 && isForVespres1) {
-            this.queryRows.OficisComunsVespres1 = result;
-          }
-          else {
-            this.queryRows.OficisComuns = result;
-          }
-          this.dataReceived(params);
-        });
-      }
+function dataReceived(params) {
+  count -= 1;
 
-      else {
-        this.dataReceived(params);
-      }
-
+  if (count === 0) {
+    if (celbracioSoul === undefined) {
+      celbracioSoul = new CelebracioSoul(queryRows, params.idTSF, params.idDE, params.Set_Soul_CB, this, tomorrowCal, GlobalData);
     }
     else {
-      Logger.LogError(Logger.LogKeys.HomeScreenController, "getOficisComuns", "InfoLog. Error OC. No result from DB");
-      this.creatingEmptyCEL();
-      info_cel = {
-        nomCel: '-',
-        infoCel: '-',
-        typeCel: '-'
-      }
-      this.LITURGIA.info_cel = info_cel;
-      this.calls(params.Set_Soul_CB);
+      celbracioSoul.makePrayer(queryRows, params.idTSF, params.idDE, params.Set_Soul_CB, this, tomorrowCal);
     }
   }
+}
 
-  dataReceived(params) {
-    this.count -= 1;
-
-    if (this.count === 0) {
-      if (this.firstAccessCel) {
-        this.firstAccessCel = false;
-        this.CelebracioSoul = new CelebracioSoul(this.queryRows, params.idTSF, params.idDE, params.Set_Soul_CB, this, this.tomorrowCal, GlobalData);
-      }
-      else {
-        this.CelebracioSoul.makePrayer(this.queryRows, params.idTSF, params.idDE, params.Set_Soul_CB, this, this.tomorrowCal);
-      }
-    }
-  }
-
-  setSoul(Set_Soul_CB, type, pregaria) {
+function setSoul(Set_Soul_CB, type, pregaria) {
     switch (type) {
       case "ofici":
-        this.countLit -= 1;
-        this.LITURGIA.ofici = pregaria;
+        countLit -= 1;
+        LITURGIA.ofici = pregaria;
         break;
       case "laudes":
-        this.countLit -= 1;
-        this.LITURGIA.laudes = pregaria;
+        countLit -= 1;
+        LITURGIA.laudes = pregaria;
         break;
       case "vespres":
-        this.countLit -= 1;
-        this.LITURGIA.vespres = pregaria;
+        countLit -= 1;
+        LITURGIA.vespres = pregaria;
         break;
       case "tercia":
-        this.countLit -= 1;
-        this.LITURGIA.tercia = pregaria;
+        countLit -= 1;
+        LITURGIA.tercia = pregaria;
         break;
       case "sexta":
-        this.LITURGIA.sexta = pregaria;
-        this.countLit -= 1;
+        LITURGIA.sexta = pregaria;
+        countLit -= 1;
         break;
       case "nona":
-        this.countLit -= 1;
-        this.LITURGIA.nona = pregaria;
+        countLit -= 1;
+        LITURGIA.nona = pregaria;
         break;
       case "completes":
-        this.countLit -= 1;
-        this.LITURGIA.completes = pregaria;
+        countLit -= 1;
+        LITURGIA.completes = pregaria;
         break;
       case "celebracio":
-        this.CEL = pregaria;
+        CEL = pregaria;
         
-        this.LITURGIA.info_cel = pregaria.INFO_CEL;
+        LITURGIA.info_cel = pregaria.INFO_CEL;
 
-        this.calls(Set_Soul_CB);
+        calls(Set_Soul_CB);
         break;
     }
 
-    if (this.countLit === 0) {
-      this.countLit = 7;
-      Set_Soul_CB(this.LITURGIA, this.LITURGIA.info_cel);
+    if (countLit === 0) {
+      countLit = 7;
+      Set_Soul_CB(LITURGIA, LITURGIA.info_cel);
     }
   }
 
-  calls(Set_Soul_CB) {
-    this.setSomeInfo();
+function calls(Set_Soul_CB) {
+    setSomeInfo();
     if (
-      this.tomorrowCal === '-' || //demà no hi ha cap celebració
-      this.tomorrowCal === 'F' || //demà hi ha Festa
+      tomorrowCal === '-' || //demà no hi ha cap celebració
+      tomorrowCal === 'F' || //demà hi ha Festa
 
       // TODO: HARDCODED These conditions below is there to fix Montserrat's Day. Fix properly (fa que les vespres siguin de Montserrat i no de St Jordi)
       (GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30) ||
       (GlobalData.date.getFullYear() == 2022 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 27) ||
 
-      (this.idTSF !== -1 && this.tomorrowCal !== 'TSF') || //quan dues TSF seguides es fa Vespres1 de la segona TSF. Basicamen evito el conflicte de les Vespres de Sagrada Familia quan cau en 31/12 i l'andemà és Mare de Déi 1/1 (únic conflicte possible entre TSF)
-      (this.idDE !== -1 && this.tomorrowCal === '-') || //avui és DE i demà no hi ha celebració
-      (GlobalData.date.getDay() === 0 && this.tomorrowCal === 'S' && GlobalData.LT !== GLOBAL.O_ORDINARI) //Amb això generalitzo que DiumengeOrdinari>S i potser no és així
+      (idTSF !== -1 && tomorrowCal !== 'TSF') || //quan dues TSF seguides es fa Vespres1 de la segona TSF. Basicamen evito el conflicte de les Vespres de Sagrada Familia quan cau en 31/12 i l'andemà és Mare de Déi 1/1 (únic conflicte possible entre TSF)
+      (idDE !== -1 && tomorrowCal === '-') || //avui és DE i demà no hi ha celebració
+      (GlobalData.date.getDay() === 0 && tomorrowCal === 'S' && GlobalData.LT !== GLOBAL.O_ORDINARI) //Amb això generalitzo que DiumengeOrdinari>S i potser no és així
     ) {
-      this.LITURGIA.vespres1 = false;
-      vespresCelDEF = this.CEL.VESPRES;
+      LITURGIA.vespres1 = false;
+      vespresCelDEF = CEL.VESPRES;
       
     }
-    else if (this.tomorrowCal === 'T') { //demà és divendres Sant
-      this.LITURGIA.vespres1 = false;
-      vespresCelDEF = this.CEL.VESPRES1;
+    else if (tomorrowCal === 'T') { //demà és divendres Sant
+      LITURGIA.vespres1 = false;
+      vespresCelDEF = CEL.VESPRES1;
     }
     else {
-      this.LITURGIA.vespres1 = true;
-      vespresCelDEF = this.CEL.VESPRES1;
+      LITURGIA.vespres1 = true;
+      vespresCelDEF = CEL.VESPRES1;
     }
 
-    if (this.firstAccess) {
-      this.firstAccess = false;
-      this.OficiSoul = new OficiSoul(this.queryRows, this.CEL.OFICI, Set_Soul_CB, this, GlobalData);
-      this.LaudesSoul = new LaudesSoul(this.queryRows, this.CEL.LAUDES, Set_Soul_CB, this, GlobalData);
-      this.VespresSoul = new VespresSoul(this.queryRows, vespresCelDEF, Set_Soul_CB, this, GlobalData);
-      this.HoraMenorSoul = new HoraMenorSoul(this.queryRows, this.CEL.HORA_MENOR, Set_Soul_CB, this, GlobalData);
-      this.CompletesSoul = new CompletesSoul(this.queryRows, Set_Soul_CB, this, GlobalData);
+    if (oficiSoul === undefined) {
+      oficiSoul = new OficiSoul(queryRows, CEL.OFICI, Set_Soul_CB, this, GlobalData);
+      laudesSoul = new LaudesSoul(queryRows, CEL.LAUDES, Set_Soul_CB, this, GlobalData);
+      vespresSoul = new VespresSoul(queryRows, vespresCelDEF, Set_Soul_CB, this, GlobalData);
+      horaMenorSoul = new HoraMenorSoul(queryRows, CEL.HORA_MENOR, Set_Soul_CB, this, GlobalData);
+      completesSoul = new CompletesSoul(queryRows, Set_Soul_CB, this, GlobalData);
     }
     else {
-      this.OficiSoul.makePrayer(this.queryRows, this.CEL.OFICI, Set_Soul_CB, this);
-      this.LaudesSoul.makePrayer(this.queryRows, this.CEL.LAUDES, Set_Soul_CB, this);
-      this.VespresSoul.makePrayer(this.queryRows, vespresCelDEF, Set_Soul_CB, this);
-      this.HoraMenorSoul.makePrayer(this.queryRows, this.CEL.HORA_MENOR, Set_Soul_CB, this);
-      this.CompletesSoul.makePrayer(this.queryRows, Set_Soul_CB, this);
+      oficiSoul.makePrayer(queryRows, CEL.OFICI, Set_Soul_CB, this);
+      laudesSoul.makePrayer(queryRows, CEL.LAUDES, Set_Soul_CB, this);
+      vespresSoul.makePrayer(queryRows, vespresCelDEF, Set_Soul_CB, this);
+      horaMenorSoul.makePrayer(queryRows, CEL.HORA_MENOR, Set_Soul_CB, this);
+      completesSoul.makePrayer(queryRows, Set_Soul_CB, this);
     }
   }
 
-  setSomeInfo() {
+function setSomeInfo() {
     if (GlobalData.LT === GLOBAL.Q_DIUM_RAMS) {
-      this.LITURGIA.info_cel.nomCel = "Diumenge de Rams";
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
+      LITURGIA.info_cel.nomCel = "Diumenge de Rams";
+      LITURGIA.info_cel.infoCel = '-';
+      LITURGIA.info_cel.typeCel = '-';
     }
-    else if (this.LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_SET_SANTA) {
-      this.LITURGIA.info_cel.nomCel = this.weekDayName(GlobalData.date.getDay()) + " Sant";
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_SET_SANTA) {
+      LITURGIA.info_cel.nomCel = weekDayName(GlobalData.date.getDay()) + " Sant";
+      LITURGIA.info_cel.infoCel = '-';
+      LITURGIA.info_cel.typeCel = '-';
     }
-    else if (this.LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_TRIDU) {
-      this.LITURGIA.info_cel.nomCel = this.weekDayName(GlobalData.date.getDay()) + " Sant";
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_TRIDU) {
+      LITURGIA.info_cel.nomCel = weekDayName(GlobalData.date.getDay()) + " Sant";
+      LITURGIA.info_cel.infoCel = '-';
+      LITURGIA.info_cel.typeCel = '-';
     }
-    else if (this.LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.P_OCTAVA) {
-      this.LITURGIA.info_cel.nomCel = "Octava de Pasqua";
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.P_OCTAVA) {
+      LITURGIA.info_cel.nomCel = "Octava de Pasqua";
+      LITURGIA.info_cel.infoCel = '-';
+      LITURGIA.info_cel.typeCel = '-';
     }
-    else if (this.LITURGIA.info_cel.nomCel === '-'
+    else if (LITURGIA.info_cel.nomCel === '-'
       && GlobalData.LT === GLOBAL.N_OCTAVA
-      && this.idTSF === -1 && this.idDE === -1) {
-      this.LITURGIA.info_cel.nomCel = "Octava de Nadal";
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
+      && idTSF === -1 && idDE === -1) {
+      LITURGIA.info_cel.nomCel = "Octava de Nadal";
+      LITURGIA.info_cel.infoCel = '-';
+      LITURGIA.info_cel.typeCel = '-';
     }
-    else if (this.LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_CENDRA) {
-      this.LITURGIA.info_cel.nomCel = "Cendra";
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_CENDRA) {
+      LITURGIA.info_cel.nomCel = "Cendra";
+      LITURGIA.info_cel.infoCel = '-';
+      LITURGIA.info_cel.typeCel = '-';
     }
-    else if (this.LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.A_FERIES) {
-      this.LITURGIA.info_cel.nomCel = "Fèria d’Advent";
-      this.LITURGIA.info_cel.infoCel = '-';
-      this.LITURGIA.info_cel.typeCel = '-';
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.A_FERIES) {
+      LITURGIA.info_cel.nomCel = "Fèria d’Advent";
+      LITURGIA.info_cel.infoCel = '-';
+      LITURGIA.info_cel.typeCel = '-';
     }
   }
 
-  weekDayName(num) {
+function weekDayName(num) {
     switch (num) {
       case 0:
         return ("Diumenge");
@@ -880,26 +352,26 @@ export default class LH_SOUL {
     }
   }
 
-  tomorrowCalVespres1CEL(date, LT, setmana, pentacosta, diocesi) {
+function tomorrowCalVespres1CEL(date, LT, setmana, pentacosta, diocesi) {
     if (LT !== GLOBAL.Q_DIUM_PASQUA) {
       if (LT === GLOBAL.Q_DIUM_RAMS) return 'DR';
       if (date.getDay() === 5 && LT === GLOBAL.Q_TRIDU) return 'T';
       if (date.getDay() === 0 && setmana === '1' && LT === GLOBAL.A_SETMANES) return 'A';
 
-      this.idDETomorrow = this.findDiesEspecials(date, LT, setmana, pentacosta, diocesi);
-      if (this.idDETomorrow !== -1 && this.idDETomorrow !== 1)
+      idDETomorrow = findDiesEspecials(date, LT, setmana, pentacosta, diocesi);
+      if (idDETomorrow !== -1 && idDETomorrow !== 1)
         return 'DE';
 
-      this.idTSFTomorrow = this.findTempsSolemnitatsFestes(date, LT, setmana, pentacosta);
+      idTSFTomorrow = findTempsSolemnitatsFestes(date, LT, setmana, pentacosta);
  
       // By precedence we dont want tomorrow TFS if today is more important
-      let idTFSToday = this.findTempsSolemnitatsFestes(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
-      if(idTFSToday != -1 && idTFSToday < this.idTSFTomorrow){
-        Logger.Log(Logger.LogKeys.HomeScreenController, "tomorrowCalVespres1CEL", "tomorrow is: " + this.idTSFTomorrow + " but today is more important: " + idTFSToday);
-        this.idTSFTomorrow = -1;
+      let idTFSToday = findTempsSolemnitatsFestes(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
+      if(idTFSToday != -1 && idTFSToday < idTSFTomorrow){
+        Logger.Log(Logger.LogKeys.HomeScreenController, "tomorrowCalVespres1CEL", "tomorrow is: " + idTSFTomorrow + " but today is more important: " + idTFSToday);
+        idTSFTomorrow = -1;
       }
 
-      if (this.idTSFTomorrow !== -1) {
+      if (idTSFTomorrow !== -1) {
         return 'TSF';
       }
 
@@ -908,17 +380,18 @@ export default class LH_SOUL {
     return '-';
   }
 
-  /*
-    Return id of #santsMemories or #santsSolemnitats or -1 if there isn't there
-  */
-  diesMov(date, LT, setmana, pentacosta, celType) {
+/*
+  Return id of #santsMemories or #santsSolemnitats or -1 if there isn't there
+*/
+function diesMov(date, LT, setmana, pentacosta, celType) {
+    let precAux;
     //santsMemories M - Dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
     if (celType === 'M') {
-      var corImmaculat = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 20);
+      let corImmaculat = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 20);
       if (date.getDate() === corImmaculat.getDate() && date.getMonth() === corImmaculat.getMonth() &&
         date.getFullYear() === corImmaculat.getFullYear()) {
-        var precAux = 10;
-        if (precAux < this.prec) this.prec = precAux;
+        precAux = 10;
+        if (precAux < prec) prec = precAux;
         return SoulKeys.santsMemories_CorImmaculatBenauradaVergeMaria;
       }
     }
@@ -939,13 +412,13 @@ export default class LH_SOUL {
     if (date.getDate() === cinta.getDate() && date.getMonth() === cinta.getMonth() &&
       date.getFullYear() === cinta.getFullYear()) {
       if (celType === 'M') {
-        var precAux = 10;
-        if (precAux < this.prec) this.prec = precAux;
+        precAux = 10;
+        if (precAux < prec) prec = precAux;
         return SoulKeys.santsMemories_MareDeuCinta;
       }
       if (celType === 'S') {
-        var precAux = 4;
-        if (precAux < this.prec) this.prec = precAux;
+        precAux = 4;
+        if (precAux < prec) prec = precAux;
         return SoulKeys.santsSolemnitats_MareDeuCinta;
       }
     }
@@ -955,8 +428,8 @@ export default class LH_SOUL {
       var granSacerdot = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 4);
       if (date.getDate() === granSacerdot.getDate() && date.getMonth() === granSacerdot.getMonth() &&
         date.getFullYear() === granSacerdot.getFullYear()) {
-        var precAux = 8;
-        if (precAux < this.prec) this.prec = precAux;
+        precAux = 8;
+        if (precAux < prec) prec = precAux;
         return SoulKeys.santsSolemnitats_JesucristGranSacerdotSempre;
       }
     }
@@ -966,8 +439,8 @@ export default class LH_SOUL {
       var benaurada = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 1);
       if (date.getDate() === benaurada.getDate() && date.getMonth() === benaurada.getMonth() &&
         date.getFullYear() === benaurada.getFullYear()) {
-        var precAux = 10;
-        if (precAux < this.prec) this.prec = precAux;
+        precAux = 10;
+        if (precAux < prec) prec = precAux;
         return SoulKeys.santsMemories_BenauradaVergeMariaMareEsglesia;
       }
     }
@@ -975,10 +448,10 @@ export default class LH_SOUL {
     return -1;
   }
 
-  /*
-    Return id of #salteriComuOficiTF or -1 if there isn't there
-  */
-  findTF(date, LT, setmana, pentacosta) {
+/*
+  Return id of #salteriComuOficiTF or -1 if there isn't there
+*/
+function findTF(date, LT, setmana, pentacosta) {
     //1- Dissabte I Advent
     if (LT === GLOBAL.A_SETMANES && setmana === '1' && date.getDay() === 6) {
       return SoulKeys.salteriComuOficiTF_DissabteIAdvent;
@@ -1117,12 +590,12 @@ export default class LH_SOUL {
     return -1;
   }
   
-  /*
-    Return id of #diesespecials or -1 if there isn't there
-  */
-  findDiesEspecials(date, LT, setmana, pentacosta, diocesi) {
+/*
+  Return id of #diesespecials or -1 if there isn't there
+*/
+function findDiesEspecials(date, LT, setmana, pentacosta, diocesi) {
     //1- Sagrada Família quan és el 30 de desembre
-    if (this.isSagradaFamilia(date) && date.getDate() === 30) {
+    if (isSagradaFamilia(date) && date.getDate() === 30) {
       return SoulKeys.diesespecials_SagradaFamilia30Desembre;
     }
 
@@ -1134,27 +607,27 @@ export default class LH_SOUL {
     var auxDay = new Date(date.getFullYear(), date.getMonth(), (date.getDate() - 7));
 
     //3- Diumenge II de Nadal, quan s’escau el dia 2 de gener
-    if (this.isSagradaFamilia(auxDay) && date.getDate() === 2) {
+    if (isSagradaFamilia(auxDay) && date.getDate() === 2) {
       return SoulKeys.diesespecials_DiumengeIINadal2Gener;
     }
 
     //4- Diumenge II de Nadal, quan s’escau el dia 3 de gener
-    if (this.isSagradaFamilia(auxDay) && date.getDate() === 3) {
+    if (isSagradaFamilia(auxDay) && date.getDate() === 3) {
       return SoulKeys.diesespecials_DiumengeIINadal3Gener;
     }
 
     //5- Diumenge II de Nadal, quan s’escau el dia 4 de gener
-    if (this.isSagradaFamilia(auxDay) && date.getDate() === 4) {
+    if (isSagradaFamilia(auxDay) && date.getDate() === 4) {
       return SoulKeys.diesespecials_DiumengeIINadal4Gener;
     }
 
     //6- Diumenge II de Nadal, quan s’escau el dia 5 de gener
-    if (this.isSagradaFamilia(auxDay) && date.getDate() === 5) {
+    if (isSagradaFamilia(auxDay) && date.getDate() === 5) {
       return SoulKeys.diesespecials_DiumengeIINadal5Gener;
     }
 
     //7- Baptisme del Senyor quan és 7 de gener
-    if (this.isBaptisme(date) && date.getDate() === 7) {
+    if (isBaptisme(date) && date.getDate() === 7) {
       return SoulKeys.diesespecials_BaptismeSenyor7Gener;
     }
 
@@ -1296,17 +769,17 @@ export default class LH_SOUL {
     return -1;
   }
 
-  /*
-    Return id of #tempsSolemnitatsFestes or -1 if there isnt there
-  */
-  findTempsSolemnitatsFestes(date, LT, setmana, pentacosta) {
+/*
+  Return id of #tempsSolemnitatsFestes or -1 if there isnt there
+*/
+function findTempsSolemnitatsFestes(date, LT, setmana, pentacosta) {
     //1- Nadal
     if (date.getDate() === 25 && date.getMonth() === 11) {
       return SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
 
     //2- Sagrada Família
-    if (this.isSagradaFamilia(date)) {
+    if (isSagradaFamilia(date)) {
       return SoulKeys.tempsSolemnitatsFestes_SagradaFamilia;
     }
 
@@ -1321,7 +794,7 @@ export default class LH_SOUL {
     }
 
     //5- Baptisme
-    if (this.isBaptisme(date)) {
+    if (isBaptisme(date)) {
       return SoulKeys.tempsSolemnitatsFestes_Baptisme;
     }
 
@@ -1365,28 +838,28 @@ export default class LH_SOUL {
     return -1;
   }
 
-  isSagradaFamilia(today) {
+function isSagradaFamilia(today) {
     if (today.getMonth() !== 11) return false; // Dicember
     if (today.getDay() !== 0) return false; // Sunday
     if (today.getDate() < 26 || today.getDate() > 31) return false; // Between [26 & 31]
     return true;
   }
 
-  isBaptisme(today) {
+function isBaptisme(today) {
     if (today.getMonth() !== 0) return false;
     if (today.getDay() !== 0) return false;
     if (today.getDate() < 7 || today.getDate() > 13) return false;
     return true;
   }
 
-  creatingEmptyCEL() {
-    this.INFO_CEL = {
+function creatingEmptyCEL() {
+    INFO_CEL = {
       nomCel: '-',
       infoCel: '-',
       typeCel: '-',
     }
 
-    this.OFICI = { //60
+    OFICI = { //60
       diumPasqua: false,
       invitatori: '-',
       antInvitatori: '-',
@@ -1449,7 +922,7 @@ export default class LH_SOUL {
       oracio3: '-',
     }
 
-    this.LAUDES = { //31
+    LAUDES = { //31
       diumPasqua: false,
       invitatori: '-',
       antInvitatori: '-',
@@ -1483,7 +956,7 @@ export default class LH_SOUL {
       oracio: '-',
     }
 
-    this.TERCIA = { //24
+    TERCIA = { //24
       diumPasqua: false,
       himne: '-',
       antifones: '-',
@@ -1510,7 +983,7 @@ export default class LH_SOUL {
       oracio: '-',
     }
 
-    this.SEXTA = { //24
+    SEXTA = { //24
       diumPasqua: false,
       himne: '-',
       antifones: '-',
@@ -1537,7 +1010,7 @@ export default class LH_SOUL {
       oracio: '-',
     }
 
-    this.NONA = { //24
+    NONA = { //24
       diumPasqua: false,
       himne: '-',
       antifones: '-',
@@ -1564,7 +1037,7 @@ export default class LH_SOUL {
       oracio: '-',
     }
 
-    this.VESPRES1 = { //28
+    VESPRES1 = { //28
       diumPasqua: false,
       himne: '-',
       ant1: '-',
@@ -1595,7 +1068,7 @@ export default class LH_SOUL {
       oracio: '-',
     }
 
-    this.VESPRES = { //28
+    VESPRES = { //28
       diumPasqua: false,
       himne: '-',
       ant1: '-',
@@ -1626,7 +1099,7 @@ export default class LH_SOUL {
       oracio: '-',
     }
 
-    this.COMPLETES = { //24
+    COMPLETES = { //24
       himneLlati: '-',
       himneCat: '-',
       antifones: '-',
@@ -1654,18 +1127,17 @@ export default class LH_SOUL {
       antMare: '-',
     }
 
-    this.CEL = {
-      INFO_CEL: this.INFO_CEL,
-      OFICI: this.OFICI,
-      LAUDES: this.LAUDES,
+    CEL = {
+      INFO_CEL: INFO_CEL,
+      OFICI: OFICI,
+      LAUDES: LAUDES,
       HORA_MENOR: {
-        TERCIA: this.TERCIA,
-        SEXTA: this.SEXTA,
-        NONA: this.NONA,
+        TERCIA: TERCIA,
+        SEXTA: SEXTA,
+        NONA: NONA,
       },
-      VESPRES: this.VESPRES,
-      VESPRES1: this.VESPRES1,
-      COMPLETES: this.COMPLETES,
+      VESPRES: VESPRES,
+      VESPRES1: VESPRES1,
+      COMPLETES: COMPLETES,
     }
   }
-}

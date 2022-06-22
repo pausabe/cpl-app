@@ -3,10 +3,11 @@ import * as SQLite from 'expo-sqlite';
 import * as Logger from "../Utils/Logger";
 import {Asset} from "expo-asset";
 import {FileSystemService} from "./FileSystemService";
+import {SQLResultSet} from "expo-sqlite";
 
 let CPLDataBase = undefined;
 
-export function executeQueryAsync(query){
+export function executeQueryAsync(query) : Promise<SQLResultSet>{
     return new Promise((resolve, reject) =>
         executeQuery(
             query,
@@ -110,7 +111,7 @@ function DatabaseNameFromUri(uri){
     return uri.split("/").pop();
 }
 
-function _executeQuery(query){
+function _executeQuery(query) : Promise<SQLResultSet>{
     return new Promise((resolve, reject) => {
         CPLDataBase.transaction((tx) => {
             tx.executeSql(
