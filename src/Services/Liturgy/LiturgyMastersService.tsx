@@ -3,10 +3,43 @@ import GlobalKeys from "../../Utils/GlobalKeys";
 import SoulKeys from '../../Controllers/Classes/SOUL/SoulKeys';
 import * as DatabaseDataService from '../DatabaseDataService';
 import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
-import LiturgyMastersKeys from "../../Models/LiturgyMasters/LiturgyMastersKeys";
 import SecureCall from "../../Utils/SecureCall";
 import InvitatoryCommonPsalter from "../../Models/LiturgyMasters/InvitatoryCommonPsalter";
 import GlobalFunctions from '../../Utils/GlobalFunctions';
+import OfficeOfOrdinaryTime from "../../Models/LiturgyMasters/OfficeOfOrdinaryTime";
+import PrayersOfOrdinaryTime from "../../Models/LiturgyMasters/PrayersOfOrdinaryTime";
+import CommonPartsUntilFifthWeekOfLentTime from "../../Models/LiturgyMasters/CommonPartsUntilFifthWeekOfLentTime";
+import PartsOfLentTime from "../../Models/LiturgyMasters/PartsOfLentTime";
+import PartsOfFiveWeeksOfLentTime from "../../Models/LiturgyMasters/PartsOfFiveWeeksOfLentTime";
+import CommonPartsOfHolyWeek from "../../Models/LiturgyMasters/CommonPartsOfHolyWeek";
+import PalmSundayParts from "../../Models/LiturgyMasters/PalmSundayParts";
+import PartsOfHolyWeek from "../../Models/LiturgyMasters/PartsOfHolyWeek";
+import PartsOfEasterTriduum from "../../Models/LiturgyMasters/PartsOfEasterTriduum";
+import PartsOfEasterBeforeAscension from "../../Models/LiturgyMasters/PartsOfEasterBeforeAscension";
+import PartsOfEasterOctave from "../../Models/LiturgyMasters/PartsOfEasterOctave";
+import PartsOfEasterAfterAscension from "../../Models/LiturgyMasters/PartsOfEasterAfterAscension";
+import EasterWeekParts from "../../Models/LiturgyMasters/EasterWeekParts";
+import CommonAdventAndChristmasParts from "../../Models/LiturgyMasters/CommonAdventAndChristmasParts";
+import AdventWeekParts from "../../Models/LiturgyMasters/AdventWeekParts";
+import AdventSundayParts from "../../Models/LiturgyMasters/AdventSundayParts";
+import AdventFairDaysParts from "../../Models/LiturgyMasters/AdventFairDaysParts";
+import AdventFairDaysAntiphons from "../../Models/LiturgyMasters/AdventFairDaysAntiphons";
+import ChristmasWhenOctaveParts from "../../Models/LiturgyMasters/ChristmasWhenOctaveParts";
+import ChristmasBeforeEpiphanyParts from "../../Models/LiturgyMasters/ChristmasBeforeEpiphanyParts";
+import SpecialCommonPartsOfEasterSundays from "../../Models/LiturgyMasters/SpecialCommonPartsOfEasterSundays";
+import LaudesCommonPsalter from "../../Models/LiturgyMasters/LaudesCommonPsalter";
+import CommonSpecialPartsOfEaster from "../../Models/LiturgyMasters/CommonSpecialPartsOfEaster";
+import EasterSundayParts from "../../Models/LiturgyMasters/EasterSundayParts";
+import EasterSunday from "../../Models/LiturgyMasters/EasterSunday";
+import FiveWeeksOfSundayLentParts from "../../Models/LiturgyMasters/FiveWeeksOfSundayLentParts";
+import VespersCommonPsalter from "../../Models/LiturgyMasters/VespersCommonPsalter";
+import SolemnityAndFestivityParts from "../../Models/LiturgyMasters/SolemnityAndFestivityParts";
+import CommonHourPsalter from "../../Models/LiturgyMasters/CommonHourPsalter";
+import CommonNightPrayerPsalter from "../../Models/LiturgyMasters/CommonNightPrayerPsalter";
+import CommonOfficeWhenStrongTimesPsalter from "../../Models/LiturgyMasters/CommonOfficeWhenStrongTimesPsalter";
+import SaintsSolemnitiesParts from "../../Models/LiturgyMasters/SaintsSolemnitiesParts";
+import SaintsMemories from "../../Models/LiturgyMasters/SaintsMemories";
+import SpecialDaysParts from "../../Models/LiturgyMasters/SpecialDaysParts";
 
 export async function ObtainLiturgyMasters(globalData) : Promise<LiturgyMasters>{
     const liturgyMasters = new LiturgyMasters();
@@ -26,30 +59,30 @@ export async function ObtainLiturgyMasters(globalData) : Promise<LiturgyMasters>
     liturgyMasters.PartsOfEasterOctave = await ObtainPartsOfEasterOctave(globalData);
     liturgyMasters.PartsOfEasterAfterAscension = await ObtainPartsOfEasterAfterAscension(globalData);
     liturgyMasters.EasterWeekParts = await ObtainEasterWeekParts(globalData);
-    liturgyMasters.ObtainCommonAdventAndChristmasParts = await ObtainCommonAdventAndChristmasParts(globalData);
-    liturgyMasters.ObtainAdventWeekParts = await ObtainAdventWeekParts(globalData);
-    liturgyMasters.ObtainAdventSundayParts = await ObtainAdventSundayParts(globalData);
-    liturgyMasters.ObtainAdventFirstVespersOfSundayParts = await ObtainAdventFirstVespersOfSundayParts(globalData);
-    liturgyMasters.ObtainAdventFairDaysParts = await ObtainAdventFairDaysParts(globalData);
-    liturgyMasters.ObtainAdventFairDaysAntiphons = await ObtainAdventFairDaysAntiphons(globalData);
-    liturgyMasters.ObtainChristmasWhenOctaveParts = await ObtainChristmasWhenOctaveParts(globalData);
-    liturgyMasters.ObtainChristmasBeforeEpiphanyParts = await ObtainChristmasBeforeEpiphanyParts(globalData);
-    liturgyMasters.ObtainSpecialCommonPartsOfEasterSundays = await ObtainSpecialCommonPartsOfEasterSundays(globalData);
-    liturgyMasters.ObtainLaudesCommonPsalter = await ObtainLaudesCommonPsalter(globalData);
-    liturgyMasters.ObtainCommonSpecialPartsOfEaster = await ObtainCommonSpecialPartsOfEaster(globalData);
-    liturgyMasters.ObtainEasterSundayParts = await ObtainEasterSundayParts(globalData);
-    liturgyMasters.ObtainEasterFirstVespersOfSundayParts = await ObtainEasterFirstVespersOfSundayParts(globalData);
-    liturgyMasters.ObtainEasterSunday = await ObtainEasterSunday(globalData);
-    liturgyMasters.ObtainFiveWeeksOfSundayLentParts = await ObtainFiveWeeksOfSundayLentParts(globalData);
-    liturgyMasters.ObtainFiveWeeksOfFirstsVespersOfSundayLentParts = await ObtainFiveWeeksOfFirstsVespersOfSundayLentParts(globalData);
-    liturgyMasters.ObtainVespersCommonPsalter = await ObtainVespersCommonPsalter(globalData);
-    liturgyMasters.ObtainSolemnityOrFestivityParts = await ObtainSolemnityOrFestivityParts(globalData);
-    liturgyMasters.ObtainCommonHourPsalter = await ObtainCommonHourPsalter(globalData);
-    liturgyMasters.ObtainCommonNightPrayerPsalter = await ObtainCommonNightPrayerPsalter(globalData);
-    liturgyMasters.ObtainCommonOfficeWhenStrongTimesPsalter = await ObtainCommonOfficeWhenStrongTimesPsalter(globalData);
-    liturgyMasters.ObtainSaintsOrSolemnitiesParts = await ObtainSaintsOrSolemnitiesParts(globalData);
-    liturgyMasters.ObtainSaintsOrSolemnitiesWhenFirstsVespersParts = await ObtainSaintsOrSolemnitiesWhenFirstsVespersParts(globalData);
-    liturgyMasters.ObtainSaintsOrMemories = await ObtainSaintsOrMemories(globalData);
+    liturgyMasters.CommonAdventAndChristmasParts = await ObtainCommonAdventAndChristmasParts(globalData);
+    liturgyMasters.AdventWeekParts = await ObtainAdventWeekParts(globalData);
+    liturgyMasters.AdventSundayParts = await ObtainAdventSundayParts(globalData);
+    liturgyMasters.AdventFirstVespersOfSundayParts = await ObtainAdventFirstVespersOfSundayParts(globalData);
+    liturgyMasters.AdventFairDaysParts = await ObtainAdventFairDaysParts(globalData);
+    liturgyMasters.AdventFairDaysAntiphons = await ObtainAdventFairDaysAntiphons(globalData);
+    liturgyMasters.ChristmasWhenOctaveParts = await ObtainChristmasWhenOctaveParts(globalData);
+    liturgyMasters.ChristmasBeforeEpiphanyParts = await ObtainChristmasBeforeEpiphanyParts(globalData);
+    liturgyMasters.SpecialCommonPartsOfEasterSundays = await ObtainSpecialCommonPartsOfEasterSundays(globalData);
+    liturgyMasters.LaudesCommonPsalter = await ObtainLaudesCommonPsalter(globalData);
+    liturgyMasters.CommonSpecialPartsOfEaster = await ObtainCommonSpecialPartsOfEaster(globalData);
+    liturgyMasters.EasterSundayParts = await ObtainEasterSundayParts(globalData);
+    liturgyMasters.EasterFirstVespersOfSundayParts = await ObtainEasterFirstVespersOfSundayParts(globalData);
+    liturgyMasters.EasterSunday = await ObtainEasterSunday(globalData);
+    liturgyMasters.FiveWeeksOfSundayLentParts = await ObtainFiveWeeksOfSundayLentParts(globalData);
+    liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts = await ObtainFiveWeeksOfFirstsVespersOfSundayLentParts(globalData);
+    liturgyMasters.VespersCommonPsalter = await ObtainVespersCommonPsalter(globalData);
+    liturgyMasters.SolemnityAndFestivityParts = await ObtainSolemnityAndFestivityParts(globalData);
+    liturgyMasters.CommonHourPsalter = await ObtainCommonHourPsalter(globalData);
+    liturgyMasters.CommonNightPrayerPsalter = await ObtainCommonNightPrayerPsalter(globalData);
+    liturgyMasters.CommonOfficeWhenStrongTimesPsalter = await ObtainCommonOfficeWhenStrongTimesPsalter(globalData);
+    liturgyMasters.SaintsSolemnitiesParts = await ObtainSaintsSolemnitiesParts(globalData);
+    liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts = await ObtainSaintsSolemnitiesWhenFirstsVespersParts(globalData);
+    liturgyMasters.SaintsMemories = await ObtainSaintsMemories(globalData);
     liturgyMasters.SpecialDaysParts = await ObtainSpecialDaysParts(globalData);
     return liturgyMasters;
 }
@@ -60,7 +93,7 @@ async function ObtainOfficeCommonPsalter(globalData) : Promise<OfficeCommonPsalt
             globalData.LT !== GlobalKeys.P_OCTAVA &&
             globalData.LT !== GlobalKeys.N_OCTAVA) {
             const id = (parseInt(globalData.cicle) - 1) * 7 + (globalData.date.getDay() + 1);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.OfficeCommonPsalter, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(OfficeCommonPsalter.MasterName, id);
             return new OfficeCommonPsalter(row);
         }
     });
@@ -70,168 +103,153 @@ async function ObtainInvitatoryCommonPsalter(globalData) : Promise<InvitatoryCom
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.O_ORDINARI) {
             const id = (parseInt(globalData.cicle) - 1) * 7 + (globalData.date.getDay() + 1);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.InvitatoryCommonPsalter, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(InvitatoryCommonPsalter.MasterName, id);
             return new InvitatoryCommonPsalter(row);
         }
     });
 }
 
-//tempsOrdinariOfici
 async function ObtainOfficeOfOrdinaryTime(globalData) : Promise<OfficeOfOrdinaryTime> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.O_ORDINARI) {
             const id = (parseInt(globalData.setmana) - 1) * 7 + (globalData.date.getDay() + 1);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.OfficeOfOrdinaryTime, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(OfficeOfOrdinaryTime.MasterName, id);
             return new OfficeOfOrdinaryTime(row);
         }
     });
 }
 
-//tempsOrdinariOracions
 async function ObtainPrayersOfOrdinaryTime(globalData) : Promise<PrayersOfOrdinaryTime> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.O_ORDINARI) {
             const id = parseInt(globalData.setmana);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PrayersOfOrdinaryTime, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PrayersOfOrdinaryTime.MasterName, id);
             return new PrayersOfOrdinaryTime(row);
         }
     });
 }
 
-//tempsOrdinariOracions (firsts vespers)
-async function ObtainPrayersOfOrdinaryTimeWhenFirstVespers(globalData) : Promise<PrayersOfOrdinaryTimeWhenFirstVespers> {
+async function ObtainPrayersOfOrdinaryTimeWhenFirstVespers(globalData) : Promise<PrayersOfOrdinaryTime> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.O_ORDINARI) {
             const id = parseInt(globalData.setmana) + 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PrayersOfOrdinaryTimeWhenFirstVespers, id);
-            return new PrayersOfOrdinaryTimeWhenFirstVespers(row);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PrayersOfOrdinaryTime.MasterName, id);
+            return new PrayersOfOrdinaryTime(row);
         }
     });
 }
 
-//tempsQuaresmaComuFV
 async function ObtainCommonPartsUntilFifthWeekOfLentTime(globalData) : Promise<CommonPartsUntilFifthWeekOfLentTime> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_CENDRA || globalData.LT === GlobalKeys.Q_SETMANES) {
             const id = parseInt(globalData.setmana);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.CommonPartsUntilFifthWeekOfLentTime, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonPartsUntilFifthWeekOfLentTime.MasterName, id);
             return new CommonPartsUntilFifthWeekOfLentTime(row);
         }
     });
 }
 
-//tempsQuaresmaCendra
 async function ObtainPartsOfLentTime(globalData) : Promise<PartsOfLentTime> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_CENDRA) {
             const id = globalData.date.getDay() - 2;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PartsOfLentTime, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfLentTime.MasterName, id);
             return new PartsOfLentTime(row);
         }
     });
 }
 
-//tempsQuaresmaVSetmanes
 async function ObtainPartsOfFiveWeeksOfLentTime(globalData) : Promise<PartsOfFiveWeeksOfLentTime> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_SETMANES) {
             const id = (parseInt(globalData.setmana) - 1) * 7 + (globalData.date.getDay() + 1);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PartsOfFiveWeeksOfLentTime, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfFiveWeeksOfLentTime.MasterName, id);
             return new PartsOfFiveWeeksOfLentTime(row);
         }
     });
 }
 
-//tempsQuaresmaComuSS
 async function ObtainCommonPartsOfHolyWeek(globalData) : Promise<CommonPartsOfHolyWeek> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_DIUM_RAMS || tomorrowCal === 'DR' || globalData.LT === GlobalKeys.Q_SET_SANTA) {
             const id = 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.CommonPartsOfHolyWeek, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonPartsOfHolyWeek.MasterName, id);
             return new CommonPartsOfHolyWeek(row);
         }
     });
 }
 
-//tempsQuaresmaRams
 async function ObtainPalmSundayParts(globalData) : Promise<PalmSundayParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_DIUM_RAMS || tomorrowCal === 'DR') {
             const id = 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PalmSundayParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PalmSundayParts.MasterName, id);
             return new PalmSundayParts(row);
         }
     });
 }
 
-//tempsQuaresmaSetSanta
 async function ObtainPartsOfHolyWeek(globalData) : Promise<PartsOfHolyWeek> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_DIUM_RAMS || tomorrowCal === 'DR') {
             const id = globalData.date.getDay();
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PartsOfHolyWeek, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfHolyWeek.MasterName, id);
             return new PartsOfHolyWeek(row);
         }
     });
 }
 
-//tempsQuaresmaTridu
 async function ObtainPartsOfEasterTriduum(globalData) : Promise<PartsOfEasterTriduum> {
     return await SecureCall(async () => {
         if (tomorrowCal === 'T' || globalData.LT === GlobalKeys.Q_TRIDU) {
             const id = globalData.date.getDay() - 3;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PartsOfEasterTriduum, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterTriduum.MasterName, id);
             return new PartsOfEasterTriduum(row);
         }
     });
 }
 
-//tempsPasquaAA
 async function ObtainPartsOfEasterBeforeAscension(globalData) : Promise<PartsOfEasterBeforeAscension> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_OCTAVA || globalData.LT === GlobalKeys.P_SETMANES) {
             const id = 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PartsOfEasterTriduum, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterTriduum.MasterName, id);
             return new PartsOfEasterBeforeAscension(row);
         }
     });
 }
 
-//tempsPasquaOct
 async function ObtainPartsOfEasterOctave(globalData) : Promise<PartsOfEasterOctave> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_OCTAVA) {
             const id = globalData.date.getDay() === 0 ? 7 : globalData.date.getDay();
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PartsOfEasterOctave, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterOctave.MasterName, id);
             return new PartsOfEasterOctave(row);
         }
     });
 }
 
-//tempsPasquaDA
 async function ObtainPartsOfEasterAfterAscension(globalData) : Promise<PartsOfEasterAfterAscension> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_SETMANES) {
             const id = 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.PartsOfEasterAfterAscension, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterAfterAscension.MasterName, id);
             return new PartsOfEasterAfterAscension(row);
         }
     });
 }
 
-//tempsPasquaSetmanes
 async function ObtainEasterWeekParts(globalData) : Promise<EasterWeekParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_SETMANES) {
             let id = (parseInt(globalData.setmana) - 2) * 7 + (globalData.date.getDay() + 1);
             if (id === 43) id = 1; //TODO: diumenge de pentacosta (no està dins tempsPasquaSetmanes). Apaño perquè no peti
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.EasterWeekParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterWeekParts.MasterName, id);
             return new EasterWeekParts(row);
         }
     });
 }
 
-//tempsAdventNadalComu
 async function ObtainCommonAdventAndChristmasParts(globalData) : Promise<CommonAdventAndChristmasParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.A_SETMANES ||
@@ -259,13 +277,12 @@ async function ObtainCommonAdventAndChristmasParts(globalData) : Promise<CommonA
                     }
                     break;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.CommonAdventAndChristmasParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonAdventAndChristmasParts.MasterName, id);
             return new CommonAdventAndChristmasParts(row);
         }
     });
 }
 
-//tempsAdventSetmanes
 async function ObtainAdventWeekParts(globalData) : Promise<AdventWeekParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.A_SETMANES || tomorrowCal === 'A') {
@@ -281,60 +298,55 @@ async function ObtainAdventWeekParts(globalData) : Promise<AdventWeekParts> {
             else {
                 id = (parseInt(auxCicle) - 1) * 7 + globalData.date.getDay() + 2;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.AdventWeekParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventWeekParts.MasterName, id);
             return new AdventWeekParts(row);
         }
     });
 }
 
-//tempsAdventSetmanesDium
 async function ObtainAdventSundayParts(globalData) : Promise<AdventSundayParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.A_SETMANES || globalData.LT === GlobalKeys.A_FERIES) {
             let id = parseInt(globalData.cicle);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.AdventSundayParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventSundayParts.MasterName, id);
             return new AdventSundayParts(row);
         }
     });
 }
 
-//tempsAdventSetmanesDium (firsts vespers)
-async function ObtainAdventFirstVespersOfSundayParts(globalData) : Promise<AdventFirstVespersOfSundayParts> {
+async function ObtainAdventFirstVespersOfSundayParts(globalData) : Promise<AdventSundayParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.A_SETMANES || globalData.LT === GlobalKeys.A_FERIES || tomorrowCal === 'A') {
             let id = parseInt(globalData.cicle) + 1;
             if (tomorrowCal === 'A') {
                 id = 1;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.AdventFirstVespersOfSundayParts, id);
-            return new AdventFirstVespersOfSundayParts(row);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventSundayParts.MasterName, id);
+            return new AdventSundayParts(row);
         }
     });
 }
 
-//tempsAdventFeries
 async function ObtainAdventFairDaysParts(globalData) : Promise<AdventFairDaysParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.A_FERIES) {
             let id = globalData.date.getDate() - 16;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.AdventFairDaysParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventFairDaysParts.MasterName, id);
             return new AdventFairDaysParts(row);
         }
     });
 }
 
-//tempsAdventFeriesAnt
 async function ObtainAdventFairDaysAntiphons(globalData) : Promise<AdventFairDaysAntiphons> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.A_FERIES && auxDay !== 0) {
             let id = globalData.date.getDate();
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.AdventFairDaysAntiphons, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventFairDaysAntiphons.MasterName, id);
             return new AdventFairDaysAntiphons(row);
         }
     });
 }
 
-//tempsNadalOctava
 async function ObtainChristmasWhenOctaveParts(globalData) : Promise<ChristmasWhenOctaveParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.N_OCTAVA && globalData.date.getDate() !== 25) {
@@ -342,35 +354,32 @@ async function ObtainChristmasWhenOctaveParts(globalData) : Promise<ChristmasWhe
             if (globalData.date.getDate() === 1) {
                 id = 1;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.ChristmasWhenOctaveParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(ChristmasWhenOctaveParts.MasterName, id);
             return new ChristmasWhenOctaveParts(row);
         }
     });
 }
 
-//tempsNadalAbansEpifania
 async function ObtainChristmasBeforeEpiphanyParts(globalData) : Promise<ChristmasBeforeEpiphanyParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.N_ABANS) {
             const id = globalData.date.getDate() < 6 ? globalData.date.getDate() - 1 : globalData.date.getDate() - 2;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.ChristmasBeforeEpiphanyParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(ChristmasBeforeEpiphanyParts.MasterName, id);
             return new ChristmasBeforeEpiphanyParts(row);
         }
     });
 }
 
-//salteriComuEspPasquaDium
 async function ObtainSpecialCommonPartsOfEasterSundays(globalData) : Promise<SpecialCommonPartsOfEasterSundays> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_SETMANES) {
             const id = 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.SpecialCommonPartsOfEasterSundays, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SpecialCommonPartsOfEasterSundays.MasterName, id);
             return new SpecialCommonPartsOfEasterSundays(row);
         }
     });
 }
 
-//salteriComuLaudes
 async function ObtainLaudesCommonPsalter(globalData) : Promise<LaudesCommonPsalter> {
     return await SecureCall(async () => {
         if (globalData.LT !== GlobalKeys.Q_TRIDU && globalData.LT !== GlobalKeys.P_OCTAVA) {
@@ -391,24 +400,22 @@ async function ObtainLaudesCommonPsalter(globalData) : Promise<LaudesCommonPsalt
                 cicleAux = 2;
             }
             const id = (cicleAux - 1) * 7 + (auxDay + 1);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.LaudesCommonPsalter, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LaudesCommonPsalter.MasterName, id);
             return new LaudesCommonPsalter(row);
         }
     });
 }
 
-//salteriComuEspPasqua
 async function ObtainCommonSpecialPartsOfEaster(globalData) : Promise<CommonSpecialPartsOfEaster> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_SETMANES) {
             const id = (parseInt(globalData.cicle) - 1) * 6 + (globalData.date.getDay());
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.CommonSpecialPartsOfEaster, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonSpecialPartsOfEaster.MasterName, id);
             return new CommonSpecialPartsOfEaster(row);
         }
     });
 }
 
-//tempsPasquaSetmanesDium
 async function ObtainEasterSundayParts(globalData) : Promise<EasterSundayParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_SETMANES) {
@@ -416,63 +423,58 @@ async function ObtainEasterSundayParts(globalData) : Promise<EasterSundayParts> 
             if (id === 7) {
                 id = 6;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.EasterSundayParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterSundayParts.MasterName, id);
             return new EasterSundayParts(row);
         }
     });
 }
 
-//tempsPasquaSetmanesDium (firsts vespers)
-async function ObtainEasterFirstVespersOfSundayParts(globalData) : Promise<EasterFirstVespersOfSundayParts> {
+async function ObtainEasterFirstVespersOfSundayParts(globalData) : Promise<EasterSundayParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_SETMANES) {
             let id = parseInt(globalData.setmana);
             if (id === 7 || id === 8) {
                 id = 6;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.EasterFirstVespersOfSundayParts, id);
-            return new EasterFirstVespersOfSundayParts(row);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterSundayParts.MasterName, id);
+            return new EasterSundayParts(row);
         }
     });
 }
 
-//tempsQuaresmaDiumPasq
 async function ObtainEasterSunday(globalData) : Promise<EasterSunday> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.P_OCTAVA || globalData.LT === GlobalKeys.Q_DIUM_PASQUA) {
             let id = 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.EasterSunday, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterSunday.MasterName, id);
             return new EasterSunday(row);
         }
     });
 }
 
-//tempsQuaresmaVSetmanesDium
 async function ObtainFiveWeeksOfSundayLentParts(globalData) : Promise<FiveWeeksOfSundayLentParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_SETMANES) {
             let id = parseInt(globalData.setmana);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.FiveWeeksOfSundayLentParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.MasterName, id);
             return new FiveWeeksOfSundayLentParts(row);
         }
     });
 }
 
-//tempsQuaresmaVSetmanesDium (firsts vespers)
-async function ObtainFiveWeeksOfFirstsVespersOfSundayLentParts(globalData) : Promise<FiveWeeksOfFirstsVespersOfSundayLentParts> {
+async function ObtainFiveWeeksOfFirstsVespersOfSundayLentParts(globalData) : Promise<FiveWeeksOfSundayLentParts> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.Q_SETMANES || globalData.LT === GlobalKeys.Q_CENDRA) {
             let id = 1;
             if (globalData.LT !== GlobalKeys.Q_CENDRA) {
                 id = parseInt(globalData.setmana) + 1;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.FiveWeeksOfFirstsVespersOfSundayLentParts, id);
-            return new FiveWeeksOfFirstsVespersOfSundayLentParts(row);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.MasterName, id);
+            return new FiveWeeksOfSundayLentParts(row);
         }
     });
 }
 
-//salteriComuVespres
 async function ObtainVespersCommonPsalter(globalData) : Promise<VespersCommonPsalter> {
     return await SecureCall(async () => {
         if (globalData.LT !== GlobalKeys.Q_TRIDU && globalData.LT !== GlobalKeys.P_OCTAVA) {
@@ -485,14 +487,13 @@ async function ObtainVespersCommonPsalter(globalData) : Promise<VespersCommonPsa
                 cicle = 1;
             }
             const id = (cicle - 1) * 7 + weekDayNormalVespers;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.VespersCommonPsalter, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(VespersCommonPsalter.MasterName, id);
             return new VespersCommonPsalter(row);
         }
     });
 }
 
-//tempsSolemnitatsFestes
-async function ObtainSolemnityOrFestivityParts(globalData) : Promise<SolemnityOrFestivityParts> {
+async function ObtainSolemnityAndFestivityParts(globalData) : Promise<SolemnityAndFestivityParts> {
     return await SecureCall(async () => {
         if (params.idTSF !== -1 || globalData.LT === GlobalKeys.Q_TRIDU || globalData.LT === GlobalKeys.N_OCTAVA) {
             let id;
@@ -502,24 +503,22 @@ async function ObtainSolemnityOrFestivityParts(globalData) : Promise<SolemnityOr
             else {
                 id = params.idTSF;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.SolemnityOrFestivityParts, id);
-            return new SolemnityOrFestivityParts(row);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SolemnityAndFestivityParts.MasterName, id);
+            return new SolemnityAndFestivityParts(row);
         }
     });
 }
 
-//salteriComuHora
 async function ObtainCommonHourPsalter(globalData) : Promise<CommonHourPsalter> {
     return await SecureCall(async () => {
         if (globalData.LT !== GlobalKeys.Q_TRIDU && globalData.LT !== GlobalKeys.P_OCTAVA) {
             const id = (parseInt(globalData.cicle) - 1) * 7 + (globalData.date.getDay() + 1);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.CommonHourPsalter, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonHourPsalter.MasterName, id);
             return new CommonHourPsalter(row);
         }
     });
 }
 
-//salteriComuCompletes
 async function ObtainCommonNightPrayerPsalter(globalData) : Promise<CommonNightPrayerPsalter> {
     return await SecureCall(async () => {
         let id = globalData.date.getDay() === 6 ? 1 : globalData.date.getDay() + 2;
@@ -541,17 +540,16 @@ async function ObtainCommonNightPrayerPsalter(globalData) : Promise<CommonNightP
         if (globalData.LT === GlobalKeys.Q_TRIDU) {
             id = 9;
         }
-        const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.CommonNightPrayerPsalter, id);
+        const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonNightPrayerPsalter.MasterName, id);
         return new CommonNightPrayerPsalter(row);
     });
 }
 
-//salteriComuOficiTF
 async function ObtainCommonOfficeWhenStrongTimesPsalter(globalData) : Promise<CommonOfficeWhenStrongTimesPsalter> {
     return await SecureCall(async () => {
         if (idTF !== -1) {
             const id = idTF;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.CommonOfficeWhenStrongTimesPsalter, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonOfficeWhenStrongTimesPsalter.MasterName, id);
             // TODO:
             //queryRows.salteriComuOficiTF.com2 = '-';
             //queryRows.salteriComuOficiTF.com3 = '-';
@@ -566,22 +564,21 @@ async function ObtainCommonOfficeWhenStrongTimesPsalter(globalData) : Promise<Co
     });
 }
 
-//santsSolemnitats
-async function ObtainSaintsOrSolemnitiesParts(globalData) : Promise<SaintsOrSolemnitiesParts> {
+async function ObtainSaintsSolemnitiesParts(globalData) : Promise<SaintsSolemnitiesParts> {
     return await SecureCall(async () => {
         if (globalData.LT !== GlobalKeys.Q_DIUM_PASQUA && (((params.idTSF === -1 && params.idDE === -1) && (globalData.celType === 'S' || globalData.celType === 'F')))) {
             let idDM = diesMov(globalData.date, globalData.LT, globalData.setmana, globalData.pentacosta, globalData.celType);
             if (idDM === -1) {
                 let day = GlobalFunctions.calculeDia(globalData.date, globalData.diocesi, globalData.diaMogut, globalData.diocesiMogut);
                 // TODO:
-                DatabaseDataService.getSolMem("santsSolemnitats", day, globalData.diocesi, globalData.lloc, globalData.diocesiName, globalData.tempsespecific, (result) => {
+                DatabaseDataService.getSolMem(SaintsSolemnitiesParts.MasterName, day, globalData.diocesi, globalData.lloc, globalData.diocesiName, globalData.tempsespecific, (result) => {
                     queryRows.santsSolemnitats = result;
                     getOficisComuns(params, result, false);
                 });
             }
             else {
                 // TODO:
-                DatabaseDataService.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
+                DatabaseDataService.getSolMemDiesMov(SaintsSolemnitiesParts.MasterName, idDM, (result) => {
                     queryRows.santsSolemnitats = result;
                     getOficisComuns(params, result, false);
                 });
@@ -590,15 +587,14 @@ async function ObtainSaintsOrSolemnitiesParts(globalData) : Promise<SaintsOrSole
     });
 }
 
-//santsSolemnitats (firsts vespers)
-async function ObtainSaintsOrSolemnitiesWhenFirstsVespersParts(globalData) : Promise<SaintsOrSolemnitiesWhenFirstsVespersParts> {
+async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(globalData) : Promise<SaintsSolemnitiesParts> {
     return await SecureCall(async () => {
         if (tomorrowCal === 'S') {
             let idDM = diesMov(globalData.dataTomorrow.date, globalData.dataTomorrow.LT, globalData.dataTomorrow.setmana, globalData.pentacosta, globalData.dataTomorrow.celType);
             if (idDM !== -1) {
                 params.vespres1 = true;
                 // TODO:
-                DatabaseDataService.getSolMemDiesMov("santsSolemnitats", idDM, (result) => {
+                DatabaseDataService.getSolMemDiesMov(SaintsSolemnitiesParts.MasterName, idDM, (result) => {
                     queryRows.santsSolemnitatsFVespres1 = result;
                     getOficisComuns(params, result, true);
                 });
@@ -615,7 +611,7 @@ async function ObtainSaintsOrSolemnitiesWhenFirstsVespersParts(globalData) : Pro
                 }
                 params.vespres1 = true;
                 // TODO:
-                DatabaseDataService.getSolMem("santsSolemnitats", day, globalData.diocesi, globalData.lloc, globalData.diocesiName, globalData.tempsespecific, (result) => {
+                DatabaseDataService.getSolMem(SaintsSolemnitiesParts.MasterName, day, globalData.diocesi, globalData.lloc, globalData.diocesiName, globalData.tempsespecific, (result) => {
                     queryRows.santsSolemnitatsFVespres1 = result;
                     getOficisComuns(params, result, true);
                 });
@@ -624,8 +620,7 @@ async function ObtainSaintsOrSolemnitiesWhenFirstsVespersParts(globalData) : Pro
     });
 }
 
-//santsMemories
-async function ObtainSaintsOrMemories(globalData) : Promise<SaintsOrMemories> {
+async function ObtainSaintsMemories(globalData) : Promise<SaintsMemories> {
     return await SecureCall(async () => {
         if (params.idTSF === -1 && (globalData.celType === 'M' || globalData.celType === 'L' || globalData.celType === 'V')) {
             let idDM = diesMov(globalData.date, globalData.LT, globalData.setmana, globalData.pentacosta, globalData.celType);
@@ -639,13 +634,13 @@ async function ObtainSaintsOrMemories(globalData) : Promise<SaintsOrMemories> {
             else {
                 if (idDM === -1) {
                     const day = GlobalFunctions.calculeDia(globalData.date, globalData.diocesi, globalData.diaMogut, globalData.diocesiMogut);
-                    DatabaseDataService.getSolMem("santsMemories", day, globalData.diocesi, globalData.lloc, globalData.diocesiName, globalData.tempsespecific, (result) => {
+                    DatabaseDataService.getSolMem(SaintsMemories.MasterName, day, globalData.diocesi, globalData.lloc, globalData.diocesiName, globalData.tempsespecific, (result) => {
                         queryRows.santsMemories = result;
                         getOficisComuns(params, result, false);
                     });
                 }
                 else {
-                    DatabaseDataService.getSolMemDiesMov("santsMemories", idDM, (result) => {
+                    DatabaseDataService.getSolMemDiesMov(SaintsMemories.MasterName, idDM, (result) => {
                         queryRows.santsMemories = result;
                         getOficisComuns(params, result, false);
                     });
@@ -655,15 +650,14 @@ async function ObtainSaintsOrMemories(globalData) : Promise<SaintsOrMemories> {
     });
 }
 
-//diesespecials
 async function ObtainSpecialDaysParts(globalData) : Promise<SpecialDaysParts> {
-    return await SecureCall(async () => {
+    return await SecureCall(async (master: string, rowId: number) => {
         if (tomorrowCal === 'DE' || params.idDE !== -1) {
             let id = params.idDE;
             if (tomorrowCal === 'DE') {
                 id = idDETomorrow;
             }
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LiturgyMastersKeys.SpecialDaysParts, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SpecialDaysParts.MasterName, id);
             return new SpecialDaysParts(row);
         }
     });
