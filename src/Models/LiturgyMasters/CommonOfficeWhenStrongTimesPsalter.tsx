@@ -2,26 +2,37 @@ export default class CommonOfficeWhenStrongTimesPsalter {
     static MasterName: string = "salteriComuOficiTF";
 
     constructor(databaseRow) {
-        this. = databaseRow.id;
-        this. = databaseRow.himneNitLlati;
-        this. = databaseRow.himneNitCat;
-        this. = databaseRow.ant1;
-        this. = databaseRow.titol1;
-        this. = databaseRow.com1;
-        this. = databaseRow.salm1;
-        this. = databaseRow.gloria1;
-        this. = databaseRow.ant2;
-        this. = databaseRow.titol2;
-        this. = databaseRow.salm2;
-        this. = databaseRow.gloria2;
-        this. = databaseRow.ant3;
-        this. = databaseRow.titol3;
-        this. = databaseRow.salm3;
-        this. = databaseRow.gloria3;
-        this. = databaseRow.respV;
-        this. = databaseRow.respR;
+        this.Id = databaseRow.id;
+        this.LatinAnthem = databaseRow.himneNitLlati;
+        this.CatalanAnthem = databaseRow.himneNitCat;
+
+        this.FirstPsalm.Antiphon = databaseRow.ant1;
+        this.FirstPsalm.Title = databaseRow.titol1;
+        this.FirstPsalm.Comment = databaseRow.com1;
+        this.FirstPsalm.Psalm = databaseRow.salm1;
+        this.FirstPsalm.HasGloryPrayer = databaseRow.gloria1 === "1";
+
+        this.SecondPsalm.Antiphon = databaseRow.ant2;
+        this.SecondPsalm.Title = databaseRow.titol2;
+        this.SecondPsalm.Comment = ""; // Missing com2 in the database
+        this.SecondPsalm.Psalm = databaseRow.salm2;
+        this.SecondPsalm.HasGloryPrayer = databaseRow.gloria2 === "1";
+
+        this.ThirdPsalm.Antiphon = databaseRow.ant3;
+        this.ThirdPsalm.Title = databaseRow.titol3;
+        this.ThirdPsalm.Psalm = databaseRow.salm3;
+        this.ThirdPsalm.Comment = ""; // Missing com3 in the database
+        this.ThirdPsalm.HasGloryPrayer = databaseRow.gloria3 === "1";
+
+        this.Responsory.Versicle = databaseRow.respV;
+        this.Responsory.Response = databaseRow.respR;
     }
 
     Id: number;
-    Antiphon: string;
+    LatinAnthem: string;
+    CatalanAnthem: string;
+    FirstPsalm: Psalm;
+    SecondPsalm: Psalm;
+    ThirdPsalm: Psalm;
+    Responsory: Responsory;
 }

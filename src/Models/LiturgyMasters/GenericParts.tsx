@@ -7,6 +7,9 @@ class LectureOfTheOffice{
 }
 
 class HourCommonParts{
+    LatinAnthem: string;
+    CatalanAnthem: string;
+    Antiphon: string;
     ShortReading: ShortReading;
     Responsory: Responsory;
     FinalPrayer: string;

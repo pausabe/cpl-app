@@ -4,8 +4,8 @@ export default class AdventFairDaysParts {
     constructor(databaseRow) {
         this.Id = databaseRow.id;
 
-        this.Responsory.Versicle = databaseRow.respVOfici;
-        this.Responsory.Versicle = databaseRow.respROfici;
+        this.OfficeResponsory.Versicle = databaseRow.respVOfici;
+        this.OfficeResponsory.Versicle = databaseRow.respROfici;
 
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.cita1;
@@ -36,30 +36,35 @@ export default class AdventFairDaysParts {
         this.LaudesPrayers = databaseRow.pregariesLaudes;
         this.LaudesFinalPrayer = databaseRow.oraFiLaudes;
 
-        this. = databaseRow.citaLBTercia;
-        this. = databaseRow.lecturaBreuTercia;
-        this. = databaseRow.respVTercia;
-        this. = databaseRow.respRTercia;
-        this. = databaseRow.citaLBSexta;
-        this. = databaseRow.lecturaBreuSexta;
-        this. = databaseRow.respVSexta;
-        this. = databaseRow.respRSexta;
-        this. = databaseRow.citaLBNona;
-        this. = databaseRow.lecturaBreuNona;
-        this. = databaseRow.respVNona;
-        this. = databaseRow.respRNona;
-        this. = databaseRow.citaLBVespres;
-        this. = databaseRow.lecturaBreuVespres;
-        this. = databaseRow.respBreuVespres1;
-        this. = databaseRow.respBreuVespres2;
-        this. = databaseRow.respBreuVespres3;
-        this. = databaseRow.antMaria;
-        this. = databaseRow.pregariesVespres;
-        this. = databaseRow.oraFiVespres;
+        this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
+        this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
+        this.ThirdHourParts.Responsory.Versicle = databaseRow.respVTercia;
+        this.ThirdHourParts.Responsory.Response = databaseRow.respRTercia;
+
+        this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
+        this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
+        this.SixthHourParts.Responsory.Versicle = databaseRow.respVSexta;
+        this.SixthHourParts.Responsory.Response = databaseRow.respRSexta;
+
+        this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
+        this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
+        this.NinthHourParts.Responsory.Versicle = databaseRow.respVNona;
+        this.NinthHourParts.Responsory.Response = databaseRow.respRNona;
+
+        this.VespersShortReading.Quote = databaseRow.citaLBVespres;
+        this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
+
+        this.VespersShorResponsory.FirstPart = databaseRow.respBreuVespres1;
+        this.VespersShorResponsory.SecondPart = databaseRow.respBreuVespres2;
+        this.VespersShorResponsory.ThirdPart = databaseRow.respBreuVespres3;
+
+        this.VespersEvangelicalAntiphon = databaseRow.antMaria;
+        this.VespersPrayers = databaseRow.pregariesVespres;
+        this.VespersFinalPrayer = databaseRow.oraFiVespres;
     }
 
     Id: number;
-    Responsory: Responsory;
+    OfficeResponsory: Responsory;
     OfficeFirstReading: LectureOfTheOffice;
     OfficeSecondReading: LectureOfTheOffice;
     LaudesShortReading: ShortReading;
@@ -67,4 +72,12 @@ export default class AdventFairDaysParts {
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
     LaudesFinalPrayer: string;
+    ThirdHourParts: HourCommonParts;
+    SixthHourParts: HourCommonParts;
+    NinthHourParts: HourCommonParts;
+    VespersShortReading: ShortReading;
+    VespersShorResponsory: ShortResponsory;
+    VespersEvangelicalAntiphon: string;
+    VespersPrayers: string;
+    VespersFinalPrayer: string;
 }

@@ -2,21 +2,32 @@ export default class CommonPartsOfHolyWeek {
     static MasterName: string = "tempsQuaresmaComuSS";
 
     constructor(databaseRow) {
-        this. = databaseRow.id;
-        this. = databaseRow.himneVespresLlati;
-        this. = databaseRow.himneVespresCat;
-        this. = databaseRow.antInvitatori;
-        this. = databaseRow.himneOficiLlati;
-        this. = databaseRow.himneOficiCat;
-        this. = databaseRow.himneLaudesLlati;
-        this. = databaseRow.himneLaudesCat;
-        this. = databaseRow.himneHoraLlati;
-        this. = databaseRow.himneHoraCat;
-        this. = databaseRow.antTercia;
-        this. = databaseRow.antSexta;
-        this. = databaseRow.antNona;
+        this.Id = databaseRow.id;
+        this.VespersLatinAnthem = databaseRow.himneVespresLlati;
+        this.VespersCatalanAnthem = databaseRow.himneVespresCat;
+        this.InvitationAntiphon = databaseRow.antInvitatori;
+        this.OfficeLatinAnthem = databaseRow.himneOficiLlati;
+        this.OfficeCatalanAnthem = databaseRow.himneOficiCat;
+        this.LaudesLatinAnthem = databaseRow.himneLaudesLlati;
+        this.LaudesCatalanAnthem = databaseRow.himneLaudesCat;
+        this.ThirdHourLatinAnthem = databaseRow.himneHoraLlati;
+        this.ThirdHourCatalanAnthem = databaseRow.himneHoraCat;
+        this.ThirdHourAntiphon = databaseRow.antTercia;
+        this.SixthHourAntiphon = databaseRow.antSexta;
+        this.NinthHourAntiphon = databaseRow.antNona;
     }
 
     Id: number;
-    Antiphon: string;
+    VespersLatinAnthem: string;
+    VespersCatalanAnthem: string;
+    InvitationAntiphon: string;
+    OfficeLatinAnthem: string;
+    OfficeCatalanAnthem: string;
+    LaudesLatinAnthem: string;
+    LaudesCatalanAnthem: string;
+    ThirdHourLatinAnthem: string;
+    ThirdHourCatalanAnthem: string;
+    ThirdHourAntiphon: string
+    SixthHourAntiphon: string
+    NinthHourAntiphon: string
 }

@@ -16,13 +16,13 @@ export default class LaudesCommonPsalter {
         this.SecondPsalm.Title = databaseRow.titol2;
         this.SecondPsalm.Comment = databaseRow.com2;
         this.SecondPsalm.Psalm = databaseRow.salm2;
-        this.SecondPsalm.HasGloryPrayer = databaseRow.gloria2;
+        this.SecondPsalm.HasGloryPrayer = databaseRow.gloria2 === "1";
 
         this.ThirdPsalm.Antiphon = databaseRow.ant3;
         this.ThirdPsalm.Title = databaseRow.titol3;
         this.ThirdPsalm.Comment = databaseRow.com3;
         this.ThirdPsalm.Psalm = databaseRow.salm3;
-        this.ThirdPsalm.HasGloryPrayer = databaseRow.gloria3;
+        this.ThirdPsalm.HasGloryPrayer = databaseRow.gloria3 === "1";
 
         this.ShortReading.Quote = databaseRow.versetLB;
         this.ShortReading.ShortReading = databaseRow.lecturaBreu;
