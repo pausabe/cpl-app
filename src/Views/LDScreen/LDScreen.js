@@ -45,7 +45,7 @@ export default class LDScreen extends Component {
       });
   
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "Refresh_Layout", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Refresh_Layout", error);
       this.setState( { renderError: true } )
     }
    
@@ -121,7 +121,7 @@ export default class LDScreen extends Component {
       );
 
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "render", error);
       return null
     }
   }
@@ -162,7 +162,7 @@ export default class LDScreen extends Component {
       }
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "VespersSelector", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "VespersSelector", error);
       return null;
     }
   }
@@ -173,7 +173,7 @@ export default class LDScreen extends Component {
       this.setState({ need_lectura2: MassLiturgyData.Lectura2 != '-' })
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "OnNormalPressed", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "OnNormalPressed", error);
       return null;
     }
   }
@@ -184,7 +184,7 @@ export default class LDScreen extends Component {
       this.setState({ need_lectura2: MassLiturgyData.Lectura2Vespers != '-' })
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "OnVespersPressed", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "OnVespersPressed", error);
       return null;
     }
   }
@@ -240,7 +240,7 @@ export default class LDScreen extends Component {
       )
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "Buttons", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Buttons", error);
       return null;
     }
   }

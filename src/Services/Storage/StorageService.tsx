@@ -6,7 +6,7 @@ export async function StoreData(storageKey, value){
         await AsyncStorage.setItem(storageKey, value.toString());
     }
     catch(e) {
-        Logger.LogError(Logger.LogKeys.StorageService, "StoreData", "Error in save:", e);
+        Logger.LogError(Logger.LogKeys.StorageService, "StoreData", e);
     }
 }
 
@@ -18,7 +18,7 @@ export async function GetData(storageKey, defaultValue) {
         }
         return value;
     } catch(e) {
-        Logger.LogError(Logger.LogKeys.StorageService, "GetData", "Error in get:", e);
+        Logger.LogError(Logger.LogKeys.StorageService, "GetData", e);
         return defaultValue;
     }
 }

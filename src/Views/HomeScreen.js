@@ -32,7 +32,7 @@ export default class HomeScreen extends Component {
       return t;
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "tempsName", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "tempsName", error);
       return null;
     }
   }
@@ -52,7 +52,7 @@ export default class HomeScreen extends Component {
       }
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "liturgicPaint", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "liturgicPaint", error);
       return null;
     }
   }
@@ -72,7 +72,7 @@ export default class HomeScreen extends Component {
       return Array(+digits.join("") + 1).join("M") + roman;
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "romanize", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "romanize", error);
       return null;
     }
   }
@@ -116,7 +116,7 @@ export default class HomeScreen extends Component {
       return null;
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "transfromCelTypeName", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "transfromCelTypeName", error);
       return null;
     }
   }
@@ -141,7 +141,7 @@ export default class HomeScreen extends Component {
       }
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "weekDayName", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "weekDayName", error);
       return null;
     }
   }
@@ -153,7 +153,7 @@ export default class HomeScreen extends Component {
       this.props.lliureCB(this.switchValue);
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "onSwitchValueChange", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "onSwitchValueChange", error);
     }
   }
 
@@ -167,7 +167,7 @@ export default class HomeScreen extends Component {
       }
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "On_Give_Press", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "On_Give_Press", error);
       return null;
     }
   }
@@ -177,7 +177,7 @@ export default class HomeScreen extends Component {
       this.props.navigation.navigate('Comment');
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "On_Comment_Press", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "On_Comment_Press", error);
       return null;
     }
   }
@@ -200,7 +200,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "render", error);
       return null;
     }
   }
@@ -218,7 +218,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "Top_Info", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Top_Info", error);
       return null;
     }
   }
@@ -281,7 +281,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "Info_Liturgica", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Info_Liturgica", error);
       return null;
     }
   }
@@ -383,7 +383,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "Cel_Info", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Cel_Info", error);
       return null;
     }
   }
@@ -418,7 +418,7 @@ export default class HomeScreen extends Component {
       )
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "Two_Buttons", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "Two_Buttons", error);
       return null;
     }
   }

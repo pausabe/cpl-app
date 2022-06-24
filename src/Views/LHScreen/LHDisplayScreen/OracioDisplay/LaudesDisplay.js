@@ -270,7 +270,7 @@ export default class LaudesDisplay extends Component {
       );
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "render", error);
       if(this.superTestMode) this.testErrorCB();
       return null;
     }

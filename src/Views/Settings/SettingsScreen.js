@@ -26,7 +26,7 @@ export default class SettingsScreen extends Component {
   UNSAFE_componentWillMount(){
       SettingsComponentAdapter.getSettingsOptions(this.refreshHome.bind(this)).then(result =>{
           this.setState({options: result});
-      }).catch(error =>  Logger.LogError(Logger.LogKeys.Screens, "UNSAFE_componentWillMount", "", error));
+      }).catch(error =>  Logger.LogError(Logger.LogKeys.Screens, "UNSAFE_componentWillMount", error));
   }
 
   HandleLogsPressed(){

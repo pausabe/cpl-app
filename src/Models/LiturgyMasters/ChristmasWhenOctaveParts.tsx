@@ -24,14 +24,14 @@ export default class ChristmasWhenOctaveParts {
         this.OfficeResponsory.Versicle = databaseRow.respVOfici;
         this.OfficeResponsory.Response = databaseRow.respROfici;
 
-        this.OfficeSecondReading.Reference = databaseRow.referencia1;
-        this.OfficeSecondReading.Quote = databaseRow.citaLect1Ofici;
-        this.OfficeSecondReading.Title = databaseRow.titolLect1Ofici;
-        this.OfficeSecondReading.Lecture = databaseRow.lectura1;
-        this.OfficeSecondReading.Responsory.Quote = databaseRow.citaResp1Ofici;
-        this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp1Part1Ofici;
-        this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
-        this.OfficeSecondReading.Responsory.ThirdPart = databaseRow.resp1Part3Ofici;
+        this.OfficeFirstReading.Reference = databaseRow.referencia1;
+        this.OfficeFirstReading.Quote = databaseRow.citaLect1Ofici;
+        this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
+        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1Ofici;
+        this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1Ofici;
+        this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
+        this.OfficeFirstReading.Responsory.ThirdPart = databaseRow.resp1Part3Ofici;
 
         this.OfficeSecondReading.Reference = databaseRow.referencia2Ofici;
         this.OfficeSecondReading.Quote = databaseRow.citaLec2Ofici;

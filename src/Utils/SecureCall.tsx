@@ -6,7 +6,7 @@ export default async function SecureCall(call, defaultReturn = undefined){
         returnValue = await call();
     }
     catch (error) {
-        Logger.LogError(Logger.LogKeys.SecureCall, "SecureCall", "", error);
+        Logger.LogError(Logger.LogKeys.SecureCall, "SecureCall", error);
     }
     return returnValue;
 }

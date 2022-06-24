@@ -1,3 +1,5 @@
+import {Psalm, Responsory} from "./CommonParts";
+
 export default class OfficeCommonPsalter {
     static MasterName: string = "salteriComuOfici";
 
@@ -8,11 +10,13 @@ export default class OfficeCommonPsalter {
         this.DayLatinAnthem = databaseRow.himneDiaLlati;
         this.DayCatalanAnthem = databaseRow.himneDiaCat;
 
-        this.FirstPsalm.Antiphon = databaseRow.ant1;
-        this.FirstPsalm.Title = databaseRow.titol1;
-        this.FirstPsalm.Comment = databaseRow.com1;
-        this.FirstPsalm.Psalm = databaseRow.salm1;
-        this.FirstPsalm.HasGloryPrayer = databaseRow.gloria1 === '1';
+        this.FirstPsalm = new Psalm({
+            antiphon: databaseRow.ant1,
+            title: databaseRow.titol1,
+            comment: databaseRow.com1,
+            psalm: databaseRow.salm1,
+            hasGloryPrayer: databaseRow.gloria1 === '1'
+        });
 
         this.SecondPsalm.Antiphon = databaseRow.ant2;
         this.SecondPsalm.Title = databaseRow.titol2;
@@ -26,8 +30,10 @@ export default class OfficeCommonPsalter {
         this.ThirdPsalm.Psalm = databaseRow.salm3;
         this.ThirdPsalm.HasGloryPrayer = databaseRow.gloria3 === '1';
 
-        this.Responsory.Versicle = databaseRow.respV;
-        this.Responsory.Response = databaseRow.respR;
+        this.Responsory = new Responsory({
+            versicle: databaseRow.respV,
+            response: databaseRow.respR
+        });
     }
 
     Id: number;

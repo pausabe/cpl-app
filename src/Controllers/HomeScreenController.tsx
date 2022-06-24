@@ -39,7 +39,7 @@ export default function HomeScreenController(props) {
     return GetView(props, CurrentState, setState);
   }
   catch (error) {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "HomeScreenController", "", error);
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "HomeScreenController", error);
     return null;
   }
 }
@@ -131,7 +131,7 @@ async function AppearanceHasChanged(param) {
     await CheckSystemDarkMode(param.colorScheme);
   }
   catch (error) {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "AppearanceHasChanged", "", error);
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "AppearanceHasChanged", error);
   }
 }
 
@@ -146,7 +146,7 @@ async function CheckSystemDarkMode(colorScheme) {
       }
     });
   } catch (error) {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "CheckSystemDarkMode", "", error);
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "CheckSystemDarkMode", error);
   }
 }
 
@@ -202,7 +202,7 @@ function GetInitialState(checkLatePopup){
     }
   }
   catch (error) {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "GetInitialState", "", error);
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "GetInitialState", error);
   }
   return initialState;
 }
@@ -275,7 +275,7 @@ async function HandleOnSwitchFreePrayerPressed(freePrayerEnabled, setState) {
 }
 
 function HandleGetDataError(error, setState){
-  Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", "", error);
+  Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", error);
   const messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
   setState(CurrentState.UpdateObtainDataErrorMessage(messageToShow));
 }

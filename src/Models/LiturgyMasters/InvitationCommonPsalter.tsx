@@ -1,4 +1,4 @@
-export default class InvitatoryCommonPsalter {
+export default class InvitationCommonPsalter {
     static MasterName: string = "salteriComuInvitatori";
 
     constructor(databaseRow) {

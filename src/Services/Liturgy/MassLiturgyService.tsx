@@ -143,7 +143,7 @@ export default class LD_SOUL {
             }
         }
         catch (error) {
-            Logger.LogError(Logger.LogKeys.Soul, "makeQueryies", "", error);
+            Logger.LogError(Logger.LogKeys.Soul, "makeQueryies", error);
         }
     }
 

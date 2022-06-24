@@ -173,7 +173,7 @@ function getOficisComuns(params, result, isForVespres1) {
 
   }
   else {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "getOficisComuns", "InfoLog. Error OC. No result from DB");
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "getOficisComuns", new Error("InfoLog. Error OC. No result from DB"));
     creatingEmptyCEL();
     info_cel = {
       nomCel: '-',

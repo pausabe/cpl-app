@@ -159,7 +159,7 @@ export default class OficiDisplay extends Component {
       }
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "remder", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "remder", error);
       if(this.superTestMode) this.testErrorCB();
       return null;
     }
@@ -578,7 +578,7 @@ export default class OficiDisplay extends Component {
       )
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "lectures", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "lectures", error);
       return null;
     }
   }

@@ -234,11 +234,11 @@ let GlobalFunctions = {
           };
         
         default:
-          Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", "getTextStyle NOT FOUND!!!! -> " + typeCode);
+          Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", new Error("getTextStyle NOT FOUND!!!! -> " + typeCode));
           break;
     }
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", "", error);
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", error);
     }
   },
 
@@ -299,7 +299,7 @@ let GlobalFunctions = {
       return text;
       
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, "trim", "Something went wrong triming the text '" + text + "': ", error);
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "trim", error);
       return text
     }
 
@@ -322,7 +322,7 @@ let GlobalFunctions = {
         result = r1 + ' ' + r2.charAt(0).toLowerCase() + r2.slice(1);
     }
     else{
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, "respTogether", "InfoLog. respTogether NOT possible. Something went wrong!", error);
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "respTogether", error);
     }
 
     return result;

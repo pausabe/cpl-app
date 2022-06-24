@@ -4,7 +4,7 @@ import SoulKeys from '../../Controllers/Classes/SOUL/SoulKeys';
 import * as DatabaseDataService from '../DatabaseDataService';
 import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
 import SecureCall from "../../Utils/SecureCall";
-import InvitatoryCommonPsalter from "../../Models/LiturgyMasters/InvitatoryCommonPsalter";
+import InvitationCommonPsalter from "../../Models/LiturgyMasters/InvitationCommonPsalter";
 import GlobalFunctions from '../../Utils/GlobalFunctions';
 import OfficeOfOrdinaryTime from "../../Models/LiturgyMasters/OfficeOfOrdinaryTime";
 import PrayersOfOrdinaryTime from "../../Models/LiturgyMasters/PrayersOfOrdinaryTime";
@@ -44,7 +44,7 @@ import SpecialDaysParts from "../../Models/LiturgyMasters/SpecialDaysParts";
 export async function ObtainLiturgyMasters(globalData) : Promise<LiturgyMasters>{
     const liturgyMasters = new LiturgyMasters();
     liturgyMasters.OfficeCommonPsalter = await ObtainOfficeCommonPsalter(globalData);
-    liturgyMasters.InvitatoryCommonPsalter = await ObtainInvitatoryCommonPsalter(globalData);
+    /*liturgyMasters.InvitationCommonPsalter = await ObtainInvitationCommonPsalter(globalData);
     liturgyMasters.OfficeOfOrdinaryTime = await ObtainOfficeOfOrdinaryTime(globalData);
     liturgyMasters.PrayersOfOrdinaryTime = await ObtainPrayersOfOrdinaryTime(globalData);
     liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers = await ObtainPrayersOfOrdinaryTimeWhenFirstVespers(globalData);
@@ -83,7 +83,7 @@ export async function ObtainLiturgyMasters(globalData) : Promise<LiturgyMasters>
     liturgyMasters.SaintsSolemnitiesParts = await ObtainSaintsSolemnitiesParts(globalData);
     liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts = await ObtainSaintsSolemnitiesWhenFirstsVespersParts(globalData);
     liturgyMasters.SaintsMemories = await ObtainSaintsMemories(globalData);
-    liturgyMasters.SpecialDaysParts = await ObtainSpecialDaysParts(globalData);
+    liturgyMasters.SpecialDaysParts = await ObtainSpecialDaysParts(globalData);*/
     return liturgyMasters;
 }
 
@@ -99,12 +99,12 @@ async function ObtainOfficeCommonPsalter(globalData) : Promise<OfficeCommonPsalt
     });
 }
 
-async function ObtainInvitatoryCommonPsalter(globalData) : Promise<InvitatoryCommonPsalter> {
+async function ObtainInvitationCommonPsalter(globalData) : Promise<InvitationCommonPsalter> {
     return await SecureCall(async () => {
         if (globalData.LT === GlobalKeys.O_ORDINARI) {
             const id = (parseInt(globalData.cicle) - 1) * 7 + (globalData.date.getDay() + 1);
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(InvitatoryCommonPsalter.MasterName, id);
-            return new InvitatoryCommonPsalter(row);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(InvitationCommonPsalter.MasterName, id);
+            return new InvitationCommonPsalter(row);
         }
     });
 }

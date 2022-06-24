@@ -180,7 +180,7 @@ export function getLDSantoral(day, specialResultId, celType, tempsEspecific, cic
           const special_result = result.rows.item(0);
 
           if(special_result === undefined){
-            Logger.LogError(Logger.LogKeys.DatabaseDataService, "getLDSantoral", `"Special Result cannot be undefined. Query was "${query}"`);
+            Logger.LogError(Logger.LogKeys.DatabaseDataService, "getLDSantoral", new Error(`"Special Result cannot be undefined. Query was "${query}"`));
           }
           else if(normal_result !== undefined){
             if (special_result.Lectura1Text === '-'){

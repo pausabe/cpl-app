@@ -41,7 +41,7 @@ export const doUpdateIfAvailable = async (beforeDownloadCallback, throwUpdateErr
         },msFromChecking < minMsFromCheckingUpdatesAndReloading? (minMsFromCheckingUpdatesAndReloading - msFromChecking) : 0);
 
     } catch (e) {
-        Logger.LogError(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', "", e);
+        Logger.LogError(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', e);
         if (throwUpdateErrors) throw e
         return false
     }

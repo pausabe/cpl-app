@@ -92,7 +92,7 @@ export default class LDDisplayScreen extends Component {
             )
         }
         catch (error) {
-            Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
+            Logger.LogError(Logger.LogKeys.Screens, "render", error);
             return null;
         }
     }

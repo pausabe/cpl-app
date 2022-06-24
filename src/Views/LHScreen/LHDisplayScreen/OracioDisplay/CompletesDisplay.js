@@ -410,11 +410,11 @@ export default class CompletesDisplay extends Component {
         );
       }
       else{
-        Logger.LogError(Logger.LogKeys.Screens, "render", "wierd error....... this.props:",this.props);
+        Logger.LogError(Logger.LogKeys.Screens, "render", new Error("wierd error......."));
         return null;
       }
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "render", error);
       if(this.superTestMode) this.testErrorCB();
       return(null);
     }

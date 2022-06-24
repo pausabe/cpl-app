@@ -104,7 +104,7 @@ export default class HoraMenorDisplay extends Component {
       );
     }
     catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, "render", "", error);
+      Logger.LogError(Logger.LogKeys.Screens, "render", error);
       if(this.props.superTestMode) this.props.testErrorCB();
       return null;
     }

@@ -1,5 +1,5 @@
 import OfficeCommonPsalter from "./OfficeCommonPsalter";
-import InvitatoryCommonPsalter from "./InvitatoryCommonPsalter";
+import InvitationCommonPsalter from "./InvitationCommonPsalter";
 import OfficeOfOrdinaryTime from "./OfficeOfOrdinaryTime";
 import PrayersOfOrdinaryTime from "./PrayersOfOrdinaryTime";
 import CommonPartsUntilFifthWeekOfLentTime from "./CommonPartsUntilFifthWeekOfLentTime";
@@ -37,7 +37,7 @@ import CommonSpecialPartsOfEaster from "./CommonSpecialPartsOfEaster";
 
 export default class LiturgyMasters{
     OfficeCommonPsalter: OfficeCommonPsalter;
-    InvitatoryCommonPsalter: InvitatoryCommonPsalter;
+    InvitationCommonPsalter: InvitationCommonPsalter;
     OfficeOfOrdinaryTime: OfficeOfOrdinaryTime;
     PrayersOfOrdinaryTime: PrayersOfOrdinaryTime;
     PrayersOfOrdinaryTimeWhenFirstVespers: PrayersOfOrdinaryTime;

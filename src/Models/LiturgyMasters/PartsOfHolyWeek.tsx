@@ -25,59 +25,62 @@ export default class PartsOfHolyWeek {
         this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2;
         this.OfficeSecondReading.Responsory.ThirdPart = databaseRow.resp2Part3;
 
-        this. = databaseRow.ant1Laudes;
-        this. = databaseRow.ant2Laudes;
-        this. = databaseRow.ant3Laudes;
+        this.LaudesFirstAntiphon = databaseRow.ant1Laudes;
+        this.LaudesSecondAntiphon = databaseRow.ant2Laudes;
+        this.LaudesThirdAntiphon = databaseRow.ant3Laudes;
 
-        this. = databaseRow.citaLBLaudes;
-        this. = databaseRow.lecturaBreuLaudes;
+        this.LaudesShortReading.Quote = databaseRow.citaLBLaudes;
+        this.LaudesShortReading.ShortReading = databaseRow.lecturaBreuLaudes;
 
-        this. = databaseRow.respBreu1Laudes;
-        this. = databaseRow.respBreu2Laudes;
-        this. = databaseRow.respBreu3Laudes;
+        this.LaudesShortResponsory.FirstPart = databaseRow.respBreu1Laudes;
+        this.LaudesShortResponsory.SecondPart = databaseRow.respBreu2Laudes;
+        this.LaudesShortResponsory.ThirdPart = databaseRow.respBreu3Laudes;
 
-        this. = databaseRow.antZacaries;
-        this. = databaseRow.pregariesLaudes;
-        this. = databaseRow.oraFiLaudes;
+        this.LaudesEvangelicalAntiphon = databaseRow.antZacaries;
+        this.LaudesPrayers = databaseRow.pregariesLaudes;
+        this.LaudesFinalPrayer = databaseRow.oraFiLaudes;
 
-        this. = databaseRow.antTercia;
-        this. = databaseRow.citaLBTercia;
-        this. = databaseRow.lecturaBreuTercia;
-        this. = databaseRow.respVTercia;
-        this. = databaseRow.respRTercia;
+        this.ThirdHourParts.Antiphon = databaseRow.antTercia;
+        this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
+        this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
+        this.ThirdHourParts.Responsory.Versicle = databaseRow.respVTercia;
+        this.ThirdHourParts.Responsory.Response = databaseRow.respRTercia;
 
-        this. = databaseRow.antSexta;
-        this. = databaseRow.citaLBSexta;
-        this. = databaseRow.lecturaBreuSexta;
-        this. = databaseRow.respVSexta;
-        this. = databaseRow.respRSexta;
+        this.SixthHourParts.Antiphon = databaseRow.antSexta;
+        this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
+        this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
+        this.SixthHourParts.Responsory.Versicle = databaseRow.respVSexta;
+        this.SixthHourParts.Responsory.Response = databaseRow.respRSexta;
 
-        this. = databaseRow.antNona;
-        this. = databaseRow.citaLBNona;
-        this. = databaseRow.lecturaBreuNona;
-        this. = databaseRow.respVNona;
-        this. = databaseRow.respRNona;
+        this.NinthHourParts.Antiphon = databaseRow.antNona;
+        this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
+        this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
+        this.NinthHourParts.Responsory.Versicle = databaseRow.respVNona;
+        this.NinthHourParts.Responsory.Response = databaseRow.respRNona;
 
-        this. = databaseRow.ant1Vespres;
-        this. = databaseRow.ant2Vespres;
-        this. = databaseRow.ant3Vespres;
+        this.VespersFirstAntiphon = databaseRow.ant1Vespres;
+        this.VespersSecondAntiphon = databaseRow.ant2Vespres;
+        this.VespersThirdAntiphon = databaseRow.ant3Vespres;
 
-        this. = databaseRow.citaLBVespres;
-        this. = databaseRow.lecturaBreuVespres;
+        this.VespersShortReading.Quote = databaseRow.citaLBVespres;
+        this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
 
-        this. = databaseRow.respBreuVespres1;
-        this. = databaseRow.respBreuVespres2;
-        this. = databaseRow.respBreuVespres3;
+        this.VespersShorResponsory.FirstPart = databaseRow.respBreuVespres1;
+        this.VespersShorResponsory.SecondPart = databaseRow.respBreuVespres2;
+        this.VespersShorResponsory.ThirdPart = databaseRow.respBreuVespres3;
 
-        this. = databaseRow.antMaria;
-        this. = databaseRow.pregariesVespres;
-        this. = databaseRow.oraFiVespres;
+        this.VespersEvangelicalAntiphon = databaseRow.antMaria;
+        this.VespersPrayers = databaseRow.pregariesVespres;
+        this.VespersFinalPrayer = databaseRow.oraFiVespres;
     }
 
     Id: number;
     OfficeResponsory: Responsory;
     OfficeFirstReading: LectureOfTheOffice;
     OfficeSecondReading: LectureOfTheOffice;
+    LaudesFirstAntiphon: string;
+    LaudesSecondAntiphon: string;
+    LaudesThirdAntiphon: string;
     LaudesShortReading: ShortReading;
     LaudesShortResponsory: ShortResponsory;
     LaudesEvangelicalAntiphon: string;
@@ -86,6 +89,9 @@ export default class PartsOfHolyWeek {
     ThirdHourParts: HourCommonParts;
     SixthHourParts: HourCommonParts;
     NinthHourParts: HourCommonParts;
+    VespersFirstAntiphon: string;
+    VespersSecondAntiphon: string;
+    VespersThirdAntiphon: string;
     VespersShortReading: ShortReading;
     VespersShorResponsory: ShortResponsory;
     VespersEvangelicalAntiphon: string;
