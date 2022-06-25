@@ -11,7 +11,7 @@ import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
 import GLOBALS from '../../Utils/GlobalKeys';
-import { MassLiturgyData, GlobalData } from '../../Services/DataService';
+import { MassLiturgy, GlobalData } from '../../Services/DataService';
 
 const VESPERS_SELECTOR_TYPES = {
   NORMAL: 'normal',
@@ -38,10 +38,10 @@ export default class LDScreen extends Component {
   Refresh_Layout() {
 
     try {
-      this.CURRENT_VESPERS_SELECTOR = (!MassLiturgyData.VetllaPasqua && MassLiturgyData.Vespers && GlobalData.date.getHours() >= GLOBALS.afternoon_hour && MassLiturgyData.Lectura2Vespers != '-')? VESPERS_SELECTOR_TYPES.VESPERS : VESPERS_SELECTOR_TYPES.NORMAL;
+      this.CURRENT_VESPERS_SELECTOR = (!MassLiturgy.VetllaPasqua && MassLiturgy.Vespers && GlobalData.date.getHours() >= GLOBALS.afternoon_hour && MassLiturgy.Lectura2Vespers != '-')? VESPERS_SELECTOR_TYPES.VESPERS : VESPERS_SELECTOR_TYPES.NORMAL;
 
       this.setState({
-        need_lectura2: (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.NORMAL && MassLiturgyData.Lectura2 != '-') || (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.VESPERS && MassLiturgyData.Lectura2Vespers != '-')
+        need_lectura2: (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.NORMAL && MassLiturgy.Lectura2 != '-') || (this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.VESPERS && MassLiturgy.Lectura2Vespers != '-')
       });
   
     } catch (error) {
@@ -101,10 +101,10 @@ export default class LDScreen extends Component {
         <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
             {
                <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-               {MassLiturgyData.Vespers == undefined ?
+               {MassLiturgy.Vespers == undefined ?
                  null :
                  <View style={{ flex: 1, }}>
-                   {MassLiturgyData.Vespers ?
+                   {MassLiturgy.Vespers ?
                      <View style={styles.liturgiaContainerVespers}>
                        {this.VespersSelector()}
                      </View>
@@ -128,7 +128,7 @@ export default class LDScreen extends Component {
 
   VespersSelector() {
     try {
-      if (MassLiturgyData.Vespers) {
+      if (MassLiturgy.Vespers) {
         return (
           <View style={styles.buttons_containerVespers}>
             <TouchableOpacity style={this.CURRENT_VESPERS_SELECTOR == VESPERS_SELECTOR_TYPES.VESPERS ? styles.buttonContainer : styles.buttonContainerPressedLeft} onPress={this.OnNormalPressed.bind(this)}>
@@ -170,7 +170,7 @@ export default class LDScreen extends Component {
   OnNormalPressed() {
     try {
       this.CURRENT_VESPERS_SELECTOR = VESPERS_SELECTOR_TYPES.NORMAL;
-      this.setState({ need_lectura2: MassLiturgyData.Lectura2 != '-' })
+      this.setState({ need_lectura2: MassLiturgy.Lectura2 != '-' })
     }
     catch (error) {
       Logger.LogError(Logger.LogKeys.Screens, "OnNormalPressed", error);
@@ -181,7 +181,7 @@ export default class LDScreen extends Component {
   OnVespersPressed() {
     try {
       this.CURRENT_VESPERS_SELECTOR = VESPERS_SELECTOR_TYPES.VESPERS;
-      this.setState({ need_lectura2: MassLiturgyData.Lectura2Vespers != '-' })
+      this.setState({ need_lectura2: MassLiturgy.Lectura2Vespers != '-' })
     }
     catch (error) {
       Logger.LogError(Logger.LogKeys.Screens, "OnVespersPressed", error);
@@ -193,7 +193,7 @@ export default class LDScreen extends Component {
     try {
       return (
         <View style={styles.buttons_container}>
-          {MassLiturgyData.VetllaPasqua ?
+          {MassLiturgy.VetllaPasqua ?
             <View style={{ flex: 1 }}>
               <TouchableOpacity style={styles.buttonContainer} onPress={this.On_Button_Pressed.bind(this, "VetllaPasquaLecturesSalms", need_lectura2)}>
                 <Text style={styles.buttonText}>{"Lectures i salms"}</Text>

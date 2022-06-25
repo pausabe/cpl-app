@@ -1,3 +1,5 @@
+import {HourCommonParts, LectureOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+
 export default class PalmSundayParts {
     static MasterName: string = "tempsQuaresmaRams";
 
@@ -90,34 +92,34 @@ export default class PalmSundayParts {
     FirstVespersFirstAntiphon: string;
     FirstVespersSecondAntiphon: string;
     FirstVespersThirdAntiphon: string;
-    FirstVespersResponsory: Responsory;
-    FirstVespresShortResponsory: ShortResponsory;
+    FirstVespersResponsory: Responsory = new Responsory();
+    FirstVespresShortResponsory: ShortResponsory = new ShortResponsory();
     FirstVespersEvangelicalAntiphonYearA: string;
     FirstVespersEvangelicalAntiphonYearB: string;
     FirstVespersEvangelicalAntiphonYearC: string;
     FirstVespersPrayers: string;
     FirstVespersFinalPrayer: string;
-    OfficeResponsory: Responsory;
-    OfficeFirstReading: LectureOfTheOffice;
-    OfficeSecondReading: LectureOfTheOffice;
+    OfficeResponsory: Responsory = new Responsory();
+    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
     LaudesFirstAntiphon: string;
     LaudesSecondAntiphon: string;
     LaudesThirdAntiphon: string;
-    LaudesShortReading: ShortReading;
-    LaudesShortResponsory: ShortResponsory;
+    LaudesShortReading: ShortReading = new ShortReading();
+    LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphonYearA: string;
     LaudesEvangelicalAntiphonYearB: string;
     LaudesEvangelicalAntiphonYearC: string;
     LaudesPrayers: string;
     LaudesFinalPrayer:string;
-    ThirdHourParts: HourCommonParts;
-    SixthHourParts: HourCommonParts;
-    NinthHourParts: HourCommonParts;
+    ThirdHourParts: HourCommonParts = new HourCommonParts();
+    SixthHourParts: HourCommonParts = new HourCommonParts();
+    NinthHourParts: HourCommonParts = new HourCommonParts();
     SecondVespersFirstAntiphon: string;
     SecondVespersSecondAntiphon: string;
     SecondVespersThirdAntiphon: string;
-    SecondVespersResponsory: Responsory;
-    SecondVespresShortResponsory: ShortResponsory;
+    SecondVespersResponsory: Responsory = new Responsory();
+    SecondVespresShortResponsory: ShortResponsory = new ShortResponsory();
     SecondVespersEvangelicalAntiphonYearA: string;
     SecondVespersEvangelicalAntiphonYearB: string;
     SecondVespersEvangelicalAntiphonYearC: string;

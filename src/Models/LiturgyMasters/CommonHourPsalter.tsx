@@ -1,3 +1,5 @@
+import {HourCommonParts, Psalm} from "./CommonParts";
+
 export default class CommonHourPsalter {
     static MasterName: string = "salteriComuHora";
 
@@ -42,10 +44,10 @@ export default class CommonHourPsalter {
     }
 
     Id: number;
-    FirstPsalm: Psalm;
-    SecondPsalm: Psalm;
-    ThirdPsalm: Psalm;
-    ThirdHourParts: HourCommonParts;
-    SixthHourParts: HourCommonParts;
-    NinthHourParts: HourCommonParts;
+    FirstPsalm: Psalm = new Psalm();
+    SecondPsalm: Psalm = new Psalm();
+    ThirdPsalm: Psalm = new Psalm();
+    ThirdHourParts: HourCommonParts = new HourCommonParts();
+    SixthHourParts: HourCommonParts = new HourCommonParts();
+    NinthHourParts: HourCommonParts = new HourCommonParts();
 }

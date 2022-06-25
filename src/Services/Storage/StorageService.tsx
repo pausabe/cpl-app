@@ -10,7 +10,7 @@ export async function StoreData(storageKey, value){
     }
 }
 
-export async function GetData(storageKey, defaultValue) {
+export async function GetData(storageKey, defaultValue?) {
     try {
         const value = await AsyncStorage.getItem(storageKey);
         if(!value) {

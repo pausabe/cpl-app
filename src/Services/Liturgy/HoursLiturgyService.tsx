@@ -9,7 +9,7 @@ import GLOBAL from '../../Utils/GlobalKeys';
 import GF from '../../Utils/GlobalFunctions';
 import SoulKeys from '../../Controllers/Classes/SOUL/SoulKeys';
 import * as DatabaseDataService from '../DatabaseDataService';
-import HoursLiturgy from "../../Models/HoursLiturgyModel";
+import HoursLiturgy from "../../Models/HoursLiturgy";
 
 let GlobalData;
 let queryRows = {

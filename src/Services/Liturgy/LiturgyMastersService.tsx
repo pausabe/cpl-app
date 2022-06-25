@@ -44,14 +44,14 @@ import SpecialDaysParts from "../../Models/LiturgyMasters/SpecialDaysParts";
 export async function ObtainLiturgyMasters(globalData) : Promise<LiturgyMasters>{
     const liturgyMasters = new LiturgyMasters();
     liturgyMasters.OfficeCommonPsalter = await ObtainOfficeCommonPsalter(globalData);
-    /*liturgyMasters.InvitationCommonPsalter = await ObtainInvitationCommonPsalter(globalData);
+    liturgyMasters.InvitationCommonPsalter = await ObtainInvitationCommonPsalter(globalData);
     liturgyMasters.OfficeOfOrdinaryTime = await ObtainOfficeOfOrdinaryTime(globalData);
     liturgyMasters.PrayersOfOrdinaryTime = await ObtainPrayersOfOrdinaryTime(globalData);
     liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers = await ObtainPrayersOfOrdinaryTimeWhenFirstVespers(globalData);
     liturgyMasters.CommonPartsUntilFifthWeekOfLentTime = await ObtainCommonPartsUntilFifthWeekOfLentTime(globalData);
     liturgyMasters.PartsOfLentTime = await ObtainPartsOfLentTime(globalData);
     liturgyMasters.PartsOfFiveWeeksOfLentTime = await ObtainPartsOfFiveWeeksOfLentTime(globalData);
-    liturgyMasters.CommonPartsOfHolyWeek = await ObtainCommonPartsOfHolyWeek(globalData);
+    /*liturgyMasters.CommonPartsOfHolyWeek = await ObtainCommonPartsOfHolyWeek(globalData);
     liturgyMasters.PalmSundayParts = await ObtainPalmSundayParts(globalData);
     liturgyMasters.PartsOfHolyWeek = await ObtainPartsOfHolyWeek(globalData);
     liturgyMasters.PartsOfEasterTriduum = await ObtainPartsOfEasterTriduum(globalData);

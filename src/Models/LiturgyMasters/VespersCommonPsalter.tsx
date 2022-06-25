@@ -1,3 +1,5 @@
+import {Psalm, ShortReading, ShortResponsory} from "./CommonParts";
+
 export default class VespersCommonPsalter {
     static MasterName: string = "salteriComuVespres";
 
@@ -39,11 +41,11 @@ export default class VespersCommonPsalter {
     Id: number;
     LatinAnthem: string;
     CatalanAnthem: string;
-    FirstPsalm: Psalm;
-    SecondPsalm: Psalm;
-    ThirdPsalm: Psalm;
-    ShortReading: ShortReading;
-    ShortResponsory: ShortResponsory;
+    FirstPsalm: Psalm = new Psalm();
+    SecondPsalm: Psalm = new Psalm();
+    ThirdPsalm: Psalm = new Psalm();
+    ShortReading: ShortReading = new ShortReading();
+    ShortResponsory: ShortResponsory = new ShortResponsory();
     EvangelicalAntiphon: string;
     Prayers: string;
     FinalPrayer: string;

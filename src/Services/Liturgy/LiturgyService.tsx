@@ -1,6 +1,6 @@
 import {ObtainHoursLiturgy} from './HoursLiturgyService';
 import MassLiturgyService from './MassLiturgyService';
-import Liturgy from "../../Models/LiturgyModel";
+import Liturgy from "../../Models/Liturgy";
 import {ObtainLiturgyMasters} from "./LiturgyMastersService";
 
 export async function SetupLiturgy(globalData): Promise<Liturgy> {

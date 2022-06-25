@@ -6,7 +6,7 @@ import Laudes from './OracioDisplay/LaudesDisplay'
 import Vespres from './OracioDisplay/VespresDisplay'
 import HoraMenor from './OracioDisplay/HoraMenorDisplay'
 import Completes from './OracioDisplay/CompletesDisplay'
-import {GlobalData, HoursLiturgyData} from '../../../Services/DataService';
+import {GlobalData, HoursLiturgy} from '../../../Services/DataService';
 import GF from '../../../Utils/GlobalFunctions';
 
 export default class LHDisplayScreen extends Component {
@@ -67,15 +67,15 @@ export default class LHDisplayScreen extends Component {
   getTitols(){
     var titols = [];
 
-    titols.push(HoursLiturgyData.ofici.titol1);
-    titols.push(HoursLiturgyData.ofici.titol2);
-    titols.push(HoursLiturgyData.ofici.titol3);
-    titols.push(HoursLiturgyData.laudes.titol1);
-    titols.push(HoursLiturgyData.laudes.titol3);
-    titols.push(HoursLiturgyData.vespres.titol1);
-    titols.push(HoursLiturgyData.vespres.titol2);
-    titols.push(HoursLiturgyData.completes.titol1);
-    titols.push(HoursLiturgyData.completes.titol2);
+    titols.push(HoursLiturgy.ofici.titol1);
+    titols.push(HoursLiturgy.ofici.titol2);
+    titols.push(HoursLiturgy.ofici.titol3);
+    titols.push(HoursLiturgy.laudes.titol1);
+    titols.push(HoursLiturgy.laudes.titol3);
+    titols.push(HoursLiturgy.vespres.titol1);
+    titols.push(HoursLiturgy.vespres.titol2);
+    titols.push(HoursLiturgy.completes.titol1);
+    titols.push(HoursLiturgy.completes.titol2);
 
     return titols;
   }
@@ -117,7 +117,7 @@ export default class LHDisplayScreen extends Component {
             return(
             <HoraMenor
               HM = {type}
-              HORA_MENOR = {HoursLiturgyData.tercia}
+              HORA_MENOR = {HoursLiturgy.tercia}
               superTestMode = {this.screen_props.superTestMode}
               testErrorCB={this.testErrorCB.bind(this)}
               events={this.eventEmitter}/>
@@ -128,7 +128,7 @@ export default class LHDisplayScreen extends Component {
             return(
               <HoraMenor
                 HM = {type}
-                HORA_MENOR = {HoursLiturgyData.sexta}
+                HORA_MENOR = {HoursLiturgy.sexta}
                 superTestMode = {this.screen_props.superTestMode}
                 testErrorCB={this.testErrorCB.bind(this)}
                 events={this.eventEmitter}/>
@@ -139,7 +139,7 @@ export default class LHDisplayScreen extends Component {
             return(
               <HoraMenor
                 HM = {type}
-                HORA_MENOR = {HoursLiturgyData.nona}
+                HORA_MENOR = {HoursLiturgy.nona}
                 superTestMode = {this.screen_props.superTestMode}
                 testErrorCB={this.testErrorCB.bind(this)}
                 events={this.eventEmitter}/>

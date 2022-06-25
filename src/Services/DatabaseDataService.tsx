@@ -1,8 +1,10 @@
 import * as Logger from '../Utils/Logger';
 import GF from '../Utils/GlobalFunctions';
 import {executeQuery, executeQueryAsync} from "./DatabaseManagerService";
+import { Settings } from '../Models/Settings';
+import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 
-export function getDatabaseVersion(){
+export function getDatabaseVersion() : Promise<number>{
   return new Promise((resolve) => {
     executeQuery(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`,
         result => {
@@ -32,47 +34,40 @@ export async function ObtainMasterRowFromDatabase(master: string, rowId: number)
     return result.rows.item(0);
 }
 
-export function getAnyLiturgic(year, month, day, callback, errorCallback) {
-  const query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND mes = '${month + 1}' AND dia = '${day}'`;
-  executeQuery(query,
-    result => {
-      getTomorrow(result.rows.item(0), year, month, day, callback);
-    }
-    ,errorCallback);
+export async function ObtainLiturgySpecificDayInformation(date: Date, currentSettings: Settings) : Promise<LiturgySpecificDayInformation> {
+  const result = await executeQueryAsync(`SELECT * FROM anyliturgic WHERE any = '${date.getFullYear()}' AND mes = '${date.getMonth() + 1}' AND dia = '${date.getDate()}'`);
+  const todayLiturgy = result.rows.item(0);
+  let liturgyDayInformation = new LiturgySpecificDayInformation();
+  liturgyDayInformation.PentecostDay = await ObtainPentecostDay(currentSettings.TodayDate);
+  liturgyDayInformation.CelebrationType = GF.getCelType(currentSettings.DioceseName, todayLiturgy);
+  liturgyDayInformation.MovedDay.Date = todayLiturgy.diaMogut;
+  liturgyDayInformation.MovedDay.DioceseName = todayLiturgy.diocesiMogut;
+  liturgyDayInformation.LiturgyColor = todayLiturgy.Color;
+  liturgyDayInformation.GenericLiturgyTime = todayLiturgy.tempsespecific;
+  liturgyDayInformation.SpecificLiturgyTime = todayLiturgy.temps;
+  liturgyDayInformation.WeekCycle = todayLiturgy.cicle;
+  liturgyDayInformation.Week = todayLiturgy.NumSet;
+  liturgyDayInformation.YearType = todayLiturgy.anyABC;
+  liturgyDayInformation.YearIsEven = todayLiturgy.paroimpar === "II";
+  liturgyDayInformation.DayOfTheWeek = todayLiturgy.DiadelaSetmana;
+  return liturgyDayInformation;
 }
 
-export function getTomorrow(r1, year, month, day, callback) {
-  const tomorrow = new Date(year, month, day);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const year2 = tomorrow.getFullYear();
-  const month2 = tomorrow.getMonth();
-  const day2 = tomorrow.getDate();
-
-  const query = `SELECT * FROM anyliturgic WHERE any = '${year2}' AND mes = '${month2 + 1}' AND dia = '${day2}'`;
-  executeQuery(query,
-    result => {
-      getPentacosta(r1, result.rows.item(0), year, callback);
-    });
+export async function ObtainPentecostDay(date: Date) {
+  const result = await executeQueryAsync(`SELECT * FROM anyliturgic WHERE any = '${date.getFullYear()}' AND temps = 'P_SETMANES' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`);
+  return new Date(date.getFullYear(), (result.rows.item(0).mes - 1), result.rows.item(0).dia);
 }
 
-export function getPentacosta(r1, r2, year, callback) {
-  let query = `SELECT * FROM anyliturgic WHERE any = '${year}' AND temps = 'P_SETMANES' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`;
-  executeQuery(query,
-    result => {
-      let pentacosta = new Date(year, (result.rows.item(0).mes - 1), result.rows.item(0).dia);
-      getMinMaxDates(r1, r2, pentacosta, callback);
-    });
-}
-
-export function getMinMaxDates(r1, r2, r3, callback){
+export async function ObtainMinimumAndMaximumSelectableDates() : Promise<{MinimumSelectableDate : Date, MaximumSelectableDate : Date}>{
   const query = `SELECT MIN(CAST(any As INTEGER)) as minAny, (SELECT MIN(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT)) as minMes, (SELECT MIN(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MIN(CAST(anyliturgic2.mes As INTEGER)) as TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) as TEXT))) as minDia, MAX(any) as maxAny, (SELECT MAX(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any as INTEGER)) As TEXT)) as maxMes, (SELECT MAX(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MAX(CAST(anyliturgic2.mes as INTEGER)) As TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT))) as maxDia FROM anyliturgic`;
-  executeQuery(query,
-    result => {
-      const marginDays = 2;
-      const minDate = new Date(result.rows.item(0).minAny, (result.rows.item(0).minMes - 1), (result.rows.item(0).minDia + marginDays));
-      const maxDate = new Date(result.rows.item(0).maxAny, (result.rows.item(0).maxMes - 1), (result.rows.item(0).maxDia - marginDays));
-      callback(r1, r2, r3, minDate, maxDate);
-    });
+  const result = await executeQueryAsync(query);
+  const marginDays = 2;
+  const minDate = new Date(result.rows.item(0).minAny, (result.rows.item(0).minMes - 1), (result.rows.item(0).minDia + marginDays));
+  const maxDate = new Date(result.rows.item(0).maxAny, (result.rows.item(0).maxMes - 1), (result.rows.item(0).maxDia - marginDays));
+  return {
+    MinimumSelectableDate: minDate,
+    MaximumSelectableDate: maxDate
+  }
 }
 
 export function getSolMem(table, dia, diocesi, lloc, diocesiName, temps, callback) {

@@ -1,5 +1,5 @@
-import CelebrationInformation from "./CelebrationInformationModel";
-import HoursLiturgy from "./HoursLiturgyModel";
+import CelebrationInformation from "./CelebrationInformation";
+import HoursLiturgy from "./HoursLiturgy";
 import MassLiturgy from "./MassLiturgy";
 
 export default class Liturgy {

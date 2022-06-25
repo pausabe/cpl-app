@@ -11,7 +11,7 @@ import GLOBAL from '../../../../Utils/GlobalKeys';
 import GF from '../../../../Utils/GlobalFunctions';
 import SettingsService from '../../../../Services/SettingsService';
 import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
+import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
 
 export default class OficiDisplay extends Component {
   componentDidMount(){
@@ -51,7 +51,7 @@ export default class OficiDisplay extends Component {
       prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
     };
 
-    this.OFICI = HoursLiturgyData.ofici;
+    this.OFICI = HoursLiturgy.ofici;
     
     this.superTestMode = props.superTestMode;
     this.testErrorCB = props.testErrorCB;

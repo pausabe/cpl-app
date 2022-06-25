@@ -10,7 +10,7 @@ import HR from '../../../../Components/HRComponent';
 import GLOBAL from '../../../../Utils/GlobalKeys';
 import GF from '../../../../Utils/GlobalFunctions';
 import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
+import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
 
 export default class VespresDisplay extends Component {
   componentDidMount(){
@@ -40,7 +40,7 @@ export default class VespresDisplay extends Component {
 
   render(){
     try {
-      VESPRES = HoursLiturgyData.vespres;
+      VESPRES = HoursLiturgy.vespres;
       const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
 
       var aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';

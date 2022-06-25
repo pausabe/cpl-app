@@ -1,3 +1,13 @@
+import {
+    Celebration,
+    HourCommonParts,
+    LectureOfTheOffice,
+    Psalm,
+    Responsory,
+    ShortReading,
+    ShortResponsory
+} from "./CommonParts";
+
 export default class SaintsMemories {
     static MasterName: string = "santsMemories";
 
@@ -147,40 +157,40 @@ export default class SaintsMemories {
     }
 
     Id: number;
-    Celebration: Celebration;
+    Celebration: Celebration = new Celebration();
     InvitationAntiphon: string;
     OfficeLatinAnthem: string;
     OfficeCatalanAnthem: string;
-    OfficeFirstPsalm: Psalm;
-    OfficeSecondPsalm: Psalm;
-    OfficeThirdPsalm: Psalm;
-    OfficeResponsory: Responsory;
-    OfficeFirstReading: LectureOfTheOffice;
-    OfficeSecondReading: LectureOfTheOffice;
+    OfficeFirstPsalm: Psalm = new Psalm();
+    OfficeSecondPsalm: Psalm = new Psalm();
+    OfficeThirdPsalm: Psalm = new Psalm();
+    OfficeResponsory: Responsory = new Responsory();
+    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;
-    LaudesFirstPsalm: Psalm;
-    LaudesSecondPsalm: Psalm;
-    LaudesThirdPsalm: Psalm;
-    LaudesShortReading: ShortReading;
-    LaudesShortResponsory: ShortResponsory;
+    LaudesFirstPsalm: Psalm = new Psalm();
+    LaudesSecondPsalm: Psalm = new Psalm();
+    LaudesThirdPsalm: Psalm = new Psalm();
+    LaudesShortReading: ShortReading = new ShortReading();
+    LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
     HoursLatinAnthem: string;
     HoursCatalanAnthem: string;
-    HoursFirstPsalm: Psalm;
-    HoursSecondPsalm: Psalm;
-    HoursThirdPsalm: Psalm;
-    ThirdHourParts: HourCommonParts;
-    SixthHourParts: HourCommonParts;
-    NinthHourParts: HourCommonParts;
+    HoursFirstPsalm: Psalm = new Psalm();
+    HoursSecondPsalm: Psalm = new Psalm();
+    HoursThirdPsalm: Psalm = new Psalm();
+    ThirdHourParts: HourCommonParts = new HourCommonParts();
+    SixthHourParts: HourCommonParts = new HourCommonParts();
+    NinthHourParts: HourCommonParts = new HourCommonParts();
     VespersLatinAnthem: string;
     VespersCatalanAnthem: string;
-    VespersShortReading: ShortReading;
-    VespersFirstPsalm: Psalm;
-    VespersSecondPsalm: Psalm;
-    VespersThirdPsalm: Psalm;
-    VespersShorResponsory: ShortResponsory;
+    VespersShortReading: ShortReading = new ShortReading();
+    VespersFirstPsalm: Psalm = new Psalm();
+    VespersSecondPsalm: Psalm = new Psalm();
+    VespersThirdPsalm: Psalm = new Psalm();
+    VespersShorResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;

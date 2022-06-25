@@ -12,7 +12,7 @@ import GLOBAL from '../../../../Utils/GlobalKeys';
 import GF from '../../../../Utils/GlobalFunctions';
 import SettingsService from '../../../../Services/SettingsService';
 import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
+import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
 
 export default class LaudesDisplay extends Component {
   componentDidMount(){
@@ -52,7 +52,7 @@ export default class LaudesDisplay extends Component {
       prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
     };
 
-    this.LAUDES = HoursLiturgyData.laudes;
+    this.LAUDES = HoursLiturgy.laudes;
     this.superTestMode = props.superTestMode;
     this.testErrorCB = props.testErrorCB;
     this.setNumSalmInv = props.setNumSalmInv;

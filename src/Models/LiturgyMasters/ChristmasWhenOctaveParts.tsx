@@ -1,3 +1,5 @@
+import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+
 export default class ChristmasWhenOctaveParts {
     static MasterName: string = "tempsNadalOctava";
 
@@ -82,22 +84,22 @@ export default class ChristmasWhenOctaveParts {
 
     Id: number;
     InvitationAntiphon: string;
-    OfficeResponsory: Responsory;
-    OfficeFirstPsalm: Psalm;
-    OfficeSecondPsalm: Psalm;
-    OfficeThirdPsalm: Psalm;
-    OfficeFirstReading: LectureOfTheOffice;
-    OfficeSecondReading: LectureOfTheOffice;
-    LaudesShortReading: ShortReading;
-    LaudesShortResponsory: ShortResponsory;
+    OfficeResponsory: Responsory = new Responsory();
+    OfficeFirstPsalm: Psalm = new Psalm();
+    OfficeSecondPsalm: Psalm = new Psalm();
+    OfficeThirdPsalm: Psalm = new Psalm();
+    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    LaudesShortReading: ShortReading = new ShortReading();
+    LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
     LaudesFinalPrayer: string;
-    ThirdHourParts: HourCommonParts;
-    SixthHourParts: HourCommonParts;
-    NinthHourParts: HourCommonParts;
-    VespersShortReading: ShortReading;
-    VespersShorResponsory: ShortResponsory;
+    ThirdHourParts: HourCommonParts = new HourCommonParts();
+    SixthHourParts: HourCommonParts = new HourCommonParts();
+    NinthHourParts: HourCommonParts = new HourCommonParts();
+    VespersShortReading: ShortReading = new ShortReading();
+    VespersShorResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;

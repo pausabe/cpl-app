@@ -11,7 +11,7 @@ import GLOBAL from '../../../../Utils/GlobalKeys';
 import GF from '../../../../Utils/GlobalFunctions';
 import SettingsService from '../../../../Services/SettingsService';
 import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgyData } from '../../../../Services/DataService';
+import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
 
 export default class CompletesDisplay extends Component {
   componentDidMount(){
@@ -55,7 +55,7 @@ export default class CompletesDisplay extends Component {
       numAntMare: auxNumAntMare
     }
 
-    this.COMPLETES = HoursLiturgyData.completes;
+    this.COMPLETES = HoursLiturgy.completes;
     this.superTestMode = props.superTestMode;
     this.testErrorCB = props.testErrorCB;
     this.setNumAntMare = props.setNumAntMare;

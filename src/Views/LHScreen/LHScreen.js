@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import LHButtons from './LHButtons';
 import GLOBALS from '../../Utils/GlobalKeys';
-import { HoursLiturgyData, GlobalData } from '../../Services/DataService';
+import { HoursLiturgy, GlobalData } from '../../Services/DataService';
 
 export default class LHScreen extends Component {
   constructor(props) {
@@ -63,7 +63,7 @@ export default class LHScreen extends Component {
       <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
           {
             <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-              {HoursLiturgyData.vespres == undefined ?
+              {HoursLiturgy.vespres == undefined ?
                 null :
                 <View style={styles.liturgiaContainer}>
                   <LHButtons

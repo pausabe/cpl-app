@@ -1,3 +1,5 @@
+import {Psalm, ShortReading} from "./CommonParts";
+
 export default class CommonNightPrayerPsalter {
     static MasterName: string = "salteriComuCompletes";
 
@@ -25,9 +27,9 @@ export default class CommonNightPrayerPsalter {
     }
 
     Id: number;
-    FirstPsalm: Psalm;
+    FirstPsalm: Psalm = new Psalm();
     HasTwoPsalms: boolean;
-    SecondPsalm: Psalm;
-    ShortReading: ShortReading;
+    SecondPsalm: Psalm = new Psalm();
+    ShortReading: ShortReading = new ShortReading();
     FinalPrayer: string;
 }

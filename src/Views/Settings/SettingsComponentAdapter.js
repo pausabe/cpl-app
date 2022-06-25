@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SettingsService, {darkModeOptions, diocesis, lloc} from '../../Services/SettingsService';
+import SettingsService, {DarkModeOption, Diocese, PrayingPlace} from '../../Services/SettingsService';
 import SettingsComponent from '../../Components/SettingsComponent';
 
 export default class SettingsComponentAdapter{
@@ -17,18 +17,18 @@ export default class SettingsComponentAdapter{
     }
 
     static async getSettingsComponentUseLatin(RH){
-        let value = await SettingsService.getSettingUseLatin() === "true";
+        let value = await SettingsService.getSettingUseLatin();
         return (<SettingsComponent selectorComponent="switch" name="Himnes en llatí" id="useLatin" key="useLatin"
                                    value={value} callback={(id, value) => {
-            SettingsService.setSettingUseLatin(value ? "true" : "false", this.refreshHome.bind(this, RH));
+            SettingsService.setSettingUseLatin(value, this.refreshHome.bind(this, RH));
         }}/>);
     }
 
     static async getSettingsComponentPrayLliures(RH){
-        let value = await SettingsService.getSettingPrayLliures() === "true";
+        let value = await SettingsService.getSettingPrayLliures();
         return (<SettingsComponent selectorComponent="switch" name="Memòries lliures" id="prayLliures" key="prayLliures"
                                    value={value} callback={(id, value) => {
-            SettingsService.setSettingPrayLliures(value ? "true" : "false", this.refreshHome.bind(this, RH));
+            SettingsService.setSettingPrayLliures(value, this.refreshHome.bind(this, RH));
         }}/>);
     }
 
@@ -43,31 +43,31 @@ export default class SettingsComponentAdapter{
 
     static async getSettingsComponentDarkMode(RH){
         let value = await SettingsService.getSettingDarkMode();
-        value = _getKeyFromValue(darkModeOptions, value);
+        value = _getKeyFromValue(DarkModeOption, value);
         return (<SettingsComponent selectorComponent="picker" name="Mode obscur" id="darkMode" key="darkMode"
-                                   value={value} options={darkModeOptions} selectorProps={{mode: "dropdown"}}
+                                   value={value} options={DarkModeOption} selectorProps={{mode: "dropdown"}}
                                    callback={(id, value) => {
-                                       SettingsService.setSettingDarkMode(darkModeOptions[value], this.refreshHome.bind(this, RH));
+                                       SettingsService.setSettingDarkMode(DarkModeOption[value], this.refreshHome.bind(this, RH));
                                    }}/>);
     }
 
     static async getSettingsComponentDiocesis(RH){
         let value = await SettingsService.getSettingDiocesis();
-        value = _getKeyFromValue(diocesis, value);
+        value = _getKeyFromValue(Diocese, value);
         return (<SettingsComponent selectorComponent="picker" name="Diòcesi" id="diocesis" key="diocesis"
-                                   value={value} options={diocesis} selectorProps={{mode: "dropdown"}}
+                                   value={value} options={Diocese} selectorProps={{mode: "dropdown"}}
                                    callback={(id, value) => {
-                                       SettingsService.setSettingDiocesis(diocesis[value], this.refreshHome.bind(this, RH));
+                                       SettingsService.setSettingDiocesis(Diocese[value], this.refreshHome.bind(this, RH));
                                    }}/>);
     }
 
     static async getSettingsComponentLloc(RH){
         let value = await SettingsService.getSettingLloc();
-        value = _getKeyFromValue(lloc, value);
+        value = _getKeyFromValue(PrayingPlace, value);
         return (<SettingsComponent selectorComponent="picker" name="Lloc" id="lloc" key="lloc"
-                                   value={value} options={lloc} selectorProps={{mode: "dropdown"}}
+                                   value={value} options={PrayingPlace} selectorProps={{mode: "dropdown"}}
                                    callback={(id, value) => {
-                                       SettingsService.setSettingLloc(lloc[value], this.refreshHome.bind(this, RH));
+                                       SettingsService.setSettingLloc(PrayingPlace[value], this.refreshHome.bind(this, RH));
                                    }}/>);
     }
 

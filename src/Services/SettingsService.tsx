@@ -1,58 +1,58 @@
 import * as StorageService from './Storage/StorageService';
 
-export const diocesis = {
-    ANDORRA: "Andorra",
-    BARCELONA: "Barcelona",
-    GIRONA: "Girona",
-    LLEIDA: "Lleida",
-    MALLORCA: "Mallorca",
-    SANT_FELIU: "Sant Feliu de Llobregat",
-    SOLSONA: "Solsona",
-    TARRAGONA: "Tarragona",
-    TERRASSA: "Terrassa",
-    TORTOSA: "Tortosa",
-    URGELL: "Urgell",
-    VIC: "Vic"
+export enum Diocese {
+    Andorra = "Andorra",
+    Barcelona = "Barcelona",
+    Girona = "Girona",
+    Lleida = "Lleida",
+    Mallorca = "Mallorca",
+    SantFeliu = "Sant Feliu de Llobregat",
+    Solsona = "Solsona",
+    Tarragona = "Tarragona",
+    Terrassa = "Terrassa",
+    Tortosa = "Tortosa",
+    Urgell = "Urgell",
+    Vic = "Vic"
 };
 
-export const lloc = {
-    DIOCESI: "Diòcesi",
-    CIUTAT: "Ciutat",
-    CATEDRAL: "Catedral"
-};
-
-export const salmInvitatori = {
-  SALM94: '94',
-  SALM99: '99',
-  SALM66: '66',
-  SALM23: '23'
+export enum PrayingPlace {
+    Diocese = "Diòcesi",
+    City = "Ciutat",
+    Cathedral = "Catedral"
 }
 
-export const antMare = {
-  ANT1: '1',
-  ANT2: '2',
-  ANT3: '3',
-  ANT4: '4',
-  ANT5: '5'
+export enum InvitationPsalmOption {
+  Psalm94 = '94',
+  Psalm99 = '99',
+  Psalm66 = '66',
+  Psalm23 = '23'
 }
 
-export const darkModeOptions = {
-    ON: 'Activat',
-    OFF: 'Desactivat',
-    SYSTEM: 'Automàtic'
+export enum VirginAntiphonOption {
+  Antiphon1 = '1',
+  Antiphon2 = '2',
+  Antiphon3 = '3',
+  Antiphon4 = '4',
+  Antiphon5 = '5'
+}
+
+export enum DarkModeOption {
+    On = 'Activat',
+    Off = 'Desactivat',
+    System = 'Automàtic'
   }
 
 const defaultSettings = {
     showGlories: "false",
     prayLliures: "false",
-    useLatin: "false",
+    useLatin: false,
     textSize: "3", //1-5
-    diocesis: diocesis.BARCELONA,
-    lloc: lloc.DIOCESI,
+    diocesis: Diocese.Barcelona,
+    lloc: PrayingPlace.Diocese,
     dayStart: "0", //Values from 0 to 3 allowed, which means 00:00AM, 01:00AM, 02:00AM and 03:00AM
-    salmInvitatori: salmInvitatori.SALM94,
-    antMare: antMare.ANT1,
-    darkMode: darkModeOptions.SYSTEM
+    salmInvitatori: InvitationPsalmOption.Psalm94,
+    antMare: VirginAntiphonOption.Antiphon1,
+    darkMode: DarkModeOption.System
 };
 
 export default class SettingsService {
@@ -103,11 +103,11 @@ export default class SettingsService {
         return SettingsService._getStorageValue("prayLliures", callback, defaultSettings.prayLliures);
     }
 
-    static getSettingUseLatin(callback){
+    static getSettingUseLatin(callback?){
         return SettingsService._getStorageValue("useLatin", callback, defaultSettings.useLatin);
     }
 
-    static getSettingTextSize(callback){
+    static getSettingTextSize(callback?){
         return SettingsService._getStorageValue("textSize", callback, defaultSettings.textSize);
     }
 
@@ -115,11 +115,11 @@ export default class SettingsService {
         return SettingsService._getStorageValue("darkMode", callback, defaultSettings.darkMode);
     }
 
-    static getSettingDiocesis(callback){
+    static getSettingDiocesis(callback?){
         return SettingsService._getStorageValue("diocesis", callback, defaultSettings.diocesis);
     }
 
-    static getSettingLloc(callback){
+    static getSettingLloc(callback?){
         return SettingsService._getStorageValue("lloc", callback, defaultSettings.lloc);
     }
 
@@ -127,29 +127,29 @@ export default class SettingsService {
         return SettingsService._getStorageValue("dayStart", callback, defaultSettings.dayStart);
     }
 
-    static getSettingNumSalmInv(callback){
+    static getSettingNumSalmInv(callback?){
         return SettingsService._getStorageValue("salmInvitatori", callback, defaultSettings.salmInvitatori);
     }
 
-    static getSettingNumAntMare(callback){
+    static getSettingNumAntMare(callback?){
         return SettingsService._getStorageValue("antMare", callback, defaultSettings.antMare);
     }
 
     static setSettingShowGlories(value, callback){
         return SettingsService._setValueIfValid("showGlories", value,
-            (val) => val === "true" || val === "false",
+            (val) => val || !val,
             callback);
     }
 
     static setSettingUseLatin(value, callback){
         return SettingsService._setValueIfValid("useLatin", value,
-            (val) => val === "true" || val === "false",
+            (val) => val || !val,
             callback);
     }
 
     static setSettingPrayLliures(value, callback){
         return SettingsService._setValueIfValid("prayLliures", value,
-            (val) => val === "true" || val === "false",
+            (val) => val || !val,
             callback);
     }
 
@@ -162,21 +162,21 @@ export default class SettingsService {
     static setSettingDarkMode(value, callback){
         return SettingsService._setValueIfValid("darkMode", value,
             (val) => {
-                return findValueInObject(darkModeOptions, val);
+                return findValueInObject(DarkModeOption, val);
             }, callback);
     }
 
     static setSettingDiocesis(value, callback){
         return SettingsService._setValueIfValid("diocesis", value,
             (val) => {
-                return findValueInObject(diocesis, val);
+                return findValueInObject(Diocese, val);
             }, callback);
     }
 
     static setSettingLloc(value, callback){
         return SettingsService._setValueIfValid("lloc", value,
             (val) => {
-                return findValueInObject(lloc, val);
+                return findValueInObject(PrayingPlace, val);
             }, callback);
     }
 
@@ -189,14 +189,14 @@ export default class SettingsService {
     static setSettingNumSalmInv(value){
         return SettingsService._setValueIfValid("salmInvitatori", value,
             (val) => {
-                return findValueInObject(salmInvitatori, val);
+                return findValueInObject(InvitationPsalmOption, val);
             });
     }
 
     static setSettingNumAntMare(value){
         return SettingsService._setValueIfValid("antMare", value,
             (val) => {
-                return findValueInObject(antMare, val);
+                return findValueInObject(VirginAntiphonOption, val);
             });
     }
 

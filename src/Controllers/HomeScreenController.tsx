@@ -19,7 +19,7 @@ import GLOBALS from '../Utils/GlobalKeys';
 import GF from '../Utils/GlobalFunctions';
 import * as Logger from '../Utils/Logger';
 import SettingsService from '../Services/SettingsService';
-import { ReloadAllData, GlobalData, LAST_REFRESH } from '../Services/DataService';
+import { ReloadAllData, GlobalData, LastRefreshDate } from '../Services/DataService';
 import * as StorageService from '../Services/Storage/StorageService';
 import StorageKeys from "../Services/Storage/StorageKeys";
 import HomeScreenState, {CelebrationData, GlobalDataToShowClass, PlaceData} from './HomeScreenState';
@@ -113,7 +113,7 @@ function HandleAppStateChange(nextAppState, navigation?, setState?){
     const now = new Date();
 
     // Refresh the date if today is different from the last refresh date
-    if(now.getDate() !== LAST_REFRESH.getDate() || now.getMonth() !== LAST_REFRESH.getMonth() || now.getFullYear() !== LAST_REFRESH.getFullYear()){
+    if(now.getDate() !== LastRefreshDate.getDate() || now.getMonth() !== LastRefreshDate.getMonth() || now.getFullYear() !== LastRefreshDate.getFullYear()){
 
       // Navigate to Home Screen
       navigation.popToTop()

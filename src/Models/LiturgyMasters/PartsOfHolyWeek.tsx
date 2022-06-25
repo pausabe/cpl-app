@@ -1,3 +1,5 @@
+import {HourCommonParts, LectureOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+
 export default class PartsOfHolyWeek {
     static MasterName: string = "tempsQuaresmaSetSanta";
 
@@ -75,25 +77,25 @@ export default class PartsOfHolyWeek {
     }
 
     Id: number;
-    OfficeResponsory: Responsory;
-    OfficeFirstReading: LectureOfTheOffice;
-    OfficeSecondReading: LectureOfTheOffice;
+    OfficeResponsory: Responsory = new Responsory();
+    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
     LaudesFirstAntiphon: string;
     LaudesSecondAntiphon: string;
     LaudesThirdAntiphon: string;
-    LaudesShortReading: ShortReading;
-    LaudesShortResponsory: ShortResponsory;
+    LaudesShortReading: ShortReading = new ShortReading();
+    LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
     LaudesFinalPrayer: string;
-    ThirdHourParts: HourCommonParts;
-    SixthHourParts: HourCommonParts;
-    NinthHourParts: HourCommonParts;
+    ThirdHourParts: HourCommonParts = new HourCommonParts();
+    SixthHourParts: HourCommonParts = new HourCommonParts();
+    NinthHourParts: HourCommonParts = new HourCommonParts();
     VespersFirstAntiphon: string;
     VespersSecondAntiphon: string;
     VespersThirdAntiphon: string;
-    VespersShortReading: ShortReading;
-    VespersShorResponsory: ShortResponsory;
+    VespersShortReading: ShortReading = new ShortReading();
+    VespersShorResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;

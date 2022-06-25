@@ -1,3 +1,5 @@
+import {LectureOfTheOffice} from "./CommonParts";
+
 export default class OfficeOfOrdinaryTime {
     static MasterName: string = "tempsOrdinariOfici";
 
@@ -24,6 +26,6 @@ export default class OfficeOfOrdinaryTime {
     }
 
     Id: number;
-    OfficeFirstReading: LectureOfTheOffice;
-    OfficeSecondReading: LectureOfTheOffice;
+    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
 }

@@ -1,3 +1,5 @@
+import {Psalm, Responsory} from "./CommonParts";
+
 export default class CommonOfficeWhenStrongTimesPsalter {
     static MasterName: string = "salteriComuOficiTF";
 
@@ -31,8 +33,8 @@ export default class CommonOfficeWhenStrongTimesPsalter {
     Id: number;
     LatinAnthem: string;
     CatalanAnthem: string;
-    FirstPsalm: Psalm;
-    SecondPsalm: Psalm;
-    ThirdPsalm: Psalm;
-    Responsory: Responsory;
+    FirstPsalm: Psalm = new Psalm();
+    SecondPsalm: Psalm = new Psalm();
+    ThirdPsalm: Psalm = new Psalm();
+    Responsory: Responsory = new Responsory();
 }
