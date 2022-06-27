@@ -1,6 +1,6 @@
 import * as Logger from '../../Utils/Logger';
 import GF from '../../Utils/GlobalFunctions';
-import SoulKeys from '../../Controllers/Classes/SOUL/SoulKeys';
+import SoulKeys from '../SoulKeys';
 import * as DatabaseDataService from '../DatabaseDataService';
 
 let GlobalData;

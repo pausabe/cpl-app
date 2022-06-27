@@ -7,7 +7,7 @@ import CompletesSoul from '../../Controllers/Classes/SOUL/CompletesSoul';
 import CelebracioSoul from '../../Controllers/Classes/SOUL/CelebracioSoul';
 import GLOBAL from '../../Utils/GlobalKeys';
 import GF from '../../Utils/GlobalFunctions';
-import SoulKeys from '../../Controllers/Classes/SOUL/SoulKeys';
+import SoulKeys from '../SoulKeys';
 import * as DatabaseDataService from '../DatabaseDataService';
 import HoursLiturgy from "../../Models/HoursLiturgy";
 
@@ -110,28 +110,8 @@ let CEL;
 
 export function ObtainHoursLiturgy(globalData) : Promise<HoursLiturgy> {
   GlobalData = globalData;
-
-  prec = 22;
-  if (GlobalData.date.getDay() === 0) {//diumenge
-    prec = 9;
-    if (GlobalData.LT === GLOBAL.A_SETMANES ||
-      GlobalData.LT === GLOBAL.A_FERIES ||
-      GlobalData.LT === GLOBAL.Q_CENDRA ||
-      GlobalData.LT === GLOBAL.Q_SETMANES ||
-      GlobalData.LT === GLOBAL.Q_SET_SANTA ||
-      GlobalData.LT === GLOBAL.P_OCTAVA ||
-      GlobalData.LT === GLOBAL.P_SETMANES) {
-      prec = 2;
-    }
   }
-  let idDE_aux = findDiesEspecials(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta, GlobalData.diocesi);
-  idDE = idDE_aux;
-  let idTSF_aux;
-  if (idDE_aux === -1)
-    idTSF_aux = findTempsSolemnitatsFestes(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
-  else idTSF_aux = -1;
-  idTSF = idTSF_aux;
-  const idTF = findTF(GlobalData.date, GlobalData.LT, GlobalData.setmana, GlobalData.pentacosta);
+
 
   tomorrowCal = '-';
   tomorrowCal = tomorrowCalVespres1CEL(GlobalData.dataTomorrow.date, GlobalData.dataTomorrow.LT,
@@ -378,74 +358,6 @@ function tomorrowCalVespres1CEL(date, LT, setmana, pentacosta, diocesi) {
       if (GlobalData.dataTomorrow.celType === 'S') return 'S';
     }
     return '-';
-  }
-
-/*
-  Return id of #santsMemories or #santsSolemnitats or -1 if there isn't there
-*/
-function diesMov(date, LT, setmana, pentacosta, celType) {
-    let precAux;
-    //santsMemories M - Dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
-    if (celType === 'M') {
-      let corImmaculat = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 20);
-      if (date.getDate() === corImmaculat.getDate() && date.getMonth() === corImmaculat.getMonth() &&
-        date.getFullYear() === corImmaculat.getFullYear()) {
-        precAux = 10;
-        if (precAux < prec) prec = precAux;
-        return SoulKeys.santsMemories_CorImmaculatBenauradaVergeMaria;
-      }
-    }
-
-    //santsMemories M - Dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
-    //santsSolemnitats S - Dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
-    var auxDay = new Date(date.getFullYear(), 8, 2);
-    var b = true;
-    var dies = 0;
-    while (b && dies < 7) {
-      if (auxDay.getDay() === 0) {
-        b = false;
-      }
-      auxDay.setDate(auxDay.getDate() + 1)
-      dies += 1;
-    }
-    var cinta = new Date(date.getFullYear(), 8, dies);
-    if (date.getDate() === cinta.getDate() && date.getMonth() === cinta.getMonth() &&
-      date.getFullYear() === cinta.getFullYear()) {
-      if (celType === 'M') {
-        precAux = 10;
-        if (precAux < prec) prec = precAux;
-        return SoulKeys.santsMemories_MareDeuCinta;
-      }
-      if (celType === 'S') {
-        precAux = 4;
-        if (precAux < prec) prec = precAux;
-        return SoulKeys.santsSolemnitats_MareDeuCinta;
-      }
-    }
-
-    //santsSolemnitats F - Dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
-    if (celType === 'F') {
-      var granSacerdot = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 4);
-      if (date.getDate() === granSacerdot.getDate() && date.getMonth() === granSacerdot.getMonth() &&
-        date.getFullYear() === granSacerdot.getFullYear()) {
-        precAux = 8;
-        if (precAux < prec) prec = precAux;
-        return SoulKeys.santsSolemnitats_JesucristGranSacerdotSempre;
-      }
-    }
-
-    //santsMemories M - Dilluns despres de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
-    if (celType === 'M') {
-      var benaurada = new Date(pentacosta.getFullYear(), pentacosta.getMonth(), pentacosta.getDate() + 1);
-      if (date.getDate() === benaurada.getDate() && date.getMonth() === benaurada.getMonth() &&
-        date.getFullYear() === benaurada.getFullYear()) {
-        precAux = 10;
-        if (precAux < prec) prec = precAux;
-        return SoulKeys.santsMemories_BenauradaVergeMariaMareEsglesia;
-      }
-    }
-
-    return -1;
   }
 
 /*

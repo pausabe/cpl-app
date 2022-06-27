@@ -3,6 +3,8 @@ import GF from '../Utils/GlobalFunctions';
 import {executeQuery, executeQueryAsync} from "./DatabaseManagerService";
 import { Settings } from '../Models/Settings';
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
+import GLOBAL from "../Utils/GlobalKeys";
+import HoursLiturgy from "../Models/HoursLiturgy";
 
 export function getDatabaseVersion() : Promise<number>{
   return new Promise((resolve) => {
@@ -38,7 +40,8 @@ export async function ObtainLiturgySpecificDayInformation(date: Date, currentSet
   const result = await executeQueryAsync(`SELECT * FROM anyliturgic WHERE any = '${date.getFullYear()}' AND mes = '${date.getMonth() + 1}' AND dia = '${date.getDate()}'`);
   const todayLiturgy = result.rows.item(0);
   let liturgyDayInformation = new LiturgySpecificDayInformation();
-  liturgyDayInformation.PentecostDay = await ObtainPentecostDay(currentSettings.TodayDate);
+  liturgyDayInformation.Date = date;
+  liturgyDayInformation.PentecostDay = await ObtainPentecostDay(liturgyDayInformation.Date);
   liturgyDayInformation.CelebrationType = GF.getCelType(currentSettings.DioceseName, todayLiturgy);
   liturgyDayInformation.MovedDay.Date = todayLiturgy.diaMogut;
   liturgyDayInformation.MovedDay.DioceseName = todayLiturgy.diocesiMogut;
@@ -70,6 +73,7 @@ export async function ObtainMinimumAndMaximumSelectableDates() : Promise<{Minimu
   }
 }
 
+/** @deprecated User ObtainSolemnitiesAndMemoriesAsync instead **/
 export function getSolMem(table, dia, diocesi, lloc, diocesiName, temps, callback) {
   let auxDiocesiName = diocesiName;
   let auxDiocesi = diocesi;
@@ -94,6 +98,31 @@ export function getSolMem(table, dia, diocesi, lloc, diocesiName, temps, callbac
       const index = findCorrect(result.rows, result.rows.length, auxDiocesi, auxDiocesiName, lloc);
       callback(result.rows.item(index));
     });
+}
+
+export async function ObtainSolemnitiesAndMemoriesAsync(masterName : string, dateString : string, dioceseCode : string,
+                                                  prayingPlace : string, dioceseName : string, genericLiturgyTime : string) {
+  let auxDioceseName = dioceseName;
+  let auxDiocese = dioceseCode;
+  if (dioceseCode === 'Andorra' && dateString !== '08-sep') {
+    auxDioceseName = 'Urgell';
+    auxDiocese = transformDiocesiName('Urgell', prayingPlace);
+  }
+  let auxDioceseQuery = `'${auxDiocese}'`;
+  if (prayingPlace === 'Ciutat') {
+    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${transformDiocesiName(auxDioceseName, 'Diòcesi')}' OR Diocesis = '${transformDiocesiName(auxDioceseName, 'Catedral')}'`;
+  }
+  else if (prayingPlace === 'Catedral') {
+    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${transformDiocesiName(auxDioceseName, 'Diòcesi')}' OR Diocesis = '${transformDiocesiName(auxDioceseName, 'Ciutat')}'`;
+  }
+  else if (prayingPlace === 'Diòcesi') {
+    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${transformDiocesiName(auxDioceseName, 'Catedral')}' OR Diocesis = '${transformDiocesiName(auxDioceseName, 'Ciutat')}'`;
+  }
+  const query = `SELECT * FROM ${masterName} WHERE (Diocesis = ${auxDioceseQuery} OR Diocesis = '-') AND dia = '${dateString}' AND Temps = '${genericLiturgyTime}'`;
+
+  const result = await executeQueryAsync(query);
+  const index = findCorrect(result.rows, result.rows.length, auxDiocese, auxDioceseName, prayingPlace);
+  return result.rows.item(index);
 }
 
 export function getSolMemDiesMov(table, id, callback) {

@@ -41,7 +41,8 @@ export default class OficiSoul {
           ohDeu: TABLES.diversos.item(2).oracio, //TODO: opció en llati?
         };
 
-        if(TABLES.salteriComuOficiTF !== ''){
+        // TODO: not sure if this goes here
+        if(liturgyDayInformation.Today.SpecialCelebration.StrongTimesMasterIdentifier !== -1){
           this.state.salteriComuOfici = TABLES.salteriComuOficiTF;
         }
 
