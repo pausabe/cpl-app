@@ -38,6 +38,8 @@ export class ShortResponsory{
     FirstPart: string;
     SecondPart: string;
     ThirdPart: string;
+    HasSpecialAntiphon: boolean;
+    SpecialAntiphon: string;
 }
 
 export class Celebration{

@@ -6,8 +6,6 @@ export default class Laudes {
     SecondPsalm: Psalm = new Psalm();
     ThirdPsalm: Psalm = new Psalm();
     ShortReading: ShortReading = new ShortReading();
-    HasSpecialAntiphon: boolean;
-    SpecialAntiphon: string;
     ShortResponsory: ShortResponsory = new ShortResponsory();
     EvangelicalChant: string;
     EvangelicalAntiphon: string;

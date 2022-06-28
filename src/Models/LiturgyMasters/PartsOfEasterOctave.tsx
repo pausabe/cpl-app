@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading} from "./CommonParts";
+import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 
 export default class PartsOfEasterOctave {
     static MasterName: string = "tempsPasquaOct";
@@ -45,7 +45,9 @@ export default class PartsOfEasterOctave {
         this.LaudesShortReading.Quote = databaseRow.citaLBLaudes;
         this.LaudesShortReading.ShortReading = databaseRow.lecturaBreuLaudes;
 
-        this.LaudesSpecialAntiphon = databaseRow.antEspecialLaudes;
+        this.LaudesShortResponsory.HasSpecialAntiphon = true;
+        this.LaudesShortResponsory.SpecialAntiphon = databaseRow.antEspecialLaudes;
+
         this.LaudesEvangelicalAntiphon = databaseRow.antZacaries;
         this.LaudesPrayers = databaseRow.pregariesLaudes;
         this.LaudesFinalPrayer = databaseRow.oraFiLaudes;
@@ -97,7 +99,7 @@ export default class PartsOfEasterOctave {
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;
     LaudesShortReading: ShortReading = new ShortReading();
-    LaudesSpecialAntiphon: string;
+    LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
     LaudesFinalPrayer: string;

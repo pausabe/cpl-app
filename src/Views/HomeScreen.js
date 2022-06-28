@@ -39,7 +39,7 @@ export default class HomeScreen extends Component {
 
   liturgicPaint(string, color) {
     try {
-      if (color === 'B') {
+      if (color === YearType.B) {
         return (<Text style={{color: 'white'}}>{string}</Text>);
       } else if (color === 'V') {
         return (<Text style={{color: 'rgb(0, 120, 0)'}}>{string}</Text>);

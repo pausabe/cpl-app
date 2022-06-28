@@ -3,7 +3,7 @@ export default class PrayersOfOrdinaryTime {
 
     constructor(databaseRow) {
         this.Id = databaseRow.id;
-        this.Prayer = databaseRow.oracio;
+        this.FinalPrayer = databaseRow.oracio;
         this.FirstVespersEvangelicalAntiphonYearA = databaseRow.antMaria1A;
         this.FirstVespersEvangelicalAntiphonYearB = databaseRow.antMaria1B;
         this.FirstVespersEvangelicalAntiphonYearC = databaseRow.antMaria1C;
@@ -16,7 +16,7 @@ export default class PrayersOfOrdinaryTime {
     }
 
     Id: number;
-    Prayer: string;
+    FinalPrayer: string;
     FirstVespersEvangelicalAntiphonYearA: string;
     FirstVespersEvangelicalAntiphonYearB: string;
     FirstVespersEvangelicalAntiphonYearC: string;

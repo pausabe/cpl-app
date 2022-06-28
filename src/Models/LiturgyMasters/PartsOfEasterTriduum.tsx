@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading} from "./CommonParts";
+import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 import {shadow} from "react-native-paper";
 
 export default class PartsOfEasterTriduum {
@@ -71,7 +71,9 @@ export default class PartsOfEasterTriduum {
         this.LaudesShortReading.Quote = databaseRow.citaLBLaudes;
         this.LaudesShortReading.ShortReading = databaseRow.lecturaBreuLaudes;
 
-        this.LaudesSpecialAntiphon = databaseRow.antEspecialLaudes;
+        this.LaudesShortResponsory.HasSpecialAntiphon = true;
+        this.LaudesShortResponsory.SpecialAntiphon = databaseRow.antEspecialLaudes;
+
         this.LaudesEvangelicalAntiphon = databaseRow.antZacaries;
         this.LaudesPrayers = databaseRow.pregariesLaudes;
         this.LaudesFinalPrayer = databaseRow.oraFiLaudes;
@@ -160,7 +162,7 @@ export default class PartsOfEasterTriduum {
     LaudesSecondPsalm: Psalm = new Psalm();
     LaudesThirdPsalm: Psalm = new Psalm();
     LaudesShortReading: ShortReading = new ShortReading();
-    LaudesSpecialAntiphon: string;
+    LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
     LaudesFinalPrayer: string;

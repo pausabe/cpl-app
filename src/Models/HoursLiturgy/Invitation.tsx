@@ -1,8 +1,7 @@
-export default class Invitation(){
+export default class Invitation{
     InvitationAntiphon: string;
-
-        salm94: TABLES.diversos.item(0).oracio,
-        salm99: TABLES.diversos.item(34).oracio,
-        salm66: TABLES.diversos.item(35).oracio,
-        salm23: TABLES.diversos.item(36).oracio,
+    Psalm94: string;
+    Psalm99: string;
+    Psalm66: string;
+    Psalm23: string;
 }

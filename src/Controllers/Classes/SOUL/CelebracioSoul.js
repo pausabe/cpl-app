@@ -2179,13 +2179,13 @@ export default class CelebracioSoul {
     this.VESPRES1.respBreu2 = TABLES.tempsQuaresmaRams.respBreuVespres2;
     this.VESPRES1.respBreu3 = TABLES.tempsQuaresmaRams.respBreuVespres3;
     switch (anyABC) {
-      case 'A':
+      case YearType.A:
         this.VESPRES1.antCantic = TABLES.tempsQuaresmaRams.antMaria1A;
         break;
-      case 'B':
+      case YearType.B:
         this.VESPRES1.antCantic = TABLES.tempsQuaresmaRams.antMaria1B;
         break;
-      case 'C':
+      case YearType.C:
         this.VESPRES1.antCantic = TABLES.tempsQuaresmaRams.antMaria1C;
         break;
     }
@@ -2237,13 +2237,13 @@ export default class CelebracioSoul {
     this.VESPRES1.respBreu2 = TABLES.tempsAdventSetmanes.respBreuVespres2;
     this.VESPRES1.respBreu3 = TABLES.tempsAdventSetmanes.respBreuVespres3;
     switch (anyABC) {
-      case 'C':
+      case YearType.C:
         this.VESPRES1.antCantic = TABLES.tempsAdventSetmanesDiumVespres1.antMaria1A;
         break;
-      case 'A':
+      case YearType.A:
         this.VESPRES1.antCantic = TABLES.tempsAdventSetmanesDiumVespres1.antMaria1B;
         break;
-      case 'B':
+      case YearType.B:
         this.VESPRES1.antCantic = TABLES.tempsAdventSetmanesDiumVespres1.antMaria1C;
         break;
     }

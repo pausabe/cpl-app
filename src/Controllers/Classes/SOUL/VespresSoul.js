@@ -112,70 +112,70 @@ export default class VespresSoul {
       case GLOBAL.Q_SETMANES:
         if(weekDay===0 || weekDay===6){ //vespres de diumenge
           if(llati === 'true'){
-            himne = this.state.tempsQuaresmaComuFV.himneVespresLlatiDom;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneVespresLlatiDom;
           }
           else{
-            himne = this.state.tempsQuaresmaComuFV.himneVespresCatDom;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneVespresCatDom;
           }
         }
         else{//ferial
           if(llati === 'true'){
-            himne = this.state.tempsQuaresmaComuFV.himneVespresLlatiFer;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneVespresLlatiFer;
           }
           else{
-            himne = this.state.tempsQuaresmaComuFV.himneVespresCatFer;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneVespresCatFer;
           }
         }
         break;
       case GLOBAL.Q_DIUM_RAMS:
       case GLOBAL.Q_SET_SANTA:
         if(llati === 'true'){
-          himne = this.state.tempsQuaresmaComuSS.himneVespresLlati;
+          himne = liturgyMasters.CommonPartsOfHolyWeek.himneVespresLlati;
         }
         else{
-          himne = this.state.tempsQuaresmaComuSS.himneVespresCat;
+          himne = liturgyMasters.CommonPartsOfHolyWeek.himneVespresCat;
         }
         break;
       case GLOBAL.Q_TRIDU:
         if(llati === 'true'){
-          himne = this.state.tempsQuaresmaTridu.himneDSOVespresllati;
+          himne = liturgyMasters.PartsOfEasterTriduum.himneDSOVespresllati;
         }
         else{
-          himne = this.state.tempsQuaresmaTridu.himneDSOVespresCat;
+          himne = liturgyMasters.PartsOfEasterTriduum.himneDSOVespresCat;
         }
         break;
       case GLOBAL.P_OCTAVA:
         if(llati === 'true'){
-          himne = this.state.tempsPasquaAA.himneVespresLlati1;
+          himne = liturgyMasters.PartsOfEasterBeforeAscension.himneVespresLlati1;
         }
         else{
-          himne = this.state.tempsPasquaAA.himneVespresCat1;
+          himne = liturgyMasters.PartsOfEasterBeforeAscension.himneVespresCat1;
         }
         break;
       case GLOBAL.P_SETMANES:
         if(setmana === '7'){
           if(llati === 'true'){
-            himne = this.state.tempsPasquaDA.himneVespresLlati;
+            himne = liturgyMasters.PartsOfEasterAfterAscension.himneVespresLlati;
           }
           else{
-            himne = this.state.tempsPasquaDA.himneVespresCat;
+            himne = liturgyMasters.PartsOfEasterAfterAscension.himneVespresCat;
           }
         }
         else{
           if(weekDay === 6 || weekDay === 0){
             if(llati === 'true'){
-              himne = this.state.tempsPasquaAA.himneVespresLlati1;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneVespresLlati1;
             }
             else{
-              himne = this.state.tempsPasquaAA.himneVespresCat1;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneVespresCat1;
             }
           }
           else{
             if(llati === 'true'){
-              himne = this.state.tempsPasquaAA.himneVespresLlati2;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneVespresLlati2;
             }
             else{
-              himne = this.state.tempsPasquaAA.himneVespresCat2;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneVespresCat2;
             }
           }
         }
@@ -185,19 +185,19 @@ export default class VespresSoul {
       case GLOBAL.N_ABANS:
         if(LT != GLOBAL.N_ABANS || (LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13)){
           if(llati === 'true'){
-            himne = this.state.tempsAdventNadalComu.himneVespresLlati;
+            himne = liturgyMasters.CommonAdventAndChristmasParts.himneVespresLlati;
           }
           else{
-            himne = this.state.tempsAdventNadalComu.himneVespresCat;
+            himne = liturgyMasters.CommonAdventAndChristmasParts.himneVespresCat;
           }
         }
         break;
       case GLOBAL.N_OCTAVA:
         if(llati === 'true'){
-          himne = this.state.tempsSolemnitatsFestes.himneVespres2Llati;
+          himne = liturgyMasters.SolemnityAndFestivityParts.himneVespres2Llati;
         }
         else{
-          himne = this.state.tempsSolemnitatsFestes.himneVespres2Cat;
+          himne = liturgyMasters.SolemnityAndFestivityParts.himneVespres2Cat;
         }
         break;
     }
@@ -329,21 +329,21 @@ export default class VespresSoul {
 
       break;
       case GLOBAL.Q_TRIDU:
-        ant1 = this.state.tempsQuaresmaTridu.ant1Vespres;
-        titol1 = this.state.tempsQuaresmaTridu.titol1Vespres;
+        ant1 = liturgyMasters.PartsOfEasterTriduum.ant1Vespres;
+        titol1 = liturgyMasters.PartsOfEasterTriduum.titol1Vespres;
         com1 = "-";
-        salm1 = this.state.tempsQuaresmaTridu.salm1Vespres;
-        gloria1 = this.state.tempsQuaresmaTridu.gloriaVespres1;
-        ant2 = this.state.tempsQuaresmaTridu.ant2Vespres;
-        titol2 = this.state.tempsQuaresmaTridu.titol2Vespres;
+        salm1 = liturgyMasters.PartsOfEasterTriduum.salm1Vespres;
+        gloria1 = liturgyMasters.PartsOfEasterTriduum.gloriaVespres1;
+        ant2 = liturgyMasters.PartsOfEasterTriduum.ant2Vespres;
+        titol2 = liturgyMasters.PartsOfEasterTriduum.titol2Vespres;
         com2 = "-";
-        salm2 = this.state.tempsQuaresmaTridu.salm2Vespres;
-        gloria2 = this.state.tempsQuaresmaTridu.gloriaVespres2;
-        ant3 = this.state.tempsQuaresmaTridu.ant3Vespres;
-        titol3 = this.state.tempsQuaresmaTridu.titol3Vespres;
+        salm2 = liturgyMasters.PartsOfEasterTriduum.salm2Vespres;
+        gloria2 = liturgyMasters.PartsOfEasterTriduum.gloriaVespres2;
+        ant3 = liturgyMasters.PartsOfEasterTriduum.ant3Vespres;
+        titol3 = liturgyMasters.PartsOfEasterTriduum.titol3Vespres;
         com3 = "-";
-        salm3 = this.state.tempsQuaresmaTridu.salm3Vespres;
-        gloria3 = this.state.tempsQuaresmaTridu.gloriaVespres3;
+        salm3 = liturgyMasters.PartsOfEasterTriduum.salm3Vespres;
+        gloria3 = liturgyMasters.PartsOfEasterTriduum.gloriaVespres3;
         break;
       case GLOBAL.P_OCTAVA:
         ant1 = this.state.tempsQuaresmaDiumPasq.ant1Vespres;
@@ -420,20 +420,20 @@ export default class VespresSoul {
         }
         break;
       case GLOBAL.N_OCTAVA:
-        ant1 = this.state.tempsSolemnitatsFestes.ant1Vespres2;
-        titol1 = this.state.tempsSolemnitatsFestes.titol1Vespres2;
+        ant1 = liturgyMasters.SolemnityAndFestivityParts.ant1Vespres2;
+        titol1 = liturgyMasters.SolemnityAndFestivityParts.titol1Vespres2;
         com1 = "-";
-        salm1 = this.state.tempsSolemnitatsFestes.text1Vespres2;
+        salm1 = liturgyMasters.SolemnityAndFestivityParts.text1Vespres2;
         gloria1 = "1";
-        ant2 = this.state.tempsSolemnitatsFestes.ant2Vespres2;
-        titol2 = this.state.tempsSolemnitatsFestes.titol2Vespres2;
+        ant2 = liturgyMasters.SolemnityAndFestivityParts.ant2Vespres2;
+        titol2 = liturgyMasters.SolemnityAndFestivityParts.titol2Vespres2;
         com2 = "-";
-        salm2 = this.state.tempsSolemnitatsFestes.text2Vespres2;
+        salm2 = liturgyMasters.SolemnityAndFestivityParts.text2Vespres2;
         gloria2 = "1";
-        ant3 = this.state.tempsSolemnitatsFestes.ant3Vespres2;
-        titol3 = this.state.tempsSolemnitatsFestes.titol3Vespres2;
+        ant3 = liturgyMasters.SolemnityAndFestivityParts.ant3Vespres2;
+        titol3 = liturgyMasters.SolemnityAndFestivityParts.titol3Vespres2;
         com3 = "-";
-        salm3 = this.state.tempsSolemnitatsFestes.text3Vespres2;
+        salm3 = liturgyMasters.SolemnityAndFestivityParts.text3Vespres2;
         gloria3 = "1";
         break;
     }
@@ -515,8 +515,8 @@ export default class VespresSoul {
         lecturaBreu = this.state.tempsQuaresmaSetSanta.lecturaBreuVespres;
         break;
       case GLOBAL.Q_TRIDU:
-        vers = this.state.tempsQuaresmaTridu.citaLBVespres;
-        lecturaBreu = this.state.tempsQuaresmaTridu.lecturaBreuVespres;
+        vers = liturgyMasters.PartsOfEasterTriduum.citaLBVespres;
+        lecturaBreu = liturgyMasters.PartsOfEasterTriduum.lecturaBreuVespres;
         break;
       case GLOBAL.P_OCTAVA:
         vers = this.state.tempsPasquaOct.citaLBVespres;
@@ -531,17 +531,17 @@ export default class VespresSoul {
         lecturaBreu = this.state.tempsAdventSetmanes.lecturaBreuVespres;
         break;
       case GLOBAL.A_FERIES:
-        vers = this.state.tempsAdventFeries.citaLBVespres;
-        lecturaBreu = this.state.tempsAdventFeries.lecturaBreuVespres;
+        vers = liturgyMasters.AdventFairDaysParts.citaLBVespres;
+        lecturaBreu = liturgyMasters.AdventFairDaysParts.lecturaBreuVespres;
         break;
       case GLOBAL.N_OCTAVA:
-        vers = this.state.tempsNadalOctava.citaLBVespres;
-        lecturaBreu = this.state.tempsNadalOctava.lecturaBreuVespres;
+        vers = liturgyMasters.ChristmasWhenOctaveParts.citaLBVespres;
+        lecturaBreu = liturgyMasters.ChristmasWhenOctaveParts.lecturaBreuVespres;
         break;
       case GLOBAL.N_ABANS:
         if(LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13){
-          vers = this.state.tempsNadalAbansEpifania.citaLBVespres;
-          lecturaBreu = this.state.tempsNadalAbansEpifania.lecturaBreuVespres;
+          vers = liturgyMasters.ChristmasBeforeEpiphanyParts.citaLBVespres;
+          lecturaBreu = liturgyMasters.ChristmasBeforeEpiphanyParts.lecturaBreuVespres;
         }
         break;
     }
@@ -598,20 +598,20 @@ export default class VespresSoul {
         respBreu3 = this.state.tempsAdventSetmanes.respBreuVespres3
         break;
       case GLOBAL.A_FERIES:
-        respBreu1 = this.state.tempsAdventFeries.respBreuVespres1
-        respBreu2 = this.state.tempsAdventFeries.respBreuVespres2
-        respBreu3 = this.state.tempsAdventFeries.respBreuVespres3
+        respBreu1 = liturgyMasters.AdventFairDaysParts.respBreuVespres1
+        respBreu2 = liturgyMasters.AdventFairDaysParts.respBreuVespres2
+        respBreu3 = liturgyMasters.AdventFairDaysParts.respBreuVespres3
         break;
       case GLOBAL.N_OCTAVA:
-        respBreu1 = this.state.tempsNadalOctava.respBreuVespres1Part1
-        respBreu2 = this.state.tempsNadalOctava.respBreuVespres1Part2
-        respBreu3 = this.state.tempsNadalOctava.respBreuVespres1Part3
+        respBreu1 = liturgyMasters.ChristmasWhenOctaveParts.respBreuVespres1Part1
+        respBreu2 = liturgyMasters.ChristmasWhenOctaveParts.respBreuVespres1Part2
+        respBreu3 = liturgyMasters.ChristmasWhenOctaveParts.respBreuVespres1Part3
         break;
       case GLOBAL.N_ABANS:
         if(LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13){
-          respBreu1 = this.state.tempsNadalAbansEpifania.respBreuVespres1
-          respBreu2 = this.state.tempsNadalAbansEpifania.respBreuVespres2
-          respBreu3 = this.state.tempsNadalAbansEpifania.respBreuVespres3
+          respBreu1 = liturgyMasters.ChristmasBeforeEpiphanyParts.respBreuVespres1
+          respBreu2 = liturgyMasters.ChristmasBeforeEpiphanyParts.respBreuVespres2
+          respBreu3 = liturgyMasters.ChristmasBeforeEpiphanyParts.respBreuVespres3
         }
         break;
     }
@@ -628,7 +628,7 @@ export default class VespresSoul {
         else{
           if(LT === GLOBAL.Q_TRIDU){
             this.VESPRES.calAntEspecial = true;
-            this.VESPRES.antEspecialVespres = this.state.tempsQuaresmaTridu.antifonaEspecialVespres;
+            this.VESPRES.antEspecialVespres = liturgyMasters.PartsOfEasterTriduum.antifonaEspecialVespres;
           }
           else if(LT === GLOBAL.P_OCTAVA){
             this.VESPRES.calAntEspecial = true;
@@ -660,27 +660,27 @@ export default class VespresSoul {
         else{ //1res i 2nes de diumenge
           if(weekDay === 6 && this.state.tempsOrdinariOracionsVespres1){ //dissabte, 1res Vespres
             switch (litYear) {
-              case 'A':
+              case YearType.A:
                 antCantic = this.state.tempsOrdinariOracionsVespres1.antMaria1A;
                 break;
-              case 'B':
+              case YearType.B:
                 antCantic = this.state.tempsOrdinariOracionsVespres1.antMaria1B;
                 break;
-              case 'C':
+              case YearType.C:
                 antCantic = this.state.tempsOrdinariOracionsVespres1.antMaria1C;
                 break;
             }
           }
           else{ //diumnge, 2nes Vespres
             switch (litYear) {
-              case 'A':
-                antCantic = this.state.tempsOrdinariOracions.antMaria2A;
+              case YearType.A:
+                antCantic = this.state.liturgyMasters.PrayersOfOrdinaryTime.antMaria2A;
                 break;
-              case 'B':
-                antCantic = this.state.tempsOrdinariOracions.antMaria2B;
+              case YearType.B:
+                antCantic = this.state.liturgyMasters.PrayersOfOrdinaryTime.antMaria2B;
                 break;
-              case 'C':
-                antCantic = this.state.tempsOrdinariOracions.antMaria2C;
+              case YearType.C:
+                antCantic = this.state.liturgyMasters.PrayersOfOrdinaryTime.antMaria2C;
                 break;
             }
           }
@@ -688,13 +688,13 @@ export default class VespresSoul {
         break;
       case GLOBAL.Q_CENDRA:
         switch (litYear) {
-          case 'A':
+          case YearType.A:
             antCantic = this.state.tempsQuaresmaCendra.antMariaA;
             break;
-          case 'B':
+          case YearType.B:
             antCantic = this.state.tempsQuaresmaCendra.antMariaB;
             break;
-          case 'C':
+          case YearType.C:
             antCantic = this.state.tempsQuaresmaCendra.antMariaC;
             break;
         }
@@ -707,26 +707,26 @@ export default class VespresSoul {
         else{ //1res i 2nes de diumenge
           if(weekDay === 6 && this.state.tempsQuaresmaVSetmanesDiumVespres1){ //dissabte, 1res Vespres
             switch (litYear) {
-              case 'A':
+              case YearType.A:
                 antCantic = this.state.tempsQuaresmaVSetmanesDiumVespres1.antMaria1A;
                 break;
-              case 'B':
+              case YearType.B:
                 antCantic = this.state.tempsQuaresmaVSetmanesDiumVespres1.antMaria1B;
                 break;
-              case 'C':
+              case YearType.C:
                 antCantic = this.state.tempsQuaresmaVSetmanesDiumVespres1.antMaria1C;
                 break;
             }
           }
           else{ //diumnge, 2nes Vespres
             switch (litYear) {
-              case 'A':
+              case YearType.A:
                 antCantic = this.state.tempsQuaresmaVSetmanesDium.antMaria2A;
                 break;
-              case 'B':
+              case YearType.B:
                 antCantic = this.state.tempsQuaresmaVSetmanesDium.antMaria2B;
                 break;
-              case 'C':
+              case YearType.C:
                 antCantic = this.state.tempsQuaresmaVSetmanesDium.antMaria2C;
                 break;
             }
@@ -736,26 +736,26 @@ export default class VespresSoul {
       case GLOBAL.Q_DIUM_RAMS:
         /*if(weekDay === 6){ //dissabte, 1res Vespres
           switch (litYear) {
-            case 'A':
+            case YearType.A:
               antCantic = this.state.tempsQuaresmaRams.antMaria1A;
               break;
-            case 'B':
+            case YearType.B:
               antCantic = this.state.tempsQuaresmaRams.antMaria1B;
               break;
-            case 'C':
+            case YearType.C:
               antCantic = this.state.tempsQuaresmaRams.antMaria1C;
               break;
           }
         }
         else{ //diumnge, 2nes Vespres*/
           switch (litYear) {
-            case 'A':
+            case YearType.A:
               antCantic = this.state.tempsQuaresmaRams.antMaria1A2;
               break;
-            case 'B':
+            case YearType.B:
               antCantic = this.state.tempsQuaresmaRams.antMaria1B2;
               break;
-            case 'C':
+            case YearType.C:
               antCantic = this.state.tempsQuaresmaRams.antMaria1C2;
               break;
           //}
@@ -765,7 +765,7 @@ export default class VespresSoul {
           antCantic = this.state.tempsQuaresmaSetSanta.antMaria;
         break;
       case GLOBAL.Q_TRIDU:
-          antCantic = this.state.tempsQuaresmaTridu.antMaria;
+          antCantic = liturgyMasters.PartsOfEasterTriduum.antMaria;
         break;
       case GLOBAL.P_OCTAVA:
           antCantic = this.state.tempsPasquaOct.antMaria;
@@ -777,26 +777,26 @@ export default class VespresSoul {
         else{ //vespres de diumenge
           if(weekDay === 6 && this.state.tempsPasquaSetmanesDiumVespres1){ //primeres vespres
             switch (litYear) {
-              case 'A':
+              case YearType.A:
                 antCantic = this.state.tempsPasquaSetmanesDiumVespres1.antMaria1A;
                 break;
-              case 'B':
+              case YearType.B:
                 antCantic = this.state.tempsPasquaSetmanesDiumVespres1.antMaria1B;
                 break;
-              case 'C':
+              case YearType.C:
                 antCantic = this.state.tempsPasquaSetmanesDiumVespres1.antMaria1C;
                 break;
             }
           }
           else{ //segones vespres
             switch (litYear) {
-              case 'A':
+              case YearType.A:
                 antCantic = this.state.tempsPasquaSetmanesDium.antMaria2A;
                 break;
-              case 'B':
+              case YearType.B:
                 antCantic = this.state.tempsPasquaSetmanesDium.antMaria2B;
                 break;
-              case 'C':
+              case YearType.C:
                 antCantic = this.state.tempsPasquaSetmanesDium.antMaria2C;
                 break;
             }
@@ -810,26 +810,26 @@ export default class VespresSoul {
         else{ //vespres de diumenge
           if(weekDay === 6 && this.state.tempsAdventSetmanesDiumVespres1){ //primeres vespres
             switch (litYear) {
-              case 'A':
+              case YearType.A:
                 antCantic = this.state.tempsAdventSetmanesDiumVespres1.antMaria1A;
                 break;
-              case 'B':
+              case YearType.B:
                 antCantic = this.state.tempsAdventSetmanesDiumVespres1.antMaria1B;
                 break;
-              case 'C':
+              case YearType.C:
                 antCantic = this.state.tempsAdventSetmanesDiumVespres1.antMaria1C;
                 break;
             }
           }
           else{ //segones vespres
             switch (litYear) {
-              case 'A':
+              case YearType.A:
                 antCantic = this.state.tempsAdventSetmanesDium.antMaria2A;
                 break;
-              case 'B':
+              case YearType.B:
                 antCantic = this.state.tempsAdventSetmanesDium.antMaria2B;
                 break;
-              case 'C':
+              case YearType.C:
                 antCantic = this.state.tempsAdventSetmanesDium.antMaria2C;
                 break;
             }
@@ -837,14 +837,14 @@ export default class VespresSoul {
         }
         break;
       case GLOBAL.A_FERIES:
-        antCantic = this.state.tempsAdventFeries.antMaria;
+        antCantic = liturgyMasters.AdventFairDaysParts.antMaria;
         break;
       case GLOBAL.N_OCTAVA:
-        antCantic = this.state.tempsNadalOctava.antMaria;
+        antCantic = liturgyMasters.ChristmasWhenOctaveParts.antMaria;
         break;
       case GLOBAL.N_ABANS:
         if(LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13){
-          antCantic = this.state.tempsNadalAbansEpifania.antMaria;
+          antCantic = liturgyMasters.ChristmasBeforeEpiphanyParts.antMaria;
         }
         break;
     }
@@ -878,7 +878,7 @@ export default class VespresSoul {
           pregaries = this.state.tempsQuaresmaSetSanta.pregariesVespres;
         break;
       case GLOBAL.Q_TRIDU:
-          pregaries = this.state.tempsQuaresmaTridu.pregariesVespres;
+          pregaries = liturgyMasters.PartsOfEasterTriduum.pregariesVespres;
         break;
       case GLOBAL.P_OCTAVA:
           pregaries = this.state.tempsPasquaOct.pregariesVespres;
@@ -890,14 +890,14 @@ export default class VespresSoul {
           pregaries = this.state.tempsAdventSetmanes.pregariesVespres;
         break;
       case GLOBAL.A_FERIES:
-          pregaries = this.state.tempsAdventFeries.pregariesVespres;
+          pregaries = liturgyMasters.AdventFairDaysParts.pregariesVespres;
         break;
       case GLOBAL.N_OCTAVA:
-          pregaries = this.state.tempsNadalOctava.pregariesVespres;
+          pregaries = liturgyMasters.ChristmasWhenOctaveParts.pregariesVespres;
         break;
       case GLOBAL.N_ABANS:
         if(LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13){
-          pregaries = this.state.tempsNadalAbansEpifania.pregariesVespres;
+          pregaries = liturgyMasters.ChristmasBeforeEpiphanyParts.pregariesVespres;
         }
         break;
     }
@@ -913,7 +913,7 @@ export default class VespresSoul {
           oracio = this.state.salteriComuVespres.oraFi;
         }
         else if(weekDay === 0){ // vespres de 1res o 2nes diumenge
-          oracio = this.state.tempsOrdinariOracions.oracio;
+          oracio = this.state.liturgyMasters.PrayersOfOrdinaryTime.oracio;
         }
         else if(this.state.tempsOrdinariOracionsVespres1){
           oracio = this.state.tempsOrdinariOracionsVespres1.oracio;
@@ -937,7 +937,7 @@ export default class VespresSoul {
         oracio = this.state.tempsQuaresmaSetSanta.oraFiVespres;
         break;
       case GLOBAL.Q_TRIDU:
-        oracio = this.state.tempsQuaresmaTridu.oraFiVespres;
+        oracio = liturgyMasters.PartsOfEasterTriduum.oraFiVespres;
         break;
       case GLOBAL.P_OCTAVA:
         oracio = this.state.tempsPasquaOct.oraFiVespres;
@@ -949,14 +949,14 @@ export default class VespresSoul {
         oracio = this.state.tempsAdventSetmanes.oraFiVespres;
         break;
       case GLOBAL.A_FERIES:
-        oracio = this.state.tempsAdventFeries.oraFiVespres;
+        oracio = liturgyMasters.AdventFairDaysParts.oraFiVespres;
         break;
       case GLOBAL.N_OCTAVA:
-        oracio = this.state.tempsNadalOctava.oraFiVespres;
+        oracio = liturgyMasters.ChristmasWhenOctaveParts.oraFiVespres;
         break;
       case GLOBAL.N_ABANS:
         if(LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13){
-          oracio = this.state.tempsNadalAbansEpifania.oraFiVespres;
+          oracio = liturgyMasters.ChristmasBeforeEpiphanyParts.oraFiVespres;
         }
         break;
     }

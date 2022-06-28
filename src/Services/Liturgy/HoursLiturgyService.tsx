@@ -15,7 +15,7 @@ import {Settings} from "../../Models/Settings";
 export async function ObtainHoursLiturgy(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : Promise<HoursLiturgy> {
     let hoursLiturgy = new HoursLiturgy();
     const celebrationHoursLiturgy = CelebrationHoursLiturgyService.ObtainCelebrationHoursLiturgy();
-    hoursLiturgy.Invitation = InvitationService.ObtainInvitation(liturgyMasters, celebrationHoursLiturgy.Office);
+    hoursLiturgy.Invitation = InvitationService.ObtainInvitation(liturgyMasters, liturgyDayInformation, celebrationHoursLiturgy.Invitation);
     hoursLiturgy.Office = OfficeService.ObtainOffice(liturgyMasters, celebrationHoursLiturgy.Office);
     hoursLiturgy.Laudes = LaudesService.ObtainLaudes(liturgyMasters, liturgyDayInformation, celebrationHoursLiturgy.Laudes, settings);
     hoursLiturgy.FirstVespers = ObtainFirstVespers();

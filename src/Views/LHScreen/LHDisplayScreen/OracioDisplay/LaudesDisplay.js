@@ -4,31 +4,24 @@ import {
   Text,
   View,
   Platform,
-  TouchableOpacity,
-  Share
+  TouchableOpacity
 } from 'react-native';
 import HR from '../../../../Components/HRComponent';
 import GLOBAL from '../../../../Utils/GlobalKeys';
 import GF from '../../../../Utils/GlobalFunctions';
 import SettingsService from '../../../../Services/SettingsService';
 import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
+import {CurrentSettings, CurrentHoursLiturgy} from '../../../../Services/DataService';
 
 export default class LaudesDisplay extends Component {
-  componentDidMount(){
-  }
-
-  componentWillUnmount(){
-  }
-
   constructor(props){
     super(props);
-    var auxNumSalmInv = GlobalData.numSalmInv;
+      let auxNumSalmInv = CurrentSettings.InvitationPsalmOption;
 
-    if(!GF.salmInvExists(auxNumSalmInv,props.titols)){
-      auxNumSalmInv = '94';
-      props.setNumSalmInv('94');
-      SettingsService.setSettingNumSalmInv('94');
+      if(!GF.salmInvExists(auxNumSalmInv, props.titols)){
+          auxNumSalmInv = '94';
+          props.setNumSalmInv('94');
+          SettingsService.setSettingNumSalmInv('94');
     }
 
     this.state = {
@@ -52,7 +45,6 @@ export default class LaudesDisplay extends Component {
       prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
     };
 
-    this.LAUDES = HoursLiturgy.laudes;
     this.superTestMode = props.superTestMode;
     this.testErrorCB = props.testErrorCB;
     this.setNumSalmInv = props.setNumSalmInv;
@@ -99,7 +91,7 @@ export default class LaudesDisplay extends Component {
     }
 
     var estrofes = salm.split("\n\n");
-    var antifona = GF.rs(this.LAUDES.antInvitatori, this.superTestMode, this.testErrorCB.bind(this));
+    var antifona = GF.rs(CurrentHoursLiturgy.Invitation.InvitationAntiphon, this.superTestMode, this.testErrorCB.bind(this));
     var gloriaString = "Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.";
 
     return(

@@ -302,7 +302,7 @@ export default class LD_SOUL {
         }
         var differentPart;
         switch (ABC) {
-            case 'A':
+            case YearType.A:
                 differentPart = {
                     Evangeli: "Mt 28,1-10",
                     EvangeliCita: "Ha ressuscitat i anirà davant vostre a Galilea",
@@ -310,7 +310,7 @@ export default class LD_SOUL {
                     EvangeliText: "Passat el dissabte, quan ja clarejava el matí del diumenge, Maria Magdalena i l’altra Maria anaren a veure el sepulcre. De cop i volta se sentí un gran terratrèmol: un àngel del Senyor, baixat del cel, havia fet rodolar la pedra i s’hi havia assegut. Resplendia com un llamp i el seu vestit era blanc com la neu. Va ser tan gran el sobresalt dels guardes, que de l’esglai quedaren com morts. L’àngel del Senyor digué a les dones: «No tingueu por, vosaltres. Sé que busqueu Jesús, el crucificat. No hi és, aquí. Ha ressuscitat tal com ho havia predit. Veniu a veure el lloc on havia estat posat, i aneu de seguida a dir als deixebles: Ha ressuscitat d’entre els morts i anirà davant vostre a Galilea; allà el veureu. Mireu que jo us ho he dit». Immediatament elles, amb por, però amb una gran alegria, se n’anaren corrents del sepulcre per anunciar-ho als deixebles. Jesús els sortí al pas i les saludà dient-los: «Déu vos guard». Elles se li acostaren, se li abraçaren als peus i l’adoraren. Jesús els digué. «No tingueu por. Aneu a dir als meus germans que vagin a Galilea i que allà em veuran».",
                 }
                 break;
-            case 'B':
+            case YearType.B:
                 differentPart = {
                     Evangeli: "Mc 16,1-8",
                     EvangeliCita: "Jesús de Natzaret, el crucificat, ha ressuscitat",
@@ -318,7 +318,7 @@ export default class LD_SOUL {
                     EvangeliText: "Acabat el repòs del dissabte, Maria Magdalena, Maria, la mare de Jaume, i Salomé compraren espècies aromàtiques per anar a ungir el cos de Jesús. El diumenge, molt de matí, arribaren al sepulcre a la sortida del sol. Entre elles preguntaven: «Qui ens farà rodolar la pedra que tanca l’entrada del sepulcre?». Llavors alçaren els ulls i s’adonaren que la pedra ja havia estat apartada. Era una pedra realment molt grossa. Entraren al sepulcre, veieren, assegut a la dreta, un jove vestit de blanc, i s’esglaiaren. Ell els diu: «No tingueu por. Busqueu Jesús de Natzaret, el crucificat. Ha ressuscitat, no hi és, aquí. Mireu el lloc on l’havien posat. I ara aneu a dir als deixebles i a Pere que anirà davant vostre a Galilea; allà el veureu, tal com ell us ho havia dit». Elles sortiren del sepulcre i fugiren. Tremolaven d’esglai i, de por que tenien, no s’atreviren a dir res a ningú.",
                 }
                 break;
-            case 'C':
+            case YearType.C:
                 differentPart = {
                     Evangeli: "Lc 24,1-12",
                     EvangeliCita: "Per què busqueu entre els morts aquell que viu?",
@@ -357,11 +357,11 @@ export default class LD_SOUL {
         if (today_date.getDate() === diaAbansPentecosta.getDate() && today_date.getMonth() === diaAbansPentecosta.getMonth() &&
             today_date.getFullYear() === diaAbansPentecosta.getFullYear()) {
             switch (ABC) {
-                case 'A':
+                case YearType.A:
                     return SoulKeys.LDSantoral_PentecostaA;
-                case 'B':
+                case YearType.B:
                     return SoulKeys.LDSantoral_PentecostaB;
-                case 'C':
+                case YearType.C:
                     return SoulKeys.LDSantoral_PentecostaC;
             }
         }
@@ -419,11 +419,11 @@ export default class LD_SOUL {
         //Diumenge dins l’Octava de Nadal A (146) B (149) C (152)
         if (today_date.getMonth() == 11 && today_date.getDay() == 0 && today_date.getDate() >= 26 && today_date.getDate() <= 31) {
             switch (ABC) {
-                case 'A':
+                case YearType.A:
                     return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepA;
-                case 'B':
+                case YearType.B:
                     return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepB;
-                case 'C':
+                case YearType.C:
                     return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepC;
             }
         }
@@ -431,11 +431,11 @@ export default class LD_SOUL {
         //Diumenge després del dia 6 de gener A (157) B (158) C (159)
         if (today_date.getMonth() == 0 && today_date.getDay() == 0 && today_date.getDate() >= 7 && today_date.getDate() <= 13) {
             switch (ABC) {
-                case 'A':
+                case YearType.A:
                     return SoulKeys.LDSantoral_BaptismeSenyorA;
-                case 'B':
+                case YearType.B:
                     return SoulKeys.LDSantoral_BaptismeSenyorB;
-                case 'C':
+                case YearType.C:
                     return SoulKeys.LDSantoral_BaptismeSenyorC;
             }
         }
@@ -445,11 +445,11 @@ export default class LD_SOUL {
         if (today_date.getDate() === trinitat.getDate() && today_date.getMonth() === trinitat.getMonth() &&
             today_date.getFullYear() === trinitat.getFullYear()) {
             switch (ABC) {
-                case 'A':
+                case YearType.A:
                     return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatA;
-                case 'B':
+                case YearType.B:
                     return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatB;
-                case 'C':
+                case YearType.C:
                     return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatC;
             }
         }
@@ -460,11 +460,11 @@ export default class LD_SOUL {
         if (today_date.getDate() === cosSang.getDate() && today_date.getMonth() === cosSang.getMonth() &&
             today_date.getFullYear() === cosSang.getFullYear()) {                
             switch (ABC) {
-                case 'A':
+                case YearType.A:
                     return SoulKeys.LDSantoral_SantissimCosSangCristA;
-                case 'B':
+                case YearType.B:
                     return SoulKeys.LDSantoral_SantissimCosSangCristB;
-                case 'C':
+                case YearType.C:
                     return SoulKeys.LDSantoral_SantissimCosSangCristC;
             }
         }
@@ -475,11 +475,11 @@ export default class LD_SOUL {
         if (today_date.getDate() === sagratCor.getDate() && today_date.getMonth() === sagratCor.getMonth() &&
             today_date.getFullYear() === sagratCor.getFullYear()) {
             switch (ABC) {
-                case 'A':
+                case YearType.A:
                     return SoulKeys.LDSantoral_SagratCorJesusA;
-                case 'B':
+                case YearType.B:
                     return SoulKeys.LDSantoral_SagratCorJesusB;
-                case 'C':
+                case YearType.C:
                     return SoulKeys.LDSantoral_SagratCorJesusC;
             }
         }

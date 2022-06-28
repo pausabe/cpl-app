@@ -112,39 +112,39 @@ export default class LaudesSoul {
   introduccio(LT, setmana, CEL, date){
     switch(LT){
       case GLOBAL.O_ORDINARI:
-        antInvitatori = this.state.salteriComuInvitatori.ant;
+        antInvitatori = this.state.liturgyMasters.InvitationCommonPsalter.ant;
         break;
       case GLOBAL.Q_CENDRA:
       case GLOBAL.Q_SETMANES:
-        antInvitatori = this.state.tempsQuaresmaComuFV.antInvitatori1;
+        antInvitatori = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.antInvitatori1;
         break;
       case GLOBAL.Q_DIUM_RAMS:
       case GLOBAL.Q_SET_SANTA:
-        antInvitatori = this.state.tempsQuaresmaComuSS.antInvitatori;
+        antInvitatori = liturgyMasters.CommonPartsOfHolyWeek.antInvitatori;
         break;
       case GLOBAL.Q_TRIDU:
-        antInvitatori = this.state.tempsQuaresmaTridu.antInvitatori;
+        antInvitatori = liturgyMasters.PartsOfEasterTriduum.antInvitatori;
         break;
       case GLOBAL.P_OCTAVA:
-        antInvitatori = this.state.tempsPasquaAA.antInvitatori;
+        antInvitatori = liturgyMasters.PartsOfEasterBeforeAscension.antInvitatori;
         break;
       case GLOBAL.P_SETMANES:
         if(setmana === '7'){
-          antInvitatori = this.state.tempsPasquaDA.antInvitatori;
+          antInvitatori = liturgyMasters.PartsOfEasterAfterAscension.antInvitatori;
         }
         else{
-          antInvitatori = this.state.tempsPasquaAA.antInvitatori;
+          antInvitatori = liturgyMasters.PartsOfEasterBeforeAscension.antInvitatori;
         }
         break;
       case GLOBAL.A_SETMANES:
       case GLOBAL.A_FERIES:
       case GLOBAL.N_ABANS:
         if(LT != GLOBAL.N_ABANS || (LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13)){
-          antInvitatori = this.state.tempsAdventNadalComu.antInvitatori;
+          antInvitatori = liturgyMasters.CommonAdventAndChristmasParts.antInvitatori;
         }
         break;
       case GLOBAL.N_OCTAVA:
-        antInvitatori = this.state.tempsSolemnitatsFestes.antInvitatori;
+        antInvitatori = liturgyMasters.SolemnityAndFestivityParts.antInvitatori;
         break;
     }
     if(CEL.antInvitatori === '-')
@@ -166,70 +166,70 @@ export default class LaudesSoul {
       case GLOBAL.Q_SETMANES:
         if(weekDay===0){ //diumenge
           if(llati === 'true'){
-            himne = this.state.tempsQuaresmaComuFV.himneLaudesLlatiDom;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneLaudesLlatiDom;
           }
           else{
-            himne = this.state.tempsQuaresmaComuFV.himneLaudesCatDom;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneLaudesCatDom;
           }
         }
         else{//ferial
           if(llati === 'true'){
-            himne = this.state.tempsQuaresmaComuFV.himneLaudesLlatiFer;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneLaudesLlatiFer;
           }
           else{
-            himne = this.state.tempsQuaresmaComuFV.himneLaudesCatFer;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneLaudesCatFer;
           }
         }
         break;
       case GLOBAL.Q_DIUM_RAMS:
       case GLOBAL.Q_SET_SANTA:
         if(llati === 'true'){
-          himne = this.state.tempsQuaresmaComuSS.himneLaudesLlati;
+          himne = liturgyMasters.CommonPartsOfHolyWeek.himneLaudesLlati;
         }
         else{
-          himne = this.state.tempsQuaresmaComuSS.himneLaudesCat;
+          himne = liturgyMasters.CommonPartsOfHolyWeek.himneLaudesCat;
         }
         break;
       case GLOBAL.Q_TRIDU:
         if(llati === 'true'){
-          himne = this.state.tempsQuaresmaTridu.himneDSOLaudesllati;
+          himne = liturgyMasters.PartsOfEasterTriduum.himneDSOLaudesllati;
         }
         else{
-          himne = this.state.tempsQuaresmaTridu.himneDSOLaudescat;
+          himne = liturgyMasters.PartsOfEasterTriduum.himneDSOLaudescat;
         }
         break;
       case GLOBAL.P_OCTAVA:
         if(llati === 'true'){
-          himne = this.state.tempsPasquaAA.himneLaudesLlati1;
+          himne = liturgyMasters.PartsOfEasterBeforeAscension.himneLaudesLlati1;
         }
         else{
-          himne = this.state.tempsPasquaAA.himneLaudesCat1;
+          himne = liturgyMasters.PartsOfEasterBeforeAscension.himneLaudesCat1;
         }
         break;
       case GLOBAL.P_SETMANES:
         if(setmana === '7'){
           if(llati === 'true'){
-            himne = this.state.tempsPasquaDA.himneLaudesLlati;
+            himne = liturgyMasters.PartsOfEasterAfterAscension.himneLaudesLlati;
           }
           else{
-            himne = this.state.tempsPasquaDA.himneLaudesCat;
+            himne = liturgyMasters.PartsOfEasterAfterAscension.himneLaudesCat;
           }
         }
         else{
           if(weekDay === 6 || weekDay === 0){
             if(llati === 'true'){
-              himne = this.state.tempsPasquaAA.himneLaudesLlati1;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneLaudesLlati1;
             }
             else{
-              himne = this.state.tempsPasquaAA.himneLaudesCat1;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneLaudesCat1;
             }
           }
           else{
             if(llati === 'true'){
-              himne = this.state.tempsPasquaAA.himneLaudesLlati2;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneLaudesLlati2;
             }
             else{
-              himne = this.state.tempsPasquaAA.himneLaudesCat2;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneLaudesCat2;
             }
           }
         }
@@ -239,19 +239,19 @@ export default class LaudesSoul {
       case GLOBAL.N_ABANS:
         if(LT != GLOBAL.N_ABANS || (LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13)){
           if(llati === 'true'){
-            himne = this.state.tempsAdventNadalComu.himneLaudesLlati;
+            himne = liturgyMasters.CommonAdventAndChristmasParts.himneLaudesLlati;
           }
           else{
-            himne = this.state.tempsAdventNadalComu.himneLaudesCat;
+            himne = liturgyMasters.CommonAdventAndChristmasParts.himneLaudesCat;
           }
         }
         break;
       case GLOBAL.N_OCTAVA:
         if(llati === 'true'){
-          himne = this.state.tempsSolemnitatsFestes.himneLaudesLlati;
+          himne = liturgyMasters.SolemnityAndFestivityParts.himneLaudesLlati;
         }
         else{
-          himne = this.state.tempsSolemnitatsFestes.himneLaudesCat;
+          himne = liturgyMasters.SolemnityAndFestivityParts.himneLaudesCat;
         }
         break;
     }
@@ -389,21 +389,21 @@ export default class LaudesSoul {
 
       break;
       case GLOBAL.Q_TRIDU:
-        ant1 = this.state.tempsQuaresmaTridu.ant1Laudes;
-        titol1 = this.state.tempsQuaresmaTridu.titol1Laudes;
+        ant1 = liturgyMasters.PartsOfEasterTriduum.ant1Laudes;
+        titol1 = liturgyMasters.PartsOfEasterTriduum.titol1Laudes;
         com1 = "-";
-        salm1 = this.state.tempsQuaresmaTridu.salm1Laudes;
-        gloria1 = this.state.tempsQuaresmaTridu.gloriaLaudes1;
-        ant2 = this.state.tempsQuaresmaTridu.ant2Laudes;
-        titol2 = this.state.tempsQuaresmaTridu.titol2Laudes;
+        salm1 = liturgyMasters.PartsOfEasterTriduum.salm1Laudes;
+        gloria1 = liturgyMasters.PartsOfEasterTriduum.gloriaLaudes1;
+        ant2 = liturgyMasters.PartsOfEasterTriduum.ant2Laudes;
+        titol2 = liturgyMasters.PartsOfEasterTriduum.titol2Laudes;
         com2 = "-";
-        salm2 = this.state.tempsQuaresmaTridu.salm2Laudes;
-        gloria2 = this.state.tempsQuaresmaTridu.gloriaLaudes2;
-        ant3 = this.state.tempsQuaresmaTridu.ant3Laudes;
-        titol3 = this.state.tempsQuaresmaTridu.titol3Laudes;
+        salm2 = liturgyMasters.PartsOfEasterTriduum.salm2Laudes;
+        gloria2 = liturgyMasters.PartsOfEasterTriduum.gloriaLaudes2;
+        ant3 = liturgyMasters.PartsOfEasterTriduum.ant3Laudes;
+        titol3 = liturgyMasters.PartsOfEasterTriduum.titol3Laudes;
         com3 = "-";
-        salm3 = this.state.tempsQuaresmaTridu.salm3Laudes;
-        gloria3 = this.state.tempsQuaresmaTridu.gloriaLaudes3;
+        salm3 = liturgyMasters.PartsOfEasterTriduum.salm3Laudes;
+        gloria3 = liturgyMasters.PartsOfEasterTriduum.gloriaLaudes3;
         break;
       case GLOBAL.P_OCTAVA:
         ant1 = this.state.tempsQuaresmaDiumPasq.ant1Laudes;
@@ -495,9 +495,9 @@ export default class LaudesSoul {
           ant3 = this.state.salteriComuLaudes.ant3;
         }
         else {
-          ant1 = this.state.tempsSolemnitatsFestes.ant1Laudes;
-          ant2 = this.state.tempsSolemnitatsFestes.ant2Laudes;
-          ant3 = this.state.tempsSolemnitatsFestes.ant3Laudes;
+          ant1 = liturgyMasters.SolemnityAndFestivityParts.ant1Laudes;
+          ant2 = liturgyMasters.SolemnityAndFestivityParts.ant2Laudes;
+          ant3 = liturgyMasters.SolemnityAndFestivityParts.ant3Laudes;
         }
         break;
     }
@@ -578,8 +578,8 @@ export default class LaudesSoul {
         lecturaBreu = this.state.tempsQuaresmaSetSanta.lecturaBreuLaudes;
         break;
       case GLOBAL.Q_TRIDU:
-        vers = this.state.tempsQuaresmaTridu.citaLBLaudes;
-        lecturaBreu = this.state.tempsQuaresmaTridu.lecturaBreuLaudes;
+        vers = liturgyMasters.PartsOfEasterTriduum.citaLBLaudes;
+        lecturaBreu = liturgyMasters.PartsOfEasterTriduum.lecturaBreuLaudes;
         break;
       case GLOBAL.P_OCTAVA:
         vers = this.state.tempsPasquaOct.citaLBLaudes;
@@ -594,17 +594,17 @@ export default class LaudesSoul {
         lecturaBreu = this.state.tempsAdventSetmanes.lecturaBreuLaudes;
         break;
       case GLOBAL.A_FERIES:
-        vers = this.state.tempsAdventFeries.citaLBLaudes;
-        lecturaBreu = this.state.tempsAdventFeries.lecturaBreuLaudes;
+        vers = liturgyMasters.AdventFairDaysParts.citaLBLaudes;
+        lecturaBreu = liturgyMasters.AdventFairDaysParts.lecturaBreuLaudes;
         break;
       case GLOBAL.N_OCTAVA:
-        vers = this.state.tempsNadalOctava.citaLBLaudes;
-        lecturaBreu = this.state.tempsNadalOctava.lecturaBreuLaudes;
+        vers = liturgyMasters.ChristmasWhenOctaveParts.citaLBLaudes;
+        lecturaBreu = liturgyMasters.ChristmasWhenOctaveParts.lecturaBreuLaudes;
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          vers = this.state.tempsNadalAbansEpifania.citaLBLaudes;
-          lecturaBreu = this.state.tempsNadalAbansEpifania.lecturaBreuLaudes;
+          vers = liturgyMasters.ChristmasBeforeEpiphanyParts.citaLBLaudes;
+          lecturaBreu = liturgyMasters.ChristmasBeforeEpiphanyParts.lecturaBreuLaudes;
         }
         break;
     }
@@ -654,20 +654,20 @@ export default class LaudesSoul {
         respBreu3 = this.state.tempsAdventSetmanes.respBreuLaudes3
         break;
       case GLOBAL.A_FERIES:
-        respBreu1 = this.state.tempsAdventFeries.respBreuLaudes1
-        respBreu2 = this.state.tempsAdventFeries.respBreuLaudes2
-        respBreu3 = this.state.tempsAdventFeries.respBreuLaudes3
+        respBreu1 = liturgyMasters.AdventFairDaysParts.respBreuLaudes1
+        respBreu2 = liturgyMasters.AdventFairDaysParts.respBreuLaudes2
+        respBreu3 = liturgyMasters.AdventFairDaysParts.respBreuLaudes3
         break;
       case GLOBAL.N_OCTAVA:
-        respBreu1 = this.state.tempsNadalOctava.resp2Breu1Laudes
-        respBreu2 = this.state.tempsNadalOctava.resp2Breu2Laudes
-        respBreu3 = this.state.tempsNadalOctava.resp2Breu3Laudes
+        respBreu1 = liturgyMasters.ChristmasWhenOctaveParts.resp2Breu1Laudes
+        respBreu2 = liturgyMasters.ChristmasWhenOctaveParts.resp2Breu2Laudes
+        respBreu3 = liturgyMasters.ChristmasWhenOctaveParts.resp2Breu3Laudes
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          respBreu1 = this.state.tempsNadalAbansEpifania.respBreuLaudes1
-          respBreu2 = this.state.tempsNadalAbansEpifania.respBreuLaudes2
-          respBreu3 = this.state.tempsNadalAbansEpifania.respBreuLaudes3
+          respBreu1 = liturgyMasters.ChristmasBeforeEpiphanyParts.respBreuLaudes1
+          respBreu2 = liturgyMasters.ChristmasBeforeEpiphanyParts.respBreuLaudes2
+          respBreu3 = liturgyMasters.ChristmasBeforeEpiphanyParts.respBreuLaudes3
         }
         break;
     }
@@ -679,7 +679,7 @@ export default class LaudesSoul {
       if(CEL.respBreu1 === '-'){
         if(LT === GLOBAL.Q_TRIDU){
           this.LAUDES.calAntEspecial = true;
-          this.LAUDES.antEspecialLaudes = this.state.tempsQuaresmaTridu.antEspecialLaudes;
+          this.LAUDES.antEspecialLaudes = liturgyMasters.PartsOfEasterTriduum.antEspecialLaudes;
         }
         else if(LT === GLOBAL.P_OCTAVA){
           this.LAUDES.calAntEspecial = true;
@@ -709,14 +709,14 @@ export default class LaudesSoul {
         }
         else{ //diumenge
           switch (litYear) {
-            case 'A':
-              antCantic = this.state.tempsOrdinariOracions.antZacariesA;
+            case YearType.A:
+              antCantic = this.state.liturgyMasters.PrayersOfOrdinaryTime.antZacariesA;
               break;
-            case 'B':
-              antCantic = this.state.tempsOrdinariOracions.antZacariesB;
+            case YearType.B:
+              antCantic = this.state.liturgyMasters.PrayersOfOrdinaryTime.antZacariesB;
               break;
-            case 'C':
-              antCantic = this.state.tempsOrdinariOracions.antZacariesC;
+            case YearType.C:
+              antCantic = this.state.liturgyMasters.PrayersOfOrdinaryTime.antZacariesC;
               break;
           }
         }
@@ -730,13 +730,13 @@ export default class LaudesSoul {
         }
         else{ //diumenge
           switch (litYear) {
-            case 'A':
+            case YearType.A:
               antCantic = this.state.tempsQuaresmaVSetmanesDium.antZacariesA;
               break;
-            case 'B':
+            case YearType.B:
               antCantic = this.state.tempsQuaresmaVSetmanesDium.antZacariesB;
               break;
-            case 'C':
+            case YearType.C:
               antCantic = this.state.tempsQuaresmaVSetmanesDium.antZacariesC;
               break;
           }
@@ -744,13 +744,13 @@ export default class LaudesSoul {
         break;
       case GLOBAL.Q_DIUM_RAMS:
         switch (litYear) {
-          case 'A':
+          case YearType.A:
             antCantic = this.state.tempsQuaresmaRams.antZacariesA;
             break;
-          case 'B':
+          case YearType.B:
             antCantic = this.state.tempsQuaresmaRams.antZacariesB;
             break;
-          case 'C':
+          case YearType.C:
             antCantic = this.state.tempsQuaresmaRams.antZacariesC;
             break;
         }
@@ -759,7 +759,7 @@ export default class LaudesSoul {
           antCantic = this.state.tempsQuaresmaSetSanta.antZacaries;
         break;
       case GLOBAL.Q_TRIDU:
-          antCantic = this.state.tempsQuaresmaTridu.antZacaries;
+          antCantic = liturgyMasters.PartsOfEasterTriduum.antZacaries;
         break;
       case GLOBAL.P_OCTAVA:
           antCantic = this.state.tempsPasquaOct.antZacaries;
@@ -770,13 +770,13 @@ export default class LaudesSoul {
         }
         else{ //diumenge
           switch (litYear) {
-            case 'A':
+            case YearType.A:
               antCantic = this.state.tempsPasquaSetmanesDium.antZacariesA;
               break;
-            case 'B':
+            case YearType.B:
               antCantic = this.state.tempsPasquaSetmanesDium.antZacariesB;
               break;
-            case 'C':
+            case YearType.C:
               antCantic = this.state.tempsPasquaSetmanesDium.antZacariesC;
               break;
           }
@@ -788,27 +788,27 @@ export default class LaudesSoul {
         }
         else{ //diumenge
           switch (litYear) {
-            case 'A':
+            case YearType.A:
               antCantic = this.state.tempsAdventSetmanesDium.antZacariesA;
               break;
-            case 'B':
+            case YearType.B:
               antCantic = this.state.tempsAdventSetmanesDium.antZacariesB;
               break;
-            case 'C':
+            case YearType.C:
               antCantic = this.state.tempsAdventSetmanesDium.antZacariesC;
               break;
           }
         }
         break;
       case GLOBAL.A_FERIES:
-        antCantic = this.state.tempsAdventFeries.antZacaries;
+        antCantic = liturgyMasters.AdventFairDaysParts.antZacaries;
         break;
       case GLOBAL.N_OCTAVA:
-        antCantic = this.state.tempsNadalOctava.antZacaries;
+        antCantic = liturgyMasters.ChristmasWhenOctaveParts.antZacaries;
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          antCantic = this.state.tempsNadalAbansEpifania.antZacaries;
+          antCantic = liturgyMasters.ChristmasBeforeEpiphanyParts.antZacaries;
         }
         break;
     }
@@ -837,7 +837,7 @@ export default class LaudesSoul {
           pregaries = this.state.tempsQuaresmaSetSanta.pregariesLaudes;
         break;
       case GLOBAL.Q_TRIDU:
-          pregaries = this.state.tempsQuaresmaTridu.pregariesLaudes;
+          pregaries = liturgyMasters.PartsOfEasterTriduum.pregariesLaudes;
         break;
       case GLOBAL.P_OCTAVA:
           pregaries = this.state.tempsPasquaOct.pregariesLaudes;
@@ -849,14 +849,14 @@ export default class LaudesSoul {
           pregaries = this.state.tempsAdventSetmanes.pregariesLaudes;
         break;
       case GLOBAL.A_FERIES:
-          pregaries = this.state.tempsAdventFeries.pregariesLaudes;
+          pregaries = liturgyMasters.AdventFairDaysParts.pregariesLaudes;
         break;
       case GLOBAL.N_OCTAVA:
-          pregaries = this.state.tempsNadalOctava.pregariesLaudes;
+          pregaries = liturgyMasters.ChristmasWhenOctaveParts.pregariesLaudes;
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          pregaries = this.state.tempsNadalAbansEpifania.pregariesLaudes;
+          pregaries = liturgyMasters.ChristmasBeforeEpiphanyParts.pregariesLaudes;
         }
         break;
     }
@@ -872,7 +872,7 @@ export default class LaudesSoul {
           oracio = this.state.salteriComuLaudes.oraFi;
         }
         else{ //diumenge
-          oracio = this.state.tempsOrdinariOracions.oracio;
+          oracio = this.state.liturgyMasters.PrayersOfOrdinaryTime.oracio;
         }
         break;
       case GLOBAL.Q_CENDRA:
@@ -888,7 +888,7 @@ export default class LaudesSoul {
         oracio = this.state.tempsQuaresmaSetSanta.oraFiLaudes;
         break;
       case GLOBAL.Q_TRIDU:
-        oracio = this.state.tempsQuaresmaTridu.oraFiLaudes;
+        oracio = liturgyMasters.PartsOfEasterTriduum.oraFiLaudes;
         break;
       case GLOBAL.P_OCTAVA:
         oracio = this.state.tempsPasquaOct.oraFiLaudes;
@@ -900,14 +900,14 @@ export default class LaudesSoul {
         oracio = this.state.tempsAdventSetmanes.oraFiLaudes;
         break;
       case GLOBAL.A_FERIES:
-        oracio = this.state.tempsAdventFeries.oraFiLaudes;
+        oracio = liturgyMasters.AdventFairDaysParts.oraFiLaudes;
         break;
       case GLOBAL.N_OCTAVA:
-        oracio = this.state.tempsNadalOctava.oraFiLaudes;
+        oracio = liturgyMasters.ChristmasWhenOctaveParts.oraFiLaudes;
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          oracio = this.state.tempsNadalAbansEpifania.oraFiLaudes;
+          oracio = liturgyMasters.ChristmasBeforeEpiphanyParts.oraFiLaudes;
         }
         break;
     }

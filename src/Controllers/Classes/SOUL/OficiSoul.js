@@ -111,39 +111,39 @@ export default class OficiSoul {
   introduccio(LT, setmana, CEL, date){
     switch(LT){
       case GLOBAL.O_ORDINARI:
-        antInvitatori = this.state.salteriComuInvitatori.ant;
+        antInvitatori = this.state.liturgyMasters.InvitationCommonPsalter.ant;
         break;
       case GLOBAL.Q_CENDRA:
       case GLOBAL.Q_SETMANES:
-        antInvitatori = this.state.tempsQuaresmaComuFV.antInvitatori1;
+        antInvitatori = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.antInvitatori1;
         break;
       case GLOBAL.Q_DIUM_RAMS:
       case GLOBAL.Q_SET_SANTA:
-        antInvitatori = this.state.tempsQuaresmaComuSS.antInvitatori;
+        antInvitatori = liturgyMasters.CommonPartsOfHolyWeek.antInvitatori;
         break;
       case GLOBAL.Q_TRIDU:
-        antInvitatori = this.state.tempsQuaresmaTridu.antInvitatori;
+        antInvitatori = liturgyMasters.PartsOfEasterTriduum.antInvitatori;
         break;
       case GLOBAL.P_OCTAVA:
-        antInvitatori = this.state.tempsPasquaAA.antInvitatori;
+        antInvitatori = liturgyMasters.PartsOfEasterBeforeAscension.antInvitatori;
         break;
       case GLOBAL.P_SETMANES:
         if(setmana === '7'){
-          antInvitatori = this.state.tempsPasquaDA.antInvitatori;
+          antInvitatori = liturgyMasters.PartsOfEasterAfterAscension.antInvitatori;
         }
         else{
-          antInvitatori = this.state.tempsPasquaAA.antInvitatori;
+          antInvitatori = liturgyMasters.PartsOfEasterBeforeAscension.antInvitatori;
         }
         break;
       case GLOBAL.A_SETMANES:
       case GLOBAL.A_FERIES:
       case GLOBAL.N_ABANS:
         if(LT != GLOBAL.N_ABANS || (LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13)){
-          antInvitatori = this.state.tempsAdventNadalComu.antInvitatori;
+          antInvitatori = liturgyMasters.CommonAdventAndChristmasParts.antInvitatori;
         }
         break;
       case GLOBAL.N_OCTAVA:
-        antInvitatori = this.state.tempsSolemnitatsFestes.antInvitatori;
+        antInvitatori = liturgyMasters.SolemnityAndFestivityParts.antInvitatori;
         break;
     }
     if(CEL.antInvitatori === '-')
@@ -175,70 +175,70 @@ export default class OficiSoul {
       case GLOBAL.Q_SETMANES:
         if(weekDay===0){ //diumenge
           if(llati === 'true'){
-            himne = this.state.tempsQuaresmaComuFV.himneOficiLlatiDom;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneOficiLlatiDom;
           }
           else{
-            himne = this.state.tempsQuaresmaComuFV.himneOficiCatDom;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneOficiCatDom;
           }
         }
         else{//ferial
           if(llati === 'true'){
-            himne = this.state.tempsQuaresmaComuFV.himneOficiLlatiFer;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneOficiLlatiFer;
           }
           else{
-            himne = this.state.tempsQuaresmaComuFV.himneOficiCatFer;
+            himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneOficiCatFer;
           }
         }
         break;
       case GLOBAL.Q_DIUM_RAMS:
       case GLOBAL.Q_SET_SANTA:
         if(llati === 'true'){
-          himne = this.state.tempsQuaresmaComuSS.himneOficiLlati;
+          himne = liturgyMasters.CommonPartsOfHolyWeek.himneOficiLlati;
         }
         else{
-          himne = this.state.tempsQuaresmaComuSS.himneOficiCat;
+          himne = liturgyMasters.CommonPartsOfHolyWeek.himneOficiCat;
         }
         break;
       case GLOBAL.Q_TRIDU:
         if(llati === 'true'){
-          himne = this.state.tempsQuaresmaTridu.himneDSOLLlati;
+          himne = liturgyMasters.PartsOfEasterTriduum.himneDSOLLlati;
         }
         else{
-          himne = this.state.tempsQuaresmaTridu.himneDSOLCat;
+          himne = liturgyMasters.PartsOfEasterTriduum.himneDSOLCat;
         }
         break;
       case GLOBAL.P_OCTAVA:
         if(llati === 'true'){
-          himne = this.state.tempsPasquaAA.himneOficiLlati1;
+          himne = liturgyMasters.PartsOfEasterBeforeAscension.himneOficiLlati1;
         }
         else{
-          himne = this.state.tempsPasquaAA.himneOficiCat1;
+          himne = liturgyMasters.PartsOfEasterBeforeAscension.himneOficiCat1;
         }
         break;
       case GLOBAL.P_SETMANES:
         if(setmana === '7'){
           if(llati === 'true'){
-            himne = this.state.tempsPasquaDA.himneOficiLlati;
+            himne = liturgyMasters.PartsOfEasterAfterAscension.himneOficiLlati;
           }
           else{
-            himne = this.state.tempsPasquaDA.himneOficiCat;
+            himne = liturgyMasters.PartsOfEasterAfterAscension.himneOficiCat;
           }
         }
         else{
           if(weekDay === 6 || weekDay === 0){
             if(llati === 'true'){
-              himne = this.state.tempsPasquaAA.himneOficiLlati1;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneOficiLlati1;
             }
             else{
-              himne = this.state.tempsPasquaAA.himneOficiCat1;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneOficiCat1;
             }
           }
           else{
             if(llati === 'true'){
-              himne = this.state.tempsPasquaAA.himneOficiLlati2;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneOficiLlati2;
             }
             else{
-              himne = this.state.tempsPasquaAA.himneOficiCat2;
+              himne = liturgyMasters.PartsOfEasterBeforeAscension.himneOficiCat2;
             }
           }
         }
@@ -249,10 +249,10 @@ export default class OficiSoul {
       case GLOBAL.N_ABANS:
         if(LT != GLOBAL.N_ABANS || (LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13)){
           if(llati === 'true'){
-            himne = this.state.tempsAdventNadalComu.himneOficiLlati;
+            himne = liturgyMasters.CommonAdventAndChristmasParts.himneOficiLlati;
           }
           else{
-            himne = this.state.tempsAdventNadalComu.himneOficiCat;
+            himne = liturgyMasters.CommonAdventAndChristmasParts.himneOficiCat;
           }
         }
         break;
@@ -301,21 +301,21 @@ export default class OficiSoul {
         }
         break;
       case GLOBAL.Q_TRIDU:
-        ant1 = this.state.tempsQuaresmaTridu.ant1Ofici;
-        titol1 = this.state.tempsQuaresmaTridu.titolSalm1Ofici;
+        ant1 = liturgyMasters.PartsOfEasterTriduum.ant1Ofici;
+        titol1 = liturgyMasters.PartsOfEasterTriduum.titolSalm1Ofici;
         com1 = "-";
-        salm1 = this.state.tempsQuaresmaTridu.salm1Ofici;
-        gloria1 = this.state.tempsQuaresmaTridu.gloriaOfici1;
-        ant2 = this.state.tempsQuaresmaTridu.ant2Ofici;
-        titol2 = this.state.tempsQuaresmaTridu.titolSalm2Ofici;
+        salm1 = liturgyMasters.PartsOfEasterTriduum.salm1Ofici;
+        gloria1 = liturgyMasters.PartsOfEasterTriduum.gloriaOfici1;
+        ant2 = liturgyMasters.PartsOfEasterTriduum.ant2Ofici;
+        titol2 = liturgyMasters.PartsOfEasterTriduum.titolSalm2Ofici;
         com2 = "-";
-        salm2 = this.state.tempsQuaresmaTridu.salm2Ofici;
-        gloria2 = this.state.tempsQuaresmaTridu.gloriaOfici2;
-        ant3 = this.state.tempsQuaresmaTridu.ant3Ofici;
-        titol3 = this.state.tempsQuaresmaTridu.titolSalm3Ofici;
+        salm2 = liturgyMasters.PartsOfEasterTriduum.salm2Ofici;
+        gloria2 = liturgyMasters.PartsOfEasterTriduum.gloriaOfici2;
+        ant3 = liturgyMasters.PartsOfEasterTriduum.ant3Ofici;
+        titol3 = liturgyMasters.PartsOfEasterTriduum.titolSalm3Ofici;
         com3 = "-";
-        salm3 = this.state.tempsQuaresmaTridu.salm3Ofici;
-        gloria3 = this.state.tempsQuaresmaTridu.gloriaOfici3;
+        salm3 = liturgyMasters.PartsOfEasterTriduum.salm3Ofici;
+        gloria3 = liturgyMasters.PartsOfEasterTriduum.gloriaOfici3;
         break;
       case GLOBAL.P_OCTAVA:
         ant1 = this.state.tempsPasquaOct.ant1Ofici;
@@ -419,21 +419,21 @@ export default class OficiSoul {
         }
         break;
       case GLOBAL.N_OCTAVA:
-        ant1 = this.state.tempsNadalOctava.ant1Ofici;
-        titol1 = this.state.tempsNadalOctava.titolSalm1Ofici;
+        ant1 = liturgyMasters.ChristmasWhenOctaveParts.ant1Ofici;
+        titol1 = liturgyMasters.ChristmasWhenOctaveParts.titolSalm1Ofici;
         com1 = "-";
-        salm1 = this.state.tempsNadalOctava.salm1Ofici;
-        gloria1 = this.state.tempsNadalOctava.gloriaOfici1;
-        ant2 = this.state.tempsNadalOctava.ant2Ofici;
-        titol2 = this.state.tempsNadalOctava.titolSalm2Ofici;
+        salm1 = liturgyMasters.ChristmasWhenOctaveParts.salm1Ofici;
+        gloria1 = liturgyMasters.ChristmasWhenOctaveParts.gloriaOfici1;
+        ant2 = liturgyMasters.ChristmasWhenOctaveParts.ant2Ofici;
+        titol2 = liturgyMasters.ChristmasWhenOctaveParts.titolSalm2Ofici;
         com2 = "-";
-        salm2 = this.state.tempsNadalOctava.salm2Ofici;
-        gloria2 = this.state.tempsNadalOctava.gloriaOfici2;
-        ant3 = this.state.tempsNadalOctava.ant3Ofici;
-        titol3 = this.state.tempsNadalOctava.titolSalm3Ofici;
+        salm2 = liturgyMasters.ChristmasWhenOctaveParts.salm2Ofici;
+        gloria2 = liturgyMasters.ChristmasWhenOctaveParts.gloriaOfici2;
+        ant3 = liturgyMasters.ChristmasWhenOctaveParts.ant3Ofici;
+        titol3 = liturgyMasters.ChristmasWhenOctaveParts.titolSalm3Ofici;
         com3 = "-";
-        salm3 = this.state.tempsNadalOctava.salm3Ofici;
-        gloria3 = this.state.tempsNadalOctava.gloriaOfici3;
+        salm3 = liturgyMasters.ChristmasWhenOctaveParts.salm3Ofici;
+        gloria3 = liturgyMasters.ChristmasWhenOctaveParts.gloriaOfici3;
         break;
     }
     if(CEL.ant1 === '-')
@@ -512,8 +512,8 @@ export default class OficiSoul {
         respR = this.state.tempsQuaresmaSetSanta.respROfici;
         break;
       case GLOBAL.Q_TRIDU:
-        respV = this.state.tempsQuaresmaTridu.respVOfici;
-        respR = this.state.tempsQuaresmaTridu.respROfici;
+        respV = liturgyMasters.PartsOfEasterTriduum.respVOfici;
+        respR = liturgyMasters.PartsOfEasterTriduum.respROfici;
         break;
       case GLOBAL.P_OCTAVA:
         respV = this.state.tempsPasquaOct.respVOfici;
@@ -528,17 +528,17 @@ export default class OficiSoul {
         respR = this.state.tempsAdventSetmanes.respROfici;
         break;
       case GLOBAL.A_FERIES:
-        respV = this.state.tempsAdventFeries.respVOfici;
-        respR = this.state.tempsAdventFeries.respROfici;
+        respV = liturgyMasters.AdventFairDaysParts.respVOfici;
+        respR = liturgyMasters.AdventFairDaysParts.respROfici;
         break;
       case GLOBAL.N_OCTAVA:
-        respV = this.state.tempsNadalOctava.respVOfici;
-        respR = this.state.tempsNadalOctava.respROfici;
+        respV = liturgyMasters.ChristmasWhenOctaveParts.respVOfici;
+        respR = liturgyMasters.ChristmasWhenOctaveParts.respROfici;
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          respV = this.state.tempsNadalAbansEpifania.respVOfici;
-          respR = this.state.tempsNadalAbansEpifania.respROfici;
+          respV = liturgyMasters.ChristmasBeforeEpiphanyParts.respVOfici;
+          respR = liturgyMasters.ChristmasBeforeEpiphanyParts.respROfici;
         }
         break;
     }
@@ -660,22 +660,22 @@ export default class OficiSoul {
         resp2Part3 = this.state.tempsQuaresmaSetSanta.resp2Part3;
         break;
       case GLOBAL.Q_TRIDU:
-        referencia1 = this.state.tempsQuaresmaTridu.referencia1; //TODO: canvair nom de la variable???
-        cita1 = this.state.tempsQuaresmaTridu.citaLect1Ofici;
-        titol1 = this.state.tempsQuaresmaTridu.titolLect1Ofici;
-        lectura1 = this.state.tempsQuaresmaTridu.lectura1;
-        citaResp1 = this.state.tempsQuaresmaTridu.citaResp1Ofici;
-        resp1Part1 = this.state.tempsQuaresmaTridu.resp1Part1Ofici;
-        resp1Part2 = this.state.tempsQuaresmaTridu.resp1Part2Ofici;
-        resp1Part3 = this.state.tempsQuaresmaTridu.resp1Part3Ofici;
-        referencia2 = this.state.tempsQuaresmaTridu.referencia2Ofici; //TODO: canvair nom de la variable???
-        cita2 = this.state.tempsQuaresmaTridu.citaLect2Ofici;
-        titol2 = this.state.tempsQuaresmaTridu.titolLect2Ofici;
-        lectura2 = this.state.tempsQuaresmaTridu.lectura2;
-        versResp2 = this.state.tempsQuaresmaTridu.citaResp2Ofici;
-        resp2Part1 = this.state.tempsQuaresmaTridu.resp2Part1Ofici;
-        resp2Part2 = this.state.tempsQuaresmaTridu.resp2Part2Ofici;
-        resp2Part3 = this.state.tempsQuaresmaTridu.resp2Part3Ofici;
+        referencia1 = liturgyMasters.PartsOfEasterTriduum.referencia1; //TODO: canvair nom de la variable???
+        cita1 = liturgyMasters.PartsOfEasterTriduum.citaLect1Ofici;
+        titol1 = liturgyMasters.PartsOfEasterTriduum.titolLect1Ofici;
+        lectura1 = liturgyMasters.PartsOfEasterTriduum.lectura1;
+        citaResp1 = liturgyMasters.PartsOfEasterTriduum.citaResp1Ofici;
+        resp1Part1 = liturgyMasters.PartsOfEasterTriduum.resp1Part1Ofici;
+        resp1Part2 = liturgyMasters.PartsOfEasterTriduum.resp1Part2Ofici;
+        resp1Part3 = liturgyMasters.PartsOfEasterTriduum.resp1Part3Ofici;
+        referencia2 = liturgyMasters.PartsOfEasterTriduum.referencia2Ofici; //TODO: canvair nom de la variable???
+        cita2 = liturgyMasters.PartsOfEasterTriduum.citaLect2Ofici;
+        titol2 = liturgyMasters.PartsOfEasterTriduum.titolLect2Ofici;
+        lectura2 = liturgyMasters.PartsOfEasterTriduum.lectura2;
+        versResp2 = liturgyMasters.PartsOfEasterTriduum.citaResp2Ofici;
+        resp2Part1 = liturgyMasters.PartsOfEasterTriduum.resp2Part1Ofici;
+        resp2Part2 = liturgyMasters.PartsOfEasterTriduum.resp2Part2Ofici;
+        resp2Part3 = liturgyMasters.PartsOfEasterTriduum.resp2Part3Ofici;
         break;
       case GLOBAL.P_OCTAVA:
         referencia1 = this.state.tempsPasquaOct.referencia1; //TODO: canvair nom de la variable???
@@ -732,59 +732,59 @@ export default class OficiSoul {
         resp2Part3 = this.state.tempsAdventSetmanes.resp2Part3;
         break;
       case GLOBAL.A_FERIES:
-        referencia1 = this.state.tempsAdventFeries.referencia1;
-        cita1 = this.state.tempsAdventFeries.cita1;
-        titol1 = this.state.tempsAdventFeries.titol1;
-        lectura1 = this.state.tempsAdventFeries.lectura1;
-        citaResp1 = this.state.tempsAdventFeries.citaResp1; //TODO: canviar nom de la variable??
-        resp1Part1 = this.state.tempsAdventFeries.resp1Part1;
-        resp1Part2 = this.state.tempsAdventFeries.resp1Part2;
-        resp1Part3 = this.state.tempsAdventFeries.resp1Part3;
-        referencia2 = this.state.tempsAdventFeries.referencia2;
-        cita2 = this.state.tempsAdventFeries.cita2;
-        titol2 = this.state.tempsAdventFeries.titol2;
-        lectura2 = this.state.tempsAdventFeries.lectura2;
-        versResp2 = this.state.tempsAdventFeries.versResp2; //TODO: canviar nom de la variable??
-        resp2Part1 = this.state.tempsAdventFeries.resp2Part1;
-        resp2Part2 = this.state.tempsAdventFeries.resp2Part2;
-        resp2Part3 = this.state.tempsAdventFeries.resp2Part3;
+        referencia1 = liturgyMasters.AdventFairDaysParts.referencia1;
+        cita1 = liturgyMasters.AdventFairDaysParts.cita1;
+        titol1 = liturgyMasters.AdventFairDaysParts.titol1;
+        lectura1 = liturgyMasters.AdventFairDaysParts.lectura1;
+        citaResp1 = liturgyMasters.AdventFairDaysParts.citaResp1; //TODO: canviar nom de la variable??
+        resp1Part1 = liturgyMasters.AdventFairDaysParts.resp1Part1;
+        resp1Part2 = liturgyMasters.AdventFairDaysParts.resp1Part2;
+        resp1Part3 = liturgyMasters.AdventFairDaysParts.resp1Part3;
+        referencia2 = liturgyMasters.AdventFairDaysParts.referencia2;
+        cita2 = liturgyMasters.AdventFairDaysParts.cita2;
+        titol2 = liturgyMasters.AdventFairDaysParts.titol2;
+        lectura2 = liturgyMasters.AdventFairDaysParts.lectura2;
+        versResp2 = liturgyMasters.AdventFairDaysParts.versResp2; //TODO: canviar nom de la variable??
+        resp2Part1 = liturgyMasters.AdventFairDaysParts.resp2Part1;
+        resp2Part2 = liturgyMasters.AdventFairDaysParts.resp2Part2;
+        resp2Part3 = liturgyMasters.AdventFairDaysParts.resp2Part3;
         break;
       case GLOBAL.N_OCTAVA:
-        referencia1 = this.state.tempsNadalOctava.referencia1; //TODO: canvair nom de la variable???
-        cita1 = this.state.tempsNadalOctava.citaLect1Ofici;
-        titol1 = this.state.tempsNadalOctava.titolLect1Ofici;
-        lectura1 = this.state.tempsNadalOctava.lectura1;
-        citaResp1 = this.state.tempsNadalOctava.citaResp1Ofici;
-        resp1Part1 = this.state.tempsNadalOctava.resp1Part1Ofici;
-        resp1Part2 = this.state.tempsNadalOctava.resp1Part2Ofici;
-        resp1Part3 = this.state.tempsNadalOctava.resp1Part3Ofici;
-        referencia2 = this.state.tempsNadalOctava.referencia2Ofici; //TODO: canvair nom de la variable???
-        cita2 = this.state.tempsNadalOctava.citaLect2Ofici;
-        titol2 = this.state.tempsNadalOctava.titolLect2Ofici;
-        lectura2 = this.state.tempsNadalOctava.lectura2;
-        versResp2 = this.state.tempsNadalOctava.citaResp2Ofici;
-        resp2Part1 = this.state.tempsNadalOctava.resp2Part1Ofici;
-        resp2Part2 = this.state.tempsNadalOctava.resp2Part2Ofici;
-        resp2Part3 = this.state.tempsNadalOctava.resp2Part3Ofici;
+        referencia1 = liturgyMasters.ChristmasWhenOctaveParts.referencia1; //TODO: canvair nom de la variable???
+        cita1 = liturgyMasters.ChristmasWhenOctaveParts.citaLect1Ofici;
+        titol1 = liturgyMasters.ChristmasWhenOctaveParts.titolLect1Ofici;
+        lectura1 = liturgyMasters.ChristmasWhenOctaveParts.lectura1;
+        citaResp1 = liturgyMasters.ChristmasWhenOctaveParts.citaResp1Ofici;
+        resp1Part1 = liturgyMasters.ChristmasWhenOctaveParts.resp1Part1Ofici;
+        resp1Part2 = liturgyMasters.ChristmasWhenOctaveParts.resp1Part2Ofici;
+        resp1Part3 = liturgyMasters.ChristmasWhenOctaveParts.resp1Part3Ofici;
+        referencia2 = liturgyMasters.ChristmasWhenOctaveParts.referencia2Ofici; //TODO: canvair nom de la variable???
+        cita2 = liturgyMasters.ChristmasWhenOctaveParts.citaLect2Ofici;
+        titol2 = liturgyMasters.ChristmasWhenOctaveParts.titolLect2Ofici;
+        lectura2 = liturgyMasters.ChristmasWhenOctaveParts.lectura2;
+        versResp2 = liturgyMasters.ChristmasWhenOctaveParts.citaResp2Ofici;
+        resp2Part1 = liturgyMasters.ChristmasWhenOctaveParts.resp2Part1Ofici;
+        resp2Part2 = liturgyMasters.ChristmasWhenOctaveParts.resp2Part2Ofici;
+        resp2Part3 = liturgyMasters.ChristmasWhenOctaveParts.resp2Part3Ofici;
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          referencia1 = this.state.tempsNadalAbansEpifania.referencia1;
-          cita1 = this.state.tempsNadalAbansEpifania.cita1;
-          titol1 = this.state.tempsNadalAbansEpifania.titol1;
-          lectura1 = this.state.tempsNadalAbansEpifania.lectura1;
-          citaResp1 = this.state.tempsNadalAbansEpifania.citaResp1; //TODO: canviar nom de la variable??
-          resp1Part1 = this.state.tempsNadalAbansEpifania.resp1Part1;
-          resp1Part2 = this.state.tempsNadalAbansEpifania.resp1Part2;
-          resp1Part3 = this.state.tempsNadalAbansEpifania.resp1Part3;
-          referencia2 = this.state.tempsNadalAbansEpifania.referencia2;
-          cita2 = this.state.tempsNadalAbansEpifania.cita2;
-          titol2 = this.state.tempsNadalAbansEpifania.titol2;
-          lectura2 = this.state.tempsNadalAbansEpifania.lectura2;
-          versResp2 = this.state.tempsNadalAbansEpifania.versResp2; //TODO: canviar nom de la variable??
-          resp2Part1 = this.state.tempsNadalAbansEpifania.resp2Part1;
-          resp2Part2 = this.state.tempsNadalAbansEpifania.resp2Part2;
-          resp2Part3 = this.state.tempsNadalAbansEpifania.resp2Part3;
+          referencia1 = liturgyMasters.ChristmasBeforeEpiphanyParts.referencia1;
+          cita1 = liturgyMasters.ChristmasBeforeEpiphanyParts.cita1;
+          titol1 = liturgyMasters.ChristmasBeforeEpiphanyParts.titol1;
+          lectura1 = liturgyMasters.ChristmasBeforeEpiphanyParts.lectura1;
+          citaResp1 = liturgyMasters.ChristmasBeforeEpiphanyParts.citaResp1; //TODO: canviar nom de la variable??
+          resp1Part1 = liturgyMasters.ChristmasBeforeEpiphanyParts.resp1Part1;
+          resp1Part2 = liturgyMasters.ChristmasBeforeEpiphanyParts.resp1Part2;
+          resp1Part3 = liturgyMasters.ChristmasBeforeEpiphanyParts.resp1Part3;
+          referencia2 = liturgyMasters.ChristmasBeforeEpiphanyParts.referencia2;
+          cita2 = liturgyMasters.ChristmasBeforeEpiphanyParts.cita2;
+          titol2 = liturgyMasters.ChristmasBeforeEpiphanyParts.titol2;
+          lectura2 = liturgyMasters.ChristmasBeforeEpiphanyParts.lectura2;
+          versResp2 = liturgyMasters.ChristmasBeforeEpiphanyParts.versResp2; //TODO: canviar nom de la variable??
+          resp2Part1 = liturgyMasters.ChristmasBeforeEpiphanyParts.resp2Part1;
+          resp2Part2 = liturgyMasters.ChristmasBeforeEpiphanyParts.resp2Part2;
+          resp2Part3 = liturgyMasters.ChristmasBeforeEpiphanyParts.resp2Part3;
         }
         break;
     }
@@ -875,7 +875,7 @@ export default class OficiSoul {
   oracio(LT, weekDay, CEL, date){
     switch(LT){
       case GLOBAL.O_ORDINARI:
-        oracio = this.state.tempsOrdinariOracions.oracio;
+        oracio = this.state.liturgyMasters.PrayersOfOrdinaryTime.oracio;
         break;
       case GLOBAL.Q_CENDRA:
         oracio = this.state.tempsQuaresmaCendra.oraFiLaudes;
@@ -890,7 +890,7 @@ export default class OficiSoul {
         oracio = this.state.tempsQuaresmaSetSanta.oraFiLaudes;
         break;
       case GLOBAL.Q_TRIDU:
-        oracio = this.state.tempsQuaresmaTridu.oraFiOfici;
+        oracio = liturgyMasters.PartsOfEasterTriduum.oraFiOfici;
         break;
       case GLOBAL.P_OCTAVA:
         oracio = this.state.tempsPasquaOct.oraFiLaudes;
@@ -902,14 +902,14 @@ export default class OficiSoul {
         oracio = this.state.tempsAdventSetmanes.oraFiLaudes;
         break;
       case GLOBAL.A_FERIES:
-        oracio = this.state.tempsAdventFeries.oraFiLaudes;
+        oracio = liturgyMasters.AdventFairDaysParts.oraFiLaudes;
         break;
       case GLOBAL.N_OCTAVA:
-        oracio = this.state.tempsNadalOctava.oraFiLaudes;
+        oracio = liturgyMasters.ChristmasWhenOctaveParts.oraFiLaudes;
         break;
       case GLOBAL.N_ABANS:
         if(date.getMonth() == 0 && date.getDate() != 13){
-          oracio = this.state.tempsNadalAbansEpifania.oraFiLaudes;
+          oracio = liturgyMasters.ChristmasBeforeEpiphanyParts.oraFiLaudes;
         }
         break;
     }

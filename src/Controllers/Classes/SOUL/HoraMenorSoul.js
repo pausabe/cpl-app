@@ -184,26 +184,26 @@ export default class HoraMenorSoul {
           if(llati === 'true'){
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.himne = this.state.tempsQuaresmaComuFV.himneTerciaLlati;
+                this.TERCIA.himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneTerciaLlati;
                 break;
               case 'Sexta':
-                this.SEXTA.himne = this.state.tempsQuaresmaComuFV.himneSextaLlati;
+                this.SEXTA.himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneSextaLlati;
                 break;
               case 'Nona':
-                this.NONA.himne = this.state.tempsQuaresmaComuFV.himneNonaLlati;
+                this.NONA.himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneNonaLlati;
                 break;
             }
           }
           else{
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.himne = this.state.tempsQuaresmaComuFV.himneTerciaCat;
+                this.TERCIA.himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneTerciaCat;
                 break;
               case 'Sexta':
-                this.SEXTA.himne = this.state.tempsQuaresmaComuFV.himneSextaCat;
+                this.SEXTA.himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneSextaCat;
                 break;
               case 'Nona':
-                this.NONA.himne = this.state.tempsQuaresmaComuFV.himneNonaCat;
+                this.NONA.himne = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.himneNonaCat;
                 break;
             }
           }
@@ -211,40 +211,40 @@ export default class HoraMenorSoul {
         case GLOBAL.Q_DIUM_RAMS:
         case GLOBAL.Q_SET_SANTA:
           if(llati === 'true'){
-            this.TERCIA.himne = this.state.tempsQuaresmaComuSS.himneHoraLlati;
-            this.SEXTA.himne = this.state.tempsQuaresmaComuSS.himneHoraLlati;
-            this.NONA.himne = this.state.tempsQuaresmaComuSS.himneHoraLlati;
+            this.TERCIA.himne = liturgyMasters.CommonPartsOfHolyWeek.himneHoraLlati;
+            this.SEXTA.himne = liturgyMasters.CommonPartsOfHolyWeek.himneHoraLlati;
+            this.NONA.himne = liturgyMasters.CommonPartsOfHolyWeek.himneHoraLlati;
           }
           else{
-            this.TERCIA.himne = this.state.tempsQuaresmaComuSS.himneHoraCat;
-            this.SEXTA.himne = this.state.tempsQuaresmaComuSS.himneHoraCat;
-            this.NONA.himne = this.state.tempsQuaresmaComuSS.himneHoraCat;
+            this.TERCIA.himne = liturgyMasters.CommonPartsOfHolyWeek.himneHoraCat;
+            this.SEXTA.himne = liturgyMasters.CommonPartsOfHolyWeek.himneHoraCat;
+            this.NONA.himne = liturgyMasters.CommonPartsOfHolyWeek.himneHoraCat;
           }
           break;
         case GLOBAL.Q_TRIDU:
           if(llati === 'true'){
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.himne = this.state.tempsQuaresmaTridu.himneLlatiTercia;
+                this.TERCIA.himne = liturgyMasters.PartsOfEasterTriduum.himneLlatiTercia;
                 break;
               case 'Sexta':
-                this.SEXTA.himne = this.state.tempsQuaresmaTridu.himneLlatiSexta;
+                this.SEXTA.himne = liturgyMasters.PartsOfEasterTriduum.himneLlatiSexta;
                 break;
               case 'Nona':
-                this.NONA.himne = this.state.tempsQuaresmaTridu.himneLlatiNona;
+                this.NONA.himne = liturgyMasters.PartsOfEasterTriduum.himneLlatiNona;
                 break;
             }
           }
           else{
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.himne = this.state.tempsQuaresmaTridu.himneCatTercia;
+                this.TERCIA.himne = liturgyMasters.PartsOfEasterTriduum.himneCatTercia;
                 break;
               case 'Sexta':
-                this.SEXTA.himne = this.state.tempsQuaresmaTridu.himneCatSexta;
+                this.SEXTA.himne = liturgyMasters.PartsOfEasterTriduum.himneCatSexta;
                 break;
               case 'Nona':
-                this.NONA.himne = this.state.tempsQuaresmaTridu.himneCatNona;
+                this.NONA.himne = liturgyMasters.PartsOfEasterTriduum.himneCatNona;
                 break;
             }
           }
@@ -253,26 +253,26 @@ export default class HoraMenorSoul {
           if(llati === 'true'){
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.himne = this.state.tempsPasquaAA.himneTerciaLlati;
+                this.TERCIA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneTerciaLlati;
                 break;
               case 'Sexta':
-                this.SEXTA.himne = this.state.tempsPasquaAA.himneSextaLlati;
+                this.SEXTA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneSextaLlati;
                 break;
               case 'Nona':
-                this.NONA.himne = this.state.tempsPasquaAA.himneNonaLlati;
+                this.NONA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneNonaLlati;
                 break;
             }
           }
           else{
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.himne = this.state.tempsPasquaAA.himneTerciaCat;
+                this.TERCIA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneTerciaCat;
                 break;
               case 'Sexta':
-                this.SEXTA.himne = this.state.tempsPasquaAA.himneSextaCat;
+                this.SEXTA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneSextaCat;
                 break;
               case 'Nona':
-                this.NONA.himne = this.state.tempsPasquaAA.himneNonaCat;
+                this.NONA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneNonaCat;
                 break;
             }
           }
@@ -282,26 +282,26 @@ export default class HoraMenorSoul {
             if(llati === 'true'){
               switch (HM) {
                 case 'Tèrcia':
-                  this.TERCIA.himne = this.state.tempsPasquaDA.himneTerciaLlati;
+                  this.TERCIA.himne = liturgyMasters.PartsOfEasterAfterAscension.himneTerciaLlati;
                   break;
                 case 'Sexta':
-                  this.SEXTA.himne = this.state.tempsPasquaDA.himneSextaLlati;
+                  this.SEXTA.himne = liturgyMasters.PartsOfEasterAfterAscension.himneSextaLlati;
                   break;
                 case 'Nona':
-                  this.NONA.himne = this.state.tempsPasquaDA.himneNonaLlati;
+                  this.NONA.himne = liturgyMasters.PartsOfEasterAfterAscension.himneNonaLlati;
                   break;
               }
             }
             else{
               switch (HM) {
                 case 'Tèrcia':
-                  this.TERCIA.himne = this.state.tempsPasquaDA.himneTerciaCat;
+                  this.TERCIA.himne = liturgyMasters.PartsOfEasterAfterAscension.himneTerciaCat;
                   break;
                 case 'Sexta':
-                  this.SEXTA.himne = this.state.tempsPasquaDA.himneSextaCat;
+                  this.SEXTA.himne = liturgyMasters.PartsOfEasterAfterAscension.himneSextaCat;
                   break;
                 case 'Nona':
-                  this.NONA.himne = this.state.tempsPasquaDA.himneNonaCat;
+                  this.NONA.himne = liturgyMasters.PartsOfEasterAfterAscension.himneNonaCat;
                   break;
               }
             }
@@ -310,26 +310,26 @@ export default class HoraMenorSoul {
             if(llati === 'true'){
               switch (HM) {
                 case 'Tèrcia':
-                  this.TERCIA.himne = this.state.tempsPasquaAA.himneTerciaLlati;
+                  this.TERCIA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneTerciaLlati;
                   break;
                 case 'Sexta':
-                  this.SEXTA.himne = this.state.tempsPasquaAA.himneSextaLlati;
+                  this.SEXTA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneSextaLlati;
                   break;
                 case 'Nona':
-                  this.NONA.himne = this.state.tempsPasquaAA.himneNonaLlati;
+                  this.NONA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneNonaLlati;
                   break;
               }
             }
             else{
               switch (HM) {
                 case 'Tèrcia':
-                  this.TERCIA.himne = this.state.tempsPasquaAA.himneTerciaCat;
+                  this.TERCIA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneTerciaCat;
                   break;
                 case 'Sexta':
-                  this.SEXTA.himne = this.state.tempsPasquaAA.himneSextaCat;
+                  this.SEXTA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneSextaCat;
                   break;
                 case 'Nona':
-                  this.NONA.himne = this.state.tempsPasquaAA.himneNonaCat;
+                  this.NONA.himne = liturgyMasters.PartsOfEasterBeforeAscension.himneNonaCat;
                   break;
               }
             }
@@ -343,26 +343,26 @@ export default class HoraMenorSoul {
             if(llati === 'true'){
               switch (HM) {
                 case 'Tèrcia':
-                  this.TERCIA.himne = this.state.tempsAdventNadalComu.himneTerciaLlati;
+                  this.TERCIA.himne = liturgyMasters.CommonAdventAndChristmasParts.himneTerciaLlati;
                   break;
                 case 'Sexta':
-                  this.SEXTA.himne = this.state.tempsAdventNadalComu.himneSextaLlati;
+                  this.SEXTA.himne = liturgyMasters.CommonAdventAndChristmasParts.himneSextaLlati;
                   break;
                 case 'Nona':
-                  this.NONA.himne = this.state.tempsAdventNadalComu.himneNonaLlati;
+                  this.NONA.himne = liturgyMasters.CommonAdventAndChristmasParts.himneNonaLlati;
                   break;
               }
             }
             else{
               switch (HM) {
                 case 'Tèrcia':
-                  this.TERCIA.himne = this.state.tempsAdventNadalComu.himneTerciaCat;
+                  this.TERCIA.himne = liturgyMasters.CommonAdventAndChristmasParts.himneTerciaCat;
                   break;
                 case 'Sexta':
-                  this.SEXTA.himne = this.state.tempsAdventNadalComu.himneSextaCat;
+                  this.SEXTA.himne = liturgyMasters.CommonAdventAndChristmasParts.himneSextaCat;
                   break;
                 case 'Nona':
-                  this.NONA.himne = this.state.tempsAdventNadalComu.himneNonaCat;
+                  this.NONA.himne = liturgyMasters.CommonAdventAndChristmasParts.himneNonaCat;
                   break;
               }
             }
@@ -508,13 +508,13 @@ export default class HoraMenorSoul {
           if(CEL.ant === '-'){
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.ant = this.state.tempsQuaresmaComuFV.antTercia;
+                this.TERCIA.ant = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.antTercia;
                 break;
               case 'Sexta':
-                this.SEXTA.ant = this.state.tempsQuaresmaComuFV.antSexta;
+                this.SEXTA.ant = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.antSexta;
                 break;
               case 'Nona':
-                this.NONA.ant = this.state.tempsQuaresmaComuFV.antNona;
+                this.NONA.ant = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.antNona;
                 break;
             }
           }
@@ -569,13 +569,13 @@ export default class HoraMenorSoul {
           if(CEL.ant === '-'){
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.ant = this.state.tempsQuaresmaComuSS.antTercia;
+                this.TERCIA.ant = liturgyMasters.CommonPartsOfHolyWeek.antTercia;
                 break;
               case 'Sexta':
-                this.SEXTA.ant = this.state.tempsQuaresmaComuSS.antSexta;
+                this.SEXTA.ant = liturgyMasters.CommonPartsOfHolyWeek.antSexta;
                 break;
               case 'Nona':
-                this.NONA.ant = this.state.tempsQuaresmaComuSS.antNona;
+                this.NONA.ant = liturgyMasters.CommonPartsOfHolyWeek.antNona;
                 break;
             }
           }
@@ -583,59 +583,59 @@ export default class HoraMenorSoul {
         case GLOBAL.Q_TRIDU:
           this.TERCIA.antifones = false;
 
-          this.TERCIA.titol1 = this.state.tempsQuaresmaTridu.titolSalmMenor1;
+          this.TERCIA.titol1 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor1;
           this.TERCIA.com1 = "-";
-          this.TERCIA.salm1 = this.state.tempsQuaresmaTridu.salmMenor1;
+          this.TERCIA.salm1 = liturgyMasters.PartsOfEasterTriduum.salmMenor1;
           this.TERCIA.gloria1 = "1";
-          this.TERCIA.titol2 = this.state.tempsQuaresmaTridu.titolSalmMenor2;
+          this.TERCIA.titol2 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor2;
           this.TERCIA.com2 = "-";
-          this.TERCIA.salm2 = this.state.tempsQuaresmaTridu.salmMenor2;
+          this.TERCIA.salm2 = liturgyMasters.PartsOfEasterTriduum.salmMenor2;
           this.TERCIA.gloria2 = "1";
-          this.TERCIA.titol3 = this.state.tempsQuaresmaTridu.titolSalmMenor3;
+          this.TERCIA.titol3 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor3;
           this.TERCIA.com3 = "-";
-          this.TERCIA.salm3 = this.state.tempsQuaresmaTridu.salmMenor3;
+          this.TERCIA.salm3 = liturgyMasters.PartsOfEasterTriduum.salmMenor3;
           this.TERCIA.gloria3 = "1";
 
           this.SEXTA.antifones = false;
 
-          this.SEXTA.titol1 = this.state.tempsQuaresmaTridu.titolSalmMenor1;
+          this.SEXTA.titol1 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor1;
           this.SEXTA.com1 = "-";
-          this.SEXTA.salm1 = this.state.tempsQuaresmaTridu.salmMenor1;
+          this.SEXTA.salm1 = liturgyMasters.PartsOfEasterTriduum.salmMenor1;
           this.SEXTA.gloria1 = "1";
-          this.SEXTA.titol2 = this.state.tempsQuaresmaTridu.titolSalmMenor2;
+          this.SEXTA.titol2 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor2;
           this.SEXTA.com2 = "-";
-          this.SEXTA.salm2 = this.state.tempsQuaresmaTridu.salmMenor2;
+          this.SEXTA.salm2 = liturgyMasters.PartsOfEasterTriduum.salmMenor2;
           this.SEXTA.gloria2 = "1";
-          this.SEXTA.titol3 = this.state.tempsQuaresmaTridu.titolSalmMenor3;
+          this.SEXTA.titol3 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor3;
           this.SEXTA.com3 = "-";
-          this.SEXTA.salm3 = this.state.tempsQuaresmaTridu.salmMenor3;
+          this.SEXTA.salm3 = liturgyMasters.PartsOfEasterTriduum.salmMenor3;
           this.SEXTA.gloria3 = "1";
 
           this.NONA.antifones = false;
 
-          this.NONA.titol1 = this.state.tempsQuaresmaTridu.titolSalmMenor1;
+          this.NONA.titol1 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor1;
           this.NONA.com1 = "-";
-          this.NONA.salm1 = this.state.tempsQuaresmaTridu.salmMenor1;
+          this.NONA.salm1 = liturgyMasters.PartsOfEasterTriduum.salmMenor1;
           this.NONA.gloria1 = "1";
-          this.NONA.titol2 = this.state.tempsQuaresmaTridu.titolSalmMenor2;
+          this.NONA.titol2 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor2;
           this.NONA.com2 = "-";
-          this.NONA.salm2 = this.state.tempsQuaresmaTridu.salmMenor2;
+          this.NONA.salm2 = liturgyMasters.PartsOfEasterTriduum.salmMenor2;
           this.NONA.gloria2 = "1";
-          this.NONA.titol3 = this.state.tempsQuaresmaTridu.titolSalmMenor3;
+          this.NONA.titol3 = liturgyMasters.PartsOfEasterTriduum.titolSalmMenor3;
           this.NONA.com3 = "-";
-          this.NONA.salm3 = this.state.tempsQuaresmaTridu.salmMenor3;
+          this.NONA.salm3 = liturgyMasters.PartsOfEasterTriduum.salmMenor3;
           this.NONA.gloria3 = "1";
 
           if(CEL.ant === '-'){
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.ant = this.state.tempsQuaresmaTridu.antTercia;
+                this.TERCIA.ant = liturgyMasters.PartsOfEasterTriduum.antTercia;
                 break;
               case 'Sexta':
-                this.SEXTA.ant = this.state.tempsQuaresmaTridu.antSexta;
+                this.SEXTA.ant = liturgyMasters.PartsOfEasterTriduum.antSexta;
                 break;
               case 'Nona':
-                this.NONA.ant = this.state.tempsQuaresmaTridu.antNona;
+                this.NONA.ant = liturgyMasters.PartsOfEasterTriduum.antNona;
                 break;
             }
           }
@@ -805,13 +805,13 @@ export default class HoraMenorSoul {
             if(CEL.ant === '-'){
               switch (HM) {
                 case 'Tèrcia':
-                  this.TERCIA.ant = this.state.tempsAdventNadalComu.antTercia;
+                  this.TERCIA.ant = liturgyMasters.CommonAdventAndChristmasParts.antTercia;
                   break;
                 case 'Sexta':
-                  this.SEXTA.ant = this.state.tempsAdventNadalComu.antSexta;
+                  this.SEXTA.ant = liturgyMasters.CommonAdventAndChristmasParts.antSexta;
                   break;
                 case 'Nona':
-                  this.NONA.ant = this.state.tempsAdventNadalComu.antNona;
+                  this.NONA.ant = liturgyMasters.CommonAdventAndChristmasParts.antNona;
                   break;
               }
             }
@@ -992,22 +992,22 @@ export default class HoraMenorSoul {
         case GLOBAL.Q_TRIDU:
           switch (HM) {
             case 'Tèrcia':
-              this.TERCIA.vers = this.state.tempsQuaresmaTridu.citaLectBreuTercia;
-              this.TERCIA.lecturaBreu = this.state.tempsQuaresmaTridu.lecturaBreuTercia;
-              this.TERCIA.respV = this.state.tempsQuaresmaTridu.respVTercia;
-              this.TERCIA.respR = this.state.tempsQuaresmaTridu.respRTercia;
+              this.TERCIA.vers = liturgyMasters.PartsOfEasterTriduum.citaLectBreuTercia;
+              this.TERCIA.lecturaBreu = liturgyMasters.PartsOfEasterTriduum.lecturaBreuTercia;
+              this.TERCIA.respV = liturgyMasters.PartsOfEasterTriduum.respVTercia;
+              this.TERCIA.respR = liturgyMasters.PartsOfEasterTriduum.respRTercia;
               break;
             case 'Sexta':
-              this.SEXTA.vers = this.state.tempsQuaresmaTridu.citaLectBreuSexta;
-              this.SEXTA.lecturaBreu = this.state.tempsQuaresmaTridu.lecturaBreuSexta;
-              this.SEXTA.respV = this.state.tempsQuaresmaTridu.respVSexta;
-              this.SEXTA.respR = this.state.tempsQuaresmaTridu.respRSexta;
+              this.SEXTA.vers = liturgyMasters.PartsOfEasterTriduum.citaLectBreuSexta;
+              this.SEXTA.lecturaBreu = liturgyMasters.PartsOfEasterTriduum.lecturaBreuSexta;
+              this.SEXTA.respV = liturgyMasters.PartsOfEasterTriduum.respVSexta;
+              this.SEXTA.respR = liturgyMasters.PartsOfEasterTriduum.respRSexta;
               break;
             case 'Nona':
-              this.NONA.vers = this.state.tempsQuaresmaTridu.citaLectBreuNona;
-              this.NONA.lecturaBreu = this.state.tempsQuaresmaTridu.lecturaBreuNona;
-              this.NONA.respV = this.state.tempsQuaresmaTridu.respVNona;
-              this.NONA.respR = this.state.tempsQuaresmaTridu.respRNona;
+              this.NONA.vers = liturgyMasters.PartsOfEasterTriduum.citaLectBreuNona;
+              this.NONA.lecturaBreu = liturgyMasters.PartsOfEasterTriduum.lecturaBreuNona;
+              this.NONA.respV = liturgyMasters.PartsOfEasterTriduum.respVNona;
+              this.NONA.respR = liturgyMasters.PartsOfEasterTriduum.respRNona;
               break;
           }
           break;
@@ -1082,44 +1082,44 @@ export default class HoraMenorSoul {
         case GLOBAL.A_FERIES:
           switch (HM) {
             case 'Tèrcia':
-              this.TERCIA.vers = this.state.tempsAdventFeries.citaLBTercia;
-              this.TERCIA.lecturaBreu = this.state.tempsAdventFeries.lecturaBreuTercia;
-              this.TERCIA.respV = this.state.tempsAdventFeries.respVTercia;
-              this.TERCIA.respR = this.state.tempsAdventFeries.respRTercia;
+              this.TERCIA.vers = liturgyMasters.AdventFairDaysParts.citaLBTercia;
+              this.TERCIA.lecturaBreu = liturgyMasters.AdventFairDaysParts.lecturaBreuTercia;
+              this.TERCIA.respV = liturgyMasters.AdventFairDaysParts.respVTercia;
+              this.TERCIA.respR = liturgyMasters.AdventFairDaysParts.respRTercia;
               break;
             case 'Sexta':
-              this.SEXTA.vers = this.state.tempsAdventFeries.citaLBSexta;
-              this.SEXTA.lecturaBreu = this.state.tempsAdventFeries.lecturaBreuSexta;
-              this.SEXTA.respV = this.state.tempsAdventFeries.respVSexta;
-              this.SEXTA.respR = this.state.tempsAdventFeries.respRSexta;
+              this.SEXTA.vers = liturgyMasters.AdventFairDaysParts.citaLBSexta;
+              this.SEXTA.lecturaBreu = liturgyMasters.AdventFairDaysParts.lecturaBreuSexta;
+              this.SEXTA.respV = liturgyMasters.AdventFairDaysParts.respVSexta;
+              this.SEXTA.respR = liturgyMasters.AdventFairDaysParts.respRSexta;
               break;
             case 'Nona':
-              this.NONA.vers = this.state.tempsAdventFeries.citaLBNona;
-              this.NONA.lecturaBreu = this.state.tempsAdventFeries.lecturaBreuNona;
-              this.NONA.respV = this.state.tempsAdventFeries.respVNona;
-              this.NONA.respR = this.state.tempsAdventFeries.respRNona;
+              this.NONA.vers = liturgyMasters.AdventFairDaysParts.citaLBNona;
+              this.NONA.lecturaBreu = liturgyMasters.AdventFairDaysParts.lecturaBreuNona;
+              this.NONA.respV = liturgyMasters.AdventFairDaysParts.respVNona;
+              this.NONA.respR = liturgyMasters.AdventFairDaysParts.respRNona;
               break;
           }
           break;
         case GLOBAL.N_OCTAVA:
           switch (HM) {
             case 'Tèrcia':
-              this.TERCIA.vers = this.state.tempsNadalOctava.citaLectBreuTercia;
-              this.TERCIA.lecturaBreu = this.state.tempsNadalOctava.lecturaBreuTercia;
-              this.TERCIA.respV = this.state.tempsNadalOctava.respVTercia;
-              this.TERCIA.respR = this.state.tempsNadalOctava.respRTercia;
+              this.TERCIA.vers = liturgyMasters.ChristmasWhenOctaveParts.citaLectBreuTercia;
+              this.TERCIA.lecturaBreu = liturgyMasters.ChristmasWhenOctaveParts.lecturaBreuTercia;
+              this.TERCIA.respV = liturgyMasters.ChristmasWhenOctaveParts.respVTercia;
+              this.TERCIA.respR = liturgyMasters.ChristmasWhenOctaveParts.respRTercia;
               break;
             case 'Sexta':
-              this.SEXTA.vers = this.state.tempsNadalOctava.citaLectBreuSexta;
-              this.SEXTA.lecturaBreu = this.state.tempsNadalOctava.lecturaBreuSexta;
-              this.SEXTA.respV = this.state.tempsNadalOctava.respVSexta;
-              this.SEXTA.respR = this.state.tempsNadalOctava.respRSexta;
+              this.SEXTA.vers = liturgyMasters.ChristmasWhenOctaveParts.citaLectBreuSexta;
+              this.SEXTA.lecturaBreu = liturgyMasters.ChristmasWhenOctaveParts.lecturaBreuSexta;
+              this.SEXTA.respV = liturgyMasters.ChristmasWhenOctaveParts.respVSexta;
+              this.SEXTA.respR = liturgyMasters.ChristmasWhenOctaveParts.respRSexta;
               break;
             case 'Nona':
-              this.NONA.vers = this.state.tempsNadalOctava.citaLectBreuNona;
-              this.NONA.lecturaBreu = this.state.tempsNadalOctava.lecturaBreuNona;
-              this.NONA.respV = this.state.tempsNadalOctava.respVNona;
-              this.NONA.respR = this.state.tempsNadalOctava.respRNona;
+              this.NONA.vers = liturgyMasters.ChristmasWhenOctaveParts.citaLectBreuNona;
+              this.NONA.lecturaBreu = liturgyMasters.ChristmasWhenOctaveParts.lecturaBreuNona;
+              this.NONA.respV = liturgyMasters.ChristmasWhenOctaveParts.respVNona;
+              this.NONA.respR = liturgyMasters.ChristmasWhenOctaveParts.respRNona;
               break;
           }
           break;
@@ -1127,22 +1127,22 @@ export default class HoraMenorSoul {
           if(LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13){
             switch (HM) {
               case 'Tèrcia':
-                this.TERCIA.vers = this.state.tempsNadalAbansEpifania.citaLBTercia;
-                this.TERCIA.lecturaBreu = this.state.tempsNadalAbansEpifania.lecturaBreuTercia;
-                this.TERCIA.respV = this.state.tempsNadalAbansEpifania.respVTercia;
-                this.TERCIA.respR = this.state.tempsNadalAbansEpifania.respRTercia;
+                this.TERCIA.vers = liturgyMasters.ChristmasBeforeEpiphanyParts.citaLBTercia;
+                this.TERCIA.lecturaBreu = liturgyMasters.ChristmasBeforeEpiphanyParts.lecturaBreuTercia;
+                this.TERCIA.respV = liturgyMasters.ChristmasBeforeEpiphanyParts.respVTercia;
+                this.TERCIA.respR = liturgyMasters.ChristmasBeforeEpiphanyParts.respRTercia;
                 break;
               case 'Sexta':
-                this.SEXTA.vers = this.state.tempsNadalAbansEpifania.citaLBSexta;
-                this.SEXTA.lecturaBreu = this.state.tempsNadalAbansEpifania.lecturaBreuSexta;
-                this.SEXTA.respV = this.state.tempsNadalAbansEpifania.respVSexta;
-                this.SEXTA.respR = this.state.tempsNadalAbansEpifania.respRSexta;
+                this.SEXTA.vers = liturgyMasters.ChristmasBeforeEpiphanyParts.citaLBSexta;
+                this.SEXTA.lecturaBreu = liturgyMasters.ChristmasBeforeEpiphanyParts.lecturaBreuSexta;
+                this.SEXTA.respV = liturgyMasters.ChristmasBeforeEpiphanyParts.respVSexta;
+                this.SEXTA.respR = liturgyMasters.ChristmasBeforeEpiphanyParts.respRSexta;
                 break;
               case 'Nona':
-                this.NONA.vers = this.state.tempsNadalAbansEpifania.citaLBNona;
-                this.NONA.lecturaBreu = this.state.tempsNadalAbansEpifania.lecturaBreuNona;
-                this.NONA.respV = this.state.tempsNadalAbansEpifania.respVNona;
-                this.NONA.respR = this.state.tempsNadalAbansEpifania.respRNona;
+                this.NONA.vers = liturgyMasters.ChristmasBeforeEpiphanyParts.citaLBNona;
+                this.NONA.lecturaBreu = liturgyMasters.ChristmasBeforeEpiphanyParts.lecturaBreuNona;
+                this.NONA.respV = liturgyMasters.ChristmasBeforeEpiphanyParts.respVNona;
+                this.NONA.respR = liturgyMasters.ChristmasBeforeEpiphanyParts.respRNona;
                 break;
             }
           }
@@ -1178,9 +1178,9 @@ export default class HoraMenorSoul {
       switch(LT){
         case GLOBAL.O_ORDINARI:
           if(weekDay === 0){ //diumenge
-            this.TERCIA.oracio = this.state.tempsOrdinariOracions.oracio;
-            this.SEXTA.oracio = this.state.tempsOrdinariOracions.oracio;
-            this.NONA.oracio = this.state.tempsOrdinariOracions.oracio;
+            this.TERCIA.oracio = this.state.liturgyMasters.PrayersOfOrdinaryTime.oracio;
+            this.SEXTA.oracio = this.state.liturgyMasters.PrayersOfOrdinaryTime.oracio;
+            this.NONA.oracio = this.state.liturgyMasters.PrayersOfOrdinaryTime.oracio;
           }
           else{ //no diumenge
             switch (HM) {
@@ -1217,9 +1217,9 @@ export default class HoraMenorSoul {
           this.NONA.oracio = this.state.tempsQuaresmaSetSanta.oraFiLaudes;
           break;
         case GLOBAL.Q_TRIDU:
-          this.TERCIA.oracio = this.state.tempsQuaresmaTridu.oraFiMenor;
-          this.SEXTA.oracio = this.state.tempsQuaresmaTridu.oraFiMenor;
-          this.NONA.oracio = this.state.tempsQuaresmaTridu.oraFiMenor;
+          this.TERCIA.oracio = liturgyMasters.PartsOfEasterTriduum.oraFiMenor;
+          this.SEXTA.oracio = liturgyMasters.PartsOfEasterTriduum.oraFiMenor;
+          this.NONA.oracio = liturgyMasters.PartsOfEasterTriduum.oraFiMenor;
           break;
         case GLOBAL.P_OCTAVA:
           this.TERCIA.oracio = this.state.tempsPasquaOct.oraFiMenor;
@@ -1237,20 +1237,20 @@ export default class HoraMenorSoul {
           this.NONA.oracio = this.state.tempsAdventSetmanes.oraFiLaudes;
           break;
         case GLOBAL.A_FERIES:
-          this.TERCIA.oracio = this.state.tempsAdventFeries.oraFiLaudes;
-          this.SEXTA.oracio = this.state.tempsAdventFeries.oraFiLaudes;
-          this.NONA.oracio = this.state.tempsAdventFeries.oraFiLaudes;
+          this.TERCIA.oracio = liturgyMasters.AdventFairDaysParts.oraFiLaudes;
+          this.SEXTA.oracio = liturgyMasters.AdventFairDaysParts.oraFiLaudes;
+          this.NONA.oracio = liturgyMasters.AdventFairDaysParts.oraFiLaudes;
           break;
         case GLOBAL.N_OCTAVA:
-          this.TERCIA.oracio = this.state.tempsNadalOctava.oraFiLaudes;
-          this.SEXTA.oracio = this.state.tempsNadalOctava.oraFiLaudes;
-          this.NONA.oracio = this.state.tempsNadalOctava.oraFiLaudes;
+          this.TERCIA.oracio = liturgyMasters.ChristmasWhenOctaveParts.oraFiLaudes;
+          this.SEXTA.oracio = liturgyMasters.ChristmasWhenOctaveParts.oraFiLaudes;
+          this.NONA.oracio = liturgyMasters.ChristmasWhenOctaveParts.oraFiLaudes;
           break;
         case GLOBAL.N_ABANS:
           if(LT == GLOBAL.N_ABANS && date.getMonth() == 0 && date.getDate() != 13){
-            this.TERCIA.oracio = this.state.tempsNadalAbansEpifania.oraFiLaudes;
-            this.SEXTA.oracio = this.state.tempsNadalAbansEpifania.oraFiLaudes;
-            this.NONA.oracio = this.state.tempsNadalAbansEpifania.oraFiLaudes;
+            this.TERCIA.oracio = liturgyMasters.ChristmasBeforeEpiphanyParts.oraFiLaudes;
+            this.SEXTA.oracio = liturgyMasters.ChristmasBeforeEpiphanyParts.oraFiLaudes;
+            this.NONA.oracio = liturgyMasters.ChristmasBeforeEpiphanyParts.oraFiLaudes;
           }
           break;
       }

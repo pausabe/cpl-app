@@ -42,3 +42,9 @@ export enum DioceseCode{
     MaV = 'MaV',
     MaC = 'MaC'
 }
+
+export enum YearType{
+    A = "A",
+    B = "B",
+    C = "C"
+}

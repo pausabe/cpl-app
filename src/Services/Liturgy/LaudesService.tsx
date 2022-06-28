@@ -3,13 +3,13 @@ import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import GlobalKeys from "../../Utils/GlobalKeys";
 import {Settings} from "../../Models/Settings";
-import { Psalm } from "../../Models/LiturgyMasters/CommonParts";
+import {Psalm, ShortReading, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
+import {YearType} from "../DatabaseEnums";
 
 export function ObtainLaudes(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes, settings : Settings) : Laudes{
     let laudes = new Laudes();
     if(liturgyDayInformation.SpecificLiturgyTime === GlobalKeys.Q_DIUM_PASQUA) {
         laudes = celebrationLaudes;
-        laudes.EvangelicalChant = liturgyMasters.Various.LaudesEvangelicalChant;
     }
     else{
         laudes.Anthem = GetAnthem(liturgyMasters, liturgyDayInformation, celebrationLaudes, settings);
@@ -17,18 +17,22 @@ export function ObtainLaudes(liturgyMasters : LiturgyMasters, liturgyDayInformat
         laudes.FirstPsalm = psalmody.FirstPsalm;
         laudes.SecondPsalm = psalmody.SecondPsalm;
         laudes.ThirdPsalm = psalmody.ThirdPsalm;
-        lecturaBreu(GlobalData.LT, CEL, date);
-        responsori(GlobalData.LT, CEL, date);
-        cantic(GlobalData.LT, liturgyDayInformation.Date.getDay(), GlobalData.ABC, CEL, date);
-        pregaries(GlobalData.LT, CEL, date);
-        oracio(GlobalData.LT, liturgyDayInformation.Date.getDay(), CEL, date);
+        laudes.ShortReading = GetShortReading(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+        laudes.ShortResponsory = GetShortResponsory(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+        laudes.EvangelicalAntiphon = GetEvangelicalAntiphon(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+        laudes.Prayers = GetPrayers(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+        laudes.FinalPrayer = GetFinalPrayer(liturgyMasters, liturgyDayInformation, celebrationLaudes);
     }
+    laudes.EvangelicalChant = liturgyMasters.Various.LaudesEvangelicalChant;
     return laudes;
 }
 
 function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes, settings : Settings) : string{
-    let anthem = "";
+    if(celebrationLaudes.Anthem !== '-'){
+        return celebrationLaudes.Anthem;
+    }
     
+    let anthem = "";
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case GlobalKeys.O_ORDINARI:
             if(settings.UseLatin){
@@ -132,14 +136,14 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
             }
             break;
     }
-    return celebrationLaudes.Anthem === '-'? anthem : celebrationLaudes.Anthem;
+    return anthem;
 }
 
 function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : {FirstPsalm : Psalm, SecondPsalm : Psalm, ThirdPsalm : Psalm}{
     let psalmody = {
-        FirstPsalm = new Psalm(),
-        SecondPsalm = new Psalm(),
-        ThirdPsalm = new Psalm()
+        FirstPsalm: new Psalm(),
+        SecondPsalm: new Psalm(),
+        ThirdPsalm: new Psalm()
     }
     
     switch(liturgyDayInformation.SpecificLiturgyTime){
@@ -404,363 +408,252 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
     return psalmody;
 }
 
-lecturaBreu(LT, CEL, date){
+function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : ShortReading{
+    if(celebrationLaudes.ShortReading.Quote !== "-"){
+        return celebrationLaudes.ShortReading;
+    }
+
+    let shortReading = liturgyMasters.LaudesCommonPsalter.ShortReading;
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case GlobalKeys.O_ORDINARI:
-            vers = liturgyMasters.LaudesCommonPsalter.versetLB;
-            lecturaBreu = liturgyMasters.LaudesCommonPsalter.lecturaBreu;
-            break;
         case GlobalKeys.Q_CENDRA:
-            vers = tempsQuaresmaCendra.citaLBLaudes;
-            lecturaBreu = tempsQuaresmaCendra.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.PartsOfLentTime.LaudesShortReading;
         case GlobalKeys.Q_SETMANES:
-            vers = tempsQuaresmaVSetmanes.citaLBLaudes;
-            lecturaBreu = tempsQuaresmaVSetmanes.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesShortReading;
         case GlobalKeys.Q_DIUM_RAMS:
-            vers = liturgyMasters.PalmSundayParts.citaLBLaudes;
-            lecturaBreu = liturgyMasters.PalmSundayParts.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.PalmSundayParts.LaudesShortReading;
         case GlobalKeys.Q_SET_SANTA:
-            vers = liturgyMasters.PartsOfHolyWeek.citaLBLaudes;
-            lecturaBreu = liturgyMasters.PartsOfHolyWeek.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.PartsOfHolyWeek.LaudesShortReading;
         case GlobalKeys.Q_TRIDU:
-            vers = liturgyMasters.PartsOfEasterTriduum.citaLBLaudes;
-            lecturaBreu = liturgyMasters.PartsOfEasterTriduum.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.PartsOfEasterTriduum.LaudesShortReading;
         case GlobalKeys.P_OCTAVA:
-            vers = tempsPasquaOct.citaLBLaudes;
-            lecturaBreu = tempsPasquaOct.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.PartsOfEasterOctave.LaudesShortReading;
         case GlobalKeys.P_SETMANES:
-            vers = tempsPasquaSetmanes.citaLBLaudes;
-            lecturaBreu = tempsPasquaSetmanes.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.EasterWeekParts.LaudesShortReading;
         case GlobalKeys.A_SETMANES:
-            vers = tempsAdventSetmanes.citaLBLaudes;
-            lecturaBreu = tempsAdventSetmanes.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.AdventWeekParts.LaudesShortReading;
         case GlobalKeys.A_FERIES:
-            vers = tempsAdventFeries.citaLBLaudes;
-            lecturaBreu = tempsAdventFeries.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.AdventFairDaysParts.LaudesShortReading;
         case GlobalKeys.N_OCTAVA:
-            vers = tempsNadalOctava.citaLBLaudes;
-            lecturaBreu = tempsNadalOctava.lecturaBreuLaudes;
-            break;
+            return liturgyMasters.ChristmasWhenOctaveParts.LaudesShortReading;
         case GlobalKeys.N_ABANS:
             if(liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
-                vers = tempsNadalAbansEpifania.citaLBLaudes;
-                lecturaBreu = tempsNadalAbansEpifania.lecturaBreuLaudes;
+                return liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesShortReading;
             }
             break;
     }
-    if(CEL.vers === '-')
-        LAUDES.vers = vers;
-    else LAUDES.vers = CEL.vers;
-    if(CEL.lecturaBreu === '-')
-        LAUDES.lecturaBreu = lecturaBreu;
-    else LAUDES.lecturaBreu = CEL.lecturaBreu;
+    return shortReading;
 }
 
-responsori(LT, CEL, date){
-    switch(liturgyDayInformation.SpecificLiturgyTime){
-        case GlobalKeys.O_ORDINARI:
-            respBreu1 = liturgyMasters.LaudesCommonPsalter.respBreu1
-            respBreu2 = liturgyMasters.LaudesCommonPsalter.respBreu2
-            respBreu3 = liturgyMasters.LaudesCommonPsalter.respBreu3
-            break;
-        case GlobalKeys.Q_CENDRA:
-            respBreu1 = tempsQuaresmaCendra.respBreuLaudes1
-            respBreu2 = tempsQuaresmaCendra.respBreuLaudes2
-            respBreu3 = tempsQuaresmaCendra.respBreuLaudes3
-            break;
-        case GlobalKeys.Q_SETMANES:
-            respBreu1 = tempsQuaresmaVSetmanes.respBreuLaudes1
-            respBreu2 = tempsQuaresmaVSetmanes.respBreuLaudes2
-            respBreu3 = tempsQuaresmaVSetmanes.respBreuLaudes3
-            break;
-        case GlobalKeys.Q_DIUM_RAMS:
-            respBreu1 = liturgyMasters.PalmSundayParts.respBreu1Laudes
-            respBreu2 = liturgyMasters.PalmSundayParts.respBreu2Laudes
-            respBreu3 = liturgyMasters.PalmSundayParts.respBreu3Laudes
-            break;
-        case GlobalKeys.Q_SET_SANTA:
-            respBreu1 = liturgyMasters.PartsOfHolyWeek.respBreu1Laudes
-            respBreu2 = liturgyMasters.PartsOfHolyWeek.respBreu2Laudes
-            respBreu3 = liturgyMasters.PartsOfHolyWeek.respBreu3Laudes
-            break;
-        case GlobalKeys.P_SETMANES:
-            respBreu1 = tempsPasquaSetmanes.respBreuLaudes1
-            respBreu2 = tempsPasquaSetmanes.respBreuLaudes2
-            respBreu3 = tempsPasquaSetmanes.respBreuLaudes3
-            break;
-        case GlobalKeys.A_SETMANES:
-            respBreu1 = tempsAdventSetmanes.respBreuLaudes1
-            respBreu2 = tempsAdventSetmanes.respBreuLaudes2
-            respBreu3 = tempsAdventSetmanes.respBreuLaudes3
-            break;
-        case GlobalKeys.A_FERIES:
-            respBreu1 = tempsAdventFeries.respBreuLaudes1
-            respBreu2 = tempsAdventFeries.respBreuLaudes2
-            respBreu3 = tempsAdventFeries.respBreuLaudes3
-            break;
-        case GlobalKeys.N_OCTAVA:
-            respBreu1 = tempsNadalOctava.resp2Breu1Laudes
-            respBreu2 = tempsNadalOctava.resp2Breu2Laudes
-            respBreu3 = tempsNadalOctava.resp2Breu3Laudes
-            break;
-        case GlobalKeys.N_ABANS:
-            if(liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
-                respBreu1 = tempsNadalAbansEpifania.respBreuLaudes1
-                respBreu2 = tempsNadalAbansEpifania.respBreuLaudes2
-                respBreu3 = tempsNadalAbansEpifania.respBreuLaudes3
-            }
-            break;
-    }
-    if(CEL.diumPasqua){
-        LAUDES.calAntEspecial = true;
-        LAUDES.antEspecialLaudes = CEL.antEspecialLaudes;
+function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : ShortResponsory{
+    if(liturgyDayInformation.SpecificLiturgyTime === GlobalKeys.Q_DIUM_PASQUA ||
+        celebrationLaudes.ShortResponsory.FirstPart !== "-"){
+        return celebrationLaudes.ShortResponsory;
     }
     else{
-        if(CEL.respBreu1 === '-'){
-            if(liturgyDayInformation.SpecificLiturgyTime === GlobalKeys.Q_TRIDU){
-                LAUDES.calAntEspecial = true;
-                LAUDES.antEspecialLaudes = liturgyMasters.PartsOfEasterTriduum.antEspecialLaudes;
+        if(liturgyDayInformation.SpecificLiturgyTime === GlobalKeys.Q_TRIDU){
+            return liturgyMasters.PartsOfEasterTriduum.LaudesShortResponsory;
+        }
+        else if(liturgyDayInformation.SpecificLiturgyTime === GlobalKeys.P_OCTAVA){
+            return liturgyMasters.PartsOfEasterOctave.LaudesShortResponsory;
+        }
+    }
+
+    let shortResponsory = liturgyMasters.LaudesCommonPsalter.ShortResponsory;
+    shortResponsory.HasSpecialAntiphon = false;
+    switch(liturgyDayInformation.SpecificLiturgyTime){
+        case GlobalKeys.Q_CENDRA:
+            return liturgyMasters.PartsOfLentTime.LaudesShortResponsory;
+        case GlobalKeys.Q_SETMANES:
+            return liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesShortResponsory;
+        case GlobalKeys.Q_DIUM_RAMS:
+            return liturgyMasters.PalmSundayParts.LaudesShortResponsory;
+        case GlobalKeys.Q_SET_SANTA:
+            return liturgyMasters.PartsOfHolyWeek.LaudesShortResponsory;
+        case GlobalKeys.P_SETMANES:
+            return liturgyMasters.EasterWeekParts.LaudesShortResponsory;
+        case GlobalKeys.A_SETMANES:
+            return liturgyMasters.AdventWeekParts.LaudesShortResponsory;
+        case GlobalKeys.A_FERIES:
+            return liturgyMasters.AdventFairDaysParts.LaudesShortResponsory;
+        case GlobalKeys.N_OCTAVA:
+            return liturgyMasters.ChristmasWhenOctaveParts.LaudesShortResponsory;
+        case GlobalKeys.N_ABANS:
+            if(liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+                return liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesShortResponsory;
             }
-            else if(liturgyDayInformation.SpecificLiturgyTime === GlobalKeys.P_OCTAVA){
-                LAUDES.calAntEspecial = true;
-                LAUDES.antEspecialLaudes = tempsPasquaOct.antEspecialLaudes;
+            break;
+    }
+    return shortResponsory;
+}
+
+function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : string{
+    if(celebrationLaudes.EvangelicalAntiphon !== "-"){
+        return celebrationLaudes.EvangelicalAntiphon;
+    }
+
+    let evangelicalAntiphon = liturgyMasters.LaudesCommonPsalter.EvangelicalAntiphon;
+    switch(liturgyDayInformation.SpecificLiturgyTime){
+        case GlobalKeys.O_ORDINARI:
+            if(liturgyDayInformation.DayOfTheWeek === 0){
+                switch (liturgyDayInformation.YearType) {
+                    case YearType.A:
+                        return liturgyMasters.PrayersOfOrdinaryTime.LaudesEvangelicalAntiphonYearA;
+                    case YearType.B:
+                        return liturgyMasters.PrayersOfOrdinaryTime.LaudesEvangelicalAntiphonYearB;
+                    case YearType.C:
+                        return liturgyMasters.PrayersOfOrdinaryTime.LaudesEvangelicalAntiphonYearC;
+                }
+            }
+            break;
+        case GlobalKeys.Q_CENDRA:
+            return liturgyMasters.PartsOfLentTime.LaudesEvangelicalAntiphon;
+        case GlobalKeys.Q_SETMANES:
+            if(liturgyDayInformation.DayOfTheWeek !== 0){
+                return liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesEvangelicalAntiphon;
             }
             else{
-                LAUDES.calAntEspecial = false;
-                LAUDES.respBreu1 = respBreu1;
-                LAUDES.respBreu2 = respBreu2;
-                LAUDES.respBreu3 = respBreu3;
-            }
-        }
-        else {
-            LAUDES.calAntEspecial = false;
-            LAUDES.respBreu1 = CEL.respBreu1;
-            LAUDES.respBreu2 = CEL.respBreu2;
-            LAUDES.respBreu3 = CEL.respBreu3;
-        }
-    }
-}
-
-cantic(LT, liturgyDayInformation.DayOfTheWeek, litYear, CEL, date){
-    switch(liturgyDayInformation.SpecificLiturgyTime){
-        case GlobalKeys.O_ORDINARI:
-            if(liturgyDayInformation.DayOfTheWeek !== 0){ ///no diumenge
-                antCantic = liturgyMasters.LaudesCommonPsalter.antEvangelic;
-            }
-            else{ //diumenge
-                switch (litYear) {
-                    case 'A':
-                        antCantic = tempsOrdinariOracions.antZacariesA;
-                        break;
-                    case 'B':
-                        antCantic = tempsOrdinariOracions.antZacariesB;
-                        break;
-                    case 'C':
-                        antCantic = tempsOrdinariOracions.antZacariesC;
-                        break;
-                }
-            }
-            break;
-        case GlobalKeys.Q_CENDRA:
-            antCantic = tempsQuaresmaCendra.antZacaries;
-            break;
-        case GlobalKeys.Q_SETMANES:
-            if(liturgyDayInformation.DayOfTheWeek !== 0){ ///no diumenge
-                antCantic = tempsQuaresmaVSetmanes.antZacaries;
-            }
-            else{ //diumenge
-                switch (litYear) {
-                    case 'A':
-                        antCantic = tempsQuaresmaVSetmanesDium.antZacariesA;
-                        break;
-                    case 'B':
-                        antCantic = tempsQuaresmaVSetmanesDium.antZacariesB;
-                        break;
-                    case 'C':
-                        antCantic = tempsQuaresmaVSetmanesDium.antZacariesC;
-                        break;
+                switch (liturgyDayInformation.YearType) {
+                    case YearType.A:
+                        return liturgyMasters.FiveWeeksOfSundayLentParts.LaudesEvangelicalAntiphonYearA;
+                    case YearType.B:
+                        return liturgyMasters.FiveWeeksOfSundayLentParts.LaudesEvangelicalAntiphonYearB;
+                    case YearType.C:
+                        return liturgyMasters.FiveWeeksOfSundayLentParts.LaudesEvangelicalAntiphonYearC;
                 }
             }
             break;
         case GlobalKeys.Q_DIUM_RAMS:
-            switch (litYear) {
-                case 'A':
-                    antCantic = liturgyMasters.PalmSundayParts.antZacariesA;
-                    break;
-                case 'B':
-                    antCantic = liturgyMasters.PalmSundayParts.antZacariesB;
-                    break;
-                case 'C':
-                    antCantic = liturgyMasters.PalmSundayParts.antZacariesC;
-                    break;
+            switch (liturgyDayInformation.YearType) {
+                case YearType.A:
+                    return liturgyMasters.PalmSundayParts.LaudesEvangelicalAntiphonYearA;
+                case YearType.B:
+                    return liturgyMasters.PalmSundayParts.LaudesEvangelicalAntiphonYearB;
+                case YearType.C:
+                    return liturgyMasters.PalmSundayParts.LaudesEvangelicalAntiphonYearC;
             }
             break;
         case GlobalKeys.Q_SET_SANTA:
-            antCantic = liturgyMasters.PartsOfHolyWeek.antZacaries;
-            break;
+            return liturgyMasters.PartsOfHolyWeek.LaudesEvangelicalAntiphon;
         case GlobalKeys.Q_TRIDU:
-            antCantic = liturgyMasters.PartsOfEasterTriduum.antZacaries;
-            break;
+            return liturgyMasters.PartsOfEasterTriduum.LaudesEvangelicalAntiphon;
         case GlobalKeys.P_OCTAVA:
-            antCantic = tempsPasquaOct.antZacaries;
-            break;
+            return liturgyMasters.PartsOfEasterOctave.LaudesEvangelicalAntiphon;
         case GlobalKeys.P_SETMANES:
-            if(liturgyDayInformation.DayOfTheWeek !== 0){ ///no diumenge
-                antCantic = tempsPasquaSetmanes.antZacaries;
+            if(liturgyDayInformation.DayOfTheWeek !== 0){
+                return liturgyMasters.EasterWeekParts.LaudesEvangelicalAntiphon;
             }
-            else{ //diumenge
-                switch (litYear) {
-                    case 'A':
-                        antCantic = liturgyMasters.EasterSundayParts.antZacariesA;
-                        break;
-                    case 'B':
-                        antCantic = liturgyMasters.EasterSundayParts.antZacariesB;
-                        break;
-                    case 'C':
-                        antCantic = liturgyMasters.EasterSundayParts.antZacariesC;
-                        break;
+            else{
+                switch (liturgyDayInformation.YearType) {
+                    case YearType.A:
+                        return liturgyMasters.EasterSundayParts.LaudesEvangelicalAntiphonYearA;
+                    case YearType.B:
+                        return liturgyMasters.EasterSundayParts.LaudesEvangelicalAntiphonYearB;
+                    case YearType.C:
+                        return liturgyMasters.EasterSundayParts.LaudesEvangelicalAntiphonYearC;
                 }
             }
             break;
         case GlobalKeys.A_SETMANES:
-            if(liturgyDayInformation.DayOfTheWeek !== 0){ ///no diumenge
-                antCantic = tempsAdventSetmanes.antZacaries;
+            if(liturgyDayInformation.DayOfTheWeek !== 0){
+                 return liturgyMasters.AdventWeekParts.LaudesEvangelicalAntiphon;
             }
-            else{ //diumenge
-                switch (litYear) {
-                    case 'A':
-                        antCantic = liturgyMasters.AdventSundayParts.antZacariesA;
-                        break;
-                    case 'B':
-                        antCantic = liturgyMasters.AdventSundayParts.antZacariesB;
-                        break;
-                    case 'C':
-                        antCantic = liturgyMasters.AdventSundayParts.antZacariesC;
-                        break;
+            else{
+                switch (liturgyDayInformation.YearType) {
+                    case YearType.A:
+                        return liturgyMasters.AdventSundayParts.LaudesEvangelicalAntiphonYearA;
+                    case YearType.B:
+                        return liturgyMasters.AdventSundayParts.LaudesEvangelicalAntiphonYearB;
+                    case YearType.C:
+                        return liturgyMasters.AdventSundayParts.LaudesEvangelicalAntiphonYearC;
                 }
             }
             break;
         case GlobalKeys.A_FERIES:
-            antCantic = tempsAdventFeries.antZacaries;
-            break;
+            return liturgyMasters.AdventFairDaysParts.LaudesEvangelicalAntiphon;
         case GlobalKeys.N_OCTAVA:
-            antCantic = tempsNadalOctava.antZacaries;
-            break;
+            return liturgyMasters.ChristmasWhenOctaveParts.LaudesEvangelicalAntiphon;
         case GlobalKeys.N_ABANS:
             if(liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
-                antCantic = tempsNadalAbansEpifania.antZacaries;
+                return liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesEvangelicalAntiphon;
             }
             break;
     }
-    LAUDES.cantic = benedictus;
-
-    if(CEL.antCantic === '-')
-        LAUDES.antCantic = antCantic;
-    else LAUDES.antCantic = CEL.antCantic;
+    return evangelicalAntiphon;
 }
 
-pregaries(LT, CEL, date){
+function GetPrayers(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : string{
+    if(celebrationLaudes.Prayers !== "-"){
+        return celebrationLaudes.Prayers;
+    }
+
+    let prayers = liturgyMasters.LaudesCommonPsalter.Prayers;
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case GlobalKeys.O_ORDINARI:
-            pregaries = liturgyMasters.LaudesCommonPsalter.pregaries;
-            break;
         case GlobalKeys.Q_CENDRA:
-            pregaries = tempsQuaresmaCendra.pregariesLaudes;
-            break;
+            return liturgyMasters.PartsOfLentTime.LaudesPrayers;
         case GlobalKeys.Q_SETMANES:
-            pregaries = tempsQuaresmaVSetmanes.pregariesLaudes;
-            break;
+            return liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesPrayers;
         case GlobalKeys.Q_DIUM_RAMS:
-            pregaries = liturgyMasters.PalmSundayParts.pregariesLaudes;
-            break;
+            return liturgyMasters.PalmSundayParts.LaudesPrayers;
         case GlobalKeys.Q_SET_SANTA:
-            pregaries = liturgyMasters.PartsOfHolyWeek.pregariesLaudes;
-            break;
+            return liturgyMasters.PartsOfHolyWeek.LaudesPrayers;
         case GlobalKeys.Q_TRIDU:
-            pregaries = liturgyMasters.PartsOfEasterTriduum.pregariesLaudes;
-            break;
+            return liturgyMasters.PartsOfEasterTriduum.LaudesPrayers;
         case GlobalKeys.P_OCTAVA:
-            pregaries = tempsPasquaOct.pregariesLaudes;
-            break;
+            return liturgyMasters.PartsOfEasterOctave.LaudesPrayers;
         case GlobalKeys.P_SETMANES:
-            pregaries = tempsPasquaSetmanes.pregariesLaudes;
-            break;
+            return liturgyMasters.EasterWeekParts.LaudesPrayers;
         case GlobalKeys.A_SETMANES:
-            pregaries = tempsAdventSetmanes.pregariesLaudes;
-            break;
+            return liturgyMasters.AdventWeekParts.LaudesPrayers;
         case GlobalKeys.A_FERIES:
-            pregaries = tempsAdventFeries.pregariesLaudes;
-            break;
+            return liturgyMasters.AdventFairDaysParts.LaudesPrayers;
         case GlobalKeys.N_OCTAVA:
-            pregaries = tempsNadalOctava.pregariesLaudes;
-            break;
+            return liturgyMasters.ChristmasWhenOctaveParts.LaudesPrayers;
         case GlobalKeys.N_ABANS:
             if(liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
-                pregaries = tempsNadalAbansEpifania.pregariesLaudes;
+                return liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesPrayers;
             }
             break;
     }
-    if(CEL.pregaries === '-')
-        LAUDES.pregaries = pregaries;
-    else LAUDES.pregaries = CEL.pregaries;
+    return prayers;
 }
 
-oracio(LT, liturgyDayInformation.DayOfTheWeek, CEL, date){
+function GetFinalPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : string{
+    if(celebrationLaudes.FinalPrayer !== "-"){
+        return celebrationLaudes.FinalPrayer;
+    }
+
+    let finalPrayer = liturgyMasters.LaudesCommonPsalter.FinalPrayer;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case GlobalKeys.O_ORDINARI:
-            if(liturgyDayInformation.DayOfTheWeek !== 0){ ///no diumenge
-                oracio = liturgyMasters.LaudesCommonPsalter.oraFi;
-            }
-            else{ //diumenge
-                oracio = tempsOrdinariOracions.oracio;
+            if(liturgyDayInformation.DayOfTheWeek === 0) {
+                return liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
             }
             break;
         case GlobalKeys.Q_CENDRA:
-            oracio = tempsQuaresmaCendra.oraFiLaudes;
-            break;
+            return liturgyMasters.PartsOfLentTime.LaudesFinalPrayer;
         case GlobalKeys.Q_SETMANES:
-            oracio = tempsQuaresmaVSetmanes.oraFiLaudes;
-            break;
+            return liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesFinalPrayer;
         case GlobalKeys.Q_DIUM_RAMS:
-            oracio = liturgyMasters.PalmSundayParts.oraFiLaudes;
-            break;
+            return liturgyMasters.PalmSundayParts.LaudesFinalPrayer;
         case GlobalKeys.Q_SET_SANTA:
-            oracio = liturgyMasters.PartsOfHolyWeek.oraFiLaudes;
-            break;
+            return liturgyMasters.PartsOfHolyWeek.LaudesFinalPrayer;
         case GlobalKeys.Q_TRIDU:
-            oracio = liturgyMasters.PartsOfEasterTriduum.oraFiLaudes;
-            break;
+            return liturgyMasters.PartsOfEasterTriduum.LaudesFinalPrayer;
         case GlobalKeys.P_OCTAVA:
-            oracio = tempsPasquaOct.oraFiLaudes;
-            break;
+            return liturgyMasters.PartsOfEasterOctave.LaudesFinalPrayer;
         case GlobalKeys.P_SETMANES:
-            oracio = tempsPasquaSetmanes.oraFiLaudes;
-            break;
+            return liturgyMasters.EasterWeekParts.LaudesFinalPrayer;
         case GlobalKeys.A_SETMANES:
-            oracio = tempsAdventSetmanes.oraFiLaudes;
-            break;
+            return liturgyMasters.AdventWeekParts.LaudesFinalPrayer;
         case GlobalKeys.A_FERIES:
-            oracio = tempsAdventFeries.oraFiLaudes;
-            break;
+            return liturgyMasters.AdventFairDaysParts.LaudesFinalPrayer;
         case GlobalKeys.N_OCTAVA:
-            oracio = tempsNadalOctava.oraFiLaudes;
-            break;
+            return liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
         case GlobalKeys.N_ABANS:
             if(liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
-                oracio = tempsNadalAbansEpifania.oraFiLaudes;
+                return liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesFinalPrayer;
             }
             break;
     }
-    if(CEL.oracio === '-')
-        LAUDES.oracio = oracio;
-    else LAUDES.oracio = CEL.oracio;
+    return finalPrayer;
 }
