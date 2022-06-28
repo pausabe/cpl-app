@@ -150,20 +150,25 @@ export default class SolemnityAndFestivityParts {
 
         this.SecondVespersLatinAnthem = databaseRow.himneVespres2Llati;
         this.SecondVespersCatalanAnthem = databaseRow.himneVespres2Cat;
+
         this.SecondVespersFirstPsalm.Antiphon = databaseRow.ant1Vespres2;
         this.SecondVespersFirstPsalm.Title = databaseRow.titol1Vespres2;
         this.SecondVespersFirstPsalm.Psalm = databaseRow.text1Vespres2;
         this.SecondVespersFirstPsalm.HasGloryPrayer = databaseRow.gloria1Vespres2 === "1";
+
         this.SecondVespersSecondPsalm.Antiphon = databaseRow.ant2Vespres2;
         this.SecondVespersSecondPsalm.Title = databaseRow.titol2Vespres2;
         this.SecondVespersSecondPsalm.Psalm = databaseRow.text2Vespres2;
         this.SecondVespersSecondPsalm.HasGloryPrayer = databaseRow.gloria2Vespres2 === "1";
+
         this.SecondVespersThirdPsalm.Antiphon = databaseRow.ant3Vespres2;
         this.SecondVespersThirdPsalm.Title = databaseRow.titol3Vespres2;
         this.SecondVespersThirdPsalm.Psalm = databaseRow.text3Vespres2;
         this.SecondVespersThirdPsalm.HasGloryPrayer = databaseRow.gloria3Vespres2 === "1";
+
         this.SecondVespersShortReading.Quote = databaseRow.citaLBVespres2;
         this.SecondVespersShortReading.ShortReading = databaseRow.lecturaBreuVespres2;
+
         this.SecondVespersShortResponsory.FirstPart = databaseRow.respBreuVespres2Part1;
         this.SecondVespersShortResponsory.SecondPart = databaseRow.respBreuVespres2Part2;
         this.SecondVespersShortResponsory.ThirdPart = databaseRow.respBreuVespres2Part3;

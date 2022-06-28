@@ -43,6 +43,7 @@ export class ShortResponsory{
 export class Celebration{
     Diocese : string;
     Category : string;
+    CelebrationType: string;
     Precedence: string;
     Day : string;
     WeekDay: string;

@@ -4,14 +4,14 @@ export default class AdventFairDaysAntiphons {
     constructor(databaseRow) {
         this.Id = databaseRow.id;
         this.WeekDay = databaseRow.diaSetmana;
-        this.FirstAntiphon = databaseRow.ant1;
-        this.SecondAntiphon = databaseRow.ant2;
-        this.ThirdAntiphon = databaseRow.ant3;
+        this.LaudesFirstAntiphon = databaseRow.ant1;
+        this.LaudesSecondAntiphon = databaseRow.ant2;
+        this.LaudesThirdAntiphon = databaseRow.ant3;
     }
 
     Id: number;
     WeekDay: string;
-    FirstAntiphon: string;
-    SecondAntiphon: string;
-    ThirdAntiphon: string;
+    LaudesFirstAntiphon: string;
+    LaudesSecondAntiphon: string;
+    LaudesThirdAntiphon: string;
 }

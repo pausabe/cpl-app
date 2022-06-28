@@ -45,7 +45,8 @@ import {Settings} from "../../Models/Settings";
 import GLOBAL from "../../Utils/GlobalKeys";
 import {CelebrationType} from "../DatabaseEnums";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
-import {JesusChristHighPriestForever} from "../CelebrationIdentifierService";
+import CommonOffices from "../../Models/LiturgyMasters/CommonOffices";
+import Various from "../../Models/LiturgyMasters/Various";
 
 export async function ObtainLiturgyMasters(currentLiturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<LiturgyMasters>{
     const liturgyMasters = new LiturgyMasters();
@@ -90,6 +91,7 @@ export async function ObtainLiturgyMasters(currentLiturgyDayInformation : Liturg
     liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts = await ObtainSaintsSolemnitiesWhenFirstsVespersParts(currentLiturgyDayInformation, settings);
     liturgyMasters.SaintsMemories = await ObtainSaintsMemories(currentLiturgyDayInformation, settings);
     liturgyMasters.SpecialDaysParts = await ObtainSpecialDaysParts(currentLiturgyDayInformation);
+    liturgyMasters.Various = await ObtainVarious(currentLiturgyDayInformation);
     return liturgyMasters;
 }
 
@@ -574,18 +576,19 @@ async function ObtainCommonOfficeWhenStrongTimesPsalter(liturgyDayInformation : 
 async function ObtainSaintsSolemnitiesParts(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsSolemnitiesParts> {
     return await SecureCall(async () => {
         if (liturgyDayInformation.Today.SpecificLiturgyTime !== GlobalKeys.Q_DIUM_PASQUA && (((liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier === -1 && liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier === -1) && (liturgyDayInformation.Today.CelebrationType === CelebrationType.Solemnity || liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity)))) {
-            let idDM = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
-            if (idDM === -1) {
+            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
+            if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
                 let day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseName);
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnitiesParts.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
-                return new SaintsSolemnitiesParts(row);
-                getOficisComuns(params, result, false);
+                const saintsSolemnitiesParts = new SaintsSolemnitiesParts(row);
+                saintsSolemnitiesParts.CommonOffices = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
+                return saintsSolemnitiesParts;
             }
             else {
-                DatabaseDataService.getSolMemDiesMov(SaintsSolemnitiesParts.MasterName, idDM, (result) => {
-                    queryRows.santsSolemnitats = result;
-                    getOficisComuns(params, result, false);
-                });
+                const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(SaintsSolemnitiesParts.MasterName, saintsMemoryOrSolemnityMasterIdentifier);
+                const saintsSolemnitiesParts = new SaintsSolemnitiesParts(row);
+                saintsSolemnitiesParts.CommonOffices = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
+                return saintsSolemnitiesParts;
             }
         }
     });
@@ -594,13 +597,12 @@ async function ObtainSaintsSolemnitiesParts(liturgyDayInformation : LiturgyDayIn
 async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsSolemnitiesParts> {
     return await SecureCall(async () => {
         if (liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity) {
-            let idDM = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Tomorrow);
-            if (idDM !== -1) {
-                params.vespres1 = true;
-                DatabaseDataService.getSolMemDiesMov(SaintsSolemnitiesParts.MasterName, idDM, (result) => {
-                    queryRows.santsSolemnitatsFVespres1 = result;
-                    getOficisComuns(params, result, true);
-                });
+            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Tomorrow);
+            if (saintsMemoryOrSolemnityMasterIdentifier !== -1) {
+                const row = DatabaseDataService.ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(SaintsSolemnitiesParts.MasterName, saintsMemoryOrSolemnityMasterIdentifier);
+                const saintsSolemnitiesParts = new SaintsSolemnitiesParts(row);
+                saintsSolemnitiesParts.CommonOfficesForFirstVespers = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
+                return saintsSolemnitiesParts;
             }
             else {
                 let day = '-';
@@ -612,10 +614,10 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
                     let tomorrowDay = new Date(liturgyDayInformation.Today.Date.getFullYear(), liturgyDayInformation.Today.Date.getMonth(), (liturgyDayInformation.Today.Date.getDate() + 1));
                     day = GlobalFunctions.calculeDia(tomorrowDay, settings.DioceseName, '-', '-');
                 }
-                params.vespres1 = true;
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnitiesParts.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
-                return new SaintsSolemnitiesParts(row);
-                getOficisComuns(params, result, true);
+                const saintsSolemnitiesParts = new SaintsSolemnitiesParts(row);
+                saintsSolemnitiesParts.CommonOfficesForFirstVespers = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
+                return saintsSolemnitiesParts;
             }
         }
     });
@@ -624,26 +626,27 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
 async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsMemories> {
     return await SecureCall(async () => {
         if (liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier === -1 && (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory || liturgyDayInformation.Today.CelebrationType === CelebrationType.FreeMemory || liturgyDayInformation.Today.CelebrationType === CelebrationType.FreeVirginMemory)) {
-            let idDM = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today.Date, liturgyDayInformation.Today.SpecificLiturgyTime, liturgyDayInformation.Today.Week, liturgyDayInformation.Today.PentecostDay, liturgyDayInformation.Today.CelebrationType);
+            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
 
-            if (liturgyDayInformation.Today.CelebrationType === 'V' && idDM === -1) {
-                DatabaseDataService.getV((result) => {
-                    queryRows.santsMemories = result;
-                    getOficisComuns(params, result, false);
-                });
+            if (liturgyDayInformation.Today.CelebrationType === CelebrationType.FreeVirginMemory && saintsMemoryOrSolemnityMasterIdentifier === -1) {
+                const row = await DatabaseDataService.ObtainFreeVirginMemoryAsync();
+                const saintsMemories = new SaintsMemories(row);
+                saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
+                return saintsMemories;
             }
             else {
-                if (idDM === -1) {
+                if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
                     const day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseName);
                     const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsMemories.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
-                    return new SaintsMemories(row);
-                    getOficisComuns(params, result, false);
+                    const saintsMemories = new SaintsMemories(row);
+                    saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
+                    return saintsMemories;
                 }
                 else {
-                    DatabaseDataService.getSolMemDiesMov(SaintsMemories.MasterName, idDM, (result) => {
-                        queryRows.santsMemories = result;
-                        getOficisComuns(params, result, false);
-                    });
+                    const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(SaintsMemories.MasterName, saintsMemoryOrSolemnityMasterIdentifier);
+                    const saintsMemories = new SaintsMemories(row);
+                    saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
+                    return saintsMemories;
                 }
             }
         }
@@ -651,14 +654,31 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
 }
 
 async function ObtainSpecialDaysParts(liturgyDayInformation : LiturgyDayInformation) : Promise<SpecialDaysParts> {
-    return await SecureCall(async (master: string, rowId: number) => {
-        if (tomorrowCal === 'DE' || params.idDE !== -1) {
-            let id = params.idDE;
-            if (tomorrowCal === 'DE') {
-                id = idDETomorrow;
+    return await SecureCall(async () => {
+        if (liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier !== -1 ||
+            liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialDaysMasterIdentifier !== -1) {
+            let id = liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier;
+            if (liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialDaysMasterIdentifier !== -1) {
+                id = liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialDaysMasterIdentifier;
             }
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SpecialDaysParts.MasterName, id);
             return new SpecialDaysParts(row);
+        }
+    });
+}
+
+async function ObtainVarious(liturgyDayInformation : LiturgyDayInformation) : Promise<Various> {
+    return await SecureCall(async () => {
+        const table = await DatabaseDataService.ObtainMasterTableFromDatabase(Various.MasterName);
+        return new Various(table);
+    });
+}
+
+async function ObtainCommonOffices(category : string) : Promise<CommonOffices>{
+    return await SecureCall(async () => {
+        if (category && category !== '0000') {
+            const row = await DatabaseDataService.ObtainCommonOfficesAsync(category);
+            return new CommonOffices(row);
         }
     });
 }

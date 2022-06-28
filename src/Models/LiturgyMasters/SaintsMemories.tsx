@@ -7,6 +7,7 @@ import {
     ShortReading,
     ShortResponsory
 } from "./CommonParts";
+import CommonOffice from "./CommonOffices";
 
 export default class SaintsMemories {
     static MasterName: string = "santsMemories";
@@ -194,4 +195,6 @@ export default class SaintsMemories {
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;
+    CommonOffices: CommonOffice;
+    CommonOfficesForFirstVespers: CommonOffice;
 }

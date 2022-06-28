@@ -4,7 +4,7 @@ import {executeQuery, executeQueryAsync} from "./DatabaseManagerService";
 import { Settings } from '../Models/Settings';
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import GLOBAL from "../Utils/GlobalKeys";
-import HoursLiturgy from "../Models/HoursLiturgy";
+import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
 
 export function getDatabaseVersion() : Promise<number>{
   return new Promise((resolve) => {
@@ -34,6 +34,11 @@ export function getLiturgia(table, id, callback) {
 export async function ObtainMasterRowFromDatabase(master: string, rowId: number){
     const result = await executeQueryAsync(`SELECT * FROM ${master} WHERE id = ${rowId}`);
     return result.rows.item(0);
+}
+
+export async function ObtainMasterTableFromDatabase(master: string){
+    const result = await executeQueryAsync(`SELECT * FROM ${master}`);
+    return result.rows;
 }
 
 export async function ObtainLiturgySpecificDayInformation(date: Date, currentSettings: Settings) : Promise<LiturgySpecificDayInformation> {
@@ -125,22 +130,43 @@ export async function ObtainSolemnitiesAndMemoriesAsync(masterName : string, dat
   return result.rows.item(index);
 }
 
+/** @deprecated Use ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync instead**/
 export function getSolMemDiesMov(table, id, callback) {
   let query = `SELECT * FROM ${table} WHERE id = '${id}'`;
   executeQuery(query,
     result => callback(result.rows.item(0)));
 }
 
+export async function ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(masterCode : string, masterIdentifier : number){
+  let query = `SELECT * FROM ${masterCode} WHERE id = '${masterIdentifier}'`;
+  const result = await executeQueryAsync(query);
+  return result.rows.item(0);
+}
+
+/** @deprecated Use ObtainFreeVirginMemoryAsync instead**/
 export function getV(callback) {
   let query = `SELECT * FROM santsMemories WHERE id = 457`;
   executeQuery(query,
     result => callback(result.rows.item(0)));
 }
 
+export async function ObtainFreeVirginMemoryAsync() {
+  let query = `SELECT * FROM santsMemories WHERE id = 457`;
+  const result = await executeQueryAsync(query);
+  return result.rows.item(0);
+}
+
+/** @deprecated Use ObtainCommonOfficesAsync instead**/
 export function getOC(categoria, callback) {
   let query = `SELECT * FROM OficisComuns WHERE Categoria = '${categoria}'`;
   executeQuery(query,
     result => callback(result.rows.item(0), categoria));
+}
+
+export async function ObtainCommonOfficesAsync(categoria) {
+  let query = `SELECT * FROM OficisComuns WHERE Categoria = '${categoria}'`;
+  const result = await executeQueryAsync(query);
+  return result.rows.item(0);
 }
 
 export function getVispers(idSpecialVespers, callback){

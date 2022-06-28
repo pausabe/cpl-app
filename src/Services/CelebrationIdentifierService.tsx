@@ -1,6 +1,5 @@
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {CelebrationType} from "./DatabaseEnums";
-import SoulKeys from "./SoulKeys";
 
 export function IsImmaculateHeartOfTheBlessedVirginMary(liturgyDateInformation : LiturgySpecificDayInformation) : boolean{
     //santsMemories M - Dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)

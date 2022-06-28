@@ -34,6 +34,7 @@ import SaintsSolemnitiesParts from "./SaintsSolemnitiesParts";
 import SaintsMemories from "./SaintsMemories";
 import SpecialDaysParts from "./SpecialDaysParts";
 import CommonSpecialPartsOfEaster from "./CommonSpecialPartsOfEaster";
+import Various from "./Various";
 
 export default class LiturgyMasters{
     OfficeCommonPsalter: OfficeCommonPsalter;
@@ -77,5 +78,6 @@ export default class LiturgyMasters{
     SaintsSolemnitiesWhenFirstsVespersParts: SaintsSolemnitiesParts;
     SaintsMemories: SaintsMemories;
     SpecialDaysParts: SpecialDaysParts;
+    Various: Various;
 }
 
