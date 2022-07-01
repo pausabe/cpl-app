@@ -1,13 +1,19 @@
 import HoursLiturgy from "../../Models/HoursLiturgy/HoursLiturgy";
-import GLOBAL from "../../Utils/GlobalKeys";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import {CelebrationType} from "../DatabaseEnums";
 import Vespers from "../../Models/HoursLiturgy/Vespers";
+import { SpecificCelebrationType } from "../CelebrationTimeEnums";
 
 export function ObtainCelebrationHoursLiturgy(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : HoursLiturgy{
     let hoursLiturgy = new HoursLiturgy();
+
+    // TODO: fill CelebrationInformation
+    /*hoursLiturgy.CelebrationInformation.Name;
+    hoursLiturgy.CelebrationInformation.Description;
+    hoursLiturgy.CelebrationInformation.CelebrationType;
+    ex: hoursLiturgy.CelebrationInformation.Precedence = liturgyMasters.SaintsSolemnitiesParts.Celebration.Precedence;*/
 
     if((liturgyDayInformation.CelebrationType === CelebrationType.OptionalMemory ||
         liturgyDayInformation.CelebrationType == CelebrationType.OptionalVirginMemory) &&
@@ -17,7 +23,7 @@ export function ObtainCelebrationHoursLiturgy(liturgyMasters : LiturgyMasters, l
         this.INFO_CEL.typeCel = celType;
     }
 
-    // TODO: by defualt, everithing was "-" (now will be undefined, enough?)
+    // TODO: by defualt, everithing was "-" (now will be undefined, enough? change !== '-'?)
 
     // TODAY
     if(idDE !== -1){
@@ -28,7 +34,7 @@ export function ObtainCelebrationHoursLiturgy(liturgyMasters : LiturgyMasters, l
         // TODO: vespers here will be SecondVespersWithCelebration
         makeTSF(TABLES);
     }
-    else if(GlobalData.LT === GLOBAL.Q_DIUM_PASQUA){
+    else if(GlobalData.LT === SpecificCelebrationType.Q_DIUM_PASQUA){
         // TODO: vespers here will be SecondVespersWithCelebration
         makeDP(TABLES);
     }
@@ -45,7 +51,7 @@ export function ObtainCelebrationHoursLiturgy(liturgyMasters : LiturgyMasters, l
     if(this.INFO_CEL.typeCel === '.') {
         this.INFO_CEL.typeCel = GlobalData.celType;
     }
-    if(GlobalData.LT === GLOBAL.Q_TRIDU && GlobalData.date.getDay() === 6){
+    if(GlobalData.LT === SpecificCelebrationType.Q_TRIDU && GlobalData.date.getDay() === 6){
         this.INFO_CEL.nomCelTom = "dium-pasqua";
     }
 
@@ -1038,7 +1044,7 @@ function makeSF(TABLES, CelebrationIsSaintOrFestivity : boolean, EnableSomething
     this.NONA.oracio = TABLES.santsSolemnitats.oraFiMenor;
     // else if(TABLES.OficisComuns !== null) this.NONA.oracio = TABLES.OficisComuns.oraFiMenor;
 
-    if(!(EnableSomething && GlobalData.date.getDay() === 6) && !(CelebrationIsSaintOrFestivity && GlobalData.date.getDay() === 6 && GlobalData.LT === GLOBAL.Q_SETMANES)){
+    if(!(EnableSomething && GlobalData.date.getDay() === 6) && !(CelebrationIsSaintOrFestivity && GlobalData.date.getDay() === 6 && GlobalData.LT === SpecificCelebrationType.Q_SETMANES)){
         //::::::SF-VESPRES2::::::
         //SF-VESPRES2 -> HIMNE
         if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){

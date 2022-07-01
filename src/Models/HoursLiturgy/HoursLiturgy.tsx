@@ -4,8 +4,10 @@ import Laudes from "./Laudes";
 import NightPrayer from "./NightPrayer";
 import Vespers from "./Vespers";
 import Invitation from "./Invitation";
+import CelebrationInformation from "./CelebrationInformation";
 
 export default class HoursLiturgy {
+    CelebrationInformation: CelebrationInformation = new CelebrationInformation();
     Invitation : Invitation;
     Office : Office;
     Laudes : Laudes;
@@ -19,8 +21,7 @@ export default class HoursLiturgy {
 }
 
 export class VespersOptions{
-    TomorrowFirstVespersWithoutCelebration : Vespers = new Vespers();
-    TodaySecondVespersWithoutCelebration : Vespers = new Vespers();
+    VespersWithoutCelebration : Vespers = new Vespers();
     TomorrowFirstVespersWithCelebration : Vespers = new Vespers();
     TodaySecondVespersWithCelebration : Vespers = new Vespers();
 }

@@ -1,7 +1,7 @@
 import Invitation from "../../Models/HoursLiturgy/Invitation";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
-import GlobalKeys from "../../Utils/GlobalKeys";
+import {SpecificCelebrationType} from "../CelebrationTimeEnums";
 
 export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationInvitation : Invitation) : Invitation{
     let invitation = new Invitation();
@@ -11,21 +11,21 @@ export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInfo
     else{
         invitation.InvitationAntiphon = liturgyMasters.InvitationCommonPsalter.Antiphon;
         switch(liturgyDayInformation.SpecificLiturgyTime){
-            case GlobalKeys.Q_CENDRA:
-            case GlobalKeys.Q_SETMANES:
+            case SpecificCelebrationType.Q_CENDRA:
+            case SpecificCelebrationType.Q_SETMANES:
                 invitation.InvitationAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.InvitationAntiphonFirstOption;
                 break;
-            case GlobalKeys.Q_DIUM_RAMS:
-            case GlobalKeys.Q_SET_SANTA:
+            case SpecificCelebrationType.Q_DIUM_RAMS:
+            case SpecificCelebrationType.Q_SET_SANTA:
                 invitation.InvitationAntiphon = liturgyMasters.CommonPartsOfHolyWeek.InvitationAntiphon;
                 break;
-            case GlobalKeys.Q_TRIDU:
+            case SpecificCelebrationType.Q_TRIDU:
                 invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterTriduum.InvitationAntiphon;
                 break;
-            case GlobalKeys.P_OCTAVA:
+            case SpecificCelebrationType.P_OCTAVA:
                 invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterBeforeAscension.InvitationAntiphon;
                 break;
-            case GlobalKeys.P_SETMANES:
+            case SpecificCelebrationType.P_SETMANES:
                 if(liturgyDayInformation.Week === '7'){
                     invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterAfterAscension.InvitationAntiphon;
                 }
@@ -33,15 +33,15 @@ export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInfo
                     invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterBeforeAscension.InvitationAntiphon;
                 }
                 break;
-            case GlobalKeys.A_SETMANES:
-            case GlobalKeys.A_FERIES:
-            case GlobalKeys.N_ABANS:
-                if(liturgyDayInformation.SpecificLiturgyTime != GlobalKeys.N_ABANS ||
-                    (liturgyDayInformation.SpecificLiturgyTime == GlobalKeys.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
+            case SpecificCelebrationType.A_SETMANES:
+            case SpecificCelebrationType.A_FERIES:
+            case SpecificCelebrationType.N_ABANS:
+                if(liturgyDayInformation.SpecificLiturgyTime != SpecificCelebrationType.N_ABANS ||
+                    (liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
                     invitation.InvitationAntiphon = liturgyMasters.CommonAdventAndChristmasParts.InvitationAntiphon;
                 }
                 break;
-            case GlobalKeys.N_OCTAVA:
+            case SpecificCelebrationType.N_OCTAVA:
                 invitation.InvitationAntiphon = liturgyMasters.SolemnityAndFestivityParts.InvitationAntiphon;
                 break;
         }

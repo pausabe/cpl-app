@@ -17,6 +17,7 @@ export class LiturgySpecificDayInformation {
     YearIsEven: boolean;
     DayOfTheWeek: number;
     SpecialCelebration: SpecialCelebration = new SpecialCelebration();
+    PrecedenceLevel: number = 999;
 }
 
 class MovedDay{
@@ -25,7 +26,7 @@ class MovedDay{
 }
 
 export class SpecialCelebration{
-    SomeCelebration: boolean = false;
+    CelebrationIsSpecial: boolean = false;
     SpecialDaysMasterIdentifier: number = -1;
     SolemnityAndFestivityMasterIdentifier: number = -1;
     StrongTimesMasterIdentifier: number = -1;

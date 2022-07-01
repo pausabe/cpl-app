@@ -1,5 +1,4 @@
 import {Psalm, ShortReading, ShortResponsory} from "../LiturgyMasters/CommonParts";
-import VespersPrecedenceLevelKeys from "../../Services/Liturgy/VespersPrecedenceLevelKeys";
 
 export default class Vespers {
     Anthem: string;
@@ -13,5 +12,4 @@ export default class Vespers {
     Prayers: string;
     FinalPrayer: string;
     CelebrationTitle: string;
-    PrecedenceLevel: number = VespersPrecedenceLevelKeys.DefaultValue;
 }

@@ -1,21 +1,18 @@
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {CelebrationType} from "./DatabaseEnums";
-import GlobalKeys from "../Utils/GlobalKeys";
 import { Settings } from "../Models/Settings";
 import {GenericCelebrationType, SpecificCelebrationType} from "./CelebrationTimeEnums";
 
 export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpecificDayInformation, settings: Settings) : number{
-    let precedence = 999;
-    
     if(dateLiturgyInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_TRIDU){
         return 1;
     }
-    if (CelebrationIdentifierService.IsChristmas() ||
-        CelebrationIdentifierService.IsEpiphany() ||
-        CelebrationIdentifierService.IsAscencion() ||
-        CelebrationIdentifierService.IsPentecost() ||
-        CelebrationIdentifierService.WednesdayAshes() ||
+    if (CelebrationIdentifierService.IsChristmas(dateLiturgyInformation) ||
+        CelebrationIdentifierService.IsEpiphany(dateLiturgyInformation) ||
+        CelebrationIdentifierService.IsAscension(dateLiturgyInformation) ||
+        CelebrationIdentifierService.IsPentecost(dateLiturgyInformation) ||
+        CelebrationIdentifierService.AshWednesday(dateLiturgyInformation) ||
         (dateLiturgyInformation.DayOfTheWeek === 0 &&
             (dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Advent ||
             dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Lent ||
@@ -27,78 +24,49 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
         dateLiturgyInformation.SpecificLiturgyTime === SpecificCelebrationType.P_OCTAVA){
         return 2;
     }
-    if(false /*TODO*/){
+
+    // Tipus de Solemnitats/Festes (4): propies / senyor / marededeu / sants
+    // Tipus de Memories obligatories (2): generals / propies
+
+    if(false /*TODO solemnitats del senyor, marededeu i sants && CelebrationIdentifierService.IsCommmemoriationOfAllDifunts()*/){
         return 3;
     }
-    if(dateLiturgyInformation.CelebrationType === CelebrationType.Solemnity){
+    if(false /*TODO solemnitats propies*/){
         return 4;
     }
-    if(dateLiturgyInformation.CelebrationType === CelebrationType.Festivity){
+    if(false /*TODO festes del senyor general*/){
         return 5;
     }
-    if(dateLiturgyInformation.DayOfTheWeek === 0){
+    if(dateLiturgyInformation.DayOfTheWeek === 0 &&
+        (dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Christmas ||
+        dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Ordinary)){
         return 6;
     }
-    if(false /*TODO*/){
+    if(false /*TODO festes marededeu i sants*/){
         return 7;
     }
-    if(dateLiturgyInformation.CelebrationType === CelebrationType.Memory || 
-        ((dateLiturgyInformation.CelebrationType === CelebrationType.OptionalMemory ||
-            dateLiturgyInformation.CelebrationType === CelebrationType.OptionalVirginMemory) &&
-            settings.OptionalFestivityEnabled)){
+    if(false /*TODO festes propies */){
         return 8;
     }
-    if (false /*TODO*/) {
+    if ((dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
+        dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Advent &&
+        dateLiturgyInformation.Date.getDate() >= 17 && dateLiturgyInformation.Date.getDate() <= 24 &&
+        dateLiturgyInformation.Date.getMonth() === 11) ||
+        dateLiturgyInformation.SpecificLiturgyTime === SpecificCelebrationType.N_OCTAVA ||
+        (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
+        dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Lent)) {
         return 9;
     }
-    return UpdatePrecedenceCelebrationStatus(dateLiturgyInformation, precedence);
+    if(false/*TODO memoria obligatoria general que no cau en quaresma*/){
+        return 10;
+    }
+    if(false/*TODO memoria obligatoria propia que no cau en quaresma*/){
+        return 11;
+    }
+    if(false/*TODO memoria lliure o memoria obligatoria de quaresma*/){
+        return 12;
+    }
+    else{
+        return 13;
+    }
 }
-
-function UpdatePrecedenceCelebrationStatus(dateLiturgyInformation : LiturgySpecificDayInformation, precedence: number) : number{
-    if (CelebrationIdentifierService.IsImmaculateHeartOfTheBlessedVirginMary(dateLiturgyInformation)) {
-        return 10 < precedence? 10 : precedence;
-    }
-    if(CelebrationIdentifierService.MotherOfGodFromTheTibbon(dateLiturgyInformation)){
-        if (dateLiturgyInformation.CelebrationType === CelebrationType.Memory) {
-            return 10 < precedence? 10 : precedence;
-        }
-        if (dateLiturgyInformation.CelebrationType === CelebrationType.Solemnity) {
-            return 4 < precedence? 4 : precedence;
-        }
-    }
-    if(CelebrationIdentifierService.JesusChristHighPriestForever(dateLiturgyInformation)){
-        return 8 < precedence? 8 : precedence;
-    }
-    if(CelebrationIdentifierService.BlessedVirginMaryMotherOfTheChurch(dateLiturgyInformation)){
-        return 10 < precedence? 10 : precedence;
-    }
-    return precedence;
-}
-
-/*function ObtainFirstVespers() : Vespers{
-    let vespers = new Vespers();
-    if (
-        tomorrowCal === '-' || //demà no hi ha cap celebració
-        tomorrowCal === 'F' || //demà hi ha Festa
-
-        // TODO: HARDCODED These conditions below is there to fix Montserrat's Day. Fix properly (fa que les vespres siguin de Montserrat i no de St Jordi)
-        (GlobalData.date.getFullYear() == 2019 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 30) ||
-        (GlobalData.date.getFullYear() == 2022 && GlobalData.date.getMonth() == 3 && GlobalData.date.getDate() == 27) ||
-
-        (idTSF !== -1 && tomorrowCal !== 'TSF') || //quan dues TSF seguides es fa Vespres1 de la segona TSF. Basicamen evito el conflicte de les Vespres de Sagrada Familia quan cau en 31/12 i l'andemà és Mare de Déi 1/1 (únic conflicte possible entre TSF)
-        (idDE !== -1 && tomorrowCal === '-') || //avui és DE i demà no hi ha celebració
-        (GlobalData.date.getDay() === 0 && tomorrowCal === 'S' && GlobalData.LT !== GlobalKeys.O_ORDINARI) //Amb això generalitzo que DiumengeOrdinari>S i potser no és així
-    ) {
-        LITURGIA.vespres1 = false;
-        vespresCelDEF = CEL.VESPRES;
-    }
-    else if (tomorrowCal === 'T') { //demà és divendres Sant
-        LITURGIA.vespres1 = false;
-        vespresCelDEF = CEL.VESPRES1;
-    }
-    else {
-        LITURGIA.vespres1 = true;
-        vespresCelDEF = CEL.VESPRES1;
-    }
-    return vespers;
-}*/

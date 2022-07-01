@@ -1,6 +1,6 @@
 import {Appearance} from 'react-native';
 import GF from "../Utils/GlobalFunctions";
-import SettingsService from './SettingsService';
+import SettingsService, {DarkModeOption} from './SettingsService';
 import * as DatabaseDataService from './DatabaseDataService';
 import * as StorageService from './Storage/StorageService';
 import * as SpecialCelebrationService from './SpecialCelebrationService';
@@ -16,7 +16,7 @@ import {ObtainLiturgyMasters} from "./Liturgy/LiturgyMastersService";
 import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
 import MassLiturgy from "../Models/MassLiturgy";
 import * as PrecedenceService from "./PrecedenceService";
-import GLOBAL from "../Utils/GlobalKeys";
+import {SpecificCelebrationType} from "./CelebrationTimeEnums";
 
 export let LastRefreshDate = new Date()
 export let CurrentSettings = new Settings();
@@ -32,20 +32,9 @@ export async function ReloadAllData(date) {
     CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();
     CurrentLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(date, CurrentSettings);
     const liturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
-    CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation.Today, CurrentSettings);
-    CurrentMassLiturgy = await ObtainMassLiturgy(liturgyMasters, globalData);
+    CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation, CurrentSettings);
+    // TODO: CurrentMassLiturgy = await ObtainMassLiturgy(liturgyMasters, globalData);
     CurrentCelebrationInformation = await ObtainCurrentCelebrationInformation();
-
-    /*
-    TODO: !!!
-    GlobalData.primVespres ???
-    function DetermineTodayVespersAreTomorrowFirstVespers(date: Date, celebrationType: string, specificLiturgyTime: string) {
-        return (date.getDay() === 6 &&
-                (celebrationType || (celebrationType === 'S' && specificLiturgyTime === GLOBAL.Q_SETMANES)))
-            ||
-            HoursLiturgy.vespres1;
-    }*/
-
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Total time passed: ', (new Date().getMilliseconds() - LastRefreshDate.getMilliseconds()) / 1000);
 }
 
@@ -68,13 +57,13 @@ async function ObtainCurrentSettings(date: Date) : Promise<Settings>{
 function DetermineDarkModeIsEnabled(darkModeConfiguration: string) : boolean{
     let currentDarkModeEnabled = false;
     switch (darkModeConfiguration) {
-        case "Activat":
+        case DarkModeOption.On:
             currentDarkModeEnabled = true;
             break;
-        case "Desactivat":
+        case DarkModeOption.Off:
             currentDarkModeEnabled = false;
             break;
-        case "Automàtic":
+        case DarkModeOption.System:
             currentDarkModeEnabled = Appearance.getColorScheme() === 'dark';
             break;
     }
@@ -109,10 +98,12 @@ async function ObtainCurrentLiturgyDayInformation(date: Date, currentSettings : 
     let currentLiturgyDayInformation = new LiturgyDayInformation();
     currentLiturgyDayInformation.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, currentSettings);
     currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Today, currentSettings);
+    currentLiturgyDayInformation.Today.PrecedenceLevel = PrecedenceService.ObtainPrecedenceByLiturgyTime(currentLiturgyDayInformation.Today, currentSettings);
     const tomorrowDate = new Date(date);
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
     currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, currentSettings);
     currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Tomorrow, currentSettings);
+    currentLiturgyDayInformation.Tomorrow.PrecedenceLevel = PrecedenceService.ObtainPrecedenceByLiturgyTime(currentLiturgyDayInformation.Tomorrow, currentSettings);
     return currentLiturgyDayInformation;
 }
 
@@ -124,39 +115,39 @@ async function ObtainCurrentCelebrationInformation() : Promise<CelebrationInform
 }
 
 function setSomeInfo() {
-    if (GlobalData.LT === GLOBAL.Q_DIUM_RAMS) {
+    if (GlobalData.LT === SpecificCelebrationType.Q_DIUM_RAMS) {
         LITURGIA.info_cel.nomCel = "Diumenge de Rams";
         LITURGIA.info_cel.infoCel = '-';
         LITURGIA.info_cel.typeCel = '-';
     }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_SET_SANTA) {
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.Q_SET_SANTA) {
         LITURGIA.info_cel.nomCel = weekDayName(GlobalData.date.getDay()) + " Sant";
         LITURGIA.info_cel.infoCel = '-';
         LITURGIA.info_cel.typeCel = '-';
     }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_TRIDU) {
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.Q_TRIDU) {
         LITURGIA.info_cel.nomCel = weekDayName(GlobalData.date.getDay()) + " Sant";
         LITURGIA.info_cel.infoCel = '-';
         LITURGIA.info_cel.typeCel = '-';
     }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.P_OCTAVA) {
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.P_OCTAVA) {
         LITURGIA.info_cel.nomCel = "Octava de Pasqua";
         LITURGIA.info_cel.infoCel = '-';
         LITURGIA.info_cel.typeCel = '-';
     }
     else if (LITURGIA.info_cel.nomCel === '-'
-        && GlobalData.LT === GLOBAL.N_OCTAVA
+        && GlobalData.LT === SpecificCelebrationType.N_OCTAVA
         && idTSF === -1 && idDE === -1) {
         LITURGIA.info_cel.nomCel = "Octava de Nadal";
         LITURGIA.info_cel.infoCel = '-';
         LITURGIA.info_cel.typeCel = '-';
     }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.Q_CENDRA) {
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.Q_CENDRA) {
         LITURGIA.info_cel.nomCel = "Cendra";
         LITURGIA.info_cel.infoCel = '-';
         LITURGIA.info_cel.typeCel = '-';
     }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === GLOBAL.A_FERIES) {
+    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.A_FERIES) {
         LITURGIA.info_cel.nomCel = "Fèria d’Advent";
         LITURGIA.info_cel.infoCel = '-';
         LITURGIA.info_cel.typeCel = '-';
@@ -167,25 +158,18 @@ function weekDayName(num) {
     switch (num) {
         case 0:
             return ("Diumenge");
-            break;
         case 1:
             return ("Dilluns");
-            break;
         case 2:
             return ("Dimarts");
-            break;
         case 3:
             return ("Dimecres");
-            break;
         case 4:
             return ("Dijous");
-            break;
         case 5:
             return ("Divendres");
-            break;
         case 6:
             return ("Dissabte");
-            break;
     }
 }
 

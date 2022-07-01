@@ -17,7 +17,9 @@ export enum SpecificCelebrationType{
 
 // TODO: check entire code literals and check that are correct also
 export enum GenericCelebrationType{
+    Ordinary = "Ordinari",
     Advent = "Advent",
+    Christmas = "Nadal",
     Lent = "Quaresma",
     Easter = "Pasqua"
 }

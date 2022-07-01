@@ -1,5 +1,72 @@
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {CelebrationType} from "./DatabaseEnums";
+import {CompareDates} from "../Utils/DateManagement";
+import {SpecificCelebrationType} from "./CelebrationTimeEnums";
+
+export function IsSantJoan(liturgyDayInformation: LiturgySpecificDayInformation) {
+    return liturgyDayInformation.Date.getMonth() === 5 && liturgyDayInformation.Date.getDate() === 24;
+}
+
+export function IsSantaEulalia(liturgyDayInformation: LiturgySpecificDayInformation) {
+    return liturgyDayInformation.Date.getMonth() === 1 && liturgyDayInformation.Date.getDate() === 12
+}
+
+export function IsDedicationSantJoanLatera(liturgyDayInformation: LiturgySpecificDayInformation) {
+    return liturgyDayInformation.Date.getMonth() === 10 && liturgyDayInformation.Date.getDate() === 9
+}
+
+export function IsExaltationHolyCross(liturgyDayInformation: LiturgySpecificDayInformation) {
+    return liturgyDayInformation.Date.getMonth() === 8 && liturgyDayInformation.Date.getDate() === 14
+}
+
+export function IsLordTransfiguration(liturgyDateInformation: LiturgySpecificDayInformation) {
+    return liturgyDateInformation.Date.getMonth() === 7 && liturgyDateInformation.Date.getDate() === 6
+}
+
+export function IsLordPresentation(liturgyDateInformation: LiturgySpecificDayInformation) {
+    return liturgyDateInformation.Date.getMonth() === 1 && liturgyDateInformation.Date.getDate() === 2;
+}
+export function AshWednesday(liturgyDateInformation : LiturgySpecificDayInformation) {
+    return liturgyDateInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_CENDRA &&
+        liturgyDateInformation.DayOfTheWeek === 3;
+}
+
+export function IsPentecost(liturgyDateInformation : LiturgySpecificDayInformation) {
+    return CompareDates(liturgyDateInformation.Date, liturgyDateInformation.PentecostDay);
+}
+
+export function IsAscension(liturgyDateInformation : LiturgySpecificDayInformation) {
+    return liturgyDateInformation.Date.getDay() === 0 &&
+        liturgyDateInformation.SpecificLiturgyTime === SpecificCelebrationType.P_SETMANES &&
+        liturgyDateInformation.Week === '7';
+}
+
+export function IsEpiphany(liturgyDateInformation : LiturgySpecificDayInformation) {
+    return liturgyDateInformation.Date.getDate() === 6 &&
+        liturgyDateInformation.Date.getMonth() === 0;
+}
+
+export function IsChristmas(liturgyDateInformation : LiturgySpecificDayInformation) {
+    return liturgyDateInformation.Date.getDate() === 25 &&
+        liturgyDateInformation.Date.getMonth() === 11;
+}
+
+export function IsSacredFamily(today : Date) : boolean{
+    if (today.getMonth() !== 11) return false; // December
+    if (today.getDay() !== 0) return false; // Sunday
+    if (today.getDate() < 26 || today.getDate() > 31) return false; // Between [26 & 31]
+    return true;
+}
+
+export function IsBaptism(today : Date) : boolean{
+    if (today.getMonth() !== 0) return false;
+    if (today.getDay() !== 0) return false;
+    return !(today.getDate() < 7 || today.getDate() > 13);
+}
+
+export function IsMatherOfGod(liturgyDayInformation: LiturgySpecificDayInformation) {
+    return liturgyDayInformation.Date.getMonth() === 0 && liturgyDayInformation.Date.getDate() === 1
+}
 
 export function IsImmaculateHeartOfTheBlessedVirginMary(liturgyDateInformation : LiturgySpecificDayInformation) : boolean{
     //santsMemories M - Dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
