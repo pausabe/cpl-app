@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading} from "./CommonParts";
 
 export default class EasterSunday {
     static MasterName: string = "tempsQuaresmaDiumPasq";
@@ -9,7 +9,7 @@ export default class EasterSunday {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.citaLect1Ofici;
         this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstPsalm.Antiphon = databaseRow.ant1Ofici;
         this.OfficeFirstPsalm.Quote = databaseRow.citaSalm1Ofici;
         this.OfficeFirstPsalm.Psalm = databaseRow.salm1Ofici;
@@ -18,7 +18,7 @@ export default class EasterSunday {
         this.OfficeSecondReading.Reference = databaseRow.referencia2Ofici;
         this.OfficeSecondReading.Quote = databaseRow.citaLec2Ofici;
         this.OfficeSecondReading.Title = databaseRow.titolLect2Ofici;
-        this.OfficeSecondReading.Lecture = databaseRow.lectura2;
+        this.OfficeSecondReading.Reading = databaseRow.lectura2;
         this.OfficeSecondPsalm.Antiphon = databaseRow.ant2Ofici;
         this.OfficeSecondPsalm.Quote = databaseRow.citaSalm2Ofici;
         this.OfficeSecondPsalm.Psalm = databaseRow.salm2Ofici;
@@ -27,7 +27,7 @@ export default class EasterSunday {
         this.OfficeThirdReading.Reference = databaseRow.referencia3Ofici;
         this.OfficeThirdReading.Quote = databaseRow.citaLec3Ofici;
         this.OfficeThirdReading.Title = databaseRow.titolLect3Ofici;
-        this.OfficeThirdReading.Lecture = databaseRow.lectura3;
+        this.OfficeThirdReading.Reading = databaseRow.lectura3;
         this.OfficeThirdPsalm.Antiphon = databaseRow.ant3Ofici;
         this.OfficeThirdPsalm.Quote = databaseRow.citaSalm3Ofici;
         this.OfficeThirdPsalm.Psalm = databaseRow.salm3Ofici;
@@ -36,7 +36,7 @@ export default class EasterSunday {
         this.OfficeThirdReading.Reference = databaseRow.referencia4Ofici;
         this.OfficeThirdReading.Quote = databaseRow.citaLec4Ofici;
         this.OfficeThirdReading.Title = databaseRow.titolLect4Ofici;
-        this.OfficeThirdReading.Lecture = databaseRow.lectura4;
+        this.OfficeThirdReading.Reading = databaseRow.lectura4;
         this.OfficeThirdPsalm.Antiphon = ""; // Missing column
         this.OfficeThirdPsalm.Quote = ""; // Missing column
         this.OfficeThirdPsalm.Psalm = ""; // Missing column
@@ -136,13 +136,13 @@ export default class EasterSunday {
 
     Id: number;
     InvitationAntiphon: string;
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeFirstPsalm: EasterOfficePsalm = new EasterOfficePsalm();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeSecondPsalm: EasterOfficePsalm = new EasterOfficePsalm();
-    OfficeThirdReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeThirdReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeThirdPsalm: EasterOfficePsalm = new EasterOfficePsalm();
-    OfficeFourthReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFourthReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeFourthPsalm: EasterOfficePsalm = new EasterOfficePsalm();
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;

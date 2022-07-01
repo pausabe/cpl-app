@@ -1,4 +1,4 @@
-import {LectureOfTheOffice} from "./CommonParts";
+import {ReadingOfTheOffice} from "./CommonParts";
 
 export default class OfficeOfOrdinaryTime {
     static MasterName: string = "tempsOrdinariOfici";
@@ -9,7 +9,7 @@ export default class OfficeOfOrdinaryTime {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.cita1;
         this.OfficeFirstReading.Title = databaseRow.titol1;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2;
@@ -18,7 +18,7 @@ export default class OfficeOfOrdinaryTime {
         this.OfficeSecondReading.Reference = databaseRow.referencia2;
         this.OfficeSecondReading.Quote = databaseRow.cita2;
         this.OfficeSecondReading.Title = databaseRow.titol2;
-        this.OfficeSecondReading.Lecture = databaseRow.lectura2;
+        this.OfficeSecondReading.Reading = databaseRow.lectura2;
         this.OfficeSecondReading.Responsory.Quote = databaseRow.versResp2;
         this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1;
         this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2;
@@ -26,6 +26,6 @@ export default class OfficeOfOrdinaryTime {
     }
 
     Id: number;
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
 }

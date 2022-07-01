@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 
 export default class EasterWeekParts {
     static MasterName: string = "tempsPasquaSetmanes";
@@ -14,7 +14,7 @@ export default class EasterWeekParts {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.cita1;
         this.OfficeFirstReading.Title = databaseRow.titol1;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2;
@@ -23,7 +23,7 @@ export default class EasterWeekParts {
         this.OfficeSecondReading.Reference = databaseRow.referencia2;
         this.OfficeSecondReading.Quote = databaseRow.cita2;
         this.OfficeSecondReading.Title = databaseRow.titol2;
-        this.OfficeSecondReading.Lecture = databaseRow.lectura2;
+        this.OfficeSecondReading.Reading = databaseRow.lectura2;
         this.OfficeSecondReading.Responsory.Quote = databaseRow.versResp2;
         this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1;
         this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2;
@@ -58,9 +58,9 @@ export default class EasterWeekParts {
         this.VespersShortReading.Quote = databaseRow.citaLBVespres;
         this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
 
-        this.VespersShorResponsory.FirstPart = databaseRow.respBreuVespres1;
-        this.VespersShorResponsory.SecondPart = databaseRow.respBreuVespres2;
-        this.VespersShorResponsory.ThirdPart = databaseRow.respBreuVespres3;
+        this.VespersShortResponsory.FirstPart = databaseRow.respBreuVespres1;
+        this.VespersShortResponsory.SecondPart = databaseRow.respBreuVespres2;
+        this.VespersShortResponsory.ThirdPart = databaseRow.respBreuVespres3;
 
         this.VespersEvangelicalAntiphon = databaseRow.antMaria;
         this.VespersPrayers = databaseRow.pregariesVespres;
@@ -70,8 +70,8 @@ export default class EasterWeekParts {
     Id: number;
     WeekDay: string;
     OfficeResponsory: Responsory = new Responsory();
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     LaudesShortReading: ShortReading = new ShortReading();
     LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
@@ -81,7 +81,7 @@ export default class EasterWeekParts {
     SixthHourParts: HourCommonParts = new HourCommonParts();
     NinthHourParts: HourCommonParts = new HourCommonParts();
     VespersShortReading: ShortReading = new ShortReading();
-    VespersShorResponsory: ShortResponsory = new ShortResponsory();
+    VespersShortResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;

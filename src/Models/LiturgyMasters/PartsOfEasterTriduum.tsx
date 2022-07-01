@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 import {shadow} from "react-native-paper";
 
 export default class PartsOfEasterTriduum {
@@ -33,7 +33,7 @@ export default class PartsOfEasterTriduum {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.citaLect1Ofici;
         this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1Ofici;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1Ofici;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
@@ -42,7 +42,7 @@ export default class PartsOfEasterTriduum {
         this.OfficeFirstReading.Reference = databaseRow.referencia2Ofici;
         this.OfficeFirstReading.Quote = databaseRow.citaLec2Ofici;
         this.OfficeFirstReading.Title = databaseRow.titolLect2Ofici;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura2;
+        this.OfficeFirstReading.Reading = databaseRow.lectura2;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp2Ofici;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp2Part1Ofici;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
@@ -137,7 +137,8 @@ export default class PartsOfEasterTriduum {
         this.VespersShortReading.Quote = databaseRow.citaLBVespres;
         this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
 
-        this.VespersSpecialAntiphon = databaseRow.antifonaEspecialVespres;
+        this.VespersShortResponsory.HasSpecialAntiphon = true;
+        this.VespersShortResponsory.SpecialAntiphon = databaseRow.antifonaEspecialVespres;
         this.VespersEvangelicalAntiphon = databaseRow.antMaria;
         this.VespersPrayers = databaseRow.pregariesVespres;
         this.VespersFinalPrayer = databaseRow.oraFiVespres;
@@ -153,8 +154,8 @@ export default class PartsOfEasterTriduum {
     OfficeSecondPsalm: Psalm = new Psalm();
     OfficeThirdPsalm: Psalm = new Psalm();
     OfficeResponsory: Responsory = new Responsory();
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeFinalPrayer: string;
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;
@@ -179,8 +180,8 @@ export default class PartsOfEasterTriduum {
     VespersSecondPsalm: Psalm = new Psalm();
     VespersThirdPsalm: Psalm = new Psalm();
     VespersShortReading: ShortReading = new ShortReading();
-    VespersSpecialAntiphon: string;
     VespersEvangelicalAntiphon: string;
+    VespersShortResponsory: ShortResponsory = new ShortResponsory();
     VespersPrayers: string;
     VespersFinalPrayer: string;
     NightPrayerAntiphon: string;

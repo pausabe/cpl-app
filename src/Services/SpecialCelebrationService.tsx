@@ -15,6 +15,7 @@ export function ObtainSpecialCelebration(liturgyDayInformation : LiturgySpecific
     specialCelebration.SpecialDaysMasterIdentifier = ObtainSpecialDaysMasterIdentifier(liturgyDayInformation, settings);
     if (specialCelebration.SpecialDaysMasterIdentifier === -1){
         // Special days always precede Solemnity and Fair ones. We let with the '-1' value the ID
+        // TODO: I think I should obtain both ids and decide later which is more precedent
         specialCelebration.SolemnityAndFestivityMasterIdentifier = ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation);
     }
     specialCelebration.StrongTimesMasterIdentifier = ObtainStrongTimesMasterIdentifier(liturgyDayInformation);

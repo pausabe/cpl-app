@@ -519,7 +519,6 @@ export default class CelebracioSoul {
         }
         break;
 
-
       case "SF":
         if(tomCal === '.'){
           this.makeSF(TABLES, type, tomCal, F);
@@ -612,7 +611,7 @@ export default class CelebracioSoul {
     //DP-LAUDES -> INVITATORI
     this.LAUDES.antInvitatori = TABLES.tempsQuaresmaDiumPasq.antInvitatori;
     //DP-LAUDES -> HIMNE
-    if(llati === 'true') this.LAUDES.himne = TABLES.tempsQuaresmaDiumPasq.himneLlatiLaudes;
+    if(settings.UseLatin) this.LAUDES.himne = TABLES.tempsQuaresmaDiumPasq.himneLlatiLaudes;
     else this.LAUDES.himne = TABLES.tempsQuaresmaDiumPasq.himneCatLaudes;
     //DP-LAUDES -> SALMÒDIA
     this.LAUDES.ant1 = TABLES.tempsQuaresmaDiumPasq.ant1Laudes;
@@ -646,7 +645,7 @@ export default class CelebracioSoul {
     //::::::DP-TERCIA::::::
     this.TERCIA.diumPasqua = true;
     this.TERCIA.antifones = false;
-    if(llati === 'true') this.TERCIA.himne = TABLES.tempsQuaresmaDiumPasq.himneTerciaLlati;
+    if(settings.UseLatin) this.TERCIA.himne = TABLES.tempsQuaresmaDiumPasq.himneTerciaLlati;
     else this.TERCIA.himne = TABLES.tempsQuaresmaDiumPasq.himneTerciaCat;
     this.TERCIA.ant = TABLES.tempsQuaresmaDiumPasq.antMenorTercia;
     this.TERCIA.titol1 = TABLES.tempsQuaresmaDiumPasq.titol1salm117;
@@ -670,7 +669,7 @@ export default class CelebracioSoul {
     //::::::DP-SEXTA::::::
     this.SEXTA.diumPasqua = true;
     this.SEXTA.antifones = false;
-    if(llati === 'true') this.SEXTA.himne = TABLES.tempsQuaresmaDiumPasq.himneSextaLlati;
+    if(settings.UseLatin) this.SEXTA.himne = TABLES.tempsQuaresmaDiumPasq.himneSextaLlati;
     else this.SEXTA.himne = TABLES.tempsQuaresmaDiumPasq.himneSextaCat;
     this.SEXTA.ant = TABLES.tempsQuaresmaDiumPasq.antMenorSexta;
     this.SEXTA.titol1 = TABLES.tempsQuaresmaDiumPasq.titol1salm117;
@@ -695,7 +694,7 @@ export default class CelebracioSoul {
     //::::::DP-NONA::::::
     this.NONA.diumPasqua = true;
     this.NONA.antifones = false;
-    if(llati === 'true') this.NONA.himne = TABLES.tempsQuaresmaDiumPasq.himneNonaLlati;
+    if(settings.UseLatin) this.NONA.himne = TABLES.tempsQuaresmaDiumPasq.himneNonaLlati;
     else this.NONA.himne = TABLES.tempsQuaresmaDiumPasq.himneNonaCat;
     this.NONA.ant = TABLES.tempsQuaresmaDiumPasq.antMenorNona;
     this.NONA.titol1 = TABLES.tempsQuaresmaDiumPasq.titol1salm117;
@@ -719,7 +718,7 @@ export default class CelebracioSoul {
 
     //::::::DP-VESPRES::::::
     this.VESPRES.diumPasqua = true;
-    if(llati === 'true') this.VESPRES.himne = TABLES.tempsQuaresmaDiumPasq.himneLlatiVespres;
+    if(settings.UseLatin) this.VESPRES.himne = TABLES.tempsQuaresmaDiumPasq.himneLlatiVespres;
     else this.VESPRES.himne = TABLES.tempsQuaresmaDiumPasq.himneCatVespres;
     this.VESPRES.ant1 = TABLES.tempsQuaresmaDiumPasq.ant1Vespres;
     this.VESPRES.titol1 = TABLES.tempsQuaresmaDiumPasq.titol1Vespres;
@@ -752,7 +751,7 @@ export default class CelebracioSoul {
     //::::::TSF-INFO_CEL::::::
     this.INFO_CEL.nomCelTom = TABLES.tempsSolemnitatsFestesVespres1.nomMemoria;
     //::::::TSF-VESPRES1::::::
-    if(llati === 'true') this.VESPRES1.himne = TABLES.tempsSolemnitatsFestesVespres1.himneVespres1Llati;
+    if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsSolemnitatsFestesVespres1.himneVespres1Llati;
     else this.VESPRES1.himne = TABLES.tempsSolemnitatsFestesVespres1.himneVespres1Cat;
     this.VESPRES1.ant1 = TABLES.tempsSolemnitatsFestesVespres1.ant1Vespres1;
     this.VESPRES1.titol1 = TABLES.tempsSolemnitatsFestesVespres1.titol1Vespres1;
@@ -803,7 +802,7 @@ export default class CelebracioSoul {
     //TSF-OFICI -> INVITATORI
     this.OFICI.antInvitatori = TABLES.tempsSolemnitatsFestes.antInvitatori;
     //TSF-OFICI -> HIMNE
-    if(llati === 'true') this.OFICI.himne = TABLES.tempsSolemnitatsFestes.himneOficiLlati;
+    if(settings.UseLatin) this.OFICI.himne = TABLES.tempsSolemnitatsFestes.himneOficiLlati;
     else this.OFICI.himne = TABLES.tempsSolemnitatsFestes.himneOficiCat;
     //TSF-OFICI -> SALMÒDIA
     //S1
@@ -856,7 +855,7 @@ export default class CelebracioSoul {
     //TSF-LAUDES -> INVITATORI
     this.LAUDES.antInvitatori = TABLES.tempsSolemnitatsFestes.antInvitatori;
     //TSF-LAUDES -> HIMNE
-    if(llati === 'true') this.LAUDES.himne = TABLES.tempsSolemnitatsFestes.himneLaudesLlati;
+    if(settings.UseLatin) this.LAUDES.himne = TABLES.tempsSolemnitatsFestes.himneLaudesLlati;
     else this.LAUDES.himne = TABLES.tempsSolemnitatsFestes.himneLaudesCat;
     //TSF-LAUDES -> SALMÒDIA
     this.LAUDES.ant1 = TABLES.tempsSolemnitatsFestes.ant1Laudes;
@@ -889,7 +888,7 @@ export default class CelebracioSoul {
 
 
     //::::::TSF-TERCIA::::::
-    if(llati === 'true') this.TERCIA.himne = TABLES.tempsSolemnitatsFestes.himneLlatiTercia;
+    if(settings.UseLatin) this.TERCIA.himne = TABLES.tempsSolemnitatsFestes.himneLlatiTercia;
     else this.TERCIA.himne = TABLES.tempsSolemnitatsFestes.himneCatTercia;
     this.TERCIA.antifones = false;
     this.TERCIA.ant = TABLES.tempsSolemnitatsFestes.antMenorTercia;
@@ -959,7 +958,7 @@ export default class CelebracioSoul {
 
 
     //::::::TSF-VESPRES::::::
-    if(llati === 'true') this.VESPRES.himne = TABLES.tempsSolemnitatsFestes.himneVespres2Llati;
+    if(settings.UseLatin) this.VESPRES.himne = TABLES.tempsSolemnitatsFestes.himneVespres2Llati;
     else this.VESPRES.himne = TABLES.tempsSolemnitatsFestes.himneVespres2Cat;
     this.VESPRES.ant1 = TABLES.tempsSolemnitatsFestes.ant1Vespres2;
     this.VESPRES.titol1 = TABLES.tempsSolemnitatsFestes.titol1Vespres2;
@@ -1010,7 +1009,7 @@ export default class CelebracioSoul {
     //DE-OFICI -> INVITATORI
     this.OFICI.antInvitatori = TABLES.diesespecials.antInvitatori;
     //DE-OFICI -> HIMNE
-    if(llati === 'true') this.OFICI.himne = TABLES.diesespecials.himneOficiLlati;
+    if(settings.UseLatin) this.OFICI.himne = TABLES.diesespecials.himneOficiLlati;
     else this.OFICI.himne = TABLES.diesespecials.himneOficiCat;
     //DE-OFICI -> SALMÒDIA
     //S1
@@ -1065,7 +1064,7 @@ export default class CelebracioSoul {
     //DE-LAUDES -> INVITATORI
     this.LAUDES.antInvitatori = TABLES.diesespecials.antInvitatori;
     //DE-LAUDES -> HIMNE
-    if(llati === 'true') this.LAUDES.himne = TABLES.diesespecials.himneLaudesLlati;
+    if(settings.UseLatin) this.LAUDES.himne = TABLES.diesespecials.himneLaudesLlati;
     else this.LAUDES.himne = TABLES.diesespecials.himneLaudesCat;
     //DE-LAUDES -> SALMÒDIA
     this.LAUDES.ant1 = TABLES.diesespecials.ant1Laudes;
@@ -1097,7 +1096,7 @@ export default class CelebracioSoul {
 
 
     //::::::DE-TERCIA::::::
-    if(llati === 'true') this.TERCIA.himne = TABLES.diesespecials.HimneMenorLlat;
+    if(settings.UseLatin) this.TERCIA.himne = TABLES.diesespecials.HimneMenorLlat;
     else this.TERCIA.himne = TABLES.diesespecials.HimneMenorCat;
     this.TERCIA.antifones = false;
     this.TERCIA.ant = TABLES.diesespecials.antMenorTer;
@@ -1121,7 +1120,7 @@ export default class CelebracioSoul {
 
 
     //::::::DE-SEXTA::::::
-    if(llati === 'true') this.SEXTA.himne = TABLES.diesespecials.HimneMenorLlatSexta;
+    if(settings.UseLatin) this.SEXTA.himne = TABLES.diesespecials.HimneMenorLlatSexta;
     else this.SEXTA.himne = TABLES.diesespecials.HimneMenorCatSexta;
     this.SEXTA.antifones = false;
     this.SEXTA.ant = TABLES.diesespecials.antMenorSextA;
@@ -1145,7 +1144,7 @@ export default class CelebracioSoul {
 
 
     //::::::DE-NONA::::::
-    if(llati === 'true') this.NONA.himne = TABLES.diesespecials.HimneMenorCatNona;
+    if(settings.UseLatin) this.NONA.himne = TABLES.diesespecials.HimneMenorCatNona;
     else this.NONA.himne = TABLES.diesespecials.HimneMenorLlatNona;
     this.NONA.antifones = false;
     this.NONA.ant = TABLES.diesespecials.antMenorNona;
@@ -1169,7 +1168,7 @@ export default class CelebracioSoul {
 
 
     //::::::DE-VESPRES::::::
-    if(llati === 'true') this.VESPRES.himne = TABLES.diesespecials.himneVespresLlati;
+    if(settings.UseLatin) this.VESPRES.himne = TABLES.diesespecials.himneVespresLlati;
     else this.VESPRES.himne = TABLES.diesespecials.himneVespresCat;
     this.VESPRES.ant1 = TABLES.diesespecials.ant1Vespres;
     this.VESPRES.titol1 = TABLES.diesespecials.titol1Vespres;
@@ -1204,7 +1203,7 @@ export default class CelebracioSoul {
     this.INFO_CEL.nomCelTom = TABLES.diesespecials.nomMemoria;
 
     //::::::DE-VESPRES1::::::
-    if(llati === 'true') this.VESPRES1.himne = TABLES.diesespecials.himneVespres1Llati;
+    if(settings.UseLatin) this.VESPRES1.himne = TABLES.diesespecials.himneVespres1Llati;
     else this.VESPRES1.himne = TABLES.diesespecials.himneVespres1Cat;
     this.VESPRES1.ant1 = TABLES.diesespecials.ant1Vespres1;
     this.VESPRES1.titol1 = TABLES.diesespecials.titol1Vespres1;
@@ -1249,11 +1248,11 @@ export default class CelebracioSoul {
     else this.OFICI.antInvitatori = TABLES.OficisComuns.antInvitatori;
     //SF-OFICI -> HIMNE
     if(TABLES.santsSolemnitats.himneOficiLlati !== '-'){
-      if(llati === 'true') this.OFICI.himne = TABLES.santsSolemnitats.himneOficiLlati;
+      if(settings.UseLatin) this.OFICI.himne = TABLES.santsSolemnitats.himneOficiLlati;
       else this.OFICI.himne = TABLES.santsSolemnitats.himneOficiCat;
     }
     else if(TABLES.OficisComuns !== null) {
-      if(llati === 'true') this.OFICI.himne = TABLES.OficisComuns.himneOficiLlati;
+      if(settings.UseLatin) this.OFICI.himne = TABLES.OficisComuns.himneOficiLlati;
       else this.OFICI.himne = TABLES.OficisComuns.himneOficiCat;
     }
     //SF-OFICI -> SALMÒDIA
@@ -1372,11 +1371,11 @@ export default class CelebracioSoul {
     else if(TABLES.OficisComuns !== null) this.LAUDES.antInvitatori = TABLES.OficisComuns.antInvitatori;
     //SF-LAUDES -> HIMNE
     if(TABLES.santsSolemnitats.himneLaudesLlati !== '-'){
-      if(llati === 'true') this.LAUDES.himne = TABLES.santsSolemnitats.himneLaudesLlati;
+      if(settings.UseLatin) this.LAUDES.himne = TABLES.santsSolemnitats.himneLaudesLlati;
       else this.LAUDES.himne = TABLES.santsSolemnitats.himneLaudesCat;
     }
     else if(TABLES.OficisComuns !== null){
-      if(llati === 'true') this.LAUDES.himne = TABLES.OficisComuns.himneLaudesLlati;
+      if(settings.UseLatin) this.LAUDES.himne = TABLES.OficisComuns.himneLaudesLlati;
       else this.LAUDES.himne = TABLES.OficisComuns.himneLaudesCat;
     }
     //SF-LAUDES -> SALMÒDIA
@@ -1573,11 +1572,11 @@ export default class CelebracioSoul {
       //::::::SF-VESPRES2::::::
       //SF-VESPRES2 -> HIMNE
       if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){
-        if(llati === 'true') this.VESPRES.himne = TABLES.santsSolemnitats.himneVespres2Llati;
+        if(settings.UseLatin) this.VESPRES.himne = TABLES.santsSolemnitats.himneVespres2Llati;
         else this.VESPRES.himne = TABLES.santsSolemnitats.himneVespres2Cat;
       }
       else if(TABLES.OficisComuns !== null){
-        if(llati === 'true') this.VESPRES.himne = TABLES.OficisComuns.himneVespresLlati;
+        if(settings.UseLatin) this.VESPRES.himne = TABLES.OficisComuns.himneVespresLlati;
         else this.VESPRES.himne = TABLES.OficisComuns.himneVespresCat;
       }
       //SF-VESPRES2 -> SALMÒDIA
@@ -1663,11 +1662,11 @@ export default class CelebracioSoul {
     //::::::SF-VESPRES1::::::
     //SF-VESPRES1 -> HIMNE
     if(this.VESPRES1.himne = TABLES.santsSolemnitatsFVespres1.himneVespres1Llati !== '-'){
-      if(llati === 'true') this.VESPRES1.himne = TABLES.santsSolemnitatsFVespres1.himneVespres1Llati;
+      if(settings.UseLatin) this.VESPRES1.himne = TABLES.santsSolemnitatsFVespres1.himneVespres1Llati;
       else this.VESPRES1.himne = TABLES.santsSolemnitatsFVespres1.himneVespres1Cat;
     }
     else if(TABLES.OficisComunsVespres1 !== null){
-      if(llati === 'true') this.VESPRES1.himne = TABLES.OficisComunsVespres1.himneVespres1Llati;
+      if(settings.UseLatin) this.VESPRES1.himne = TABLES.OficisComunsVespres1.himneVespres1Llati;
       else this.VESPRES1.himne = TABLES.OficisComunsVespres1.himneVespres1Cat;
     }
     //SF-VESPRES1 -> SALMÒDIA
@@ -1760,11 +1759,11 @@ export default class CelebracioSoul {
       this.OFICI.antInvitatori = TABLES.santsMemories.Invitatori;
     else if(TABLES.OficisComuns !== null) this.OFICI.antInvitatori = TABLES.OficisComuns.antInvitatori;
     if(TABLES.santsMemories.himneOficiLlati !== '-'){
-      if(llati === 'true') this.OFICI.himne = TABLES.santsMemories.himneOficiLlati;
+      if(settings.UseLatin) this.OFICI.himne = TABLES.santsMemories.himneOficiLlati;
       else this.OFICI.himne = TABLES.santsMemories.himneOficiCat;
     }
     else if(TABLES.OficisComuns !== null) {
-      if(llati === 'true') this.OFICI.himne = TABLES.OficisComuns.himneOficiLlati;
+      if(settings.UseLatin) this.OFICI.himne = TABLES.OficisComuns.himneOficiLlati;
       else this.OFICI.himne = TABLES.OficisComuns.himneOficiCat;
     }
     if(TABLES.santsMemories.ant1Ofici !== '-')
@@ -1876,11 +1875,11 @@ export default class CelebracioSoul {
     else if(TABLES.OficisComuns !== null) this.LAUDES.antInvitatori = TABLES.OficisComuns.antInvitatori;
     //ML LAUDES -> HIMNE
     if(TABLES.santsMemories.himneLaudesLlati !== '-'){
-      if(llati === 'true') this.LAUDES.himne = TABLES.santsMemories.himneLaudesLlati;
+      if(settings.UseLatin) this.LAUDES.himne = TABLES.santsMemories.himneLaudesLlati;
       else this.LAUDES.himne = TABLES.santsMemories.himneLaudesCat;
     }
     else if(TABLES.OficisComuns !== null){
-      if(llati === 'true') this.LAUDES.himne = TABLES.OficisComuns.himneLaudesLlati;
+      if(settings.UseLatin) this.LAUDES.himne = TABLES.OficisComuns.himneLaudesLlati;
       else this.LAUDES.himne = TABLES.OficisComuns.himneLaudesCat;
     }
     //ML LAUDES -> SALMÒDIA
@@ -1957,7 +1956,7 @@ export default class CelebracioSoul {
     //:::::::TÈRCIA:::::::
     //ML TÈRCIA -> HIMNE
     if(TABLES.santsMemories.HimneMenorLlat !== '-'){
-      if(llati === 'true') this.TERCIA.himne = TABLES.santsMemories.HimneMenorLlat;
+      if(settings.UseLatin) this.TERCIA.himne = TABLES.santsMemories.HimneMenorLlat;
       else this.TERCIA.himne = TABLES.santsMemories.HimneMenorCat;
     }
     //ML TÈRCIA -> SALMÒDIA
@@ -1999,7 +1998,7 @@ export default class CelebracioSoul {
     //:::::::SEXTA:::::::
     //ML SEXTA -> HIMNE
     if(TABLES.santsMemories.HimneMenorLlat !== '-'){
-      if(llati === 'true') this.SEXTA.himne = TABLES.santsMemories.HimneMenorLlat;
+      if(settings.UseLatin) this.SEXTA.himne = TABLES.santsMemories.HimneMenorLlat;
       else this.SEXTA.himne = TABLES.santsMemories.HimneMenorCat;
     }
     //ML SEXTA -> SALMÒDIA
@@ -2041,7 +2040,7 @@ export default class CelebracioSoul {
     //:::::::NONA:::::::
     //ML NONA -> HIMNE
     if(TABLES.santsMemories.HimneMenorLlat !== '-'){
-      if(llati === 'true') this.NONA.himne = TABLES.santsMemories.HimneMenorLlat;
+      if(settings.UseLatin) this.NONA.himne = TABLES.santsMemories.HimneMenorLlat;
       else this.NONA.himne = TABLES.santsMemories.HimneMenorCat;
     }
     //ML NONA -> SALMÒDIA
@@ -2084,11 +2083,11 @@ export default class CelebracioSoul {
       //:::::::ML-VESPRES:::::::
       //ML-VESPRES -> HIMNE
       if(TABLES.santsMemories.himneVespresLlati !== '-'){
-        if(llati === 'true') this.VESPRES.himne = TABLES.santsMemories.himneVespresLlati;
+        if(settings.UseLatin) this.VESPRES.himne = TABLES.santsMemories.himneVespresLlati;
         else this.VESPRES.himne = TABLES.santsMemories.himneVespresCat;
       }
       else if(TABLES.OficisComuns !== null){
-        if(llati === 'true') this.VESPRES.himne = TABLES.OficisComuns.himneVespresLlati;
+        if(settings.UseLatin) this.VESPRES.himne = TABLES.OficisComuns.himneVespresLlati;
         else this.VESPRES.himne = TABLES.OficisComuns.himneVespresCat;
       }
       //ML-VESPRES -> SALMÒDIA
@@ -2168,7 +2167,7 @@ export default class CelebracioSoul {
   makeDR(TABLES, type, tomCal){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
-    if(llati === 'true') this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresLlati;
+    if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaRams.ant1Vespres1;
     this.VESPRES1.ant2 = TABLES.tempsQuaresmaRams.ant2Vespres1;
@@ -2196,7 +2195,7 @@ export default class CelebracioSoul {
   makeT(TABLES, type, tomCal){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
-    if(llati === 'true') this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresllati;
+    if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresllati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaTridu.ant1Vespres;
     this.VESPRES1.titol1 = TABLES.tempsQuaresmaTridu.titol1Vespres;
@@ -2225,7 +2224,7 @@ export default class CelebracioSoul {
   makeA(TABLES, type, tomCal){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
-    if(llati === 'true')
+    if(settings.UseLatin)
       this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsAdventSetmanesDiumVespres1.ant1Vespres;

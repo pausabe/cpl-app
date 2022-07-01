@@ -10,10 +10,17 @@ export default class HoursLiturgy {
     Office : Office;
     Laudes : Laudes;
     Hours : Hours;
-    FirstVespers : Vespers;
-    SecondVespers : Vespers;
+    VespersOptions: VespersOptions = new VespersOptions();
+    Vespers : Vespers;
     NightPrayer : NightPrayer;
-    // TODO:
+    // TODO: maybe in other place
     papa: TABLES.diversos.item(38).oracio,
     bisbe: TABLES.diversos.item(GF.bisbeId(diocesiName)).oracio,
+}
+
+export class VespersOptions{
+    TomorrowFirstVespersWithoutCelebration : Vespers = new Vespers();
+    TodaySecondVespersWithoutCelebration : Vespers = new Vespers();
+    TomorrowFirstVespersWithCelebration : Vespers = new Vespers();
+    TodaySecondVespersWithCelebration : Vespers = new Vespers();
 }

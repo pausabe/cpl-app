@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 
 export default class ChristmasWhenOctaveParts {
     static MasterName: string = "tempsNadalOctava";
@@ -29,7 +29,7 @@ export default class ChristmasWhenOctaveParts {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.citaLect1Ofici;
         this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1Ofici;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1Ofici;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
@@ -38,7 +38,7 @@ export default class ChristmasWhenOctaveParts {
         this.OfficeSecondReading.Reference = databaseRow.referencia2Ofici;
         this.OfficeSecondReading.Quote = databaseRow.citaLec2Ofici;
         this.OfficeSecondReading.Title = databaseRow.titolLect2Ofici;
-        this.OfficeSecondReading.Lecture = databaseRow.lectura2;
+        this.OfficeSecondReading.Reading = databaseRow.lectura2;
         this.OfficeSecondReading.Responsory.Quote = databaseRow.citaResp2Ofici;
         this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1Ofici;
         this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
@@ -73,9 +73,9 @@ export default class ChristmasWhenOctaveParts {
         this.VespersShortReading.Quote = databaseRow.citaLBVespres;
         this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
 
-        this.VespersShorResponsory.FirstPart = databaseRow.respBreuVespres1Part1;
-        this.VespersShorResponsory.SecondPart = databaseRow.respBreuVespres1Part2;
-        this.VespersShorResponsory.ThirdPart = databaseRow.respBreuVespres1Part3;
+        this.VespersShortResponsory.FirstPart = databaseRow.respBreuVespres1Part1;
+        this.VespersShortResponsory.SecondPart = databaseRow.respBreuVespres1Part2;
+        this.VespersShortResponsory.ThirdPart = databaseRow.respBreuVespres1Part3;
 
         this.VespersEvangelicalAntiphon = databaseRow.antMaria;
         this.VespersPrayers = databaseRow.pregariesVespres;
@@ -88,8 +88,8 @@ export default class ChristmasWhenOctaveParts {
     OfficeFirstPsalm: Psalm = new Psalm();
     OfficeSecondPsalm: Psalm = new Psalm();
     OfficeThirdPsalm: Psalm = new Psalm();
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     LaudesShortReading: ShortReading = new ShortReading();
     LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
@@ -99,7 +99,7 @@ export default class ChristmasWhenOctaveParts {
     SixthHourParts: HourCommonParts = new HourCommonParts();
     NinthHourParts: HourCommonParts = new HourCommonParts();
     VespersShortReading: ShortReading = new ShortReading();
-    VespersShorResponsory: ShortResponsory = new ShortResponsory();
+    VespersShortResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;

@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 
 export default class PalmSundayParts {
     static MasterName: string = "tempsQuaresmaRams";
@@ -9,8 +9,8 @@ export default class PalmSundayParts {
         this.FirstVespersFirstAntiphon = databaseRow.ant1Vespres1;
         this.FirstVespersSecondAntiphon = databaseRow.ant2Vespres1;
         this.FirstVespersThirdAntiphon = databaseRow.ant3Vespres1;
-        this.FirstVespersResponsory.Versicle = databaseRow.citaLBVespres;
-        this.FirstVespersResponsory.Response = databaseRow.lecturaBreuVespres;
+        this.FirstVespersShortReading.Quote = databaseRow.citaLBVespres;
+        this.FirstVespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
         this.FirstVespresShortResponsory.FirstPart = databaseRow.respBreuVespres1;
         this.FirstVespresShortResponsory.SecondPart = databaseRow.respBreuVespres2;
         this.FirstVespresShortResponsory.ThirdPart = databaseRow.respBreuVespres3;
@@ -26,7 +26,7 @@ export default class PalmSundayParts {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.cita1;
         this.OfficeFirstReading.Title = databaseRow.titol1;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2;
@@ -35,7 +35,7 @@ export default class PalmSundayParts {
         this.OfficeSecondReading.Reference = databaseRow.referencia2;
         this.OfficeSecondReading.Quote = databaseRow.cita2;
         this.OfficeSecondReading.Title = databaseRow.titol2;
-        this.OfficeSecondReading.Lecture = databaseRow.lectura2;
+        this.OfficeSecondReading.Reading = databaseRow.lectura2;
         this.OfficeSecondReading.Responsory.Quote = databaseRow.versResp2;
         this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1;
         this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2;
@@ -76,8 +76,8 @@ export default class PalmSundayParts {
         this.SecondVespersFirstAntiphon = databaseRow.ant1Vespres2;
         this.SecondVespersSecondAntiphon = databaseRow.ant2Vespres2;
         this.SecondVespersThirdAntiphon = databaseRow.ant3Vespres2;
-        this.SecondVespersResponsory.Versicle = databaseRow.citaLBVespres2;
-        this.SecondVespersResponsory.Response = databaseRow.lecturaBreuVespres2;
+        this.SecondVespersShortReading.Quote = databaseRow.citaLBVespres2;
+        this.SecondVespersShortReading.ShortReading = databaseRow.lecturaBreuVespres2;
         this.SecondVespresShortResponsory.FirstPart = databaseRow.respBreuVespres12;
         this.SecondVespresShortResponsory.SecondPart = databaseRow.respBreuVespres22;
         this.SecondVespresShortResponsory.ThirdPart = databaseRow.respBreuVespres32;
@@ -92,7 +92,7 @@ export default class PalmSundayParts {
     FirstVespersFirstAntiphon: string;
     FirstVespersSecondAntiphon: string;
     FirstVespersThirdAntiphon: string;
-    FirstVespersResponsory: Responsory = new Responsory();
+    FirstVespersShortReading: ShortReading = new ShortReading();
     FirstVespresShortResponsory: ShortResponsory = new ShortResponsory();
     FirstVespersEvangelicalAntiphonYearA: string;
     FirstVespersEvangelicalAntiphonYearB: string;
@@ -100,8 +100,8 @@ export default class PalmSundayParts {
     FirstVespersPrayers: string;
     FirstVespersFinalPrayer: string;
     OfficeResponsory: Responsory = new Responsory();
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     LaudesFirstAntiphon: string;
     LaudesSecondAntiphon: string;
     LaudesThirdAntiphon: string;
@@ -118,7 +118,7 @@ export default class PalmSundayParts {
     SecondVespersFirstAntiphon: string;
     SecondVespersSecondAntiphon: string;
     SecondVespersThirdAntiphon: string;
-    SecondVespersResponsory: Responsory = new Responsory();
+    SecondVespersShortReading: ShortReading = new ShortReading();
     SecondVespresShortResponsory: ShortResponsory = new ShortResponsory();
     SecondVespersEvangelicalAntiphonYearA: string;
     SecondVespersEvangelicalAntiphonYearB: string;

@@ -1,9 +1,10 @@
 export enum CelebrationType{
+    Fair = '-',
     Solemnity = 'S',
     Festivity = 'F',
     Memory = 'M',
-    FreeMemory = 'L',
-    FreeVirginMemory = 'V',
+    OptionalMemory = 'L',
+    OptionalVirginMemory = 'V'
 }
 
 export enum DioceseCode{

@@ -60,7 +60,7 @@ export class GlobalDataToShowClass {
         this.ready = ready;
         this.lloc = placeData;
         this.data = date;
-        this.setmana = week;
+        this.liturgyDayInformation.Week = week;
         this.temps = time;
         this.setCicle = weekCycle;
         this.anyABC = yearABC;

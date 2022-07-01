@@ -32,7 +32,7 @@ export async function ReloadAllData(date) {
     CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();
     CurrentLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(date, CurrentSettings);
     const liturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
-    CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation);
+    CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation.Today, CurrentSettings);
     CurrentMassLiturgy = await ObtainMassLiturgy(liturgyMasters, globalData);
     CurrentCelebrationInformation = await ObtainCurrentCelebrationInformation();
 
@@ -109,7 +109,6 @@ async function ObtainCurrentLiturgyDayInformation(date: Date, currentSettings : 
     let currentLiturgyDayInformation = new LiturgyDayInformation();
     currentLiturgyDayInformation.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, currentSettings);
     currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Today, currentSettings);
-    currentLiturgyDayInformation.Today.Precedence = PrecedenceService.ObtainPrecedence(currentLiturgyDayInformation.Today);
     const tomorrowDate = new Date(date);
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
     currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, currentSettings);

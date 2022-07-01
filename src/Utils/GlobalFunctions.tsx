@@ -754,7 +754,7 @@ let GlobalFunctions = {
     return true;
   },
 
-  isDarkHimn(){
+  isDarkAnthem(){
     //return true; //To avoid distint himns when doing state test and compare dark test with light test
     var nowDate = new Date();
     var hour = nowDate.getHours();

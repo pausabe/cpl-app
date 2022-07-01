@@ -1,4 +1,4 @@
-import {HourCommonParts, LectureOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 
 export default class PartsOfEasterOctave {
     static MasterName: string = "tempsPasquaOct";
@@ -27,7 +27,7 @@ export default class PartsOfEasterOctave {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.citaLect1Ofici;
         this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1Ofici;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1Ofici;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
@@ -36,7 +36,7 @@ export default class PartsOfEasterOctave {
         this.OfficeFirstReading.Reference = databaseRow.referencia2Ofici;
         this.OfficeFirstReading.Quote = databaseRow.citaLect2Ofici;
         this.OfficeFirstReading.Title = databaseRow.titolLect2Ofici;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura2;
+        this.OfficeFirstReading.Reading = databaseRow.lectura2;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp2Ofici;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp2Part1Ofici;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
@@ -81,7 +81,8 @@ export default class PartsOfEasterOctave {
         this.VespersShortReading.Quote = databaseRow.citaLBVespres;
         this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
 
-        this.VespersSpecialAntiphon = databaseRow.antEspecialVespres;
+        this.VespersShortResponsory.HasSpecialAntiphon = true;
+        this.VespersShortResponsory.SpecialAntiphon = databaseRow.antEspecialVespres;
         this.VespersEvangelicalAntiphon = databaseRow.antMaria;
         this.VespersPrayers = databaseRow.pregariesVespres;
         this.VespersFinalPrayer = databaseRow.oraFiVespres;
@@ -94,8 +95,8 @@ export default class PartsOfEasterOctave {
     OfficeSecondPsalm: Psalm = new Psalm();
     OfficeThirdPsalm: Psalm = new Psalm();
     OfficeResponsory: Responsory = new Responsory();
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;
     LaudesShortReading: ShortReading = new ShortReading();
@@ -112,7 +113,7 @@ export default class PartsOfEasterOctave {
     HoursResponsory: Responsory = new Responsory();
     HoursFinalPrayer: string;
     VespersShortReading: ShortReading = new ShortReading();
-    VespersSpecialAntiphon: string;
+    VespersShortResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;

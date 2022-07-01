@@ -625,10 +625,10 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
 
 async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsMemories> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier === -1 && (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory || liturgyDayInformation.Today.CelebrationType === CelebrationType.FreeMemory || liturgyDayInformation.Today.CelebrationType === CelebrationType.FreeVirginMemory)) {
+        if (liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier === -1 && (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory || liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory || liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
             let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
 
-            if (liturgyDayInformation.Today.CelebrationType === CelebrationType.FreeVirginMemory && saintsMemoryOrSolemnityMasterIdentifier === -1) {
+            if (liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory && saintsMemoryOrSolemnityMasterIdentifier === -1) {
                 const row = await DatabaseDataService.ObtainFreeVirginMemoryAsync();
                 const saintsMemories = new SaintsMemories(row);
                 saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);

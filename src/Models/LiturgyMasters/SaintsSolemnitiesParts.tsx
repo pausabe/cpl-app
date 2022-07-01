@@ -1,7 +1,7 @@
 import {
     Celebration,
     HourCommonParts,
-    LectureOfTheOffice,
+    ReadingOfTheOffice,
     Psalm,
     Responsory,
     ShortReading,
@@ -80,7 +80,7 @@ export default class SaintsSolemnitiesParts {
         this.OfficeFirstReading.Reference = databaseRow.referencia1;
         this.OfficeFirstReading.Quote = databaseRow.citaLect1Ofici;
         this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
-        this.OfficeFirstReading.Lecture = databaseRow.lectura1;
+        this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1Ofici;
         this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1Ofici;
         this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
@@ -89,7 +89,7 @@ export default class SaintsSolemnitiesParts {
         this.OfficeSecondReading.Reference = databaseRow.referencia2Ofici;
         this.OfficeSecondReading.Quote = databaseRow.citaLec2Ofici;
         this.OfficeSecondReading.Title = databaseRow.titolLect2Ofici;
-        this.OfficeSecondReading.Lecture = databaseRow.lectura2;
+        this.OfficeSecondReading.Reading = databaseRow.lectura2;
         this.OfficeSecondReading.Responsory.Quote = databaseRow.citaResp2Ofici;
         this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1Ofici;
         this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
@@ -196,8 +196,8 @@ export default class SaintsSolemnitiesParts {
     OfficeSecondPsalm: Psalm = new Psalm();
     OfficeThirdPsalm: Psalm = new Psalm();
     OfficeResponsory: Responsory = new Responsory();
-    OfficeFirstReading: LectureOfTheOffice = new LectureOfTheOffice();
-    OfficeSecondReading: LectureOfTheOffice = new LectureOfTheOffice();
+    OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeFinalPrayer: string;
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;

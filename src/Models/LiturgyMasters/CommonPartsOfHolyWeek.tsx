@@ -10,8 +10,8 @@ export default class CommonPartsOfHolyWeek {
         this.OfficeCatalanAnthem = databaseRow.himneOficiCat;
         this.LaudesLatinAnthem = databaseRow.himneLaudesLlati;
         this.LaudesCatalanAnthem = databaseRow.himneLaudesCat;
-        this.ThirdHourLatinAnthem = databaseRow.himneHoraLlati;
-        this.ThirdHourCatalanAnthem = databaseRow.himneHoraCat;
+        this.HoursLatinAnthem = databaseRow.himneHoraLlati;
+        this.HoursCatalanAnthem = databaseRow.himneHoraCat;
         this.ThirdHourAntiphon = databaseRow.antTercia;
         this.SixthHourAntiphon = databaseRow.antSexta;
         this.NinthHourAntiphon = databaseRow.antNona;
@@ -25,8 +25,8 @@ export default class CommonPartsOfHolyWeek {
     OfficeCatalanAnthem: string;
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;
-    ThirdHourLatinAnthem: string;
-    ThirdHourCatalanAnthem: string;
+    HoursLatinAnthem: string;
+    HoursCatalanAnthem: string;
     ThirdHourAntiphon: string
     SixthHourAntiphon: string
     NinthHourAntiphon: string

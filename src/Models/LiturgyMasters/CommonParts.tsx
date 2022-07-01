@@ -1,8 +1,8 @@
-export class LectureOfTheOffice{
+export class ReadingOfTheOffice {
     Reference: string;
     Quote: string;
     Title: string;
-    Lecture: string;
+    Reading: string;
     Responsory: ShortResponsory = new ShortResponsory();
 }
 
