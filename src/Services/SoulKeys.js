@@ -32,8 +32,6 @@ module.exports = {
     LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD: 211,
     LDSantoral_SantissimNomDeJesus: 219,
 
-    tempsSolemnitatsFestes_Nadal: 1,
-
     santsMemories_CorImmaculatBenauradaVergeMaria: 252,
     santsMemories_MareDeuCinta: 472,
     santsMemories_BenauradaVergeMariaMareEsglesia: 484,

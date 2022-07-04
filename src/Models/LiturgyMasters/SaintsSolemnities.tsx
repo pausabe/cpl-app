@@ -1,5 +1,4 @@
 import {
-    Celebration,
     HourCommonParts,
     ReadingOfTheOffice,
     Psalm,
@@ -8,15 +7,17 @@ import {
     ShortResponsory
 } from "./CommonParts";
 import CommonOffice from "./CommonOffices";
+import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
 
-export default class SaintsSolemnitiesParts {
+export default class SaintsSolemnities {
     static MasterName: string = "santsSolemnitats";
 
     constructor(databaseRow) {
         this.Id = databaseRow.id;
 
         this.Celebration.Day = databaseRow.dia;
-        this.Celebration.CelebrationType = databaseRow.Cat;
+        this.Celebration.Type = databaseRow.Cat;
+        this.Celebration.SpecificClassification = databaseRow.ClassificacioCategoria; // TODO: fill it in the database
         this.Celebration.Precedence = databaseRow.Precedencia;
         this.Celebration.LiturgicalTime = databaseRow.Temps;
         this.Celebration.Diocese = databaseRow.Diocesis;
@@ -178,7 +179,7 @@ export default class SaintsSolemnitiesParts {
     }
 
     Id: number;
-    Celebration: Celebration = new Celebration();
+    Celebration: CelebrationInformation = new CelebrationInformation();
     FirstVespersLatinAnthem: string;
     FirstVespersCatalanAnthem: string;
     FirstVespersFirstPsalm: Psalm = new Psalm();

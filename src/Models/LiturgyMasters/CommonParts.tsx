@@ -41,15 +41,3 @@ export class ShortResponsory{
     HasSpecialAntiphon: boolean;
     SpecialAntiphon: string;
 }
-
-export class Celebration{
-    Diocese : string;
-    Category : string;
-    CelebrationType: string;
-    Precedence: string;
-    Day : string;
-    WeekDay: string;
-    LiturgicalTime : string;
-    Title : string;
-    Description : string;
-}

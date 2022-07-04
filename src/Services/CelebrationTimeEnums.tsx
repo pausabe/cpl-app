@@ -1,4 +1,4 @@
-export enum SpecificCelebrationType{
+export enum SpecificLiturgyTimeType{
     // TODO: change names when GLOBAL => Specific..
     O_ORDINARI = 'O_ORDINAR',
     Q_CENDRA = 'Q_CENDRA',
@@ -16,7 +16,7 @@ export enum SpecificCelebrationType{
 }
 
 // TODO: check entire code literals and check that are correct also
-export enum GenericCelebrationType{
+export enum GenericLiturgyTimeType{
     Ordinary = "Ordinari",
     Advent = "Advent",
     Christmas = "Nadal",

@@ -1,72 +1,96 @@
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
-import {CelebrationType} from "./DatabaseEnums";
-import { Settings } from "../Models/Settings";
-import {GenericCelebrationType, SpecificCelebrationType} from "./CelebrationTimeEnums";
+import {CelebrationSpecificClassification, CelebrationType} from "./DatabaseEnums";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
+import CelebrationInformation from "../Models/HoursLiturgy/CelebrationInformation";
 
-export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpecificDayInformation, settings: Settings) : number{
-    if(dateLiturgyInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_TRIDU){
+export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpecificDayInformation, celebrationInformation: CelebrationInformation) : number{
+    if(dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU){
         return 1;
     }
     if (CelebrationIdentifierService.IsChristmas(dateLiturgyInformation) ||
-        CelebrationIdentifierService.IsEpiphany(dateLiturgyInformation) ||
+        CelebrationIdentifierService.IsEpiphany(dateLiturgyInformation.Date) ||
         CelebrationIdentifierService.IsAscension(dateLiturgyInformation) ||
         CelebrationIdentifierService.IsPentecost(dateLiturgyInformation) ||
         CelebrationIdentifierService.AshWednesday(dateLiturgyInformation) ||
         (dateLiturgyInformation.DayOfTheWeek === 0 &&
-            (dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Advent ||
-            dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Lent ||
-            dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Easter)) ||
+            (dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent ||
+            dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent ||
+            dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter)) ||
         (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
-            dateLiturgyInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_SET_SANTA &&
+            dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_SET_SANTA &&
             dateLiturgyInformation.DayOfTheWeek >= 1 &&
             dateLiturgyInformation.DayOfTheWeek <= 4) ||
-        dateLiturgyInformation.SpecificLiturgyTime === SpecificCelebrationType.P_OCTAVA){
+        dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA){
         return 2;
     }
-
-    // Tipus de Solemnitats/Festes (4): propies / senyor / marededeu / sants
-    // Tipus de Memories obligatories (2): generals / propies
-
-    if(false /*TODO solemnitats del senyor, marededeu i sants && CelebrationIdentifierService.IsCommmemoriationOfAllDifunts()*/){
+    if((celebrationInformation.Type === CelebrationType.Solemnity &&
+        (celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Lord ||
+            celebrationInformation.SpecificClassification === CelebrationSpecificClassification.MotherOfGod ||
+            celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic)) ||
+        CelebrationIdentifierService.IsAllSaints(dateLiturgyInformation)){
         return 3;
     }
-    if(false /*TODO solemnitats propies*/){
+    if(celebrationInformation.Type === CelebrationType.Solemnity &&
+        celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Own){
         return 4;
     }
-    if(false /*TODO festes del senyor general*/){
+    if(celebrationInformation.Type === CelebrationType.Festivity &&
+        celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Lord){
         return 5;
     }
     if(dateLiturgyInformation.DayOfTheWeek === 0 &&
-        (dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Christmas ||
-        dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Ordinary)){
+        (dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Christmas ||
+        dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Ordinary)){
         return 6;
     }
-    if(false /*TODO festes marededeu i sants*/){
+    if(celebrationInformation.Type === CelebrationType.Festivity &&
+        (celebrationInformation.SpecificClassification === CelebrationSpecificClassification.MotherOfGod ||
+            celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic)){
         return 7;
     }
-    if(false /*TODO festes propies */){
+    if(celebrationInformation.Type === CelebrationType.Festivity &&
+        celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Own){
         return 8;
     }
     if ((dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
-        dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Advent &&
+        dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent &&
         dateLiturgyInformation.Date.getDate() >= 17 && dateLiturgyInformation.Date.getDate() <= 24 &&
         dateLiturgyInformation.Date.getMonth() === 11) ||
-        dateLiturgyInformation.SpecificLiturgyTime === SpecificCelebrationType.N_OCTAVA ||
+        dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA ||
         (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
-        dateLiturgyInformation.GenericLiturgyTime === GenericCelebrationType.Lent)) {
+        dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent)) {
         return 9;
     }
-    if(false/*TODO memoria obligatoria general que no cau en quaresma*/){
+    if(celebrationInformation.Type === CelebrationType.Memory &&
+        celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic &&
+        dateLiturgyInformation.GenericLiturgyTime !== GenericLiturgyTimeType.Lent){
         return 10;
     }
-    if(false/*TODO memoria obligatoria propia que no cau en quaresma*/){
+    if(celebrationInformation.Type === CelebrationType.Memory &&
+        celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Own &&
+        dateLiturgyInformation.GenericLiturgyTime !== GenericLiturgyTimeType.Lent){
         return 11;
     }
-    if(false/*TODO memoria lliure o memoria obligatoria de quaresma*/){
+    if((celebrationInformation.Type === CelebrationType.OptionalMemory || celebrationInformation.Type === CelebrationType.OptionalVirginMemory) ||
+        (celebrationInformation.Type === CelebrationType.Memory &&
+            dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent)){
         return 12;
     }
-    else{
+    if((celebrationInformation.Type === CelebrationType.Fair &&
+            dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent &&
+            dateLiturgyInformation.Date.getDate() <= 16) ||
+        (celebrationInformation.Type === CelebrationType.Fair &&
+            dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Christmas &&
+            dateLiturgyInformation.Date.getDate() >= 2 &&
+            dateLiturgyInformation.Date.getDate() <= CelebrationIdentifierService.GetSaturdayAfterEpiphanyDate(dateLiturgyInformation).getDate()) ||
+        (celebrationInformation.Type === CelebrationType.Fair &&
+            dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter &&
+            dateLiturgyInformation.Date.getDate() >= CelebrationIdentifierService.GetMondayAfterEasterOctaveDate(dateLiturgyInformation).getDate() &&
+            dateLiturgyInformation.Date.getDate() <= CelebrationIdentifierService.GetSaturdayBeforePentecostDate(dateLiturgyInformation).getDate()) ||
+        (celebrationInformation.Type === CelebrationType.Fair &&
+            dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Ordinary)){
         return 13;
     }
+    return 999; // Never should be here
 }

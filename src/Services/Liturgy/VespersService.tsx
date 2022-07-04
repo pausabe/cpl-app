@@ -4,7 +4,7 @@ import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation"
 import {Settings} from "../../Models/Settings";
 import {Psalm, ShortReading, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
 import {YearType} from "../DatabaseEnums";
-import {SpecificCelebrationType} from "../CelebrationTimeEnums";
+import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 
 export function ObtainVespers(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : Vespers{
     let vespers = new Vespers();
@@ -25,7 +25,7 @@ export function ObtainVespers(liturgyMasters : LiturgyMasters, liturgyDayInforma
 
 export function MergeVespersWithCelebration(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings, withoutCelebrationVespers: Vespers, withCelebrationVespers: Vespers): Vespers {
     let vespers = withoutCelebrationVespers;
-    if(liturgyDayInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_DIUM_PASQUA) {
+    if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA) {
         vespers = withCelebrationVespers;
     }
     else{
@@ -74,8 +74,8 @@ export function MergeVespersWithCelebration(liturgyMasters : LiturgyMasters, lit
 function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : string{
     let anthem = settings.UseLatin? liturgyMasters.VespersCommonPsalter.LatinAnthem : liturgyMasters.VespersCommonPsalter.CatalanAnthem;
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case SpecificCelebrationType.Q_CENDRA:
-        case SpecificCelebrationType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_CENDRA:
+        case SpecificLiturgyTimeType.Q_SETMANES:
             // TODO: firstVespresOption not sure
             if(liturgyDayInformation.DayOfTheWeek === 0 || liturgyDayInformation.DayOfTheWeek === 6){
                 if(settings.UseLatin){
@@ -94,8 +94,8 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
                 }
             }
             break;
-        case SpecificCelebrationType.Q_DIUM_RAMS:
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_DIUM_RAMS:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             if(settings.UseLatin){
                 anthem = liturgyMasters.CommonPartsOfHolyWeek.VespersLatinAnthem;
             }
@@ -103,7 +103,7 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
                 anthem = liturgyMasters.CommonPartsOfHolyWeek.VespersCatalanAnthem;
             }
             break;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             if(settings.UseLatin){
                 anthem = liturgyMasters.PartsOfEasterTriduum.VespersLatinAnthem;
             }
@@ -111,7 +111,7 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
                 anthem = liturgyMasters.PartsOfEasterTriduum.VespersCatalanAnthem;
             }
             break;
-        case SpecificCelebrationType.P_OCTAVA:
+        case SpecificLiturgyTimeType.P_OCTAVA:
             if(settings.UseLatin){
                 anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWeekendLatinAnthem;
             }
@@ -119,7 +119,7 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
                 anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWeekendCatalanAnthem;
             }
             break;
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             if(liturgyDayInformation.Week === '7'){
                 if(settings.UseLatin){
                     anthem = liturgyMasters.PartsOfEasterAfterAscension.VespersLatinAnthem;
@@ -148,11 +148,11 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
                 }
             }
             break;
-        case SpecificCelebrationType.A_SETMANES:
-        case SpecificCelebrationType.A_FERIES:
-        case SpecificCelebrationType.N_ABANS:
-            if(liturgyDayInformation.SpecificLiturgyTime != SpecificCelebrationType.N_ABANS ||
-                (liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
+        case SpecificLiturgyTimeType.A_SETMANES:
+        case SpecificLiturgyTimeType.A_FERIES:
+        case SpecificLiturgyTimeType.N_ABANS:
+            if(liturgyDayInformation.SpecificLiturgyTime != SpecificLiturgyTimeType.N_ABANS ||
+                (liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
                 if(settings.UseLatin){
                     anthem = liturgyMasters.CommonAdventAndChristmasParts.VespersLatinAnthem;
                 }
@@ -161,7 +161,7 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
                 }
             }
             break;
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             // TODO: what about SolemnityAndFestivityParts first vespers anthem?
             if(settings.UseLatin){
                 anthem = liturgyMasters.SolemnityAndFestivityParts.SecondVespersLatinAnthem;
@@ -181,15 +181,15 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
         ThirdPsalm: liturgyMasters.VespersCommonPsalter.ThirdPsalm
     }
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case SpecificCelebrationType.A_FERIES:
+        case SpecificLiturgyTimeType.A_FERIES:
             if(liturgyDayInformation.DayOfTheWeek !== 0){
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesFirstAntiphon;
                 psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesSecondAntiphon;
                 psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesThirdAntiphon;
             }
             break;
-        case SpecificCelebrationType.Q_SETMANES:
-        case SpecificCelebrationType.Q_CENDRA:
+        case SpecificLiturgyTimeType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_CENDRA:
             if(liturgyDayInformation.DayOfTheWeek === 6){
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersFirstAntiphon;
                 psalmody.SecondPsalm.Antiphon = liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersSecondAntiphon;
@@ -201,7 +201,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
                 psalmody.ThirdPsalm.Antiphon = liturgyMasters.FiveWeeksOfSundayLentParts.SecondVespersThirdAntiphon;
             }
             break;
-        case SpecificCelebrationType.Q_DIUM_RAMS:
+        case SpecificLiturgyTimeType.Q_DIUM_RAMS:
             // TODO: not sure why but these lines were commented (precedence's thing I guess)
             /*if(liturgyDayInformation.DayOfTheWeek === 6){
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.PalmSundayParts.FirstVespersFirstAntiphon;
@@ -214,12 +214,12 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
                 psalmody.ThirdPsalm.Antiphon = liturgyMasters.PalmSundayParts.SecondVespersThirdAntiphon;
             }
             break;
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             psalmody.FirstPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersFirstAntiphon;
             psalmody.SecondPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersSecondAntiphon;
             psalmody.ThirdPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersThirdAntiphon;
             break;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             psalmody.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.VespersFirstPsalm;
             psalmody.FirstPsalm.Comment = "-";
             psalmody.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.VespersSecondPsalm;
@@ -227,7 +227,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
             psalmody.ThirdPsalm = liturgyMasters.PartsOfEasterTriduum.VespersThirdPsalm;
             psalmody.ThirdPsalm.Comment = "-";
             break;
-        case SpecificCelebrationType.P_OCTAVA:
+        case SpecificLiturgyTimeType.P_OCTAVA:
             psalmody.FirstPsalm = liturgyMasters.EasterSunday.VespersFirstPsalm;
             psalmody.FirstPsalm.Comment = "-";
             psalmody.SecondPsalm = liturgyMasters.EasterSunday.VespersSecondPsalm;
@@ -235,7 +235,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
             psalmody.ThirdPsalm = liturgyMasters.EasterSunday.VespersThirdPsalm;
             psalmody.ThirdPsalm.Comment = "-";
             break;
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             if(liturgyDayInformation.DayOfTheWeek === 6 && liturgyMasters.EasterFirstVespersOfSundayParts.LaudesFirstAntiphon !== "-"){
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.LaudesFirstAntiphon;
                 psalmody.SecondPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.LaudesSecondAntiphon;
@@ -252,7 +252,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
                 psalmody.ThirdPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.LaudesThirdAntiphon;
             }
             break;
-        case SpecificCelebrationType.A_SETMANES:
+        case SpecificLiturgyTimeType.A_SETMANES:
             if(liturgyDayInformation.DayOfTheWeek === 6 && liturgyMasters.AdventFirstVespersOfSundayParts.LaudesFirstAntiphon !== "-"){
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.LaudesFirstAntiphon;
                 psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.LaudesSecondAntiphon;
@@ -264,7 +264,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
                 psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventSundayParts.LaudesThirdAntiphon;
             }
             break;
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             psalmody.FirstPsalm = liturgyMasters.SolemnityAndFestivityParts.SecondVespersFirstPsalm;
             psalmody.FirstPsalm.Comment = "-";
             psalmody.FirstPsalm.HasGloryPrayer = true;
@@ -279,9 +279,9 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
 
     // TODO: I thing this should be moved to CelebationVespers
     if(liturgyDayInformation.DayOfTheWeek === 0 &&
-        (liturgyDayInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_SET_SANTA ||
-            liturgyDayInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_SETMANES ||
-            liturgyDayInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_DIUM_RAMS)){
+        (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_SET_SANTA ||
+            liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_SETMANES ||
+            liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_RAMS)){
         psalmody.ThirdPsalm.Title = "Càntic 1Pe 2, 21-24\nLa passió voluntària del Crist, el servent de Déu";
         psalmody.ThirdPsalm.Comment = '-';
         psalmody.ThirdPsalm.Psalm =  liturgyMasters.Various.SpecialVesperChant;
@@ -293,11 +293,11 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
 function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation) : ShortReading{
     let shortReading = liturgyMasters.VespersCommonPsalter.ShortReading;
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case SpecificCelebrationType.Q_CENDRA:
+        case SpecificLiturgyTimeType.Q_CENDRA:
             return liturgyMasters.PartsOfLentTime.VespersShortReading;
-        case SpecificCelebrationType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_SETMANES:
             return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersShortReading;
-        case SpecificCelebrationType.Q_DIUM_RAMS:
+        case SpecificLiturgyTimeType.Q_DIUM_RAMS:
             // TODO: not sure why but these lines were commented (precedence's thing I guess)
             /*if(liturgyDayInformation.DayOfTheWeek === 6){
                 return liturgyMasters.PalmSundayParts.FirstVespersShortReading;
@@ -305,22 +305,22 @@ function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation 
             else{*/
                 return liturgyMasters.PalmSundayParts.SecondVespersShortReading;
             //}
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             return liturgyMasters.PartsOfHolyWeek.VespersShortReading;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             return liturgyMasters.PartsOfEasterTriduum.VespersShortReading;
-        case SpecificCelebrationType.P_OCTAVA:
+        case SpecificLiturgyTimeType.P_OCTAVA:
             return liturgyMasters.PartsOfEasterOctave.VespersShortReading;
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             return liturgyMasters.EasterWeekParts.VespersShortReading;
-        case SpecificCelebrationType.A_SETMANES:
+        case SpecificLiturgyTimeType.A_SETMANES:
             return liturgyMasters.AdventWeekParts.VespersShortReading;
-        case SpecificCelebrationType.A_FERIES:
+        case SpecificLiturgyTimeType.A_FERIES:
             return liturgyMasters.AdventFairDaysParts.VespersShortReading;
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             return liturgyMasters.ChristmasWhenOctaveParts.VespersShortReading;
-        case SpecificCelebrationType.N_ABANS:
-            if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+        case SpecificLiturgyTimeType.N_ABANS:
+            if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                 return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersShortReading;
             }
             break;
@@ -332,11 +332,11 @@ function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformati
     let shortResponsory =  liturgyMasters.VespersCommonPsalter.ShortResponsory;
     shortResponsory.HasSpecialAntiphon = false;
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case SpecificCelebrationType.Q_CENDRA:
+        case SpecificLiturgyTimeType.Q_CENDRA:
             return liturgyMasters.PartsOfLentTime.VespersShortResponsory;
-        case SpecificCelebrationType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_SETMANES:
             return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersShortResponsory;
-        case SpecificCelebrationType.Q_DIUM_RAMS:
+        case SpecificLiturgyTimeType.Q_DIUM_RAMS:
             // TODO: not sure why but these lines were commented (precedence's thing I guess)
             /*if(liturgyDayInformation.DayOfTheWeek === 6){
               respBreu1 = liturgyMasters.PalmSundayParts.respBreuVespres1
@@ -346,24 +346,24 @@ function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformati
             else{*/
             return liturgyMasters.PalmSundayParts.SecondVespresShortResponsory;
             //}
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             return liturgyMasters.PartsOfHolyWeek.VespersShortResponsory;
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             return liturgyMasters.EasterWeekParts.VespersShortResponsory;
-        case SpecificCelebrationType.A_SETMANES:
+        case SpecificLiturgyTimeType.A_SETMANES:
             return liturgyMasters.AdventWeekParts.VespersShortResponsory;
-        case SpecificCelebrationType.A_FERIES:
+        case SpecificLiturgyTimeType.A_FERIES:
             return liturgyMasters.AdventFairDaysParts.VespersShortResponsory;
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             return liturgyMasters.ChristmasWhenOctaveParts.VespersShortResponsory;
-        case SpecificCelebrationType.N_ABANS:
-            if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+        case SpecificLiturgyTimeType.N_ABANS:
+            if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                 return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersShortResponsory;
             }
             break;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             return liturgyMasters.PartsOfEasterTriduum.VespersShortResponsory;
-        case SpecificCelebrationType.P_OCTAVA:
+        case SpecificLiturgyTimeType.P_OCTAVA:
             return liturgyMasters.PartsOfEasterOctave.VespersShortResponsory;
     }
     return shortResponsory;
@@ -403,7 +403,7 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
         }
     }
     switch(liturgyDayInformation.SpecificLiturgyTime) {
-        case SpecificCelebrationType.Q_CENDRA:
+        case SpecificLiturgyTimeType.Q_CENDRA:
             switch (liturgyDayInformation.YearType) {
                 case YearType.A:
                     evangelicalAntiphon = liturgyMasters.PartsOfLentTime.VespersEvangelicalAntiphonYearA;
@@ -419,7 +419,7 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
                 evangelicalAntiphon = liturgyMasters.PartsOfLentTime.VespersEvangelicalAntiphon;
             }
             break;
-        case SpecificCelebrationType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_SETMANES:
             if (liturgyDayInformation.DayOfTheWeek !== 0 && liturgyDayInformation.DayOfTheWeek !== 6) {
                 evangelicalAntiphon = liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersEvangelicalAntiphon;
             } else {
@@ -450,7 +450,7 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
                 }
             }
             break;
-        case SpecificCelebrationType.Q_DIUM_RAMS:
+        case SpecificLiturgyTimeType.Q_DIUM_RAMS:
             // TODO: not sure why but these lines were commented (precedence's thing I guess)
             /*if(liturgyDayInformation.DayOfTheWeek === 6){
               switch (liturgyDayInformation.YearType) {
@@ -479,16 +479,16 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
             }
             //}
             break;
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             evangelicalAntiphon = liturgyMasters.PartsOfHolyWeek.VespersEvangelicalAntiphon;
             break;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             evangelicalAntiphon = liturgyMasters.PartsOfEasterTriduum.VespersEvangelicalAntiphon;
             break;
-        case SpecificCelebrationType.P_OCTAVA:
+        case SpecificLiturgyTimeType.P_OCTAVA:
             evangelicalAntiphon = liturgyMasters.PartsOfEasterOctave.VespersEvangelicalAntiphon;
             break;
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             if(liturgyDayInformation.DayOfTheWeek !== 6 && liturgyDayInformation.DayOfTheWeek !== 0){
                 evangelicalAntiphon = liturgyMasters.EasterWeekParts.VespersEvangelicalAntiphon;
             }
@@ -521,7 +521,7 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
                 }
             }
             break;
-        case SpecificCelebrationType.A_SETMANES:
+        case SpecificLiturgyTimeType.A_SETMANES:
             if(liturgyDayInformation.DayOfTheWeek !== 6 && liturgyDayInformation.DayOfTheWeek !==0){
                 evangelicalAntiphon = liturgyMasters.AdventWeekParts.VespersEvangelicalAntiphon;
             }
@@ -554,14 +554,14 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
                 }
             }
             break;
-        case SpecificCelebrationType.A_FERIES:
+        case SpecificLiturgyTimeType.A_FERIES:
             evangelicalAntiphon = liturgyMasters.AdventFairDaysParts.VespersEvangelicalAntiphon;
             break;
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             evangelicalAntiphon = liturgyMasters.ChristmasWhenOctaveParts.VespersEvangelicalAntiphon;
             break;
-        case SpecificCelebrationType.N_ABANS:
-            if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+        case SpecificLiturgyTimeType.N_ABANS:
+            if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                 evangelicalAntiphon = liturgyMasters.ChristmasBeforeEpiphanyParts.VespersEvangelicalAntiphon;
             }
             break;
@@ -572,11 +572,11 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
 function GetPrayers(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation) : string{
     let prayers = liturgyMasters.VespersCommonPsalter.Prayers;
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case SpecificCelebrationType.Q_CENDRA:
+        case SpecificLiturgyTimeType.Q_CENDRA:
             return liturgyMasters.PartsOfLentTime.VespersPrayers;
-        case SpecificCelebrationType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_SETMANES:
             return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersPrayers;
-        case SpecificCelebrationType.Q_DIUM_RAMS:
+        case SpecificLiturgyTimeType.Q_DIUM_RAMS:
             // TODO: not sure why but these lines were commented (precedence's thing I guess)
             /*if(liturgyDayInformation.DayOfTheWeek === 6){
               prayers = liturgyMasters.PalmSundayParts.FirstVespersPrayers;
@@ -584,22 +584,22 @@ function GetPrayers(liturgyMasters : LiturgyMasters, liturgyDayInformation : Lit
             else{*/
             return liturgyMasters.PalmSundayParts.SecondVespersPrayers;
             //}
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             return liturgyMasters.PartsOfHolyWeek.VespersPrayers;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             return liturgyMasters.PartsOfEasterTriduum.VespersPrayers;
-        case SpecificCelebrationType.P_OCTAVA:
+        case SpecificLiturgyTimeType.P_OCTAVA:
             return liturgyMasters.PartsOfEasterOctave.VespersPrayers;
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             return liturgyMasters.EasterWeekParts.VespersPrayers;
-        case SpecificCelebrationType.A_SETMANES:
+        case SpecificLiturgyTimeType.A_SETMANES:
             return liturgyMasters.AdventWeekParts.VespersPrayers;
-        case SpecificCelebrationType.A_FERIES:
+        case SpecificLiturgyTimeType.A_FERIES:
             return liturgyMasters.AdventFairDaysParts.VespersPrayers;
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             return liturgyMasters.ChristmasWhenOctaveParts.VespersPrayers;
-        case SpecificCelebrationType.N_ABANS:
-            if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+        case SpecificLiturgyTimeType.N_ABANS:
+            if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                 return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersPrayers;
             }
             break;
@@ -616,11 +616,11 @@ function GetFinalPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation :
         finalPrayer = liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FinalPrayer;
     }
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case SpecificCelebrationType.Q_CENDRA:
+        case SpecificLiturgyTimeType.Q_CENDRA:
             return liturgyMasters.PartsOfLentTime.VespersFinalPrayer;
-        case SpecificCelebrationType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_SETMANES:
             return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersFinalPrayer;
-        case SpecificCelebrationType.Q_DIUM_RAMS:
+        case SpecificLiturgyTimeType.Q_DIUM_RAMS:
             // TODO: not sure why but these lines were commented (precedence's thing I guess)
             /*if(liturgyDayInformation.DayOfTheWeek === 6){
               finalPrayer = liturgyMasters.PalmSundayParts.FinalVespersFinalPrayer;
@@ -628,22 +628,22 @@ function GetFinalPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation :
             else{*/
             return liturgyMasters.PalmSundayParts.SecondVespersFinalPrayer;
             //}
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             return liturgyMasters.PartsOfHolyWeek.VespersFinalPrayer;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             return liturgyMasters.PartsOfEasterTriduum.VespersFinalPrayer;
-        case SpecificCelebrationType.P_OCTAVA:
+        case SpecificLiturgyTimeType.P_OCTAVA:
             return liturgyMasters.PartsOfEasterOctave.VespersFinalPrayer;
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             return liturgyMasters.EasterWeekParts.VespersFinalPrayer;
-        case SpecificCelebrationType.A_SETMANES:
+        case SpecificLiturgyTimeType.A_SETMANES:
             return liturgyMasters.AdventWeekParts.VespersFinalPrayer;
-        case SpecificCelebrationType.A_FERIES:
+        case SpecificLiturgyTimeType.A_FERIES:
             return liturgyMasters.AdventFairDaysParts.VespersFinalPrayer;
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             return liturgyMasters.ChristmasWhenOctaveParts.VespersFinalPrayer;
-        case SpecificCelebrationType.N_ABANS:
-            if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+        case SpecificLiturgyTimeType.N_ABANS:
+            if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                 return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersFinalPrayer;
             }
             break;

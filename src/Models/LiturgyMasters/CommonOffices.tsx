@@ -1,4 +1,5 @@
-import {Celebration, HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
+import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
 
 export default class CommonOffice {
     static MasterName: string = "OficisComuns";
@@ -154,7 +155,7 @@ export default class CommonOffice {
     }
 
     Id: number;
-    Celebration: Celebration = new Celebration();
+    Celebration: CelebrationInformation = new CelebrationInformation();
     FirstVespersLatinAnthem: string;
     FirstVespersCatalanAnthem: string;
     FirstVespersFirstPsalm: Psalm = new Psalm();

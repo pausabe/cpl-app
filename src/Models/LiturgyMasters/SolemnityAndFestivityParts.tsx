@@ -1,5 +1,4 @@
 import {
-    Celebration,
     HourCommonParts,
     ReadingOfTheOffice,
     Psalm,
@@ -7,6 +6,7 @@ import {
     ShortReading,
     ShortResponsory
 } from "./CommonParts";
+import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
 
 export default class SolemnityAndFestivityParts {
     static MasterName: string = "tempsSolemnitatsFestes";
@@ -17,6 +17,7 @@ export default class SolemnityAndFestivityParts {
         this.Celebration.Day = databaseRow.dia;
         this.Celebration.Title = databaseRow.nomMemoria;
         this.Celebration.Category = databaseRow.Cat;
+        this.Celebration.SpecificClassification = databaseRow.ClassificacioCategoria; // TODO: fill it in the database
 
         this.FirstVespersLatinAnthem = databaseRow.himneVespres1Llati;
         this.FirstVespersCatalanAnthem = databaseRow.himneVespres1Cat;
@@ -182,7 +183,7 @@ export default class SolemnityAndFestivityParts {
     }
 
     Id: number;
-    Celebration: Celebration = new Celebration();
+    Celebration: CelebrationInformation = new CelebrationInformation();
     FirstVespersLatinAnthem: string;
     FirstVespersCatalanAnthem: string;
     FirstVespersFirstPsalm: Psalm = new Psalm();

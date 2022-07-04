@@ -3,7 +3,7 @@ import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import {Psalm, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
-import {SpecificCelebrationType} from "../CelebrationTimeEnums";
+import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 
 export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationNightPrayer : NightPrayer, settings : Settings) : NightPrayer{
     let nightPrayer = new NightPrayer();
@@ -23,20 +23,20 @@ export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInf
 function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationNightPrayer : NightPrayer, settings : Settings) : string{
     let anthem = settings.UseLatin? liturgyMasters.Various.NightPrayerLatinSecondOptionAnthem : liturgyMasters.Various.NightPrayerCatalanSecondOptionAnthem;
     switch (liturgyDayInformation.SpecificLiturgyTime) {
-        case SpecificCelebrationType.Q_SETMANES:
+        case SpecificLiturgyTimeType.Q_SETMANES:
             if(liturgyDayInformation.Week == "1" || liturgyDayInformation.Week == "3" || liturgyDayInformation.Week == "5") {
                 return settings.UseLatin? liturgyMasters.Various.NightPrayerLatinFirstOptionAnthem : liturgyMasters.Various.NightPrayerCatalanFirstOptionAnthem;
             }
             break;
-        case SpecificCelebrationType.A_SETMANES:
-        case SpecificCelebrationType.N_OCTAVA:
+        case SpecificLiturgyTimeType.A_SETMANES:
+        case SpecificLiturgyTimeType.N_OCTAVA:
             return settings.UseLatin? liturgyMasters.Various.NightPrayerLatinFirstOptionAnthem : liturgyMasters.Various.NightPrayerCatalanFirstOptionAnthem;
-        case SpecificCelebrationType.A_FERIES:
+        case SpecificLiturgyTimeType.A_FERIES:
             if(liturgyDayInformation.Date.getDate() == 24 && liturgyDayInformation.Date.getMonth() == 11){
                 return settings.UseLatin? liturgyMasters.Various.NightPrayerLatinFirstOptionAnthem : liturgyMasters.Various.NightPrayerCatalanFirstOptionAnthem;
             }
             break;
-        case SpecificCelebrationType.N_ABANS:
+        case SpecificLiturgyTimeType.N_ABANS:
             if(liturgyDayInformation.Date.getDate() < 5){
                 return settings.UseLatin? liturgyMasters.Various.NightPrayerLatinFirstOptionAnthem : liturgyMasters.Various.NightPrayerCatalanFirstOptionAnthem;
             }
@@ -58,7 +58,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
     }
     // TODO: Isn't P_SETMANES already inside 'Pasqua'?
     if(liturgyDayInformation.GenericLiturgyTime === 'Pasqua' ||
-        liturgyDayInformation.SpecificLiturgyTime === SpecificCelebrationType.P_SETMANES){
+        liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES){
         psalmody.FirstPsalm.Antiphon = "Al·leluia, al·leluia, al·leluia.";
     }
     return psalmody;
@@ -71,18 +71,18 @@ function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformati
     shortResponsory.SecondPart = "Encomano el meu esperit.";
     shortResponsory.ThirdPart = "Vós, Déu fidel, ens heu redimit.";
     switch (liturgyDayInformation.SpecificLiturgyTime) {
-        case SpecificCelebrationType.P_SETMANES:
+        case SpecificLiturgyTimeType.P_SETMANES:
             shortResponsory.FirstPart = "A les vostres mans, Senyor, encomano el meu esperit,";
             shortResponsory.SecondPart = "Al·leluia, al·leluia.";
             shortResponsory.ThirdPart = "Vós, Déu fidel, ens heu redimit.";
             break;
-        case SpecificCelebrationType.Q_SET_SANTA:
+        case SpecificLiturgyTimeType.Q_SET_SANTA:
             if(liturgyDayInformation.DayOfTheWeek === 4){
                 shortResponsory.HasSpecialAntiphon = true;
                 shortResponsory.SpecialAntiphon = "Crist es féu per nosaltres obedient fins a la mort.";
             }
             break;
-        case SpecificCelebrationType.Q_TRIDU:
+        case SpecificLiturgyTimeType.Q_TRIDU:
             if(liturgyDayInformation.DayOfTheWeek === 5){
                 shortResponsory.HasSpecialAntiphon = true;
                 shortResponsory.SpecialAntiphon = "Crist es féu per nosaltres obedient fins a la mort i una mort de creu.";
@@ -104,7 +104,7 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
     let evangelicalAntiphon = "Salveu-nos, Senyor, durant el dia, guardeu-nos durant la nit, perquè sigui amb Crist la nostra vetlla i amb Crist el nostre descans.";
     // TODO: Isn't P_SETMANES already inside 'Pasqua'?
     if(liturgyDayInformation.GenericLiturgyTime === 'Pasqua' ||
-        liturgyDayInformation.SpecificLiturgyTime === SpecificCelebrationType.P_SETMANES){
+        liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES){
         evangelicalAntiphon = evangelicalAntiphon + " Al·leluia.";
     }
     return evangelicalAntiphon;

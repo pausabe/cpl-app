@@ -1,6 +1,13 @@
 export default class CelebrationInformation{
-    Name: string;
+    Title: string;
     Description: string;
-    CelebrationType: string;
-    Precedence: number;
+    Type: string;
+    SpecificClassification: string;
+    Diocese : string;
+    Category : string;
+    /** @deprecated **/
+    Precedence: string;
+    Day : string;
+    WeekDay: string;
+    LiturgicalTime : string;
 }

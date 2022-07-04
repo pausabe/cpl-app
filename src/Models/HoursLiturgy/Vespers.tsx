@@ -12,4 +12,5 @@ export default class Vespers {
     Prayers: string;
     FinalPrayer: string;
     CelebrationTitle: string;
+    Title: string;
 }

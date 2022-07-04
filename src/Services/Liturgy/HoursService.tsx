@@ -3,11 +3,11 @@ import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import {Psalm, Responsory, ShortReading} from "../../Models/LiturgyMasters/CommonParts";
-import {SpecificCelebrationType} from "../CelebrationTimeEnums";
+import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 
 export function ObtainHours(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationHours : Hours, settings : Settings) : Hours {
     let hours = new Hours();
-    if (liturgyDayInformation.SpecificLiturgyTime === SpecificCelebrationType.Q_DIUM_PASQUA) {
+    if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA) {
         hours = celebrationHours;
     } 
     else {
@@ -74,8 +74,8 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
             hourAnthems.NinthValue = liturgyMasters.Various.NinthHourCatalanFirstOptionAnthem;
         }
         switch(liturgyDayInformation.SpecificLiturgyTime){
-            case SpecificCelebrationType.Q_CENDRA:
-            case SpecificCelebrationType.Q_SETMANES:
+            case SpecificLiturgyTimeType.Q_CENDRA:
+            case SpecificLiturgyTimeType.Q_SETMANES:
                 if(settings.UseLatin){
                     hourAnthems.ThirdValue = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.ThirdHourLatinAnthem;
                     hourAnthems.SixthValue = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.SixthHourLatinAnthem;
@@ -87,8 +87,8 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
                     hourAnthems.NinthValue = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.NinthHourCatalanAnthem;
                 }
                 break;
-            case SpecificCelebrationType.Q_DIUM_RAMS:
-            case SpecificCelebrationType.Q_SET_SANTA:
+            case SpecificLiturgyTimeType.Q_DIUM_RAMS:
+            case SpecificLiturgyTimeType.Q_SET_SANTA:
                 if(settings.UseLatin){
                     hourAnthems.ThirdValue = liturgyMasters.CommonPartsOfHolyWeek.HoursLatinAnthem;
                     hourAnthems.SixthValue = liturgyMasters.CommonPartsOfHolyWeek.HoursLatinAnthem;
@@ -100,7 +100,7 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
                     hourAnthems.NinthValue = liturgyMasters.CommonPartsOfHolyWeek.HoursCatalanAnthem;
                 }
                 break;
-            case SpecificCelebrationType.Q_TRIDU:
+            case SpecificLiturgyTimeType.Q_TRIDU:
                 if(settings.UseLatin){
                     hourAnthems.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.LatinAnthem;
                     hourAnthems.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.LatinAnthem;
@@ -112,7 +112,7 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
                     hourAnthems.NinthValue = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.CatalanAnthem;
                 }
                 break;
-            case SpecificCelebrationType.P_OCTAVA:
+            case SpecificLiturgyTimeType.P_OCTAVA:
                 if(settings.UseLatin){
                     hourAnthems.ThirdValue = liturgyMasters.PartsOfEasterBeforeAscension.ThirdHourLatinAnthem;
                     hourAnthems.SixthValue = liturgyMasters.PartsOfEasterBeforeAscension.SixthHourLatinAnthem;
@@ -124,7 +124,7 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
                     hourAnthems.NinthValue = liturgyMasters.PartsOfEasterBeforeAscension.NinthHourCatalanAnthem;
                 }
                 break;
-            case SpecificCelebrationType.P_SETMANES:
+            case SpecificLiturgyTimeType.P_SETMANES:
                 if(liturgyDayInformation.Week === '7'){
                     if(settings.UseLatin){
                         hourAnthems.ThirdValue = liturgyMasters.PartsOfEasterAfterAscension.ThirdHourLatinAnthem;
@@ -150,12 +150,12 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
                     }
                 }
                 break;
-            case SpecificCelebrationType.A_SETMANES:
-            case SpecificCelebrationType.A_FERIES:
-            case SpecificCelebrationType.N_OCTAVA:
-            case SpecificCelebrationType.N_ABANS:
-                if(liturgyDayInformation.SpecificLiturgyTime != SpecificCelebrationType.N_ABANS ||
-                    (liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
+            case SpecificLiturgyTimeType.A_SETMANES:
+            case SpecificLiturgyTimeType.A_FERIES:
+            case SpecificLiturgyTimeType.N_OCTAVA:
+            case SpecificLiturgyTimeType.N_ABANS:
+                if(liturgyDayInformation.SpecificLiturgyTime != SpecificLiturgyTimeType.N_ABANS ||
+                    (liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
                     if(settings.UseLatin){
                         hourAnthems.ThirdValue = liturgyMasters.CommonAdventAndChristmasParts.ThirdHourLatinAnthem;
                         hourAnthems.SixthValue = liturgyMasters.CommonAdventAndChristmasParts.SixthHourLatinAnthem;
@@ -213,8 +213,8 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
         psalmodyAnthems.SixthValue.SecondPsalm = liturgyMasters.CommonHourPsalter.SecondPsalm;
         psalmodyAnthems.NinthValue.ThirdPsalm = liturgyMasters.CommonHourPsalter.ThirdPsalm;
         switch(liturgyDayInformation.SpecificLiturgyTime){
-            case SpecificCelebrationType.Q_CENDRA:
-            case SpecificCelebrationType.Q_SETMANES:
+            case SpecificLiturgyTimeType.Q_CENDRA:
+            case SpecificLiturgyTimeType.Q_SETMANES:
                 psalmodyAnthems.ThirdValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.SixthValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.NinthValue.HasMultipleAntiphons = false;
@@ -222,8 +222,8 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 psalmodyAnthems.SixthValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.SixthHourAntiphon;
                 psalmodyAnthems.NinthValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.NinthHourAntiphon;
                 break;
-            case SpecificCelebrationType.Q_DIUM_RAMS:
-            case SpecificCelebrationType.Q_SET_SANTA:
+            case SpecificLiturgyTimeType.Q_DIUM_RAMS:
+            case SpecificLiturgyTimeType.Q_SET_SANTA:
                 psalmodyAnthems.ThirdValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.SixthValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.NinthValue.HasMultipleAntiphons = false;
@@ -231,7 +231,7 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 psalmodyAnthems.SixthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.SixthHourAntiphon;
                 psalmodyAnthems.NinthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.NinthHourAntiphon;
                 break;
-            case SpecificCelebrationType.Q_TRIDU:
+            case SpecificLiturgyTimeType.Q_TRIDU:
                 psalmodyAnthems.ThirdValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.SixthValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.NinthValue.HasMultipleAntiphons = false;
@@ -263,7 +263,7 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 psalmodyAnthems.SixthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.Antiphon;
                 psalmodyAnthems.NinthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.Antiphon;
                 break;
-            case SpecificCelebrationType.P_OCTAVA:
+            case SpecificLiturgyTimeType.P_OCTAVA:
                 psalmodyAnthems.ThirdValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.SixthValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.NinthValue.HasMultipleAntiphons = false;
@@ -295,7 +295,7 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 psalmodyAnthems.SixthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.SixthHourParts.Antiphon;
                 psalmodyAnthems.NinthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.NinthHourParts.Antiphon;
                 break;
-            case SpecificCelebrationType.P_SETMANES:
+            case SpecificLiturgyTimeType.P_SETMANES:
                 psalmodyAnthems.ThirdValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.SixthValue.HasMultipleAntiphons = false;
                 psalmodyAnthems.NinthValue.HasMultipleAntiphons = false;
@@ -303,12 +303,12 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 psalmodyAnthems.SixthValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
                 psalmodyAnthems.NinthValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
                 break;
-            case SpecificCelebrationType.A_SETMANES:
-            case SpecificCelebrationType.N_OCTAVA:
-            case SpecificCelebrationType.A_FERIES:
-            case SpecificCelebrationType.N_ABANS:
-                if(liturgyDayInformation.SpecificLiturgyTime != SpecificCelebrationType.N_ABANS ||
-                    (liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
+            case SpecificLiturgyTimeType.A_SETMANES:
+            case SpecificLiturgyTimeType.N_OCTAVA:
+            case SpecificLiturgyTimeType.A_FERIES:
+            case SpecificLiturgyTimeType.N_ABANS:
+                if(liturgyDayInformation.SpecificLiturgyTime != SpecificLiturgyTimeType.N_ABANS ||
+                    (liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13)){
                     psalmodyAnthems.ThirdValue.HasMultipleAntiphons = false;
                     psalmodyAnthems.SixthValue.HasMultipleAntiphons = false;
                     psalmodyAnthems.NinthValue.HasMultipleAntiphons = false;
@@ -347,32 +347,32 @@ function GetResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformation : 
         hourAnthems.SixthValue = liturgyMasters.CommonHourPsalter.SixthHourParts.Responsory;
         hourAnthems.NinthValue = liturgyMasters.CommonHourPsalter.NinthHourParts.Responsory;
         switch(liturgyDayInformation.SpecificLiturgyTime){
-            case SpecificCelebrationType.Q_CENDRA:
+            case SpecificLiturgyTimeType.Q_CENDRA:
                 hourAnthems.ThirdValue = liturgyMasters.PartsOfLentTime.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.PartsOfLentTime.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.PartsOfLentTime.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.Q_SETMANES:
+            case SpecificLiturgyTimeType.Q_SETMANES:
                 hourAnthems.ThirdValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.Q_DIUM_RAMS:
+            case SpecificLiturgyTimeType.Q_DIUM_RAMS:
                 hourAnthems.ThirdValue = liturgyMasters.PalmSundayParts.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.PalmSundayParts.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.PalmSundayParts.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.Q_SET_SANTA:
+            case SpecificLiturgyTimeType.Q_SET_SANTA:
                 hourAnthems.ThirdValue = liturgyMasters.PartsOfHolyWeek.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.PartsOfHolyWeek.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.PartsOfHolyWeek.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.Q_TRIDU:
+            case SpecificLiturgyTimeType.Q_TRIDU:
                 hourAnthems.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.P_OCTAVA:
+            case SpecificLiturgyTimeType.P_OCTAVA:
                 hourAnthems.ThirdValue.Versicle = "Avui és el dia en què ha obrat el Senyor, al·leluia.";
                 hourAnthems.ThirdValue.Response = "Alegrem-nos i celebrem-lo, al·leluia.";
                 hourAnthems.SixthValue.Versicle = "Avui és el dia en què ha obrat el Senyor, al·leluia.";
@@ -380,28 +380,28 @@ function GetResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformation : 
                 hourAnthems.NinthValue.Versicle = "Avui és el dia en què ha obrat el Senyor, al·leluia.";
                 hourAnthems.NinthValue.Response = "Alegrem-nos i celebrem-lo, al·leluia.";
                 break;
-            case SpecificCelebrationType.P_SETMANES:
+            case SpecificLiturgyTimeType.P_SETMANES:
                 hourAnthems.ThirdValue = liturgyMasters.EasterWeekParts.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.EasterWeekParts.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.EasterWeekParts.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.A_SETMANES:
+            case SpecificLiturgyTimeType.A_SETMANES:
                 hourAnthems.ThirdValue = liturgyMasters.AdventWeekParts.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.AdventWeekParts.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.AdventWeekParts.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.A_FERIES:
+            case SpecificLiturgyTimeType.A_FERIES:
                 hourAnthems.ThirdValue = liturgyMasters.AdventFairDaysParts.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.AdventFairDaysParts.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.N_OCTAVA:
+            case SpecificLiturgyTimeType.N_OCTAVA:
                 hourAnthems.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.Responsory;
                 break;
-            case SpecificCelebrationType.N_ABANS:
-                if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+            case SpecificLiturgyTimeType.N_ABANS:
+                if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                     hourAnthems.ThirdValue = liturgyMasters.ChristmasBeforeEpiphanyParts.ThirdHourParts.Responsory;
                     hourAnthems.SixthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.SixthHourParts.Responsory;
                     hourAnthems.NinthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.NinthHourParts.Responsory;
@@ -429,58 +429,58 @@ function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation 
         hourShortReading.SixthValue = liturgyMasters.CommonHourPsalter.SixthHourParts.ShortReading;
         hourShortReading.NinthValue = liturgyMasters.CommonHourPsalter.NinthHourParts.ShortReading;
         switch(liturgyDayInformation.SpecificLiturgyTime){
-            case SpecificCelebrationType.Q_CENDRA:
+            case SpecificLiturgyTimeType.Q_CENDRA:
                 hourShortReading.ThirdValue = liturgyMasters.PartsOfLentTime.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.PartsOfLentTime.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PartsOfLentTime.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.Q_SETMANES:
+            case SpecificLiturgyTimeType.Q_SETMANES:
                 hourShortReading.ThirdValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.Q_DIUM_RAMS:
+            case SpecificLiturgyTimeType.Q_DIUM_RAMS:
                 hourShortReading.ThirdValue = liturgyMasters.PalmSundayParts.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.PalmSundayParts.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PalmSundayParts.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.Q_SET_SANTA:
+            case SpecificLiturgyTimeType.Q_SET_SANTA:
                 hourShortReading.ThirdValue = liturgyMasters.PartsOfHolyWeek.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.PartsOfHolyWeek.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PartsOfHolyWeek.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.Q_TRIDU:
+            case SpecificLiturgyTimeType.Q_TRIDU:
                 hourShortReading.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.P_OCTAVA:
+            case SpecificLiturgyTimeType.P_OCTAVA:
                 hourShortReading.ThirdValue = liturgyMasters.PartsOfEasterOctave.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.PartsOfEasterOctave.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PartsOfEasterOctave.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.P_SETMANES:
+            case SpecificLiturgyTimeType.P_SETMANES:
                 hourShortReading.ThirdValue = liturgyMasters.EasterWeekParts.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.EasterWeekParts.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.EasterWeekParts.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.A_SETMANES:
+            case SpecificLiturgyTimeType.A_SETMANES:
                 hourShortReading.ThirdValue = liturgyMasters.AdventWeekParts.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.AdventWeekParts.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.AdventWeekParts.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.A_FERIES:
+            case SpecificLiturgyTimeType.A_FERIES:
                 hourShortReading.ThirdValue = liturgyMasters.AdventFairDaysParts.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.AdventFairDaysParts.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.N_OCTAVA:
+            case SpecificLiturgyTimeType.N_OCTAVA:
                 hourShortReading.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.ShortReading;
                 break;
-            case SpecificCelebrationType.N_ABANS:
-                if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+            case SpecificLiturgyTimeType.N_ABANS:
+                if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                     hourShortReading.ThirdValue = liturgyMasters.ChristmasBeforeEpiphanyParts.ThirdHourParts.ShortReading;
                     hourShortReading.SixthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.SixthHourParts.ShortReading;
                     hourShortReading.NinthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.NinthHourParts.ShortReading;
@@ -515,58 +515,58 @@ function GetFinalPraying(liturgyMasters : LiturgyMasters, liturgyDayInformation 
             finalPraying.NinthValue = liturgyMasters.CommonHourPsalter.NinthHourParts.FinalPrayer;
         }
         switch(liturgyDayInformation.SpecificLiturgyTime){
-            case SpecificCelebrationType.Q_CENDRA:
+            case SpecificLiturgyTimeType.Q_CENDRA:
                 finalPraying.ThirdValue = liturgyMasters.PartsOfLentTime.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.PartsOfLentTime.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PartsOfLentTime.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.Q_SETMANES:
+            case SpecificLiturgyTimeType.Q_SETMANES:
                 finalPraying.ThirdValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.Q_DIUM_RAMS:
+            case SpecificLiturgyTimeType.Q_DIUM_RAMS:
                 finalPraying.ThirdValue = liturgyMasters.PalmSundayParts.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.PalmSundayParts.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PalmSundayParts.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.Q_SET_SANTA:
+            case SpecificLiturgyTimeType.Q_SET_SANTA:
                 finalPraying.ThirdValue = liturgyMasters.PartsOfHolyWeek.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.PartsOfHolyWeek.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PartsOfHolyWeek.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.Q_TRIDU:
+            case SpecificLiturgyTimeType.Q_TRIDU:
                 finalPraying.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.P_OCTAVA:
+            case SpecificLiturgyTimeType.P_OCTAVA:
                 finalPraying.ThirdValue = liturgyMasters.PartsOfEasterOctave.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.PartsOfEasterOctave.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PartsOfEasterOctave.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.P_SETMANES:
+            case SpecificLiturgyTimeType.P_SETMANES:
                 finalPraying.ThirdValue = liturgyMasters.EasterWeekParts.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.EasterWeekParts.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.EasterWeekParts.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.A_SETMANES:
+            case SpecificLiturgyTimeType.A_SETMANES:
                 finalPraying.ThirdValue = liturgyMasters.AdventWeekParts.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.AdventWeekParts.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.AdventWeekParts.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.A_FERIES:
+            case SpecificLiturgyTimeType.A_FERIES:
                 finalPraying.ThirdValue = liturgyMasters.AdventFairDaysParts.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.AdventFairDaysParts.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.N_OCTAVA:
+            case SpecificLiturgyTimeType.N_OCTAVA:
                 finalPraying.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.FinalPrayer;
                 break;
-            case SpecificCelebrationType.N_ABANS:
-                if(liturgyDayInformation.SpecificLiturgyTime == SpecificCelebrationType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+            case SpecificLiturgyTimeType.N_ABANS:
+                if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.N_ABANS && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
                     finalPraying.ThirdValue = liturgyMasters.ChristmasBeforeEpiphanyParts.ThirdHourParts.FinalPrayer;
                     finalPraying.SixthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.SixthHourParts.FinalPrayer;
                     finalPraying.NinthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.NinthHourParts.FinalPrayer;

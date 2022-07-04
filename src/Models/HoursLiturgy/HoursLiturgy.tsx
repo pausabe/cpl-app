@@ -16,8 +16,8 @@ export default class HoursLiturgy {
     Vespers : Vespers;
     NightPrayer : NightPrayer;
     // TODO: maybe in other place
-    papa: TABLES.diversos.item(38).oracio,
-    bisbe: TABLES.diversos.item(GF.bisbeId(diocesiName)).oracio,
+    //papa: TABLES.diversos.item(38).oracio,
+    //bisbe: TABLES.diversos.item(GF.bisbeId(diocesiName)).oracio,
 }
 
 export class VespersOptions{

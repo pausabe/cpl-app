@@ -9,14 +9,14 @@ import {getDatabaseVersion} from "./DatabaseDataService";
 import * as Logger from "../Utils/Logger";
 import {Settings} from "../Models/Settings";
 import DatabaseInformation from "../Models/DatabaseInformation";
-import LiturgyDayInformation from "../Models/LiturgyDayInformation";
-import CelebrationInformation from "../Models/CelebrationInformation";
+import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {ObtainHoursLiturgy} from "./Liturgy/HoursLiturgyService";
 import {ObtainLiturgyMasters} from "./Liturgy/LiturgyMastersService";
 import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
 import MassLiturgy from "../Models/MassLiturgy";
-import * as PrecedenceService from "./PrecedenceService";
-import {SpecificCelebrationType} from "./CelebrationTimeEnums";
+import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
+import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformation';
+import {CelebrationType} from "./DatabaseEnums";
 
 export let LastRefreshDate = new Date()
 export let CurrentSettings = new Settings();
@@ -33,8 +33,8 @@ export async function ReloadAllData(date) {
     CurrentLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(date, CurrentSettings);
     const liturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
     CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation, CurrentSettings);
+    CurrentCelebrationInformation = ObtainCurrentCelebrationInformation(CurrentHoursLiturgy);
     // TODO: CurrentMassLiturgy = await ObtainMassLiturgy(liturgyMasters, globalData);
-    CurrentCelebrationInformation = await ObtainCurrentCelebrationInformation();
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Total time passed: ', (new Date().getMilliseconds() - LastRefreshDate.getMilliseconds()) / 1000);
 }
 
@@ -94,82 +94,19 @@ async function ObtainCurrentDatabaseInformation() : Promise<DatabaseInformation>
     return databaseInformation;
 }
 
-async function ObtainCurrentLiturgyDayInformation(date: Date, currentSettings : Settings) : Promise<LiturgyDayInformation>{
+async function ObtainCurrentLiturgyDayInformation(date: Date, settings : Settings) : Promise<LiturgyDayInformation>{
     let currentLiturgyDayInformation = new LiturgyDayInformation();
-    currentLiturgyDayInformation.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, currentSettings);
-    currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Today, currentSettings);
-    currentLiturgyDayInformation.Today.PrecedenceLevel = PrecedenceService.ObtainPrecedenceByLiturgyTime(currentLiturgyDayInformation.Today, currentSettings);
+    currentLiturgyDayInformation.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, settings);
+    currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Today, settings);
     const tomorrowDate = new Date(date);
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-    currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, currentSettings);
-    currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Tomorrow, currentSettings);
-    currentLiturgyDayInformation.Tomorrow.PrecedenceLevel = PrecedenceService.ObtainPrecedenceByLiturgyTime(currentLiturgyDayInformation.Tomorrow, currentSettings);
+    currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, settings);
+    currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Tomorrow, settings);
     return currentLiturgyDayInformation;
 }
 
-async function ObtainCurrentCelebrationInformation() : Promise<CelebrationInformation>{
-    let currentCelebrationInformation = new CelebrationInformation();
-    // TODO:
-    setSomeInfo();
-    return currentCelebrationInformation;
-}
-
-function setSomeInfo() {
-    if (GlobalData.LT === SpecificCelebrationType.Q_DIUM_RAMS) {
-        LITURGIA.info_cel.nomCel = "Diumenge de Rams";
-        LITURGIA.info_cel.infoCel = '-';
-        LITURGIA.info_cel.typeCel = '-';
-    }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.Q_SET_SANTA) {
-        LITURGIA.info_cel.nomCel = weekDayName(GlobalData.date.getDay()) + " Sant";
-        LITURGIA.info_cel.infoCel = '-';
-        LITURGIA.info_cel.typeCel = '-';
-    }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.Q_TRIDU) {
-        LITURGIA.info_cel.nomCel = weekDayName(GlobalData.date.getDay()) + " Sant";
-        LITURGIA.info_cel.infoCel = '-';
-        LITURGIA.info_cel.typeCel = '-';
-    }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.P_OCTAVA) {
-        LITURGIA.info_cel.nomCel = "Octava de Pasqua";
-        LITURGIA.info_cel.infoCel = '-';
-        LITURGIA.info_cel.typeCel = '-';
-    }
-    else if (LITURGIA.info_cel.nomCel === '-'
-        && GlobalData.LT === SpecificCelebrationType.N_OCTAVA
-        && idTSF === -1 && idDE === -1) {
-        LITURGIA.info_cel.nomCel = "Octava de Nadal";
-        LITURGIA.info_cel.infoCel = '-';
-        LITURGIA.info_cel.typeCel = '-';
-    }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.Q_CENDRA) {
-        LITURGIA.info_cel.nomCel = "Cendra";
-        LITURGIA.info_cel.infoCel = '-';
-        LITURGIA.info_cel.typeCel = '-';
-    }
-    else if (LITURGIA.info_cel.nomCel === '-' && GlobalData.LT === SpecificCelebrationType.A_FERIES) {
-        LITURGIA.info_cel.nomCel = "Fèria d’Advent";
-        LITURGIA.info_cel.infoCel = '-';
-        LITURGIA.info_cel.typeCel = '-';
-    }
-}
-
-function weekDayName(num) {
-    switch (num) {
-        case 0:
-            return ("Diumenge");
-        case 1:
-            return ("Dilluns");
-        case 2:
-            return ("Dimarts");
-        case 3:
-            return ("Dimecres");
-        case 4:
-            return ("Dijous");
-        case 5:
-            return ("Divendres");
-        case 6:
-            return ("Dissabte");
-    }
+function ObtainCurrentCelebrationInformation(hoursLiturgy: HoursLiturgy): CelebrationInformation{
+    // For now, celebration information is inside hour's data. In the future it should be complete separated
+    return hoursLiturgy.CelebrationInformation;
 }
 

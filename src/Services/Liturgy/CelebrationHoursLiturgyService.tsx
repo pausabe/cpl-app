@@ -1,88 +1,104 @@
 import HoursLiturgy from "../../Models/HoursLiturgy/HoursLiturgy";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
+import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import {CelebrationType} from "../DatabaseEnums";
 import Vespers from "../../Models/HoursLiturgy/Vespers";
-import { SpecificCelebrationType } from "../CelebrationTimeEnums";
+import { SpecificLiturgyTimeType } from "../CelebrationTimeEnums";
+import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
+import SaintsSolemnities from "../../Models/LiturgyMasters/SaintsSolemnities";
+import SaintsMemories from "../../Models/LiturgyMasters/SaintsMemories";
+import { WeekDayName } from "../../Utils/DateManagement";
 
-export function ObtainCelebrationHoursLiturgy(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : HoursLiturgy{
-    let hoursLiturgy = new HoursLiturgy();
-
-    // TODO: fill CelebrationInformation
-    /*hoursLiturgy.CelebrationInformation.Name;
-    hoursLiturgy.CelebrationInformation.Description;
-    hoursLiturgy.CelebrationInformation.CelebrationType;
-    ex: hoursLiturgy.CelebrationInformation.Precedence = liturgyMasters.SaintsSolemnitiesParts.Celebration.Precedence;*/
-
-    if((liturgyDayInformation.CelebrationType === CelebrationType.OptionalMemory ||
-        liturgyDayInformation.CelebrationType == CelebrationType.OptionalVirginMemory) &&
-        !settings.OptionalFestivityEnabled){
-        this.INFO_CEL.nomCel = TABLES.santsMemories.nomMemoria;
-        this.INFO_CEL.infoCel = TABLES.santsMemories.infoMemoria;
-        this.INFO_CEL.typeCel = celType;
-    }
+export function ObtainCelebrationHoursLiturgy(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgyDayInformation, settings : Settings) : HoursLiturgy{
+    let hoursLiturgy: HoursLiturgy;
 
     // TODO: by defualt, everithing was "-" (now will be undefined, enough? change !== '-'?)
 
-    // TODAY
-    if(idDE !== -1){
-        // TODO: vespers here will be SecondVespersWithCelebration
-        makeDE(TABLES, todayCelebrationType);
+    // Get hours liturgy
+    if(liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier !== -1){
+        hoursLiturgy = makeDE(liturgyMasters.SpecialDaysParts, liturgyDayInformation);
     }
-    else if(idTSF !== -1){
-        // TODO: vespers here will be SecondVespersWithCelebration
-        makeTSF(TABLES);
+    else if(liturgyDayInformation.Today.SpecialCelebration.StrongTimesMasterIdentifier !== -1){
+        hoursLiturgy = makeTSF(liturgyMasters.SolemnityAndFestivityParts);
     }
-    else if(GlobalData.LT === SpecificCelebrationType.Q_DIUM_PASQUA){
-        // TODO: vespers here will be SecondVespersWithCelebration
-        makeDP(TABLES);
+    else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA){
+        hoursLiturgy = makeDP(liturgyMasters.EasterSunday);
     }
     else{
-        // TODO: vespers here will be SecondVespersWithCelebration
-        createCelNormal();
+        hoursLiturgy = createCelNormal(liturgyMasters, liturgyDayInformation.Today, settings);
     }
 
-    // TOMORROW
-    if(tomorrowCelebrationType !== '-'){
+    // First Vespers when tomorrow there is a celebration
+    if(liturgyDayInformation.Tomorrow.CelebrationType !== CelebrationType.Fair){
         hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration = createCelOnlyVespres1();
     }
 
-    if(this.INFO_CEL.typeCel === '.') {
-        this.INFO_CEL.typeCel = GlobalData.celType;
-    }
-    if(GlobalData.LT === SpecificCelebrationType.Q_TRIDU && GlobalData.date.getDay() === 6){
-        this.INFO_CEL.nomCelTom = "dium-pasqua";
+    // Special vesper title code when tomorrow is Easter sunday
+    if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU &&
+        liturgyDayInformation.Today.Date.getDay() === 6){
+        hoursLiturgy.Vespers.Title = "dium-pasqua";
     }
 
-    // TODO: what the hell?
-    TABLES.OficisComuns = null;
+    // Update Celebration Information if it was empty
+    if(hoursLiturgy.CelebrationInformation.Type === undefined) {
+        hoursLiturgy.CelebrationInformation = GetCelebrationInformationNotByCelebration(liturgyDayInformation.Today);
+    }
 
     return hoursLiturgy;
 }
 
-function createCelNormal(){
-    switch (celType) {
-        case "S":
-            makeSF(TABLES, true, true);
+function GetCelebrationInformationNotByCelebration(liturgyDayInformation: LiturgySpecificDayInformation): CelebrationInformation{
+    let celebrationInformation = new CelebrationInformation();
+    celebrationInformation.Title = "";
+    celebrationInformation.Description = "-";
+    celebrationInformation.Type = CelebrationType.Fair;
+    if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_SET_SANTA ||
+        liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU) {
+        celebrationInformation.Title = WeekDayName(liturgyDayInformation.Date.getDay()) + " Sant";
+    }
+    else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA) {
+        celebrationInformation.Title = "Octava de Pasqua";
+    }
+    else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA &&
+        liturgyDayInformation.SpecialCelebration.StrongTimesMasterIdentifier === -1 &&
+        liturgyDayInformation.SpecialCelebration.SpecialDaysMasterIdentifier === -1) {
+        celebrationInformation.Title = "Octava de Nadal";
+    }
+    else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA) {
+        celebrationInformation.Title = "Cendra";
+    }
+    else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.A_FERIES) {
+        celebrationInformation.Title = "Fèria d’Advent";
+    }
+    return celebrationInformation;
+}
+
+function createCelNormal(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): HoursLiturgy{
+    let hoursLiturgy = new HoursLiturgy();
+    switch (liturgyDayInformation.CelebrationType) {
+        case CelebrationType.Solemnity:
+            hoursLiturgy = makeSF(liturgyMasters.SaintsSolemnities, true, true);
             break;
-        case "F":
-            if(date.getDay() !== 0) {
-                makeSF(TABLES, true, true);
+        case CelebrationType.Festivity:
+            if(liturgyDayInformation.Date.getDay() !== 0) {
+                hoursLiturgy = makeSF(liturgyMasters.SaintsSolemnities, true, true);
             }
             break;
-        case "L":
-        case "V":
-            if(date.getDay() !== 0 && GlobalData.lliures === true){
-                makeML(TABLES, "ML");
+        case CelebrationType.OptionalMemory:
+        case CelebrationType.OptionalVirginMemory:
+            if(liturgyDayInformation.Date.getDay() !== 0 &&
+                settings.OptionalFestivityEnabled === true){
+                hoursLiturgy = makeML(liturgyMasters.SaintsMemories, liturgyDayInformation);
             }
             break;
-        case "M":
-            if(date.getDay() !== 0) {
-                makeML(TABLES, "ML");
+        case CelebrationType.Memory:
+            if(liturgyDayInformation.Date.getDay() !== 0) {
+                hoursLiturgy = makeML(liturgyMasters.SaintsMemories, liturgyDayInformation);
             }
             break;
     }
+    return hoursLiturgy;
 }
 
 function createCelOnlyVespres1() : Vespers{
@@ -115,14 +131,13 @@ function createCelOnlyVespres1() : Vespers{
     }
 }
 
-//---
-
-function makeDP(TABLES){
+function makeDP(TABLES): HoursLiturgy{
     //::::::>>>>>DP<<<<<::::::
     //::::::DP-INFO_CEL::::::
     this.INFO_CEL.nomCel = 'Diumenge de Pasqua';
     this.INFO_CEL.infoCel = '-';
     this.INFO_CEL.typeCel = 'S';
+    // TODO: SpecificClassification = 1
 
     //::::::DP-OFICI::::::
     this.OFICI.diumPasqua = true;
@@ -274,6 +289,7 @@ function makeDP(TABLES){
 
 
     //::::::DP-VESPRES::::::
+    // TODO: vespers here will be SecondVespersWithCelebration
     this.VESPRES.diumPasqua = true;
     if(settings.UseLatin) this.VESPRES.himne = TABLES.tempsQuaresmaDiumPasq.himneLlatiVespres;
     else this.VESPRES.himne = TABLES.tempsQuaresmaDiumPasq.himneCatVespres;
@@ -300,7 +316,7 @@ function makeDP(TABLES){
     this.VESPRES.oracio = TABLES.tempsQuaresmaDiumPasq.oraFiVespres;
 }
 
-function makeTSF(TABLES){
+function makeTSF(TABLES): HoursLiturgy{
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
     //::::::>>>>>TSF<<<<<::::::
@@ -308,6 +324,7 @@ function makeTSF(TABLES){
     this.INFO_CEL.nomCel = TABLES.tempsSolemnitatsFestes.nomMemoria;
     this.INFO_CEL.infoCel = '-';
     this.INFO_CEL.typeCel = TABLES.tempsSolemnitatsFestes.Cat;
+    // TODO: ensure to fill CelebrationInformation
 
     //::::::TSF-OFICI::::::
     //TSF-OFICI -> INVITATORI
@@ -469,6 +486,7 @@ function makeTSF(TABLES){
 
 
     //::::::TSF-VESPRES::::::
+    // TODO: vespers here will be SecondVespersWithCelebration
     if(settings.UseLatin) this.VESPRES.himne = TABLES.tempsSolemnitatsFestes.himneVespres2Llati;
     else this.VESPRES.himne = TABLES.tempsSolemnitatsFestes.himneVespres2Cat;
     this.VESPRES.ant1 = TABLES.tempsSolemnitatsFestes.ant1Vespres2;
@@ -507,7 +525,7 @@ function makeTSF(TABLES){
     this.VESPRES.oracio = TABLES.tempsSolemnitatsFestes.oraFiVespres2;
 }
 
-function makeDE(TABLES, infoCel_typeCel){
+function makeDE(TABLES, infoCel_typeCel): HoursLiturgy{
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
     //::::::>>>>>DE<<<<<::::::
@@ -515,6 +533,7 @@ function makeDE(TABLES, infoCel_typeCel){
     this.INFO_CEL.nomCel = TABLES.diesespecials.nomMemoria;
     this.INFO_CEL.infoCel = TABLES.diesespecials.infoMemoria;
     this.INFO_CEL.typeCel = infoCel_typeCel;
+    // TODO: ensure to fill CelebrationInformation
 
     //::::::DE-OFICI::::::
     //DE-OFICI -> INVITATORI
@@ -679,6 +698,7 @@ function makeDE(TABLES, infoCel_typeCel){
 
 
     //::::::DE-VESPRES::::::
+    // TODO: vespers here will be SecondVespersWithCelebration
     if(settings.UseLatin) this.VESPRES.himne = TABLES.diesespecials.himneVespresLlati;
     else this.VESPRES.himne = TABLES.diesespecials.himneVespresCat;
     this.VESPRES.ant1 = TABLES.diesespecials.ant1Vespres;
@@ -707,7 +727,7 @@ function makeDE(TABLES, infoCel_typeCel){
     this.VESPRES.oracio = TABLES.diesespecials.oraFi;
 }
 
-function makeSF(TABLES, CelebrationIsSaintOrFestivity : boolean, EnableSomething : boolean){
+function makeSF(saintsSolemnities: SaintsSolemnities, CelebrationIsSaintOrFestivity : boolean, EnableSomething : boolean): HoursLiturgy{
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
 
@@ -716,12 +736,13 @@ function makeSF(TABLES, CelebrationIsSaintOrFestivity : boolean, EnableSomething
     this.INFO_CEL.nomCel = TABLES.santsSolemnitats.nomMemoria;
     this.INFO_CEL.infoCel = TABLES.santsSolemnitats.infoMemoria;
     this.INFO_CEL.typeCel = TABLES.santsSolemnitats.Cat;
+    // TODO: ensure to fill CelebrationInformation
 
     //::::::SF-OFICI::::::
     //SF-OFICI -> INVITATORI
     if(TABLES.santsSolemnitats.antInvitatori !== '-')
         this.OFICI.antInvitatori = TABLES.santsSolemnitats.antInvitatori;
-    else this.OFICI.antInvitatori = TABLES.OficisComuns.antInvitatori;
+    else this.OFICI.antInvitatori = saintsSolemnities.CommonOffices.InvitationAntiphon;// TODO: example TABLES.OficisComuns.antInvitatori;
     //SF-OFICI -> HIMNE
     if(TABLES.santsSolemnitats.himneOficiLlati !== '-'){
         if(settings.UseLatin) this.OFICI.himne = TABLES.santsSolemnitats.himneOficiLlati;
@@ -1044,7 +1065,8 @@ function makeSF(TABLES, CelebrationIsSaintOrFestivity : boolean, EnableSomething
     this.NONA.oracio = TABLES.santsSolemnitats.oraFiMenor;
     // else if(TABLES.OficisComuns !== null) this.NONA.oracio = TABLES.OficisComuns.oraFiMenor;
 
-    if(!(EnableSomething && GlobalData.date.getDay() === 6) && !(CelebrationIsSaintOrFestivity && GlobalData.date.getDay() === 6 && GlobalData.LT === SpecificCelebrationType.Q_SETMANES)){
+    // TODO: vespers here will be SecondVespersWithCelebration
+    if(!(EnableSomething && GlobalData.date.getDay() === 6) && !(CelebrationIsSaintOrFestivity && GlobalData.date.getDay() === 6 && GlobalData.LT === SpecificLiturgyTimeType.Q_SETMANES)){
         //::::::SF-VESPRES2::::::
         //SF-VESPRES2 -> HIMNE
         if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){
@@ -1129,7 +1151,7 @@ function makeSF(TABLES, CelebrationIsSaintOrFestivity : boolean, EnableSomething
     }
 }
 
-function makeML(TABLES, infoCel_typeCel){
+function makeML(saintsMemories: SaintsMemories, liturgyDayInformation: LiturgySpecificDayInformation): HoursLiturgy{
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
 
@@ -1138,6 +1160,7 @@ function makeML(TABLES, infoCel_typeCel){
     this.INFO_CEL.nomCel = TABLES.santsMemories.nomMemoria;
     this.INFO_CEL.infoCel = TABLES.santsMemories.infoMemoria;
     this.INFO_CEL.typeCel = infoCel_typeCel;
+    // TODO: ensure to fill CelebrationInformation
 
     //::::::ML-OFICI::::::
     if(TABLES.santsMemories.Invitatori !== '-')
@@ -1464,6 +1487,7 @@ function makeML(TABLES, infoCel_typeCel){
     this.NONA.oracio = TABLES.santsMemories.OracioNona;
 
 
+    // TODO: vespers here will be SecondVespersWithCelebration
     if(GlobalData.date.getDay() !== 6){
         //:::::::ML-VESPRES:::::::
         //ML-VESPRES -> HIMNE
@@ -1555,6 +1579,7 @@ function makeVespres1TSF(TABLES){
 
     //::::::>>>>>TSF<<<<<::::::
     //::::::TSF-INFO_CEL::::::
+    //TODO: VESPRES.Title = ...
     this.INFO_CEL.nomCelTom = TABLES.tempsSolemnitatsFestesVespres1.nomMemoria;
     //::::::TSF-VESPRES1::::::
     if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsSolemnitatsFestesVespres1.himneVespres1Llati;
@@ -1599,6 +1624,7 @@ function makeVespres1DE(TABLES){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
 
+    //TODO: VESPRES.Title = ...
     this.INFO_CEL.nomCelTom = TABLES.diesespecials.nomMemoria;
 
     //::::::DE-VESPRES1::::::
@@ -1634,6 +1660,7 @@ function makeVespres1SF(TABLES){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
 
+    //TODO: VESPRES.Title = ...
     this.INFO_CEL.nomCelTom = TABLES.santsSolemnitatsFVespres1.nomMemoria;
 
     //::::::SF-VESPRES1::::::
@@ -1724,6 +1751,7 @@ function makeVespres1SF(TABLES){
 function makeVespres1DR(TABLES){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
+    //TODO: VESPRES.Title = ...
     if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaRams.ant1Vespres1;
@@ -1752,6 +1780,7 @@ function makeVespres1DR(TABLES){
 function makeVespres1T(TABLES){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
+    //TODO: VESPRES.Title = ...
     if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresllati;
     else this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresCat;
     this.VESPRES1.ant1 = TABLES.tempsQuaresmaTridu.ant1Vespres;
@@ -1781,6 +1810,7 @@ function makeVespres1T(TABLES){
 function makeVespres1A(TABLES){
     llati = GlobalData.llati;
     anyABC = GlobalData.ABC;
+    //TODO: VESPRES.Title = ...
     if(settings.UseLatin)
         this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresLlati;
     else this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresCat;

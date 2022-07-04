@@ -7,6 +7,14 @@ export enum CelebrationType{
     OptionalVirginMemory = 'V'
 }
 
+export enum CelebrationSpecificClassification{
+    Lord = "SENYOR",
+    MotherOfGod = "MARE",
+    Own = "PROPIA",
+    Generic = "GENERICA",
+    NoClassification = "-"
+}
+
 export enum DioceseCode{
     BaD = 'BaD',
     BaV = 'BaV',
