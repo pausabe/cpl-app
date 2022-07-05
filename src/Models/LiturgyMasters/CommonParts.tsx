@@ -26,6 +26,7 @@ export class Psalm{
     Comment: string;
     Psalm: string;
     HasGloryPrayer: boolean;
+    Prayer: string;
 }
 
 export class Responsory{

@@ -1,4 +1,4 @@
-import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading} from "./CommonParts";
+import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 
 export default class EasterSunday {
     static MasterName: string = "tempsQuaresmaDiumPasq";
@@ -11,7 +11,7 @@ export default class EasterSunday {
         this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
         this.OfficeFirstReading.Reading = databaseRow.lectura1;
         this.OfficeFirstPsalm.Antiphon = databaseRow.ant1Ofici;
-        this.OfficeFirstPsalm.Quote = databaseRow.citaSalm1Ofici;
+        this.OfficeFirstPsalm.Comment = databaseRow.citaSalm1Ofici;
         this.OfficeFirstPsalm.Psalm = databaseRow.salm1Ofici;
         this.OfficeFirstPsalm.Prayer = databaseRow.oracioSalm1Ofici;
 
@@ -20,7 +20,7 @@ export default class EasterSunday {
         this.OfficeSecondReading.Title = databaseRow.titolLect2Ofici;
         this.OfficeSecondReading.Reading = databaseRow.lectura2;
         this.OfficeSecondPsalm.Antiphon = databaseRow.ant2Ofici;
-        this.OfficeSecondPsalm.Quote = databaseRow.citaSalm2Ofici;
+        this.OfficeSecondPsalm.Comment = databaseRow.citaSalm2Ofici;
         this.OfficeSecondPsalm.Psalm = databaseRow.salm2Ofici;
         this.OfficeSecondPsalm.Prayer = databaseRow.oracioSalm2Ofici;
 
@@ -29,7 +29,7 @@ export default class EasterSunday {
         this.OfficeThirdReading.Title = databaseRow.titolLect3Ofici;
         this.OfficeThirdReading.Reading = databaseRow.lectura3;
         this.OfficeThirdPsalm.Antiphon = databaseRow.ant3Ofici;
-        this.OfficeThirdPsalm.Quote = databaseRow.citaSalm3Ofici;
+        this.OfficeThirdPsalm.Comment = databaseRow.citaSalm3Ofici;
         this.OfficeThirdPsalm.Psalm = databaseRow.salm3Ofici;
         this.OfficeThirdPsalm.Prayer = ""; // Missing column
 
@@ -38,7 +38,7 @@ export default class EasterSunday {
         this.OfficeThirdReading.Title = databaseRow.titolLect4Ofici;
         this.OfficeThirdReading.Reading = databaseRow.lectura4;
         this.OfficeThirdPsalm.Antiphon = ""; // Missing column
-        this.OfficeThirdPsalm.Quote = ""; // Missing column
+        this.OfficeThirdPsalm.Comment = ""; // Missing column
         this.OfficeThirdPsalm.Psalm = ""; // Missing column
         this.OfficeThirdPsalm.Prayer = databaseRow.oracioSalm4Ofici;
 
@@ -65,7 +65,8 @@ export default class EasterSunday {
         this.LaudesShortReading.Quote = databaseRow.citaLBLaudes;
         this.LaudesShortReading.ShortReading = databaseRow.lecturaBreuLaudes;
 
-        this.LaudesSpecialAntiphon = databaseRow.antEspecialLaudes;
+        this.LaudesShortResponsory.HasSpecialAntiphon = true;
+        this.LaudesShortResponsory.SpecialAntiphon = databaseRow.antEspecialLaudes;
         this.LaudesEvangelicalAntiphon = databaseRow.antZacaries;
         this.LaudesPrayers = databaseRow.pregariesLaudes;
         this.LaudesFinalPrayer = databaseRow.oraFiLaudes;
@@ -126,7 +127,8 @@ export default class EasterSunday {
         this.VespersShortReading.Quote = databaseRow.citaLBVespres;
         this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
 
-        this.VespersSpecialAntiphon = databaseRow.antEspecialVespres;
+        this.VespersShortResponsory.HasSpecialAntiphon = true;
+        this.VespersShortResponsory.SpecialAntiphon = databaseRow.antEspecialVespres;
         this.VespersEvangelicalAntiphon = databaseRow.antMaria;
         this.VespersPrayers = databaseRow.pregariesVespres;
         this.VespersFinalPrayer = databaseRow.oraFiVespres;
@@ -150,7 +152,7 @@ export default class EasterSunday {
     LaudesSecondPsalm: Psalm = new Psalm();
     LaudesThirdPsalm: Psalm = new Psalm();
     LaudesShortReading: ShortReading = new ShortReading();
-    LaudesSpecialAntiphon: string;
+    LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
     LaudesFinalPrayer: string;
@@ -168,7 +170,7 @@ export default class EasterSunday {
     VespersSecondPsalm: Psalm = new Psalm();
     VespersThirdPsalm: Psalm = new Psalm();
     VespersShortReading: ShortReading = new ShortReading();
-    VespersSpecialAntiphon: string;
+    VespersShortResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;
@@ -177,7 +179,7 @@ export default class EasterSunday {
 
 class EasterOfficePsalm{
     Antiphon: string;
-    Quote: string;
+    Comment: string;
     Psalm: string;
     Prayer: string;
 }

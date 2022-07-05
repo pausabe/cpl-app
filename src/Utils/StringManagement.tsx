@@ -6,4 +6,10 @@ export class StringManagement {
         const limit = Math.min(value.length, desiredLimit);
         return value.substring(endOfTheValue? value.length - limit : 0, endOfTheValue? value.length : limit);
     }
+
+    static HasLiturgyContent(value: string): boolean{
+        return value !== undefined &&
+            value !== "" &&
+            value !== "-";
+    }
 }

@@ -5,9 +5,12 @@ export default class Office {
     FirstPsalm: Psalm = new Psalm();
     SecondPsalm: Psalm = new Psalm();
     ThirdPsalm: Psalm = new Psalm();
+    FourthPsalm: Psalm = new Psalm();
     Responsory: Responsory = new Responsory();
     FirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     SecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    ThirdReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    FourthReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     TeDeumInformation: TeDeumInformation = new TeDeumInformation();
     FinalPrayer: string;
 }

@@ -139,7 +139,7 @@ export default class LDScreen extends Component {
               <View style={{ padding: 1, paddingHorizontal: 5 }}>
                 {GlobalData.info_cel.nomCelTom !== '-' ?
                   <View>
-                    {GlobalData.info_cel.nomCelTom !== 'dium-pasqua' ?
+                    {GlobalData.info_cel.nomCelTom !== "dium-pasqua" ?
                       <Text numberOfLines={1} style={styles.redCenter}>{GlobalData.info_cel.nomCelTom}</Text>
                       : null
                     }

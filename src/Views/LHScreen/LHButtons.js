@@ -66,7 +66,7 @@ export default class LHButtons extends Component {
             <View style={{ padding: 5, paddingHorizontal: 15 }}>
               {GlobalData.info_cel.nomCelTom !== '-' ?
                 <View>
-                  {GlobalData.info_cel.nomCelTom !== 'dium-pasqua' ?
+                  {GlobalData.info_cel.nomCelTom !== "dium-pasqua" ?
                     <Text numberOfLines={1} style={styles.redCenter}>{GlobalData.info_cel.nomCelTom}</Text>
                     : null
                   }

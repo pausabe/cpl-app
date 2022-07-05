@@ -64,6 +64,8 @@ export default class SaintsMemories {
         this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
         this.OfficeSecondReading.Responsory.ThirdPart = databaseRow.resp2Part3Ofici;
 
+        this.OfficeFinalPrayer = databaseRow.oraFi;
+
         this.LaudesLatinAnthem = databaseRow.himneLaudesLlati;
         this.LaudesCatalanAnthem = databaseRow.himneLaudesCat;
 
@@ -91,6 +93,7 @@ export default class SaintsMemories {
 
         this.LaudesEvangelicalAntiphon = databaseRow.antZacaries;
         this.LaudesPrayers = databaseRow.pregariesLaudes;
+        this.LaudesFinalPrayer = databaseRow.oraFi;
 
         this.HoursLatinAnthem = databaseRow.HimneMenorLlat;
         this.HoursCatalanAnthem = databaseRow.HimneMenorCat;
@@ -169,6 +172,7 @@ export default class SaintsMemories {
     OfficeResponsory: Responsory = new Responsory();
     OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+    OfficeFinalPrayer: string;
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;
     LaudesFirstPsalm: Psalm = new Psalm();
@@ -178,6 +182,7 @@ export default class SaintsMemories {
     LaudesShortResponsory: ShortResponsory = new ShortResponsory();
     LaudesEvangelicalAntiphon: string;
     LaudesPrayers: string;
+    LaudesFinalPrayer: string;
     HoursLatinAnthem: string;
     HoursCatalanAnthem: string;
     HoursFirstPsalm: Psalm = new Psalm();

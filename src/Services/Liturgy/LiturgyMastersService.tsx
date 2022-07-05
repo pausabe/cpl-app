@@ -628,7 +628,10 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
 
 async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsMemories> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier === -1 && (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory || liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory || liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
+        if (liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier === -1 &&
+            (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory ||
+                liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory ||
+                liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
             let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
 
             if (liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory && saintsMemoryOrSolemnityMasterIdentifier === -1) {

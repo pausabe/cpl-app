@@ -318,14 +318,6 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 }
                 break;
         }
-        if(celebrationHours.ThirdHour.UniqueAntiphon !== "-") {
-            psalmodyAnthems.ThirdValue.HasMultipleAntiphons = celebrationHours.ThirdHour.HasMultipleAntiphons;
-            psalmodyAnthems.ThirdValue.UniqueAntiphon = celebrationHours.ThirdHour.UniqueAntiphon;
-            psalmodyAnthems.SixthValue.HasMultipleAntiphons = celebrationHours.SixthHour.HasMultipleAntiphons;
-            psalmodyAnthems.SixthValue.UniqueAntiphon = celebrationHours.SixthHour.UniqueAntiphon;
-            psalmodyAnthems.NinthValue.HasMultipleAntiphons = celebrationHours.NinthHour.HasMultipleAntiphons;
-            psalmodyAnthems.NinthValue.UniqueAntiphon = celebrationHours.NinthHour.UniqueAntiphon;
-        }
     }
     return psalmodyAnthems;
 }

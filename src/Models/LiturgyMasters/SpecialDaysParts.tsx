@@ -193,7 +193,7 @@ export default class SpecialDaysParts {
         this.SecondVespersShortResponsory.ThirdPart = databaseRow.respBreuVespres3;
 
         this.SecondVespersPrayers = databaseRow.pregariesVespres;
-        this.SecondVespersEvangelicalAntiphonYear = databaseRow.antMaria;
+        this.SecondVespersEvangelicalAntiphon = databaseRow.antMaria;
         this.SecondVespersFinalPrayer = databaseRow.oraFi;
     }
 
@@ -245,7 +245,7 @@ export default class SpecialDaysParts {
     SecondVespersThirdPsalm: Psalm = new Psalm();
     SecondVespersShortReading: ShortReading = new ShortReading();
     SecondVespersShortResponsory: ShortResponsory = new ShortResponsory();
-    SecondVespersEvangelicalAntiphonYear: string;
+    SecondVespersEvangelicalAntiphon: string;
     SecondVespersPrayers: string;
     SecondVespersFinalPrayer: string;
 }

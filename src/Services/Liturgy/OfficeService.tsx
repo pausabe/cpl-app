@@ -353,31 +353,11 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             }
             break;
     }
-    if(celebrationOffice.FirstReading.Reference !== "-"){
-        readings.FirstReading.Reference = celebrationOffice.FirstReading.Reference;
+    if(celebrationOffice.FirstReading.Reading !== "-"){
+        readings.FirstReading = celebrationOffice.FirstReading;
     }
-    if(celebrationOffice.FirstReading.Quote !== "-"){
-        readings.FirstReading.Quote = celebrationOffice.FirstReading.Quote;
-    }
-    if(celebrationOffice.FirstReading.Title !== "-"){
-        readings.FirstReading.Title = celebrationOffice.FirstReading.Title;
-        readings.FirstReading.Reading = celebrationOffice.FirstReading.Reading;
-    }
-    if(celebrationOffice.FirstReading.Responsory.FirstPart !== "-"){
-        readings.FirstReading.Responsory = celebrationOffice.FirstReading.Responsory;
-    }
-    if(celebrationOffice.SecondReading.Reference !== "-"){
-        readings.SecondReading.Reference = celebrationOffice.SecondReading.Reference;
-    }
-    if(celebrationOffice.SecondReading.Quote !== "-"){
-        readings.SecondReading.Quote = celebrationOffice.SecondReading.Quote;
-    }
-    if(celebrationOffice.SecondReading.Title !== "-"){
-        readings.SecondReading.Title = celebrationOffice.SecondReading.Title;
-        readings.SecondReading.Reading = celebrationOffice.SecondReading.Reading;
-    }
-    if(celebrationOffice.SecondReading.Responsory.FirstPart !== "-"){
-        readings.SecondReading.Responsory = celebrationOffice.SecondReading.Responsory;
+    if(celebrationOffice.SecondReading.Reading !== "-"){
+        readings.SecondReading = celebrationOffice.SecondReading;
     }
     return readings;
 }
@@ -412,7 +392,7 @@ function GetTeDeumInformation(currentOfficeCommonPsalter : OfficeCommonPsalter, 
             break;
     }
     let teDeumInformation = new TeDeumInformation();
-    teDeumInformation.Enabled = teDeumInformationEnabled;
+    teDeumInformation.Enabled = teDeumInformationEnabled || celebrationOffice.TeDeumInformation.Enabled;
     teDeumInformation.Anthem = settings.UseLatin? liturgyMasters.Various.TeDeumLatinAnthem : liturgyMasters.Various.TeDeumCatalanAnthem;
     return teDeumInformation;
 }
