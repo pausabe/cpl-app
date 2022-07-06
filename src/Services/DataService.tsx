@@ -17,6 +17,7 @@ import MassLiturgy from "../Models/MassLiturgy";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformation';
 import {CelebrationType} from "./DatabaseEnums";
+import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
 
 export let LastRefreshDate = new Date()
 export let CurrentSettings = new Settings();
@@ -29,6 +30,7 @@ export let CurrentMassLiturgy = new MassLiturgy();
 export async function ReloadAllData(date) {
 
     // TODO: check for all "." / '.' occurrences. Change the way this is code is used
+    // TODO: and change !== "-" -> StringManagement.HasLiturgyContent()
 
     LastRefreshDate = new Date();
     CurrentSettings = await ObtainCurrentSettings(date);
@@ -37,7 +39,7 @@ export async function ReloadAllData(date) {
     const liturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
     CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation, CurrentSettings);
     CurrentCelebrationInformation = ObtainCurrentCelebrationInformation(CurrentHoursLiturgy);
-    // TODO: CurrentMassLiturgy = await ObtainMassLiturgy(liturgyMasters, globalData);
+    CurrentMassLiturgy = await ObtainMassLiturgy(liturgyMasters);
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Total time passed: ', (new Date().getMilliseconds() - LastRefreshDate.getMilliseconds()) / 1000);
 }
 
