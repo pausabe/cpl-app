@@ -4,6 +4,7 @@ import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation"
 import {Settings} from "../../Models/Settings";
 import {Psalm, Responsory, ShortReading} from "../../Models/LiturgyMasters/CommonParts";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
+import {StringManagement} from "../../Utils/StringManagement";
 
 export function ObtainHours(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationHours : Hours, settings : Settings) : Hours {
     let hours = new Hours();
@@ -57,7 +58,7 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
         NinthValue: ""
     }
     
-    if(celebrationHours.ThirdHour.Anthem !== "-") {
+    if(StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.Anthem)) {
         hourAnthems.ThirdValue = celebrationHours.ThirdHour.Anthem;
         hourAnthems.SixthValue = celebrationHours.SixthHour.Anthem;
         hourAnthems.NinthValue = celebrationHours.NinthHour.Anthem;
@@ -180,7 +181,7 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
         NinthValue: { HasMultipleAntiphons: true, UniqueAntiphon: "", FirstPsalm: new Psalm(), SecondPsalm: new Psalm(), ThirdPsalm: new Psalm() }
     }
 
-    if(celebrationHours.ThirdHour.FirstPsalm.Title !== "-") {
+    if(StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.FirstPsalm.Title)) {
         psalmodyAnthems.ThirdValue.HasMultipleAntiphons = celebrationHours.ThirdHour.HasMultipleAntiphons;
         psalmodyAnthems.ThirdValue.UniqueAntiphon = celebrationHours.ThirdHour.UniqueAntiphon;
         psalmodyAnthems.ThirdValue.FirstPsalm = celebrationHours.ThirdHour.FirstPsalm;
@@ -196,17 +197,6 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
         psalmodyAnthems.NinthValue.FirstPsalm = celebrationHours.NinthHour.FirstPsalm;
         psalmodyAnthems.NinthValue.SecondPsalm = celebrationHours.NinthHour.SecondPsalm;
         psalmodyAnthems.NinthValue.ThirdPsalm = celebrationHours.NinthHour.ThirdPsalm;
-        
-        // TODO: move this to CelebrationService
-        /*this.TERCIA.com1 = '-';
-        this.TERCIA.com2 = '-';
-        this.TERCIA.com3 = '-';
-        this.SEXTA.com1 = '-';
-        this.SEXTA.com2 = '-';
-        this.SEXTA.com3 = '-';
-        this.NONA.com1 = '-';
-        this.NONA.com2 = '-';
-        this.NONA.com3 = '-';*/
     }
     else{
         psalmodyAnthems.ThirdValue.FirstPsalm = liturgyMasters.CommonHourPsalter.FirstPsalm;
@@ -329,7 +319,7 @@ function GetResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformation : 
         NinthValue: new Responsory()
     }
 
-    if(celebrationHours.ThirdHour.Responsory.Versicle !== "-") {
+    if(StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.Responsory.Versicle)) {
         hourAnthems.ThirdValue = celebrationHours.ThirdHour.Responsory;
         hourAnthems.SixthValue = celebrationHours.SixthHour.Responsory;
         hourAnthems.NinthValue = celebrationHours.NinthHour.Responsory;
@@ -411,7 +401,7 @@ function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation 
         NinthValue: new ShortReading()
     }
 
-    if(celebrationHours.ThirdHour.ShortReading.ShortReading !== "-") {
+    if(StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.ShortReading.ShortReading)) {
         hourShortReading.ThirdValue = celebrationHours.ThirdHour.ShortReading;
         hourShortReading.SixthValue = celebrationHours.SixthHour.ShortReading;
         hourShortReading.NinthValue = celebrationHours.NinthHour.ShortReading;
@@ -490,7 +480,7 @@ function GetFinalPraying(liturgyMasters : LiturgyMasters, liturgyDayInformation 
         NinthValue: ""
     }
 
-    if(celebrationHours.ThirdHour.FinalPrayer !== "-") {
+    if(StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.FinalPrayer)) {
         finalPraying.ThirdValue = celebrationHours.ThirdHour.FinalPrayer;
         finalPraying.SixthValue = celebrationHours.SixthHour.FinalPrayer;
         finalPraying.NinthValue = celebrationHours.NinthHour.FinalPrayer;

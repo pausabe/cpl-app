@@ -5,9 +5,9 @@ import {Settings} from "../../Models/Settings";
 import {Psalm, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 
-export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationNightPrayer : NightPrayer, settings : Settings) : NightPrayer{
+export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : NightPrayer{
     let nightPrayer = new NightPrayer();
-    nightPrayer.Anthem = GetAnthem(liturgyMasters, liturgyDayInformation, celebrationNightPrayer, settings);
+    nightPrayer.Anthem = GetAnthem(liturgyMasters, liturgyDayInformation, settings);
     const psalmody = GetPsalmody(liturgyMasters, liturgyDayInformation);
     nightPrayer.FirstPsalm = psalmody.FirstPsalm;
     nightPrayer.SecondPsalm = psalmody.SecondPsalm;
@@ -20,7 +20,7 @@ export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInf
     return nightPrayer;
 }
 
-function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationNightPrayer : NightPrayer, settings : Settings) : string{
+function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : string{
     let anthem = settings.UseLatin? liturgyMasters.Various.NightPrayerLatinSecondOptionAnthem : liturgyMasters.Various.NightPrayerCatalanSecondOptionAnthem;
     switch (liturgyDayInformation.SpecificLiturgyTime) {
         case SpecificLiturgyTimeType.Q_SETMANES:

@@ -71,6 +71,7 @@ export default class LiturgyMasters{
     FiveWeeksOfFirstsVespersOfSundayLentParts: FiveWeeksOfSundayLentParts;
     VespersCommonPsalter: VespersCommonPsalter;
     SolemnityAndFestivityParts: SolemnityAndFestivityParts;
+    SolemnityAndFestivityWhenFirstVespersParts: SolemnityAndFestivityParts;
     CommonHourPsalter: CommonHourPsalter;
     CommonNightPrayerPsalter: CommonNightPrayerPsalter;
     CommonOfficeWhenStrongTimesPsalter: CommonOfficeWhenStrongTimesPsalter;

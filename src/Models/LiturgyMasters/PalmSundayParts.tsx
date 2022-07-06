@@ -11,9 +11,9 @@ export default class PalmSundayParts {
         this.FirstVespersThirdAntiphon = databaseRow.ant3Vespres1;
         this.FirstVespersShortReading.Quote = databaseRow.citaLBVespres;
         this.FirstVespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
-        this.FirstVespresShortResponsory.FirstPart = databaseRow.respBreuVespres1;
-        this.FirstVespresShortResponsory.SecondPart = databaseRow.respBreuVespres2;
-        this.FirstVespresShortResponsory.ThirdPart = databaseRow.respBreuVespres3;
+        this.FirstVespersShortResponsory.FirstPart = databaseRow.respBreuVespres1;
+        this.FirstVespersShortResponsory.SecondPart = databaseRow.respBreuVespres2;
+        this.FirstVespersShortResponsory.ThirdPart = databaseRow.respBreuVespres3;
         this.FirstVespersEvangelicalAntiphonYearA = databaseRow.antMaria1A;
         this.FirstVespersEvangelicalAntiphonYearB = databaseRow.antMaria1B;
         this.FirstVespersEvangelicalAntiphonYearC = databaseRow.antMaria1C;
@@ -93,7 +93,7 @@ export default class PalmSundayParts {
     FirstVespersSecondAntiphon: string;
     FirstVespersThirdAntiphon: string;
     FirstVespersShortReading: ShortReading = new ShortReading();
-    FirstVespresShortResponsory: ShortResponsory = new ShortResponsory();
+    FirstVespersShortResponsory: ShortResponsory = new ShortResponsory();
     FirstVespersEvangelicalAntiphonYearA: string;
     FirstVespersEvangelicalAntiphonYearB: string;
     FirstVespersEvangelicalAntiphonYearC: string;

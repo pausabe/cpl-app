@@ -5,6 +5,7 @@ import {Settings} from "../../Models/Settings";
 import {Psalm, ShortReading, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
 import {YearType} from "../DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
+import {StringManagement} from "../../Utils/StringManagement";
 
 export function ObtainLaudes(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes, settings : Settings) : Laudes{
     let laudes = new Laudes();
@@ -28,7 +29,7 @@ export function ObtainLaudes(liturgyMasters : LiturgyMasters, liturgyDayInformat
 }
 
 function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes, settings : Settings) : string{
-    if(celebrationLaudes.Anthem !== '-'){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.Anthem)){
         return celebrationLaudes.Anthem;
     }
     
@@ -368,38 +369,38 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
             break;
     }
 
-    if(celebrationLaudes.FirstPsalm.Antiphon !== '-'){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.FirstPsalm.Antiphon)){
         psalmody.FirstPsalm.Antiphon = celebrationLaudes.FirstPsalm.Antiphon;
     }
-    if(celebrationLaudes.FirstPsalm.Title !== '-'){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.FirstPsalm.Title)){
         psalmody.FirstPsalm.Title = celebrationLaudes.FirstPsalm.Title;
         psalmody.FirstPsalm.Comment = "-";
     }
-    if(celebrationLaudes.FirstPsalm.Psalm !== '-')
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.FirstPsalm.Psalm))
     {
         psalmody.FirstPsalm.Psalm = celebrationLaudes.FirstPsalm.Psalm;
         psalmody.FirstPsalm.HasGloryPrayer = celebrationLaudes.FirstPsalm.HasGloryPrayer;
     }
-    if(celebrationLaudes.SecondPsalm.Antiphon !== '-'){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.SecondPsalm.Antiphon)){
         psalmody.SecondPsalm.Antiphon = celebrationLaudes.SecondPsalm.Antiphon;
     }
-    if(celebrationLaudes.SecondPsalm.Title !== '-'){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.SecondPsalm.Title)){
         psalmody.SecondPsalm.Title = celebrationLaudes.SecondPsalm.Title;
         psalmody.SecondPsalm.Comment = "-";
     }
-    if(celebrationLaudes.SecondPsalm.Psalm !== '-')
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.SecondPsalm.Psalm))
     {
         psalmody.SecondPsalm.Psalm = celebrationLaudes.SecondPsalm.Psalm;
         psalmody.SecondPsalm.HasGloryPrayer = celebrationLaudes.SecondPsalm.HasGloryPrayer;
     }
-    if(celebrationLaudes.ThirdPsalm.Antiphon !== '-'){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.ThirdPsalm.Antiphon)){
         psalmody.ThirdPsalm.Antiphon = celebrationLaudes.ThirdPsalm.Antiphon;
     }
-    if(celebrationLaudes.ThirdPsalm.Title !== '-'){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.ThirdPsalm.Title)){
         psalmody.ThirdPsalm.Title = celebrationLaudes.ThirdPsalm.Title;
         psalmody.ThirdPsalm.Comment = "-";
     }
-    if(celebrationLaudes.ThirdPsalm.Psalm !== '-')
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.ThirdPsalm.Psalm))
     {
         psalmody.ThirdPsalm.Psalm = celebrationLaudes.ThirdPsalm.Psalm;
         psalmody.ThirdPsalm.HasGloryPrayer = celebrationLaudes.ThirdPsalm.HasGloryPrayer;
@@ -409,7 +410,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
 }
 
 function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : ShortReading{
-    if(celebrationLaudes.ShortReading.Quote !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.ShortReading.Quote)){
         return celebrationLaudes.ShortReading;
     }
 
@@ -446,7 +447,7 @@ function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation 
 
 function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : ShortResponsory{
     if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA ||
-        celebrationLaudes.ShortResponsory.FirstPart !== "-"){
+        StringManagement.HasLiturgyContent(celebrationLaudes.ShortResponsory.FirstPart)){
         return celebrationLaudes.ShortResponsory;
     }
     else{
@@ -487,7 +488,7 @@ function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformati
 }
 
 function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : string{
-    if(celebrationLaudes.EvangelicalAntiphon !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.EvangelicalAntiphon)){
         return celebrationLaudes.EvangelicalAntiphon;
     }
 
@@ -582,7 +583,7 @@ function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInfor
 }
 
 function GetPrayers(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : string{
-    if(celebrationLaudes.Prayers !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.Prayers)){
         return celebrationLaudes.Prayers;
     }
 
@@ -618,7 +619,7 @@ function GetPrayers(liturgyMasters : LiturgyMasters, liturgyDayInformation : Lit
 }
 
 function GetFinalPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes) : string{
-    if(celebrationLaudes.FinalPrayer !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationLaudes.FinalPrayer)){
         return celebrationLaudes.FinalPrayer;
     }
 

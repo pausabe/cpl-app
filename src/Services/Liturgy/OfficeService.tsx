@@ -6,6 +6,7 @@ import {Settings} from "../../Models/Settings";
 import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
 import {ReadingOfTheOffice, Psalm, Responsory} from "../../Models/LiturgyMasters/CommonParts";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
+import {StringManagement} from "../../Utils/StringManagement";
 
 export function ObtainOffice(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : Office{
     let office = new Office();
@@ -37,25 +38,25 @@ export function ObtainOffice(liturgyMasters : LiturgyMasters, liturgyDayInformat
 }
 
 function GetAnthem(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : string{
-    if(celebrationOffice.Anthem !== '-') {
+    if(StringManagement.HasLiturgyContent(celebrationOffice.Anthem)) {
         return celebrationOffice.Anthem;
     }
 
     let anthem;
     if(GlobalFunctions.isDarkAnthem()){
         if(settings.UseLatin){
-            anthem = this.state.salteriComuOfici.himneNitLlati;
+            anthem = liturgyMasters.OfficeCommonPsalter.NightLatinAnthem;
         }
         else{
-            anthem = this.state.salteriComuOfici.himneNitCat;
+            anthem = liturgyMasters.OfficeCommonPsalter.NightCatalanAnthem;
         }
     }
     else{
         if(settings.UseLatin){
-            anthem = this.state.salteriComuOfici.himneDiaLlati;
+            anthem = liturgyMasters.OfficeCommonPsalter.DayLatinAnthem;
         }
         else{
-            anthem = this.state.salteriComuOfici.himneDiaCat;
+            anthem = liturgyMasters.OfficeCommonPsalter.DayCatalanAnthem;
         }
     }
     switch(liturgyDayInformation.SpecificLiturgyTime){
@@ -228,22 +229,22 @@ function GetPsalmody(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             break;
     }
 
-    if(celebrationOffice.FirstPsalm.Antiphon !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.FirstPsalm.Antiphon)){
         psalmody.FirstPsalm.Antiphon = celebrationOffice.FirstPsalm.Antiphon;
     }
-    if(celebrationOffice.FirstPsalm.Title !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.FirstPsalm.Title)){
         psalmody.FirstPsalm = celebrationOffice.FirstPsalm;
     }
-    if(celebrationOffice.SecondPsalm.Antiphon !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.SecondPsalm.Antiphon)){
         psalmody.SecondPsalm.Antiphon = celebrationOffice.SecondPsalm.Antiphon;
     }
-    if(celebrationOffice.SecondPsalm.Title !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.SecondPsalm.Title)){
         psalmody.SecondPsalm = celebrationOffice.SecondPsalm;
     }
-    if(celebrationOffice.ThirdPsalm.Antiphon !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.ThirdPsalm.Antiphon)){
         psalmody.ThirdPsalm.Antiphon = celebrationOffice.ThirdPsalm.Antiphon;
     }
-    if(celebrationOffice.ThirdPsalm.Title !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.ThirdPsalm.Title)){
         psalmody.ThirdPsalm = celebrationOffice.ThirdPsalm;
     }
 
@@ -266,7 +267,7 @@ function GetPsalmody(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
 }
 
 function GetResponsory(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office) : Responsory{
-    if(celebrationOffice.Responsory.Response !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.Responsory.Response)){
         return celebrationOffice.Responsory;
     }
     
@@ -353,10 +354,10 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             }
             break;
     }
-    if(celebrationOffice.FirstReading.Reading !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.FirstReading.Reading)){
         readings.FirstReading = celebrationOffice.FirstReading;
     }
-    if(celebrationOffice.SecondReading.Reading !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.SecondReading.Reading)){
         readings.SecondReading = celebrationOffice.SecondReading;
     }
     return readings;
@@ -398,7 +399,7 @@ function GetTeDeumInformation(currentOfficeCommonPsalter : OfficeCommonPsalter, 
 }
 
 function GetFinalPrayer(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office) : string{
-    if(celebrationOffice.FinalPrayer !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationOffice.FinalPrayer)){
         return celebrationOffice.FinalPrayer;
     }
 

@@ -1,31 +1,27 @@
 import HoursLiturgy from "../../Models/HoursLiturgy/HoursLiturgy";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import LiturgyDayInformation, {
-    LiturgySpecificDayInformation,
-    SpecialCelebration
+    LiturgySpecificDayInformation
 } from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import {CelebrationType, YearType} from "../DatabaseEnums";
 import Vespers from "../../Models/HoursLiturgy/Vespers";
 import { SpecificLiturgyTimeType } from "../CelebrationTimeEnums";
-import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
 import SaintsSolemnities from "../../Models/LiturgyMasters/SaintsSolemnities";
 import SaintsMemories from "../../Models/LiturgyMasters/SaintsMemories";
-import { WeekDayName } from "../../Utils/DateManagement";
-import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
 import SpecialDaysParts from "../../Models/LiturgyMasters/SpecialDaysParts";
 import EasterSunday from "../../Models/LiturgyMasters/EasterSunday";
-import {ReadingOfTheOffice} from "../../Models/LiturgyMasters/CommonParts";
 import SolemnityAndFestivityParts from "../../Models/LiturgyMasters/SolemnityAndFestivityParts";
-import CommonOffice from "../../Models/LiturgyMasters/CommonOffices";
 import {StringManagement} from "../../Utils/StringManagement";
 import PalmSundayParts from "../../Models/LiturgyMasters/PalmSundayParts";
+import CommonPartsOfHolyWeek from "../../Models/LiturgyMasters/CommonPartsOfHolyWeek";
+import PartsOfEasterTriduum from "../../Models/LiturgyMasters/PartsOfEasterTriduum";
+import CommonAdventAndChristmasParts from "../../Models/LiturgyMasters/CommonAdventAndChristmasParts";
+import AdventWeekParts from "../../Models/LiturgyMasters/AdventWeekParts";
+import AdventSundayParts from "../../Models/LiturgyMasters/AdventSundayParts";
 
 export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, settings: Settings): HoursLiturgy{
     let hoursLiturgy: HoursLiturgy;
-
-    // TODO: by defualt, everithing was "-" (now will be undefined, enough? change !== '-'?)
-    // TODO: ho estic deixant com a undefined.. aixi qe shaura d'adaptar
 
     if(liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier !== -1){
         hoursLiturgy = GetSpecialDayHoursLiturgy(liturgyMasters.SpecialDaysParts, settings);
@@ -41,7 +37,7 @@ export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, li
     }
 
     hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration =
-        GetFirstVespersWithCelebration(liturgyMasters, liturgyDayInformation.Tomorrow);
+        GetFirstVespersWithCelebration(liturgyMasters, liturgyDayInformation.Tomorrow, settings);
 
     // Special vesper title code when tomorrow is Easter sunday
     if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU &&
@@ -58,11 +54,11 @@ function GetNormalCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturg
     let hoursLiturgy = new HoursLiturgy();
     switch (liturgyDayInformation.CelebrationType) {
         case CelebrationType.Solemnity:
-            hoursLiturgy = makeSF(liturgyMasters.SaintsSolemnities, true, true);
+            hoursLiturgy = GetSaintsSolemnitiesHoursLiturgy(liturgyMasters.SaintsSolemnities, settings);
             break;
         case CelebrationType.Festivity:
             if(liturgyDayInformation.Date.getDay() !== 0) {
-                hoursLiturgy = makeSF(liturgyMasters.SaintsSolemnities, true, true);
+                hoursLiturgy = GetSaintsSolemnitiesHoursLiturgy(liturgyMasters.SaintsSolemnities, settings);
             }
             break;
         case CelebrationType.OptionalMemory:
@@ -81,28 +77,33 @@ function GetNormalCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturg
     return hoursLiturgy;
 }
 
-function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrowLiturgyInformation: LiturgySpecificDayInformation) : Vespers{
+function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrowLiturgyInformation: LiturgySpecificDayInformation, settings: Settings) : Vespers{
    if(tomorrowLiturgyInformation.SpecialCelebration.SolemnityAndFestivityMasterIdentifier !== -1) {
-       return makeVespres1TSF(liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts);
+       return GetSolemnityAndFestivityFirstVespersOfTomorrow(liturgyMasters.SolemnityAndFestivityWhenFirstVespersParts, tomorrowLiturgyInformation, settings);
    }
    if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_RAMS) {
-       return makeVespres1DR(liturgyMasters.PalmSundayParts);
+       return GetPalmSundayFistVespersOfTomorrow(liturgyMasters.PalmSundayParts, liturgyMasters.CommonPartsOfHolyWeek, tomorrowLiturgyInformation, settings);
    }
    if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU &&
        tomorrowLiturgyInformation.Date.getDay() === 5) {
-       return makeVespres1T(liturgyMasters.PartsOfEasterTriduum);
+       return GetEasterTriduumFistVespersOfTomorrow(liturgyMasters.PartsOfEasterTriduum, settings);
    }
    if(tomorrowLiturgyInformation.Date.getDay() === 0 &&
        tomorrowLiturgyInformation.Week === '1' &&
        tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.A_SETMANES) {
-       return makeVespres1A(liturgyMasters);
+       return GetAdventSundayFirstVespersOfTomorrow(
+           liturgyMasters.AdventFirstVespersOfSundayParts,
+           liturgyMasters.AdventWeekParts,
+           liturgyMasters.CommonAdventAndChristmasParts,
+           tomorrowLiturgyInformation,
+           settings);
    }
    if(tomorrowLiturgyInformation.SpecialCelebration.SpecialDaysMasterIdentifier !== -1) {
-       return makeVespres1DE(liturgyMasters.SpecialDaysParts);
+       return GetSpecialDaysFirstVespersOfTomorrow(liturgyMasters.SpecialDaysParts, tomorrowLiturgyInformation, settings);
    }
    if(tomorrowLiturgyInformation.CelebrationType === CelebrationType.Solemnity ||
-        tomorrowLiturgyInformation.CelebrationType === CelebrationType.Festivity){
-       return makeVespres1SF(liturgyMasters);
+       tomorrowLiturgyInformation.CelebrationType === CelebrationType.Festivity){
+       return GetSaintsSolemnitiesFirstVespersOfTomorrow(liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts, tomorrowLiturgyInformation, settings);
    }
    return new Vespers();
 }
@@ -341,7 +342,7 @@ function GetSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings:
     return hoursLiturgy;
 }
 
-function makeSF(saintsSolemnities: SaintsSolemnities, CelebrationIsSaintOrFestivity: boolean, EnableSomething: boolean, settings: Settings): HoursLiturgy{
+function GetSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, settings: Settings): HoursLiturgy{
     let hoursLiturgy = new HoursLiturgy();
 
     hoursLiturgy.CelebrationInformation = saintsSolemnities.Celebration;
@@ -400,7 +401,6 @@ function makeSF(saintsSolemnities: SaintsSolemnities, CelebrationIsSaintOrFestiv
     if(StringManagement.HasLiturgyContent(saintsSolemnities.LaudesThirdAntiphon)){
         hoursLiturgy.Laudes.ThirdPsalm.Antiphon = saintsSolemnities.LaudesThirdAntiphon;
     }
-    // TODO: continue here
     hoursLiturgy.Laudes.ShortReading = saintsSolemnities.LaudesShortReading;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.Laudes.ShortReading.ShortReading) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.Laudes.ShortReading = saintsSolemnities.CommonOffices.LaudesShortReading;
@@ -475,297 +475,45 @@ function makeSF(saintsSolemnities: SaintsSolemnities, CelebrationIsSaintOrFestiv
     hoursLiturgy.Hours.NinthHour.FinalPrayer = saintsSolemnities.NinthHourParts.FinalPrayer;
 
     hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem =
-        settings.UseLatin? saintsSolemnities.VespersLatinAnthem : saintsSolemnities.VespersCatalanAnthem;
+        settings.UseLatin? saintsSolemnities.SecondVespersLatinAnthem : saintsSolemnities.SecondVespersCatalanAnthem;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin?
             saintsSolemnities.CommonOffices.SecondVespersLatinAnthem : saintsSolemnities.CommonOffices.SecondVespersCatalanAnthem;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm = saintsSolemnities.VespersFirstPsalm;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm = saintsSolemnities.SecondVespersFirstPsalm;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm.Psalm) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm = saintsSolemnities.CommonOffices.SecondVespersFirstPsalm;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm = saintsSolemnities.VespersSecondPsalm;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm = saintsSolemnities.SecondVespersSecondPsalm;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm.Psalm) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm = saintsSolemnities.CommonOffices.SecondVespersSecondPsalm;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm = saintsSolemnities.VespersThirdPsalm;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm = saintsSolemnities.SecondVespersThirdPsalm;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm.Psalm) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm = saintsSolemnities.CommonOffices.SecondVespersThirdPsalm;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading = saintsSolemnities.VespersShortReading;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading = saintsSolemnities.SecondVespersShortReading;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading.ShortReading) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading = saintsSolemnities.CommonOffices.SecondVespersShortReading;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory = saintsSolemnities.VespersShortResponsory;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory = saintsSolemnities.SecondVespersShortResponsory;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory.FirstPart) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory = saintsSolemnities.CommonOffices.SecondVespersShortResponsory;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon = saintsSolemnities.VespersEvangelicalAntiphon;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon = saintsSolemnities.SecondVespersEvangelicalAntiphon;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon = saintsSolemnities.CommonOffices.SecondVespersEvangelicalAntiphon;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers = saintsSolemnities.VespersPrayers;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers = saintsSolemnities.SecondVespersPrayers;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers = saintsSolemnities.CommonOffices.SecondVespersPrayers;
     }
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer = saintsSolemnities.VespersFinalPrayer;
+    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer = saintsSolemnities.SecondVespersFinalPrayer;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer = saintsSolemnities.CommonOffices.SecondVespersFinalPrayer;
     }
 
     return hoursLiturgy;
-
-
-    //SF-LAUDES -> LECTURA BREU
-    if(TABLES.santsSolemnitats.citaLBLaudes !== '-')
-        this.LAUDES.vers = TABLES.santsSolemnitats.citaLBLaudes;
-    else if(TABLES.OficisComuns !== null) this.LAUDES.vers = TABLES.OficisComuns.citaLBLaudes;
-    if(TABLES.santsSolemnitats.lecturaBreuLaudes !== '-')
-        this.LAUDES.lecturaBreu = TABLES.santsSolemnitats.lecturaBreuLaudes;
-    else if(TABLES.OficisComuns !== null) this.LAUDES.lecturaBreu = TABLES.OficisComuns.lecturaBreuLaudes;
-    //SF-LAUDES -> RESPONSORI
-    this.LAUDES.calAntEspecial = false;
-    if(TABLES.santsSolemnitats.resp2Part1Laudes !== '-')
-        this.LAUDES.respBreu1 = TABLES.santsSolemnitats.resp2Part1Laudes;
-    else if(TABLES.OficisComuns !== null) this.LAUDES.respBreu1 = TABLES.OficisComuns.respBreuLaudes1;
-    if(TABLES.santsSolemnitats.resp2Part2Laudes !== '-')
-        this.LAUDES.respBreu2 = TABLES.santsSolemnitats.resp2Part2Laudes;
-    else if(TABLES.OficisComuns !== null) this.LAUDES.respBreu2 = TABLES.OficisComuns.respBreuLaudes2;
-    if(TABLES.santsSolemnitats.resp2Part3Laudes !== '-')
-        this.LAUDES.respBreu3 = TABLES.santsSolemnitats.resp2Part3Laudes;
-    else if(TABLES.OficisComuns !== null) this.LAUDES.respBreu3 = TABLES.OficisComuns.respBreuLaudes3;
-    //SF-LAUDES -> CÀNTIC
-    if(TABLES.santsSolemnitats.antZacaries !== '-')
-        this.LAUDES.antCantic = TABLES.santsSolemnitats.antZacaries;
-    else if(TABLES.OficisComuns !== null) this.LAUDES.antCantic = TABLES.OficisComuns.antZacaries;
-    //SF-LAUDES -> PREGÀRIES
-    if(TABLES.santsSolemnitats.pregariesLaudes !== '-')
-        this.LAUDES.pregaries = TABLES.santsSolemnitats.pregariesLaudes;
-    else if(TABLES.OficisComuns !== null) this.LAUDES.pregaries = TABLES.OficisComuns.pregariesLaudes;
-    //SF-LAUDES -> ORACIÓ
-    // if(TABLES.santsSolemnitats.oraFiLaudes !== '-')
-    this.LAUDES.oracio = TABLES.santsSolemnitats.oraFiLaudes;
-    // else if(TABLES.OficisComuns !== null) this.LAUDES.oracio = TABLES.OficisComuns.oraFiLaudes;
-
-
-    //::::::SF-TÈRCIA::::::
-    //SF-TÈRCIA -> SALMÒDIA
-    //ANT
-    this.TERCIA.antifones = false;
-    if(TABLES.santsSolemnitats.antMenorTercia !== '-'){
-        this.TERCIA.ant = TABLES.santsSolemnitats.antMenorTercia;
-    }
-    else if(TABLES.OficisComuns !== null) {
-        this.TERCIA.ant = TABLES.OficisComuns.antMenorTer;
-    }
-    else{
-    }
-    //S1
-    this.TERCIA.titol1 = TABLES.santsSolemnitats.titolSalm1;
-    this.TERCIA.com1 = ".";
-    this.TERCIA.salm1 = TABLES.santsSolemnitats.salm1Menor;
-    this.TERCIA.gloria1 = TABLES.santsSolemnitats.gloriaSalm1;
-    //S2
-    this.TERCIA.titol2 = TABLES.santsSolemnitats.titolSalm2;
-    this.TERCIA.com2 = ".";
-    this.TERCIA.salm2 = TABLES.santsSolemnitats.salm2Menor;
-    this.TERCIA.gloria2 = TABLES.santsSolemnitats.gloriaSalm2;
-    //S3
-    this.TERCIA.titol3 = TABLES.santsSolemnitats.titolSalm3;
-    this.TERCIA.com3 = ".";
-    this.TERCIA.salm3 = TABLES.santsSolemnitats.salm3Menor;
-    this.TERCIA.gloria3 = TABLES.santsSolemnitats.gloriaSaml3;
-    //SF-TÈRCIA -> LECTURA BREU
-    if(TABLES.santsSolemnitats.citaLBTercia !== '-')
-        this.TERCIA.vers = TABLES.santsSolemnitats.citaLBTercia;
-    else if(TABLES.OficisComuns !== null) this.TERCIA.vers = TABLES.OficisComuns.citaLBTercia;
-    if(TABLES.santsSolemnitats.lecturaBreuTercia !== '-')
-        this.TERCIA.lecturaBreu = TABLES.santsSolemnitats.lecturaBreuTercia;
-    else if(TABLES.OficisComuns !== null) this.TERCIA.lecturaBreu = TABLES.OficisComuns.lecturaBreuTercia;
-    //SF-TÈRCIA -> RESPONSORI
-    if(TABLES.santsSolemnitats.responsoriVTercia !== '-')
-        this.TERCIA.respV = TABLES.santsSolemnitats.responsoriVTercia;
-    else if(TABLES.OficisComuns !== null) this.TERCIA.respV = TABLES.OficisComuns.respVTercia;
-    if(TABLES.santsSolemnitats.responsoriRTercia !== '-')
-        this.TERCIA.respR = TABLES.santsSolemnitats.responsoriRTercia;
-    else if(TABLES.OficisComuns !== null) this.TERCIA.respR = TABLES.OficisComuns.respRTercia;
-    //SF-TÈRCIA -> ORACIÓ
-    // if(TABLES.santsSolemnitats.oraFiMenor !== '-')
-    this.TERCIA.oracio = TABLES.santsSolemnitats.oraFiMenor;
-    // else if(TABLES.OficisComuns !== null) this.TERCIA.oracio = TABLES.OficisComuns.oraFiMenor;
-
-
-    //::::::SF-SEXTA::::::
-    //SF-SEXTA -> SALMÒDIA
-    //ANT
-    this.SEXTA.antifones = false;
-    if(TABLES.santsSolemnitats.antMenorSexta !== '-')
-        this.SEXTA.ant = TABLES.santsSolemnitats.antMenorSexta;
-    else if(TABLES.OficisComuns !== null) {
-        this.SEXTA.ant = TABLES.OficisComuns.antMenorSextA;
-    }
-    else{
-    }
-    //S1
-    this.SEXTA.titol1 = TABLES.santsSolemnitats.titolSalm1;
-    this.SEXTA.com1 = ".";
-    this.SEXTA.salm1 = TABLES.santsSolemnitats.salm1Menor;
-    this.SEXTA.gloria1 = TABLES.santsSolemnitats.gloriaSalm1;
-    //S2
-    this.SEXTA.titol2 = TABLES.santsSolemnitats.titolSalm2;
-    this.SEXTA.com2 = ".";
-    this.SEXTA.salm2 = TABLES.santsSolemnitats.salm2Menor;
-    this.SEXTA.gloria2 = TABLES.santsSolemnitats.gloriaSalm2;
-    //S3
-    this.SEXTA.titol3 = TABLES.santsSolemnitats.titolSalm3;
-    this.SEXTA.com3 = ".";
-    this.SEXTA.salm3 = TABLES.santsSolemnitats.salm3Menor;
-    this.SEXTA.gloria3 = TABLES.santsSolemnitats.gloriaSaml3;
-    //SF-SEXTA -> LECTURA BREU
-    if(TABLES.santsSolemnitats.citaLBSexta !== '-')
-        this.SEXTA.vers = TABLES.santsSolemnitats.citaLBSexta;
-    else if(TABLES.OficisComuns !== null) this.SEXTA.vers = TABLES.OficisComuns.citaLBSexta;
-    if(TABLES.santsSolemnitats.lecturaBreuSexta !== '-')
-        this.SEXTA.lecturaBreu = TABLES.santsSolemnitats.lecturaBreuSexta;
-    else if(TABLES.OficisComuns !== null) this.SEXTA.lecturaBreu = TABLES.OficisComuns.lecturaBreuSexta;
-    //SF-SEXTA -> RESPONSORI BREU
-    if(TABLES.santsSolemnitats.responsoriVSexta !== '-')
-        this.SEXTA.respV = TABLES.santsSolemnitats.responsoriVSexta;
-    else if(TABLES.OficisComuns !== null) this.SEXTA.respV = TABLES.OficisComuns.respVSexta;
-    if(TABLES.santsSolemnitats.responsoriRSexta !== '-')
-        this.SEXTA.respR = TABLES.santsSolemnitats.responsoriRSexta;
-    else if(TABLES.OficisComuns !== null) this.SEXTA.respR = TABLES.OficisComuns.respRSexta;
-    //SF-SEXTA -> ORACIÓ
-    // if(TABLES.santsSolemnitats.oraFiMenor !== '-')
-    this.SEXTA.oracio = TABLES.santsSolemnitats.oraFiMenor;
-    // else if(TABLES.OficisComuns !== null) this.SEXTA.oracio = TABLES.OficisComuns.oraFiMenor;
-
-
-    //::::::SF-NONA::::::
-    //SF-NONA -> SALMÒDIA
-    //ANT
-    this.NONA.antifones = false;
-    if(TABLES.santsSolemnitats.antMenorNona !== '-')
-        this.NONA.ant = TABLES.santsSolemnitats.antMenorNona;
-    else if(TABLES.OficisComuns !== null) this.NONA.ant = TABLES.OficisComuns.antMenorNona;
-    //S1
-    this.NONA.titol1 = TABLES.santsSolemnitats.titolSalm1;
-    this.NONA.com1 = ".";
-    this.NONA.salm1 = TABLES.santsSolemnitats.salm1Menor;
-    this.NONA.gloria1 = TABLES.santsSolemnitats.gloriaSalm1;
-    //S2
-    this.NONA.titol2 = TABLES.santsSolemnitats.titolSalm2;
-    this.NONA.com2 = ".";
-    this.NONA.salm2 = TABLES.santsSolemnitats.salm2Menor;
-    this.NONA.gloria2 = TABLES.santsSolemnitats.gloriaSalm2;
-    //S3
-    this.NONA.titol3 = TABLES.santsSolemnitats.titolSalm3;
-    this.NONA.com3 = ".";
-    this.NONA.salm3 = TABLES.santsSolemnitats.salm3Menor;
-    this.NONA.gloria3 = TABLES.santsSolemnitats.gloriaSaml3;
-    //SF-NONA -> LECTURA BREU
-    if(TABLES.santsSolemnitats.citaLBNona !== '-')
-        this.NONA.vers = TABLES.santsSolemnitats.citaLBNona;
-    else if(TABLES.OficisComuns !== null) this.NONA.vers = TABLES.OficisComuns.citaLBNona;
-    if(TABLES.santsSolemnitats.lecturaBreuNona !== '-')
-        this.NONA.lecturaBreu = TABLES.santsSolemnitats.lecturaBreuNona;
-    else if(TABLES.OficisComuns !== null) this.NONA.lecturaBreu = TABLES.OficisComuns.lecturaBreuNona;
-    //SF-NONA -> RESPONSORI
-    if(TABLES.santsSolemnitats.responsoriVNona !== '-')
-        this.NONA.respV = TABLES.santsSolemnitats.responsoriVNona;
-    else if(TABLES.OficisComuns !== null) this.NONA.respV = TABLES.OficisComuns.respVNona;
-    if(TABLES.santsSolemnitats.responsoriRNona !== '-')
-        this.NONA.respR = TABLES.santsSolemnitats.responsoriRNona;
-    else if(TABLES.OficisComuns !== null) this.NONA.respR = TABLES.OficisComuns.respRNona;
-    //SF-NONA -> ORACIÓ
-    // if(TABLES.santsSolemnitats.oraFiMenor !== '-')
-    this.NONA.oracio = TABLES.santsSolemnitats.oraFiMenor;
-    // else if(TABLES.OficisComuns !== null) this.NONA.oracio = TABLES.OficisComuns.oraFiMenor;
-
-    // TODO: vespers here will be SecondVespersWithCelebration
-    if(!(EnableSomething && GlobalData.date.getDay() === 6) && !(CelebrationIsSaintOrFestivity && GlobalData.date.getDay() === 6 && GlobalData.LT === SpecificLiturgyTimeType.Q_SETMANES)){
-        //::::::SF-VESPRES2::::::
-        //SF-VESPRES2 -> HIMNE
-        if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){
-            if(settings.UseLatin) this.VESPRES.himne = TABLES.santsSolemnitats.himneVespres2Llati;
-            else this.VESPRES.himne = TABLES.santsSolemnitats.himneVespres2Cat;
-        }
-        else if(TABLES.OficisComuns !== null){
-            if(settings.UseLatin) this.VESPRES.himne = TABLES.OficisComuns.himneVespresLlati;
-            else this.VESPRES.himne = TABLES.OficisComuns.himneVespresCat;
-        }
-        //SF-VESPRES2 -> SALMÒDIA
-        //S1
-        if(TABLES.santsSolemnitats.ant1Vespres2 !== '-')
-            this.VESPRES.ant1 = TABLES.santsSolemnitats.ant1Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.ant1 = TABLES.OficisComuns.ant1Vespres;
-        if(TABLES.santsSolemnitats.titol1Vespres2 !== '-')
-            this.VESPRES.titol1 = TABLES.santsSolemnitats.titol1Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.titol1 = TABLES.OficisComuns.titol1Vespres;
-        this.VESPRES.com1 = ".";
-        if(TABLES.santsSolemnitats.text1Vespres2 !== '-')
-            this.VESPRES.salm1 = TABLES.santsSolemnitats.text1Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.salm1 = TABLES.OficisComuns.Salm1Vespres;
-        if(TABLES.santsSolemnitats.gloria1Vespres2 !== '-')
-            this.VESPRES.gloria1 = TABLES.santsSolemnitats.gloria1Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.gloria1 = TABLES.OficisComuns.gloria1Vespres;
-        //S2
-        if(TABLES.santsSolemnitats.ant2Vespres2 !== '-')
-            this.VESPRES.ant2 = TABLES.santsSolemnitats.ant2Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.ant2 = TABLES.OficisComuns.ant2Vespres;
-        if(TABLES.santsSolemnitats.titol2Vespres2 !== '-')
-            this.VESPRES.titol2 = TABLES.santsSolemnitats.titol2Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.titol2 = TABLES.OficisComuns.titol2Vespres;
-        this.VESPRES.com2 = ".";
-        if(TABLES.santsSolemnitats.text2Vespres2 !== '-')
-            this.VESPRES.salm2 = TABLES.santsSolemnitats.text2Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.salm2 = TABLES.OficisComuns.Salm2Vespres;
-        if(TABLES.santsSolemnitats.gloria2Vespres2 !== '-')
-            this.VESPRES.gloria2 = TABLES.santsSolemnitats.gloria2Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.gloria2 = TABLES.OficisComuns.gloria2Vespres;
-        //S3
-        if(TABLES.santsSolemnitats.ant3Vespres2 !== '-')
-            this.VESPRES.ant3 = TABLES.santsSolemnitats.ant3Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.ant3 = TABLES.OficisComuns.ant3Vespres;
-        if(TABLES.santsSolemnitats.titol3Vespres2 !== '-')
-            this.VESPRES.titol3 = TABLES.santsSolemnitats.titol3Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.titol3 = TABLES.OficisComuns.titol3Vespres;
-        this.VESPRES.com3 = ".";
-        if(TABLES.santsSolemnitats.text3Vespres2 !== '-')
-            this.VESPRES.salm3 = TABLES.santsSolemnitats.text3Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.salm3 = TABLES.OficisComuns.Salm3Vespres;
-        if(TABLES.santsSolemnitats.gloria3Vespres2 !== '-')
-            this.VESPRES.gloria3 = TABLES.santsSolemnitats.gloria3Vespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.gloria3 = TABLES.OficisComuns.gloria3Vespres;
-        //SF-VESPRES2 -> LECTURA BREU
-        if(TABLES.santsSolemnitats.citaLBVespres2 !== '-')
-            this.VESPRES.vers = TABLES.santsSolemnitats.citaLBVespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.vers = TABLES.OficisComuns.citaLBVespres;
-        if(TABLES.santsSolemnitats.lecturaBreuVespres2 !== '-')
-            this.VESPRES.lecturaBreu = TABLES.santsSolemnitats.lecturaBreuVespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.lecturaBreu = TABLES.OficisComuns.lecturaBreuVespres;
-        //SF-VESPRES2 -> RESPONSORI
-        this.VESPRES.calAntEspecial = false;
-        if(TABLES.santsSolemnitats.respBreuVespres2Part1 !== '-')
-            this.VESPRES.respBreu1 = TABLES.santsSolemnitats.respBreuVespres2Part1;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.respBreu1 = TABLES.OficisComuns.respBreuVespres1;
-        if(TABLES.santsSolemnitats.respBreuVespres2Part2 !== '-')
-            this.VESPRES.respBreu2 = TABLES.santsSolemnitats.respBreuVespres2Part2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.respBreu2 = TABLES.OficisComuns.respBreuVespres2;
-        if(TABLES.santsSolemnitats.respBreuVespres2Part3 !== '-')
-            this.VESPRES.respBreu3 = TABLES.santsSolemnitats.respBreuVespres2Part3;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.respBreu3 = TABLES.OficisComuns.respBreuVespres3;
-        //SF-VESPRES2 -> CÀNTIC
-        if(TABLES.santsSolemnitats.antMaria2 !== '-')
-            this.VESPRES.antCantic = TABLES.santsSolemnitats.antMaria2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.antCantic = TABLES.OficisComuns.antMaria;
-        //SF-VESPRES2 -> PREGÀRIES
-        if(TABLES.santsSolemnitats.pregariesVespres2 !== '-')
-            this.VESPRES.pregaries = TABLES.santsSolemnitats.pregariesVespres2;
-        else if(TABLES.OficisComuns !== null) this.VESPRES.pregaries = TABLES.OficisComuns.pregariesVespres;
-        //SF-VESPRES2 -> ORACIÓ
-        this.VESPRES.oracio = TABLES.santsSolemnitats.oraFiVespres2;
-    }
 }
 
 function GetSaintsMemoriesHoursLiturgy(saintsMemories: SaintsMemories, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): HoursLiturgy{
@@ -940,266 +688,154 @@ function GetSaintsMemoriesHoursLiturgy(saintsMemories: SaintsMemories, liturgyDa
     return hoursLiturgy;
 }
 
-function makeVespres1TSF(saintsSolemnities: SaintsSolemnities): Vespers{
-    llati = GlobalData.llati;
-    anyABC = GlobalData.ABC;
-
-    //::::::>>>>>TSF<<<<<::::::
-    //::::::TSF-INFO_CEL::::::
-    //TODO: VESPRES.Title = ...
-    this.INFO_CEL.nomCelTom = TABLES.tempsSolemnitatsFestesVespres1.nomMemoria;
-    //::::::TSF-VESPRES1::::::
-    if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsSolemnitatsFestesVespres1.himneVespres1Llati;
-    else this.VESPRES1.himne = TABLES.tempsSolemnitatsFestesVespres1.himneVespres1Cat;
-    this.VESPRES1.ant1 = TABLES.tempsSolemnitatsFestesVespres1.ant1Vespres1;
-    this.VESPRES1.titol1 = TABLES.tempsSolemnitatsFestesVespres1.titol1Vespres1;
-    this.VESPRES1.com1 = ".";
-    this.VESPRES1.salm1 = TABLES.tempsSolemnitatsFestesVespres1.text1Vespres1;
-    this.VESPRES1.gloria1 = TABLES.tempsSolemnitatsFestesVespres1.gloria1Vespres1;
-    this.VESPRES1.ant2 = TABLES.tempsSolemnitatsFestesVespres1.ant2Vespres1;
-    this.VESPRES1.titol2 = TABLES.tempsSolemnitatsFestesVespres1.titol2Vespres1;
-    this.VESPRES1.com2 = ".";
-    this.VESPRES1.salm2 = TABLES.tempsSolemnitatsFestesVespres1.text2Vespres1;
-    this.VESPRES1.gloria2 = TABLES.tempsSolemnitatsFestesVespres1.gloria2Vespres1;
-    this.VESPRES1.ant3 = TABLES.tempsSolemnitatsFestesVespres1.ant3Vespres1;
-    this.VESPRES1.titol3 = TABLES.tempsSolemnitatsFestesVespres1.titol3Vespres1;
-    this.VESPRES1.com3 = ".";
-    this.VESPRES1.salm3 = TABLES.tempsSolemnitatsFestesVespres1.text3Vespres1;
-    this.VESPRES1.gloria3 = TABLES.tempsSolemnitatsFestesVespres1.gloria3Vespres1;
-    this.VESPRES1.vers = TABLES.tempsSolemnitatsFestesVespres1.citaLBVespres1;
-    this.VESPRES1.lecturaBreu = TABLES.tempsSolemnitatsFestesVespres1.lecturaBreuVespres1;
-    this.VESPRES1.calAntEspecial = false;
-    this.VESPRES1.respBreu1 = TABLES.tempsSolemnitatsFestesVespres1.respBreuVespres1Part1;
-    this.VESPRES1.respBreu2 = TABLES.tempsSolemnitatsFestesVespres1.respBreuVespres1Part2;
-    this.VESPRES1.respBreu3 = TABLES.tempsSolemnitatsFestesVespres1.respBreuVespres1Part3;
-    switch (anyABC) {
-        case "A":
-            this.VESPRES1.antCantic = TABLES.tempsSolemnitatsFestesVespres1.antMaria1A;
-            break;
-        case "B":
-            this.VESPRES1.antCantic = TABLES.tempsSolemnitatsFestesVespres1.antMaria1B;
-            break;
-        case "C":
-            this.VESPRES1.antCantic = TABLES.tempsSolemnitatsFestesVespres1.antMaria1C;
-            break;
-    }
-    this.VESPRES1.pregaries = TABLES.tempsSolemnitatsFestesVespres1.pregariesVespres1;
-    this.VESPRES1.oracio = TABLES.tempsSolemnitatsFestesVespres1.oraFiVespres1;
-}
-
-function makeVespres1DE(specialDaysParts: SpecialDaysParts): Vespers{
-    llati = GlobalData.llati;
-    anyABC = GlobalData.ABC;
-
-    //TODO: VESPRES.Title = ...
-    this.INFO_CEL.nomCelTom = TABLES.diesespecials.nomMemoria;
-
-    //::::::DE-VESPRES1::::::
-    if(settings.UseLatin) this.VESPRES1.himne = TABLES.diesespecials.himneVespres1Llati;
-    else this.VESPRES1.himne = TABLES.diesespecials.himneVespres1Cat;
-    this.VESPRES1.ant1 = TABLES.diesespecials.ant1Vespres1;
-    this.VESPRES1.titol1 = TABLES.diesespecials.titol1Vespres1;
-    this.VESPRES1.com1 = ".";
-    this.VESPRES1.salm1 = TABLES.diesespecials.text1Vespres1;
-    this.VESPRES1.gloria1 = TABLES.diesespecials.gloria1Vespres1;
-    this.VESPRES1.ant2 = TABLES.diesespecials.ant2Vespres1;
-    this.VESPRES1.titol2 = TABLES.diesespecials.titol2Vespres1;
-    this.VESPRES1.com2 = ".";
-    this.VESPRES1.salm2 = TABLES.diesespecials.text2Vespres1;
-    this.VESPRES1.gloria2 = TABLES.diesespecials.gloria2Vespres1;
-    this.VESPRES1.ant3 = TABLES.diesespecials.ant3Vespres1;
-    this.VESPRES1.titol3 = TABLES.diesespecials.titol3Vespres1;
-    this.VESPRES1.com3 = ".";
-    this.VESPRES1.salm3 = TABLES.diesespecials.text3Vespres1;
-    this.VESPRES1.gloria3 = TABLES.diesespecials.gloria3Vespres1;
-    this.VESPRES1.vers = TABLES.diesespecials.citaLBVespres1;
-    this.VESPRES1.lecturaBreu = TABLES.diesespecials.lecturaBreuVespres1;
-    this.VESPRES1.calAntEspecial = false;
-    this.VESPRES1.respBreu1 = TABLES.diesespecials.respBreuVespres1Part1;
-    this.VESPRES1.respBreu2 = TABLES.diesespecials.respBreuVespres1Part2;
-    this.VESPRES1.respBreu3 = TABLES.diesespecials.respBreuVespres1Part3;
-    this.VESPRES1.antCantic = TABLES.diesespecials.antMaria1A;
-    this.VESPRES1.pregaries = TABLES.diesespecials.pregariesVespres1;
-    this.VESPRES1.oracio = TABLES.diesespecials.oraFiVespres1;
-}
-
-function makeVespres1SF(liturgyMasters: LiturgyMasters): Vespers{
-    llati = GlobalData.llati;
-    anyABC = GlobalData.ABC;
-
-    //TODO: VESPRES.Title = ...
-    this.INFO_CEL.nomCelTom = TABLES.santsSolemnitatsFVespres1.nomMemoria;
-
-    //::::::SF-VESPRES1::::::
-    //SF-VESPRES1 -> HIMNE
-    if(this.VESPRES1.himne = TABLES.santsSolemnitatsFVespres1.himneVespres1Llati !== '-'){
-        if(settings.UseLatin) this.VESPRES1.himne = TABLES.santsSolemnitatsFVespres1.himneVespres1Llati;
-        else this.VESPRES1.himne = TABLES.santsSolemnitatsFVespres1.himneVespres1Cat;
-    }
-    else if(TABLES.OficisComunsVespres1 !== null){
-        if(settings.UseLatin) this.VESPRES1.himne = TABLES.OficisComunsVespres1.himneVespres1Llati;
-        else this.VESPRES1.himne = TABLES.OficisComunsVespres1.himneVespres1Cat;
-    }
-    //SF-VESPRES1 -> SALMÒDIA
-    //S1
-    if(TABLES.santsSolemnitatsFVespres1.ant1Vespres1 !== '-')
-        this.VESPRES1.ant1 = TABLES.santsSolemnitatsFVespres1.ant1Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.ant1 = TABLES.OficisComunsVespres1.ant1Vespres1;
-    if(TABLES.santsSolemnitatsFVespres1.titol1Vespres1 !== '-')
-        this.VESPRES1.titol1 = TABLES.santsSolemnitatsFVespres1.titol1Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.titol1 = TABLES.OficisComunsVespres1.titol1Vespres1;
-    this.VESPRES1.com1 = ".";
-    if(TABLES.santsSolemnitatsFVespres1.text1Vespres1 !== '-')
-        this.VESPRES1.salm1 = TABLES.santsSolemnitatsFVespres1.text1Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.salm1 = TABLES.OficisComunsVespres1.text1Vespres1;
-    if(TABLES.santsSolemnitatsFVespres1.gloria1Vespres1 !== '-')
-        this.VESPRES1.gloria1 = TABLES.santsSolemnitatsFVespres1.gloria1Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.gloria1 = TABLES.OficisComunsVespres1.gloria1Vespres1;
-    //S2
-    if(TABLES.santsSolemnitatsFVespres1.ant2Vespres1 !== '-')
-        this.VESPRES1.ant2 = TABLES.santsSolemnitatsFVespres1.ant2Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.ant2 = TABLES.OficisComunsVespres1.ant2Vespres1;
-    if(TABLES.santsSolemnitatsFVespres1.titol2Vespres1 !== '-')
-        this.VESPRES1.titol2 = TABLES.santsSolemnitatsFVespres1.titol2Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.titol2 = TABLES.OficisComunsVespres1.titol2Vespres1;
-    this.VESPRES1.com2 = ".";
-    if(TABLES.santsSolemnitatsFVespres1.text2Vespres1 !== '-')
-        this.VESPRES1.salm2 = TABLES.santsSolemnitatsFVespres1.text2Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.salm2 = TABLES.OficisComunsVespres1.text2Vespres1;
-    if(TABLES.santsSolemnitatsFVespres1.gloria2Vespres1 !== '-')
-        this.VESPRES1.gloria2 = TABLES.santsSolemnitatsFVespres1.gloria2Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.gloria2 = TABLES.OficisComunsVespres1.gloria2Vespres1;
-    //S3
-    if(TABLES.santsSolemnitatsFVespres1.ant3Vespres1 !== '-')
-        this.VESPRES1.ant3 = TABLES.santsSolemnitatsFVespres1.ant3Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.ant3 = TABLES.OficisComunsVespres1.ant3Vespres1;
-    if(TABLES.santsSolemnitatsFVespres1.titol3Vespres1 !== '-')
-        this.VESPRES1.titol3 = TABLES.santsSolemnitatsFVespres1.titol3Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.titol3 = TABLES.OficisComunsVespres1.titol3Vespres1;
-    this.VESPRES1.com3 = ".";
-    if(TABLES.santsSolemnitatsFVespres1.text3Vespres1 !== '-')
-        this.VESPRES1.salm3 = TABLES.santsSolemnitatsFVespres1.text3Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.salm3 = TABLES.OficisComunsVespres1.text3Vespres1;
-    if(TABLES.santsSolemnitatsFVespres1.gloria3Vespres1 !== '-')
-        this.VESPRES1.gloria3 = TABLES.santsSolemnitatsFVespres1.gloria3Vespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.gloria3 = TABLES.OficisComunsVespres1.gloria3Vespres1;
-    //SF-VESPRES1 -> LECTURA BREU
-    if(TABLES.santsSolemnitatsFVespres1.citaLBVespres1 !== '-')
-        this.VESPRES1.vers = TABLES.santsSolemnitatsFVespres1.citaLBVespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.vers = TABLES.OficisComunsVespres1.citaLBVespres1;
-    if(TABLES.santsSolemnitatsFVespres1.lecturaBreuVespres1 !== '-')
-        this.VESPRES1.lecturaBreu = TABLES.santsSolemnitatsFVespres1.lecturaBreuVespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.lecturaBreu = TABLES.OficisComunsVespres1.lecturaBreuVespres1;
-    //SF-VESPRES1 -> RESPONSORI
-    this.VESPRES1.calAntEspecial = false;
-    if(TABLES.santsSolemnitatsFVespres1.respBreuVespres1Part1 !== '-')
-        this.VESPRES1.respBreu1 = TABLES.santsSolemnitatsFVespres1.respBreuVespres1Part1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.respBreu1 = TABLES.OficisComunsVespres1.respBreuVespres1Part1;
-    if(TABLES.santsSolemnitatsFVespres1.respBreuVespres1Part2 !== '-')
-        this.VESPRES1.respBreu2 = TABLES.santsSolemnitatsFVespres1.respBreuVespres1Part2;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.respBreu2 = TABLES.OficisComunsVespres1.respBreuVespres1Part2;
-    if(TABLES.santsSolemnitatsFVespres1.respBreuVespres1Part3 !== '-')
-        this.VESPRES1.respBreu3 = TABLES.santsSolemnitatsFVespres1.respBreuVespres1Part3;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.respBreu3 = TABLES.OficisComunsVespres1.respBreuVespres1Part3;
-    //SF-VESPRES1 -> CÀNTIC
-    if(TABLES.santsSolemnitatsFVespres1.antMaria1 !== '-')
-        this.VESPRES1.antCantic = TABLES.santsSolemnitatsFVespres1.antMaria1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.antCantic = TABLES.OficisComunsVespres1.antMaria1A;
-    //SF-VESPRES1 -> PREGÀRIES
-    if(TABLES.santsSolemnitatsFVespres1.pregariesVespres1 !== '-')
-        this.VESPRES1.pregaries = TABLES.santsSolemnitatsFVespres1.pregariesVespres1;
-    else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.pregaries = TABLES.OficisComunsVespres1.pregariesVespres1;
-    //SF-VESPRES1 -> ORACIÓ
-    if(TABLES.santsSolemnitatsFVespres1.oraFiVespres1 !== '-')
-        this.VESPRES1.oracio = TABLES.santsSolemnitatsFVespres1.oraFiVespres1;
-    // else if(TABLES.OficisComunsVespres1 !== null) this.VESPRES1.oracio = TABLES.OficisComunsVespres1.oraFiVespres1;
-}
-
-function makeVespres1DR(palmSundayParts: PalmSundayParts): Vespers{
-    llati = GlobalData.llati;
-    anyABC = GlobalData.ABC;
-    //TODO: VESPRES.Title = ...
-    if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresLlati;
-    else this.VESPRES1.himne = TABLES.tempsQuaresmaComuSS.himneVespresCat;
-    this.VESPRES1.ant1 = TABLES.tempsQuaresmaRams.ant1Vespres1;
-    this.VESPRES1.ant2 = TABLES.tempsQuaresmaRams.ant2Vespres1;
-    this.VESPRES1.ant3 = TABLES.tempsQuaresmaRams.ant3Vespres1;
-    this.VESPRES1.vers = TABLES.tempsQuaresmaRams.citaLBVespres;
-    this.VESPRES1.lecturaBreu = TABLES.tempsQuaresmaRams.lecturaBreuVespres;
-    this.VESPRES1.respBreu1 = TABLES.tempsQuaresmaRams.respBreuVespres1;
-    this.VESPRES1.respBreu2 = TABLES.tempsQuaresmaRams.respBreuVespres2;
-    this.VESPRES1.respBreu3 = TABLES.tempsQuaresmaRams.respBreuVespres3;
-    switch (anyABC) {
+function GetSolemnityAndFestivityFirstVespersOfTomorrow(solemnityAndFestivityParts: SolemnityAndFestivityParts, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Vespers{
+    let vespers = new Vespers();
+    vespers.Title = solemnityAndFestivityParts.Celebration.Title;
+    vespers.Anthem = settings.UseLatin? solemnityAndFestivityParts.FirstVespersLatinAnthem : solemnityAndFestivityParts.FirstVespersCatalanAnthem;
+    vespers.FirstPsalm = solemnityAndFestivityParts.FirstVespersFirstPsalm;
+    vespers.SecondPsalm = solemnityAndFestivityParts.FirstVespersSecondPsalm;
+    vespers.ThirdPsalm = solemnityAndFestivityParts.FirstVespersThirdPsalm;
+    vespers.ShortReading = solemnityAndFestivityParts.FirstVespersShortReading;
+    vespers.ShortResponsory = solemnityAndFestivityParts.FirstVespersShortResponsory;
+    switch (liturgyDayInformation.YearType) {
         case YearType.A:
-            this.VESPRES1.antCantic = TABLES.tempsQuaresmaRams.antMaria1A;
+            vespers.EvangelicalAntiphon = solemnityAndFestivityParts.FirstVespersEvangelicalAntiphonYearA;
             break;
         case YearType.B:
-            this.VESPRES1.antCantic = TABLES.tempsQuaresmaRams.antMaria1B;
+            vespers.EvangelicalAntiphon = solemnityAndFestivityParts.FirstVespersEvangelicalAntiphonYearB;
             break;
         case YearType.C:
-            this.VESPRES1.antCantic = TABLES.tempsQuaresmaRams.antMaria1C;
+            vespers.EvangelicalAntiphon = solemnityAndFestivityParts.FirstVespersEvangelicalAntiphonYearC;
             break;
     }
-    this.VESPRES1.pregaries = TABLES.tempsQuaresmaRams.pregariesVespres1;
-    this.VESPRES1.oracio = TABLES.tempsQuaresmaRams.oraFiVespres1;
+    vespers.Prayers = solemnityAndFestivityParts.FirstVespersPrayers;
+    vespers.FinalPrayer = solemnityAndFestivityParts.FirstVespersFinalPrayer;
+    return vespers;
 }
 
-function makeVespres1T(TABLES): Vespers{
-    llati = GlobalData.llati;
-    anyABC = GlobalData.ABC;
-    //TODO: VESPRES.Title = ...
-    if(settings.UseLatin) this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresllati;
-    else this.VESPRES1.himne = TABLES.tempsQuaresmaTridu.himneDSOVespresCat;
-    this.VESPRES1.ant1 = TABLES.tempsQuaresmaTridu.ant1Vespres;
-    this.VESPRES1.titol1 = TABLES.tempsQuaresmaTridu.titol1Vespres;
-    this.VESPRES1.com1 = "-";
-    this.VESPRES1.salm1 = TABLES.tempsQuaresmaTridu.salm1Vespres;
-    this.VESPRES1.gloria1 = TABLES.tempsQuaresmaTridu.gloriaVespres1;
-    this.VESPRES1.ant2 = TABLES.tempsQuaresmaTridu.ant2Vespres;
-    this.VESPRES1.titol2 = TABLES.tempsQuaresmaTridu.titol2Vespres;
-    this.VESPRES1.com2 = "-";
-    this.VESPRES1.salm2 = TABLES.tempsQuaresmaTridu.salm2Vespres;
-    this.VESPRES1.gloria2 = TABLES.tempsQuaresmaTridu.gloriaVespres2;
-    this.VESPRES1.ant3 = TABLES.tempsQuaresmaTridu.ant3Vespres;
-    this.VESPRES1.titol3 = TABLES.tempsQuaresmaTridu.titol3Vespres;
-    this.VESPRES1.com3 = "-";
-    this.VESPRES1.salm3 = TABLES.tempsQuaresmaTridu.salm3Vespres;
-    this.VESPRES1.gloria3 = TABLES.tempsQuaresmaTridu.gloriaVespres3;
-    this.VESPRES1.vers = TABLES.tempsQuaresmaTridu.citaLBVespres;
-    this.VESPRES1.lecturaBreu = TABLES.tempsQuaresmaTridu.lecturaBreuVespres;
-    this.VESPRES1.calAntEspecial = true;
-    this.VESPRES1.antEspecialVespres = TABLES.tempsQuaresmaTridu.antifonaEspecialVespres;
-    this.VESPRES1.antCantic = TABLES.tempsQuaresmaTridu.antMaria;
-    this.VESPRES1.pregaries = TABLES.tempsQuaresmaTridu.pregariesVespres;
-    this.VESPRES1.oracio = TABLES.tempsQuaresmaTridu.oraFiVespres;
-}
-
-function makeVespres1A(liturgyMasters: LiturgyMasters): Vespers{
-    llati = GlobalData.llati;
-    anyABC = GlobalData.ABC;
-    //TODO: VESPRES.Title = ...
-    if(settings.UseLatin)
-        this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresLlati;
-    else this.VESPRES1.himne = TABLES.tempsAdventNadalComu.himneVespresCat;
-    this.VESPRES1.ant1 = TABLES.tempsAdventSetmanesDiumVespres1.ant1Vespres;
-    this.VESPRES1.ant2 = TABLES.tempsAdventSetmanesDiumVespres1.ant2Vespres;
-    this.VESPRES1.ant3 = TABLES.tempsAdventSetmanesDiumVespres1.ant3Vespres;
-    this.VESPRES1.vers = TABLES.tempsAdventSetmanes.citaLBVespres;
-    this.VESPRES1.lecturaBreu = TABLES.tempsAdventSetmanes.lecturaBreuVespres;
-    this.VESPRES1.respBreu1 = TABLES.tempsAdventSetmanes.respBreuVespres1;
-    this.VESPRES1.respBreu2 = TABLES.tempsAdventSetmanes.respBreuVespres2;
-    this.VESPRES1.respBreu3 = TABLES.tempsAdventSetmanes.respBreuVespres3;
-    switch (anyABC) {
-        case YearType.C:
-            this.VESPRES1.antCantic = TABLES.tempsAdventSetmanesDiumVespres1.antMaria1A;
-            break;
+function GetSpecialDaysFirstVespersOfTomorrow(specialDaysParts: SpecialDaysParts, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Vespers{
+    let vespers = new Vespers();
+    vespers.Title = specialDaysParts.Celebration.Title;
+    vespers.Anthem = settings.UseLatin? specialDaysParts.FirstVespersLatinAnthem : specialDaysParts.FirstVespersCatalanAnthem;
+    vespers.FirstPsalm = specialDaysParts.FirstVespersFirstPsalm;
+    vespers.SecondPsalm = specialDaysParts.FirstVespersSecondPsalm;
+    vespers.ThirdPsalm = specialDaysParts.FirstVespersThirdPsalm;
+    vespers.ShortReading = specialDaysParts.FirstVespersShortReading;
+    vespers.ShortResponsory = specialDaysParts.FirstVespersShortResponsory;
+    switch (liturgyDayInformation.YearType) {
         case YearType.A:
-            this.VESPRES1.antCantic = TABLES.tempsAdventSetmanesDiumVespres1.antMaria1B;
+            vespers.EvangelicalAntiphon = specialDaysParts.FirstVespersEvangelicalAntiphonYearA;
             break;
         case YearType.B:
-            this.VESPRES1.antCantic = TABLES.tempsAdventSetmanesDiumVespres1.antMaria1C;
+            vespers.EvangelicalAntiphon = specialDaysParts.FirstVespersEvangelicalAntiphonYearB;
+            break;
+        case YearType.C:
+            vespers.EvangelicalAntiphon = specialDaysParts.FirstVespersEvangelicalAntiphonYearC;
             break;
     }
-    this.VESPRES1.pregaries = TABLES.tempsAdventSetmanes.pregariesVespres;
-    this.VESPRES1.oracio = TABLES.tempsAdventSetmanes.oraFiVespres;
+    vespers.Prayers = specialDaysParts.FirstVespersPrayers;
+    vespers.FinalPrayer = specialDaysParts.FirstVespersFinalPrayer;
+    return vespers;
+}
+
+function GetSaintsSolemnitiesFirstVespersOfTomorrow(saintsSolemnities: SaintsSolemnities, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Vespers{
+    let vespers = new Vespers();
+    vespers.Title = saintsSolemnities.Celebration.Title;
+    vespers.Anthem = settings.UseLatin? saintsSolemnities.FirstVespersLatinAnthem : saintsSolemnities.FirstVespersCatalanAnthem;
+    if(!StringManagement.HasLiturgyContent(vespers.Anthem) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.Anthem = settings.UseLatin? saintsSolemnities.CommonOffices.FirstVespersLatinAnthem : saintsSolemnities.CommonOffices.FirstVespersCatalanAnthem;
+    }
+    vespers.FirstPsalm = saintsSolemnities.FirstVespersFirstPsalm;
+    if(!StringManagement.HasLiturgyContent(vespers.FirstPsalm.Psalm) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.FirstPsalm = saintsSolemnities.CommonOffices.FirstVespersFirstPsalm;
+    }
+    vespers.SecondPsalm = saintsSolemnities.FirstVespersSecondPsalm;
+    if(!StringManagement.HasLiturgyContent(vespers.SecondPsalm.Psalm) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.SecondPsalm = saintsSolemnities.CommonOffices.FirstVespersSecondPsalm;
+    }
+    vespers.ThirdPsalm = saintsSolemnities.FirstVespersThirdPsalm;
+    if(!StringManagement.HasLiturgyContent(vespers.ThirdPsalm.Psalm) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.ThirdPsalm = saintsSolemnities.CommonOffices.FirstVespersThirdPsalm;
+    }
+    vespers.ShortReading = saintsSolemnities.FirstVespersShortReading;
+    if(!StringManagement.HasLiturgyContent(vespers.ShortReading.ShortReading) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.ShortReading = saintsSolemnities.CommonOffices.FirstVespersShortReading;
+    }
+    vespers.ShortResponsory = saintsSolemnities.FirstVespersShortResponsory;
+    if(!StringManagement.HasLiturgyContent(vespers.ShortResponsory.FirstPart) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.ShortResponsory = saintsSolemnities.CommonOffices.FirstVespersShortResponsory;
+    }
+    vespers.EvangelicalAntiphon = saintsSolemnities.FirstVespersEvangelicalAntiphon;
+    if(!StringManagement.HasLiturgyContent(vespers.EvangelicalAntiphon) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.EvangelicalAntiphon = saintsSolemnities.CommonOffices.FirstVespersEvangelicalAntiphon;
+    }
+    vespers.Prayers = saintsSolemnities.FirstVespersPrayers;
+    if(!StringManagement.HasLiturgyContent(vespers.Prayers) && saintsSolemnities.CommonOffices !== undefined){
+        vespers.Prayers = saintsSolemnities.CommonOffices.FirstVespersPrayers;
+    }
+    vespers.FinalPrayer = saintsSolemnities.FirstVespersFinalPrayer;
+    return vespers;
+}
+
+function GetPalmSundayFistVespersOfTomorrow(palmSundayParts: PalmSundayParts, commonPartsOfHolyWeek: CommonPartsOfHolyWeek, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Vespers{
+    let vespers = new Vespers();
+    vespers.Title = "Diumenge de Rams";
+    vespers.Anthem = settings.UseLatin? commonPartsOfHolyWeek.VespersLatinAnthem : commonPartsOfHolyWeek.VespersCatalanAnthem;
+    vespers.FirstPsalm.Antiphon = palmSundayParts.FirstVespersFirstAntiphon;
+    vespers.SecondPsalm.Antiphon = palmSundayParts.FirstVespersSecondAntiphon;
+    vespers.ThirdPsalm.Antiphon = palmSundayParts.FirstVespersThirdAntiphon;
+    vespers.ShortReading = palmSundayParts.FirstVespersShortReading;
+    vespers.ShortResponsory = palmSundayParts.FirstVespersShortResponsory;
+    switch (liturgyDayInformation.YearType) {
+        case YearType.A:
+            vespers.EvangelicalAntiphon = palmSundayParts.FirstVespersEvangelicalAntiphonYearA;
+            break;
+        case YearType.B:
+            vespers.EvangelicalAntiphon = palmSundayParts.FirstVespersEvangelicalAntiphonYearB;
+            break;
+        case YearType.C:
+            vespers.EvangelicalAntiphon = palmSundayParts.FirstVespersEvangelicalAntiphonYearC;
+            break;
+    }
+    vespers.Prayers = palmSundayParts.FirstVespersPrayers;
+    vespers.FinalPrayer = palmSundayParts.FirstVespersFinalPrayer;
+    return vespers;
+}
+
+function GetEasterTriduumFistVespersOfTomorrow(partsOfEasterTriduum: PartsOfEasterTriduum, settings: Settings): Vespers{
+    let vespers = new Vespers();
+    vespers.Anthem = settings.UseLatin? partsOfEasterTriduum.VespersLatinAnthem : partsOfEasterTriduum.VespersCatalanAnthem;
+    vespers.FirstPsalm = partsOfEasterTriduum.VespersFirstPsalm;
+    vespers.SecondPsalm = partsOfEasterTriduum.VespersSecondPsalm;
+    vespers.ThirdPsalm = partsOfEasterTriduum.VespersThirdPsalm;
+    vespers.ShortReading = partsOfEasterTriduum.VespersShortReading;
+    vespers.ShortResponsory = partsOfEasterTriduum.VespersShortResponsory;
+    vespers.EvangelicalAntiphon = partsOfEasterTriduum.VespersEvangelicalAntiphon;
+    vespers.Prayers = partsOfEasterTriduum.VespersPrayers;
+    vespers.FinalPrayer = partsOfEasterTriduum.VespersFinalPrayer;
+    return vespers;
+}
+
+function GetAdventSundayFirstVespersOfTomorrow(adventSundayParts: AdventSundayParts, adventWeekParts: AdventWeekParts, commonAdventAndChristmasParts: CommonAdventAndChristmasParts, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Vespers{
+    let vespers = new Vespers();
+    vespers.Anthem = settings.UseLatin? commonAdventAndChristmasParts.VespersLatinAnthem : commonAdventAndChristmasParts.VespersCatalanAnthem;
+    vespers.FirstPsalm.Antiphon = adventSundayParts.FirstVespersFirstAntiphon;
+    vespers.SecondPsalm.Antiphon = adventSundayParts.FirstVespersSecondAntiphon;
+    vespers.ThirdPsalm.Antiphon = adventSundayParts.FirstVespersThirdAntiphon;
+    vespers.ShortReading = adventWeekParts.VespersShortReading;
+    vespers.ShortResponsory = adventWeekParts.VespersShortResponsory;
+    switch (liturgyDayInformation.YearType) {
+        case YearType.A:
+            vespers.EvangelicalAntiphon = adventSundayParts.FirstVespersEvangelicalAntiphonYearA;
+            break;
+        case YearType.B:
+            vespers.EvangelicalAntiphon = adventSundayParts.FirstVespersEvangelicalAntiphonYearB;
+            break;
+        case YearType.C:
+            vespers.EvangelicalAntiphon = adventSundayParts.FirstVespersEvangelicalAntiphonYearC;
+            break;
+    }
+    vespers.Prayers = adventWeekParts.VespersPrayers;
+    vespers.FinalPrayer = adventWeekParts.VespersFinalPrayer;
+    return vespers;
 }

@@ -27,6 +27,9 @@ export let CurrentHoursLiturgy = new HoursLiturgy();
 export let CurrentMassLiturgy = new MassLiturgy();
 
 export async function ReloadAllData(date) {
+
+    // TODO: check for all "." / '.' occurrences. Change the way this is code is used
+
     LastRefreshDate = new Date();
     CurrentSettings = await ObtainCurrentSettings(date);
     CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();

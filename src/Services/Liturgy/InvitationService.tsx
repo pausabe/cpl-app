@@ -2,10 +2,11 @@ import Invitation from "../../Models/HoursLiturgy/Invitation";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
+import {StringManagement} from "../../Utils/StringManagement";
 
 export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationInvitation : Invitation) : Invitation{
     let invitation = new Invitation();
-    if(celebrationInvitation.InvitationAntiphon !== "-"){
+    if(StringManagement.HasLiturgyContent(celebrationInvitation.InvitationAntiphon)){
         invitation.InvitationAntiphon = celebrationInvitation.InvitationAntiphon;
     }
     else{

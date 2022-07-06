@@ -28,7 +28,7 @@ export async function ObtainHoursLiturgy(liturgyMasters: LiturgyMasters, liturgy
   hoursLiturgy.VespersOptions.VespersWithoutCelebration = VespersService.ObtainVespers(liturgyMasters, liturgyDayInformation.Today, settings);
   hoursLiturgy.Vespers = GetVespersWithLowerPrecedence(liturgyMasters, liturgyDayInformation, hoursLiturgy.CelebrationInformation, settings, hoursLiturgy.VespersOptions);
   hoursLiturgy.Hours = HoursService.ObtainHours(liturgyMasters, liturgyDayInformation.Today, celebrationHoursLiturgy.Hours, settings);
-  hoursLiturgy.NightPrayer = NightPrayerService.ObtainNightPrayer(liturgyMasters, liturgyDayInformation.Today, celebrationHoursLiturgy.NightPrayer, settings);
+  hoursLiturgy.NightPrayer = NightPrayerService.ObtainNightPrayer(liturgyMasters, liturgyDayInformation.Today, settings);
   return hoursLiturgy;
 }
 

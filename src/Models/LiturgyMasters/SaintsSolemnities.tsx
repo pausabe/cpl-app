@@ -16,7 +16,8 @@ export default class SaintsSolemnities {
         this.Id = databaseRow.id;
 
         this.Celebration.Day = databaseRow.dia;
-        this.Celebration.Type = databaseRow.Cat;
+        // We don't want to get this value to avoid confusion with LiturgySpecificDayInformation.CelebrationType
+        // this.Celebration.Type = databaseRow.Cat;
         this.Celebration.SpecificClassification = databaseRow.ClassificacioCategoria; // TODO: fill it in the database
         this.Celebration.Precedence = databaseRow.Precedencia;
         this.Celebration.LiturgicalTime = databaseRow.Temps;
