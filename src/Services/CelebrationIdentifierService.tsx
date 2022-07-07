@@ -3,6 +3,18 @@ import {CelebrationType} from "./DatabaseEnums";
 import {CompareDates} from "../Utils/DateManagement";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 
+export function IsAssumption(date: Date) {
+    return date.getMonth() === 7 && date.getDate() === 15;
+}
+
+export function IsSantsPerePau(date: Date) {
+    return date.getMonth() === 5 && date.getDate() === 29;
+}
+
+export function IsSaintJohnBaptist(date: Date) {
+    return date.getMonth() === 5 && date.getDate() === 24;
+}
+
 export function GetSaturdayBeforePentecostDate(liturgyDateInformation: LiturgySpecificDayInformation): Date {
     let saturdayBeforePentecost = new Date(liturgyDateInformation.PentecostDay.getDate());
     saturdayBeforePentecost.setDate(saturdayBeforePentecost.getDate() - 1);
@@ -74,9 +86,9 @@ export function IsEpiphany(date: Date) {
         date.getMonth() === 0;
 }
 
-export function IsChristmas(liturgyDateInformation : LiturgySpecificDayInformation) {
-    return liturgyDateInformation.Date.getDate() === 25 &&
-        liturgyDateInformation.Date.getMonth() === 11;
+export function IsChristmas(date: Date) {
+    return date.getDate() === 25 &&
+        date.getMonth() === 11;
 }
 
 export function IsSacredFamily(today : Date) : boolean{
@@ -92,8 +104,9 @@ export function IsBaptism(today : Date) : boolean{
     return !(today.getDate() < 7 || today.getDate() > 13);
 }
 
-export function IsMatherOfGod(liturgyDayInformation: LiturgySpecificDayInformation) {
-    return liturgyDayInformation.Date.getMonth() === 0 && liturgyDayInformation.Date.getDate() === 1
+export function IsMatherOfGod(date: Date) {
+    return date.getMonth() === 0 &&
+        date.getDate() === 1
 }
 
 export function IsImmaculateHeartOfTheBlessedVirginMary(liturgyDateInformation : LiturgySpecificDayInformation) : boolean{

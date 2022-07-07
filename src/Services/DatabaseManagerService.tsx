@@ -17,7 +17,7 @@ export function executeQueryAsync(query) : Promise<SQLResultSet>{
     );
 }
 
-// TODO: refactor
+// TODO: refactor and avoid to export (use executeQueryAsync)
 export function executeQuery(query, callback, errorCallback) {
     if(CPLDataBase === undefined) {
         OpenDatabase()

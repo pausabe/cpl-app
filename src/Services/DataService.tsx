@@ -39,7 +39,7 @@ export async function ReloadAllData(date) {
     const liturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
     CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation, CurrentSettings);
     CurrentCelebrationInformation = ObtainCurrentCelebrationInformation(CurrentHoursLiturgy);
-    CurrentMassLiturgy = await ObtainMassLiturgy(liturgyMasters);
+    CurrentMassLiturgy = await ObtainMassLiturgy(CurrentLiturgyDayInformation, CurrentCelebrationInformation, CurrentSettings);
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Total time passed: ', (new Date().getMilliseconds() - LastRefreshDate.getMilliseconds()) / 1000);
 }
 

@@ -8,7 +8,7 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
     if(dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU){
         return 1;
     }
-    if (CelebrationIdentifierService.IsChristmas(dateLiturgyInformation) ||
+    if (CelebrationIdentifierService.IsChristmas(dateLiturgyInformation.Date) ||
         CelebrationIdentifierService.IsEpiphany(dateLiturgyInformation.Date) ||
         CelebrationIdentifierService.IsAscension(dateLiturgyInformation) ||
         CelebrationIdentifierService.IsPentecost(dateLiturgyInformation) ||
@@ -24,18 +24,18 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
         dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA){
         return 2;
     }
-    if((celebrationInformation.Type === CelebrationType.Solemnity &&
+    if((dateLiturgyInformation.CelebrationType === CelebrationType.Solemnity &&
         (celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Lord ||
             celebrationInformation.SpecificClassification === CelebrationSpecificClassification.MotherOfGod ||
             celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic)) ||
         CelebrationIdentifierService.IsAllSaints(dateLiturgyInformation)){
         return 3;
     }
-    if(celebrationInformation.Type === CelebrationType.Solemnity &&
+    if(dateLiturgyInformation.CelebrationType === CelebrationType.Solemnity &&
         celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Own){
         return 4;
     }
-    if(celebrationInformation.Type === CelebrationType.Festivity &&
+    if(dateLiturgyInformation.CelebrationType === CelebrationType.Festivity &&
         celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Lord){
         return 5;
     }
@@ -44,12 +44,12 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
         dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Ordinary)){
         return 6;
     }
-    if(celebrationInformation.Type === CelebrationType.Festivity &&
+    if(dateLiturgyInformation.CelebrationType === CelebrationType.Festivity &&
         (celebrationInformation.SpecificClassification === CelebrationSpecificClassification.MotherOfGod ||
             celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic)){
         return 7;
     }
-    if(celebrationInformation.Type === CelebrationType.Festivity &&
+    if(dateLiturgyInformation.CelebrationType === CelebrationType.Festivity &&
         celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Own){
         return 8;
     }
@@ -62,33 +62,33 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
         dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent)) {
         return 9;
     }
-    if(celebrationInformation.Type === CelebrationType.Memory &&
+    if(dateLiturgyInformation.CelebrationType === CelebrationType.Memory &&
         celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic &&
         dateLiturgyInformation.GenericLiturgyTime !== GenericLiturgyTimeType.Lent){
         return 10;
     }
-    if(celebrationInformation.Type === CelebrationType.Memory &&
+    if(dateLiturgyInformation.CelebrationType === CelebrationType.Memory &&
         celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Own &&
         dateLiturgyInformation.GenericLiturgyTime !== GenericLiturgyTimeType.Lent){
         return 11;
     }
-    if((celebrationInformation.Type === CelebrationType.OptionalMemory || celebrationInformation.Type === CelebrationType.OptionalVirginMemory) ||
-        (celebrationInformation.Type === CelebrationType.Memory &&
+    if((dateLiturgyInformation.CelebrationType === CelebrationType.OptionalMemory || dateLiturgyInformation.CelebrationType === CelebrationType.OptionalVirginMemory) ||
+        (dateLiturgyInformation.CelebrationType === CelebrationType.Memory &&
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent)){
         return 12;
     }
-    if((celebrationInformation.Type === CelebrationType.Fair &&
+    if((dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent &&
             dateLiturgyInformation.Date.getDate() <= 16) ||
-        (celebrationInformation.Type === CelebrationType.Fair &&
+        (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Christmas &&
             dateLiturgyInformation.Date.getDate() >= 2 &&
             dateLiturgyInformation.Date.getDate() <= CelebrationIdentifierService.GetSaturdayAfterEpiphanyDate(dateLiturgyInformation).getDate()) ||
-        (celebrationInformation.Type === CelebrationType.Fair &&
+        (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter &&
             dateLiturgyInformation.Date.getDate() >= CelebrationIdentifierService.GetMondayAfterEasterOctaveDate(dateLiturgyInformation).getDate() &&
             dateLiturgyInformation.Date.getDate() <= CelebrationIdentifierService.GetSaturdayBeforePentecostDate(dateLiturgyInformation).getDate()) ||
-        (celebrationInformation.Type === CelebrationType.Fair &&
+        (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Ordinary)){
         return 13;
     }

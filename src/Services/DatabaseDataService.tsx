@@ -1,10 +1,9 @@
 import * as Logger from '../Utils/Logger';
-import GF from '../Utils/GlobalFunctions';
+import GlobalFunctions from '../Utils/GlobalFunctions';
 import {executeQuery, executeQueryAsync} from "./DatabaseManagerService";
 import { Settings } from '../Models/Settings';
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
-import GLOBAL from "../Utils/GlobalKeys";
-import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
+import MassLiturgy, {DayMassLiturgy} from "../Models/MassLiturgy";
 
 export function getDatabaseVersion() : Promise<number>{
   return new Promise((resolve) => {
@@ -47,7 +46,7 @@ export async function ObtainLiturgySpecificDayInformation(date: Date, currentSet
   let liturgyDayInformation = new LiturgySpecificDayInformation();
   liturgyDayInformation.Date = date;
   liturgyDayInformation.PentecostDay = await ObtainPentecostDay(liturgyDayInformation.Date);
-  liturgyDayInformation.CelebrationType = GF.getCelType(currentSettings.DioceseName, todayLiturgy);
+  liturgyDayInformation.CelebrationType = GlobalFunctions.getCelType(currentSettings.DioceseName, todayLiturgy);
   liturgyDayInformation.MovedDay.Date = todayLiturgy.diaMogut;
   liturgyDayInformation.MovedDay.DioceseName = todayLiturgy.diocesiMogut;
   liturgyDayInformation.LiturgyColor = todayLiturgy.Color;
@@ -169,6 +168,7 @@ export async function ObtainCommonOfficesAsync(categoria) {
   return result.rows.item(0);
 }
 
+/** @deprecated Use GetVespersAsync instead**/
 export function getVispers(idSpecialVespers, callback){
     let query = `SELECT * FROM LDSantoral WHERE id = '${idSpecialVespers}'`;
     executeQuery(query,
@@ -176,12 +176,52 @@ export function getVispers(idSpecialVespers, callback){
     );
 }
 
+export async function GetHolyDaysMass(holyDayMassIdentifier: number, liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy>{
+  return holyDayMassIdentifier === -1?
+      GetHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation, settings) :
+      GetHolyDaysMassWithIdentifier(holyDayMassIdentifier);
+}
+
+function RowToMassLiturgy(row): DayMassLiturgy{
+  let dayMassLiturgy = new DayMassLiturgy();
+  dayMassLiturgy.FirstReading.Quote = row.Lectura1;
+  dayMassLiturgy.FirstReading.Comment = row.Lectura1Cita;
+  dayMassLiturgy.FirstReading.Title = row.Lectura1Titol;
+  dayMassLiturgy.FirstReading.Reading = row.Lectura1Text;
+  dayMassLiturgy.Psalm.Quote = row.Salm;
+  dayMassLiturgy.Psalm.Psalm = row.SalmText;
+  dayMassLiturgy.SecondReading.Quote = row.Lectura2;
+  dayMassLiturgy.SecondReading.Comment = row.Lectura2Cita;
+  dayMassLiturgy.SecondReading.Title = row.Lectura2Titol;
+  dayMassLiturgy.SecondReading.Reading = row.Lectura2Text;
+  dayMassLiturgy.Hallelujah.Quote = row.Alleluia;
+  dayMassLiturgy.Hallelujah.Hallelujah = row.AlleluiaText;
+  dayMassLiturgy.Gospel.Quote = row.Evangeli;
+  dayMassLiturgy.Gospel.Comment = row.EvangeliCita;
+  dayMassLiturgy.Gospel.Title = row.EvangeliTitol;
+  dayMassLiturgy.Gospel.Gospel = row.EvangeliText;
+  return dayMassLiturgy;
+}
+
+async function GetHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
+  const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgyDayInformation.YearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${diaSetmana}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${parImpar}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE LDSantoral.Categoria = '${celType}'AND LDSantoral.tempsespecific = '${tempsEspecific}'AND LDSantoral.dia = '${day}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.DioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
+  const result = await executeQueryAsync(query);
+  return RowToMassLiturgy(result.rows.item(0));
+}
+
+export async function GetHolyDaysMassWithIdentifier(holyDayMassIdentifier: number): Promise<DayMassLiturgy>{
+  let query = `SELECT * FROM LDSantoral WHERE id = '${holyDayMassIdentifier}'`;
+  const result = await executeQueryAsync(query);
+  return RowToMassLiturgy(result.rows.item(0));
+}
+
+/** @deprecated Use getLDSantoralAsync instead**/
 export function getLDSantoral(day, specialResultId, celType, tempsEspecific, cicleABC, diaSetmana, parImpar, setmana, diocesiName, callback) {
   getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parImpar, (normal_result) => {
     let query;
     if (specialResultId === '-1') {
       //Normal santoral day
-      const diocesis = GF.transformDiocesiName(diocesiName, "Diòcesi");
+      const diocesis = GlobalFunctions.transformDiocesiName(diocesiName, "Diòcesi");
       query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelaliturgyDayInformation.Week = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${cicleABC}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${diaSetmana}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${parImpar}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE LDSantoral.Categoria = '${celType}'AND LDSantoral.tempsespecific = '${tempsEspecific}'AND LDSantoral.dia = '${day}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${diocesis}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
       executeQuery(query,
         result => {
@@ -258,7 +298,6 @@ export function getLDSantoral(day, specialResultId, celType, tempsEspecific, cic
               special_result.EvangeliText = normal_result.EvangeliText;
             }
           }
-
           callback(special_result)
         }
       );
@@ -266,6 +305,7 @@ export function getLDSantoral(day, specialResultId, celType, tempsEspecific, cic
   });
 }
 
+/** @deprecated Use getLDSantoralAsync instead**/
 export function getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parImpar, callback) {
   let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${tempsEspecific}' AND DiadelaSetmana = '${diaSetmana}' AND NumSet = '${setmana}'`;
   executeQuery(query,
@@ -274,6 +314,14 @@ export function getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parIm
       callback(result.rows.item(i));
     });
 }
+
+export async function GetNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation) {
+  let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${liturgyDayInformation.GenericLiturgyTime}' AND DiadelaSetmana = '${liturgyDayInformation.DayOfTheWeek}' AND NumSet = '${liturgyDayInformation.Week}'`;
+  const result = await executeQueryAsync(query);
+  let i = LDGetIndexNormal(result, liturgyDayInformation.YearType, liturgyDayInformation.YearIsEven? "II" : "I", liturgyDayInformation.DayOfTheWeek);
+  return RowToMassLiturgy(result.rows.item(i));
+}
+
 
 function findCorrect(rows, length, diocesi, diocesiName, lloc) {
   //Catedral < Ciutat < Diòcesi < -
@@ -431,7 +479,7 @@ function transformDiocesiName(diocesi, lloc) {
 
 function LDGetIndexNormal(result, cicleABC, parImpar, diaSetmana) {
   let i;
-//For getLDSantoral is necessari let in result just the rows with diaSetmana (just in case any of them have diaSetmana != '-')
+  //For getLDSantoral is necessari let in result just the rows with diaSetmana (just in case any of them have diaSetmana != '-')
   let haveSomeDiaSetmana = false;
   let DiaIsTheSame = false;
   for (let i = 0; i < result.rows.length; i++) {
