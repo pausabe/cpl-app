@@ -1,7 +1,33 @@
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {CelebrationType} from "./DatabaseEnums";
-import {CompareDates} from "../Utils/DateManagement";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
+import {DateManagement} from "../Utils/DateManagement";
+
+export function IsHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+    //Divendres de la tercera setmana després de Pentecosta (Divendres després de Corpus) A (166) B (167) C (168)
+    //Sagrat cor de Jesús
+    const holyHeartOfJesus = new Date(liturgySpecificDayInformation.PentecostDay.getFullYear(),
+        liturgySpecificDayInformation.PentecostDay.getMonth(),
+        liturgySpecificDayInformation.PentecostDay.getDate() + 19);
+    return DateManagement.CompareDates(liturgySpecificDayInformation.Date, holyHeartOfJesus);
+}
+
+export function IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+    //Diumenge després de la Santíssima Trinitat A (163) B (164) C (165)
+    //Santíssim cos i sang de crist
+    const holyBodyAndBloodOfChrist = new Date(liturgySpecificDayInformation.PentecostDay.getFullYear(),
+        liturgySpecificDayInformation.PentecostDay.getMonth(),
+        liturgySpecificDayInformation.PentecostDay.getDate() + 14);
+    return DateManagement.CompareDates(liturgySpecificDayInformation.Date, holyBodyAndBloodOfChrist);
+}
+
+export function IsHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+    //Diumenge després de Pentecosta A (160) B (161) C (162)
+    const holyTrinity = new Date(liturgySpecificDayInformation.PentecostDay.getFullYear(),
+        liturgySpecificDayInformation.PentecostDay.getMonth(),
+        liturgySpecificDayInformation.PentecostDay.getDate() + 7);
+    return DateManagement.CompareDates(liturgySpecificDayInformation.Date, holyTrinity);
+}
 
 export function IsAssumption(date: Date) {
     return date.getMonth() === 7 && date.getDate() === 15;
@@ -72,7 +98,7 @@ export function AshWednesday(liturgyDateInformation : LiturgySpecificDayInformat
 }
 
 export function IsPentecost(liturgyDateInformation : LiturgySpecificDayInformation) {
-    return CompareDates(liturgyDateInformation.Date, liturgyDateInformation.PentecostDay);
+    return DateManagement.CompareDates(liturgyDateInformation.Date, liturgyDateInformation.PentecostDay);
 }
 
 export function IsAscension(liturgyDateInformation : LiturgySpecificDayInformation) {
@@ -122,10 +148,10 @@ export function IsImmaculateHeartOfTheBlessedVirginMary(liturgyDateInformation :
     return false;
 }
 
-export function MotherOfGodFromTheTibbon(liturgyDateInformation : LiturgySpecificDayInformation) : boolean{
+export function IsMotherOfGodFromTheTibbon(date: Date) : boolean{
     //santsMemories M - Dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
     //santsSolemnitats S - Dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
-    const auxDay = new Date(liturgyDateInformation.Date.getFullYear(), 8, 2);
+    const auxDay = new Date(date.getFullYear(), 8, 2);
     let b = true;
     let dies = 0;
     while (b && dies < 7) {
@@ -135,19 +161,15 @@ export function MotherOfGodFromTheTibbon(liturgyDateInformation : LiturgySpecifi
         auxDay.setDate(auxDay.getDate() + 1)
         dies += 1;
     }
-    const cinta = new Date(liturgyDateInformation.Date.getFullYear(), 8, dies);
-    return liturgyDateInformation.Date.getDate() === cinta.getDate() &&
-        liturgyDateInformation.Date.getMonth() === cinta.getMonth() &&
-        liturgyDateInformation.Date.getFullYear() === cinta.getFullYear();
+    const tibbonDate = new Date(date.getFullYear(), 8, dies);
+    return DateManagement.CompareDates(date, tibbonDate);
 }
 
 export function JesusChristHighPriestForever(liturgyDateInformation : LiturgySpecificDayInformation) : boolean{
     //santsSolemnitats F - Dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
     if (liturgyDateInformation.CelebrationType === CelebrationType.Festivity) {
         const granSacerdot = new Date(liturgyDateInformation.PentecostDay.getFullYear(), liturgyDateInformation.PentecostDay.getMonth(), liturgyDateInformation.PentecostDay.getDate() + 4);
-        if (liturgyDateInformation.Date.getDate() === granSacerdot.getDate() &&
-            liturgyDateInformation.Date.getMonth() === granSacerdot.getMonth() &&
-            liturgyDateInformation.Date.getFullYear() === granSacerdot.getFullYear()) {
+        if (DateManagement.CompareDates(liturgyDateInformation.Date, granSacerdot)) {
             return true;
         }
     }
@@ -158,9 +180,7 @@ export function BlessedVirginMaryMotherOfTheChurch(liturgyDateInformation : Litu
     //santsMemories M - Dilluns despres de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
     if (liturgyDateInformation.CelebrationType === CelebrationType.Memory) {
         const benaurada = new Date(liturgyDateInformation.PentecostDay.getFullYear(), liturgyDateInformation.PentecostDay.getMonth(), liturgyDateInformation.PentecostDay.getDate() + 1);
-        if (liturgyDateInformation.Date.getDate() === benaurada.getDate() &&
-            liturgyDateInformation.Date.getMonth() === benaurada.getMonth() &&
-            liturgyDateInformation.Date.getFullYear() === benaurada.getFullYear()) {
+        if (DateManagement.CompareDates(liturgyDateInformation.Date, benaurada)) {
             return true;
         }
     }

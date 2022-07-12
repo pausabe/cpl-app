@@ -9,10 +9,8 @@ import {StringManagement} from "../../Utils/StringManagement";
 import * as PrecedenceService from "../PrecedenceService";
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
-import {JesusChristHighPriestForever} from "../CelebrationIdentifierService";
 
 export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInformation, celebrationInformation: CelebrationInformation, settings: Settings): Promise<MassLiturgy> {
-    // TODO: Am I taking into account the moved day here and in HoursLiturgyService?
     if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA) {
         return GetEasterEve(liturgyDayInformation.Today);
     }
@@ -35,32 +33,39 @@ function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, celebr
 }
 
 async function GetMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
-    const specialOptionalIdentifier = GetSpecialLliureDayIdentifier(liturgyDayInformation.Date, settings);
-    if (IsCelebrationDay(liturgyDayInformation, specialOptionalIdentifier, settings)) {
-        return GetCelebrationDayLiturgy(liturgyDayInformation, specialOptionalIdentifier, settings);
+    const celebrationIdentifier = GetCelebrationIdentifier(liturgyDayInformation, settings);
+    if (IsCelebrationDay(liturgyDayInformation, celebrationIdentifier)) {
+        return GetCelebrationDayLiturgy(liturgyDayInformation, celebrationIdentifier, settings);
     }
     else {
         return await DatabaseDataService.GetNormalDaysMassLiturgy(liturgyDayInformation);
     }
 }
 
-function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, specialOptionalIdentifier: number, settings: Settings){
+function GetCelebrationIdentifier(liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): number {
+    let celebrationVariableIdentifier = GetCelebrationVariableIdentifier(liturgyDayInformation);
+    if(celebrationVariableIdentifier !== -1){
+        return celebrationVariableIdentifier;
+    }
+    if(settings.OptionalFestivityEnabled &&
+        (liturgyDayInformation.CelebrationType === CelebrationType.OptionalMemory ||
+        liturgyDayInformation.CelebrationType === CelebrationType.OptionalVirginMemory)) {
+        return GetSpecialOptionalDayIdentifier(liturgyDayInformation.Date)
+    }
+    return -1;
+}
+
+function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, superMegaId: number){
     return liturgyDayInformation.CelebrationType === CelebrationType.Memory ||
         liturgyDayInformation.CelebrationType === CelebrationType.Solemnity ||
         liturgyDayInformation.CelebrationType === CelebrationType.Festivity ||
-        IsSpecialChristmas(liturgyDayInformation, settings) ||
-        ((liturgyDayInformation.CelebrationType === CelebrationType.OptionalMemory ||
-            liturgyDayInformation.CelebrationType === CelebrationType.OptionalVirginMemory) &&
-            specialOptionalIdentifier !== -1);
+        IsSpecialChristmas(liturgyDayInformation) ||
+        superMegaId !== -1;
 }
 
-async function GetCelebrationDayLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, specialOptionalIdentifier: number, settings: Settings): Promise<DayMassLiturgy>{
-    let holyDayMassIdentifier = IsSpecialDay(liturgyDayInformation);
-    if(holyDayMassIdentifier === -1){
-        holyDayMassIdentifier = specialOptionalIdentifier;
-    }
+async function GetCelebrationDayLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, celebrationIdentifier: number, settings: Settings): Promise<DayMassLiturgy>{
     return MergeLiturgyDays(
-        await DatabaseDataService.GetHolyDaysMass(holyDayMassIdentifier, liturgyDayInformation, settings),
+        await DatabaseDataService.GetHolyDaysMass(celebrationIdentifier, liturgyDayInformation, settings),
         await DatabaseDataService.GetNormalDaysMassLiturgy(liturgyDayInformation));
 }
 
@@ -100,169 +105,7 @@ async function GetVespersMassLiturgy(tomorrowLiturgyDayInformation: LiturgySpeci
     }
 }
 
-function GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation: LiturgySpecificDayInformation): number {
-    if (CelebrationIdentifierService.IsSaintJohnBaptist(tomorrowLiturgyDayInformation.Date))
-        return SoulKeys.LDSantoral_NaixamentJoanBaptista;
-    if (CelebrationIdentifierService.IsSantsPerePau(tomorrowLiturgyDayInformation.Date))
-        return SoulKeys.LDSantoral_SantsPerePau;
-    if (CelebrationIdentifierService.IsAssumption(tomorrowLiturgyDayInformation.Date))
-        return SoulKeys.LDSantoral_AssumpcioBenauradaVergeMaria;
-    if (CelebrationIdentifierService.IsChristmas(tomorrowLiturgyDayInformation.Date))
-        return SoulKeys.LDSantoral_Nadal;
-    if (CelebrationIdentifierService.IsPentecost(tomorrowLiturgyDayInformation)) {
-        switch (tomorrowLiturgyDayInformation.YearType) {
-            case YearType.A:
-                return SoulKeys.LDSantoral_PentecostaA;
-            case YearType.B:
-                return SoulKeys.LDSantoral_PentecostaB;
-            case YearType.C:
-                return SoulKeys.LDSantoral_PentecostaC;
-        }
-    }
-    return -1;
-}
-
-function IsSpecialDay(liturgySpecificDayInformation: LiturgySpecificDayInformation): number {
-    if (CelebrationIdentifierService.JesusChristHighPriestForever(liturgySpecificDayInformation)) {
-        return liturgySpecificDayInformation.YearIsEven? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI;
-    }
-
-    // TODO: continue here
-
-    //Dissabte de la tercera setmana després de Pentecosta (033)
-    //santsMemories M - Dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
-    var corImmaculat = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 20);
-    if (today_date.getDate() === corImmaculat.getDate() && today_date.getMonth() === corImmaculat.getMonth() &&
-        today_date.getFullYear() === corImmaculat.getFullYear()) {
-        // No si aquest dia es 29 de juny (St Pere i St Pau) -> St st pere i st pau > cor immaculat
-        if (!(today_date.getMonth() == 5 && today_date.getDate() == 29))
-            return SoulKeys.LDSantoral_CorImmaculatBenauradaVergeMaria;
-    }
-
-    //Dissabte abans del primer diumenge de setembre (102)
-    //santsSolemnitats S - Dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
-    var auxDay = new Date(today_date.getFullYear(), 8, 2);
-    var b = true;
-    var dies = 0;
-    while (b && dies < 7) {
-        if (auxDay.getDay() === 0) {
-            b = false;
-        }
-        auxDay.setDate(auxDay.getDate() + 1)
-        dies += 1;
-    }
-    var cinta = new Date(today_date.getFullYear(), 8, dies);
-    if (today_date.getDate() === cinta.getDate() && today_date.getMonth() === cinta.getMonth() &&
-        today_date.getFullYear() === cinta.getFullYear()) {
-        return SoulKeys.LDSantoral_MareDeuCinta;
-    }
-
-    //Dilluns després de Pentecosta I (111) II (112)
-    //santsMemories M - Dilluns despres de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
-    var benaurada = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 1);
-    if (today_date.getDate() === benaurada.getDate() && today_date.getMonth() === benaurada.getMonth() &&
-        today_date.getFullYear() === benaurada.getFullYear()) {
-        return paroimpar == 'I' ? SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaII;
-    }
-
-    //Diumenge dins l’Octava de Nadal A (146) B (149) C (152)
-    if (today_date.getMonth() == 11 && today_date.getDay() == 0 && today_date.getDate() >= 26 && today_date.getDate() <= 31) {
-        switch (ABC) {
-            case YearType.A:
-                return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepA;
-            case YearType.B:
-                return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepB;
-            case YearType.C:
-                return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepC;
-        }
-    }
-
-    //Diumenge després del dia 6 de gener A (157) B (158) C (159)
-    if (today_date.getMonth() == 0 && today_date.getDay() == 0 && today_date.getDate() >= 7 && today_date.getDate() <= 13) {
-        switch (ABC) {
-            case YearType.A:
-                return SoulKeys.LDSantoral_BaptismeSenyorA;
-            case YearType.B:
-                return SoulKeys.LDSantoral_BaptismeSenyorB;
-            case YearType.C:
-                return SoulKeys.LDSantoral_BaptismeSenyorC;
-        }
-    }
-
-    //Diumenge després de Pentecosta A (160) B (161) C (162)
-    var trinitat = new Date(GlobalData.pentacosta.getFullYear(), GlobalData.pentacosta.getMonth(), GlobalData.pentacosta.getDate() + 7);
-    if (today_date.getDate() === trinitat.getDate() && today_date.getMonth() === trinitat.getMonth() &&
-        today_date.getFullYear() === trinitat.getFullYear()) {
-        switch (ABC) {
-            case YearType.A:
-                return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatA;
-            case YearType.B:
-                return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatB;
-            case YearType.C:
-                return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatC;
-        }
-    }
-
-    //Diumenge després de la Santíssima Trinitat A (163) B (164) C (165)
-    //Santíssim cos i sang de crist
-    var cosSang = new Date(trinitat.getFullYear(), trinitat.getMonth(), trinitat.getDate() + 7);
-    if (today_date.getDate() === cosSang.getDate() && today_date.getMonth() === cosSang.getMonth() &&
-        today_date.getFullYear() === cosSang.getFullYear()) {
-        switch (ABC) {
-            case YearType.A:
-                return SoulKeys.LDSantoral_SantissimCosSangCristA;
-            case YearType.B:
-                return SoulKeys.LDSantoral_SantissimCosSangCristB;
-            case YearType.C:
-                return SoulKeys.LDSantoral_SantissimCosSangCristC;
-        }
-    }
-
-    //Divendres de la tercera setmana després de Pentecosta (Divendres després de Corpus) A (166) B (167) C (168)
-    //Sagrat cor de Jesús
-    var sagratCor = new Date(cosSang.getFullYear(), cosSang.getMonth(), cosSang.getDate() + 5);
-    if (today_date.getDate() === sagratCor.getDate() && today_date.getMonth() === sagratCor.getMonth() &&
-        today_date.getFullYear() === sagratCor.getFullYear()) {
-        switch (ABC) {
-            case YearType.A:
-                return SoulKeys.LDSantoral_SagratCorJesusA;
-            case YearType.B:
-                return SoulKeys.LDSantoral_SagratCorJesusB;
-            case YearType.C:
-                return SoulKeys.LDSantoral_SagratCorJesusC;
-        }
-    }
-
-    return -1;
-}
-
-function GetSpecialLliureDayIdentifier(date: Date, settings: Settings): number{
-    // Optional memories with dedicated readings
-    if(settings.OptionalFestivityEnabled){
-        // Pasqua 01-may -> 209 (Sant Josep obrer)
-        if (date.getDate() == 1 && date.getMonth() == 4) {
-            return SoulKeys.LDSantoral_SantJosepObrer;
-        }
-
-        // Ordinari 18-nov -> 210 ([-] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
-        if (date.getDate() == 18 && date.getMonth() == 10) {
-            return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostols;
-        }
-
-        // Ordinari 19-nov -> 211 ([BaD] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
-        if (date.getDate() == 19 && date.getMonth() == 10) {
-            return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD;
-        }
-
-        // Nadal 03-ene -> 219 ([-] Santíssim Nom de Jesús)
-        if (date.getDate() == 3 && date.getMonth() == 0) {
-            return SoulKeys.LDSantoral_SantissimNomDeJesus;
-        }
-    }
-    return -1;
-}
-
-function IsSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): boolean{
+function IsSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean{
     if(liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI)
         return false;
     if(liturgySpecificDayInformation.Date.getMonth() === 11){
@@ -377,4 +220,133 @@ function GetEasterEve(liturgySpecificDayInformation: LiturgySpecificDayInformati
     massLiturgy.Today.Gospel = gospel;
 
     return massLiturgy;
+}
+
+function GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation: LiturgySpecificDayInformation): number {
+    if (CelebrationIdentifierService.IsSaintJohnBaptist(tomorrowLiturgyDayInformation.Date))
+        return SoulKeys.LDSantoral_NaixamentJoanBaptista;
+    if (CelebrationIdentifierService.IsSantsPerePau(tomorrowLiturgyDayInformation.Date))
+        return SoulKeys.LDSantoral_SantsPerePau;
+    if (CelebrationIdentifierService.IsAssumption(tomorrowLiturgyDayInformation.Date))
+        return SoulKeys.LDSantoral_AssumpcioBenauradaVergeMaria;
+    if (CelebrationIdentifierService.IsChristmas(tomorrowLiturgyDayInformation.Date))
+        return SoulKeys.LDSantoral_Nadal;
+    if (CelebrationIdentifierService.IsPentecost(tomorrowLiturgyDayInformation)) {
+        switch (tomorrowLiturgyDayInformation.YearType) {
+            case YearType.A:
+                return SoulKeys.LDSantoral_PentecostaA;
+            case YearType.B:
+                return SoulKeys.LDSantoral_PentecostaB;
+            case YearType.C:
+                return SoulKeys.LDSantoral_PentecostaC;
+        }
+    }
+    return -1;
+}
+
+function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation): number {
+    if (CelebrationIdentifierService.JesusChristHighPriestForever(liturgySpecificDayInformation)) {
+        return liturgySpecificDayInformation.YearIsEven? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI;
+    }
+
+    if (CelebrationIdentifierService.IsImmaculateHeartOfTheBlessedVirginMary(liturgySpecificDayInformation) &&
+        liturgySpecificDayInformation.CelebrationType === CelebrationType.Memory) {
+        return SoulKeys.LDSantoral_CorImmaculatBenauradaVergeMaria;
+    }
+
+    if (CelebrationIdentifierService.IsMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date)) {
+        return SoulKeys.LDSantoral_MareDeuCinta;
+    }
+
+    if (CelebrationIdentifierService.BlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation)) {
+        return liturgySpecificDayInformation.YearIsEven? SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaII : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI;
+    }
+
+    //Diumenge dins l’Octava de Nadal A (146) B (149) C (152)
+    if (liturgySpecificDayInformation.Date.getMonth() == 11 &&
+        liturgySpecificDayInformation.Date.getDay() == 0 &&
+        liturgySpecificDayInformation.Date.getDate() >= 26 &&
+        liturgySpecificDayInformation.Date.getDate() <= 31) {
+        switch (liturgySpecificDayInformation.YearType) {
+            case YearType.A:
+                return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepA;
+            case YearType.B:
+                return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepB;
+            case YearType.C:
+                return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepC;
+        }
+    }
+
+    //Diumenge després del dia 6 de gener A (157) B (158) C (159)
+    if (liturgySpecificDayInformation.Date.getMonth() == 0 &&
+        liturgySpecificDayInformation.Date.getDay() == 0 &&
+        liturgySpecificDayInformation.Date.getDate() >= 7 &&
+        liturgySpecificDayInformation.Date.getDate() <= 13) {
+        switch (liturgySpecificDayInformation.YearType) {
+            case YearType.A:
+                return SoulKeys.LDSantoral_BaptismeSenyorA;
+            case YearType.B:
+                return SoulKeys.LDSantoral_BaptismeSenyorB;
+            case YearType.C:
+                return SoulKeys.LDSantoral_BaptismeSenyorC;
+        }
+    }
+
+    if (CelebrationIdentifierService.IsHolyTrinity(liturgySpecificDayInformation)) {
+        switch (liturgySpecificDayInformation.YearType) {
+            case YearType.A:
+                return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatA;
+            case YearType.B:
+                return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatB;
+            case YearType.C:
+                return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatC;
+        }
+    }
+
+    if (CelebrationIdentifierService.IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation)) {
+        switch (liturgySpecificDayInformation.YearType) {
+            case YearType.A:
+                return SoulKeys.LDSantoral_SantissimCosSangCristA;
+            case YearType.B:
+                return SoulKeys.LDSantoral_SantissimCosSangCristB;
+            case YearType.C:
+                return SoulKeys.LDSantoral_SantissimCosSangCristC;
+        }
+    }
+
+    if (CelebrationIdentifierService.IsHolyHeartOfJesus(liturgySpecificDayInformation)) {
+        switch (liturgySpecificDayInformation.YearType) {
+            case YearType.A:
+                return SoulKeys.LDSantoral_SagratCorJesusA;
+            case YearType.B:
+                return SoulKeys.LDSantoral_SagratCorJesusB;
+            case YearType.C:
+                return SoulKeys.LDSantoral_SagratCorJesusC;
+        }
+    }
+
+    return -1;
+}
+
+function GetSpecialOptionalDayIdentifier(date: Date): number{
+    // Pasqua 01-may -> 209 (Sant Josep obrer)
+    if (date.getDate() == 1 && date.getMonth() == 4) {
+        return SoulKeys.LDSantoral_SantJosepObrer;
+    }
+
+    // Ordinari 18-nov -> 210 ([-] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
+    if (date.getDate() == 18 && date.getMonth() == 10) {
+        return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostols;
+    }
+
+    // Ordinari 19-nov -> 211 ([BaD] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
+    if (date.getDate() == 19 && date.getMonth() == 10) {
+        return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD;
+    }
+
+    // Nadal 03-ene -> 219 ([-] Santíssim Nom de Jesús)
+    if (date.getDate() == 3 && date.getMonth() == 0) {
+        return SoulKeys.LDSantoral_SantissimNomDeJesus;
+    }
+    return -1;
 }

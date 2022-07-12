@@ -1,5 +1,5 @@
 import {Appearance} from 'react-native';
-import GF from "../Utils/GlobalFunctions";
+import GlobalFunctions from "../Utils/GlobalFunctions";
 import SettingsService, {DarkModeOption} from './SettingsService';
 import * as DatabaseDataService from './DatabaseDataService';
 import * as StorageService from './Storage/StorageService';
@@ -9,14 +9,12 @@ import {getDatabaseVersion} from "./DatabaseDataService";
 import * as Logger from "../Utils/Logger";
 import {Settings} from "../Models/Settings";
 import DatabaseInformation from "../Models/DatabaseInformation";
-import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
+import LiturgyDayInformation from "../Models/LiturgyDayInformation";
 import {ObtainHoursLiturgy} from "./Liturgy/HoursLiturgyService";
 import {ObtainLiturgyMasters} from "./Liturgy/LiturgyMastersService";
 import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
 import MassLiturgy from "../Models/MassLiturgy";
-import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformation';
-import {CelebrationType} from "./DatabaseEnums";
 import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
 
 export let LastRefreshDate = new Date()
@@ -47,7 +45,7 @@ async function ObtainCurrentSettings(date: Date) : Promise<Settings>{
     let currentSettings = new Settings();
     currentSettings.PrayingPlace = await SettingsService.getSettingLloc() as string;
     currentSettings.DioceseName = await SettingsService.getSettingDiocesis() as string;
-    currentSettings.DioceseCode = GF.transformDiocesiName(
+    currentSettings.DioceseCode = GlobalFunctions.transformDiocesiName(
         currentSettings.DioceseName,
         currentSettings.PrayingPlace);
     currentSettings.UseLatin = await SettingsService.getSettingUseLatin() as boolean;

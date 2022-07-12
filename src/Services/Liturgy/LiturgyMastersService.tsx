@@ -607,7 +607,7 @@ async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInforma
                     liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity)) {
             let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
             if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
-                let day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseName);
+                let day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnities.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                 const saintsSolemnitiesParts = new SaintsSolemnities(row);
                 saintsSolemnitiesParts.CommonOffices = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
@@ -635,7 +635,7 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
             }
             else {
                 let day = '-';
-                if (liturgyDayInformation.Tomorrow.MovedDay.Date !== '-' && GlobalFunctions.isDiocesiMogut(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseName)) {
+                if (liturgyDayInformation.Tomorrow.MovedDay.Date !== '-' && GlobalFunctions.isDiocesiMogut(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode)) {
                     day = liturgyDayInformation.Tomorrow.MovedDay.Date;
                 }
 
@@ -668,7 +668,7 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
             }
             else {
                 if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
-                    const day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseName);
+                    const day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
                     const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsMemories.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                     const saintsMemories = new SaintsMemories(row);
                     saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
@@ -722,7 +722,7 @@ function ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDateInformatio
     if (CelebrationIdentifierService.IsImmaculateHeartOfTheBlessedVirginMary(liturgyDateInformation)) {
         return SoulKeys.santsMemories_CorImmaculatBenauradaVergeMaria;
     }
-    if(CelebrationIdentifierService.MotherOfGodFromTheTibbon(liturgyDateInformation)){
+    if(CelebrationIdentifierService.IsMotherOfGodFromTheTibbon(liturgyDateInformation.Date)){
         if (liturgyDateInformation.CelebrationType === CelebrationType.Memory) {
             return SoulKeys.santsMemories_MareDeuCinta;
         }

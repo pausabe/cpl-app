@@ -2,8 +2,8 @@ import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInforma
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {CelebrationType} from "../DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import {WeekDayName} from "../../Utils/DateManagement";
 import {StringManagement} from "../../Utils/StringManagement";
+import {DateManagement} from "../../Utils/DateManagement";
 
 export function ObtainCelebrationInformation(celebrationInformationFromCelebration: CelebrationInformation, liturgyDayInformation: LiturgySpecificDayInformation): CelebrationInformation {
     // With this service I'm trying to separate Celebration by some kind of Saint from Celebration from the liturgy time
@@ -14,7 +14,7 @@ export function ObtainCelebrationInformation(celebrationInformationFromCelebrati
         liturgyDayInformation.CelebrationType = CelebrationType.Fair;
         if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_SET_SANTA ||
             liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU) {
-            celebrationInformation.Title = WeekDayName(liturgyDayInformation.Date.getDay()) + " Sant";
+            celebrationInformation.Title = DateManagement.WeekDayName(liturgyDayInformation.Date.getDay()) + " Sant";
         }
         else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA) {
             celebrationInformation.Title = "Octava de Pasqua";

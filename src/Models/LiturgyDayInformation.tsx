@@ -21,7 +21,7 @@ export class LiturgySpecificDayInformation {
 
 class MovedDay{
     Date: string;
-    DioceseName: string
+    DioceseCode: string
 }
 
 export class SpecialCelebration{
