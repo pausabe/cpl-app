@@ -29,7 +29,16 @@ export function Log(logKey, methodName, message, param = undefined, limit = Mess
 }
 
 export function LogError(logKey, methodName, error: Error = undefined, limit = MessageCharacterLimit){
-    log("[" + logKey.name + " - " + methodName + "] ERROR:", error.name + " " + error.message, error.stack, limit);
+    let param = error.stack;
+    try {
+        const errorSplit = param.split("@");
+        const method = errorSplit[0];
+        const fatherMethodRaw = errorSplit[1].split(":");
+        const fatherMethod = fatherMethodRaw[fatherMethodRaw.length - 1].replace(/[^a-zA-Z]+/g, "");
+        param = fatherMethod + " > " + method;
+    }
+    catch{}
+    log("[" + logKey.name + " - " + methodName + "] ERROR:", error.name + " " + error.message, param, limit);
 }
 
 function log(logKey, message, param, limit){

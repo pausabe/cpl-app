@@ -12,8 +12,6 @@ const updater = {
 
 const getUnixEpoch = () => Math.floor(Date.now() / 1000)
 
-export const getUpdateLogs = () => updater.logs
-
 export const doUpdateIfAvailable = async (beforeDownloadCallback, throwUpdateErrors, force, minMsFromCheckingUpdatesAndReloading) => {
     updater.lastTimeCheck = getUnixEpoch()
 

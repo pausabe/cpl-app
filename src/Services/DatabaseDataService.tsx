@@ -5,6 +5,8 @@ import { Settings } from '../Models/Settings';
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import MassLiturgy, {DayMassLiturgy} from "../Models/MassLiturgy";
 
+// TODO: refactor
+
 export function getDatabaseVersion() : Promise<number>{
   return new Promise((resolve) => {
     executeQuery(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`,

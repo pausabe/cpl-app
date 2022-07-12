@@ -226,14 +226,14 @@ export default class HomeScreen extends Component {
   Info_Liturgica(date_getday) {
     try {
 
-      let text_liturgyDayInformation.Week = "";
+      let text_setmana = "";
       if(this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.')
-        text_liturgyDayInformation.Week = this.weekDayName(date_getday) + " de la setmana "
+        text_setmana = this.weekDayName(date_getday) + " de la setmana "
       else if(GlobalData.LT === GLOBAL.Q_CENDRA){
         if(date_getday === 3)
-          text_liturgyDayInformation.Week = this.weekDayName(date_getday) + " de Cendra"
+          text_setmana = this.weekDayName(date_getday) + " de Cendra"
         else
-          text_liturgyDayInformation.Week = this.weekDayName(date_getday) + " després de Cendra"
+          text_setmana= this.weekDayName(date_getday) + " després de Cendra"
       }
 
       return (

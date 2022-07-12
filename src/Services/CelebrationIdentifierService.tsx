@@ -130,9 +130,9 @@ export function IsBaptism(today : Date) : boolean{
     return !(today.getDate() < 7 || today.getDate() > 13);
 }
 
-export function IsMatherOfGod(date: Date) {
+export function IsMatherOfGod(date: Date): boolean {
     return date.getMonth() === 0 &&
-        date.getDate() === 1
+        date.getDate() === 1;
 }
 
 export function IsImmaculateHeartOfTheBlessedVirginMary(liturgyDateInformation : LiturgySpecificDayInformation) : boolean{

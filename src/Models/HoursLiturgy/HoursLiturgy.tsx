@@ -8,13 +8,13 @@ import CelebrationInformation from "./CelebrationInformation";
 
 export default class HoursLiturgy {
     CelebrationInformation: CelebrationInformation = new CelebrationInformation();
-    Invitation : Invitation;
-    Office : Office;
-    Laudes : Laudes;
-    Hours : Hours;
+    Invitation : Invitation = new Invitation();
+    Office : Office = new Office();
+    Laudes : Laudes = new Laudes();
+    Hours : Hours = new Hours();
     VespersOptions: VespersOptions = new VespersOptions();
-    Vespers : Vespers;
-    NightPrayer : NightPrayer;
+    Vespers : Vespers = new Vespers();
+    NightPrayer : NightPrayer = new NightPrayer();
     // TODO: maybe in other place
     //papa: TABLES.diversos.item(38).oracio,
     //bisbe: TABLES.diversos.item(GF.bisbeId(diocesiName)).oracio,

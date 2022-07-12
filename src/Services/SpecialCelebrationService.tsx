@@ -41,7 +41,7 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
     }
 
     //2- Mare de Déu (1 gener) quan cau en diumenge
-    if (CelebrationIdentifier.IsMatherOfGod(liturgyDayInformation) && date.getDay() === 0) {
+    if (CelebrationIdentifier.IsMatherOfGod(liturgyDayInformation.Date) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeMaredeDeu1Gener;
     }
 
@@ -228,7 +228,7 @@ function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : Lit
     const pentecostDay = liturgyDayInformation.PentecostDay;
 
     //1- Nadal
-    if (CelebrationIdentifier.IsChristmas(liturgyDayInformation)) {
+    if (CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)) {
         return SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
 
@@ -238,7 +238,7 @@ function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : Lit
     }
 
     //3- Mare de Déu
-    if (CelebrationIdentifier.IsMatherOfGod(liturgyDayInformation)) {
+    if (CelebrationIdentifier.IsMatherOfGod(liturgyDayInformation.Date)) {
         return SoulKeys.tempsSolemnitatsFestes_MareDeu;
     }
 

@@ -1,6 +1,6 @@
 import * as Logger from './Logger';
 
-// TODO: refactor this...
+// TODO: refactor
 
 let GlobalFunctions = {
 

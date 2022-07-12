@@ -190,21 +190,21 @@ export default class SettingsService {
         return SettingsService._setValueIfValid("salmInvitatori", value,
             (val) => {
                 return findValueInObject(InvitationPsalmOption, val);
-            });
+            }, undefined);
     }
 
     static setSettingNumAntMare(value){
         return SettingsService._setValueIfValid("antMare", value,
             (val) => {
                 return findValueInObject(VirginAntiphonOption, val);
-            });
+            }, undefined);
     }
 
 }
 
 function findValueInObject(obj, value){
     let found = false;
-    for(key in obj){
+    for(let key in obj){
         if(obj[key] == value){
             found = true;
         }
