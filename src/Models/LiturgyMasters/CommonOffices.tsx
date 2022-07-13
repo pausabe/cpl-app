@@ -125,8 +125,8 @@ export default class CommonOffice {
         this.NinthHourParts.Responsory.Versicle = databaseRow.respVNona;
         this.NinthHourParts.Responsory.Response = databaseRow.respRNona;
 
-        this.SecondVespersLatinAnthem = databaseRow = databaseRow.himneVespresLlati;
-        this.SecondVespersCatalanAnthem = databaseRow = databaseRow.himneVespresCat;
+        this.SecondVespersLatinAnthem = databaseRow.himneVespresLlati;
+        this.SecondVespersCatalanAnthem = databaseRow.himneVespresCat;
 
         this.SecondVespersFirstPsalm.Antiphon = databaseRow.ant1Vespres;
         this.SecondVespersFirstPsalm.Title = databaseRow.titol1Vespres;

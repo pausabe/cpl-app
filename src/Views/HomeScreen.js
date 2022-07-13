@@ -15,12 +15,15 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons'; 
 import GLOBAL from "../Utils/GlobalKeys";
-import { GlobalData } from '../Services/DataService';
+import {CurrentCelebrationInformation, CurrentLiturgyDayInformation, CurrentSettings} from "../Services/DataService";
+import {CelebrationType, YearType} from "../Services/DatabaseEnums";
+import {SpecificLiturgyTimeType} from "../Services/CelebrationTimeEnums";
+import {StringManagement} from "../Utils/StringManagement";
 
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.switchValue = GlobalData.lliures;
+    this.switchValue = CurrentSettings.OptionalFestivityEnabled;
   }
 
   tempsName(t) {
@@ -41,7 +44,7 @@ export default class HomeScreen extends Component {
     try {
       if (color === YearType.B) {
         return (<Text style={{color: 'white'}}>{string}</Text>);
-      } else if (color === 'V') {
+      } else if (color === CelebrationType.OptionalVirginMemory) {
         return (<Text style={{color: 'rgb(0, 120, 0)'}}>{string}</Text>);
       } else if (color === 'R') {
         return (<Text style={{color: 'rgb(230, 15, 15)'}}>{string}</Text>);
@@ -80,9 +83,9 @@ export default class HomeScreen extends Component {
   transfromCelTypeName(CT, t) {
     try {
       let memLliureColor = '#333333';
-      if ((this.props.ViewData.celebracio.type === 'L'
-          || this.props.ViewData.celebracio.type === 'V')
-          && !GlobalData.lliures) {
+      if ((CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory
+          || CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)
+          && !CurrentSettings.OptionalFestivityEnabled) {
         memLliureColor = '#595959';
       }
 
@@ -95,8 +98,8 @@ export default class HomeScreen extends Component {
           if (t === 'Quaresma')
             return (<Text style={styles.celebracioType}>{"Commemoració"}</Text>);
           return (<Text style={styles.celebracioType}>{"Memòria obligatòria"}</Text>);
-        case 'V':
-        case 'L':
+        case CelebrationType.OptionalVirginMemory:
+        case CelebrationType.OptionalMemory:
           if (t === 'Quaresma')
             return (<Text style={{
               textAlign: 'center',
@@ -184,11 +187,11 @@ export default class HomeScreen extends Component {
 
   render() {
     try {
-      const date_getdate = GlobalData.date.getDate();
-      const date_getmonth = GlobalData.date.getMonth();
-      const date_getfullyear = GlobalData.date.getFullYear();
-      const date_getday = GlobalData.date.getDay();
-      this.switchValue = GlobalData.lliures;
+      const date_getdate = CurrentLiturgyDayInformation.Today.Date.getDate();
+      const date_getmonth = CurrentLiturgyDayInformation.Today.Date.getMonth();
+      const date_getfullyear = CurrentLiturgyDayInformation.Today.Date.getFullYear();
+      const date_getday = CurrentLiturgyDayInformation.Today.Date.getDay();
+      this.switchValue = CurrentSettings.OptionalFestivityEnabled;
       return (
         <SafeAreaView style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
           <ImageBackground source={require('../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
@@ -208,9 +211,9 @@ export default class HomeScreen extends Component {
   Top_Info(date_getdate, date_getmonth, date_getfullyear) {
     try {
       return (
-        <View style={this.props.ViewData.celebracio.titol !== '-' ? styles.infoContainer_cel : styles.infoContainer}>
+        <View style={CurrentCelebrationInformation.Title !== '-' ? styles.infoContainer_cel : styles.infoContainer}>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 5 }}>
-            <Text style={styles.infoText}>{this.props.ViewData.lloc.diocesiName}{" ("}{this.props.ViewData.lloc.lloc}{")"}
+            <Text style={styles.infoText}>{CurrentSettings.DioceseName}{" ("}{CurrentSettings.PrayingPlace}{")"}
               {" - "}<Text style={styles.infoText}>{date_getdate < 10 ? `0${date_getdate}` : date_getdate}/{date_getmonth + 1 < 10 ? `0${date_getmonth + 1}` : date_getmonth + 1}/{date_getfullyear}</Text>
             </Text>
           </View>
@@ -227,9 +230,9 @@ export default class HomeScreen extends Component {
     try {
 
       let text_setmana = "";
-      if(this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.')
+      if(CurrentLiturgyDayInformation.Today.Week !== '0' && CurrentLiturgyDayInformation.Today.Week !== '.')
         text_setmana = this.weekDayName(date_getday) + " de la setmana "
-      else if(GlobalData.LT === GLOBAL.Q_CENDRA){
+      else if(CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA){
         if(date_getday === 3)
           text_setmana = this.weekDayName(date_getday) + " de Cendra"
         else
@@ -241,38 +244,38 @@ export default class HomeScreen extends Component {
           <Text style={styles.diaLiturgicText}>
             {text_setmana}
             {
-              this.props.ViewData.setmana !== '0' && this.props.ViewData.setmana !== '.' ?
-                this.liturgicPaint(this.romanize(this.props.ViewData.setmana), this.props.ViewData.color)
+              CurrentLiturgyDayInformation.Today.Week !== '0' && CurrentLiturgyDayInformation.Today.Week !== '.' ?
+                this.liturgicPaint(this.romanize(CurrentLiturgyDayInformation.Today.Week), CurrentLiturgyDayInformation.Today.LiturgyColor)
                 :
                 null
             }
             {
-              this.props.ViewData.setCicle !== '0' && this.props.ViewData.setCicle !== '.' ?
+              CurrentLiturgyDayInformation.Today.WeekCycle !== '0' && CurrentLiturgyDayInformation.Today.WeekCycle !== '.' ?
                 " - Any "
                 :
                 null
             }
             {
-              this.props.ViewData.setCicle !== '0' && this.props.ViewData.setCicle !== '.' ?
-                this.liturgicPaint(this.props.ViewData.anyABC, this.props.ViewData.color)
+              CurrentLiturgyDayInformation.Today.WeekCycle !== '0' && CurrentLiturgyDayInformation.Today.WeekCycle !== '.' ?
+                this.liturgicPaint(CurrentLiturgyDayInformation.Today.YearType, CurrentLiturgyDayInformation.Today.LiturgyColor)
                 :
                 null
             }
           </Text>
           <Text style={styles.diaLiturgicText}>
             {"Temps - "}
-            {this.liturgicPaint(this.tempsName(this.props.ViewData.temps), this.props.ViewData.color)}
+            {this.liturgicPaint(this.tempsName(CurrentLiturgyDayInformation.Today.GenericLiturgyTime), CurrentLiturgyDayInformation.Today.LiturgyColor)}
           </Text>
           <Text style={styles.diaLiturgicText}>
             {
-              this.props.ViewData.setCicle !== '0' && this.props.ViewData.setCicle !== '.' ?
+              CurrentLiturgyDayInformation.Today.WeekCycle !== '0' && CurrentLiturgyDayInformation.Today.WeekCycle !== '.' ?
                 "Litúrgia de les Hores - Setmana "
                 :
                 null
             }
             {
-              this.props.ViewData.setCicle !== '0' && this.props.ViewData.setCicle !== '.' ?
-                this.liturgicPaint(this.romanize(this.props.ViewData.setCicle), this.props.ViewData.color)
+              CurrentLiturgyDayInformation.Today.WeekCycle !== '0' && CurrentLiturgyDayInformation.Today.WeekCycle !== '.' ?
+                this.liturgicPaint(this.romanize(CurrentLiturgyDayInformation.Today.WeekCycle), CurrentLiturgyDayInformation.Today.LiturgyColor)
                 :
                 null
             }
@@ -290,7 +293,7 @@ export default class HomeScreen extends Component {
     try {
       let arrowWidth = 35;
       let auxPadding = 10;
-      if ((this.props.ViewData.celebracio.type === 'L' || this.props.ViewData.celebracio.type === 'V')) {
+      if ((CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory || CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
         arrowWidth = 65;
         auxPadding = 0;
       }
@@ -298,14 +301,14 @@ export default class HomeScreen extends Component {
       return (
         <View style={styles.cel_container}>
 
-          {this.props.ViewData.ready && this.props.ViewData.celebracio.titol !== '-' ?
+          {StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Title)?
             <View style={{ paddingBottom: 5, }}>
-              {this.transfromCelTypeName(this.props.ViewData.celebracio.type, this.props.ViewData.temps)}
+              {this.transfromCelTypeName(CurrentLiturgyDayInformation.Today.CelebrationType, CurrentLiturgyDayInformation.Today.GenericLiturgyTime)}
             </View>
             : null
           }
 
-          {this.props.ViewData.ready && this.props.ViewData.celebracio.titol !== '-' ?
+          {StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Title) ?
             <View style={{
               flex: 1.1,
               justifyContent: 'center',
@@ -316,7 +319,8 @@ export default class HomeScreen extends Component {
               marginHorizontal: 20,
             }}>
               <View style={{ flex: 1, flexDirection: 'row' }}>
-                {(this.props.ViewData.celebracio.type === 'L' || this.props.ViewData.celebracio.type === 'V') ?
+                {(CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory ||
+                    CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory) ?
                   <View style={{ flex: 1, minWidth: 45, justifyContent: 'center', alignItems: 'center'}}>
                     <Switch
                       onValueChange={this.onSwitchValueChange.bind(this)}
@@ -327,7 +331,8 @@ export default class HomeScreen extends Component {
                   : null
                 }
                 <TouchableOpacity activeOpacity={1.0} style={{ flex: 20, flexDirection: 'row' }} onPress={this.props.santCB}>
-                  {this.props.ViewData.celebracio.text !== '-' && this.props.ViewData.celebracio.type !== 'L' ?
+                  {StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Description) && 
+                  CurrentLiturgyDayInformation.Today.CelebrationType !== CelebrationType.OptionalMemory ?
                     <View style={{ width: arrowWidth }} />
                     : null}
                   <View style={{ flex: 1, justifyContent: 'center', paddingRight: auxPadding }}>
@@ -337,9 +342,9 @@ export default class HomeScreen extends Component {
                       fontSize: 17,
                       fontWeight: '300'
                     }}>
-                      {this.props.ViewData.celebracio.titol}</Text>
+                      {CurrentCelebrationInformation.Title}</Text>
                   </View>
-                  {this.props.ViewData.celebracio.text !== '-' ?
+                  {StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Description) ?
                     <View style={{ width: arrowWidth, justifyContent: 'center', alignItems: 'center' }}>
                       {this.props.santPressed ?
                         <AntDesign name="down" size={24} color="black" />
@@ -349,7 +354,8 @@ export default class HomeScreen extends Component {
                     </View>
                     :
                     <View>
-                      {(this.props.ViewData.celebracio.type === 'L' || this.props.ViewData.celebracio.type === 'V') ?
+                      {(CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory || 
+                          CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory) ?
                         <View style={{width: 45}}/>
                         : null
                       }
@@ -361,7 +367,7 @@ export default class HomeScreen extends Component {
 
             : null}
 
-          {this.props.santPressed && this.props.ViewData.celebracio.text !== '-' ?
+          {this.props.santPressed && StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Description) ?
             <View style={styles.liturgiaContainer}>
               <ScrollView>
                 <Text style={{
@@ -370,7 +376,7 @@ export default class HomeScreen extends Component {
                   fontSize: 17,
                   fontWeight: '300'
                 }}>
-                  {this.props.ViewData.celebracio.text}</Text>
+                  {CurrentCelebrationInformation.Description}</Text>
                 <Text />
               </ScrollView>
             </View>

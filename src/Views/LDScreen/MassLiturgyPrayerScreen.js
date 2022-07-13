@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import { View, ScrollView, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
 import GF from '../../Utils/GlobalFunctions';
 import HR from '../../Components/HRComponent';
 import * as Logger from '../../Utils/Logger';
 import { MassLiturgy, GlobalData } from '../../Services/DataService';
+import HomeScreenState from "../../Controllers/HomeScreenState";
 
-export default class LDDisplayScreen extends Component {
+export default class MassLiturgyPrayerScreen extends Component {
     //PREVIEWS --------------------------------------------------------------------------
     UNSAFE_componentWillMount() {
         this.screen_props = this.props.route.params.props;

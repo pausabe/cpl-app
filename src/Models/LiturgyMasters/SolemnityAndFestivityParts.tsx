@@ -129,7 +129,7 @@ export default class SolemnityAndFestivityParts {
 
         this.ThirdHourParts.LatinAnthem = databaseRow.himneLlatiTercia; // Only Third Hour in the database
         this.ThirdHourParts.CatalanAnthem = databaseRow.himneCatTercia; // Only Third Hour in the database
-        this.ThirdHourParts.Antiphon = databaseRow = databaseRow.antMenorTercia;
+        this.ThirdHourParts.Antiphon = databaseRow.antMenorTercia;
         this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
         this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
         this.ThirdHourParts.Responsory.Versicle = databaseRow.responsoriVTercia;

@@ -17,12 +17,12 @@ import CommentScreen from '../Views/CommentScreen';
 import LHScreen from '../Views/LHScreen/LHScreen';
 import LHDisplayScreen from '../Views/LHScreen/LHDisplayScreen/LHDisplayScreen';
 import LDScreen from '../Views/LDScreen/LDScreen';
-import LDDisplayScreen from '../Views/LDScreen/LDDisplayScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
+import MassLiturgyPrayerScreen from '../Views/LDScreen/MassLiturgyPrayerScreen';
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -290,7 +290,7 @@ function NavigationContainerView(IsNecessaryToUpdate){
                     />
                     <Stack.Screen
                         name="LDDisplay"
-                        component={LDDisplayScreen}
+                        component={MassLiturgyPrayerScreen}
                         options={() => ({
                             title: "Missa",
                             animationEnabled: Platform.OS === "ios",

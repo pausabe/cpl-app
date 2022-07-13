@@ -19,10 +19,18 @@ import GLOBALS from '../Utils/GlobalKeys';
 import GF from '../Utils/GlobalFunctions';
 import * as Logger from '../Utils/Logger';
 import SettingsService from '../Services/SettingsService';
-import { ReloadAllData, GlobalData, LastRefreshDate } from '../Services/DataService';
+import {
+  ReloadAllData,
+  LastRefreshDate,
+  CurrentLiturgyDayInformation,
+  CurrentSettings,
+  CurrentCelebrationInformation, CurrentDatabaseInformation
+} from '../Services/DataService';
 import * as StorageService from '../Services/Storage/StorageService';
 import StorageKeys from "../Services/Storage/StorageKeys";
-import HomeScreenState, {CelebrationData, GlobalDataToShowClass, PlaceData} from './HomeScreenState';
+import HomeScreenState from './HomeScreenState';
+import {StringManagement} from "../Utils/StringManagement";
+import {DateManagement} from "../Utils/DateManagement";
 
 let LastDatePickerIOSSelected;
 let CurrentState;
@@ -45,7 +53,7 @@ export default function HomeScreenController(props) {
 }
 
 function GetView(props, CurrentState, setState){
-  const thereIsSomeError = CurrentState.ObtainDataErrorMessage === undefined || CurrentState.ObtainDataErrorMessage === "";
+  const thereIsSomeError = StringManagement.HasLiturgyContent(CurrentState.ObtainDataErrorMessage);
   if(!CurrentState.Initialized || thereIsSomeError){
     return null;
   }
@@ -53,9 +61,9 @@ function GetView(props, CurrentState, setState){
     return (
         <SafeAreaView style={{flex: 1}}>
           { thereIsSomeError?
-              HomeScreenView(props.navigation, setState)
+              HomeScreenViewWithError(CurrentState.ObtainDataErrorMessage)
               :
-              HomeScreenViewWithError(CurrentState.ObtainDataErrorMessage)}
+              HomeScreenView(props.navigation, setState)}
         </SafeAreaView>
     );
   }
@@ -68,7 +76,7 @@ function InitialEffect(props, setState){
 
   props.navigation.setParams({
     calPres: () => HandleCalendarPressed(setState),
-    Refresh_Date: () => ReloadAllDataAndRefreshView(GlobalData.date, setState),
+    Refresh_Date: () => ReloadAllDataAndRefreshView(CurrentLiturgyDayInformation.Today.Date, setState),
   });
 
   let appStateSubscription = AppState.addEventListener('change', (status) => HandleAppStateChange(status, props.navigation, setState));
@@ -98,14 +106,14 @@ function HideSplashIfItsTime(){
   }
 }
 
-function SetViewWithTheInitialDataLoaded(setState){
+async function SetViewWithTheInitialDataLoaded(setState){
   if(FirstLoad){
     FirstLoad = false;
-    ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true);
+    await ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true);
   }
 }
 
-function HandleAppStateChange(nextAppState, navigation?, setState?){
+async function HandleAppStateChange(nextAppState, navigation?, setState?){
   // Check if the state is changing to active
   if(nextAppState === 'active'){
 
@@ -113,14 +121,14 @@ function HandleAppStateChange(nextAppState, navigation?, setState?){
     const now = new Date();
 
     // Refresh the date if today is different from the last refresh date
-    if(now.getDate() !== LastRefreshDate.getDate() || now.getMonth() !== LastRefreshDate.getMonth() || now.getFullYear() !== LastRefreshDate.getFullYear()){
+    if(!DateManagement.CompareDates(now, LastRefreshDate)){
 
       // Navigate to Home Screen
-      navigation.popToTop()
-      navigation.navigate('Home')
+      navigation.popToTop();
+      navigation.navigate('Home');
 
       // Refresh data (also will check late)
-      ChangeDate(now, setState);
+      await ChangeDate(now, setState);
     }
   }
 }
@@ -142,7 +150,7 @@ async function CheckSystemDarkMode(colorScheme) {
 
     await SettingsService.getSettingDarkMode((r) => {
       if (r === 'Automàtic') {
-        GlobalData.darkModeEnabled = colorScheme === 'dark';
+        CurrentSettings.DarkModeEnabled = colorScheme === 'dark';
       }
     });
   } catch (error) {
@@ -156,19 +164,21 @@ function HandleAndroidBack(setState) {
   }
 }
 
-function ChangeDate(date, setState) {
+async function ChangeDate(date, setState) {
   if (date === null || date === undefined){
-    date = GlobalData.date;
+    date = CurrentLiturgyDayInformation.Today.Date;
   }
-  ReloadAllDataAndRefreshView(date, setState);
+  await ReloadAllDataAndRefreshView(date, setState);
 }
 
-function ReloadAllDataAndRefreshView(date, setState, checkLatePopup?){
-  ReloadAllData(date)
-      .then(() => {
-        setState(GetInitialState(checkLatePopup !== undefined));
-      })
-      .catch((errorMessage) => HandleGetDataError(errorMessage, setState))
+async function ReloadAllDataAndRefreshView(date, setState, checkLatePopup = false){
+  try {
+    await ReloadAllData(date);
+    setState(GetInitialState(checkLatePopup));
+  }
+  catch(error){
+    HandleGetDataError(error, setState);
+  }
 }
 
 function HandleCalendarPressed(setState) {
@@ -179,22 +189,8 @@ function HandleCalendarPressed(setState) {
 function GetInitialState(checkLatePopup){
   let initialState = new HomeScreenState();
   try {
-    if(GlobalData !== undefined && GlobalData !== {}) {
+    if(CurrentLiturgyDayInformation !== undefined && CurrentSettings !== undefined) {
       initialState = new HomeScreenState(
-          new GlobalDataToShowClass(
-              true,
-              new PlaceData(GlobalData.diocesiName, GlobalData.lloc),
-              GlobalData.date,
-              GlobalData.setmana,
-              GlobalData.tempsespecific,
-              GlobalData.cicle,
-              GlobalData.ABC,
-              GlobalData.litColor,
-              new CelebrationData(
-                  GlobalData.info_cel.typeCel,
-                  GlobalData.info_cel.nomCel,
-                  GlobalData.info_cel.infoCel)
-          ),
           checkLatePopup? IsLatePrayer() : false,
           false,
           false,
@@ -212,21 +208,21 @@ function IsLatePrayer() {
   return hour >= 0 && hour < GLOBALS.late_prayer;
 }
 
-function DatePickerChange(event, date, setState) {
+async function DatePickerChange(event, date, setState) {
   if (Platform.OS === "ios") {
     LastDatePickerIOSSelected = date;
   }
   else {
     setState(CurrentState.UpdateDateTimePickerVisibility(false));
-    if (date !== GlobalData.date) {
-      ShowDate(date, setState);
+    if (date !== CurrentLiturgyDayInformation.Today.Date) {
+      await ShowDate(date, setState);
     }
   }
 }
 
-function HandleDatePickerIOSAccept(setState) {
-  if (LastDatePickerIOSSelected !== GlobalData.date) {
-    ShowDate(LastDatePickerIOSSelected, setState)
+async function HandleDatePickerIOSAccept(setState) {
+  if (LastDatePickerIOSSelected !== CurrentLiturgyDayInformation.Today.Date) {
+    await ShowDate(LastDatePickerIOSSelected, setState)
   }
 }
 
@@ -234,44 +230,42 @@ function HandleDatePickerIOSCancel(setState) {
   setState(CurrentState.UpdateDateTimePickerVisibility(false));
 }
 
-function HandleDatePickerIOSToday(setState) {
+async function HandleDatePickerIOSToday(setState) {
   const now = new Date();
-  if (now !== GlobalData.date) {
-    ShowDate(now, setState)
+  if (now !== CurrentLiturgyDayInformation.Today.Date) {
+    await ShowDate(now, setState)
   }
 }
 
-function ShowDate(date, setState) {
+async function ShowDate(date, setState) {
   Logger.Log(Logger.LogKeys.HomeScreenController, "ShowDate", "date: ", date);
-  ChangeDate(date, setState);
+  await ChangeDate(date, setState);
 }
 
 function HandleOnSantPressedCallback(setState) {
-  if (GlobalData.info_cel.infoCel !== '-') {
+  if (StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Title)) {
     setState(CurrentState.UpdateCelebrationVisibility(!CurrentState.CelebrationIsVisible));
   }
 }
 
-function HandleOnYesterdayPressed(yesterday, setState) {
-  ShowDate(yesterday, setState);
+async function HandleOnYesterdayPressed(yesterday, setState) {
+  await ShowDate(yesterday, setState);
 }
 
 function HandleOnTodayPressed(setState) {
   setState(CurrentState.UpdateLatePopupVisibility(false));
 }
 
-async function HandleOnSwitchFreePrayerPressed(freePrayerEnabled, setState) {
-  if (freePrayerEnabled) {
-    const stringData = GlobalData.date.getDate() + ':' +
-        GlobalData.date.getMonth() + ':' +
-        GlobalData.date.getFullYear();
-    await StorageService.StoreData(StorageKeys.OptionalFestivity, stringData);
+async function HandleOnSwitchFreePrayerPressed(optionalPrayerEnabled, setState) {
+  if (optionalPrayerEnabled) {
+    const stringDate = DateManagement.GetDateKeyToBeStored(CurrentLiturgyDayInformation.Today.Date);
+    await StorageService.StoreData(StorageKeys.OptionalFestivity, stringDate);
   }
   else {
     await StorageService.StoreData(StorageKeys.OptionalFestivity, 'none');
   }
-  GlobalData.lliures = freePrayerEnabled;
-  ChangeDate(GlobalData.date, setState);
+  CurrentSettings.OptionalFestivityEnabled = optionalPrayerEnabled;
+  await ChangeDate(CurrentLiturgyDayInformation.Today.Date, setState);
 }
 
 function HandleGetDataError(error, setState){
@@ -289,14 +283,13 @@ function HomeScreenViewWithError(currentObtainDataErrorMessage){
 }
 
 function HomeScreenView(navigation, setState){
-  if(GlobalData.date === undefined){
+  if(CurrentLiturgyDayInformation.Today.Date === undefined){
     return null;
   }
-  const yesterday = new Date(GlobalData.date.getFullYear(), GlobalData.date.getMonth());
-  yesterday.setDate(GlobalData.date.getDate() - 1);
-  const date = GlobalData.date;
-  const minDatePicker = GlobalData.minDatePicker;
-  const maxDatePicker = GlobalData.maxDatePicker;
+  const yesterday = DateManagement.GetYesterday(CurrentLiturgyDayInformation.Today.Date);
+  const today = CurrentLiturgyDayInformation.Today.Date;
+  const minDatePicker = CurrentDatabaseInformation.MinimumSelectableDate;
+  const maxDatePicker = CurrentDatabaseInformation.MaximumSelectableDate;
   return (
       <View style={{ flex: 1 }}>
 
@@ -319,7 +312,7 @@ function HomeScreenView(navigation, setState){
                           mode="date"
                           display="inline" //spinner, compact, inline
                           onChange={DatePickerChange.bind(setState)}
-                          value={date}
+                          value={today}
                           minimumDate={minDatePicker}
                           maximumDate={maxDatePicker}
                       />
@@ -345,7 +338,7 @@ function HomeScreenView(navigation, setState){
                         mode={"date"}
                         display={"default"} // default, spinner, calendar
                         onChange={(event, date) => DatePickerChange(event, date, setState)}
-                        value={date}
+                        value={today}
                         minimumDate={minDatePicker}
                         maximumDate={maxDatePicker}
                     />
@@ -361,7 +354,7 @@ function HomeScreenView(navigation, setState){
           <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => HandleOnTodayPressed(setState)}>
             <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
               <View style={{ paddingTop: 15}}>
-                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + date.getDate() + " de " + GF.getMonthText(date.getMonth()) + "."}</Text>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + today.getDate() + " de " + GF.getMonthText(today.getMonth()) + "."}</Text>
                 <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
               </View>
 
@@ -372,7 +365,7 @@ function HomeScreenView(navigation, setState){
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => HandleOnTodayPressed(setState)}>
                   <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
-                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()}</Text>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()}</Text>
                 </TouchableOpacity>
               </View>
 

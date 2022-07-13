@@ -24,4 +24,20 @@ export class DateManagement {
         }
         return "";
     }
+
+    static GetDateKeyToBeStored(date: Date): string {
+        return date.getDate() + ':' +
+            date.getMonth() + ':' +
+            date.getFullYear();
+    }
+
+    static GetYesterday(date: Date): Date {
+        let yesterday = new Date(date.getFullYear(), date.getMonth());
+        yesterday.setDate(date.getDate() - 1);
+        return yesterday;
+    }
+
+    static DifferenceBetweenDatesInSeconds(smallestDate: Date, biggestDate: Date): number {
+        return (biggestDate - smallestDate) / 1000;
+    }
 }
