@@ -5,11 +5,11 @@ import {
   StyleSheet,
   ImageBackground,
 } from 'react-native';
-import LHButtons from './LHButtons';
-import GLOBALS from '../../Utils/GlobalKeys';
-import { HoursLiturgy, GlobalData } from '../../Services/DataService';
+import HoursLiturgyButtonsComponent from './HoursLiturgyButtonsComponent';
+import GlobalKeys from '../../Utils/GlobalKeys';
+import {CurrentHoursLiturgy, CurrentSettings} from "../../Services/DataService";
 
-export default class LHScreen extends Component {
+export default class HoursLiturgyPrayerMainScreen extends Component {
   constructor(props) {
     super(props);
   }
@@ -23,21 +23,20 @@ export default class LHScreen extends Component {
   }
 
   LHButtonCB(type, superTestMode) {
-    var title = type;
+    let title = type;
     if (type === 'Ofici') title = 'Ofici de lectura';
 
-    var params = {
+    const params = {
       title: title,
       props: {
         superTestMode: superTestMode,
-        testErrorCallBack: this.testErrorCallBack.bind(this),
         nextDayTestCB: this.nextDayTest.bind(this),
         setNumSalmInv: this.setNumSalmInv.bind(this),
         setNumAntMare: this.setNumAntMare.bind(this),
         type: type,
         events: this.eventEmitter
       },
-    }
+    };
     this.props.navigation.navigate('LHDisplay', params);
   }
 
@@ -46,27 +45,22 @@ export default class LHScreen extends Component {
   }
 
   setNumSalmInv(numSalm) {
-    GlobalData.numSalmInv = numSalm;
+    CurrentSettings.InvitationPsalmOption = numSalm;
   }
 
   setNumAntMare(numAntMare) {
-    GlobalData.numAntMare = numAntMare;
-  }
-
-  testErrorCallBack() {
-    /*this.setState({testInfo: "something went wrong (bad text)"});
-    this.testing = false;*/
+    CurrentSettings.VirginAntiphonOption = numAntMare;
   }
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: GLOBALS.screensBackgroundColor }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor }}>
           {
             <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-              {HoursLiturgy.vespres == undefined ?
+              {CurrentHoursLiturgy.Vespers === undefined ?
                 null :
                 <View style={styles.liturgiaContainer}>
-                  <LHButtons
+                  <HoursLiturgyButtonsComponent
                     oficiCB={this.LHButtonCB.bind(this, "Ofici", false)}
                     laudesCB={this.LHButtonCB.bind(this, "Laudes", false)}
                     terciaCB={this.LHButtonCB.bind(this, "Tèrcia", false)}

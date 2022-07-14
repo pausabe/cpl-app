@@ -6,14 +6,14 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Utils/GlobalKeys';
-import GF from '../../../../Utils/GlobalFunctions';
-import SettingsService from '../../../../Services/SettingsService';
-import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
+import HR from '../../../Components/HRComponent';
+import GLOBAL from '../../../Utils/GlobalKeys';
+import GF from '../../../Utils/GlobalFunctions';
+import SettingsService from '../../../Services/SettingsService';
+import * as Logger from '../../../Utils/Logger';
+import { GlobalData, HoursLiturgy } from '../../../Services/DataService';
 
-export default class CompletesDisplay extends Component {
+export default class NightPrayerComponent extends Component {
   componentDidMount(){
   }
 
@@ -438,4 +438,4 @@ export default class CompletesDisplay extends Component {
 
 }
 
-AppRegistry.registerComponent('CompletesDisplay', () => CompletesDisplay);
+AppRegistry.registerComponent('NightPrayerComponent', () => NightPrayerComponent);

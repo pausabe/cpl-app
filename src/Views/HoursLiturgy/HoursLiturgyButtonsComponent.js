@@ -6,12 +6,14 @@ import {
   TouchableOpacity
 } from 'react-native';
 import HR from '../../Components/HRComponent';
-import { GlobalData } from '../../Services/DataService';
+import {CurrentHoursLiturgy, CurrentLiturgyDayInformation} from "../../Services/DataService";
+import {StringManagement} from "../../Utils/StringManagement";
+import {SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
 
-export default class LHButtons extends Component {
+export default class HoursLiturgyButtonsComponent extends Component {
   render() {
-    var nowDate = new Date();
-    var hour = nowDate.getHours();
+    const nowDate = new Date();
+    const hour = nowDate.getHours();
 
     return (
       <View style={styles.container}>
@@ -62,24 +64,10 @@ export default class LHButtons extends Component {
             :
             <Text style={styles.buttonText}>{"Vespres"}</Text>
           }
-          {GlobalData.primVespres ?
+          {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.Title)
+            && CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
             <View style={{ padding: 5, paddingHorizontal: 15 }}>
-              {GlobalData.info_cel.nomCelTom !== '-' ?
-                <View>
-                  {GlobalData.info_cel.nomCelTom !== "dium-pasqua" ?
-                    <Text numberOfLines={1} style={styles.redCenter}>{GlobalData.info_cel.nomCelTom}</Text>
-                    : null
-                  }
-                </View>
-                :
-                <View>
-                  {GlobalData.date.getDay() === 6 ?
-                    <Text style={styles.redCenter}>{"Primeres vespres de diumenge"}</Text>
-                    :
-                    <Text style={styles.redCenter}>{"Primeres vespres"}</Text>
-                  }
-                </View>
-              }
+              <Text numberOfLines={1} style={styles.redCenter}>{CurrentHoursLiturgy.Vespers.Title}</Text>
             </View>
             : null}
         </TouchableOpacity>
@@ -99,18 +87,9 @@ export default class LHButtons extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    /*shadowOpacity: 0.4,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 0,
-      height: 10
-    },
-    */
     opacity: 0.75,
     backgroundColor: 'white',
     borderRadius: 15,
-    //borderColor: '#424242',
-    //borderWidth: 1,
   },
   buttonContainer: {
     flex: 1,

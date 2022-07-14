@@ -6,13 +6,13 @@ import {
   Platform,
   Share
 } from 'react-native';
-import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Utils/GlobalKeys';
-import GF from '../../../../Utils/GlobalFunctions';
-import * as Logger from '../../../../Utils/Logger';
-import {GlobalData} from "../../../../Services/DataService";
+import HR from '../../../Components/HRComponent';
+import GLOBAL from '../../../Utils/GlobalKeys';
+import GF from '../../../Utils/GlobalFunctions';
+import * as Logger from '../../../Utils/Logger';
+import {GlobalData} from "../../../Services/DataService";
 
-export default class HoraMenorDisplay extends Component {
+export default class HoursComponent extends Component {
   componentDidMount(){
   }
 
@@ -285,4 +285,4 @@ export default class HoraMenorDisplay extends Component {
   }
 }
 
-AppRegistry.registerComponent('HoraMenorDisplay', () => HoraMenorDisplay);
+AppRegistry.registerComponent('HoursComponent', () => HoursComponent);

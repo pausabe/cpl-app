@@ -18,7 +18,7 @@ const VESPERS_SELECTOR_TYPES = {
   VESPERS: 'vespers'
 }
 
-export default class LDScreen extends Component {
+export default class MassLiturgyMainScreen extends Component {
   //PREVIEWS --------------------------------------------------------------------------
   UNSAFE_componentWillMount() {
     this.eventEmitter = new EventEmitter();

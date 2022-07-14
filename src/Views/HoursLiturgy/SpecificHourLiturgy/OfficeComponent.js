@@ -6,29 +6,23 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Utils/GlobalKeys';
-import GF from '../../../../Utils/GlobalFunctions';
-import SettingsService from '../../../../Services/SettingsService';
-import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
+import HR from '../../../Components/HRComponent';
+import GlobalKeys from '../../../Utils/GlobalKeys';
+import GlobalFunctions from '../../../Utils/GlobalFunctions';
+import SettingsService from '../../../Services/SettingsService';
+import * as Logger from '../../../Utils/Logger';
+import {CurrentSettings} from "../../../Services/DataService";
 
-export default class OficiDisplay extends Component {
-  componentDidMount(){
-  }
-
-  componentWillUnmount(){
-  }
-
+export default class OfficeComponent extends Component {
   constructor(props){
     super(props);
-    var auxNumSalmInv = GlobalData.numSalmInv;
+      let auxNumSalmInv = CurrentSettings.InvitationPsalmOption;
 
-    if(!GF.salmInvExists(auxNumSalmInv,props.titols)){
-      auxNumSalmInv = '94';
-      props.setNumSalmInv('94');
-      SettingsService.setSettingNumSalmInv('94');
-    }
+      if(!GlobalFunctions.salmInvExists(auxNumSalmInv,props.titols)){
+          auxNumSalmInv = '94';
+          props.setNumSalmInv('94');
+          SettingsService.setSettingNumSalmInv('94');
+      }
 
     this.state = {
       invitatori: props.superTestMode,
@@ -36,19 +30,19 @@ export default class OficiDisplay extends Component {
     }
 
     this.styles = {
-      black: GF.getStyle("GENERIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      red: GF.getStyle("ACCENT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-      prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      black: GlobalFunctions.getStyle("GENERIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackBold: GlobalFunctions.getStyle("GENERIC_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackItalic: GlobalFunctions.getStyle("GENERIC_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackSmallItalicRight: GlobalFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      blackJustified: GlobalFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      red: GlobalFunctions.getStyle("ACCENT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redItalic: GlobalFunctions.getStyle("ACCENT_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenter: GlobalFunctions.getStyle("ACCENT_CENTER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redCenterBold: GlobalFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      redSmallItalicRight: GlobalFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      hiddenPrayerButton: GlobalFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButton: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+      prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
     };
 
     this.OFICI = HoursLiturgy.ofici;
@@ -69,7 +63,7 @@ export default class OficiDisplay extends Component {
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             <HR/>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-            <Text selectable={true} style={this.styles.red}>{"HIMNE"}{(GlobalData.LT===GLOBAL.O_ORDINARI && GF.isDarkAnthem())? " (nit)" : " (dia)"}</Text>
+            <Text selectable={true} style={this.styles.red}>{"HIMNE"}{(GlobalData.LT===GlobalKeys.O_ORDINARI && GlobalFunctions.isDarkAnthem())? " (nit)" : " (dia)"}</Text>
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
             {this.himne(GlobalData.LT, GlobalData.date.getDay(), false, GlobalData.setmana)}
             {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
@@ -205,7 +199,7 @@ export default class OficiDisplay extends Component {
     }
 
     var estrofes = salm.split("\n\n");
-    var antifona = GF.rs(this.OFICI.antInvitatori, this.superTestMode, this.testErrorCB.bind(this));
+    var antifona = GlobalFunctions.rs(this.OFICI.antInvitatori, this.superTestMode, this.testErrorCB.bind(this));
     var gloriaString = "Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.";
 
     return(
@@ -216,21 +210,21 @@ export default class OficiDisplay extends Component {
             <TouchableOpacity onPress={this._onSalmInvPress.bind(this,'94')}>
               <Text style={style94}>{"Salm 94  "}</Text>
             </TouchableOpacity>
-            {GF.salmInvExists('99',this.titols)?
+            {GlobalFunctions.salmInvExists('99',this.titols)?
               <TouchableOpacity onPress={this._onSalmInvPress.bind(this,'99')}>
                 <Text style={style99}>{"  Salm 99  "}</Text>
               </TouchableOpacity>
             :
               null
             }
-            {GF.salmInvExists('66',this.titols)?
+            {GlobalFunctions.salmInvExists('66',this.titols)?
               <TouchableOpacity onPress={this._onSalmInvPress.bind(this,'66')}>
                 <Text style={style66}>{"  Salm 66  "}</Text>
               </TouchableOpacity>
             :
               null
             }
-            {GF.salmInvExists('23',this.titols)?
+            {GlobalFunctions.salmInvExists('23',this.titols)?
               <TouchableOpacity onPress={this._onSalmInvPress.bind(this,'23')}>
                 <Text style={style23}>{"  Salm 23"}</Text>
               </TouchableOpacity>
@@ -355,7 +349,7 @@ export default class OficiDisplay extends Component {
 
       var aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
       var aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
-      var aux_isAleluia = GlobalData.LT !== GLOBAL.Q_CENDRA && GlobalData.LT !== GLOBAL.Q_SETMANES && GlobalData.LT !== GLOBAL.Q_DIUM_RAMS && GlobalData.LT !== GLOBAL.Q_SET_SANTA && GlobalData.LT !== GLOBAL.Q_TRIDU;
+      var aux_isAleluia = GlobalData.LT !== GlobalKeys.Q_CENDRA && GlobalData.LT !== GlobalKeys.Q_SETMANES && GlobalData.LT !== GlobalKeys.Q_DIUM_RAMS && GlobalData.LT !== GlobalKeys.Q_SET_SANTA && GlobalData.LT !== GlobalKeys.Q_TRIDU;
 
       return(
         <View>
@@ -401,27 +395,27 @@ export default class OficiDisplay extends Component {
   }
 
   himne(LT, weekDay, nit, setmana){
-    var aux_himne = GF.rs(this.OFICI.himne, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_himne = GlobalFunctions.rs(this.OFICI.himne, this.superTestMode, this.testErrorCB.bind(this));
 
     return(<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
   }
 
   salmodia(LT, setmana, weekDay, cicle){
-    var aux_ant1 = GF.rs(this.OFICI.ant1, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol1 = GF.rs(this.OFICI.titol1, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_ant1 = GlobalFunctions.rs(this.OFICI.ant1, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol1 = GlobalFunctions.rs(this.OFICI.titol1, this.superTestMode, this.testErrorCB.bind(this));
     var aux_has_com1 = this.OFICI.com1 !== '-';
-    var aux_com1 = aux_has_com1? GF.rs(this.OFICI.com1, this.superTestMode, this.testErrorCB.bind(this)) : "";
-    var aux_salm1 = this.salm(GF.rs(this.OFICI.salm1, this.superTestMode, this.testErrorCB.bind(this)));
-    var aux_ant2 = GF.rs(this.OFICI.ant2, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol2 = GF.rs(this.OFICI.titol2, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_com1 = aux_has_com1? GlobalFunctions.rs(this.OFICI.com1, this.superTestMode, this.testErrorCB.bind(this)) : "";
+    var aux_salm1 = this.salm(GlobalFunctions.rs(this.OFICI.salm1, this.superTestMode, this.testErrorCB.bind(this)));
+    var aux_ant2 = GlobalFunctions.rs(this.OFICI.ant2, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol2 = GlobalFunctions.rs(this.OFICI.titol2, this.superTestMode, this.testErrorCB.bind(this));
     var aux_has_com2 = this.OFICI.com2 !== '-';
-    var aux_com2 = aux_has_com2? GF.rs(this.OFICI.com2, this.superTestMode, this.testErrorCB.bind(this)) : "";
-    var aux_salm2 = this.salm(GF.rs(this.OFICI.salm2, this.superTestMode, this.testErrorCB.bind(this)));
-    var aux_ant3 = GF.rs(this.OFICI.ant3, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol3 = GF.rs(this.OFICI.titol3, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_com2 = aux_has_com2? GlobalFunctions.rs(this.OFICI.com2, this.superTestMode, this.testErrorCB.bind(this)) : "";
+    var aux_salm2 = this.salm(GlobalFunctions.rs(this.OFICI.salm2, this.superTestMode, this.testErrorCB.bind(this)));
+    var aux_ant3 = GlobalFunctions.rs(this.OFICI.ant3, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol3 = GlobalFunctions.rs(this.OFICI.titol3, this.superTestMode, this.testErrorCB.bind(this));
     var aux_has_com3 = this.OFICI.com3 !== '-';
-    var aux_com3 = aux_has_com3? GF.rs(this.OFICI.com3, this.superTestMode, this.testErrorCB.bind(this)) : "";
-    var aux_salm3 = this.salm(GF.rs(this.OFICI.salm3, this.superTestMode, this.testErrorCB.bind(this)));
+    var aux_com3 = aux_has_com3? GlobalFunctions.rs(this.OFICI.com3, this.superTestMode, this.testErrorCB.bind(this)) : "";
+    var aux_salm3 = this.salm(GlobalFunctions.rs(this.OFICI.salm3, this.superTestMode, this.testErrorCB.bind(this)));
 
     return(
       <View>
@@ -492,8 +486,8 @@ export default class OficiDisplay extends Component {
   }
 
   vers(LT){
-    var aux_respV = GF.rs(this.OFICI.respV, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_respR = GF.rs(this.OFICI.respR, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_respV = GlobalFunctions.rs(this.OFICI.respV, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_respR = GlobalFunctions.rs(this.OFICI.respR, this.superTestMode, this.testErrorCB.bind(this));
 
     /*this.shareText += 'VERS\n\n';
     this.shareText += 'V. ' + aux_respV + '\n';
@@ -513,26 +507,26 @@ export default class OficiDisplay extends Component {
 
   lectures(LT){
     try {
-      var aux_referencia1 = GF.rs(this.OFICI.referencia1, this.superTestMode, this.testErrorCB.bind(this));
-      var aux_titol_lectura1 = GF.rs(this.OFICI.titolLectura1, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_referencia1 = GlobalFunctions.rs(this.OFICI.referencia1, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_titol_lectura1 = GlobalFunctions.rs(this.OFICI.titolLectura1, this.superTestMode, this.testErrorCB.bind(this));
       var aux_has_cita1 = this.OFICI.cita1 !== '-';
-      var aux_cita1 = aux_has_cita1 ? GF.rs(this.OFICI.cita1, this.superTestMode, this.testErrorCB.bind(this)) : "";
-      var aux_lectura1 = GF.rs(this.OFICI.lectura1, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_cita1 = aux_has_cita1 ? GlobalFunctions.rs(this.OFICI.cita1, this.superTestMode, this.testErrorCB.bind(this)) : "";
+      var aux_lectura1 = GlobalFunctions.rs(this.OFICI.lectura1, this.superTestMode, this.testErrorCB.bind(this));
       var aux_has_citaResp1 = this.OFICI.citaResp1 !== '-';
-      var aux_cita_resp1 = aux_has_citaResp1? GF.rs(this.OFICI.citaResp1, this.superTestMode, this.testErrorCB.bind(this)) : "";
-      var aux_resp1_1_2 = GF.respTogether(GF.rs(this.OFICI.resp1Part1, this.superTestMode, this.testErrorCB.bind(this)),GF.rs(this.OFICI.resp1Part2, this.superTestMode, this.testErrorCB.bind(this)));
-      var aux_resp1_3 = GF.rs(this.OFICI.resp1Part3, this.superTestMode, this.testErrorCB.bind(this));
-      var aux_resp1_2 = GF.rs(this.OFICI.resp1Part2, this.superTestMode, this.testErrorCB.bind(this));
-      var aux_referencia2 = GF.rs(this.OFICI.referencia2, this.superTestMode, this.testErrorCB.bind(this));
-      var aux_titol_lectura2 = GF.rs(this.OFICI.titolLectura2, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_cita_resp1 = aux_has_citaResp1? GlobalFunctions.rs(this.OFICI.citaResp1, this.superTestMode, this.testErrorCB.bind(this)) : "";
+      var aux_resp1_1_2 = GlobalFunctions.respTogether(GlobalFunctions.rs(this.OFICI.resp1Part1, this.superTestMode, this.testErrorCB.bind(this)),GlobalFunctions.rs(this.OFICI.resp1Part2, this.superTestMode, this.testErrorCB.bind(this)));
+      var aux_resp1_3 = GlobalFunctions.rs(this.OFICI.resp1Part3, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_resp1_2 = GlobalFunctions.rs(this.OFICI.resp1Part2, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_referencia2 = GlobalFunctions.rs(this.OFICI.referencia2, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_titol_lectura2 = GlobalFunctions.rs(this.OFICI.titolLectura2, this.superTestMode, this.testErrorCB.bind(this));
       var aux_has_cita2 = this.OFICI.cita2 != null && this.OFICI.cita2 !== '-';
-      var aux_cita2 = aux_has_cita2? GF.rs(this.OFICI.cita2, this.superTestMode, this.testErrorCB.bind(this)) : "";
-      var aux_lectura2 = GF.rs(this.OFICI.lectura2, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_cita2 = aux_has_cita2? GlobalFunctions.rs(this.OFICI.cita2, this.superTestMode, this.testErrorCB.bind(this)) : "";
+      var aux_lectura2 = GlobalFunctions.rs(this.OFICI.lectura2, this.superTestMode, this.testErrorCB.bind(this));
       var aux_has_vers2 = this.OFICI.versResp2 !== '-';
-      var aux_vers2 = aux_has_vers2? GF.rs(this.OFICI.versResp2, this.superTestMode, this.testErrorCB.bind(this)) : "";
-      var aux_resp2_1_2 = GF.respTogether(GF.rs(this.OFICI.resp2Part1, this.superTestMode, this.testErrorCB.bind(this)),GF.rs(this.OFICI.resp2Part2, this.superTestMode, this.testErrorCB.bind(this)));
-      var aux_resp2_3 = GF.rs(this.OFICI.resp2Part3, this.superTestMode, this.testErrorCB.bind(this));
-      var aux_resp2_2 = GF.rs(this.OFICI.resp2Part2, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_vers2 = aux_has_vers2? GlobalFunctions.rs(this.OFICI.versResp2, this.superTestMode, this.testErrorCB.bind(this)) : "";
+      var aux_resp2_1_2 = GlobalFunctions.respTogether(GlobalFunctions.rs(this.OFICI.resp2Part1, this.superTestMode, this.testErrorCB.bind(this)),GlobalFunctions.rs(this.OFICI.resp2Part2, this.superTestMode, this.testErrorCB.bind(this)));
+      var aux_resp2_3 = GlobalFunctions.rs(this.OFICI.resp2Part3, this.superTestMode, this.testErrorCB.bind(this));
+      var aux_resp2_2 = GlobalFunctions.rs(this.OFICI.resp2Part2, this.superTestMode, this.testErrorCB.bind(this));
 
       return(
         <View>
@@ -584,41 +578,41 @@ export default class OficiDisplay extends Component {
   }
 
   lecturesDiumPasqua(LT){
-    var aux_referencia1 = GF.rs(this.OFICI.referencia1, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol_lectura1 = GF.rs(this.OFICI.titolLectura1, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_referencia1 = GlobalFunctions.rs(this.OFICI.referencia1, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol_lectura1 = GlobalFunctions.rs(this.OFICI.titolLectura1, this.superTestMode, this.testErrorCB.bind(this));
     var aux_has_cita1 = this.OFICI.cita1 !== '-';
-    var aux_cita1 = aux_has_cita1? GF.rs(this.OFICI.cita1, this.superTestMode, this.testErrorCB.bind(this)) : "";
-    var aux_lectura1 = GF.rs(this.OFICI.lectura1, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_ant1 = GF.rs(this.OFICI.ant1, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol1 = GF.rs(this.OFICI.titol1, this.superTestMode, this.testErrorCB.bind(this))
-    var aux_salm1 = this.salm(GF.rs(this.OFICI.salm1, this.superTestMode, this.testErrorCB.bind(this)));
+    var aux_cita1 = aux_has_cita1? GlobalFunctions.rs(this.OFICI.cita1, this.superTestMode, this.testErrorCB.bind(this)) : "";
+    var aux_lectura1 = GlobalFunctions.rs(this.OFICI.lectura1, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_ant1 = GlobalFunctions.rs(this.OFICI.ant1, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol1 = GlobalFunctions.rs(this.OFICI.titol1, this.superTestMode, this.testErrorCB.bind(this))
+    var aux_salm1 = this.salm(GlobalFunctions.rs(this.OFICI.salm1, this.superTestMode, this.testErrorCB.bind(this)));
     var aux_gloria1 = "Glòria.";
-    var aux_oracio1 = GF.rs(this.OFICI.oracio1, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_referencia2 = GF.rs(this.OFICI.referencia2, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol_lectura2 = GF.rs(this.OFICI.titolLectura2, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_oracio1 = GlobalFunctions.rs(this.OFICI.oracio1, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_referencia2 = GlobalFunctions.rs(this.OFICI.referencia2, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol_lectura2 = GlobalFunctions.rs(this.OFICI.titolLectura2, this.superTestMode, this.testErrorCB.bind(this));
     var aux_has_cita2 = this.OFICI.cita2 !== '-';
-    var aux_cita2 = aux_has_cita2? GF.rs(this.OFICI.cita2, this.superTestMode, this.testErrorCB.bind(this)) : "";
-    var aux_lectura2 = GF.rs(this.OFICI.lectura2, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_ant2 = GF.rs(this.OFICI.ant2, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol2 = GF.rs(this.OFICI.titol2, this.superTestMode, this.testErrorCB.bind(this))
-    var aux_salm2 = this.salm(GF.rs(this.OFICI.salm2, this.superTestMode, this.testErrorCB.bind(this)));
+    var aux_cita2 = aux_has_cita2? GlobalFunctions.rs(this.OFICI.cita2, this.superTestMode, this.testErrorCB.bind(this)) : "";
+    var aux_lectura2 = GlobalFunctions.rs(this.OFICI.lectura2, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_ant2 = GlobalFunctions.rs(this.OFICI.ant2, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol2 = GlobalFunctions.rs(this.OFICI.titol2, this.superTestMode, this.testErrorCB.bind(this))
+    var aux_salm2 = this.salm(GlobalFunctions.rs(this.OFICI.salm2, this.superTestMode, this.testErrorCB.bind(this)));
     var aux_gloria2 = "Glòria.";
-    var aux_oracio2 = GF.rs(this.OFICI.oracio2, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_referencia3 = GF.rs(this.OFICI.referencia3, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol_lectura3 = GF.rs(this.OFICI.titolLectura3, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_oracio2 = GlobalFunctions.rs(this.OFICI.oracio2, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_referencia3 = GlobalFunctions.rs(this.OFICI.referencia3, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol_lectura3 = GlobalFunctions.rs(this.OFICI.titolLectura3, this.superTestMode, this.testErrorCB.bind(this));
     var aux_has_cita3 = this.OFICI.cita3 !== '-';
-    var aux_cita3 = aux_has_cita3? GF.rs(this.OFICI.cita3, this.superTestMode, this.testErrorCB.bind(this)) : "";
-    var aux_lectura3 = GF.rs(this.OFICI.lectura3, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_ant3 = GF.rs(this.OFICI.ant3, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol3 = GF.rs(this.OFICI.titol3, this.superTestMode, this.testErrorCB.bind(this))
-    var aux_salm3 = this.salm(GF.rs(this.OFICI.salm3, this.superTestMode, this.testErrorCB.bind(this)));
+    var aux_cita3 = aux_has_cita3? GlobalFunctions.rs(this.OFICI.cita3, this.superTestMode, this.testErrorCB.bind(this)) : "";
+    var aux_lectura3 = GlobalFunctions.rs(this.OFICI.lectura3, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_ant3 = GlobalFunctions.rs(this.OFICI.ant3, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol3 = GlobalFunctions.rs(this.OFICI.titol3, this.superTestMode, this.testErrorCB.bind(this))
+    var aux_salm3 = this.salm(GlobalFunctions.rs(this.OFICI.salm3, this.superTestMode, this.testErrorCB.bind(this)));
     var aux_gloria3 = "Glòria.";
-    var aux_oracio3 = GF.rs(this.OFICI.oracio3, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_referencia4 = GF.rs(this.OFICI.referencia4, this.superTestMode, this.testErrorCB.bind(this));
-    var aux_titol_lectura4 = GF.rs(this.OFICI.titolLectura4, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_oracio3 = GlobalFunctions.rs(this.OFICI.oracio3, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_referencia4 = GlobalFunctions.rs(this.OFICI.referencia4, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_titol_lectura4 = GlobalFunctions.rs(this.OFICI.titolLectura4, this.superTestMode, this.testErrorCB.bind(this));
     var aux_has_cita4 = this.OFICI.cita4 !== '-';
-    var aux_cita4 = aux_has_cita4? GF.rs(this.OFICI.cita4, this.superTestMode, this.testErrorCB.bind(this)) : "";
-    var aux_lectura4 = GF.rs(this.OFICI.lectura4, this.superTestMode, this.testErrorCB.bind(this));
+    var aux_cita4 = aux_has_cita4? GlobalFunctions.rs(this.OFICI.cita4, this.superTestMode, this.testErrorCB.bind(this)) : "";
+    var aux_lectura4 = GlobalFunctions.rs(this.OFICI.lectura4, this.superTestMode, this.testErrorCB.bind(this));
 
     return(
       <View>
@@ -738,7 +732,7 @@ export default class OficiDisplay extends Component {
   }
 
   oracio(LT, weekDay){
-    var aux_oracio = GF.completeOracio(GF.rs(this.OFICI.oracio, this.superTestMode, this.testErrorCB.bind(this)),false);
+    var aux_oracio = GlobalFunctions.completeOracio(GlobalFunctions.rs(this.OFICI.oracio, this.superTestMode, this.testErrorCB.bind(this)),false);
     /*this.shareText += "ORACIÓ\n\nPreguem.\n";
     this.shareText += aux_oracio + '\n\n';
 
@@ -753,4 +747,4 @@ export default class OficiDisplay extends Component {
   }
 }
 
-AppRegistry.registerComponent('OficiDisplay', () => OficiDisplay);
+AppRegistry.registerComponent('OfficeComponent', () => OfficeComponent);

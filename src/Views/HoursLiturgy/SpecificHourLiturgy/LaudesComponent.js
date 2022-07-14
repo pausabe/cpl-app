@@ -6,14 +6,14 @@ import {
   Platform,
   TouchableOpacity
 } from 'react-native';
-import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Utils/GlobalKeys';
-import GF from '../../../../Utils/GlobalFunctions';
-import SettingsService from '../../../../Services/SettingsService';
-import * as Logger from '../../../../Utils/Logger';
-import {CurrentSettings, CurrentHoursLiturgy} from '../../../../Services/DataService';
+import HR from '../../../Components/HRComponent';
+import GLOBAL from '../../../Utils/GlobalKeys';
+import GF from '../../../Utils/GlobalFunctions';
+import SettingsService from '../../../Services/SettingsService';
+import * as Logger from '../../../Utils/Logger';
+import {CurrentSettings, CurrentHoursLiturgy} from '../../../Services/DataService';
 
-export default class LaudesDisplay extends Component {
+export default class LaudesComponent extends Component {
   constructor(props){
     super(props);
       let auxNumSalmInv = CurrentSettings.InvitationPsalmOption;
@@ -718,4 +718,4 @@ export default class LaudesDisplay extends Component {
   }
 }
 
-AppRegistry.registerComponent('LaudesDisplay', () => LaudesDisplay);
+AppRegistry.registerComponent('LaudesComponent', () => LaudesComponent);

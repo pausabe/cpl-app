@@ -6,13 +6,13 @@ import {
   Platform,
   Share
 } from 'react-native';
-import HR from '../../../../Components/HRComponent';
-import GLOBAL from '../../../../Utils/GlobalKeys';
-import GF from '../../../../Utils/GlobalFunctions';
-import * as Logger from '../../../../Utils/Logger';
-import { GlobalData, HoursLiturgy } from '../../../../Services/DataService';
+import HR from '../../../Components/HRComponent';
+import GLOBAL from '../../../Utils/GlobalKeys';
+import GF from '../../../Utils/GlobalFunctions';
+import * as Logger from '../../../Utils/Logger';
+import { GlobalData, HoursLiturgy } from '../../../Services/DataService';
 
-export default class VespresDisplay extends Component {
+export default class VespersComponent extends Component {
   componentDidMount(){
   }
 
@@ -483,4 +483,4 @@ export default class VespresDisplay extends Component {
   }
 }
 
-AppRegistry.registerComponent('VespresDisplay', () => VespresDisplay);
+AppRegistry.registerComponent('VespersComponent', () => VespersComponent);

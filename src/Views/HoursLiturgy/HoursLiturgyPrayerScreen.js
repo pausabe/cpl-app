@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, StyleSheet, Platform, TouchableOpacity} from 'react-native';
 
-import Ofici from './OracioDisplay/OficiDisplay'
-import Laudes from './OracioDisplay/LaudesDisplay'
-import Vespres from './OracioDisplay/VespresDisplay'
-import HoraMenor from './OracioDisplay/HoraMenorDisplay'
-import Completes from './OracioDisplay/CompletesDisplay'
-import {GlobalData, HoursLiturgy} from '../../../Services/DataService';
-import GF from '../../../Utils/GlobalFunctions';
+import Ofici from './SpecificHourLiturgy/OfficeComponent'
+import Laudes from './SpecificHourLiturgy/LaudesComponent'
+import Vespres from './SpecificHourLiturgy/VespersComponent'
+import HoraMenor from './SpecificHourLiturgy/HoursComponent'
+import Completes from './SpecificHourLiturgy/NightPrayerComponent'
+import {GlobalData, HoursLiturgy} from '../../Services/DataService';
+import GF from '../../Utils/GlobalFunctions';
 
-export default class LHDisplayScreen extends Component {
+export default class HoursLiturgyPrayerScreen extends Component {
   UNSAFE_componentWillMount(){
     this.screen_props = this.props.route.params.props;
     this.eventEmitter = this.screen_props.events;
@@ -30,12 +30,12 @@ export default class LHDisplayScreen extends Component {
 
   componentDidUpdate(){
     if(this.screen_props.superTestMode){
-      if(this.state.type === 'Laudes') this.setState({type: 'Tèrcia'});
+      if(this.state.type === 'LaudesComponent') this.setState({type: 'Tèrcia'});
       else if(this.state.type === 'Tèrcia') this.setState({type: 'Sexta'});
       else if(this.state.type === 'Sexta') this.setState({type: 'Nona'});
-      else if(this.state.type === 'Nona') this.setState({type: 'Vespres'});
-      else if(this.state.type === 'Vespres') this.setState({type: 'Completes'});
-      else if(this.state.type === 'Completes') {
+      else if(this.state.type === 'Nona') this.setState({type: 'VespersComponent'});
+      else if(this.state.type === 'VespersComponent') this.setState({type: 'NightPrayerComponent'});
+      else if(this.state.type === 'NightPrayerComponent') {
         this.screen_props.nextDayTestCB();
         this.screen_props.navigator.pop();
       }
@@ -82,7 +82,7 @@ export default class LHDisplayScreen extends Component {
 
   liturgicComponent(type){
     switch (type) {
-      case 'Ofici':
+      case 'OfficeComponent':
         return(
           <Ofici
             superTestMode = {this.screen_props.superTestMode}
@@ -93,7 +93,7 @@ export default class LHDisplayScreen extends Component {
           )
         break;
         
-        case 'Laudes':
+        case 'LaudesComponent':
           return(
             <Laudes
               superTestMode = {this.screen_props.superTestMode}
@@ -104,7 +104,7 @@ export default class LHDisplayScreen extends Component {
             )
           break;
 
-          case 'Vespres':
+          case 'VespersComponent':
             return(
               <Vespres
                 superTestMode = {this.screen_props.superTestMode}
@@ -146,7 +146,7 @@ export default class LHDisplayScreen extends Component {
               )
             break;
 
-          case 'Completes':
+          case 'NightPrayerComponent':
             return(
               <Completes
                 superTestMode = {this.screen_props.superTestMode}

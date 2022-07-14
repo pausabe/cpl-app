@@ -14,15 +14,15 @@ import HomeScreen from '../Controllers/HomeScreenController';
 import SettingsScreen from '../Views/Settings/SettingsScreen';
 import DonationScreen from '../Views/DonationScreen';
 import CommentScreen from '../Views/CommentScreen';
-import LHScreen from '../Views/LHScreen/LHScreen';
-import LHDisplayScreen from '../Views/LHScreen/LHDisplayScreen/LHDisplayScreen';
-import LDScreen from '../Views/LDScreen/LDScreen';
+import HoursLiturgyPrayerMainScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerMainScreen';
+import HoursLiturgyPrayerScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerScreen';
+import MassLiturgyMainScreen from '../Views/MassLiturgy/MassLiturgyMainScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import MassLiturgyPrayerScreen from '../Views/LDScreen/MassLiturgyPrayerScreen';
+import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -118,7 +118,7 @@ function LHStackScreen() {
         <LHStack.Navigator screenOptions={{headerShown: false}}>
             <LHStack.Screen
                 name="LHStack"
-                component={LHScreen}
+                component={HoursLiturgyPrayerMainScreen}
             />
         </LHStack.Navigator>
     );
@@ -130,7 +130,7 @@ function LDStackScreen() {
         <LDStack.Navigator screenOptions={{headerShown: false}}>
             <LDStack.Screen
                 name="LDStack"
-                component={LDScreen}
+                component={MassLiturgyMainScreen}
             />
         </LDStack.Navigator>
     );
@@ -275,7 +275,7 @@ function NavigationContainerView(IsNecessaryToUpdate){
                     />
                     <Stack.Screen
                         name="LHDisplay"
-                        component={LHDisplayScreen}
+                        component={HoursLiturgyPrayerScreen}
                         options={({route }) => {
                             // @ts-ignore
                             const title = route.params?.props.type;
