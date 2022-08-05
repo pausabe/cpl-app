@@ -1,3 +1,6 @@
+### v5.78.5 (05.08.2022)[78]
+- Temporal fix about transfiguration day
+
 ### v5.78.4 (21.06.2022)[78]
 - Now the updates are mandatory and user will be notified about them
 ---

@@ -1569,7 +1569,9 @@ export default class CelebracioSoul {
       this.NONA.oracio = TABLES.santsSolemnitats.oraFiMenor;
     // else if(TABLES.OficisComuns !== null) this.NONA.oracio = TABLES.OficisComuns.oraFiMenor;
 
-    if(!(F === 'F' && GlobalData.date.getDay() === 6) && !(type === 'SF' && GlobalData.date.getDay() === 6 && GlobalData.LT === GLOBAL.Q_SETMANES)){
+    if((!(F === 'F' && GlobalData.date.getDay() === 6) &&
+        !(type === 'SF' && GlobalData.date.getDay() === 6 && GlobalData.LT === GLOBAL.Q_SETMANES)) ||
+        (GlobalData.date.getFullYear() == 2022 && GlobalData.date.getMonth() == 7 && GlobalData.date.getDate() == 6)){
       //::::::SF-VESPRES2::::::
       //SF-VESPRES2 -> HIMNE
       if(TABLES.santsSolemnitats.himneVespres2Llati !== '-'){

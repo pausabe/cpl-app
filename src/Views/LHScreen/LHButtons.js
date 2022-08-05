@@ -62,7 +62,7 @@ export default class LHButtons extends Component {
             :
             <Text style={styles.buttonText}>{"Vespres"}</Text>
           }
-          {GlobalData.primVespres ?
+          {GlobalData.primVespres /*TODO: hardcoded*/ && !(GlobalData.date.getFullYear() == 2022 && GlobalData.date.getMonth() == 7 && GlobalData.date.getDate() == 6) ?
             <View style={{ padding: 5, paddingHorizontal: 15 }}>
               {GlobalData.info_cel.nomCelTom !== '-' ?
                 <View>
