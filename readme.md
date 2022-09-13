@@ -10,7 +10,6 @@ You will find it in the app markets:
 - [Android Play Store](https://play.google.com/store/apps/details?id=cpl.cpl)
 
 The app uses a deploy website for the updates. You will find the project here:
-The app uses a deploy website for the updates. You will find the project here:
 https://github.com/pausabe/deploy-cpl
 
 # Necessary Tools
