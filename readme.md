@@ -4,7 +4,7 @@
   <img src="./demo.gif" alt="" width="200" />
 </p>
 
-This project is the app CPL that help thousands of users to pray the liturgy of the ours every day.
+This project is the app CPL that help thousands of users to pray the Liturgy of the Hours every day.
 You will find it in the app markets:
 - [Apple App Store](https://apps.apple.com/es/app/litcat-cpl/id1283136025?l=en)
 - [Android Play Store](https://play.google.com/store/apps/details?id=cpl.cpl)
