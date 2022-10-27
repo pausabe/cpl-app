@@ -18,6 +18,8 @@ import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformatio
 import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
 import {DateManagement} from "../Utils/DateManagement";
 
+// TODO: I don't like the idea of these variables made public to all project
+// TODO: it should be hidden and only controllers should access it
 export let LastRefreshDate = new Date()
 export let CurrentSettings = new Settings();
 export let CurrentDatabaseInformation = new DatabaseInformation();

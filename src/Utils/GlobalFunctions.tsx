@@ -306,7 +306,7 @@ let GlobalFunctions = {
   },
 
   respTogether(r1,r2){
-    var result = r1 + ' ' + r2;
+    let result = r1 + ' ' + r2;
 
     if(r1 && r2){
       var lastCharacter = r1.charAt(r1.length-1);
@@ -322,7 +322,7 @@ let GlobalFunctions = {
         result = r1 + ' ' + r2.charAt(0).toLowerCase() + r2.slice(1);
     }
     else{
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, "respTogether", error);
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "respTogether");
     }
 
     return result;

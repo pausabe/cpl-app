@@ -15,8 +15,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
-import GLOBALS from '../Utils/GlobalKeys';
-import GF from '../Utils/GlobalFunctions';
+import GlobalKeys from '../Utils/GlobalKeys';
+import GlobalFunctions from '../Utils/GlobalFunctions';
 import * as Logger from '../Utils/Logger';
 import SettingsService from '../Services/SettingsService';
 import {
@@ -205,7 +205,7 @@ function GetInitialState(checkLatePopup){
 
 function IsLatePrayer() {
   const hour = new Date().getHours();
-  return hour >= 0 && hour < GLOBALS.late_prayer;
+  return hour >= 0 && hour < GlobalKeys.late_prayer;
 }
 
 async function DatePickerChange(event, date, setState) {
@@ -354,8 +354,8 @@ function HomeScreenView(navigation, setState){
           <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => HandleOnTodayPressed(setState)}>
             <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
               <View style={{ paddingTop: 15}}>
-                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + today.getDate() + " de " + GF.getMonthText(today.getMonth()) + "."}</Text>
-                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GF.getMonthText(yesterday.getMonth()) + "?"}</Text>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + today.getDate() + " de " + GlobalFunctions.getMonthText(today.getMonth()) + "."}</Text>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GlobalFunctions.getMonthText(yesterday.getMonth()) + "?"}</Text>
               </View>
 
               <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>

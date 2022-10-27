@@ -101,8 +101,8 @@ function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrow
    if(tomorrowLiturgyInformation.SpecialCelebration.SpecialDaysMasterIdentifier !== -1) {
        return GetSpecialDaysFirstVespersOfTomorrow(liturgyMasters.SpecialDaysParts, tomorrowLiturgyInformation, settings);
    }
-   if(tomorrowLiturgyInformation.CelebrationType === CelebrationType.Solemnity ||
-       tomorrowLiturgyInformation.CelebrationType === CelebrationType.Festivity){
+   if(tomorrowLiturgyInformation.CelebrationType === CelebrationType.Solemnity/* TODO: only Solemnity right? ||
+       tomorrowLiturgyInformation.CelebrationType === CelebrationType.Festivity*/){
        return GetSaintsSolemnitiesFirstVespersOfTomorrow(liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts, tomorrowLiturgyInformation, settings);
    }
    return new Vespers();

@@ -1,160 +1,107 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet, Platform, TouchableOpacity} from 'react-native';
+import { View, ScrollView, Text, StyleSheet, Platform } from 'react-native';
 
 import Ofici from './SpecificHourLiturgy/OfficeComponent'
 import Laudes from './SpecificHourLiturgy/LaudesComponent'
 import Vespres from './SpecificHourLiturgy/VespersComponent'
 import HoraMenor from './SpecificHourLiturgy/HoursComponent'
 import Completes from './SpecificHourLiturgy/NightPrayerComponent'
-import {GlobalData, HoursLiturgy} from '../../Services/DataService';
-import GF from '../../Utils/GlobalFunctions';
+import {CurrentSettings, CurrentHoursLiturgy} from '../../Services/DataService';
+import GlobalFunctions from '../../Utils/GlobalFunctions';
 
 export default class HoursLiturgyPrayerScreen extends Component {
-  UNSAFE_componentWillMount(){
+
+  UNSAFE_componentWillMount() {
     this.screen_props = this.props.route.params.props;
     this.eventEmitter = this.screen_props.events;
-    this.titols = this.getTitols();
+    this.titles = this.getTitles();
     this.setState({type: this.screen_props.type})
-  }
-
-  componentWillUnmount(){
-  }
-
-  componentDidMount(){
-    /*if(this.screen_props.superTestMode){
-      setTimeout(() => {
-        this.setState({type: 'Laudes'});
-      }, 1000);
-    }*/
-  }
-
-  componentDidUpdate(){
-    if(this.screen_props.superTestMode){
-      if(this.state.type === 'LaudesComponent') this.setState({type: 'Tèrcia'});
-      else if(this.state.type === 'Tèrcia') this.setState({type: 'Sexta'});
-      else if(this.state.type === 'Sexta') this.setState({type: 'Nona'});
-      else if(this.state.type === 'Nona') this.setState({type: 'VespersComponent'});
-      else if(this.state.type === 'VespersComponent') this.setState({type: 'NightPrayerComponent'});
-      else if(this.state.type === 'NightPrayerComponent') {
-        this.screen_props.nextDayTestCB();
-        this.screen_props.navigator.pop();
-      }
-    }
   }
 
   render() {
     return (
-      <View style={GF.getStyle("CONTAINER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled)}>
+      <View style={GlobalFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
         <ScrollView automaticallyAdjustContentInsets={false}>
           <View style={{paddingHorizontal: 10, paddingTop: 10}}>
-            {this.liturgicComponent(this.state.type)}
+            {this.liturgyComponent(this.state.type)}
           </View>
         </ScrollView>
       </View>
     )
   }
 
-  testErrorCB(){
-    if(this.screen_props.superTestMode){
-      this.screen_props.testErrorCallBack();
+  getTitles(){
+    const titles = [];
+
+    titles.push(CurrentHoursLiturgy.Office.FirstPsalm.Title);
+    titles.push(CurrentHoursLiturgy.Office.SecondPsalm.Title);
+    titles.push(CurrentHoursLiturgy.Office.ThirdPsalm.Title);
+    titles.push(CurrentHoursLiturgy.Laudes.FirstPsalm.Title);
+    titles.push(CurrentHoursLiturgy.Laudes.ThirdPsalm.Title);
+    titles.push(CurrentHoursLiturgy.Vespers.FirstPsalm.Title);
+    titles.push(CurrentHoursLiturgy.Vespers.SecondPsalm.Title);
+    titles.push(CurrentHoursLiturgy.NightPrayer.FirstPsalm.Title);
+
+    if(CurrentHoursLiturgy.NightPrayer.HasMultiplePsalms){
+      titles.push(CurrentHoursLiturgy.NightPrayer.SecondPsalm.Title);
     }
+    return titles;
   }
 
-  saveShareTextCB(shareText){
-    this.screen_props.saveSharedTextCB(shareText);
-  }
-
-  getTitols(){
-    var titols = [];
-
-    titols.push(HoursLiturgy.ofici.titol1);
-    titols.push(HoursLiturgy.ofici.titol2);
-    titols.push(HoursLiturgy.ofici.titol3);
-    titols.push(HoursLiturgy.laudes.titol1);
-    titols.push(HoursLiturgy.laudes.titol3);
-    titols.push(HoursLiturgy.vespres.titol1);
-    titols.push(HoursLiturgy.vespres.titol2);
-    titols.push(HoursLiturgy.completes.titol1);
-    titols.push(HoursLiturgy.completes.titol2);
-
-    return titols;
-  }
-
-  liturgicComponent(type){
+  liturgyComponent(type){
     switch (type) {
-      case 'OfficeComponent':
+      case 'Ofici':
         return(
           <Ofici
-            superTestMode = {this.screen_props.superTestMode}
-            testErrorCB={this.testErrorCB.bind(this)}
-            titols={this.titols}
+            titols={this.titles}
             setNumSalmInv={this.screen_props.setNumSalmInv}
             events={this.eventEmitter}/>
           )
-        break;
         
-        case 'LaudesComponent':
+        case 'Laudes':
           return(
             <Laudes
-              superTestMode = {this.screen_props.superTestMode}
-              testErrorCB={this.testErrorCB.bind(this)}
-              titols={this.titols}
+              titols={this.titles}
               setNumSalmInv={this.screen_props.setNumSalmInv}
               events={this.eventEmitter}/>
             )
-          break;
 
-          case 'VespersComponent':
+          case 'Vespres':
             return(
               <Vespres
-                superTestMode = {this.screen_props.superTestMode}
-                testErrorCB={this.testErrorCB.bind(this)}
                 events={this.eventEmitter}/>
               )
-            break;
 
           case 'Tèrcia':
             return(
             <HoraMenor
               HM = {type}
-              HORA_MENOR = {HoursLiturgy.tercia}
-              superTestMode = {this.screen_props.superTestMode}
-              testErrorCB={this.testErrorCB.bind(this)}
+              HORA_MENOR = {CurrentHoursLiturgy.Hours.ThirdHour}
               events={this.eventEmitter}/>
             )
-          break;
 
           case 'Sexta':
             return(
               <HoraMenor
                 HM = {type}
-                HORA_MENOR = {HoursLiturgy.sexta}
-                superTestMode = {this.screen_props.superTestMode}
-                testErrorCB={this.testErrorCB.bind(this)}
+                HORA_MENOR = {CurrentHoursLiturgy.Hours.SixthHour}
                 events={this.eventEmitter}/>
               )
-            break;
 
           case 'Nona':
             return(
               <HoraMenor
                 HM = {type}
-                HORA_MENOR = {HoursLiturgy.nona}
-                superTestMode = {this.screen_props.superTestMode}
-                testErrorCB={this.testErrorCB.bind(this)}
+                HORA_MENOR = {CurrentHoursLiturgy.Hours.NinthHour}
                 events={this.eventEmitter}/>
               )
-            break;
 
-          case 'NightPrayerComponent':
+          case 'Completes':
             return(
               <Completes
-                superTestMode = {this.screen_props.superTestMode}
-                testErrorCB={this.testErrorCB.bind(this)}
                 setNumAntMare={this.screen_props.setNumAntMare}
                 events={this.eventEmitter}/>
               )
-            break;
 
         default: 
           return(<Text style={styles.normalText}>{this.screen_props.type}</Text>)
