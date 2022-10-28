@@ -364,10 +364,6 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
 }
 
 function GetTeDeumInformation(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : TeDeumInformation{
-    if(celebrationOffice.TeDeumInformation.Enabled){
-        return celebrationOffice.TeDeumInformation;
-    }
-
     let teDeumInformationEnabled = liturgyDayInformation.DayOfTheWeek === 0;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.P_OCTAVA:

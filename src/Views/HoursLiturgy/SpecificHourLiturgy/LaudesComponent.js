@@ -30,7 +30,7 @@ export default class LaudesComponent extends Component {
         }
 
         this.state = {
-            invitatori: props.superTestMode,
+            invitatori: false,
             numSalmInv: auxNumSalmInv,
         }
 
@@ -50,7 +50,6 @@ export default class LaudesComponent extends Component {
             prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
         };
 
-        this.superTestMode = props.superTestMode;
         this.setNumSalmInv = props.setNumSalmInv;
         this.titols = props.titols;
     }
@@ -314,7 +313,8 @@ export default class LaudesComponent extends Component {
     // TODO: duplicated code
     introduction() {
         const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
-        const showInvitatory = this.state.invitatori || CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA;
+        const showInvitatory = this.state.invitatori ||
+            CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA;
 
         if (showInvitatory) {
             const aux_obriume = 'Obriu-me els llavis, Senyor.';
