@@ -1,6 +1,6 @@
 import * as StorageService from './Storage/StorageService';
 
-export enum Diocese {
+export enum DioceseName {
     Andorra = "Andorra",
     Barcelona = "Barcelona",
     Girona = "Girona",
@@ -47,7 +47,7 @@ const defaultSettings = {
     prayLliures: "false",
     useLatin: false,
     textSize: "3", //1-5
-    diocesis: Diocese.Barcelona,
+    diocesis: DioceseName.Barcelona,
     lloc: PrayingPlace.Diocese,
     dayStart: "0", //Values from 0 to 3 allowed, which means 00:00AM, 01:00AM, 02:00AM and 03:00AM
     salmInvitatori: InvitationPsalmOption.Psalm94,
@@ -169,7 +169,7 @@ export default class SettingsService {
     static setSettingDiocesis(value, callback){
         return SettingsService._setValueIfValid("diocesis", value,
             (val) => {
-                return findValueInObject(Diocese, val);
+                return findValueInObject(DioceseName, val);
             }, callback);
     }
 

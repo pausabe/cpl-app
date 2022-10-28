@@ -61,7 +61,12 @@ export default class LaudesComponent extends Component {
         SettingsService.setSettingNumSalmInv(numSalm);
     }
 
-    salmInvitatori(numSalm, salm94, salm99, salm66, salm23) {
+    salmInvitatori(numSalm) {
+        let salm94 = CurrentHoursLiturgy.Invitation.Psalm94;
+        let salm99 = CurrentHoursLiturgy.Invitation.Psalm99;
+        let salm66 = CurrentHoursLiturgy.Invitation.Psalm66;
+        let salm23 = CurrentHoursLiturgy.Invitation.Psalm23;
+
         let style94 = this.styles.prayerTabButton;
         let style99 = this.styles.prayerTabButton;
         let style66 = this.styles.prayerTabButton;
@@ -286,7 +291,7 @@ export default class LaudesComponent extends Component {
     }
 
     // TODO: duplicated code
-    invitatoriButton() {
+    invitatoriButtons() {
         return (
             <View>
                 <TouchableOpacity onPress={() => this.setState({invitatori: !this.state.invitatori})}>
@@ -306,19 +311,48 @@ export default class LaudesComponent extends Component {
         );
     }
 
+    // TODO: duplicated code
     introduction() {
         const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
-        const showInvitatory = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA && !this.state.invitatori;
+        const showInvitatory = this.state.invitatori || CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA;
 
-        if (!showInvitatory) {
+        if (showInvitatory) {
+            const aux_obriume = 'Obriu-me els llavis, Senyor.';
+            const aux_proclamare = 'I proclamaré la vostra lloança.';
+
+            return (
+                // TODO: imporve this method... if else.. not good
+                <View>
+                    {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
+                        null :
+                        <View>{this.invitatoriButtons()}</View>
+                    }
+                    <Text selectable={true} style={this.styles.red}>{'V. '}
+                        <Text selectable={true} style={this.styles.black}>{aux_obriume}</Text>
+                    </Text>
+                    <Text selectable={true} style={this.styles.red}>{'R. '}
+                        <Text selectable={true} style={this.styles.black}>{aux_proclamare}</Text>
+                    </Text>
+                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <HR/>
+                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    {this.salmInvitatori(this.state.numSalmInv)}
+                </View>
+            )
+        }
+        else {
             const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
             const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
-            const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_CENDRA && GlobalData.LT !== GlobalKeys.Q_SETMANES && GlobalData.LT !== GlobalKeys.Q_DIUM_RAMS && GlobalData.LT !== GlobalKeys.Q_SET_SANTA && GlobalData.LT !== GlobalKeys.Q_TRIDU;
+            // TODO: encapsulate
+            const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_CENDRA &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_SETMANES &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_RAMS &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_SET_SANTA &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_TRIDU;
 
-            // TODO: duplicated code
             return (
                 <View>
-                    {this.invitatoriButton()}
+                    {this.invitatoriButtons()}
                     <Text selectable={true} style={this.styles.red}>{'V. '}
                         <Text selectable={true} style={this.styles.black}>{aux_sigueu}</Text>
                     </Text>
@@ -331,30 +365,6 @@ export default class LaudesComponent extends Component {
                             <Text selectable={true} style={this.styles.black}>{' Al·leluia.'}</Text> : null
                         }
                     </Text>
-                </View>
-            )
-        }
-        else {
-            const aux_obriume = 'Obriu-me els llavis, Senyor.';
-            const aux_proclamare = 'I proclamaré la vostra lloança.';
-
-            return (
-                // TODO: imporve this method... if else.. not good
-                <View>
-                    {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
-                        <View>{this.invitatoriButton()}</View>
-                        : null
-                    }
-                    <Text selectable={true} style={this.styles.red}>{'V. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_obriume}</Text>
-                    </Text>
-                    <Text selectable={true} style={this.styles.red}>{'R. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_proclamare}</Text>
-                    </Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    {this.salmInvitatori()}
                 </View>
             )
         }
@@ -556,8 +566,7 @@ export default class LaudesComponent extends Component {
         if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
             return (<Text selectable={true} style={this.styles.black}>{"-"}</Text>);
 
-        // TODO: when I've places papa and bibse correctly
-        //allPregs = this.convertN(allPregs, CurrentHoursLiturgy.Laudes.papa, CurrentHoursLiturgy.Laudes.bisbe);
+        allPregs = this.convertN(allPregs, CurrentHoursLiturgy.ConcreteNamesInPrayers.Pope, CurrentHoursLiturgy.ConcreteNamesInPrayers.Bishop);
 
         if (allPregs.match(/—/g, "")) var numGuio = allPregs.match(/—/g, "").length;
         else return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);

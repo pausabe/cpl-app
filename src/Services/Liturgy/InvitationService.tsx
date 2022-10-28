@@ -6,6 +6,12 @@ import {StringManagement} from "../../Utils/StringManagement";
 
 export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationInvitation : Invitation) : Invitation{
     let invitation = new Invitation();
+
+    invitation.Psalm94 = liturgyMasters.Various.Psalm94;
+    invitation.Psalm23 = liturgyMasters.Various.Psalm23;
+    invitation.Psalm66 = liturgyMasters.Various.Psalm66;
+    invitation.Psalm99 = liturgyMasters.Various.Psalm99;
+
     if(StringManagement.HasLiturgyContent(celebrationInvitation.InvitationAntiphon)){
         invitation.InvitationAntiphon = celebrationInvitation.InvitationAntiphon;
     }

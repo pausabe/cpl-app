@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SettingsService, {DarkModeOption, Diocese, PrayingPlace} from '../../Services/SettingsService';
+import SettingsService, {DarkModeOption, DioceseName, PrayingPlace} from '../../Services/SettingsService';
 import SettingsComponent from '../../Components/SettingsComponent';
 
 export default class SettingsComponentAdapter{
@@ -53,11 +53,11 @@ export default class SettingsComponentAdapter{
 
     static async getSettingsComponentDiocesis(RH){
         let value = await SettingsService.getSettingDiocesis();
-        value = _getKeyFromValue(Diocese, value);
+        value = _getKeyFromValue(DioceseName, value);
         return (<SettingsComponent selectorComponent="picker" name="Diòcesi" id="diocesis" key="diocesis"
-                                   value={value} options={Diocese} selectorProps={{mode: "dropdown"}}
+                                   value={value} options={DioceseName} selectorProps={{mode: "dropdown"}}
                                    callback={(id, value) => {
-                                       SettingsService.setSettingDiocesis(Diocese[value], this.refreshHome.bind(this, RH));
+                                       SettingsService.setSettingDiocesis(DioceseName[value], this.refreshHome.bind(this, RH));
                                    }}/>);
     }
 

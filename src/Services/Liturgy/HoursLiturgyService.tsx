@@ -15,11 +15,13 @@ import Vespers from "../../Models/HoursLiturgy/Vespers";
 import {CelebrationType} from "../DatabaseEnums";
 import * as PrecedenceService from "../PrecedenceService";
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
+import * as ConcreteNamesInPrayers from "./ConcreteNamesInPrayersService";
 
 export async function ObtainHoursLiturgy(liturgyMasters: LiturgyMasters, liturgyDayInformation: liturgyDayInformation, settings: Settings) : Promise<HoursLiturgy> {
   let hoursLiturgy = new HoursLiturgy();
   const celebrationHoursLiturgy = CelebrationHoursLiturgyService.ObtainCelebrationHoursLiturgy(liturgyMasters, liturgyDayInformation, settings);
   hoursLiturgy.CelebrationInformation = CelebrationInformationService.ObtainCelebrationInformation(celebrationHoursLiturgy.CelebrationInformation, liturgyDayInformation.Today);
+  hoursLiturgy.ConcreteNamesInPrayers = ConcreteNamesInPrayers.ObtainConcreteNamesInPrayers(liturgyMasters, settings);
   hoursLiturgy.Invitation = InvitationService.ObtainInvitation(liturgyMasters, liturgyDayInformation.Today, celebrationHoursLiturgy.Invitation);
   hoursLiturgy.Office = OfficeService.ObtainOffice(liturgyMasters, liturgyDayInformation.Today, celebrationHoursLiturgy.Office, settings);
   hoursLiturgy.Laudes = LaudesService.ObtainLaudes(liturgyMasters, liturgyDayInformation.Today, celebrationHoursLiturgy.Laudes, settings);

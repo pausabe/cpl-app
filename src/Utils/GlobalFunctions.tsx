@@ -715,37 +715,6 @@ let GlobalFunctions = {
     return('BaD');
   },
 
-  bisbeId(diocesiName){
-    switch (diocesiName) {
-      case "Barcelona":
-        return(39);
-      case "Girona":
-        return(40);
-      case "Lleida":
-        return(41);
-      case "Sant Feliu de Llobregat":
-        return(42);
-      case "Solsona":
-        return(43);
-      case "Tarragona":
-        return(44);
-      case "Terrassa":
-        return(45);
-      case "Tortosa":
-        return(46);
-      case "Urgell":
-        return(47);
-      case "Vic":
-        return(48);
-      case "Andorra":
-        return(49);
-      case "Mallorca":
-        return(50);
-    }
-
-    return(39);
-  },
-
   salmInvExists(salmNum,titols){
     for(i = 0; i<titols.length; i++){
       titol = titols[i];
