@@ -7,7 +7,6 @@ import {
     TouchableOpacity
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
-import GlobalKeys from '../../../Utils/GlobalKeys';
 import GlobalFunctions from '../../../Utils/GlobalFunctions';
 import SettingsService from '../../../Services/SettingsService';
 import * as Logger from '../../../Utils/Logger';
@@ -243,7 +242,7 @@ export default class LaudesComponent extends Component {
                     {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                     <Text selectable={true} style={this.styles.red}>{'CÀNTIC DE ZACARIES'}</Text>
                     {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    {this.chantic()}
+                    {this.chant()}
                     {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                     <HR/>
                     {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
@@ -520,7 +519,7 @@ export default class LaudesComponent extends Component {
         }
     }
 
-    chantic() {
+    chant() {
         const aux_ant = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.EvangelicalAntiphon);
         const aux_titol = "Càntic\nLc 1, 68-79\nEl Messies i el seu Precursor";
         const aux_salm = this.salm(CurrentHoursLiturgy.Laudes.EvangelicalChant);
