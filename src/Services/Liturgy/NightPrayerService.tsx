@@ -3,7 +3,7 @@ import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import {Psalm, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
-import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 
 export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : NightPrayer{
     let nightPrayer = new NightPrayer();
@@ -11,12 +11,30 @@ export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInf
     const psalmody = GetPsalmody(liturgyMasters, liturgyDayInformation);
     nightPrayer.FirstPsalm = psalmody.FirstPsalm;
     nightPrayer.SecondPsalm = psalmody.SecondPsalm;
-    nightPrayer.HasMultiplePsalms = nightPrayer.SecondPsalm.Antiphon !== "-";
+    nightPrayer.HasMultiplePsalms = liturgyMasters.CommonNightPrayerPsalter.HasTwoPsalms;
+    nightPrayer.UseOnlyFirstPsalmAntiphon =
+        liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES &&
+        liturgyDayInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter;
     nightPrayer.ShortReading = liturgyMasters.CommonNightPrayerPsalter.ShortReading;
     nightPrayer.ShortResponsory = GetShortResponsory(liturgyMasters, liturgyDayInformation);
     nightPrayer.EvangelicalAntiphon = GetEvangelicalAntiphon(liturgyMasters, liturgyDayInformation);
     nightPrayer.EvangelicalChant = liturgyMasters.Various.NightPrayerEvangelicalChant;
     nightPrayer.FinalPrayer = liturgyMasters.CommonNightPrayerPsalter.FinalPrayer;
+    if(settings.UseLatin){
+        nightPrayer.VirginMaryFinalAntiphonFirstOption = liturgyMasters.Various.NightPrayerFinalAntiphonLatinFirstOption;
+        nightPrayer.VirginMaryFinalAntiphonSecondOption = liturgyMasters.Various.NightPrayerFinalAntiphonLatinSecondOption;
+        nightPrayer.VirginMaryFinalAntiphonThirdOption = liturgyMasters.Various.NightPrayerFinalAntiphonLatinThirdOption;
+        nightPrayer.VirginMaryFinalAntiphonFourthOption = liturgyMasters.Various.NightPrayerFinalAntiphonLatinFourthOption;
+        nightPrayer.VirginMaryFinalAntiphonFifthOption = liturgyMasters.Various.NightPrayerFinalAntiphonLatinFifthOption;
+    }
+    else{
+        nightPrayer.VirginMaryFinalAntiphonFirstOption = liturgyMasters.Various.NightPrayerFinalAntiphonCatalanFirstOption;
+        nightPrayer.VirginMaryFinalAntiphonSecondOption = liturgyMasters.Various.NightPrayerFinalAntiphonCatalanSecondOption;
+        nightPrayer.VirginMaryFinalAntiphonThirdOption = liturgyMasters.Various.NightPrayerFinalAntiphonCatalanThirdOption;
+        nightPrayer.VirginMaryFinalAntiphonFourthOption = liturgyMasters.Various.NightPrayerFinalAntiphonCatalanFourthOption;
+        nightPrayer.VirginMaryFinalAntiphonFifthOption = liturgyMasters.Various.NightPrayerFinalAntiphonCatalanFifthOption;
+    }
+    nightPrayer.PenitentialAct = liturgyMasters.Various.PenitentialAct;
     return nightPrayer;
 }
 

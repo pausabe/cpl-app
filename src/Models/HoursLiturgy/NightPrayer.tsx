@@ -3,6 +3,7 @@ import {Psalm, Responsory, ShortReading, ShortResponsory} from "../LiturgyMaster
 export default class NightPrayer {
     Anthem: string;
     HasMultiplePsalms: boolean;
+    UseOnlyFirstPsalmAntiphon: boolean;
     FirstPsalm: Psalm = new Psalm();
     SecondPsalm: Psalm = new Psalm();
     ShortReading: ShortReading = new ShortReading();
@@ -11,4 +12,10 @@ export default class NightPrayer {
     EvangelicalAntiphon: string;
     EvangelicalChant: string;
     FinalPrayer: string;
+    VirginMaryFinalAntiphonFirstOption: string;
+    VirginMaryFinalAntiphonSecondOption: string;
+    VirginMaryFinalAntiphonThirdOption: string;
+    VirginMaryFinalAntiphonFourthOption: string;
+    VirginMaryFinalAntiphonFifthOption: string;
+    PenitentialAct: string;
 }
