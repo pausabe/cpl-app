@@ -272,19 +272,11 @@ let GlobalFunctions = {
     return titolCantic;
   },
 
-  rs(text, superTestMode, error){
-    if(superTestMode) {
-      if(!text||text===undefined||text===''||text==='-'||text===' '||text===':'){
-        error();
-        return text;
-      }
-    }
+  rs(text){
     if(text){
       var length = text.length;
       var lastChar = text.charAt(length-1);
       if(lastChar === ' ' || lastChar === '\n') return text.slice(0,length-1);
-    }
-    else{
     }
     return text;
   },
