@@ -189,6 +189,7 @@ export async function GetHolyDaysMass(holyDayMassIdentifier: number, liturgySpec
 function RowToMassLiturgy(row): DayMassLiturgy{
   let dayMassLiturgy = new DayMassLiturgy();
   if(row !== undefined){
+    dayMassLiturgy.HasGlory = row.Gloria === '1';
     dayMassLiturgy.FirstReading.Quote = row.Lectura1;
     dayMassLiturgy.FirstReading.Comment = row.Lectura1Cita;
     dayMassLiturgy.FirstReading.Title = row.Lectura1Titol;
@@ -205,6 +206,7 @@ function RowToMassLiturgy(row): DayMassLiturgy{
     dayMassLiturgy.Gospel.Comment = row.EvangeliCita;
     dayMassLiturgy.Gospel.Title = row.EvangeliTitol;
     dayMassLiturgy.Gospel.Gospel = row.EvangeliText;
+    dayMassLiturgy.HasCreed = row.credo === '1';
   }
   return dayMassLiturgy;
 }

@@ -6,11 +6,13 @@ export default class MassLiturgy {
 
 export class DayMassLiturgy{
     Title: string;
+    HasGlory: boolean;
     FirstReading: MassReading = new MassReading();
     Psalm: MassPsalm = new MassPsalm();
     SecondReading: MassReading = new MassReading();
     Hallelujah: Hallelujah = new Hallelujah();
     Gospel: MassGospel = new MassGospel();
+    HasCreed: boolean;
 
     // Easter Eve
     SecondPsalm: MassPsalm = new MassPsalm();

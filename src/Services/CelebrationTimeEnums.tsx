@@ -21,5 +21,6 @@ export enum GenericLiturgyTimeType{
     Advent = "Advent",
     Christmas = "Nadal",
     Lent = "Quaresma",
-    Easter = "Pasqua"
+    Easter = "Pasqua",
+    PaschalTriduum = "Tridu Pasqual"
 }

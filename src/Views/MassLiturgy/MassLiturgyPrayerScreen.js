@@ -1,10 +1,15 @@
-import React, {Component, useEffect, useState} from 'react';
-import { View, ScrollView, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
-import GF from '../../Utils/GlobalFunctions';
+import React, {Component} from 'react';
+import { View, ScrollView, Text, Platform, TouchableOpacity } from 'react-native';
+import GlobalFunctions from '../../Utils/GlobalFunctions';
 import HR from '../../Components/HRComponent';
 import * as Logger from '../../Utils/Logger';
-import { MassLiturgy, GlobalData } from '../../Services/DataService';
-import HomeScreenState from "../../Controllers/HomeScreenState";
+import {
+    CurrentLiturgyDayInformation,
+    CurrentMassLiturgy,
+    CurrentSettings
+} from "../../Services/DataService";
+import {YearType} from "../../Services/DatabaseEnums";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
 
 export default class MassLiturgyPrayerScreen extends Component {
     //PREVIEWS --------------------------------------------------------------------------
@@ -31,33 +36,28 @@ export default class MassLiturgyPrayerScreen extends Component {
         super(props);
 
         this.styles = {
-            container: GF.getStyle("CONTAINER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            black: GF.getStyle("GENERIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            blackBold: GF.getStyle("GENERIC_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            blackItalic: GF.getStyle("GENERIC_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            blackSmallItalicRight: GF.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            blackJustified: GF.getStyle("GENERIC_JUSTIFIED", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            red: GF.getStyle("ACCENT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            redItalic: GF.getStyle("ACCENT_ITALIC", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            redCenter: GF.getStyle("ACCENT_CENTER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            redCenterBold: GF.getStyle("ACCENT_CENTER_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            redSmallItalicRight: GF.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            hiddenPrayerButton: GF.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            prayerTabButton: GF.getStyle("PRAYER_TAB_BUTTON", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
-            prayerTabButtonBold: GF.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled),
+            container: GlobalFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            black: GlobalFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackBold: GlobalFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackItalic: GlobalFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackSmallItalicRight: GlobalFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackJustified: GlobalFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            red: GlobalFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redItalic: GlobalFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenter: GlobalFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenterBold: GlobalFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redSmallItalicRight: GlobalFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            hiddenPrayerButton: GlobalFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButton: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
         };
-    }
-
-    //CALLBACKS ----------------------------------------------------------------------------
-    saveShareTextCB(shareText) {
-        this.screen_props.saveSharedTextCB(shareText);
     }
 
     //RENDER -------------------------------------------------------------------------------
     render() {
         try {
             return (
-                <View style={GF.getStyle("CONTAINER", Platform.OS, GlobalData.textSize, GlobalData.darkModeEnabled)}>
+                <View style={GlobalFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
                     <ScrollView automaticallyAdjustContentInsets={false} >
                         <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
                             {this.state.VetllaPasquaLecturesSalms ?
@@ -101,89 +101,89 @@ export default class MassLiturgyPrayerScreen extends Component {
     Render_VetllaPasquaLecturesSalms() {
         return (
             <View style={{ flex: 1 }}>
-                <Text selectable={true} style={this.styles.red}>{"Lectura primera "}{GF.trim(MassLiturgy.Lectura1)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura primera "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.Lectura1Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Lectura1Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.Lectura1Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgy.Salm1)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.Psalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Salm1Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.Psalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura segona "}{GF.trim(MassLiturgy.Lectura2)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura segona "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.Lectura2Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Lectura2Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.Lectura2Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgy.Salm2)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondPsalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Salm2Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondPsalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura tercera "}{GF.trim(MassLiturgy.Lectura3)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura tercera "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.ThirdReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.Lectura3Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.ThirdReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Lectura3Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.ThirdReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.Lectura3Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.ThirdReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgy.Salm3)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.ThirdPsalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Salm3Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.ThirdPsalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura quarta "}{GF.trim(MassLiturgy.Lectura4)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura quarta "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.FourthReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.Lectura4Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FourthReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Lectura4Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FourthReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.Lectura4Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FourthReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgy.Salm4)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.FourthPsalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Salm4Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FourthPsalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura cinquena "}{GF.trim(MassLiturgy.Lectura5)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura cinquena "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.FifthReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.Lectura5Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FifthReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Lectura5Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FifthReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.Lectura5Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FifthReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgy.Salm5)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.FifthPsalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Salm5Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.FifthPsalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura sisena "}{GF.trim(MassLiturgy.Lectura6)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura sisena "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.SixthReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.Lectura6Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SixthReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Lectura6Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SixthReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.Lectura6Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SixthReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgy.Salm6)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.SixthPsalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Salm6Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SixthPsalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Lectura setena "}{GF.trim(MassLiturgy.Lectura7)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura setena "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.SeventhReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.Lectura7Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SeventhReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Lectura7Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SeventhReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.Lectura7Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SeventhReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GF.trim(MassLiturgy.Salm7)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Salm responsorial "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.SeventhPsalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.Salm7Text)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.SeventhPsalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
                 <Text selectable={true} style={this.styles.red}>{"Glòria"}</Text>
@@ -191,13 +191,13 @@ export default class MassLiturgyPrayerScreen extends Component {
                 {this.GloriaText()}
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
-                <Text selectable={true} style={this.styles.red}>{"Lectura de l'apòstol "}{GF.trim(MassLiturgy.LecturaApostol)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Lectura de l'apòstol "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.ApostleReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.LecturaApostolCita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.ApostleReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.LecturaApostolTitol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.ApostleReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.LecturaApostolText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.ApostleReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
                 {this.state.VetllaPasquaEvangeli ?
@@ -221,17 +221,17 @@ export default class MassLiturgyPrayerScreen extends Component {
             <View style={{ flex: 1 }}>
                 <Text selectable={true} style={this.styles.red}>{"Evangeli"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{GF.trim(MassLiturgy.Alleluia)}</Text>
+                <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{GlobalFunctions.trim(CurrentMassLiturgy.Today.Hallelujah.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.AlleluiaText)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.Hallelujah.Hallelujah)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{GF.trim(MassLiturgy.Evangeli)}</Text>
+                <Text selectable={true} style={this.styles.red}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{GF.trim(MassLiturgy.EvangeliCita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{GF.trim(MassLiturgy.EvangeliTitol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{GF.trim(MassLiturgy.EvangeliText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Gospel)}</Text>
             </View>
         )
     }
@@ -242,20 +242,20 @@ export default class MassLiturgyPrayerScreen extends Component {
         var evangeliTitolRams = "";
         var evangeliTextRams = "";
 
-        switch (GlobalData.ABC) {
-            case "A":
+        switch (CurrentLiturgyDayInformation.Today.YearType) {
+            case YearType.A:
                 evangeliRams = "Mt 21,1-11";
                 evangeliCitaRams = "Beneït el qui ve en nom del Senyor";
                 evangeliTitolRams = "Lectura de l’evangeli segons sant Mateu";
                 evangeliTextRams = "Quan eren prop de Jerusalem, arribaren a Betfagé, a la muntanya de les Oliveres. Allà Jesús envià dos deixebles amb aquest encàrrec: «Aneu al poble d’aquí al davant, i trobareu tot seguit una somera fermada, amb el seu pollí. Deslligueu-la i porteu-me’ls. Si algú us deia res, responeu-li que el Senyor els ha de menester, però els tornarà de seguida».\nTot això va succeir perquè es complís el que el Senyor havia anunciat pel profeta: «Digueu a la ciutat de Sió: Mira, el teu rei fa humilment la seva entrada, muntat en una somera, en un pollí, fill d’un animal de càrrega».\nEls deixebles hi anaren, feren el que Jesús els havia manat, portaren la somera i el pollí, els guarniren amb els seus mantells, i ell hi pujà. Molta gent entapissava el camí amb els seus mantells, altres tallaven branques dels arbres per encatifar el camí i la gent que anava al davant i que el seguia cridava: «Hosanna al Fill de David. Beneït el qui ve en nom del Senyor. Hosanna a dalt del cel».\nQuan hagué entrat a Jerusalem, s’agità tota la ciutat. Molts preguntaven: «Qui és aquest?». La gent que anava amb ell responia: «És el profeta Jesús, de Natzaret de Galilea».";
                 break;
-            case "B":
+            case YearType.B:
                 evangeliRams = "Mc 11,1-10";
                 evangeliCitaRams = "Beneït el qui ve en nom del Senyor";
                 evangeliTitolRams = "Lectura de l’evangeli segons sant Marc";
                 evangeliTextRams = "Quan s’acostaven a Jerusalem, vora Betfagé i Betània, cap a la muntanya de les Oliveres, Jesús envià dos dels seus deixebles amb aquest encàrrec: «Aneu al poble d’aquí al davant, i així que hi entrareu trobareu un pollí fermat, que ningú no ha muntat encara. Deslligueu-lo i porteu-lo. Si algú us preguntava: Per què ho feu?, digueu-li: el Senyor l’ha de menester, i de seguida el tornarà aquí.»\nElls se n’anaren i trobaren un pollí fermat, fora, al portal d’una casa, i el deslligaren. Alguns dels qui eren allà els deien: «Què feu, que deslligueu el pollí?» Ells respongueren tal com els havia dit Jesús, i els deixaren fer. Porten a Jesús el pollí, el guarneixen amb els seus mantells i ell hi puja.\nMolts estenien els mantells pel camí, i d’altres, ramatge que collien dels camps, i els qui el precedien o el seguien cridaven: «Hosanna. Beneït el qui ve en nom del Senyor. Beneït el Regne del nostre pare David, que està a punt d’arribar. Hosanna a dalt del cel.»";
                 break;
-            case "C":
+            case YearType.C:
                 evangeliRams = "Lc 19,28-40";
                 evangeliCitaRams = "Beneït el qui ve en nom del Senyor";
                 evangeliTitolRams = "Lectura de l’evangeli segons sant Lluc";
@@ -292,7 +292,9 @@ export default class MassLiturgyPrayerScreen extends Component {
     }
 
     Render_1Lect() {
-        var displayGloria = (this.state.DisplayVespers && MassLiturgy.GloriaVespers == '1' || (!this.state.DisplayVespers && MassLiturgy.Gloria == '1'));
+        const displayGloria = (this.state.DisplayVespers &&
+        CurrentMassLiturgy.Vespers.HasGlory ||
+            (!this.state.DisplayVespers && CurrentMassLiturgy.Today.HasGlory));
 
         return (
             <View style={{ flex: 1 }}>
@@ -310,13 +312,13 @@ export default class MassLiturgyPrayerScreen extends Component {
                 }
                 <Text selectable={true} style={this.styles.red}>{"Lectura primera"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura1Vespers) : GF.trim(MassLiturgy.Lectura1)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.FirstReading.Quote) : GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura1CitaVespers) : GF.trim(MassLiturgy.Lectura1Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.FirstReading.Comment) : GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura1TitolVespers) : GF.trim(MassLiturgy.Lectura1Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.FirstReading.Title) : GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura1TextVespers) : GF.trim(MassLiturgy.Lectura1Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.FirstReading.Reading) : GlobalFunctions.trim(CurrentMassLiturgy.Today.FirstReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 {this.state.Salm ?
                     <View>
@@ -343,9 +345,9 @@ export default class MassLiturgyPrayerScreen extends Component {
             <View style={{ flex: 1 }}>
                 <Text selectable={true} style={this.styles.red}>{"Salm responsorial"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.SalmVespers) : GF.trim(MassLiturgy.Salm)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Psalm.Quote) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Psalm.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.SalmTextVespers) : GF.trim(MassLiturgy.SalmText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Psalm.Psalm) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Psalm.Psalm)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 {(need_lect2 && this.state.Lect2) || (!need_lect2 && this.state.Evangeli) ?
                     <View>
@@ -375,13 +377,13 @@ export default class MassLiturgyPrayerScreen extends Component {
             <View style={{ flex: 1 }}>
                 <Text selectable={true} style={this.styles.red}>{"Lectura segona"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura2Vespers) : GF.trim(MassLiturgy.Lectura2)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.SecondReading.Quote) : GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura2CitaVespers) : GF.trim(MassLiturgy.Lectura2Cita)}</Text>
+                <Text selectable={true} style={this.styles.blackItalic}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.SecondReading.Comment) : GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Comment)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura2TitolVespers) : GF.trim(MassLiturgy.Lectura2Titol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.SecondReading.Title) : GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.Lectura2TextVespers) : GF.trim(MassLiturgy.Lectura2Text)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.SecondReading.Reading) : GlobalFunctions.trim(CurrentMassLiturgy.Today.SecondReading.Reading)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 {this.state.Evangeli ?
                     <View>
@@ -400,28 +402,30 @@ export default class MassLiturgyPrayerScreen extends Component {
     }
 
     Render_Evangeli() {
-        var displayCredo = (this.state.DisplayVespers && MassLiturgy.credoVespers == '1' || (!this.state.DisplayVespers && MassLiturgy.credo == '1'));
-        var aleluia_text = (this.state.DisplayVespers ? MassLiturgy.AlleluiaVespers != '-'? MassLiturgy.AlleluiaVespers : "" : MassLiturgy.Alleluia != '-'? MassLiturgy.Alleluia : "")
+        var displayCredo = (this.state.DisplayVespers &&
+            CurrentMassLiturgy.Vespers.HasCreed ||
+            (!this.state.DisplayVespers && CurrentMassLiturgy.Today.HasCreed));
+        var aleluia_quote = (this.state.DisplayVespers ? CurrentMassLiturgy.Vespers.Hallelujah.Quote !== '-'? CurrentMassLiturgy.Vespers.Hallelujah.Quote : "" : CurrentMassLiturgy.Today.Hallelujah.Quote !== '-'? CurrentMassLiturgy.Today.Hallelujah.Quote : "")
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{"Evangeli"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                {(GlobalData.tempsespecific != "Quaresma" && GlobalData.tempsespecific != "Tridu Pasqual") ?
-                    <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{aleluia_text}</Text>
+                {(CurrentLiturgyDayInformation.Today.GenericLiturgyTime !== GenericLiturgyTimeType.Lent && CurrentLiturgyDayInformation.Today.GenericLiturgyTime !== GenericLiturgyTimeType.PaschalTriduum) ?
+                    <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{aleluia_quote}</Text>
                     :
                     <Text selectable={true} style={this.styles.red}>{"Vers abans de l'evangeli"}</Text>
                 }
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.AlleluiaTextVespers) : GF.trim(MassLiturgy.AlleluiaText)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Hallelujah.Hallelujah) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Hallelujah.Hallelujah)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
-                {GlobalData.LT == "Q_DIUM_PASQUA" ?
+                {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
                             <TouchableOpacity onPress={this._onEvangeliPress.bind(this, 'normal')}>
-                                <Text style={this.state.evangeliType == "normal" ? this.styles.prayerTabButtonBold : this.styles.prayerTabButton}>{"Normal  "}</Text>
+                                <Text style={this.state.evangeliType === "normal" ? this.styles.prayerTabButtonBold : this.styles.prayerTabButton}>{"Normal  "}</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this._onEvangeliPress.bind(this, 'alternative')}>
-                                <Text style={this.state.evangeliType == "normal" ? this.styles.prayerTabButton : this.styles.prayerTabButtonBold}>{"  Alternatiu (vespre)"}</Text>
+                                <Text style={this.state.evangeliType === "normal" ? this.styles.prayerTabButton : this.styles.prayerTabButtonBold}>{"  Alternatiu (vespre)"}</Text>
                             </TouchableOpacity>
                         </View>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
@@ -432,7 +436,7 @@ export default class MassLiturgyPrayerScreen extends Component {
 
                 <View>
 
-                    {this.state.evangeliType == "normal" ?
+                    {this.state.evangeliType === "normal" ?
                         this.NormalEvangeli()
                         :
                         this.AlternativePasquaEvangeli()
@@ -459,12 +463,12 @@ export default class MassLiturgyPrayerScreen extends Component {
     }
 
     NormalEvangeli() {
-        var cita = this.state.DisplayVespers ? GF.trim(MassLiturgy.EvangeliCitaVespers) : GF.trim(MassLiturgy.EvangeliCita);
+        const cita = this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Gospel.Comment) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Comment);
         return (
             <View style={{ flex: 1 }}>
-                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.EvangeliVespers) : GF.trim(MassLiturgy.Evangeli)}</Text>
+                <Text selectable={true} style={this.styles.red}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Gospel.Quote) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Quote)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                {cita == undefined || cita == '-' ?
+                {cita === undefined || cita === '-' ?
                     null
                     :
                     <View>
@@ -472,9 +476,9 @@ export default class MassLiturgyPrayerScreen extends Component {
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                     </View>
                 }
-                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.EvangeliTitolVespers) : GF.trim(MassLiturgy.EvangeliTitol)}</Text>
+                <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Gospel.Title) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Title)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
-                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GF.trim(MassLiturgy.EvangeliTextVespers) : GF.trim(MassLiturgy.EvangeliText)}</Text>
+                <Text selectable={true} style={this.styles.blackJustified}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Gospel.Gospel) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Gospel.Gospel)}</Text>
             </View>
         )
     }
