@@ -2,6 +2,7 @@ import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {CelebrationType} from "./DatabaseEnums";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import {DateManagement} from "../Utils/DateManagement";
+import {logConfigWarningsIOS} from "expo-cli/build/commands/utils/logConfigWarnings";
 
 export function IsHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
     //Divendres de la tercera setmana després de Pentecosta (Divendres després de Corpus) A (166) B (167) C (168)
@@ -23,18 +24,56 @@ export function IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: Liturg
 
 export function IsHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
     //Diumenge després de Pentecosta A (160) B (161) C (162)
-    const holyTrinity = new Date(liturgySpecificDayInformation.PentecostDay.getFullYear(),
+    const holyTrinity = GetHolyTrinity(liturgySpecificDayInformation);
+    return DateManagement.CompareDates(liturgySpecificDayInformation.Date, holyTrinity);
+}
+
+function GetHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date{
+    return new Date(liturgySpecificDayInformation.PentecostDay.getFullYear(),
         liturgySpecificDayInformation.PentecostDay.getMonth(),
         liturgySpecificDayInformation.PentecostDay.getDate() + 7);
-    return DateManagement.CompareDates(liturgySpecificDayInformation.Date, holyTrinity);
+}
+
+export function IsBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+    const bodyAndBlood = GetBodyAndBlood(liturgySpecificDayInformation);
+    return DateManagement.CompareDates(liturgySpecificDayInformation.Date, bodyAndBlood);
+}
+
+function GetBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
+    const holyTrinity = GetHolyTrinity(liturgySpecificDayInformation);
+    return new Date(holyTrinity.getFullYear(), holyTrinity.getMonth(), holyTrinity.getDate() + 7);
+}
+
+export function IsSacredHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+    const bodyAndBlood = GetBodyAndBlood(liturgySpecificDayInformation);
+    const sacredHeartOfJesus = new Date(bodyAndBlood.getFullYear(), bodyAndBlood.getMonth(), bodyAndBlood.getDate() + 5);
+    return DateManagement.CompareDates(liturgySpecificDayInformation.Date, sacredHeartOfJesus);
+}
+
+export function IsOurLordJesusChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+    return liturgySpecificDayInformation.Date.getDay() === 0 &&
+        liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI &&
+        liturgySpecificDayInformation.Week === '34';
 }
 
 export function IsAssumption(date: Date) {
     return date.getMonth() === 7 && date.getDate() === 15;
 }
 
+export function IsSaintTecla(date: Date) {
+    return date.getMonth() === 8 && date.getDate() === 23;
+}
+
+export function IsMatherOfGodOfMerce(date: Date) {
+    return date.getMonth() === 8 && date.getDate() === 24;
+}
+
 export function IsSantsPerePau(date: Date) {
     return date.getMonth() === 5 && date.getDate() === 29;
+}
+
+export function IsSaintJames(date: Date) {
+    return date.getMonth() === 6 && date.getDate() === 25;
 }
 
 export function IsSaintJohnBaptist(date: Date) {
@@ -73,7 +112,7 @@ export function IsSantJoan(liturgyDayInformation: LiturgySpecificDayInformation)
     return liturgyDayInformation.Date.getMonth() === 5 && liturgyDayInformation.Date.getDate() === 24;
 }
 
-export function IsSantaEulalia(liturgyDayInformation: LiturgySpecificDayInformation) {
+export function IsSaintEulalia(liturgyDayInformation: LiturgySpecificDayInformation) {
     return liturgyDayInformation.Date.getMonth() === 1 && liturgyDayInformation.Date.getDate() === 12;
 }
 

@@ -85,54 +85,53 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
     }
 
     //12- Santa Eulàlia (12 de febrer) quan cau en diumenge i és temps de durant l’any
-    // TODO: move to CelebrationIdentifier
-    if ((dioceseCode === DioceseCode.BaV || dioceseCode === DioceseCode.BaC) &&
-        CelebrationIdentifier.IsSantaEulalia(liturgyDayInformation) && date.getDay() === 0 && specificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI) {
+    if (CelebrationIdentifier.IsSaintEulalia(liturgyDayInformation) &&
+        date.getDay() === 0 &&
+        specificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI &&
+        (dioceseCode === DioceseCode.BaV || dioceseCode === DioceseCode.BaC)) {
         return SoulKeys.diesespecials_DiumengeTempsDurantAnySantaEulalia12Febrer;
     }
 
     //13- Sant Joan (24 de juny) quan cau en diumenge
-    // TODO: move to CelebrationIdentifier
     if (CelebrationIdentifier.IsSantJoan(liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantJoan24Juny;
     }
 
     //14- Sants Pere i Pau (29 de juny) quan cau en diumenge
-    // TODO: move to CelebrationIdentifier
-    if (date.getMonth() === 5 && date.getDate() === 29 && date.getDay() === 0) {
+    if (CelebrationIdentifier.IsSantsPerePau(date) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantsPerePau29Juny;
     }
 
     //15- Sant Jaume (25 de juliol) quan cau en diumenge
-    // TODO: move to CelebrationIdentifier
-    if (date.getMonth() === 6 && date.getDate() === 25 && date.getDay() === 0) {
+    if (CelebrationIdentifier.IsSaintJames(date) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantJaume25Juliol;
     }
 
     //16- Assumpció Maria (15 d’agost) quan cau en diumenge
-    // TODO: move to CelebrationIdentifier
-    if (date.getMonth() === 7 && date.getDate() === 15 && date.getDay() === 0) {
+    if (CelebrationIdentifier.IsAssumption(date) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeAssumpcioMaria15Agost;
     }
 
     //17- Sta. Tecla (23 setembre) quan cau en diumenge
-    // TODO: move to CelebrationIdentifier
-    if ((dioceseCode === DioceseCode.TaV || dioceseCode === DioceseCode.TaD) && date.getMonth() === 8 &&
-        date.getDate() === 23 && date.getDay() === 0) {
+    if (CelebrationIdentifier.IsSaintTecla(date) &&
+        (dioceseCode === DioceseCode.TaV || dioceseCode === DioceseCode.TaD) &&
+        date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantaTecla23Setembre;
     }
 
     //18- Mare de Déu de la Mercè (24 de setembre) quan cau en diumenge
-    // TODO: move to CelebrationIdentifier
-    if ((dioceseCode === DioceseCode.BaD || dioceseCode === DioceseCode.SFD || dioceseCode === DioceseCode.TeD ||
-            dioceseCode === DioceseCode.GiD || dioceseCode === DioceseCode.LlD || dioceseCode === DioceseCode.SoD || dioceseCode === DioceseCode.TaD
-            || dioceseCode === DioceseCode.ToD || dioceseCode === DioceseCode.UrD || dioceseCode === DioceseCode.ViD) &&
-        date.getMonth() === 8 && date.getDate() === 24 && date.getDay() === 0) {
+    const currentDioceseDisplayMatherOfGodOfMerce =
+        dioceseCode === DioceseCode.BaD || dioceseCode === DioceseCode.SFD || dioceseCode === DioceseCode.TeD ||
+        dioceseCode === DioceseCode.GiD || dioceseCode === DioceseCode.LlD || dioceseCode === DioceseCode.SoD ||
+        dioceseCode === DioceseCode.TaD || dioceseCode === DioceseCode.ToD || dioceseCode === DioceseCode.UrD ||
+        dioceseCode === DioceseCode.ViD;
+    if (CelebrationIdentifier.IsMatherOfGodOfMerce(date) &&
+        date.getDay() === 0 &&
+        currentDioceseDisplayMatherOfGodOfMerce) {
         return SoulKeys.diesespecials_DiumengeMareDeuMerce24Setembre;
     }
 
     //19- Tots Sants (1 de novembre) quan cau en diumenge
-    // TODO: move to CelebrationIdentifier
     if (CelebrationIdentifier.IsAllSaints(liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeTotsSants1Novembre;
     }
@@ -211,18 +210,13 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
 }
 
 function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : LiturgySpecificDayInformation) : number {
-    const date = liturgyDayInformation.Date;
-    const specificLiturgyTime = liturgyDayInformation.SpecificLiturgyTime;
-    const week = liturgyDayInformation.Week;
-    const pentecostDay = liturgyDayInformation.PentecostDay;
-
     //1- Nadal
     if (CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)) {
         return SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
 
     //2- Sagrada Família
-    if (CelebrationIdentifier.IsSacredFamily(date)) {
+    if (CelebrationIdentifier.IsSacredFamily(liturgyDayInformation.Date)) {
         return SoulKeys.tempsSolemnitatsFestes_SagradaFamilia;
     }
 
@@ -237,7 +231,7 @@ function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : Lit
     }
 
     //5- Baptisme
-    if (CelebrationIdentifier.IsBaptism(date)) {
+    if (CelebrationIdentifier.IsBaptism(liturgyDayInformation.Date)) {
         return SoulKeys.tempsSolemnitatsFestes_Baptisme;
     }
 
@@ -252,32 +246,22 @@ function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : Lit
     }
 
     //8- Santíssima trinitat
-    // TODO: move to CelebrationIdentifier
-    const trinitat = new Date(pentecostDay.getFullYear(), pentecostDay.getMonth(), pentecostDay.getDate() + 7);
-    if (date.getDate() === trinitat.getDate() && date.getMonth() === trinitat.getMonth() &&
-        date.getFullYear() === trinitat.getFullYear()) {
+    if (CelebrationIdentifier.IsHolyTrinity(liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_SantissimaTrinitat;
     }
 
     //9- Santíssim cos i sang de crist
-    // TODO: move to CelebrationIdentifier
-    const cosSang = new Date(trinitat.getFullYear(), trinitat.getMonth(), trinitat.getDate() + 7);
-    if (date.getDate() === cosSang.getDate() && date.getMonth() === cosSang.getMonth() &&
-        date.getFullYear() === cosSang.getFullYear()) {
+    if (CelebrationIdentifier.IsBodyAndBlood(liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_SantissimCosSangCrist;
     }
 
     //10- Sagrat cor de Jesús
-    // TODO: move to CelebrationIdentifier
-    const sagratCor = new Date(cosSang.getFullYear(), cosSang.getMonth(), cosSang.getDate() + 5);
-    if (date.getDate() === sagratCor.getDate() && date.getMonth() === sagratCor.getMonth() &&
-        date.getFullYear() === sagratCor.getFullYear()) {
+    if (CelebrationIdentifier.IsSacredHeartOfJesus(liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_SagratCorJesus;
     }
 
     //11- Nostre senyor Jesucrist
-    // TODO: move to CelebrationIdentifier
-    if (date.getDay() === 0 && specificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI && week === '34') {
+    if (CelebrationIdentifier.IsOurLordJesusChrist(liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_NostreSenyorJesucrist;
     }
 
