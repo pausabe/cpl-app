@@ -1,6 +1,6 @@
 import SoulKeys from "./SoulKeys";
 import {
-    LiturgySpecificDayInformation,
+    LiturgySpecificDayInformation, NoIdentifierNumber,
     SpecialCelebration
 } from "../Models/LiturgyDayInformation";
 import {Settings} from "../Models/Settings";
@@ -10,25 +10,17 @@ import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 
 export function ObtainSpecialCelebration(liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : SpecialCelebration{
     let specialCelebration = new SpecialCelebration();
-    if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.Q_DIUM_PASQUA){
+    if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA){
         return specialCelebration;
     }
+
     specialCelebration.SpecialDaysMasterIdentifier = ObtainSpecialDaysMasterIdentifier(liturgyDayInformation, settings);
-    if (specialCelebration.SpecialDaysMasterIdentifier === -1){
-        // Special days always precede Solemnity and Fair ones. We let with the '-1' value the ID
-        // TODO: I think I should obtain both ids and decide later which is more precedent
-        specialCelebration.SolemnityAndFestivityMasterIdentifier = ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation);
-    }
+    specialCelebration.SolemnityAndFestivityMasterIdentifier = ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation);
     specialCelebration.StrongTimesMasterIdentifier = ObtainStrongTimesMasterIdentifier(liturgyDayInformation);
-    specialCelebration.CelebrationIsSpecial = specialCelebration.SpecialDaysMasterIdentifier !== -1 ||
-        specialCelebration.SolemnityAndFestivityMasterIdentifier !== -1 ||
-        specialCelebration.StrongTimesMasterIdentifier !== -1;
+
     return specialCelebration;
 }
 
-/*
-  Return id of #diesespecials or -1 if there isn't there
-*/
 function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : number{
     const date = liturgyDayInformation.Date;
     const specificLiturgyTime = liturgyDayInformation.SpecificLiturgyTime;
@@ -215,12 +207,9 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
         return SoulKeys.diesespecials_24DesembreDissabte;
     }
 
-    return -1;
+    return NoIdentifierNumber;
 }
 
-/*
-  Return id of #tempsSolemnitatsFestes or -1 if there isnt there
-*/
 function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : LiturgySpecificDayInformation) : number {
     const date = liturgyDayInformation.Date;
     const specificLiturgyTime = liturgyDayInformation.SpecificLiturgyTime;
@@ -292,12 +281,9 @@ function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : Lit
         return SoulKeys.tempsSolemnitatsFestes_NostreSenyorJesucrist;
     }
 
-    return -1;
+    return NoIdentifierNumber;
 }
 
-/*
-  Return id of #salteriComuOficiTF or -1 if there isn't there
-*/
 function ObtainStrongTimesMasterIdentifier(liturgyDayInformation : LiturgySpecificDayInformation) {
     const date = liturgyDayInformation.Date;
     const specificLiturgyTime = liturgyDayInformation.SpecificLiturgyTime;
@@ -438,5 +424,5 @@ function ObtainStrongTimesMasterIdentifier(liturgyDayInformation : LiturgySpecif
         return SoulKeys.salteriComuOficiTF_DissabteVIPasqua;
     }
 
-    return -1;
+    return NoIdentifierNumber;
 }

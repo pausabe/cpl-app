@@ -1,12 +1,13 @@
 import HoursLiturgy from "../../Models/HoursLiturgy/HoursLiturgy";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import LiturgyDayInformation, {
-    LiturgySpecificDayInformation
+    LiturgySpecificDayInformation,
+    SpecialCelebrationTypeEnum
 } from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import {CelebrationType, YearType} from "../DatabaseEnums";
 import Vespers from "../../Models/HoursLiturgy/Vespers";
-import { SpecificLiturgyTimeType } from "../CelebrationTimeEnums";
+import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import SaintsSolemnities from "../../Models/LiturgyMasters/SaintsSolemnities";
 import SaintsMemories from "../../Models/LiturgyMasters/SaintsMemories";
 import SpecialDaysParts from "../../Models/LiturgyMasters/SpecialDaysParts";
@@ -23,11 +24,10 @@ import AdventSundayParts from "../../Models/LiturgyMasters/AdventSundayParts";
 export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, settings: Settings): HoursLiturgy{
     let hoursLiturgy: HoursLiturgy;
 
-    // TODO: not -1 comparisons. A property that makes that
-    if(liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier !== -1){
+    if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay){
         hoursLiturgy = GetSpecialDayHoursLiturgy(liturgyMasters.SpecialDaysParts, settings);
     }
-    else if(liturgyDayInformation.Today.SpecialCelebration.StrongTimesMasterIdentifier !== -1){
+    else if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.StrongTime){
         hoursLiturgy = GetSolemnityAndFestivityHoursLiturgy(liturgyMasters.SolemnityAndFestivityParts, liturgyDayInformation.Today, settings);
     }
     else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA){

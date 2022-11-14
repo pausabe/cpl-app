@@ -25,8 +25,57 @@ class MovedDay{
 }
 
 export class SpecialCelebration{
-    CelebrationIsSpecial: boolean = false;
-    SpecialDaysMasterIdentifier: number = -1;
-    SolemnityAndFestivityMasterIdentifier: number = -1;
-    StrongTimesMasterIdentifier: number = -1;
+    SpecialCelebrationType: SpecialCelebrationTypeEnum = SpecialCelebrationTypeEnum.CelebrationNotSpecial;
+
+    _specialDaysMasterIdentifier: number = NoIdentifierNumber;
+    get SpecialDaysMasterIdentifier() {
+        return this._specialDaysMasterIdentifier;
+    }
+    set SpecialDaysMasterIdentifier(value) {
+        this.updateType();
+        this._specialDaysMasterIdentifier = value;
+    }
+
+    _solemnityAndFestivityMasterIdentifier: number = NoIdentifierNumber;
+    get SolemnityAndFestivityMasterIdentifier() {
+        return this._solemnityAndFestivityMasterIdentifier;
+    }
+    set SolemnityAndFestivityMasterIdentifier(value) {
+        this.updateType();
+        this._solemnityAndFestivityMasterIdentifier = value;
+    }
+
+    _strongTimesMasterIdentifier: number = NoIdentifierNumber;
+    get StrongTimesMasterIdentifier() {
+        return this._strongTimesMasterIdentifier;
+    }
+    set StrongTimesMasterIdentifier(value) {
+        this.updateType();
+        this._strongTimesMasterIdentifier = value;
+    }
+
+    updateType(){
+        // In case of coincidences: SpecialDay > SolemnityAndFestivity > StrongTimes
+        if(this._specialDaysMasterIdentifier !== NoIdentifierNumber){
+            this.SpecialCelebrationType = SpecialCelebrationTypeEnum.SpecialDay;
+        }
+        else if(this._solemnityAndFestivityMasterIdentifier !== NoIdentifierNumber){
+            this.SpecialCelebrationType = SpecialCelebrationTypeEnum.SolemnityAndFestivity;
+        }
+        else if(this._strongTimesMasterIdentifier !== NoIdentifierNumber){
+            this.SpecialCelebrationType = SpecialCelebrationTypeEnum.StrongTime;
+        }
+        else{
+            this.SpecialCelebrationType = SpecialCelebrationTypeEnum.CelebrationNotSpecial;
+        }
+    }
+}
+
+export const NoIdentifierNumber = -1;
+
+export enum SpecialCelebrationTypeEnum{
+    CelebrationNotSpecial,
+    SpecialDay,
+    SolemnityAndFestivity,
+    StrongTime
 }
