@@ -40,14 +40,6 @@ export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, li
     hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration =
         GetFirstVespersWithCelebration(liturgyMasters, liturgyDayInformation.Tomorrow, settings);
 
-    // Special vesper title code when tomorrow is Easter sunday
-    if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU &&
-        liturgyDayInformation.Today.Date.getDay() === 6){
-        // TODO: this code is used to avoid showing Vespers.Title and MassVespertinas.Title the saturday before Easter Sunday
-        // TODO: find another way to do the same
-        hoursLiturgy.Vespers.Title = "dium-pasqua";
-    }
-
     return hoursLiturgy;
 }
 

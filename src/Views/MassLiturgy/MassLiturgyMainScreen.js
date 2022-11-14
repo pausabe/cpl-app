@@ -147,7 +147,7 @@ export default class MassLiturgyMainScreen extends Component {
                             <View style={{padding: 1, paddingHorizontal: 5}}>
                                 {CurrentHoursLiturgy.Vespers.Title !== '-' ?
                                     <View>
-                                        {CurrentHoursLiturgy.Vespers.Title !== "dium-pasqua" ?
+                                        {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA?
                                             <Text numberOfLines={1}
                                                   style={styles.redCenter}>{CurrentHoursLiturgy.Vespers.Title}</Text>
                                             : null
