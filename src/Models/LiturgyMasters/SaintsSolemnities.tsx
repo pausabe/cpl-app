@@ -1,24 +1,23 @@
-import {
-    HourCommonParts,
-    ReadingOfTheOffice,
-    Psalm,
-    Responsory,
-    ShortReading,
-    ShortResponsory
-} from "./CommonParts";
+import {HourCommonParts, Psalm, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 import CommonOffice from "./CommonOffices";
 import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
+import {CelebrationSpecificClassification, CelebrationType} from "../../Services/DatabaseEnums";
+import Solemnity from "./Solemnity";
 
-export default class SaintsSolemnities {
+export default class SaintsSolemnities extends Solemnity{
     static MasterName: string = "santsSolemnitats";
 
     constructor(databaseRow) {
+        super();
+
         this.Id = databaseRow.id;
 
         this.Celebration.Day = databaseRow.dia;
-        // We don't want to get this value to avoid confusion with LiturgySpecificDayInformation.CelebrationType
-        // this.Celebration.Type = databaseRow.Cat;
-        this.Celebration.SpecificClassification = databaseRow.ClassificacioCategoria; // TODO: fill it in the database
+        /*
+        We don't want to get 'this.Celebration.Type' to avoid confusion with LiturgySpecificDayInformation.CelebrationType
+        this.Celebration.Type = databaseRow.Cat;
+         */
+        this.Celebration.SpecificClassification = this.GetSpecificClassificationByCelebrationType(databaseRow.Precedencia, databaseRow.Cat, databaseRow.Diocesis);
         this.Celebration.Precedence = databaseRow.Precedencia;
         this.Celebration.LiturgicalTime = databaseRow.Temps;
         this.Celebration.Diocese = databaseRow.Diocesis;
@@ -177,6 +176,18 @@ export default class SaintsSolemnities {
         this.SecondVespersEvangelicalAntiphon = databaseRow.antMaria2;
         this.SecondVespersPrayers = databaseRow.pregariesVespres2;
         this.SecondVespersFinalPrayer = databaseRow.oraFiVespres2;
+    }
+
+    private GetSpecificClassificationByCelebrationType(precedence: string, celebrationType: string, diocese: string) {
+        let specificClassification: CelebrationSpecificClassification;
+        if(celebrationType === CelebrationType.Solemnity || celebrationType === CelebrationType.Festivity){
+            specificClassification = this.GetSpecificClassification(precedence);
+        }
+        else{
+           specificClassification = diocese === '-'?
+                CelebrationSpecificClassification.Generic : CelebrationSpecificClassification.Own;
+        }
+        return specificClassification;
     }
 
     Id: number;

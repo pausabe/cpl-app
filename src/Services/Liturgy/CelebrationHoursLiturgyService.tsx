@@ -23,6 +23,7 @@ import AdventSundayParts from "../../Models/LiturgyMasters/AdventSundayParts";
 export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, settings: Settings): HoursLiturgy{
     let hoursLiturgy: HoursLiturgy;
 
+    // TODO: not -1 comparisons. A property that makes that
     if(liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier !== -1){
         hoursLiturgy = GetSpecialDayHoursLiturgy(liturgyMasters.SpecialDaysParts, settings);
     }

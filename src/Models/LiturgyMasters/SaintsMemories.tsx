@@ -1,13 +1,7 @@
-import {
-    HourCommonParts,
-    ReadingOfTheOffice,
-    Psalm,
-    Responsory,
-    ShortReading,
-    ShortResponsory
-} from "./CommonParts";
+import {HourCommonParts, Psalm, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 import CommonOffice from "./CommonOffices";
 import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
+import {CelebrationSpecificClassification} from "../../Services/DatabaseEnums";
 
 export default class SaintsMemories {
     static MasterName: string = "santsMemories";
@@ -21,7 +15,8 @@ export default class SaintsMemories {
         this.Celebration.LiturgicalTime = databaseRow.Temps;
         this.Celebration.Title = databaseRow.nomMemoria;
         this.Celebration.Description = databaseRow.infoMemoria;
-        this.Celebration.SpecificClassification = databaseRow.ClassificacioCategoria; // TODO: fill it in the database
+        this.Celebration.SpecificClassification = databaseRow.Diocesis === '-'?
+            CelebrationSpecificClassification.Generic : CelebrationSpecificClassification.Own;
 
         this.InvitationAntiphon = databaseRow.Invitatori;
 

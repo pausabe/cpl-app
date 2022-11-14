@@ -7,18 +7,21 @@ import {
     ShortResponsory
 } from "./CommonParts";
 import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
+import Solemnity from "./Solemnity";
 
-export default class SpecialDaysParts {
+export default class SpecialDaysParts extends Solemnity{
     static MasterName: string = "diesespecials";
 
     constructor(databaseRow) {
+        super();
+
         this.Id = databaseRow.id;
 
         this.Celebration.Day = databaseRow.dia;
         this.Celebration.WeekDay = databaseRow.diaSetmana;
         this.Celebration.Title = databaseRow.nomMemoria;
         this.Celebration.Description = databaseRow.infoMemoria;
-        this.Celebration.SpecificClassification = databaseRow.ClassificacioCategoria; // TODO: fill it in the database
+        this.Celebration.SpecificClassification = this.GetSpecificClassification(databaseRow.Precedencia);
 
         this.FirstVespersLatinAnthem = databaseRow.himneVespres1Llati;
         this.FirstVespersCatalanAnthem = databaseRow.himneVespres1Cat;
