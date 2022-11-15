@@ -623,7 +623,7 @@ function GetFinalPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation :
         return celebrationLaudes.FinalPrayer;
     }
 
-    let finalPrayer = liturgyMasters.LaudesCommonPsalter.FinalPrayer;
+    let finalPrayer = liturgyMasters.LaudesCommonPsalter?.FinalPrayer;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.O_ORDINARI:
             if(liturgyDayInformation.DayOfTheWeek === 0) {

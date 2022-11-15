@@ -7,13 +7,13 @@ import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter
 import {ReadingOfTheOffice, Psalm, Responsory} from "../../Models/LiturgyMasters/CommonParts";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
+import * as CelebrationIdentifier from "../CelebrationIdentifierService";
 
 export function ObtainOffice(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : Office{
     let office = new Office();
 
     let currentOfficeCommonPsalter = liturgyMasters.OfficeCommonPsalter;
     if(liturgyDayInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.StrongTime){
-        // TODO: unit test this. I should get tow different objects: liturgyMasters.OfficeCommonPsalter vs currentOfficeCommonPsalter. Therefore, "AdaptWithStrongTimes" does not affect to liturgyMasters.OfficeCommonPsalter
         currentOfficeCommonPsalter = Object.assign(Object.create(Object.getPrototypeOf(liturgyMasters.OfficeCommonPsalter)), liturgyMasters.OfficeCommonPsalter) as OfficeCommonPsalter;
         currentOfficeCommonPsalter.AdaptWithStrongTimes(liturgyMasters.CommonOfficeWhenStrongTimesPsalter);
     }
@@ -152,13 +152,10 @@ function GetAnthem(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMast
 
 function GetPsalmody(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office) : {FirstPsalm : Psalm, SecondPsalm : Psalm, ThirdPsalm : Psalm}{
     let psalmody = {
-        FirstPsalm: currentOfficeCommonPsalter.FirstPsalm,
-        SecondPsalm: currentOfficeCommonPsalter.SecondPsalm,
-        ThirdPsalm: currentOfficeCommonPsalter.ThirdPsalm
+        FirstPsalm: currentOfficeCommonPsalter?.FirstPsalm ?? new Psalm(),
+        SecondPsalm: currentOfficeCommonPsalter?.SecondPsalm ?? new Psalm(),
+        ThirdPsalm: currentOfficeCommonPsalter?.ThirdPsalm ?? new Psalm()
     }
-    psalmody.FirstPsalm = currentOfficeCommonPsalter.FirstPsalm;
-    psalmody.SecondPsalm = currentOfficeCommonPsalter.SecondPsalm;
-    psalmody.ThirdPsalm = currentOfficeCommonPsalter.ThirdPsalm;
 
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.Q_TRIDU:
@@ -220,12 +217,14 @@ function GetPsalmody(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             }
             break;
         case SpecificLiturgyTimeType.N_OCTAVA:
-            psalmody.FirstPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstPsalm;
-            psalmody.FirstPsalm.Comment = "-";
-            psalmody.SecondPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondPsalm;
-            psalmody.SecondPsalm.Comment = "-";
-            psalmody.ThirdPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeThirdPsalm;
-            psalmody.ThirdPsalm.Comment = "-";
+            if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)){
+                psalmody.FirstPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstPsalm;
+                psalmody.FirstPsalm.Comment = "-";
+                psalmody.SecondPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondPsalm;
+                psalmody.SecondPsalm.Comment = "-";
+                psalmody.ThirdPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeThirdPsalm;
+                psalmody.ThirdPsalm.Comment = "-";
+            }
             break;
     }
 
@@ -303,8 +302,8 @@ function GetResponsory(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgy
 
 function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office) : {FirstReading : ReadingOfTheOffice, SecondReading : ReadingOfTheOffice}{
     let readings = {
-        FirstReading: liturgyMasters.OfficeOfOrdinaryTime.OfficeFirstReading,
-        SecondReading: liturgyMasters.OfficeOfOrdinaryTime.OfficeSecondReading
+        FirstReading: liturgyMasters.OfficeOfOrdinaryTime?.OfficeFirstReading,
+        SecondReading: liturgyMasters.OfficeOfOrdinaryTime?.OfficeSecondReading
     }
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.Q_CENDRA:
@@ -344,8 +343,10 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             readings.SecondReading = liturgyMasters.AdventFairDaysParts.OfficeSecondReading;
             break;
         case SpecificLiturgyTimeType.N_OCTAVA:
-            readings.FirstReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstReading;
-            readings.SecondReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondReading;
+            if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)){
+                readings.FirstReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstReading;
+                readings.SecondReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondReading;
+            }
             break;
         case SpecificLiturgyTimeType.N_ABANS:
             if(liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
@@ -399,7 +400,7 @@ function GetFinalPrayer(currentOfficeCommonPsalter : OfficeCommonPsalter, liturg
         return celebrationOffice.FinalPrayer;
     }
 
-    let finalPrayer = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
+    let finalPrayer = liturgyMasters.PrayersOfOrdinaryTime?.FinalPrayer;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.Q_CENDRA:
             return liturgyMasters.PartsOfLentTime.LaudesFinalPrayer;

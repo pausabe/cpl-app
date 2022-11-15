@@ -71,12 +71,10 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
 
 function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation) : {FirstPsalm : Psalm, SecondPsalm : Psalm}{
     let psalmody = {
-        FirstPsalm: liturgyMasters.CommonNightPrayerPsalter.FirstPsalm,
-        SecondPsalm: liturgyMasters.CommonNightPrayerPsalter.SecondPsalm
+        FirstPsalm: liturgyMasters.CommonNightPrayerPsalter?.FirstPsalm ?? new Psalm(),
+        SecondPsalm: liturgyMasters.CommonNightPrayerPsalter?.SecondPsalm ?? new Psalm()
     }
-    // TODO: Isn't P_SETMANES already inside 'Pasqua'?
-    if(liturgyDayInformation.GenericLiturgyTime === 'Pasqua' ||
-        liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES){
+    if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES){
         psalmody.FirstPsalm.Antiphon = "Al·leluia, al·leluia, al·leluia.";
     }
     return psalmody;
@@ -120,9 +118,7 @@ function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformati
 
 function GetEvangelicalAntiphon(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation) : string{
     let evangelicalAntiphon = "Salveu-nos, Senyor, durant el dia, guardeu-nos durant la nit, perquè sigui amb Crist la nostra vetlla i amb Crist el nostre descans.";
-    // TODO: Isn't P_SETMANES already inside 'Pasqua'?
-    if(liturgyDayInformation.GenericLiturgyTime === 'Pasqua' ||
-        liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES){
+    if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES){
         evangelicalAntiphon = evangelicalAntiphon + " Al·leluia.";
     }
     return evangelicalAntiphon;

@@ -27,7 +27,7 @@ export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, li
     if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay){
         hoursLiturgy = GetSpecialDayHoursLiturgy(liturgyMasters.SpecialDaysParts, settings);
     }
-    else if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.StrongTime){
+    else if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity){
         hoursLiturgy = GetSolemnityAndFestivityHoursLiturgy(liturgyMasters.SolemnityAndFestivityParts, liturgyDayInformation.Today, settings);
     }
     else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA){
@@ -94,8 +94,8 @@ function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrow
    if(tomorrowLiturgyInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay) {
        return GetSpecialDaysFirstVespersOfTomorrow(liturgyMasters.SpecialDaysParts, tomorrowLiturgyInformation, settings);
    }
-   if(tomorrowLiturgyInformation.CelebrationType === CelebrationType.Solemnity/* TODO: only Solemnity right? ||
-       tomorrowLiturgyInformation.CelebrationType === CelebrationType.Festivity*/){
+   if(tomorrowLiturgyInformation.CelebrationType === CelebrationType.Solemnity ||
+       tomorrowLiturgyInformation.CelebrationType === CelebrationType.Festivity){
        return GetSaintsSolemnitiesFirstVespersOfTomorrow(liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts, tomorrowLiturgyInformation, settings);
    }
    return new Vespers();
@@ -547,7 +547,7 @@ function GetSaintsMemoriesHoursLiturgy(saintsMemories: SaintsMemories, liturgyDa
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.Office.SecondReading.Reading) && saintsMemories.CommonOffices !== undefined){
         hoursLiturgy.Office.SecondReading = saintsMemories.CommonOffices.OfficeSecondReading;
     }
-    hoursLiturgy.Office.TeDeumInformation.Enabled = false; // TODO: not sure
+    hoursLiturgy.Office.TeDeumInformation.Enabled = false;
     hoursLiturgy.Office.FinalPrayer = saintsMemories.OfficeFinalPrayer;
 
     hoursLiturgy.Laudes.Anthem = settings.UseLatin? saintsMemories.LaudesLatinAnthem : saintsMemories.LaudesCatalanAnthem;
