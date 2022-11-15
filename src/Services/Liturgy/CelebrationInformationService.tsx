@@ -1,5 +1,5 @@
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
+import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
 import {CelebrationType} from "../DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
@@ -20,8 +20,8 @@ export function ObtainCelebrationInformation(celebrationInformationFromCelebrati
             celebrationInformation.Title = "Octava de Pasqua";
         }
         else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA &&
-            liturgyDayInformation.SpecialCelebration.StrongTimesMasterIdentifier === -1 &&
-            liturgyDayInformation.SpecialCelebration.SpecialDaysMasterIdentifier === -1) {
+            liturgyDayInformation.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.StrongTime &&
+            liturgyDayInformation.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay) {
             celebrationInformation.Title = "Octava de Nadal";
         }
         else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA) {

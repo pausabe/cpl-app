@@ -71,7 +71,7 @@ function GetNormalCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturg
 }
 
 function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrowLiturgyInformation: LiturgySpecificDayInformation, settings: Settings) : Vespers{
-   if(tomorrowLiturgyInformation.SpecialCelebration.SolemnityAndFestivityMasterIdentifier !== -1) {
+   if(tomorrowLiturgyInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity) {
        return GetSolemnityAndFestivityFirstVespersOfTomorrow(liturgyMasters.SolemnityAndFestivityWhenFirstVespersParts, tomorrowLiturgyInformation, settings);
    }
    if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_RAMS) {
@@ -91,7 +91,7 @@ function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrow
            tomorrowLiturgyInformation,
            settings);
    }
-   if(tomorrowLiturgyInformation.SpecialCelebration.SpecialDaysMasterIdentifier !== -1) {
+   if(tomorrowLiturgyInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay) {
        return GetSpecialDaysFirstVespersOfTomorrow(liturgyMasters.SpecialDaysParts, tomorrowLiturgyInformation, settings);
    }
    if(tomorrowLiturgyInformation.CelebrationType === CelebrationType.Solemnity/* TODO: only Solemnity right? ||

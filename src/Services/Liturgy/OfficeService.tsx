@@ -1,7 +1,7 @@
 import Office, {TeDeumInformation} from "../../Models/HoursLiturgy/Office";
 import GlobalFunctions from "../../Utils/GlobalFunctions";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
+import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
 import {ReadingOfTheOffice, Psalm, Responsory} from "../../Models/LiturgyMasters/CommonParts";
@@ -12,7 +12,7 @@ export function ObtainOffice(liturgyMasters : LiturgyMasters, liturgyDayInformat
     let office = new Office();
 
     let currentOfficeCommonPsalter = liturgyMasters.OfficeCommonPsalter;
-    if(liturgyDayInformation.SpecialCelebration.StrongTimesMasterIdentifier !== -1){
+    if(liturgyDayInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.StrongTime){
         // TODO: unit test this. I should get tow different objects: liturgyMasters.OfficeCommonPsalter vs currentOfficeCommonPsalter. Therefore, "AdaptWithStrongTimes" does not affect to liturgyMasters.OfficeCommonPsalter
         currentOfficeCommonPsalter = Object.assign(Object.create(Object.getPrototypeOf(liturgyMasters.OfficeCommonPsalter)), liturgyMasters.OfficeCommonPsalter) as OfficeCommonPsalter;
         currentOfficeCommonPsalter.AdaptWithStrongTimes(liturgyMasters.CommonOfficeWhenStrongTimesPsalter);
