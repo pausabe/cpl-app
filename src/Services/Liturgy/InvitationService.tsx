@@ -16,7 +16,7 @@ export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInfo
         invitation.InvitationAntiphon = celebrationInvitation.InvitationAntiphon;
     }
     else{
-        invitation.InvitationAntiphon = liturgyMasters.InvitationCommonPsalter?.Antiphon;
+        invitation.InvitationAntiphon = liturgyMasters.InvitationCommonPsalter.Antiphon;
         switch(liturgyDayInformation.SpecificLiturgyTime){
             case SpecificLiturgyTimeType.Q_CENDRA:
             case SpecificLiturgyTimeType.Q_SETMANES:

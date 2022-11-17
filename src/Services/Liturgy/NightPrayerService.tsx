@@ -71,8 +71,8 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
 
 function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation) : {FirstPsalm : Psalm, SecondPsalm : Psalm}{
     let psalmody = {
-        FirstPsalm: liturgyMasters.CommonNightPrayerPsalter?.FirstPsalm ?? new Psalm(),
-        SecondPsalm: liturgyMasters.CommonNightPrayerPsalter?.SecondPsalm ?? new Psalm()
+        FirstPsalm: liturgyMasters.CommonNightPrayerPsalter.FirstPsalm,
+        SecondPsalm: liturgyMasters.CommonNightPrayerPsalter.SecondPsalm
     }
     if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES){
         psalmody.FirstPsalm.Antiphon = "Al·leluia, al·leluia, al·leluia.";

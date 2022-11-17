@@ -1,8 +1,6 @@
 import {HourCommonParts, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 
-export default class PartsOfLentTime {
-    static MasterName: string = "tempsQuaresmaCendra";
-
+export default class CommonStructure {
     constructor(databaseRow: any = undefined) {
         if(databaseRow) {
             this.Id = databaseRow.id;
@@ -41,18 +39,16 @@ export default class PartsOfLentTime {
 
             this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
             this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
-
             this.ThirdHourParts.Responsory.Versicle = databaseRow.respVTercia;
             this.ThirdHourParts.Responsory.Response = databaseRow.respRTercia;
 
             this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
             this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
-
             this.SixthHourParts.Responsory.Versicle = databaseRow.respVSexta;
             this.SixthHourParts.Responsory.Response = databaseRow.respRSexta;
+
             this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
             this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
-
             this.NinthHourParts.Responsory.Versicle = databaseRow.respVNona;
             this.NinthHourParts.Responsory.Response = databaseRow.respRNona;
 
@@ -66,9 +62,6 @@ export default class PartsOfLentTime {
             this.VespersEvangelicalAntiphon = databaseRow.antMaria;
             this.VespersPrayers = databaseRow.pregariesVespres;
             this.VespersFinalPrayer = databaseRow.oraFiVespres;
-            this.VespersEvangelicalAntiphonYearA = databaseRow.antMariaA;
-            this.VespersEvangelicalAntiphonYearB = databaseRow.antMariaB;
-            this.VespersEvangelicalAntiphonYearC = databaseRow.antMariaC;
         }
     }
 
@@ -89,7 +82,4 @@ export default class PartsOfLentTime {
     VespersEvangelicalAntiphon: string;
     VespersPrayers: string;
     VespersFinalPrayer: string;
-    VespersEvangelicalAntiphonYearA: string;
-    VespersEvangelicalAntiphonYearB: string;
-    VespersEvangelicalAntiphonYearC: string;
 }

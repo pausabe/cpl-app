@@ -1,31 +1,33 @@
 export default class CommonPartsUntilFifthWeekOfLentTime {
     static MasterName: string = "tempsQuaresmaComuFV";
 
-    constructor(databaseRow) {
-        this.Id = databaseRow.id;
-        this.VespersSundaysLatinAnthem = databaseRow.himneVespresLlatiDom;
-        this.VespersSundaysCatalanAnthem = databaseRow.himneVespresCatDom;
-        this.VespersFairsLatinAnthem = databaseRow.himneVespresLlatiFer;
-        this.VespersFairsCatalanAnthem = databaseRow.himneVespresCatFer;
-        this.InvitationAntiphonFirstOption = databaseRow.antInvitatori1;
-        this.InvitationAntiphonSecondOption = databaseRow.antInvitatori2;
-        this.OfficeSundaysLatinAnthem = databaseRow.himneOficiLlatiDom;
-        this.OfficeSundaysCatalanAnthem = databaseRow.himneOficiCatDom;
-        this.OfficeFairsLatinAnthem = databaseRow.himneOficiLlatiFer;
-        this.OfficeFairsCatalanAnthem = databaseRow.himneOficiCatFer;
-        this.LaudesSundaysLatinAnthem = databaseRow.himneLaudesLlatiDom;
-        this.LaudesSundaysCatalanAnthem = databaseRow.himneLaudesCatDom;
-        this.LaudesFairsLatinAnthem = databaseRow.himneLaudesLlatiFer;
-        this.LaudesFairsCatalanAnthem = databaseRow.himneLaudesCatFer;
-        this.ThirdHourLatinAnthem = databaseRow.himneTerciaLlati;
-        this.ThirdHourCatalanAnthem = databaseRow.himneTerciaCat;
-        this.ThirdHourAntiphon = databaseRow.antTercia;
-        this.SixthHourLatinAnthem = databaseRow.himneSextaLlati;
-        this.SixthHourCatalanAnthem = databaseRow.himneSextaCat;
-        this.SixthHourAntiphon = databaseRow.antSexta;
-        this.NinthHourLatinAnthem = databaseRow.himneNonaLlati;
-        this.NinthHourCatalanAnthem = databaseRow.himneNonaCat;
-        this.NinthHourAntiphon = databaseRow.antNona;
+    constructor(databaseRow: any = undefined) {
+        if(databaseRow) {
+            this.Id = databaseRow.id;
+            this.VespersSundaysLatinAnthem = databaseRow.himneVespresLlatiDom;
+            this.VespersSundaysCatalanAnthem = databaseRow.himneVespresCatDom;
+            this.VespersFairsLatinAnthem = databaseRow.himneVespresLlatiFer;
+            this.VespersFairsCatalanAnthem = databaseRow.himneVespresCatFer;
+            this.InvitationAntiphonFirstOption = databaseRow.antInvitatori1;
+            this.InvitationAntiphonSecondOption = databaseRow.antInvitatori2;
+            this.OfficeSundaysLatinAnthem = databaseRow.himneOficiLlatiDom;
+            this.OfficeSundaysCatalanAnthem = databaseRow.himneOficiCatDom;
+            this.OfficeFairsLatinAnthem = databaseRow.himneOficiLlatiFer;
+            this.OfficeFairsCatalanAnthem = databaseRow.himneOficiCatFer;
+            this.LaudesSundaysLatinAnthem = databaseRow.himneLaudesLlatiDom;
+            this.LaudesSundaysCatalanAnthem = databaseRow.himneLaudesCatDom;
+            this.LaudesFairsLatinAnthem = databaseRow.himneLaudesLlatiFer;
+            this.LaudesFairsCatalanAnthem = databaseRow.himneLaudesCatFer;
+            this.ThirdHourLatinAnthem = databaseRow.himneTerciaLlati;
+            this.ThirdHourCatalanAnthem = databaseRow.himneTerciaCat;
+            this.ThirdHourAntiphon = databaseRow.antTercia;
+            this.SixthHourLatinAnthem = databaseRow.himneSextaLlati;
+            this.SixthHourCatalanAnthem = databaseRow.himneSextaCat;
+            this.SixthHourAntiphon = databaseRow.antSexta;
+            this.NinthHourLatinAnthem = databaseRow.himneNonaLlati;
+            this.NinthHourCatalanAnthem = databaseRow.himneNonaCat;
+            this.NinthHourAntiphon = databaseRow.antNona;
+        }
     }
 
     Id: number;

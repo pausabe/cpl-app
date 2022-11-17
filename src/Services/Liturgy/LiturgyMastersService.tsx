@@ -46,7 +46,7 @@ import LiturgyDayInformation, {
 import {Settings} from "../../Models/Settings";
 import {CelebrationType} from "../DatabaseEnums";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
-import CommonOffices from "../../Models/LiturgyMasters/CommonOffices";
+import CommonOffice from "../../Models/LiturgyMasters/CommonOffices";
 import Various from "../../Models/LiturgyMasters/Various";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
@@ -108,7 +108,7 @@ async function ObtainOfficeCommonPsalter(liturgyDayInformation : LiturgyDayInfor
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(OfficeCommonPsalter.MasterName, id);
             return new OfficeCommonPsalter(row);
         }
-    });
+    }, new OfficeCommonPsalter());
 }
 
 async function ObtainInvitationCommonPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<InvitationCommonPsalter> {
@@ -118,7 +118,7 @@ async function ObtainInvitationCommonPsalter(liturgyDayInformation : LiturgyDayI
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(InvitationCommonPsalter.MasterName, id);
             return new InvitationCommonPsalter(row);
         }
-    });
+    }, new InvitationCommonPsalter());
 }
 
 async function ObtainOfficeOfOrdinaryTime(liturgyDayInformation : LiturgyDayInformation) : Promise<OfficeOfOrdinaryTime> {
@@ -128,7 +128,7 @@ async function ObtainOfficeOfOrdinaryTime(liturgyDayInformation : LiturgyDayInfo
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(OfficeOfOrdinaryTime.MasterName, id);
             return new OfficeOfOrdinaryTime(row);
         }
-    });
+    }, new OfficeOfOrdinaryTime());
 }
 
 async function ObtainPrayersOfOrdinaryTime(liturgyDayInformation : LiturgyDayInformation) : Promise<PrayersOfOrdinaryTime> {
@@ -138,7 +138,7 @@ async function ObtainPrayersOfOrdinaryTime(liturgyDayInformation : LiturgyDayInf
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PrayersOfOrdinaryTime.MasterName, id);
             return new PrayersOfOrdinaryTime(row);
         }
-    });
+    }, new PrayersOfOrdinaryTime());
 }
 
 async function ObtainPrayersOfOrdinaryTimeWhenFirstVespers(liturgyDayInformation : LiturgyDayInformation) : Promise<PrayersOfOrdinaryTime> {
@@ -148,7 +148,7 @@ async function ObtainPrayersOfOrdinaryTimeWhenFirstVespers(liturgyDayInformation
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PrayersOfOrdinaryTime.MasterName, id);
             return new PrayersOfOrdinaryTime(row);
         }
-    });
+    }, new PrayersOfOrdinaryTime());
 }
 
 async function ObtainCommonPartsUntilFifthWeekOfLentTime(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonPartsUntilFifthWeekOfLentTime> {
@@ -159,7 +159,7 @@ async function ObtainCommonPartsUntilFifthWeekOfLentTime(liturgyDayInformation :
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonPartsUntilFifthWeekOfLentTime.MasterName, id);
             return new CommonPartsUntilFifthWeekOfLentTime(row);
         }
-    });
+    }, new CommonPartsUntilFifthWeekOfLentTime());
 }
 
 async function ObtainPartsOfLentTime(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfLentTime> {
@@ -169,7 +169,7 @@ async function ObtainPartsOfLentTime(liturgyDayInformation : LiturgyDayInformati
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfLentTime.MasterName, id);
             return new PartsOfLentTime(row);
         }
-    });
+    }, new PartsOfLentTime());
 }
 
 async function ObtainPartsOfFiveWeeksOfLentTime(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfFiveWeeksOfLentTime> {
@@ -179,7 +179,7 @@ async function ObtainPartsOfFiveWeeksOfLentTime(liturgyDayInformation : LiturgyD
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfFiveWeeksOfLentTime.MasterName, id);
             return new PartsOfFiveWeeksOfLentTime(row);
         }
-    });
+    }, new PartsOfFiveWeeksOfLentTime());
 }
 
 async function ObtainCommonPartsOfHolyWeek(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonPartsOfHolyWeek> {
@@ -190,7 +190,7 @@ async function ObtainCommonPartsOfHolyWeek(liturgyDayInformation : LiturgyDayInf
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonPartsOfHolyWeek.MasterName, id);
             return new CommonPartsOfHolyWeek(row);
         }
-    });
+    }, new CommonPartsOfHolyWeek());
 }
 
 async function ObtainPalmSundayParts(liturgyDayInformation : LiturgyDayInformation) : Promise<PalmSundayParts> {
@@ -201,7 +201,7 @@ async function ObtainPalmSundayParts(liturgyDayInformation : LiturgyDayInformati
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PalmSundayParts.MasterName, id);
             return new PalmSundayParts(row);
         }
-    });
+    }, new PalmSundayParts());
 }
 
 async function ObtainPartsOfHolyWeek(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfHolyWeek> {
@@ -212,7 +212,7 @@ async function ObtainPartsOfHolyWeek(liturgyDayInformation : LiturgyDayInformati
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfHolyWeek.MasterName, id);
             return new PartsOfHolyWeek(row);
         }
-    });
+    }, new PartsOfHolyWeek());
 }
 
 async function ObtainPartsOfEasterTriduum(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfEasterTriduum> {
@@ -224,7 +224,7 @@ async function ObtainPartsOfEasterTriduum(liturgyDayInformation : LiturgyDayInfo
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterTriduum.MasterName, id);
             return new PartsOfEasterTriduum(row);
         }
-    });
+    }, new PartsOfEasterTriduum());
 }
 
 async function ObtainPartsOfEasterBeforeAscension(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfEasterBeforeAscension> {
@@ -234,7 +234,7 @@ async function ObtainPartsOfEasterBeforeAscension(liturgyDayInformation : Liturg
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterTriduum.MasterName, id);
             return new PartsOfEasterBeforeAscension(row);
         }
-    });
+    }, new PartsOfEasterBeforeAscension());
 }
 
 async function ObtainPartsOfEasterOctave(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfEasterOctave> {
@@ -244,7 +244,7 @@ async function ObtainPartsOfEasterOctave(liturgyDayInformation : LiturgyDayInfor
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterOctave.MasterName, id);
             return new PartsOfEasterOctave(row);
         }
-    });
+    }, new PartsOfEasterOctave());
 }
 
 async function ObtainPartsOfEasterAfterAscension(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfEasterAfterAscension> {
@@ -254,7 +254,7 @@ async function ObtainPartsOfEasterAfterAscension(liturgyDayInformation : Liturgy
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterAfterAscension.MasterName, id);
             return new PartsOfEasterAfterAscension(row);
         }
-    });
+    }, new PartsOfEasterAfterAscension());
 }
 
 async function ObtainEasterWeekParts(liturgyDayInformation : LiturgyDayInformation) : Promise<EasterWeekParts> {
@@ -267,7 +267,7 @@ async function ObtainEasterWeekParts(liturgyDayInformation : LiturgyDayInformati
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterWeekParts.MasterName, id);
             return new EasterWeekParts(row);
         }
-    });
+    }, new EasterWeekParts());
 }
 
 async function ObtainCommonAdventAndChristmasParts(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonAdventAndChristmasParts> {
@@ -300,7 +300,7 @@ async function ObtainCommonAdventAndChristmasParts(liturgyDayInformation : Litur
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonAdventAndChristmasParts.MasterName, id);
             return new CommonAdventAndChristmasParts(row);
         }
-    });
+    }, new CommonAdventAndChristmasParts());
 }
 
 function TodayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation : LiturgyDayInformation) : boolean{
@@ -327,7 +327,7 @@ async function ObtainAdventWeekParts(liturgyDayInformation : LiturgyDayInformati
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventWeekParts.MasterName, id);
             return new AdventWeekParts(row);
         }
-    });
+    }, new AdventWeekParts());
 }
 
 async function ObtainAdventSundayParts(liturgyDayInformation : LiturgyDayInformation) : Promise<AdventSundayParts> {
@@ -338,7 +338,7 @@ async function ObtainAdventSundayParts(liturgyDayInformation : LiturgyDayInforma
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventSundayParts.MasterName, id);
             return new AdventSundayParts(row);
         }
-    });
+    }, new AdventSundayParts());
 }
 
 async function ObtainAdventFirstVespersOfSundayParts(liturgyDayInformation : LiturgyDayInformation) : Promise<AdventSundayParts> {
@@ -353,7 +353,7 @@ async function ObtainAdventFirstVespersOfSundayParts(liturgyDayInformation : Lit
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventSundayParts.MasterName, id);
             return new AdventSundayParts(row);
         }
-    });
+    }, new AdventSundayParts());
 }
 
 async function ObtainAdventFairDaysParts(liturgyDayInformation : LiturgyDayInformation) : Promise<AdventFairDaysParts> {
@@ -363,7 +363,7 @@ async function ObtainAdventFairDaysParts(liturgyDayInformation : LiturgyDayInfor
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventFairDaysParts.MasterName, id);
             return new AdventFairDaysParts(row);
         }
-    });
+    }, new AdventFairDaysParts());
 }
 
 async function ObtainAdventFairDaysAntiphons(liturgyDayInformation : LiturgyDayInformation) : Promise<AdventFairDaysAntiphons> {
@@ -373,7 +373,7 @@ async function ObtainAdventFairDaysAntiphons(liturgyDayInformation : LiturgyDayI
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventFairDaysAntiphons.MasterName, id);
             return new AdventFairDaysAntiphons(row);
         }
-    });
+    }, new AdventFairDaysAntiphons());
 }
 
 async function ObtainChristmasWhenOctaveParts(liturgyDayInformation : LiturgyDayInformation) : Promise<ChristmasWhenOctaveParts> {
@@ -385,7 +385,7 @@ async function ObtainChristmasWhenOctaveParts(liturgyDayInformation : LiturgyDay
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(ChristmasWhenOctaveParts.MasterName, id);
             return new ChristmasWhenOctaveParts(row);
         }
-    });
+    }, new ChristmasWhenOctaveParts());
 }
 
 async function ObtainChristmasBeforeEpiphanyParts(liturgyDayInformation : LiturgyDayInformation) : Promise<ChristmasBeforeEpiphanyParts> {
@@ -395,7 +395,7 @@ async function ObtainChristmasBeforeEpiphanyParts(liturgyDayInformation : Liturg
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(ChristmasBeforeEpiphanyParts.MasterName, id);
             return new ChristmasBeforeEpiphanyParts(row);
         }
-    });
+    }, new ChristmasBeforeEpiphanyParts());
 }
 
 async function ObtainSpecialCommonPartsOfEasterSundays(liturgyDayInformation : LiturgyDayInformation) : Promise<SpecialCommonPartsOfEasterSundays> {
@@ -405,7 +405,7 @@ async function ObtainSpecialCommonPartsOfEasterSundays(liturgyDayInformation : L
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SpecialCommonPartsOfEasterSundays.MasterName, id);
             return new SpecialCommonPartsOfEasterSundays(row);
         }
-    });
+    }, new SpecialCommonPartsOfEasterSundays());
 }
 
 async function ObtainLaudesCommonPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<LaudesCommonPsalter> {
@@ -436,7 +436,7 @@ async function ObtainLaudesCommonPsalter(liturgyDayInformation : LiturgyDayInfor
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(LaudesCommonPsalter.MasterName, id);
             return new LaudesCommonPsalter(row);
         }
-    });
+    }, new LaudesCommonPsalter());
 }
 
 async function ObtainCommonSpecialPartsOfEaster(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonSpecialPartsOfEaster> {
@@ -446,7 +446,7 @@ async function ObtainCommonSpecialPartsOfEaster(liturgyDayInformation : LiturgyD
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonSpecialPartsOfEaster.MasterName, id);
             return new CommonSpecialPartsOfEaster(row);
         }
-    });
+    }, new CommonSpecialPartsOfEaster());
 }
 
 async function ObtainEasterSundayParts(liturgyDayInformation : LiturgyDayInformation) : Promise<EasterSundayParts> {
@@ -459,7 +459,7 @@ async function ObtainEasterSundayParts(liturgyDayInformation : LiturgyDayInforma
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterSundayParts.MasterName, id);
             return new EasterSundayParts(row);
         }
-    });
+    }, new EasterSundayParts());
 }
 
 async function ObtainEasterFirstVespersOfSundayParts(liturgyDayInformation : LiturgyDayInformation) : Promise<EasterSundayParts> {
@@ -472,7 +472,7 @@ async function ObtainEasterFirstVespersOfSundayParts(liturgyDayInformation : Lit
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterSundayParts.MasterName, id);
             return new EasterSundayParts(row);
         }
-    });
+    }, new EasterSundayParts());
 }
 
 async function ObtainEasterSunday(liturgyDayInformation : LiturgyDayInformation) : Promise<EasterSunday> {
@@ -482,7 +482,7 @@ async function ObtainEasterSunday(liturgyDayInformation : LiturgyDayInformation)
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(EasterSunday.MasterName, id);
             return new EasterSunday(row);
         }
-    });
+    }, new EasterSunday());
 }
 
 async function ObtainFiveWeeksOfSundayLentParts(liturgyDayInformation : LiturgyDayInformation) : Promise<FiveWeeksOfSundayLentParts> {
@@ -492,7 +492,7 @@ async function ObtainFiveWeeksOfSundayLentParts(liturgyDayInformation : LiturgyD
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.MasterName, id);
             return new FiveWeeksOfSundayLentParts(row);
         }
-    });
+    }, new FiveWeeksOfSundayLentParts());
 }
 
 async function ObtainFiveWeeksOfFirstsVespersOfSundayLentParts(liturgyDayInformation : LiturgyDayInformation) : Promise<FiveWeeksOfSundayLentParts> {
@@ -505,7 +505,7 @@ async function ObtainFiveWeeksOfFirstsVespersOfSundayLentParts(liturgyDayInforma
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.MasterName, id);
             return new FiveWeeksOfSundayLentParts(row);
         }
-    });
+    }, new FiveWeeksOfSundayLentParts());
 }
 
 async function ObtainVespersCommonPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<VespersCommonPsalter> {
@@ -523,7 +523,7 @@ async function ObtainVespersCommonPsalter(liturgyDayInformation : LiturgyDayInfo
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(VespersCommonPsalter.MasterName, id);
             return new VespersCommonPsalter(row);
         }
-    });
+    }, new VespersCommonPsalter());
 }
 
 async function ObtainSolemnityAndFestivityParts(liturgyDayInformation : LiturgyDayInformation) : Promise<SolemnityAndFestivityParts> {
@@ -542,13 +542,12 @@ async function ObtainSolemnityAndFestivityParts(liturgyDayInformation : LiturgyD
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SolemnityAndFestivityParts.MasterName, id);
             return new SolemnityAndFestivityParts(row);
         }
-    });
+    }, new SolemnityAndFestivityParts());
 }
 
 async function ObtainSolemnityAndFestivityWhenFirstVespersParts(liturgyDayInformation : LiturgyDayInformation) : Promise<SolemnityAndFestivityParts> {
     return await SecureCall(async () => {
         let id;
-        console.log(SpecialCelebrationTypeEnum[liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType])
         if (liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity){
             id = liturgyDayInformation.Tomorrow.SpecialCelebration.SolemnityAndFestivityMasterIdentifier;
         }
@@ -562,7 +561,7 @@ async function ObtainSolemnityAndFestivityWhenFirstVespersParts(liturgyDayInform
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SolemnityAndFestivityParts.MasterName, id);
             return new SolemnityAndFestivityParts(row);
         }
-    });
+    }, new SolemnityAndFestivityParts());
 }
 
 async function ObtainCommonHourPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonHourPsalter> {
@@ -572,7 +571,7 @@ async function ObtainCommonHourPsalter(liturgyDayInformation : LiturgyDayInforma
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonHourPsalter.MasterName, id);
             return new CommonHourPsalter(row);
         }
-    });
+    }, new CommonHourPsalter());
 }
 
 async function ObtainCommonNightPrayerPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonNightPrayerPsalter> {
@@ -605,7 +604,7 @@ async function ObtainCommonNightPrayerPsalter(liturgyDayInformation : LiturgyDay
         }
         const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonNightPrayerPsalter.MasterName, id);
         return new CommonNightPrayerPsalter(row);
-    });
+    }, new CommonNightPrayerPsalter());
 }
 
 async function ObtainCommonOfficeWhenStrongTimesPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonOfficeWhenStrongTimesPsalter> {
@@ -615,7 +614,7 @@ async function ObtainCommonOfficeWhenStrongTimesPsalter(liturgyDayInformation : 
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonOfficeWhenStrongTimesPsalter.MasterName, id);
             return new CommonOfficeWhenStrongTimesPsalter(row);
         }
-    });
+    }, new CommonOfficeWhenStrongTimesPsalter());
 }
 
 async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsSolemnities> {
@@ -640,7 +639,7 @@ async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInforma
                 return saintsSolemnitiesParts;
             }
         }
-    });
+    }, new SaintsSolemnities());
 }
 
 async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsSolemnities> {
@@ -674,7 +673,7 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
                 return saintsSolemnitiesParts;
             }
         }
-    });
+    }, new SaintsSolemnities());
 }
 
 async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsMemories> {
@@ -708,7 +707,7 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
                 }
             }
         }
-    });
+    }, new SaintsMemories());
 }
 
 async function ObtainSpecialDaysParts(liturgyDayInformation : LiturgyDayInformation) : Promise<SpecialDaysParts> {
@@ -722,23 +721,23 @@ async function ObtainSpecialDaysParts(liturgyDayInformation : LiturgyDayInformat
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SpecialDaysParts.MasterName, id);
             return new SpecialDaysParts(row);
         }
-    });
+    }, new SpecialDaysParts());
 }
 
 async function ObtainVarious() : Promise<Various> {
     return await SecureCall(async () => {
         const table = await DatabaseDataService.ObtainMasterTableFromDatabase(Various.MasterName);
         return new Various(table);
-    });
+    }, new Various());
 }
 
-async function ObtainCommonOffices(category : string) : Promise<CommonOffices>{
+async function ObtainCommonOffices(category : string) : Promise<CommonOffice>{
     return await SecureCall(async () => {
         if (category && category !== '0000') {
             const row = await DatabaseDataService.ObtainCommonOfficesAsync(category);
-            return new CommonOffices(row);
+            return new CommonOffice(row);
         }
-    });
+    }, new CommonOffice());
 }
 
 /*

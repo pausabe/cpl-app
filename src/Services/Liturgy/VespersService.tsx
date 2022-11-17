@@ -176,9 +176,9 @@ function GetAnthem(liturgyMasters : LiturgyMasters, liturgyDayInformation : Litu
 
 function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation) : {FirstPsalm : Psalm, SecondPsalm : Psalm, ThirdPsalm : Psalm}{
     let psalmody = {
-        FirstPsalm: liturgyMasters.VespersCommonPsalter?.FirstPsalm ?? new Psalm(),
-        SecondPsalm: liturgyMasters.VespersCommonPsalter?.SecondPsalm ?? new Psalm(),
-        ThirdPsalm: liturgyMasters.VespersCommonPsalter?.ThirdPsalm ?? new Psalm()
+        FirstPsalm: liturgyMasters.VespersCommonPsalter.FirstPsalm,
+        SecondPsalm: liturgyMasters.VespersCommonPsalter.SecondPsalm,
+        ThirdPsalm: liturgyMasters.VespersCommonPsalter.ThirdPsalm
     }
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.A_FERIES:
@@ -588,7 +588,7 @@ function GetFinalPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation :
     if(liturgyDayInformation.DayOfTheWeek === 0){ 
         finalPrayer = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
     }
-    else if(StringManagement.HasLiturgyContent(liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers?.FinalPrayer)){
+    else if(StringManagement.HasLiturgyContent(liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FinalPrayer)){
         finalPrayer = liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FinalPrayer;
     }
     switch(liturgyDayInformation.SpecificLiturgyTime){

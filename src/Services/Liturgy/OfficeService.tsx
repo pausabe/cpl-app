@@ -152,9 +152,9 @@ function GetAnthem(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMast
 
 function GetPsalmody(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office) : {FirstPsalm : Psalm, SecondPsalm : Psalm, ThirdPsalm : Psalm}{
     let psalmody = {
-        FirstPsalm: currentOfficeCommonPsalter?.FirstPsalm ?? new Psalm(),
-        SecondPsalm: currentOfficeCommonPsalter?.SecondPsalm ?? new Psalm(),
-        ThirdPsalm: currentOfficeCommonPsalter?.ThirdPsalm ?? new Psalm()
+        FirstPsalm: currentOfficeCommonPsalter.FirstPsalm,
+        SecondPsalm: currentOfficeCommonPsalter.SecondPsalm,
+        ThirdPsalm: currentOfficeCommonPsalter.ThirdPsalm
     }
 
     switch(liturgyDayInformation.SpecificLiturgyTime){
@@ -302,8 +302,8 @@ function GetResponsory(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgy
 
 function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office) : {FirstReading : ReadingOfTheOffice, SecondReading : ReadingOfTheOffice}{
     let readings = {
-        FirstReading: liturgyMasters.OfficeOfOrdinaryTime?.OfficeFirstReading,
-        SecondReading: liturgyMasters.OfficeOfOrdinaryTime?.OfficeSecondReading
+        FirstReading: liturgyMasters.OfficeOfOrdinaryTime.OfficeFirstReading,
+        SecondReading: liturgyMasters.OfficeOfOrdinaryTime.OfficeSecondReading
     }
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.Q_CENDRA:
@@ -400,7 +400,7 @@ function GetFinalPrayer(currentOfficeCommonPsalter : OfficeCommonPsalter, liturg
         return celebrationOffice.FinalPrayer;
     }
 
-    let finalPrayer = liturgyMasters.PrayersOfOrdinaryTime?.FinalPrayer;
+    let finalPrayer = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.Q_CENDRA:
             return liturgyMasters.PartsOfLentTime.LaudesFinalPrayer;
