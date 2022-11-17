@@ -293,7 +293,8 @@ export default class HomeScreen extends Component {
     try {
       let arrowWidth = 35;
       let auxPadding = 10;
-      if ((CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory || CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
+      if ((CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory ||
+          CurrentLiturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
         arrowWidth = 65;
         auxPadding = 0;
       }

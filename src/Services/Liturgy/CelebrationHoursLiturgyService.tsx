@@ -56,9 +56,14 @@ function GetNormalCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturg
             break;
         case CelebrationType.OptionalMemory:
         case CelebrationType.OptionalVirginMemory:
-            if(liturgyDayInformation.Date.getDay() !== 0 &&
-                settings.OptionalFestivityEnabled === true){
-                hoursLiturgy = GetSaintsMemoriesHoursLiturgy(liturgyMasters.SaintsMemories, liturgyDayInformation, settings);
+            if(liturgyDayInformation.Date.getDay() !== 0){
+                const saintsMemoriesHoursLiturgy = GetSaintsMemoriesHoursLiturgy(liturgyMasters.SaintsMemories, liturgyDayInformation, settings);
+                if(settings.OptionalFestivityEnabled){
+                    hoursLiturgy = saintsMemoriesHoursLiturgy;
+                }
+                else {
+                    hoursLiturgy.CelebrationInformation = saintsMemoriesHoursLiturgy.CelebrationInformation;
+                }
             }
             break;
         case CelebrationType.Memory:

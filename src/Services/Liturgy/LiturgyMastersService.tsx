@@ -528,15 +528,17 @@ async function ObtainVespersCommonPsalter(liturgyDayInformation : LiturgyDayInfo
 
 async function ObtainSolemnityAndFestivityParts(liturgyDayInformation : LiturgyDayInformation) : Promise<SolemnityAndFestivityParts> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity || liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU || liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA) {
-            let id;
-            if (liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SolemnityAndFestivity &&
-                liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA) {
-                id = SoulKeys.tempsSolemnitatsFestes_Nadal;
-            }
-            else {
-                id = liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier;
-            }
+        let id;
+        if (liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity){
+            id = liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier;
+        }
+        else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU){
+            // TODO: I dont think i need this. but even this, 16 dabril still dont work
+        }
+        else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA) {
+            id = SoulKeys.tempsSolemnitatsFestes_Nadal;
+        }
+        if(id){
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SolemnityAndFestivityParts.MasterName, id);
             return new SolemnityAndFestivityParts(row);
         }
@@ -545,17 +547,18 @@ async function ObtainSolemnityAndFestivityParts(liturgyDayInformation : LiturgyD
 
 async function ObtainSolemnityAndFestivityWhenFirstVespersParts(liturgyDayInformation : LiturgyDayInformation) : Promise<SolemnityAndFestivityParts> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity ||
-            liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU ||
-            liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA) {
-            let id;
-            if (liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SolemnityAndFestivity &&
-                liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA) {
-                id = SoulKeys.tempsSolemnitatsFestes_Nadal;
-            }
-            else {
-                id = liturgyDayInformation.Tomorrow.SpecialCelebration.SolemnityAndFestivityMasterIdentifier;
-            }
+        let id;
+        console.log(SpecialCelebrationTypeEnum[liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType])
+        if (liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity){
+            id = liturgyDayInformation.Tomorrow.SpecialCelebration.SolemnityAndFestivityMasterIdentifier;
+        }
+        else if(liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU){
+            // TODO: I dont think i need this. but even this, 16 dabril still dont work
+        }
+        else if(liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA) {
+            id = SoulKeys.tempsSolemnitatsFestes_Nadal;
+        }
+        if(id){
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(SolemnityAndFestivityParts.MasterName, id);
             return new SolemnityAndFestivityParts(row);
         }
@@ -642,8 +645,11 @@ async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInforma
 
 async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<SaintsSolemnities> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity ||
-            liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Festivity) {
+        if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA &&
+            liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SolemnityAndFestivity &&
+            liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay &&
+            (liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity ||
+                liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Festivity)) {
             let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Tomorrow);
             if (saintsMemoryOrSolemnityMasterIdentifier !== -1) {
                 const row = DatabaseDataService.ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(SaintsSolemnities.MasterName, saintsMemoryOrSolemnityMasterIdentifier);
@@ -653,7 +659,8 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
             }
             else {
                 let day = '-';
-                if (liturgyDayInformation.Tomorrow.MovedDay.Date !== '-' && GlobalFunctions.isDiocesiMogut(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode)) {
+                if (liturgyDayInformation.Tomorrow.MovedDay.Date !== '-' &&
+                    GlobalFunctions.isDiocesiMogut(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode)) {
                     day = liturgyDayInformation.Tomorrow.MovedDay.Date;
                 }
 

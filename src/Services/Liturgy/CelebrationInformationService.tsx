@@ -8,7 +8,10 @@ import {DateManagement} from "../../Utils/DateManagement";
 export function ObtainCelebrationInformation(celebrationInformationFromCelebration: CelebrationInformation, liturgyDayInformation: LiturgySpecificDayInformation): CelebrationInformation {
     // With this service I'm trying to separate Celebration by some kind of Saint from Celebration from the liturgy time
     let celebrationInformation = new CelebrationInformation();
-    if(!StringManagement.HasLiturgyContent(celebrationInformationFromCelebration.Title)) {
+    if(StringManagement.HasLiturgyContent(celebrationInformationFromCelebration.Title)) {
+        celebrationInformation = celebrationInformationFromCelebration;
+    }
+    else{
         celebrationInformation.Title = "";
         celebrationInformation.Description = "-";
         liturgyDayInformation.CelebrationType = CelebrationType.Fair;
