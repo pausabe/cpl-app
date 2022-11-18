@@ -61,7 +61,7 @@ export default class SettingsComponent extends Component {
 
     _generateSwitch() {
         let selectorProps = this._mergeProps({
-            value: !!this.state.value,
+            value: this.state.value === 'true' || this.state.value === true,
             trackColor: {true: GlobalKeys.switchColor},
             onValueChange: this._updateSelectionStateCallback.bind(this),
         });
