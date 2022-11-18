@@ -283,6 +283,10 @@ let GlobalFunctions = {
 
   trim(text){
 
+    if(!text){
+      return "";
+    }
+
     try {
 
       var length = text.length;

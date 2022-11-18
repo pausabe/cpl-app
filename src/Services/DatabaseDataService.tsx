@@ -1,9 +1,10 @@
 import * as Logger from '../Utils/Logger';
 import GlobalFunctions from '../Utils/GlobalFunctions';
 import {executeQuery, executeQueryAsync} from "./DatabaseManagerService";
-import { Settings } from '../Models/Settings';
+import {Settings} from '../Models/Settings';
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
-import MassLiturgy, {DayMassLiturgy} from "../Models/MassLiturgy";
+import {DayMassLiturgy} from "../Models/MassLiturgy";
+import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 
 // TODO: refactor
 
@@ -213,7 +214,7 @@ function RowToMassLiturgy(row): DayMassLiturgy{
 
 async function GetHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
   const dateString = GlobalFunctions.calculeDia(liturgySpecificDayInformation.Date, settings.DioceseCode, liturgySpecificDayInformation.MovedDay.Date, liturgySpecificDayInformation.MovedDay.DioceseCode);
-  const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgySpecificDayInformation.YearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${liturgySpecificDayInformation.DayOfTheWeek}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${liturgySpecificDayInformation.YearIsEven? "II" : "I"}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE LDSantoral.Categoria = '${liturgySpecificDayInformation.CelebrationType}'AND LDSantoral.tempsespecific = '${liturgySpecificDayInformation.GenericLiturgyTime}'AND LDSantoral.dia = '${dateString}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.DioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
+  const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgySpecificDayInformation.YearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${liturgySpecificDayInformation.DayOfTheWeek}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${liturgySpecificDayInformation.YearIsEven? "II" : "I"}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE LDSantoral.Categoria = '${liturgySpecificDayInformation.CelebrationType}'AND LDSantoral.tempsespecific = '${liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.A_FERIES? 'Especial' : liturgySpecificDayInformation.GenericLiturgyTime}'AND LDSantoral.dia = '${dateString}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.DioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
   const result = await executeQueryAsync(query);
   return RowToMassLiturgy(result.rows.item(0));
 }
@@ -314,7 +315,7 @@ export function getLDSantoral(day, specialResultId, celType, tempsEspecific, cic
   });
 }
 
-/** @deprecated Use getLDSantoralAsync instead**/
+/** @deprecated Use GetNormalDaysMassLiturgy instead**/
 export function getLDNormal(tempsEspecific, cicleABC, diaSetmana, setmana, parImpar, callback) {
   let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${tempsEspecific}' AND DiadelaSetmana = '${diaSetmana}' AND NumSet = '${setmana}'`;
   executeQuery(query,
@@ -551,7 +552,6 @@ function LDGetIndexNormal(result, cicleABC, parImpar, diaSetmana) {
   }
 
   if (index === undefined) {
-    Logger.Log(Logger.LogKeys.DatabaseDataService, "LDGetIndexNormal", "No index found");
     index = -1;
   }
   else {

@@ -55,12 +55,12 @@ function GetCelebrationIdentifier(liturgyDayInformation: LiturgySpecificDayInfor
     return -1;
 }
 
-function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, superMegaId: number){
+function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, celebrationIdentifier: number){
     return liturgyDayInformation.CelebrationType === CelebrationType.Memory ||
         liturgyDayInformation.CelebrationType === CelebrationType.Solemnity ||
         liturgyDayInformation.CelebrationType === CelebrationType.Festivity ||
         IsSpecialChristmas(liturgyDayInformation) ||
-        superMegaId !== -1;
+        celebrationIdentifier !== -1;
 }
 
 async function GetCelebrationDayLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, celebrationIdentifier: number, settings: Settings): Promise<DayMassLiturgy>{
@@ -70,10 +70,12 @@ async function GetCelebrationDayLiturgy(liturgyDayInformation: LiturgySpecificDa
 }
 
 function MergeLiturgyDays(firstLiturgyDay: DayMassLiturgy, secondLiturgyDay: DayMassLiturgy): DayMassLiturgy {
-    if(firstLiturgyDay === undefined){
+    const firstLiturgyDayHasContent = firstLiturgyDay && StringManagement.HasLiturgyContent(firstLiturgyDay.Gospel.Gospel);
+    const secondLiturgyDayHasContent = secondLiturgyDay && StringManagement.HasLiturgyContent(secondLiturgyDay.Gospel.Gospel);
+    if(!firstLiturgyDayHasContent){
         return secondLiturgyDay;
     }
-    if(secondLiturgyDay === undefined){
+    if(!secondLiturgyDayHasContent){
         return firstLiturgyDay;
     }
     let dayMassLiturgy = firstLiturgyDay;
