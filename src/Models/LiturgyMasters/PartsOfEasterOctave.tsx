@@ -34,14 +34,14 @@ export default class PartsOfEasterOctave {
             this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
             this.OfficeFirstReading.Responsory.ThirdPart = databaseRow.resp1Part3Ofici;
 
-            this.OfficeFirstReading.Reference = databaseRow.referencia2Ofici;
-            this.OfficeFirstReading.Quote = databaseRow.citaLect2Ofici;
-            this.OfficeFirstReading.Title = databaseRow.titolLect2Ofici;
-            this.OfficeFirstReading.Reading = databaseRow.lectura2;
-            this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp2Ofici;
-            this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp2Part1Ofici;
-            this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
-            this.OfficeFirstReading.Responsory.ThirdPart = databaseRow.resp2Part3Ofici;
+            this.OfficeSecondReading.Reference = databaseRow.referencia2Ofici;
+            this.OfficeSecondReading.Quote = databaseRow.citaLect2Ofici;
+            this.OfficeSecondReading.Title = databaseRow.titolLect2Ofici;
+            this.OfficeSecondReading.Reading = databaseRow.lectura2;
+            this.OfficeSecondReading.Responsory.Quote = databaseRow.citaResp2Ofici;
+            this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1Ofici;
+            this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
+            this.OfficeSecondReading.Responsory.ThirdPart = databaseRow.resp2Part3Ofici;
 
             this.LaudesShortReading.Quote = databaseRow.citaLBLaudes;
             this.LaudesShortReading.ShortReading = databaseRow.lecturaBreuLaudes;
