@@ -229,9 +229,10 @@ async function ObtainPartsOfEasterTriduum(liturgyDayInformation : LiturgyDayInfo
 
 async function ObtainPartsOfEasterBeforeAscension(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfEasterBeforeAscension> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA || liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES) {
+        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA ||
+            liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES) {
             const id = 1;
-            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterTriduum.MasterName, id);
+            const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterBeforeAscension.MasterName, id);
             return new PartsOfEasterBeforeAscension(row);
         }
     }, new PartsOfEasterBeforeAscension());
