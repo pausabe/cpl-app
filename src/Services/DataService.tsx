@@ -50,7 +50,7 @@ async function ObtainCurrentSettings(date: Date) : Promise<Settings>{
     currentSettings.DioceseCode = GlobalFunctions.transformDiocesiName(
         currentSettings.DioceseName,
         currentSettings.PrayingPlace);
-    currentSettings.UseLatin = await SettingsService.getSettingUseLatin() as boolean;
+    currentSettings.UseLatin = await SettingsService.getSettingUseLatin() === 'true';
     currentSettings.TextSize = await SettingsService.getSettingTextSize() as number;
     currentSettings.DarkModeEnabled = DetermineDarkModeIsEnabled(await SettingsService.getSettingTextSize() as string);
     currentSettings.InvitationPsalmOption = await SettingsService.getSettingNumSalmInv() as string;

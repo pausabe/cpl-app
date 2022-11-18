@@ -17,10 +17,10 @@ export default class SettingsComponentAdapter{
     }
 
     static async getSettingsComponentUseLatin(RH){
-        let value = await SettingsService.getSettingUseLatin();
+        let value = await SettingsService.getSettingUseLatin() === "true";
         return (<SettingsComponent selectorComponent="switch" name="Himnes en llatí" id="useLatin" key="useLatin"
                                    value={value} callback={(id, value) => {
-            SettingsService.setSettingUseLatin(value, this.refreshHome.bind(this, RH));
+            SettingsService.setSettingUseLatin(value ? "true" : "false", this.refreshHome.bind(this, RH));
         }}/>);
     }
 

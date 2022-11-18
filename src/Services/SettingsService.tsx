@@ -45,7 +45,8 @@ export enum DarkModeOption {
 const defaultSettings = {
     showGlories: "false",
     prayLliures: "false",
-    useLatin: false,
+    // TODO: I tried to avoid using 'true' or 'false' as string but it lead me to some wierd problems I don't want to face right now
+    useLatin: "false",
     textSize: "3", //1-5
     diocesis: DioceseName.Barcelona,
     lloc: PrayingPlace.Diocese,
@@ -143,7 +144,7 @@ export default class SettingsService {
 
     static setSettingUseLatin(value, callback){
         return SettingsService._setValueIfValid("useLatin", value,
-            (val) => val || !val,
+            (val) => val === "true" || val === "false",
             callback);
     }
 
