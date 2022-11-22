@@ -11,12 +11,20 @@ import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
 import GlobalKeys from '../../Utils/GlobalKeys';
-import {CurrentLiturgyDayInformation, CurrentMassLiturgy, CurrentHoursLiturgy} from "../../Services/DataService";
+import {
+    CurrentLiturgyDayInformation,
+    CurrentMassLiturgy,
+    CurrentHoursLiturgy,
+    CurrentSettings
+} from "../../Services/DataService";
 import {SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
+import {DateManagement} from "../../Utils/DateManagement";
+import * as StorageService from "../../Services/Storage/StorageService";
+import StorageKeys from "../../Services/Storage/StorageKeys";
 
 const VESPERS_SELECTOR_TYPES = {
-    NOT_DEFINED_YET: 'not_defined_yet',
+    NONE: 'none',
     NORMAL: 'normal',
     VESPERS: 'vespers'
 };
@@ -26,7 +34,6 @@ export default class MassLiturgyMainScreen extends Component {
     constructor(props) {
         super(props);
 
-        this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.NOT_DEFINED_YET;
         this.state = {renderError: false}
     }
 
@@ -44,31 +51,54 @@ export default class MassLiturgyMainScreen extends Component {
     }
 
     Refresh_Layout() {
-        try {
-            if(this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NOT_DEFINED_YET){
-                this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.NORMAL;
-                if (CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA &&
-                    CurrentMassLiturgy.HasVespers &&
-                    CurrentLiturgyDayInformation.Today.Date.getHours() >= GlobalKeys.afternoon_hour/* TODO: I dont think this condition is necessary &&
-                StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading)*/) {
-                    this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.VESPERS;
+        this.getCurrentVesperSelection().then((currentVesperSelectorType) => {
+            this.CURRENT_VESPERS_SELECTOR_TYPE = currentVesperSelectorType;
+            try {
+                if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NONE) {
+                    if (CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA &&
+                        CurrentMassLiturgy.HasVespers &&
+                        CurrentLiturgyDayInformation.Today.Date.getHours() >= GlobalKeys.afternoon_hour/* TODO: I dont think this condition is necessary &&
+                        StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading)*/) {
+                        this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.VESPERS;
+                        this.StoreVesperSelection(VESPERS_SELECTOR_TYPES.VESPERS);
+                    }
+                    else{
+                        this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.NORMAL;
+                        this.StoreVesperSelection(VESPERS_SELECTOR_TYPES.NORMAL);
+                    }
                 }
-            }
 
-            let need_lectura2 = false;
-            if(this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NORMAL){
-                need_lectura2 = StringManagement.HasLiturgyContent(CurrentMassLiturgy.Today.SecondReading.Reading);
-            }
-            else if(this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS && CurrentMassLiturgy.Vespers){
-                need_lectura2 = StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading);
-            }
+                let need_lectura2 = false;
+                if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NORMAL) {
+                    need_lectura2 = StringManagement.HasLiturgyContent(CurrentMassLiturgy.Today.SecondReading.Reading);
+                } else if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS && CurrentMassLiturgy.Vespers) {
+                    need_lectura2 = StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading);
+                }
 
-            this.setState({need_lectura2: need_lectura2});
+                this.setState({need_lectura2: need_lectura2});
 
-        } catch (error) {
-            Logger.LogError(Logger.LogKeys.Screens, "Refresh_Layout", error);
-            this.setState({renderError: true})
-        }
+            } catch (error) {
+                Logger.LogError(Logger.LogKeys.Screens, "Refresh_Layout", error);
+                this.setState({renderError: true})
+            }
+        });
+
+    }
+
+    getCurrentVesperSelection() {
+        return new Promise((resolve) => {
+            StorageService.GetData(StorageKeys.CurrentMassVespersSelector).then((currentMassVesperSelector) => {
+                if (currentMassVesperSelector &&
+                    currentMassVesperSelector.includes("_") &&
+                    currentMassVesperSelector.split("_")[0] === DateManagement.GetDateKeyToBeStored(CurrentLiturgyDayInformation.Today.Date) &&
+                    currentMassVesperSelector.split("_")[1] !== 'undefined') {
+                    resolve(currentMassVesperSelector.split("_")[1]);
+                }
+                else{
+                    resolve(VESPERS_SELECTOR_TYPES.NONE);
+                }
+            });
+        });
     }
 
     //CALLBACKS ----------------------------------------------------------------------------
@@ -140,18 +170,18 @@ export default class MassLiturgyMainScreen extends Component {
                 return (
                     <View style={styles.buttons_containerVespers}>
                         <TouchableOpacity
-                            style={this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS? styles.buttonContainer : styles.buttonContainerPressedLeft}
+                            style={this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS ? styles.buttonContainer : styles.buttonContainerPressedLeft}
                             onPress={this.OnNormalPressed.bind(this)}>
                             <Text style={styles.buttonText}>{"Avui"}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS? styles.buttonContainerPressedRight : styles.buttonContainer}
+                            style={this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS ? styles.buttonContainerPressedRight : styles.buttonContainer}
                             onPress={this.OnVespersPressed.bind(this)}>
                             <Text style={styles.buttonText}>{"Vespertina"}</Text>
                             <View style={{padding: 1, paddingHorizontal: 5}}>
                                 {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.Title) ?
                                     <View>
-                                        {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA?
+                                        {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
                                             <Text numberOfLines={1}
                                                   style={styles.redCenter}>{CurrentHoursLiturgy.Vespers.Title}</Text>
                                             : null
@@ -182,21 +212,26 @@ export default class MassLiturgyMainScreen extends Component {
     OnNormalPressed() {
         try {
             this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.NORMAL;
+            this.StoreVesperSelection(VESPERS_SELECTOR_TYPES.NORMAL);
             this.setState({need_lectura2: StringManagement.HasLiturgyContent(CurrentMassLiturgy.Today.SecondReading.Reading)})
         } catch (error) {
             Logger.LogError(Logger.LogKeys.Screens, "OnNormalPressed", error);
-            return null;
         }
     }
 
     OnVespersPressed() {
         try {
             this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.VESPERS;
+            this.StoreVesperSelection(VESPERS_SELECTOR_TYPES.VESPERS);
             this.setState({need_lectura2: StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading)})
         } catch (error) {
             Logger.LogError(Logger.LogKeys.Screens, "OnVespersPressed", error);
-            return null;
         }
+    }
+
+    StoreVesperSelection(vesperSelectorType) {
+        const stringDate = DateManagement.GetDateKeyToBeStored(CurrentLiturgyDayInformation.Today.Date);
+        StorageService.StoreData(StorageKeys.CurrentMassVespersSelector, stringDate + '_' + vesperSelectorType);
     }
 
     Buttons(need_lectura2) {

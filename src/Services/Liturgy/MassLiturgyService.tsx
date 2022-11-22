@@ -25,7 +25,7 @@ function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, celebr
     const todayShouldHaveVespers = liturgyDayInformation.Tomorrow.Date.getDay() === 0 ||
         liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity;
     const tomorrowIsMoreImportantThanToday =
-        PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Today, celebrationInformation) >
+        PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Today, celebrationInformation) <=
         PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Tomorrow, celebrationInformation);
     return todayShouldHaveVespers && 
         tomorrowIsMoreImportantThanToday && 

@@ -1,5 +1,6 @@
 let StorageKeys = {
     CurrentAppVersion: 'CurrentAppVersion',
-    OptionalFestivity: 'lliureDate'
+    OptionalFestivity: 'lliureDate',
+    CurrentMassVespersSelector: 'none'
 }
 export default StorageKeys;
