@@ -52,7 +52,7 @@ export default class OfficeComponent extends Component {
 
     render() {
         try {
-            if (CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA) {
+            if (CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
                 var aux_vetlla = "La Vetlla pasqual substitueix avui l'Ofici de lectura.";
                 var aux_participen = "Els qui no participen en la solemne Vetlla pasqual n'escolliran almenys quatre lectures, amb els corresponents salms responsorials i oracions. Les lectures més adients són les que segueixen."
                 var aux_comença = "L'Ofici comença directament per les lectures.";
@@ -100,7 +100,7 @@ export default class OfficeComponent extends Component {
                         <HR/>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                         <Text selectable={true}
-                              style={this.styles.red}>{"HIMNE"}{(CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI && GlobalFunctions.isDarkAnthem()) ? " (nit)" : " (dia)"}</Text>
+                              style={this.styles.red}>{"HIMNE"}{(CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary && GlobalFunctions.isDarkAnthem()) ? " (nit)" : " (dia)"}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                         {this.himne()}
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
@@ -374,11 +374,11 @@ export default class OfficeComponent extends Component {
             const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
             const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
             // TODO: encapsulate
-            const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_CENDRA &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_SETMANES &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_RAMS &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_SET_SANTA &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_TRIDU;
+            const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentTriduum;
 
             return (
                 <View>

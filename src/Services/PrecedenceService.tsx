@@ -3,9 +3,12 @@ import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {CelebrationSpecificClassification, CelebrationType} from "./DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import CelebrationInformation from "../Models/HoursLiturgy/CelebrationInformation";
+import {GetSaturdayBeforePentecostDate} from "./CelebrationIdentifierService";
 
 export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpecificDayInformation, celebrationInformation: CelebrationInformation) : number{
-    if(dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU){
+    CelebrationIdentifierService.GetSaturdayBeforePentecostDate(dateLiturgyInformation)
+
+    if(dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum){
         return 1;
     }
     if (CelebrationIdentifierService.IsChristmas(dateLiturgyInformation.Date) ||
@@ -18,10 +21,10 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent ||
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter)) ||
         (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
-            dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_SET_SANTA &&
+            dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek &&
             dateLiturgyInformation.DayOfTheWeek >= 1 &&
             dateLiturgyInformation.DayOfTheWeek <= 4) ||
-        dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA){
+        dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave){
         return 2;
     }
     if((dateLiturgyInformation.CelebrationType === CelebrationType.Solemnity &&
@@ -57,7 +60,7 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
         dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent &&
         dateLiturgyInformation.Date.getDate() >= 17 && dateLiturgyInformation.Date.getDate() <= 24 &&
         dateLiturgyInformation.Date.getMonth() === 11) ||
-        dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA ||
+        dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave ||
         (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
         dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent)) {
         return 9;

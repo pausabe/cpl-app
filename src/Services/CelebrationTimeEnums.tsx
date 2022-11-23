@@ -1,26 +1,24 @@
 export enum SpecificLiturgyTimeType{
-    // TODO: change names when GLOBAL => Specific..
-    O_ORDINARI = 'O_ORDINAR',
-    Q_CENDRA = 'Q_CENDRA',
-    Q_SETMANES = 'Q_SETMANES',
-    Q_DIUM_RAMS = 'Q_DIUM_RAMS',
-    Q_SET_SANTA = 'Q_SET_SANTA',
-    Q_TRIDU = 'Q_TRIDU',
-    Q_DIUM_PASQUA = 'Q_DIUM_PASQUA',
-    P_OCTAVA = 'P_OCTAVA',
-    P_SETMANES = 'P_SETMANES',
-    A_SETMANES = 'A_SETMANES',
-    A_FERIES = 'A_FERIES',
-    N_OCTAVA = 'N_OCTAVA',
-    N_ABANS = 'N_ABANS',
+    Ordinary = 'O_ORDINAR',
+    LentAshes = 'Q_CENDRA',
+    LentWeeks = 'Q_SETMANES',
+    PalmSunday = 'Q_DIUM_RAMS',
+    HolyWeek = 'Q_SET_SANTA',
+    LentTriduum = 'Q_TRIDU',
+    EasterSunday = 'Q_DIUM_PASQUA',
+    EasterOctave = 'P_OCTAVA',
+    EasterWeeks = 'P_SETMANES',
+    AdventWeeks = 'A_SETMANES',
+    AdventFairs = 'A_FERIES',
+    ChristmasOctave = 'N_OCTAVA',
+    ChristmasBeforeOrdinary = 'N_ABANS',
 }
 
-// TODO: check entire code literals and check that are correct also
 export enum GenericLiturgyTimeType{
-    Ordinary = "Ordinari",
-    Advent = "Advent",
-    Christmas = "Nadal",
-    Lent = "Quaresma",
-    Easter = "Pasqua",
-    PaschalTriduum = "Tridu Pasqual"
+    Ordinary = 'Ordinari',
+    Advent = 'Advent',
+    Christmas = 'Nadal',
+    Lent = 'Quaresma',
+    Easter = 'Pasqua',
+    PaschalTriduum = 'Tridu Pasqual'
 }

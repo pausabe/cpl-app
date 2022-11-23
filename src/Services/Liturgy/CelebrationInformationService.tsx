@@ -15,22 +15,22 @@ export function ObtainCelebrationInformation(celebrationInformationFromCelebrati
         celebrationInformation.Title = "";
         celebrationInformation.Description = "-";
         liturgyDayInformation.CelebrationType = CelebrationType.Fair;
-        if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_SET_SANTA ||
-            liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU) {
+        if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
+            liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum) {
             celebrationInformation.Title = DateManagement.WeekDayName(liturgyDayInformation.Date.getDay()) + " Sant";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_OCTAVA) {
+        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
             celebrationInformation.Title = "Octava de Pasqua";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.N_OCTAVA &&
+        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
             liturgyDayInformation.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.StrongTime &&
             liturgyDayInformation.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay) {
             celebrationInformation.Title = "Octava de Nadal";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA) {
+        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
             celebrationInformation.Title = "Cendra";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.A_FERIES) {
+        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
             celebrationInformation.Title = "Fèria d’Advent";
         }
     }

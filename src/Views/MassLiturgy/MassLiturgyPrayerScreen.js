@@ -418,7 +418,7 @@ export default class MassLiturgyPrayerScreen extends Component {
                 <Text selectable={true} style={this.styles.black}>{this.state.DisplayVespers ? GlobalFunctions.trim(CurrentMassLiturgy.Vespers.Hallelujah.Hallelujah) : GlobalFunctions.trim(CurrentMassLiturgy.Today.Hallelujah.Hallelujah)}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
 
-                {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
+                {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ?
                     <View style={{ alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', paddingVertical: 10 }}>
                             <TouchableOpacity onPress={this._onEvangeliPress.bind(this, 'normal')}>

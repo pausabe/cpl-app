@@ -52,7 +52,7 @@ export function IsSacredHeartOfJesus(liturgySpecificDayInformation: LiturgySpeci
 
 export function IsOurLordJesusChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
     return liturgySpecificDayInformation.Date.getDay() === 0 &&
-        liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI &&
+        liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
         liturgySpecificDayInformation.Week === '34';
 }
 
@@ -81,15 +81,14 @@ export function IsSaintJohnBaptist(date: Date) {
 }
 
 export function GetSaturdayBeforePentecostDate(liturgyDateInformation: LiturgySpecificDayInformation): Date {
-    let saturdayBeforePentecost = new Date(liturgyDateInformation.PentecostDay.getDate());
+    let saturdayBeforePentecost = new Date(liturgyDateInformation.PentecostDay.getFullYear(), liturgyDateInformation.PentecostDay.getMonth(), liturgyDateInformation.PentecostDay.getDate());
     saturdayBeforePentecost.setDate(saturdayBeforePentecost.getDate() - 1);
     return saturdayBeforePentecost;
 }
 
 export function GetMondayAfterEasterOctaveDate(liturgyDateInformation: LiturgySpecificDayInformation): Date {
-    // TODO: test it, not sure (easter monday, mona)
-    let mondayAfterEasterOctave = new Date(liturgyDateInformation.PentecostDay.getDate());
-    mondayAfterEasterOctave.setDate(mondayAfterEasterOctave.getDate() - 48);
+    let mondayAfterEasterOctave = new Date(liturgyDateInformation.PentecostDay.getFullYear(), liturgyDateInformation.PentecostDay.getMonth(), liturgyDateInformation.PentecostDay.getDate());
+    mondayAfterEasterOctave.setDate(mondayAfterEasterOctave.getDate() - 41);
     return mondayAfterEasterOctave;
 }
 
@@ -132,7 +131,7 @@ export function IsLordPresentation(liturgyDateInformation: LiturgySpecificDayInf
     return liturgyDateInformation.Date.getMonth() === 1 && liturgyDateInformation.Date.getDate() === 2;
 }
 export function AshWednesday(liturgyDateInformation : LiturgySpecificDayInformation) {
-    return liturgyDateInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA &&
+    return liturgyDateInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes &&
         liturgyDateInformation.DayOfTheWeek === 3;
 }
 
@@ -142,7 +141,7 @@ export function IsPentecost(liturgyDateInformation : LiturgySpecificDayInformati
 
 export function IsAscension(liturgyDateInformation : LiturgySpecificDayInformation) {
     return liturgyDateInformation.Date.getDay() === 0 &&
-        liturgyDateInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES &&
+        liturgyDateInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks &&
         liturgyDateInformation.Week === '7';
 }
 

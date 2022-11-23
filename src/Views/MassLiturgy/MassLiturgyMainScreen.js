@@ -55,7 +55,7 @@ export default class MassLiturgyMainScreen extends Component {
             this.CURRENT_VESPERS_SELECTOR_TYPE = currentVesperSelectorType;
             try {
                 if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NONE) {
-                    if (CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA &&
+                    if (CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday &&
                         CurrentMassLiturgy.HasVespers &&
                         CurrentLiturgyDayInformation.Today.Date.getHours() >= GlobalKeys.afternoon_hour/* TODO: I dont think this condition is necessary &&
                         StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading)*/) {
@@ -181,7 +181,7 @@ export default class MassLiturgyMainScreen extends Component {
                             <View style={{padding: 1, paddingHorizontal: 5}}>
                                 {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.Title) ?
                                     <View>
-                                        {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
+                                        {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday ?
                                             <Text numberOfLines={1}
                                                   style={styles.redCenter}>{CurrentHoursLiturgy.Vespers.Title}</Text>
                                             : null
@@ -238,7 +238,7 @@ export default class MassLiturgyMainScreen extends Component {
         try {
             return (
                 <View style={styles.buttons_container}>
-                    {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
+                    {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ?
                         <View style={{flex: 1}}>
                             <TouchableOpacity style={styles.buttonContainer}
                                               onPress={this.On_Button_Pressed.bind(this, "VetllaPasquaLecturesSalms", need_lectura2)}>
@@ -253,7 +253,7 @@ export default class MassLiturgyMainScreen extends Component {
                         </View>
                         :
                         <View style={{flex: 1}}>
-                            {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_RAMS ?
+                            {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ?
                                 <View style={{flex: 1}}>
                                     <TouchableOpacity style={styles.buttonContainer}
                                                       onPress={this.On_Button_Pressed.bind(this, "Rams", need_lectura2)}>

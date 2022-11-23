@@ -30,7 +30,7 @@ export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, li
     else if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity){
         hoursLiturgy = GetSolemnityAndFestivityHoursLiturgy(liturgyMasters.SolemnityAndFestivityParts, liturgyDayInformation.Today, settings);
     }
-    else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA){
+    else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday){
         hoursLiturgy = GetEasterSundayHoursLiturgy(liturgyMasters.EasterSunday, settings);
     }
     else{
@@ -79,16 +79,16 @@ function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrow
    if(tomorrowLiturgyInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity) {
        return GetSolemnityAndFestivityFirstVespersOfTomorrow(liturgyMasters.SolemnityAndFestivityWhenFirstVespersParts, tomorrowLiturgyInformation, settings);
    }
-   if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_RAMS) {
+   if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
        return GetPalmSundayFistVespersOfTomorrow(liturgyMasters.PalmSundayParts, liturgyMasters.CommonPartsOfHolyWeek, tomorrowLiturgyInformation, settings);
    }
-   if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_TRIDU &&
+   if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum &&
        tomorrowLiturgyInformation.Date.getDay() === 5) {
        return GetEasterTriduumFistVespersOfTomorrow(liturgyMasters.PartsOfEasterTriduum, settings);
    }
    if(tomorrowLiturgyInformation.Date.getDay() === 0 &&
        tomorrowLiturgyInformation.Week === '1' &&
-       tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.A_SETMANES) {
+       tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks) {
        return GetAdventSundayFirstVespersOfTomorrow(
            liturgyMasters.AdventFirstVespersOfSundayParts,
            liturgyMasters.AdventWeekParts,

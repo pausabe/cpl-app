@@ -10,7 +10,7 @@ import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 
 export function ObtainSpecialCelebration(liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : SpecialCelebration{
     let specialCelebration = new SpecialCelebration();
-    if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA){
+    if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday){
         return specialCelebration;
     }
 
@@ -87,7 +87,7 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
     //12- Santa Eulàlia (12 de febrer) quan cau en diumenge i és temps de durant l’any
     if (CelebrationIdentifier.IsSaintEulalia(liturgyDayInformation) &&
         date.getDay() === 0 &&
-        specificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI &&
+        specificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
         (dioceseCode === DioceseCode.BaV || dioceseCode === DioceseCode.BaC)) {
         return SoulKeys.diesespecials_DiumengeTempsDurantAnySantaEulalia12Febrer;
     }
@@ -137,42 +137,42 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
     }
 
     //20- Diumenge IV d’Advent, dia 18
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '4' && date.getDate() === 18 && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '4' && date.getDate() === 18 && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIVAdvent18;
     }
 
     //21- Diumenge IV d’Advent, dia 19
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '4' && date.getDate() === 19 && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '4' && date.getDate() === 19 && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIVAdvent19;
     }
 
     //22- Diumenge IV d’Advent, dia 20
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '4' && date.getDate() === 20 && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '4' && date.getDate() === 20 && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIVAdvent20;
     }
 
     //23- Diumenge IV d’Advent, dia 21
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '4' && date.getDate() === 21 && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '4' && date.getDate() === 21 && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIVAdvent21;
     }
 
     //24- Diumenge IV d’Advent, dia 22
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '4' && date.getDate() === 22 && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '4' && date.getDate() === 22 && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIVAdvent22;
     }
 
     //25- Diumenge IV d’Advent, dia 23
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '4' && date.getDate() === 23 && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '4' && date.getDate() === 23 && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIVAdvent23;
     }
 
     //26- Diumenge IV d’Advent, dia 24
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '4' && date.getDate() === 24 && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '4' && date.getDate() === 24 && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIVAdvent24;
     }
 
     //27- Diumenge III d'Advent, quan és fèria
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_FERIES && week === '3' && date.getDay() === 0) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs && week === '3' && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeIIIAdventFeria;
     }
 
@@ -274,137 +274,137 @@ function ObtainStrongTimesMasterIdentifier(liturgyDayInformation : LiturgySpecif
     const week = liturgyDayInformation.Week;
 
     //1- Dissabte I Advent
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_SETMANES && week === '1' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks && week === '1' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIAdvent;
     }
 
     //2- Dissabte II Advent
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_SETMANES && week === '2' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks && week === '2' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIIAdvent;
     }
 
     //3- Divendres IV Advent (si és el 23 de desembre)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_SETMANES && week === '4' && date.getDate() === 23 && date.getMonth() == 11 && date.getDay() == 5) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks && week === '4' && date.getDate() === 23 && date.getMonth() == 11 && date.getDay() == 5) {
         return SoulKeys.salteriComuOficiTF_DivendresIVAdvent23Desembre;
     }
 
     //4- Divendres IV Advent (si és el 24 de desembre)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_SETMANES && week === '4' && date.getDate() === 24 && date.getMonth() == 11 && date.getDay() == 5) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks && week === '4' && date.getDate() === 24 && date.getMonth() == 11 && date.getDay() == 5) {
         return SoulKeys.salteriComuOficiTF_DivendresIVAdvent24Desembre;
     }
 
     //5- Dissabte IV Advent (24 de desembre)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.A_SETMANES && week === '4' && date.getDate() === 24 && date.getMonth() == 11 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks && week === '4' && date.getDate() === 24 && date.getMonth() == 11 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIVAdvent;
     }
 
     //6- Dissabte I Nadal (si és el 2 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '1' && date.getDate() === 2 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '1' && date.getDate() === 2 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteINadal2Gener;
     }
 
     //7- Dissabte I Nadal (si és el 3 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '1' && date.getDate() === 3 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '1' && date.getDate() === 3 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteINadal3Gener;
     }
 
     //8- Dissabte I Nadal (si és el 4 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '1' && date.getDate() === 4 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '1' && date.getDate() === 4 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteINadal4Gener;
     }
 
     //9- Dissabte I Nadal (si és el 5 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '1' && date.getDate() === 5 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '1' && date.getDate() === 5 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteINadal5Gener;
     }
 
     //10- Dissabte II Nadal (si és el 7 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '2' && date.getDate() === 7 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '2' && date.getDate() === 7 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIINadal7Gener;
     }
 
     //11- Dissabte II Nadal (si és el 8 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '2' && date.getDate() === 8 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '2' && date.getDate() === 8 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIINadal8Gener;
     }
 
     //12- Dissabte II Nadal (si és el 9 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '2' && date.getDate() === 9 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '2' && date.getDate() === 9 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIINadal9Gener;
     }
 
     //13- Dissabte II Nadal (si és el 10 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '2' && date.getDate() === 10 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '2' && date.getDate() === 10 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIINadal10Gener;
     }
 
     //14- Dissabte II Nadal (si és el 11 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '2' && date.getDate() === 11 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '2' && date.getDate() === 11 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIINadal11Gener;
     }
 
     //15- Dissabte II Nadal (si és el 12 de gener)
-    if (specificLiturgyTime === SpecificLiturgyTimeType.N_ABANS && week === '2' && date.getDate() === 12 && date.getMonth() === 0 && date.getDay() == 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary && week === '2' && date.getDate() === 12 && date.getMonth() === 0 && date.getDay() == 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIINadal12Gener;
     }
 
     //16- Divendres després de Cendra, Quaresma
-    if (specificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA && date.getDay() === 5) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.LentAshes && date.getDay() === 5) {
         return SoulKeys.salteriComuOficiTF_DivendresDespresCendraQuaresma;
     }
 
     //17- Dissabte després de Cendra, Quaresma
-    if (specificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.LentAshes && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteDespresCendraQuaresma;
     }
 
     //18- Dissabte I Quaresma
-    if (specificLiturgyTime === SpecificLiturgyTimeType.Q_SETMANES && week === '1' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks && week === '1' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIQuaresma;
     }
 
     //19- Dissabte II Quaresma
-    if (specificLiturgyTime === SpecificLiturgyTimeType.Q_SETMANES && week === '2' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks && week === '2' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIIQuaresma;
     }
 
     //20- Divendres IV Quaresma
-    if (specificLiturgyTime === SpecificLiturgyTimeType.Q_SETMANES && week === '4' && date.getDay() === 5) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks && week === '4' && date.getDay() === 5) {
         return SoulKeys.salteriComuOficiTF_DivendresIVQuaresma;
     }
 
     //21- Dissabte IV Quaresma
-    if (specificLiturgyTime === SpecificLiturgyTimeType.Q_SETMANES && week === '4' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks && week === '4' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIVQuaresma;
     }
 
     //22- Dissabte V Quaresma
-    if (specificLiturgyTime === SpecificLiturgyTimeType.Q_SETMANES && week === '5' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks && week === '5' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteVQuaresma;
     }
 
     //23- Dissabte II Pasqua
-    if (specificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES && week === '2' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks && week === '2' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteIIPasqua;
     }
 
     //24- Divendres IV Pasqua
-    if (specificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES && week === '4' && date.getDay() === 5) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks && week === '4' && date.getDay() === 5) {
         return SoulKeys.salteriComuOficiTF_DivendresIVPasqua;
     }
 
     //25- Dissabte IV Pasqua
-    if (specificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES && week === '4' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks && week === '4' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_issabteIVPasqua;
     }
 
     //26- Dissabte V Pasqua
-    if (specificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES && week === '5' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks && week === '5' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteVPasqua;
     }
 
     //27- Dissabte VI Pasqua
-    if (specificLiturgyTime === SpecificLiturgyTimeType.P_SETMANES && week === '6' && date.getDay() === 6) {
+    if (specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks && week === '6' && date.getDay() === 6) {
         return SoulKeys.salteriComuOficiTF_DissabteVIPasqua;
     }
 

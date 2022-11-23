@@ -65,7 +65,7 @@ export default class HoursLiturgyButtonsComponent extends Component {
             <Text style={styles.buttonText}>{"Vespres"}</Text>
           }
           {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.Title)
-            && CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA ?
+            && CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday ?
             <View style={{ padding: 5, paddingHorizontal: 15 }}>
               <Text numberOfLines={1} style={styles.redCenter}>{CurrentHoursLiturgy.Vespers.Title}</Text>
             </View>

@@ -11,7 +11,7 @@ import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInforma
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
 
 export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInformation, celebrationInformation: CelebrationInformation, settings: Settings): Promise<MassLiturgy> {
-    if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_DIUM_PASQUA) {
+    if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
         return GetEasterEve(liturgyDayInformation.Today);
     }
     let massLiturgy = new MassLiturgy();
@@ -29,7 +29,7 @@ function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, celebr
         PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Tomorrow, celebrationInformation);
     return todayShouldHaveVespers && 
         tomorrowIsMoreImportantThanToday && 
-        liturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.Q_DIUM_PASQUA;
+        liturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday;
 }
 
 async function GetMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
@@ -108,7 +108,7 @@ async function GetVespersMassLiturgy(tomorrowLiturgyDayInformation: LiturgySpeci
 }
 
 function IsSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean{
-    if(liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.O_ORDINARI)
+    if(liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary)
         return false;
     if(liturgySpecificDayInformation.Date.getMonth() === 11){
         return liturgySpecificDayInformation.Date.getDate() === 17 ||

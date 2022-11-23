@@ -17,7 +17,7 @@ import { AntDesign } from '@expo/vector-icons';
 import GLOBAL from "../Utils/GlobalKeys";
 import {CurrentCelebrationInformation, CurrentLiturgyDayInformation, CurrentSettings} from "../Services/DataService";
 import {CelebrationType, YearType} from "../Services/DatabaseEnums";
-import {SpecificLiturgyTimeType} from "../Services/CelebrationTimeEnums";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../Services/CelebrationTimeEnums";
 import {StringManagement} from "../Utils/StringManagement";
 
 export default class HomeScreen extends Component {
@@ -29,7 +29,7 @@ export default class HomeScreen extends Component {
   tempsName(t) {
     try {
       if (!t) return "";
-      if (t === 'Ordinari') {
+      if (t === GenericLiturgyTimeType.Ordinary) {
         return "Durant l'any";
       }
       return t;
@@ -95,12 +95,12 @@ export default class HomeScreen extends Component {
         case 'S':
           return (<Text style={styles.celebracioType}>{"Solemnitat"}</Text>);
         case 'M':
-          if (t === 'Quaresma')
+          if (t === GenericLiturgyTimeType.Lent)
             return (<Text style={styles.celebracioType}>{"Commemoració"}</Text>);
           return (<Text style={styles.celebracioType}>{"Memòria obligatòria"}</Text>);
         case CelebrationType.OptionalVirginMemory:
         case CelebrationType.OptionalMemory:
-          if (t === 'Quaresma')
+          if (t === GenericLiturgyTimeType.Lent)
             return (<Text style={{
               textAlign: 'center',
               color: memLliureColor,
@@ -232,7 +232,7 @@ export default class HomeScreen extends Component {
       let text_setmana = "";
       if(CurrentLiturgyDayInformation.Today.Week !== '0' && CurrentLiturgyDayInformation.Today.Week !== '.')
         text_setmana = this.weekDayName(date_getday) + " de la setmana "
-      else if(CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Q_CENDRA){
+      else if(CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes){
         if(date_getday === 3)
           text_setmana = this.weekDayName(date_getday) + " de Cendra"
         else
