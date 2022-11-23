@@ -802,6 +802,7 @@ function GetPalmSundayFistVespersOfTomorrow(palmSundayParts: PalmSundayParts, co
 
 function GetEasterTriduumFistVespersOfTomorrow(partsOfEasterTriduum: PartsOfEasterTriduum, settings: Settings): Vespers{
     let vespers = new Vespers();
+    vespers.Title = "Tridu Pasqual";
     vespers.Anthem = settings.UseLatin? partsOfEasterTriduum.VespersLatinAnthem : partsOfEasterTriduum.VespersCatalanAnthem;
     vespers.FirstPsalm = partsOfEasterTriduum.VespersFirstPsalm;
     vespers.SecondPsalm = partsOfEasterTriduum.VespersSecondPsalm;
@@ -816,6 +817,7 @@ function GetEasterTriduumFistVespersOfTomorrow(partsOfEasterTriduum: PartsOfEast
 
 function GetAdventSundayFirstVespersOfTomorrow(adventSundayParts: AdventSundayParts, adventWeekParts: AdventWeekParts, commonAdventAndChristmasParts: CommonAdventAndChristmasParts, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Vespers{
     let vespers = new Vespers();
+    vespers.Title = "Diumenge d'advent";
     vespers.Anthem = settings.UseLatin? commonAdventAndChristmasParts.VespersLatinAnthem : commonAdventAndChristmasParts.VespersCatalanAnthem;
     vespers.FirstPsalm.Antiphon = adventSundayParts.FirstVespersFirstAntiphon;
     vespers.SecondPsalm.Antiphon = adventSundayParts.FirstVespersSecondAntiphon;

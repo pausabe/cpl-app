@@ -21,7 +21,7 @@ export function ObtainVespers(liturgyMasters : LiturgyMasters, liturgyDayInforma
     vespers.Prayers = GetPrayers(liturgyMasters, liturgyDayInformation);
     vespers.FinalPrayer = GetFinalPrayer(liturgyMasters, liturgyDayInformation);
     vespers.EvangelicalChant = liturgyMasters.Various.VespersEvangelicalChant;
-    vespers.CelebrationTitle = liturgyDayInformation.DayOfTheWeek === 6? "Primeres vespres de diumenge" : "";
+    vespers.Title = liturgyDayInformation.DayOfTheWeek === 6? "Primeres vespres de diumenge" : "";
     return vespers;
 }
 
@@ -67,7 +67,7 @@ export function MergeVespersWithCelebration(liturgyMasters : LiturgyMasters, lit
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.FinalPrayer)){
             vespers.FinalPrayer = withCelebrationVespers.FinalPrayer;
         }
-        vespers.CelebrationTitle = withCelebrationVespers.CelebrationTitle;
+        vespers.Title = withCelebrationVespers.Title;
     }
     return vespers;
 }

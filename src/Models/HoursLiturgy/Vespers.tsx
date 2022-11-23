@@ -11,6 +11,5 @@ export default class Vespers {
     EvangelicalAntiphon: string;
     Prayers: string;
     FinalPrayer: string;
-    CelebrationTitle: string;
     Title: string;
 }

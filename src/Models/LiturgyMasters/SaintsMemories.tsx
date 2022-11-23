@@ -12,8 +12,6 @@ export default class SaintsMemories {
 
             this.Celebration.Diocese = databaseRow.Diocesis;
             this.Celebration.Category = databaseRow.Categoria;
-            this.Celebration.Day = databaseRow.dia;
-            this.Celebration.LiturgicalTime = databaseRow.Temps;
             this.Celebration.Title = databaseRow.nomMemoria;
             this.Celebration.Description = databaseRow.infoMemoria;
             this.Celebration.SpecificClassification = databaseRow.Diocesis === '-' ?

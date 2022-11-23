@@ -6,8 +6,6 @@ import CelebrationInformation from "../Models/HoursLiturgy/CelebrationInformatio
 import {GetSaturdayBeforePentecostDate} from "./CelebrationIdentifierService";
 
 export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpecificDayInformation, celebrationInformation: CelebrationInformation) : number{
-    CelebrationIdentifierService.GetSaturdayBeforePentecostDate(dateLiturgyInformation)
-
     if(dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum){
         return 1;
     }

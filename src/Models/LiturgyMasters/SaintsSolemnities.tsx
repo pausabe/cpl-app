@@ -13,14 +13,7 @@ export default class SaintsSolemnities extends Solemnity{
         if(databaseRow) {
             this.Id = databaseRow.id;
 
-            this.Celebration.Day = databaseRow.dia;
-            /*
-            We don't want to get 'this.Celebration.Type' to avoid confusion with LiturgySpecificDayInformation.CelebrationType
-            this.Celebration.Type = databaseRow.Cat;
-             */
             this.Celebration.SpecificClassification = this.GetSpecificClassificationByCelebrationType(databaseRow.Precedencia, databaseRow.Cat, databaseRow.Diocesis);
-            this.Celebration.Precedence = databaseRow.Precedencia;
-            this.Celebration.LiturgicalTime = databaseRow.Temps;
             this.Celebration.Diocese = databaseRow.Diocesis;
             this.Celebration.Category = databaseRow.Categoria;
             this.Celebration.Title = databaseRow.nomMemoria;

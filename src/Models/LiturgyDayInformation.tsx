@@ -18,6 +18,7 @@ export class LiturgySpecificDayInformation {
     YearType: string;
     YearIsEven: boolean;
     DayOfTheWeek: number;
+    DayOfTheWeekNameShort: string;
     SpecialCelebration: SpecialCelebration = new SpecialCelebration();
 }
 
