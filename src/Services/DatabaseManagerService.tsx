@@ -17,42 +17,14 @@ export function executeQueryAsync(query) : Promise<SQLResultSet>{
     );
 }
 
-// TODO: refactor and avoid to export (use executeQueryAsync)
-export function executeQuery(query, callback, errorCallback) {
-    if(CPLDataBase === undefined) {
-        OpenDatabase()
-            .then((result) => {
-                _executeQuery(query)
-                    .then((result) => {
-                        if(callback !== undefined){
-                            callback(result);
-                        }
-                    })
-                    .catch((error) => {
-                        if(errorCallback !== undefined){
-                            errorCallback(error);
-                        }
-                    });
-            })
-            .catch((error) => {
-                if(errorCallback !== undefined){
-                    errorCallback(error);
-                }
-            });
+async function executeQuery(query, callback, errorCallback) {
+    if (CPLDataBase === undefined) {
+        await OpenDatabase()
+            .catch((error) => errorCallback && errorCallback(error));
     }
-    else{
-        _executeQuery(query)
-            .then((result) => {
-                if(callback !== undefined){
-                    callback(result);
-                }
-            })
-            .catch((error) => {
-                if(errorCallback !== undefined){
-                    errorCallback(error);
-                }
-            });
-    }
+    _executeQuery(query)
+        .then((result) => callback && callback(result))
+        .catch((error) => errorCallback && errorCallback(error));
 }
 
 async function OpenDatabase() {

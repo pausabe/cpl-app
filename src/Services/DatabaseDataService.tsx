@@ -1,6 +1,6 @@
 import * as Logger from '../Utils/Logger';
 import GlobalFunctions from '../Utils/GlobalFunctions';
-import {executeQuery, executeQueryAsync} from "./DatabaseManagerService";
+import {executeQueryAsync} from "./DatabaseManagerService";
 import {Settings} from '../Models/Settings';
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {DayMassLiturgy} from "../Models/MassLiturgy";
@@ -11,12 +11,12 @@ import {getDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
 
 export function getDatabaseVersion(): Promise<number> {
     return new Promise((resolve) => {
-        executeQuery(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`,
-            result => {
+        executeQueryAsync(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`)
+            .then(result => {
                 const databaseVersion = parseInt(result.rows.item(0).databaseVersion);
                 resolve(databaseVersion);
-            },
-            (error) => {
+            })
+            .catch(error => {
                 Logger.Log(Logger.LogKeys.DatabaseDataService, "getDatabaseVersion", "Error trying to get the database version", error);
                 resolve(0);
             });
@@ -112,8 +112,8 @@ export async function ObtainCommonOfficesAsync(categoria) {
 }
 
 export async function GetHolyDaysMass(holyDayMassIdentifier: number, liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
-    // TODO: here im assuming that day with ID > day without it.
-    //   it could not be always that way... I should have some way to identify the precedences and decide later the most important
+    // Assuming that day with ID > day without it. I think it's correct, but maybe I should
+    //   have some way to identify the precedences and decide later the most important. Like LDSantoral.Precedence
     return holyDayMassIdentifier === -1 ?
         GetHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation, settings) :
         GetHolyDaysMassWithIdentifier(holyDayMassIdentifier);
