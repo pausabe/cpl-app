@@ -1,11 +1,12 @@
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
-import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
+import LiturgyDayInformation, {SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
 import {CelebrationType} from "../DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
 import {DateManagement} from "../../Utils/DateManagement";
+import * as PrecedenceService from "../PrecedenceService";
 
-export function ObtainCelebrationInformation(celebrationInformationFromCelebration: CelebrationInformation, liturgyDayInformation: LiturgySpecificDayInformation): CelebrationInformation {
+export function ObtainCelebrationInformation(liturgyDayInformation: LiturgyDayInformation, celebrationInformationFromCelebration: CelebrationInformation): CelebrationInformation {
     // With this service I'm trying to separate Celebration by some kind of Saint from Celebration from the liturgy time
     let celebrationInformation = new CelebrationInformation();
     if(StringManagement.HasLiturgyContent(celebrationInformationFromCelebration.Title)) {
@@ -14,25 +15,27 @@ export function ObtainCelebrationInformation(celebrationInformationFromCelebrati
     else{
         celebrationInformation.Title = "";
         celebrationInformation.Description = "-";
-        liturgyDayInformation.CelebrationType = CelebrationType.Fair;
-        if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
-            liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum) {
-            celebrationInformation.Title = DateManagement.WeekDayName(liturgyDayInformation.Date.getDay()) + " Sant";
+        liturgyDayInformation.Today.CelebrationType = CelebrationType.Fair;
+        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
+            liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum) {
+            celebrationInformation.Title = DateManagement.WeekDayName(liturgyDayInformation.Today.Date.getDay()) + " Sant";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
+        else if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
             celebrationInformation.Title = "Octava de Pasqua";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-            liturgyDayInformation.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.StrongTime &&
-            liturgyDayInformation.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay) {
+        else if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
+            liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.StrongTime &&
+            liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay) {
             celebrationInformation.Title = "Octava de Nadal";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
+        else if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
             celebrationInformation.Title = "Cendra";
         }
-        else if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
+        else if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
             celebrationInformation.Title = "Fèria d’Advent";
         }
     }
+    celebrationInformation.TodayPrecedence = PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Today, celebrationInformation);
+    celebrationInformation.TomorrowPrecedence = PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Tomorrow, celebrationInformation);
     return celebrationInformation;
 }

@@ -20,7 +20,7 @@ import * as ConcreteNamesInPrayers from "./ConcreteNamesInPrayersService";
 export async function ObtainHoursLiturgy(liturgyMasters: LiturgyMasters, liturgyDayInformation: liturgyDayInformation, settings: Settings) : Promise<HoursLiturgy> {
   let hoursLiturgy = new HoursLiturgy();
   const celebrationHoursLiturgy = CelebrationHoursLiturgyService.ObtainCelebrationHoursLiturgy(liturgyMasters, liturgyDayInformation, settings);
-  hoursLiturgy.CelebrationInformation = CelebrationInformationService.ObtainCelebrationInformation(celebrationHoursLiturgy.CelebrationInformation, liturgyDayInformation.Today);
+  hoursLiturgy.CelebrationInformation = CelebrationInformationService.ObtainCelebrationInformation(liturgyDayInformation, celebrationHoursLiturgy.CelebrationInformation);
   hoursLiturgy.ConcreteNamesInPrayers = ConcreteNamesInPrayers.ObtainConcreteNamesInPrayers(liturgyMasters, settings);
   hoursLiturgy.Invitation = InvitationService.ObtainInvitation(liturgyMasters, liturgyDayInformation.Today, celebrationHoursLiturgy.Invitation);
   hoursLiturgy.Office = OfficeService.ObtainOffice(liturgyMasters, liturgyDayInformation.Today, celebrationHoursLiturgy.Office, settings);
@@ -36,9 +36,7 @@ export async function ObtainHoursLiturgy(liturgyMasters: LiturgyMasters, liturgy
 
 export function GetVespersWithLowerPrecedence(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, celebrationInformation: CelebrationInformation, settings : Settings, vespersOptions: VespersOptions): Vespers{
   // Low precedence level value implies more importance
-  const todayPrecedence = PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Today, celebrationInformation);
-  const tomorrowPrecedence = PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Tomorrow, celebrationInformation);
-  if(todayPrecedence <= tomorrowPrecedence){
+  if(celebrationInformation.TodayPrecedence <= celebrationInformation.TomorrowPrecedence){
     if(liturgyDayInformation.Today.CelebrationType === CelebrationType.Fair){
       return vespersOptions.VespersWithoutCelebration;
     }
