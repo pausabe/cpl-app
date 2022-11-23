@@ -6,7 +6,7 @@ import {
     Platform
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
-import GlobalFunctions from '../../../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
 import * as Logger from '../../../Utils/Logger';
 import {SpecificHour} from "../../../Models/HoursLiturgy/Hours";
 import {CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
@@ -21,19 +21,19 @@ export default class HoursComponent extends Component {
         super(props);
 
         styles = {
-            black: GlobalFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackBold: GlobalFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackItalic: GlobalFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackSmallItalicRight: GlobalFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackJustified: GlobalFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            red: GlobalFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redItalic: GlobalFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenter: GlobalFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenterBold: GlobalFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redSmallItalicRight: GlobalFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            hiddenPrayerButton: GlobalFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButton: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            black: GlobalViewFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackBold: GlobalViewFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackItalic: GlobalViewFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackSmallItalicRight: GlobalViewFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackJustified: GlobalViewFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            red: GlobalViewFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redItalic: GlobalViewFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenter: GlobalViewFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenterBold: GlobalViewFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redSmallItalicRight: GlobalViewFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            hiddenPrayerButton: GlobalViewFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButton: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButtonBold: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
         };
 
         specificHour = this.props.HORA_MENOR;
@@ -126,28 +126,28 @@ export default class HoursComponent extends Component {
     }
 
     himne() {
-        const aux_himne = GlobalFunctions.rs(specificHour.Anthem);
+        const aux_himne = GlobalViewFunctions.rs(specificHour.Anthem);
         return (<Text selectable={true} style={styles.black}>{aux_himne}</Text>);
     }
 
     salmodia() {
         const aux_antifones = specificHour.HasMultipleAntiphons;
-        const aux_ant1 = aux_antifones ? GlobalFunctions.rs(specificHour.FirstPsalm.Antiphon) : "";
-        const aux_ant = !aux_antifones ? GlobalFunctions.rs(specificHour.UniqueAntiphon) : "";
-        const aux_titol1 = GlobalFunctions.rs(specificHour.FirstPsalm.Title);
+        const aux_ant1 = aux_antifones ? GlobalViewFunctions.rs(specificHour.FirstPsalm.Antiphon) : "";
+        const aux_ant = !aux_antifones ? GlobalViewFunctions.rs(specificHour.UniqueAntiphon) : "";
+        const aux_titol1 = GlobalViewFunctions.rs(specificHour.FirstPsalm.Title);
         const aux_has_com1 = StringManagement.HasLiturgyContent(specificHour.FirstPsalm.Comment);
-        const aux_com1 = aux_has_com1 ? GlobalFunctions.rs(specificHour.FirstPsalm.Comment) : "";
-        const aux_salm1 = this.salm(GlobalFunctions.rs(specificHour.FirstPsalm.Psalm));
-        const aux_ant2 = aux_antifones ? GlobalFunctions.rs(specificHour.SecondPsalm.Antiphon) : "";
-        const aux_titol2 = GlobalFunctions.rs(specificHour.SecondPsalm.Title);
+        const aux_com1 = aux_has_com1 ? GlobalViewFunctions.rs(specificHour.FirstPsalm.Comment) : "";
+        const aux_salm1 = this.salm(GlobalViewFunctions.rs(specificHour.FirstPsalm.Psalm));
+        const aux_ant2 = aux_antifones ? GlobalViewFunctions.rs(specificHour.SecondPsalm.Antiphon) : "";
+        const aux_titol2 = GlobalViewFunctions.rs(specificHour.SecondPsalm.Title);
         const aux_has_com2 = StringManagement.HasLiturgyContent(specificHour.SecondPsalm.Comment);
-        const aux_com2 = aux_has_com2 ? GlobalFunctions.rs(specificHour.SecondPsalm.Comment) : "";
-        const aux_salm2 = this.salm(GlobalFunctions.rs(specificHour.SecondPsalm.Psalm));
-        const aux_ant3 = aux_antifones ? GlobalFunctions.rs(specificHour.ThirdPsalm.Antiphon) : "";
-        const aux_titol3 = GlobalFunctions.rs(specificHour.ThirdPsalm.Title);
+        const aux_com2 = aux_has_com2 ? GlobalViewFunctions.rs(specificHour.SecondPsalm.Comment) : "";
+        const aux_salm2 = this.salm(GlobalViewFunctions.rs(specificHour.SecondPsalm.Psalm));
+        const aux_ant3 = aux_antifones ? GlobalViewFunctions.rs(specificHour.ThirdPsalm.Antiphon) : "";
+        const aux_titol3 = GlobalViewFunctions.rs(specificHour.ThirdPsalm.Title);
         const aux_has_com3 = StringManagement.HasLiturgyContent(specificHour.ThirdPsalm.Comment);
-        const aux_com3 = aux_has_com3 ? GlobalFunctions.rs(specificHour.ThirdPsalm.Comment) : "";
-        const aux_salm3 = this.salm(GlobalFunctions.rs(specificHour.ThirdPsalm.Psalm));
+        const aux_com3 = aux_has_com3 ? GlobalViewFunctions.rs(specificHour.ThirdPsalm.Comment) : "";
+        const aux_salm3 = this.salm(GlobalViewFunctions.rs(specificHour.ThirdPsalm.Psalm));
 
         return (
             <View>
@@ -246,10 +246,10 @@ export default class HoursComponent extends Component {
     }
 
     lecturaBreuResp() {
-        const aux_vers = GlobalFunctions.rs(specificHour.ShortReading.Quote);
-        const aux_lecturaBreu = GlobalFunctions.rs(specificHour.ShortReading.ShortReading);
-        const aux_respV = GlobalFunctions.rs(specificHour.Responsory.Versicle);
-        const aux_respR = GlobalFunctions.rs(specificHour.Responsory.Response);
+        const aux_vers = GlobalViewFunctions.rs(specificHour.ShortReading.Quote);
+        const aux_lecturaBreu = GlobalViewFunctions.rs(specificHour.ShortReading.ShortReading);
+        const aux_respV = GlobalViewFunctions.rs(specificHour.Responsory.Versicle);
+        const aux_respR = GlobalViewFunctions.rs(specificHour.Responsory.Response);
 
         return (
             <View>
@@ -268,7 +268,7 @@ export default class HoursComponent extends Component {
     }
 
     finalPrayer() {
-        const aux_oracio = GlobalFunctions.completeOracio(GlobalFunctions.rs(specificHour.FinalPrayer), true);
+        const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(specificHour.FinalPrayer), true);
         return (<Text selectable={true} style={styles.black}>{aux_oracio}</Text>);
     }
 }

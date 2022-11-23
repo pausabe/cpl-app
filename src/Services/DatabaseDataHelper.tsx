@@ -1,7 +1,7 @@
 import {DioceseName, PrayingPlace} from "./SettingsService";
 import {DioceseCode} from "./DatabaseEnums";
 
-export function getDioceseCodeFromDioceseName(dioceseName, place) {
+export function GetDioceseCodeFromDioceseName(dioceseName, place) {
     switch (dioceseName) {
         case DioceseName.Barcelona:
             switch (place) {
@@ -117,4 +117,143 @@ export function getDioceseCodeFromDioceseName(dioceseName, place) {
             break;
     }
     return DioceseCode.BaD;
+}
+
+export function GetCelebrationTypeFromTodayLiurgyRow(dioceseCode: string, liturgyYearDatabaseRow: any): string{
+    switch (dioceseCode) {
+        case DioceseCode.BaD:
+            return liturgyYearDatabaseRow.BaD;
+        case DioceseCode.BaV:
+            return liturgyYearDatabaseRow.BaV;
+        case DioceseCode.BaC:
+            return liturgyYearDatabaseRow.BaC;
+        case DioceseCode.GiD:
+            return liturgyYearDatabaseRow.GiD;
+        case DioceseCode.GiV:
+            return liturgyYearDatabaseRow.GiV;
+        case DioceseCode.GiC:
+            return liturgyYearDatabaseRow.GiC;
+        case DioceseCode.LlD:
+            return liturgyYearDatabaseRow.LlD;
+        case DioceseCode.LlV:
+            return liturgyYearDatabaseRow.LlV;
+        case DioceseCode.LlC:
+            return liturgyYearDatabaseRow.LlC;
+        case DioceseCode.SFD:
+            return liturgyYearDatabaseRow.SFD;
+        case DioceseCode.SFV:
+            return liturgyYearDatabaseRow.SFV;
+        case DioceseCode.SFC:
+            return liturgyYearDatabaseRow.SFC;
+        case DioceseCode.SoD:
+            return liturgyYearDatabaseRow.SoD;
+        case DioceseCode.SoV:
+            return liturgyYearDatabaseRow.SoV;
+        case DioceseCode.SoC:
+            return liturgyYearDatabaseRow.SoC;
+        case DioceseCode.TaD:
+            return liturgyYearDatabaseRow.TaD;
+        case DioceseCode.TaV:
+            return liturgyYearDatabaseRow.TaV;
+        case DioceseCode.TaC:
+            return liturgyYearDatabaseRow.TaC;
+        case DioceseCode.TeD:
+            return liturgyYearDatabaseRow.TeD;
+        case DioceseCode.TeV:
+            return liturgyYearDatabaseRow.TeV;
+        case DioceseCode.TeC:
+            return liturgyYearDatabaseRow.TeC;
+        case DioceseCode.ToD:
+            return liturgyYearDatabaseRow.ToD;
+        case DioceseCode.ToV:
+            return liturgyYearDatabaseRow.ToV;
+        case DioceseCode.ToC:
+            return liturgyYearDatabaseRow.ToC;
+        case DioceseCode.UrD:
+            return liturgyYearDatabaseRow.UrD;
+        case DioceseCode.UrV:
+            return liturgyYearDatabaseRow.UrV;
+        case DioceseCode.UrC:
+            return liturgyYearDatabaseRow.UrC;
+        case DioceseCode.ViD:
+            return liturgyYearDatabaseRow.ViD;
+        case DioceseCode.ViV:
+            return liturgyYearDatabaseRow.ViV;
+        case DioceseCode.ViC:
+            return liturgyYearDatabaseRow.ViC;
+        case DioceseCode.MaD:
+            return liturgyYearDatabaseRow.MaD;
+        case DioceseCode.MaV:
+            return liturgyYearDatabaseRow.MaV;
+        case DioceseCode.MaC:
+            return liturgyYearDatabaseRow.MaC;
+        case DioceseCode.Andorra:
+            return liturgyYearDatabaseRow.Andorra;
+    }
+
+    return liturgyYearDatabaseRow.BaD;
+}
+
+export function IsMovedDiocese(dioceseCode: string, dioceseCodeMoved: string): boolean {
+    if (!dioceseCode || dioceseCode === '' || dioceseCodeMoved === '-' || dioceseCode === undefined)
+        return false;
+    if (dioceseCodeMoved === '*') return true;
+    if (dioceseCode === dioceseCodeMoved) return true;
+    return dioceseCode.charAt(0) === dioceseCodeMoved.charAt(0) &&
+        dioceseCode.charAt(1) === dioceseCodeMoved.charAt(1);
+}
+
+export function GetDateShortDatabaseCode(date: Date, dioceseCode: string, movedDay: string, dioceseCodeMoved: string): string {
+    if (movedDay !== '-' && IsMovedDiocese(dioceseCode, dioceseCodeMoved))
+        return movedDay;
+
+    let monthShort;
+    switch (date.getMonth()) {
+        case 0:
+            monthShort = "ene";
+            break;
+        case 1:
+            monthShort = "feb";
+            break;
+        case 2:
+            monthShort = "mar";
+            break;
+        case 3:
+            monthShort = "abr";
+            break;
+        case 4:
+            monthShort = "may";
+            break;
+        case 5:
+            monthShort = "jun";
+            break;
+        case 6:
+            monthShort = "jul";
+            break;
+        case 7:
+            monthShort = "ago";
+            break;
+        case 8:
+            monthShort = "sep";
+            break;
+        case 9:
+            monthShort = "oct";
+            break;
+        case 10:
+            monthShort = "nov";
+            break;
+        case 11:
+            monthShort = "dic";
+            break;
+    }
+
+    let dayShort;
+    if (date.getDate() < 10){
+        dayShort = `0${date.getDate()}`;
+    }
+    else {
+        dayShort = date.getDate();
+    }
+
+    return dayShort + "-" + monthShort;
 }

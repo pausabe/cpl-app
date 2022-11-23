@@ -57,8 +57,7 @@ export default class MassLiturgyMainScreen extends Component {
                 if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NONE) {
                     if (CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday &&
                         CurrentMassLiturgy.HasVespers &&
-                        CurrentLiturgyDayInformation.Today.Date.getHours() >= GlobalKeys.afternoon_hour/* TODO: I dont think this condition is necessary &&
-                        StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading)*/) {
+                        CurrentLiturgyDayInformation.Today.Date.getHours() >= GlobalKeys.afternoon_hour) {
                         this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.VESPERS;
                         this.StoreVesperSelection(VESPERS_SELECTOR_TYPES.VESPERS);
                     }

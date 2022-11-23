@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
 import GlobalKeys from '../../../Utils/GlobalKeys';
-import GlobalFunctions from '../../../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
 import SettingsService from '../../../Services/SettingsService';
 import * as Logger from '../../../Utils/Logger';
 import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
@@ -19,19 +19,19 @@ export default class NightPrayerComponent extends Component {
         super(props);
         
         this.styles = {
-            black: GlobalFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackBold: GlobalFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackItalic: GlobalFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackSmallItalicRight: GlobalFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackJustified: GlobalFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            red: GlobalFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redItalic: GlobalFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenter: GlobalFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenterBold: GlobalFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redSmallItalicRight: GlobalFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            hiddenPrayerButton: GlobalFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButton: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            black: GlobalViewFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackBold: GlobalViewFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackItalic: GlobalViewFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackSmallItalicRight: GlobalViewFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackJustified: GlobalViewFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            red: GlobalViewFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redItalic: GlobalViewFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenter: GlobalViewFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenterBold: GlobalViewFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redSmallItalicRight: GlobalViewFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            hiddenPrayerButton: GlobalViewFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButton: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButtonBold: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
         };
 
         let auxNumAntMare = CurrentSettings.VirginAntiphonOption;
@@ -71,23 +71,23 @@ export default class NightPrayerComponent extends Component {
 
         switch (numAntMare) {
             case '1':
-                antMare = GlobalFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFirstOption);
+                antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFirstOption);
                 ant1Style = this.styles.prayerTabButtonBold;
                 break;
             case '2':
-                antMare = GlobalFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonSecondOption);
+                antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonSecondOption);
                 ant2Style = this.styles.prayerTabButtonBold;
                 break;
             case '3':
-                antMare = GlobalFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonThirdOption);
+                antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonThirdOption);
                 ant3Style = this.styles.prayerTabButtonBold;
                 break;
             case '4':
-                antMare = GlobalFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFourthOption);
+                antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFourthOption);
                 ant4Style = this.styles.prayerTabButtonBold;
                 break;
             case '5':
-                antMare = GlobalFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFifthOption);
+                antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFifthOption);
                 ant5Style = this.styles.prayerTabButtonBold;
                 break;
         }
@@ -149,46 +149,46 @@ export default class NightPrayerComponent extends Component {
                     CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentTriduum;
                 const aux_lloable = "És lloable que aquí es faci examen de consciència.";
                 const aux_acte_pen = this.COMPLETES.PenitentialAct;
-                const aux_himne = GlobalFunctions.rs(this.COMPLETES.Anthem);
+                const aux_himne = GlobalViewFunctions.rs(this.COMPLETES.Anthem);
                 const is_dos_salms = this.COMPLETES.HasMultiplePsalms;
                 const has_distint_ant = !this.COMPLETES.UseOnlyFirstPsalmAntiphon;
-                const aux_ant1 = GlobalFunctions.rs(this.COMPLETES.FirstPsalm.Antiphon);
-                const aux_titol1 = GlobalFunctions.rs(this.COMPLETES.FirstPsalm.Title);
+                const aux_ant1 = GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Antiphon);
+                const aux_titol1 = GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Title);
                 const has_com1 = this.COMPLETES.FirstPsalm.Comment !== '-';
-                const aux_com1 = has_com1 ? GlobalFunctions.rs(this.COMPLETES.FirstPsalm.Comment) : "";
-                const aux_salm1 = this.salm(GlobalFunctions.rs(this.COMPLETES.FirstPsalm.Psalm));
+                const aux_com1 = has_com1 ? GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Comment) : "";
+                const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Psalm));
                 let aux_ant2;
                 let aux_titol2;
                 let has_com2;
                 let aux_com2;
                 let aux_salm2;
                 if (is_dos_salms) {
-                    aux_ant2 = has_distint_ant ? GlobalFunctions.rs(this.COMPLETES.SecondPsalm.Antiphon) : "";
-                    aux_titol2 = GlobalFunctions.rs(this.COMPLETES.SecondPsalm.Title);
+                    aux_ant2 = has_distint_ant ? GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Antiphon) : "";
+                    aux_titol2 = GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Title);
                     has_com2 = this.COMPLETES.SecondPsalm.Comment !== '-';
-                    aux_com2 = has_com2 ? GlobalFunctions.rs(this.COMPLETES.SecondPsalm.Comment) : "";
-                    aux_salm2 = this.salm(GlobalFunctions.rs(this.COMPLETES.SecondPsalm.Psalm));
+                    aux_com2 = has_com2 ? GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Comment) : "";
+                    aux_salm2 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Psalm));
                 }
-                const aux_vers = GlobalFunctions.rs(this.COMPLETES.ShortReading.Quote);
-                const aux_lectura_breu = GlobalFunctions.rs(this.COMPLETES.ShortReading.ShortReading);
+                const aux_vers = GlobalViewFunctions.rs(this.COMPLETES.ShortReading.Quote);
+                const aux_lectura_breu = GlobalViewFunctions.rs(this.COMPLETES.ShortReading.ShortReading);
                 let aux_ant_special;
                 let aux_resp_1_2;
                 let aux_resp_2;
                 let aux_resp_3;
                 const is_normal_resp = !this.COMPLETES.ShortResponsory.HasSpecialAntiphon;
                 if (is_normal_resp) {
-                    aux_resp_1_2 = GlobalFunctions.respTogether(GlobalFunctions.rs(this.COMPLETES.ShortResponsory.FirstPart), GlobalFunctions.rs(this.COMPLETES.ShortResponsory.SecondPart));
-                    aux_resp_2 = GlobalFunctions.rs(this.COMPLETES.ShortResponsory.SecondPart);
-                    aux_resp_3 = GlobalFunctions.rs(this.COMPLETES.ShortResponsory.ThirdPart);
+                    aux_resp_1_2 = GlobalViewFunctions.respTogether(GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.FirstPart), GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.SecondPart));
+                    aux_resp_2 = GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.SecondPart);
+                    aux_resp_3 = GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.ThirdPart);
                 } else {
-                    aux_ant_special = GlobalFunctions.rs(this.COMPLETES.ShortResponsory.SpecialAntiphon);
+                    aux_ant_special = GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.SpecialAntiphon);
                 }
                 const aux_gloria_half = " Glòria al Pare i al Fill i a l'Esperit Sant.";
-                const aux_ant_cantic = GlobalFunctions.rs(this.COMPLETES.EvangelicalAntiphon);
+                const aux_ant_cantic = GlobalViewFunctions.rs(this.COMPLETES.EvangelicalAntiphon);
                 const aux_titol_cantic = "Càntic\nLc 2, 29-32\nCrist, llum de les nacions i glòria d'Israel";
-                const aux_cantic = this.salm(GlobalFunctions.rs(this.COMPLETES.EvangelicalChant));
+                const aux_cantic = this.salm(GlobalViewFunctions.rs(this.COMPLETES.EvangelicalChant));
                 const aux_gloria_cantic = "Glòria.";
-                const aux_oracio = GlobalFunctions.rs(this.COMPLETES.FinalPrayer);
+                const aux_oracio = GlobalViewFunctions.rs(this.COMPLETES.FinalPrayer);
                 const aux_fi_benaurada = "Que el Senyor totpoderós ens concedeixi una nit tranquil·la i una fi benaurada.";
                 const aux_antifona_final = "Antífona final de la Mare de Déu";
 

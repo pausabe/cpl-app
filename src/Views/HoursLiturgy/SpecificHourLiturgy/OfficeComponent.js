@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
 import GlobalKeys from '../../../Utils/GlobalKeys';
-import GlobalFunctions from '../../../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
 import SettingsService from '../../../Services/SettingsService';
 import * as Logger from '../../../Utils/Logger';
 import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
@@ -19,7 +19,7 @@ export default class OfficeComponent extends Component {
         super(props);
         let auxNumSalmInv = CurrentSettings.InvitationPsalmOption;
 
-        if (!GlobalFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
+        if (!GlobalViewFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
             auxNumSalmInv = '94';
             props.setNumSalmInv('94');
             SettingsService.setSettingNumSalmInv('94');
@@ -31,19 +31,19 @@ export default class OfficeComponent extends Component {
         }
 
         this.styles = {
-            black: GlobalFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackBold: GlobalFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackItalic: GlobalFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackSmallItalicRight: GlobalFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackJustified: GlobalFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            red: GlobalFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redItalic: GlobalFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenter: GlobalFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenterBold: GlobalFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redSmallItalicRight: GlobalFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            hiddenPrayerButton: GlobalFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButton: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            black: GlobalViewFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackBold: GlobalViewFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackItalic: GlobalViewFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackSmallItalicRight: GlobalViewFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackJustified: GlobalViewFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            red: GlobalViewFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redItalic: GlobalViewFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenter: GlobalViewFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenterBold: GlobalViewFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redSmallItalicRight: GlobalViewFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            hiddenPrayerButton: GlobalViewFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButton: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButtonBold: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
         };
 
         this.setNumSalmInv = props.setNumSalmInv;
@@ -100,7 +100,7 @@ export default class OfficeComponent extends Component {
                         <HR/>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                         <Text selectable={true}
-                              style={this.styles.red}>{"HIMNE"}{(CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary && GlobalFunctions.isDarkAnthem()) ? " (nit)" : " (dia)"}</Text>
+                              style={this.styles.red}>{"HIMNE"}{(CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary && CurrentHoursLiturgy.Office.IsDarkAnthem) ? " (nit)" : " (dia)"}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                         {this.himne()}
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
@@ -204,7 +204,7 @@ export default class OfficeComponent extends Component {
         }
 
         const estrofes = psalmText.split("\n\n");
-        const antifona = GlobalFunctions.rs(CurrentHoursLiturgy.Invitation.InvitationAntiphon);
+        const antifona = GlobalViewFunctions.rs(CurrentHoursLiturgy.Invitation.InvitationAntiphon);
         const gloriaString = "Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.";
 
         return (
@@ -214,21 +214,21 @@ export default class OfficeComponent extends Component {
                         <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '94')}>
                             <Text style={style94}>{"Salm 94  "}</Text>
                         </TouchableOpacity>
-                        {GlobalFunctions.salmInvExists('99', this.titols) ?
+                        {GlobalViewFunctions.salmInvExists('99', this.titols) ?
                             <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '99')}>
                                 <Text style={style99}>{"  Salm 99  "}</Text>
                             </TouchableOpacity>
                             :
                             null
                         }
-                        {GlobalFunctions.salmInvExists('66', this.titols) ?
+                        {GlobalViewFunctions.salmInvExists('66', this.titols) ?
                             <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '66')}>
                                 <Text style={style66}>{"  Salm 66  "}</Text>
                             </TouchableOpacity>
                             :
                             null
                         }
-                        {GlobalFunctions.salmInvExists('23', this.titols) ?
+                        {GlobalViewFunctions.salmInvExists('23', this.titols) ?
                             <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '23')}>
                                 <Text style={style23}>{"  Salm 23"}</Text>
                             </TouchableOpacity>
@@ -402,30 +402,30 @@ export default class OfficeComponent extends Component {
 
     // TODO: [UI Refactor] duplicated code
     himne() {
-        const aux_himne = GlobalFunctions.rs(CurrentHoursLiturgy.Office.Anthem);
+        const aux_himne = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.Anthem);
         return (<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
     }
 
     // TODO: [UI Refactor] at this point I will stop mention duplication. Is all super duplicated and all Views need a complete refactor
     salmodia() {
-        const aux_ant1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Antiphon);
-        const aux_titol1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Title);
+        const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Antiphon);
+        const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Title);
         let aux_com1 = "";
         if (CurrentHoursLiturgy.Office.FirstPsalm.Comment !== '-')
-            aux_com1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Comment);
-        const aux_salm1 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Psalm));
-        const aux_ant2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Antiphon);
-        const aux_titol2 = GlobalFunctions.canticSpace(GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Title));
+            aux_com1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Comment);
+        const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Psalm));
+        const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Antiphon);
+        const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Title));
         let aux_com2 = "";
         if (CurrentHoursLiturgy.Office.SecondPsalm.Comment !== '-')
-            aux_com2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Comment);
-        const aux_salm2 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Psalm));
-        const aux_ant3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Antiphon);
-        const aux_titol3 = GlobalFunctions.canticSpace(GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Title));
+            aux_com2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Comment);
+        const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Psalm));
+        const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Antiphon);
+        const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Title));
         let aux_com3 = "";
         if (CurrentHoursLiturgy.Office.ThirdPsalm.Comment !== '-')
-            aux_com3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Comment);
-        const aux_salm3 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Psalm));
+            aux_com3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Comment);
+        const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Psalm));
 
         return (
             <View>
@@ -496,8 +496,8 @@ export default class OfficeComponent extends Component {
     }
 
     vers() {
-        const aux_respV = GlobalFunctions.rs(CurrentHoursLiturgy.Office.Responsory.Versicle);
-        const aux_respR = GlobalFunctions.rs(CurrentHoursLiturgy.Office.Responsory.Response);
+        const aux_respV = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.Responsory.Versicle);
+        const aux_respR = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.Responsory.Response);
 
         return (
             <View>
@@ -513,26 +513,26 @@ export default class OfficeComponent extends Component {
 
     lectures() {
         try {
-            const aux_referencia1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reference);
-            const aux_titol_lectura1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Title);
+            const aux_referencia1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reference);
+            const aux_titol_lectura1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Title);
             const aux_has_cita1 = CurrentHoursLiturgy.Office.FirstReading.Quote !== '-';
-            const aux_cita1 = aux_has_cita1 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Quote) : "";
-            const aux_lectura1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reading);
+            const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Quote) : "";
+            const aux_lectura1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reading);
             const aux_has_citaResp1 = CurrentHoursLiturgy.Office.FirstReading.Responsory.Quote !== '-';
-            const aux_cita_resp1 = aux_has_citaResp1 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.Quote) : "";
-            const aux_resp1_1_2 = GlobalFunctions.respTogether(GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.FirstPart), GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.SecondPart));
-            const aux_resp1_2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.SecondPart);
-            const aux_resp1_3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.ThirdPart);
-            const aux_referencia2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reference);
-            const aux_titol_lectura2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Title);
+            const aux_cita_resp1 = aux_has_citaResp1 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.Quote) : "";
+            const aux_resp1_1_2 = GlobalViewFunctions.respTogether(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.FirstPart), GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.SecondPart));
+            const aux_resp1_2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.SecondPart);
+            const aux_resp1_3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Responsory.ThirdPart);
+            const aux_referencia2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reference);
+            const aux_titol_lectura2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Title);
             const aux_has_cita2 = CurrentHoursLiturgy.Office.SecondReading.Quote != null && CurrentHoursLiturgy.Office.SecondReading.Quote !== '-';
-            const aux_cita2 = aux_has_cita2 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Quote) : "";
-            const aux_lectura2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reading);
+            const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Quote) : "";
+            const aux_lectura2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reading);
             const aux_has_vers2 = CurrentHoursLiturgy.Office.SecondReading.Responsory.Quote !== '-';
-            const aux_vers2 = aux_has_vers2 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.Quote) : "";
-            const aux_resp2_1_2 = GlobalFunctions.respTogether(GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.FirstPart), GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.SecondPart));
-            const aux_resp2_2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.SecondPart);
-            const aux_resp2_3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.ThirdPart);
+            const aux_vers2 = aux_has_vers2 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.Quote) : "";
+            const aux_resp2_1_2 = GlobalViewFunctions.respTogether(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.FirstPart), GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.SecondPart));
+            const aux_resp2_2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.SecondPart);
+            const aux_resp2_3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Responsory.ThirdPart);
 
             return (
                 <View>
@@ -583,47 +583,47 @@ export default class OfficeComponent extends Component {
     }
 
     lecturesDiumPasqua() {
-        const aux_referencia1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reference);
-        const aux_titol_lectura1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Title);
+        const aux_referencia1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reference);
+        const aux_titol_lectura1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Title);
         const aux_has_cita1 = CurrentHoursLiturgy.Office.FirstReading.Quote !== '-';
-        const aux_cita1 = aux_has_cita1 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Quote) : "";
-        const aux_lectura1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reading);
+        const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Quote) : "";
+        const aux_lectura1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstReading.Reading);
 
-        const aux_ant1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Antiphon);
-        const aux_titol1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Title);
-        const aux_salm1 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Psalm));
+        const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Antiphon);
+        const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Title);
+        const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Psalm));
         const aux_gloria1 = "Glòria.";
-        const aux_oracio1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Prayer);
+        const aux_oracio1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Prayer);
 
-        const aux_referencia2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reference);
-        const aux_titol_lectura2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Title);
+        const aux_referencia2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reference);
+        const aux_titol_lectura2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Title);
         const aux_has_cita2 = CurrentHoursLiturgy.Office.SecondReading.Quote !== '-';
-        const aux_cita2 = aux_has_cita2 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Quote) : "";
-        const aux_lectura2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reading);
+        const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Quote) : "";
+        const aux_lectura2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondReading.Reading);
 
-        const aux_ant2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Antiphon);
-        const aux_titol2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Title);
-        const aux_salm2 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Psalm));
+        const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Antiphon);
+        const aux_titol2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Title);
+        const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Psalm));
         const aux_gloria2 = "Glòria.";
-        const aux_oracio2 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Prayer);
+        const aux_oracio2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Prayer);
 
-        const aux_referencia3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Reference);
-        const aux_titol_lectura3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Title);
+        const aux_referencia3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Reference);
+        const aux_titol_lectura3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Title);
         const aux_has_cita3 = CurrentHoursLiturgy.Office.ThirdReading.Quote !== '-';
-        const aux_cita3 = aux_has_cita3 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Quote) : "";
-        const aux_lectura3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Reading);
+        const aux_cita3 = aux_has_cita3 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Quote) : "";
+        const aux_lectura3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdReading.Reading);
 
-        const aux_ant3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Antiphon);
-        const aux_titol3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Title);
-        const aux_salm3 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Psalm));
+        const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Antiphon);
+        const aux_titol3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Title);
+        const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Psalm));
         const aux_gloria3 = "Glòria.";
-        const aux_oracio3 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Prayer);
+        const aux_oracio3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Prayer);
 
-        const aux_referencia4 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Reference);
-        const aux_titol_lectura4 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Title);
+        const aux_referencia4 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Reference);
+        const aux_titol_lectura4 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Title);
         const aux_has_cita4 = CurrentHoursLiturgy.Office.FourthReading.Quote !== '-';
-        const aux_cita4 = aux_has_cita4 ? GlobalFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Quote) : "";
-        const aux_lectura4 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Reading);
+        const aux_cita4 = aux_has_cita4 ? GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Quote) : "";
+        const aux_lectura4 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FourthReading.Reading);
 
         return (
             <View>
@@ -741,7 +741,7 @@ export default class OfficeComponent extends Component {
     }
 
     finalPrayer() {
-        const aux_oracio = GlobalFunctions.completeOracio(GlobalFunctions.rs(CurrentHoursLiturgy.Office.FinalPrayer), false);
+        const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FinalPrayer), false);
         return (<Text selectable={true} style={this.styles.black}>{aux_oracio}</Text>);
     }
 }

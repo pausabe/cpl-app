@@ -7,7 +7,7 @@ import Vespres from './SpecificHourLiturgy/VespersComponent'
 import HoraMenor from './SpecificHourLiturgy/HoursComponent'
 import Completes from './SpecificHourLiturgy/NightPrayerComponent'
 import {CurrentSettings, CurrentHoursLiturgy} from '../../Services/DataService';
-import GlobalFunctions from '../../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 
 export default class HoursLiturgyPrayerScreen extends Component {
 
@@ -20,7 +20,7 @@ export default class HoursLiturgyPrayerScreen extends Component {
 
   render() {
     return (
-      <View style={GlobalFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
+      <View style={GlobalViewFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
         <ScrollView automaticallyAdjustContentInsets={false}>
           <View style={{paddingHorizontal: 10, paddingTop: 10}}>
             {this.liturgyComponent(this.state.type)}

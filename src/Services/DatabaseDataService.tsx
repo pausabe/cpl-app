@@ -1,5 +1,5 @@
 import * as Logger from '../Utils/Logger';
-import GlobalFunctions from '../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../Utils/GlobalViewFunctions';
 import {executeQueryAsync} from "./DatabaseManagerService";
 import {Settings} from '../Models/Settings';
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
@@ -7,7 +7,7 @@ import {DayMassLiturgy} from "../Models/MassLiturgy";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import {DioceseName, PrayingPlace} from "./SettingsService";
 import {DioceseCode} from "./DatabaseEnums";
-import {getDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
+import * as DatabaseHelper from "./DatabaseDataHelper";
 
 export function getDatabaseVersion(): Promise<number> {
     return new Promise((resolve) => {
@@ -39,7 +39,7 @@ export async function ObtainLiturgySpecificDayInformation(date: Date, currentSet
     let liturgyDayInformation = new LiturgySpecificDayInformation();
     liturgyDayInformation.Date = date;
     liturgyDayInformation.PentecostDay = await ObtainPentecostDay(liturgyDayInformation.Date);
-    liturgyDayInformation.CelebrationType = GlobalFunctions.getCelType(currentSettings.DioceseName, todayLiturgy);
+    liturgyDayInformation.CelebrationType = DatabaseHelper.GetCelebrationTypeFromTodayLiurgyRow(currentSettings.DioceseName, todayLiturgy);
     liturgyDayInformation.MovedDay.Date = todayLiturgy.diaMogut;
     liturgyDayInformation.MovedDay.DioceseCode = todayLiturgy.diocesiMogut;
     liturgyDayInformation.LiturgyColor = todayLiturgy.Color;
@@ -76,15 +76,15 @@ export async function ObtainSolemnitiesAndMemoriesAsync(masterName: string, date
     let auxDiocese = dioceseCode;
     if (dioceseCode === DioceseCode.Andorra && dateString !== '08-sep') {
         auxDioceseName = DioceseName.Urgell;
-        auxDiocese = getDioceseCodeFromDioceseName(DioceseName.Urgell, prayingPlace);
+        auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(DioceseName.Urgell, prayingPlace);
     }
     let auxDioceseQuery = `'${auxDiocese}'`;
     if (prayingPlace === PrayingPlace.City) {
-        auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}'`;
+        auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}'`;
     } else if (prayingPlace === PrayingPlace.Cathedral) {
-        auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
+        auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
     } else if (prayingPlace === PrayingPlace.Diocese) {
-        auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}' OR Diocesis = '${getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
+        auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
     }
     const query = `SELECT * FROM ${masterName} WHERE (Diocesis = ${auxDioceseQuery} OR Diocesis = '-') AND dia = '${dateString}' AND Temps = '${genericLiturgyTime}'`;
 
@@ -145,7 +145,7 @@ function RowToMassLiturgy(row): DayMassLiturgy {
 }
 
 async function GetHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
-    const dateString = GlobalFunctions.calculeDia(liturgySpecificDayInformation.Date, settings.DioceseCode, liturgySpecificDayInformation.MovedDay.Date, liturgySpecificDayInformation.MovedDay.DioceseCode);
+    const dateString = DatabaseHelper.GetDateShortDatabaseCode(liturgySpecificDayInformation.Date, settings.DioceseCode, liturgySpecificDayInformation.MovedDay.Date, liturgySpecificDayInformation.MovedDay.DioceseCode);
     const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgySpecificDayInformation.YearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${liturgySpecificDayInformation.DayOfTheWeek}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${liturgySpecificDayInformation.YearIsEven? "II" : "I"}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE LDSantoral.Categoria = '${liturgySpecificDayInformation.CelebrationType}'AND LDSantoral.tempsespecific = '${liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs? 'Especial' : liturgySpecificDayInformation.GenericLiturgyTime}'AND LDSantoral.dia = '${dateString}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.DioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
     const result = await executeQueryAsync(query);
     return RowToMassLiturgy(result.rows.item(0));
@@ -175,7 +175,7 @@ function findCorrectIndexFromSettings(rows, length, diocese, dioceseName, place)
         i += 1;
     }
     if (place === PrayingPlace.City) {
-        auxDiocese = getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
+        auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
         i = 0;
         while (i < length) {
             if (rows.item(i).Diocesis === auxDiocese) return i;
@@ -183,13 +183,13 @@ function findCorrectIndexFromSettings(rows, length, diocese, dioceseName, place)
         }
     }
     if (place === PrayingPlace.Cathedral) {
-        auxDiocese = getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City);
+        auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City);
         i = 0;
         while (i < length) {
             if (rows.item(i).Diocesis === auxDiocese) return i;
             i += 1;
         }
-        auxDiocese = getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
+        auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
         i = 0;
         while (i < length) {
             if (rows.item(i).Diocesis === auxDiocese) return i;

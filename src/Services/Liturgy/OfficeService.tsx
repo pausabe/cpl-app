@@ -1,5 +1,5 @@
 import Office, {TeDeumInformation} from "../../Models/HoursLiturgy/Office";
-import GlobalFunctions from "../../Utils/GlobalFunctions";
+import GlobalViewFunctions from "../../Utils/GlobalViewFunctions";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
@@ -22,7 +22,8 @@ export function ObtainOffice(liturgyMasters : LiturgyMasters, liturgyDayInformat
         office = celebrationOffice;
     }
     else{
-        office.Anthem = GetAnthem(currentOfficeCommonPsalter, liturgyMasters, liturgyDayInformation, celebrationOffice, settings);
+        office.IsDarkAnthem = IsDarkAnthem();
+        office.Anthem = GetAnthem(office.IsDarkAnthem, currentOfficeCommonPsalter, liturgyMasters, liturgyDayInformation, celebrationOffice, settings);
         const psalmody = GetPsalmody(currentOfficeCommonPsalter, liturgyMasters, liturgyDayInformation, celebrationOffice);
         office.FirstPsalm = psalmody.FirstPsalm;
         office.SecondPsalm = psalmody.SecondPsalm;
@@ -37,13 +38,19 @@ export function ObtainOffice(liturgyMasters : LiturgyMasters, liturgyDayInformat
     return office;
 }
 
-function GetAnthem(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : string{
+function IsDarkAnthem(){
+    const nowDate = new Date();
+    const hour = nowDate.getHours();
+    return hour < 6;
+}
+
+function GetAnthem(isDarkAnthem: boolean, currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : string{
     if(StringManagement.HasLiturgyContent(celebrationOffice.Anthem)) {
         return celebrationOffice.Anthem;
     }
 
     let anthem;
-    if(GlobalFunctions.isDarkAnthem()){
+    if(isDarkAnthem){
         if(settings.UseLatin){
             anthem = liturgyMasters.OfficeCommonPsalter.NightLatinAnthem;
         }

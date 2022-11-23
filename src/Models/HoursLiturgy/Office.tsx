@@ -1,6 +1,7 @@
 import {ReadingOfTheOffice, Psalm, Responsory} from "../LiturgyMasters/CommonParts";
 
 export default class Office {
+    IsDarkAnthem: boolean;
     Anthem: string;
     FirstPsalm: Psalm = new Psalm();
     SecondPsalm: Psalm = new Psalm();

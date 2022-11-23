@@ -7,9 +7,9 @@ import {
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
 import GLOBAL from '../../../Utils/GlobalKeys';
-import GF from '../../../Utils/GlobalFunctions';
+import GF from '../../../Utils/GlobalViewFunctions';
 import * as Logger from '../../../Utils/Logger';
-import GlobalFunctions from "../../../Utils/GlobalFunctions";
+import GlobalViewFunctions from "../../../Utils/GlobalViewFunctions";
 import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
 
@@ -18,19 +18,19 @@ export default class VespersComponent extends Component {
         super(props);
     
         this.styles = {
-            black: GlobalFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackBold: GlobalFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackItalic: GlobalFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackSmallItalicRight: GlobalFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackJustified: GlobalFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            red: GlobalFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redItalic: GlobalFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenter: GlobalFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenterBold: GlobalFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redSmallItalicRight: GlobalFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            hiddenPrayerButton: GlobalFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButton: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            black: GlobalViewFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackBold: GlobalViewFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackItalic: GlobalViewFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackSmallItalicRight: GlobalViewFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackJustified: GlobalViewFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            red: GlobalViewFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redItalic: GlobalViewFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenter: GlobalViewFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenterBold: GlobalViewFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redSmallItalicRight: GlobalViewFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            hiddenPrayerButton: GlobalViewFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButton: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButtonBold: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
         };
     }
 
@@ -141,29 +141,29 @@ export default class VespersComponent extends Component {
     }
 
     himne() {
-        const aux_himne = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.Anthem);
+        const aux_himne = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.Anthem);
         return (<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
     }
 
     salmodia() {
-        const aux_ant1 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Antiphon);
-        const aux_titol1 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Title);
+        const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Antiphon);
+        const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Title);
         let aux_com1 = "";
         if (CurrentHoursLiturgy.Vespers.FirstPsalm.Comment !== '-')
-            aux_com1 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment);
-        const aux_salm1 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Psalm));
-        const aux_ant2 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Antiphon);
-        const aux_titol2 = GlobalFunctions.canticSpace(GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Title));
+            aux_com1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment);
+        const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Psalm));
+        const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Antiphon);
+        const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Title));
         let aux_com2 = "";
         if (CurrentHoursLiturgy.Vespers.SecondPsalm.Comment !== '-')
-            aux_com2 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment);
-        const aux_salm2 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Psalm));
-        const aux_ant3 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Antiphon);
-        const aux_titol3 = GlobalFunctions.canticSpace(GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Title));
+            aux_com2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment);
+        const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Psalm));
+        const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Antiphon);
+        const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Title));
         let aux_com3 = "";
         if (CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment !== '-')
-            aux_com3 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment);
-        const aux_salm3 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Psalm));
+            aux_com3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment);
+        const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Psalm));
 
         return (
             <View>
@@ -234,8 +234,8 @@ export default class VespersComponent extends Component {
     }
 
     lecturaBreu() {
-        const aux_vers = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortReading.Quote);
-        const aux_lectura_breu = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortReading.ShortReading);
+        const aux_vers = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortReading.Quote);
+        const aux_lectura_breu = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortReading.ShortReading);
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{aux_vers}</Text>
@@ -247,7 +247,7 @@ export default class VespersComponent extends Component {
 
     responsori() {
         if (CurrentHoursLiturgy.Vespers.ShortResponsory.HasSpecialAntiphon) {
-            const aux_ant = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SpecialAntiphon);
+            const aux_ant = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SpecialAntiphon);
             return (
                 <View>
                     <Text selectable={true} style={this.styles.red}>{'Ant.'}
@@ -257,9 +257,9 @@ export default class VespersComponent extends Component {
             )
         }
         else {
-            const aux_resp_1_2 = GlobalFunctions.respTogether(GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.FirstPart), GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SecondPart));
-            const aux_resp_2 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SecondPart);
-            const aux_resp_3 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.ThirdPart);
+            const aux_resp_1_2 = GlobalViewFunctions.respTogether(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.FirstPart), GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SecondPart));
+            const aux_resp_2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SecondPart);
+            const aux_resp_3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.ThirdPart);
             const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
             // TODO: [UI Refactor] duplicated code
@@ -291,7 +291,7 @@ export default class VespersComponent extends Component {
     }
 
     chant() {
-        const aux_ant = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.EvangelicalAntiphon);
+        const aux_ant = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.EvangelicalAntiphon);
         const aux_titol = "Càntic\nLc 1, 68-79\nEl Messies i el seu Precursor";
         const aux_salm = this.salm(CurrentHoursLiturgy.Vespers.EvangelicalChant);
         const aux_gloria = "Glòria.";
@@ -329,7 +329,7 @@ export default class VespersComponent extends Component {
     }
 
     prayers() {
-        let allPregs = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.Prayers);
+        let allPregs = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.Prayers);
 
         if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
             return (<Text selectable={true} style={this.styles.black}>{"-"}</Text>);
@@ -402,7 +402,7 @@ export default class VespersComponent extends Component {
     }
 
     finalPrayer() {
-        const aux_oracio = GlobalFunctions.completeOracio(GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.FinalPrayer), false);
+        const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FinalPrayer), false);
         return (<Text selectable={true} style={this.styles.black}>{aux_oracio}</Text>);
     }
 }

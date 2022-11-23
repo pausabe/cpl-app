@@ -16,7 +16,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import HomeScreen from '../Views/HomeScreen';
 import GlobalKeys from '../Utils/GlobalKeys';
-import GlobalFunctions from '../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../Utils/GlobalViewFunctions';
 import * as Logger from '../Utils/Logger';
 import SettingsService from '../Services/SettingsService';
 import {
@@ -354,8 +354,8 @@ function HomeScreenView(navigation, setState){
           <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => HandleOnTodayPressed(setState)}>
             <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
               <View style={{ paddingTop: 15}}>
-                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + today.getDate() + " de " + GlobalFunctions.getMonthText(today.getMonth()) + "."}</Text>
-                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GlobalFunctions.getMonthText(yesterday.getMonth()) + "?"}</Text>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + today.getDate() + " de " + GlobalViewFunctions.getMonthText(today.getMonth()) + "."}</Text>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GlobalViewFunctions.getMonthText(yesterday.getMonth()) + "?"}</Text>
               </View>
 
               <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>

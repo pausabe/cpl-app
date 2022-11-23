@@ -1,5 +1,5 @@
 import {Appearance} from 'react-native';
-import GlobalFunctions from "../Utils/GlobalFunctions";
+import GlobalViewFunctions from "../Utils/GlobalViewFunctions";
 import SettingsService, {DarkModeOption} from './SettingsService';
 import * as DatabaseDataService from './DatabaseDataService';
 import * as StorageService from './Storage/StorageService';
@@ -17,6 +17,7 @@ import MassLiturgy from "../Models/MassLiturgy";
 import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformation';
 import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
 import {DateManagement} from "../Utils/DateManagement";
+import {GetDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
 
 // TODO: [UI Refactor] I don't like the idea of these variables made public to all project
 //  it should be hidden and only controllers should access it
@@ -44,7 +45,7 @@ async function ObtainCurrentSettings(date: Date) : Promise<Settings>{
     let currentSettings = new Settings();
     currentSettings.PrayingPlace = await SettingsService.getSettingLloc() as string;
     currentSettings.DioceseName = await SettingsService.getSettingDiocesis() as string;
-    currentSettings.DioceseCode = GlobalFunctions.transformDiocesiName(
+    currentSettings.DioceseCode = GetDioceseCodeFromDioceseName(
         currentSettings.DioceseName,
         currentSettings.PrayingPlace);
     currentSettings.UseLatin = await SettingsService.getSettingUseLatin() === 'true';

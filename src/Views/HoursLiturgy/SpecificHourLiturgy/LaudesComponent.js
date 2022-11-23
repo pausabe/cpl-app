@@ -7,7 +7,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
-import GlobalFunctions from '../../../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
 import SettingsService from '../../../Services/SettingsService';
 import * as Logger from '../../../Utils/Logger';
 // TODO: [UI Refactor] view shouldn't know these "current" variables. Controller should be in charge to prepare it all
@@ -22,7 +22,7 @@ export default class LaudesComponent extends Component {
 
         let auxNumSalmInv = CurrentSettings.InvitationPsalmOption;
 
-        if (!GlobalFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
+        if (!GlobalViewFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
             auxNumSalmInv = '94';
             props.setNumSalmInv('94');
             SettingsService.setSettingNumSalmInv('94');
@@ -34,19 +34,19 @@ export default class LaudesComponent extends Component {
         }
 
         this.styles = {
-            black: GlobalFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackBold: GlobalFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackItalic: GlobalFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackSmallItalicRight: GlobalFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackJustified: GlobalFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            red: GlobalFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redItalic: GlobalFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenter: GlobalFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenterBold: GlobalFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redSmallItalicRight: GlobalFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            hiddenPrayerButton: GlobalFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButton: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButtonBold: GlobalFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            black: GlobalViewFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackBold: GlobalViewFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackItalic: GlobalViewFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackSmallItalicRight: GlobalViewFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            blackJustified: GlobalViewFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            red: GlobalViewFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redItalic: GlobalViewFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenter: GlobalViewFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redCenterBold: GlobalViewFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            redSmallItalicRight: GlobalViewFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            hiddenPrayerButton: GlobalViewFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButton: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
+            prayerTabButtonBold: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
         };
 
         this.setNumSalmInv = props.setNumSalmInv;
@@ -102,7 +102,7 @@ export default class LaudesComponent extends Component {
         }
 
         const estrofes = psalmText.split("\n\n");
-        const antifona = GlobalFunctions.rs(CurrentHoursLiturgy.Invitation.InvitationAntiphon);
+        const antifona = GlobalViewFunctions.rs(CurrentHoursLiturgy.Invitation.InvitationAntiphon);
         const gloriaString = "Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.";
 
         return (
@@ -112,21 +112,21 @@ export default class LaudesComponent extends Component {
                         <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '94')}>
                             <Text style={style94}>{"Salm 94  "}</Text>
                         </TouchableOpacity>
-                        {GlobalFunctions.salmInvExists('99', this.titols) ?
+                        {GlobalViewFunctions.salmInvExists('99', this.titols) ?
                             <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '99')}>
                                 <Text style={style99}>{"  Salm 99  "}</Text>
                             </TouchableOpacity>
                             :
                             null
                         }
-                        {GlobalFunctions.salmInvExists('66', this.titols) ?
+                        {GlobalViewFunctions.salmInvExists('66', this.titols) ?
                             <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '66')}>
                                 <Text style={style66}>{"  Salm 66  "}</Text>
                             </TouchableOpacity>
                             :
                             null
                         }
-                        {GlobalFunctions.salmInvExists('23', this.titols) ?
+                        {GlobalViewFunctions.salmInvExists('23', this.titols) ?
                             <TouchableOpacity onPress={this.onSalmInvPress.bind(this, '23')}>
                                 <Text style={style23}>{"  Salm 23"}</Text>
                             </TouchableOpacity>
@@ -370,29 +370,29 @@ export default class LaudesComponent extends Component {
     }
 
     himne() {
-        const aux_himne = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.Anthem);
+        const aux_himne = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.Anthem);
         return (<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
     }
 
     salmodia() {
-        const aux_ant1 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Antiphon);
-        const aux_titol1 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Title);
+        const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Antiphon);
+        const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Title);
         let aux_com1 = "";
         if (CurrentHoursLiturgy.Laudes.FirstPsalm.Comment !== '-')
-            aux_com1 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Comment);
-        const aux_salm1 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Psalm));
-        const aux_ant2 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Antiphon);
-        const aux_titol2 = GlobalFunctions.canticSpace(GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Title));
+            aux_com1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Comment);
+        const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Psalm));
+        const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Antiphon);
+        const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Title));
         let aux_com2 = "";
         if (CurrentHoursLiturgy.Laudes.SecondPsalm.Comment !== '-')
-            aux_com2 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Comment);
-        const aux_salm2 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Psalm));
-        const aux_ant3 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Antiphon);
-        const aux_titol3 = GlobalFunctions.canticSpace(GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Title));
+            aux_com2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Comment);
+        const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Psalm));
+        const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Antiphon);
+        const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Title));
         let aux_com3 = "";
         if (CurrentHoursLiturgy.Laudes.ThirdPsalm.Comment !== '-')
-            aux_com3 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Comment);
-        const aux_salm3 = this.salm(GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Psalm));
+            aux_com3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Comment);
+        const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Psalm));
 
         return (
             <View>
@@ -463,8 +463,8 @@ export default class LaudesComponent extends Component {
     }
 
     lecturaBreu() {
-        const aux_vers = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortReading.Quote);
-        const aux_lectura_breu = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortReading.ShortReading);
+        const aux_vers = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ShortReading.Quote);
+        const aux_lectura_breu = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ShortReading.ShortReading);
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{aux_vers}</Text>
@@ -476,7 +476,7 @@ export default class LaudesComponent extends Component {
 
     responsori() {
         if (CurrentHoursLiturgy.Laudes.ShortResponsory.HasSpecialAntiphon) {
-            const aux_ant = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.SpecialAntiphon);
+            const aux_ant = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.SpecialAntiphon);
             return (
                 <View>
                     <Text selectable={true} style={this.styles.red}>{'Ant.'}
@@ -486,9 +486,9 @@ export default class LaudesComponent extends Component {
             )
         }
         else {
-            const aux_resp_1_2 = GlobalFunctions.respTogether(GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.FirstPart), GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.SecondPart));
-            const aux_resp_2 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.SecondPart);
-            const aux_resp_3 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.ThirdPart);
+            const aux_resp_1_2 = GlobalViewFunctions.respTogether(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.FirstPart), GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.SecondPart));
+            const aux_resp_2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.SecondPart);
+            const aux_resp_3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.ThirdPart);
             const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
             // TODO: [UI Refactor] duplicated code
@@ -520,7 +520,7 @@ export default class LaudesComponent extends Component {
     }
 
     chant() {
-        const aux_ant = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.EvangelicalAntiphon);
+        const aux_ant = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.EvangelicalAntiphon);
         const aux_titol = "Càntic\nLc 1, 68-79\nEl Messies i el seu Precursor";
         const aux_salm = this.salm(CurrentHoursLiturgy.Laudes.EvangelicalChant);
         const aux_gloria = "Glòria.";
@@ -560,7 +560,7 @@ export default class LaudesComponent extends Component {
     }
 
     prayers() {
-        let allPregs = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.Prayers);
+        let allPregs = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.Prayers);
 
         if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
             return (<Text selectable={true} style={this.styles.black}>{"-"}</Text>);
@@ -633,7 +633,7 @@ export default class LaudesComponent extends Component {
     }
 
     finalPrayer() {
-        const aux_oracio = GlobalFunctions.completeOracio(GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.FinalPrayer), false);
+        const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FinalPrayer), false);
         return (<Text selectable={true} style={this.styles.black}>{aux_oracio}</Text>);
     }
 

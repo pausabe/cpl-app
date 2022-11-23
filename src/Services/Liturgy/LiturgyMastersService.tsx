@@ -4,7 +4,7 @@ import * as DatabaseDataService from '../DatabaseDataService';
 import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
 import SecureCall from "../../Utils/SecureCall";
 import InvitationCommonPsalter from "../../Models/LiturgyMasters/InvitationCommonPsalter";
-import GlobalFunctions from '../../Utils/GlobalFunctions';
+import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import OfficeOfOrdinaryTime from "../../Models/LiturgyMasters/OfficeOfOrdinaryTime";
 import PrayersOfOrdinaryTime from "../../Models/LiturgyMasters/PrayersOfOrdinaryTime";
 import CommonPartsUntilFifthWeekOfLentTime from "../../Models/LiturgyMasters/CommonPartsUntilFifthWeekOfLentTime";
@@ -50,6 +50,7 @@ import CommonOffice from "../../Models/LiturgyMasters/CommonOffices";
 import Various from "../../Models/LiturgyMasters/Various";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
+import * as DatabaseHelper from "../DatabaseDataHelper";
 
 export async function ObtainLiturgyMasters(currentLiturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<LiturgyMasters>{
     const liturgyMasters = new LiturgyMasters();
@@ -621,7 +622,7 @@ async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInforma
                     liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity)) {
             let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
             if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
-                let day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
+                let day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnities.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                 const saintsSolemnitiesParts = new SaintsSolemnities(row);
                 saintsSolemnitiesParts.CommonOffices = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
@@ -654,13 +655,13 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
             else {
                 let day = '-';
                 if (liturgyDayInformation.Tomorrow.MovedDay.Date !== '-' &&
-                    GlobalFunctions.isDiocesiMogut(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode)) {
+                    DatabaseHelper.IsMovedDiocese(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode)) {
                     day = liturgyDayInformation.Tomorrow.MovedDay.Date;
                 }
 
                 if (day === '-') {
                     let tomorrowDay = new Date(liturgyDayInformation.Today.Date.getFullYear(), liturgyDayInformation.Today.Date.getMonth(), (liturgyDayInformation.Today.Date.getDate() + 1));
-                    day = GlobalFunctions.calculeDia(tomorrowDay, settings.DioceseName, '-', '-');
+                    day = DatabaseHelper.GetDateShortDatabaseCode(tomorrowDay, settings.DioceseName, '-', '-');
                 }
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnities.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                 const saintsSolemnitiesParts = new SaintsSolemnities(row);
@@ -688,7 +689,7 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
             }
             else {
                 if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
-                    const day = GlobalFunctions.calculeDia(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
+                    const day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
                     const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsMemories.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                     const saintsMemories = new SaintsMemories(row);
                     saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
