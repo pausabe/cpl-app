@@ -280,25 +280,31 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
         psalmodyAnthems.NinthValue.ThirdPsalm = liturgyMasters.CommonHourPsalter.ThirdPsalm;
         switch(liturgyDayInformation.SpecificLiturgyTime){
             case SpecificLiturgyTimeType.Q_TRIDU:
-                psalmodyAnthems.ThirdValue.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerThirdPsalm;
+                psalmodyAnthems.ThirdValue.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerFirstPsalm;
                 psalmodyAnthems.ThirdValue.FirstPsalm.Comment = "-";
                 psalmodyAnthems.ThirdValue.FirstPsalm.HasGloryPrayer = true;
+                psalmodyAnthems.ThirdValue.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerSecondPsalm;
                 psalmodyAnthems.ThirdValue.SecondPsalm.Comment = "-";
                 psalmodyAnthems.ThirdValue.SecondPsalm.HasGloryPrayer = true;
+                psalmodyAnthems.ThirdValue.ThirdPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerThirdPsalm;
                 psalmodyAnthems.ThirdValue.ThirdPsalm.Comment = "-";
                 psalmodyAnthems.ThirdValue.ThirdPsalm.HasGloryPrayer = true;
-                psalmodyAnthems.SixthValue.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerSecondPsalm;
+                psalmodyAnthems.SixthValue.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerFirstPsalm;
                 psalmodyAnthems.SixthValue.FirstPsalm.Comment = "-";
                 psalmodyAnthems.SixthValue.FirstPsalm.HasGloryPrayer = true;
+                psalmodyAnthems.SixthValue.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerSecondPsalm;
                 psalmodyAnthems.SixthValue.SecondPsalm.Comment = "-";
                 psalmodyAnthems.SixthValue.SecondPsalm.HasGloryPrayer = true;
+                psalmodyAnthems.SixthValue.ThirdPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerThirdPsalm;
                 psalmodyAnthems.SixthValue.ThirdPsalm.Comment = "-";
                 psalmodyAnthems.SixthValue.ThirdPsalm.HasGloryPrayer = true;
-                psalmodyAnthems.NinthValue.ThirdPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerThirdPsalm;
+                psalmodyAnthems.NinthValue.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerFirstPsalm;
                 psalmodyAnthems.NinthValue.FirstPsalm.Comment = "-";
                 psalmodyAnthems.NinthValue.FirstPsalm.HasGloryPrayer = true;
+                psalmodyAnthems.NinthValue.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerSecondPsalm;
                 psalmodyAnthems.NinthValue.SecondPsalm.Comment = "-";
                 psalmodyAnthems.NinthValue.SecondPsalm.HasGloryPrayer = true;
+                psalmodyAnthems.NinthValue.ThirdPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerThirdPsalm;
                 psalmodyAnthems.NinthValue.ThirdPsalm.Comment = "-";
                 psalmodyAnthems.NinthValue.ThirdPsalm.HasGloryPrayer = true;
                 break;

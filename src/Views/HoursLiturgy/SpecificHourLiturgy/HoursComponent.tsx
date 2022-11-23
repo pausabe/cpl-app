@@ -11,6 +11,7 @@ import * as Logger from '../../../Utils/Logger';
 import {SpecificHour} from "../../../Models/HoursLiturgy/Hours";
 import {CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {StringManagement} from "../../../Utils/StringManagement";
 
 let specificHour: SpecificHour;
 let styles;
@@ -134,17 +135,17 @@ export default class HoursComponent extends Component {
         const aux_ant1 = aux_antifones ? GlobalFunctions.rs(specificHour.FirstPsalm.Antiphon) : "";
         const aux_ant = !aux_antifones ? GlobalFunctions.rs(specificHour.UniqueAntiphon) : "";
         const aux_titol1 = GlobalFunctions.rs(specificHour.FirstPsalm.Title);
-        const aux_has_com1 = specificHour.FirstPsalm.Comment !== undefined;
+        const aux_has_com1 = StringManagement.HasLiturgyContent(specificHour.FirstPsalm.Comment);
         const aux_com1 = aux_has_com1 ? GlobalFunctions.rs(specificHour.FirstPsalm.Comment) : "";
         const aux_salm1 = this.salm(GlobalFunctions.rs(specificHour.FirstPsalm.Psalm));
         const aux_ant2 = aux_antifones ? GlobalFunctions.rs(specificHour.SecondPsalm.Antiphon) : "";
         const aux_titol2 = GlobalFunctions.rs(specificHour.SecondPsalm.Title);
-        const aux_has_com2 = specificHour.SecondPsalm.Comment !== undefined;
+        const aux_has_com2 = StringManagement.HasLiturgyContent(specificHour.SecondPsalm.Comment);
         const aux_com2 = aux_has_com2 ? GlobalFunctions.rs(specificHour.SecondPsalm.Comment) : "";
         const aux_salm2 = this.salm(GlobalFunctions.rs(specificHour.SecondPsalm.Psalm));
         const aux_ant3 = aux_antifones ? GlobalFunctions.rs(specificHour.ThirdPsalm.Antiphon) : "";
         const aux_titol3 = GlobalFunctions.rs(specificHour.ThirdPsalm.Title);
-        const aux_has_com3 = specificHour.ThirdPsalm.Comment !== undefined;
+        const aux_has_com3 = StringManagement.HasLiturgyContent(specificHour.ThirdPsalm.Comment);
         const aux_com3 = aux_has_com3 ? GlobalFunctions.rs(specificHour.ThirdPsalm.Comment) : "";
         const aux_salm3 = this.salm(GlobalFunctions.rs(specificHour.ThirdPsalm.Psalm));
 
