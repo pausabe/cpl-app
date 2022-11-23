@@ -310,7 +310,7 @@ export default class OfficeComponent extends Component {
         );
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     salm(salm) {
         if (!salm) return null;
         salm = salm.replace(/    [*]/g, '');
@@ -324,7 +324,7 @@ export default class OfficeComponent extends Component {
         return salm;
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     invitatoriButtons() {
         return (
             <View>
@@ -345,7 +345,7 @@ export default class OfficeComponent extends Component {
         );
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     introduction() {
         const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
         const showInvitatory = this.state.invitatori;
@@ -373,7 +373,7 @@ export default class OfficeComponent extends Component {
         else {
             const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
             const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
-            // TODO: encapsulate
+            // TODO: [UI Refactor] encapsulate
             const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
                 CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
                 CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
@@ -400,13 +400,13 @@ export default class OfficeComponent extends Component {
         }
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     himne() {
         const aux_himne = GlobalFunctions.rs(CurrentHoursLiturgy.Office.Anthem);
         return (<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
     }
 
-    // TODO: at this point I will stop mention duplication. Is all super duplicated and all Views need a complete refactor
+    // TODO: [UI Refactor] at this point I will stop mention duplication. Is all super duplicated and all Views need a complete refactor
     salmodia() {
         const aux_ant1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Antiphon);
         const aux_titol1 = GlobalFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Title);

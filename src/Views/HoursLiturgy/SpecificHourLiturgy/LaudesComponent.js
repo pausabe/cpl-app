@@ -10,14 +10,14 @@ import HR from '../../../Components/HRComponent';
 import GlobalFunctions from '../../../Utils/GlobalFunctions';
 import SettingsService from '../../../Services/SettingsService';
 import * as Logger from '../../../Utils/Logger';
-// TODO: view shouldn't know these "current" variables. Controller should be in charge to prepare it all
-// TODO: actually, it seems that these "views" are view + controller. When I separe it, it will make more sense
+// TODO: [UI Refactor] view shouldn't know these "current" variables. Controller should be in charge to prepare it all
+//  actually, it seems that these "views" are view + controller. When I separe it, it will make more sense
 import {CurrentSettings, CurrentHoursLiturgy, CurrentLiturgyDayInformation} from '../../../Services/DataService';
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
 
 export default class LaudesComponent extends Component {
     constructor(props) {
-        // TODO: duplicated code
+        // TODO: [UI Refactor] duplicated code
         super(props);
 
         let auxNumSalmInv = CurrentSettings.InvitationPsalmOption;
@@ -274,7 +274,7 @@ export default class LaudesComponent extends Component {
         }
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     salm(salm) {
         if (!salm) return null;
         salm = salm.replace(/    [*]/g, '');
@@ -288,7 +288,7 @@ export default class LaudesComponent extends Component {
         return salm;
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     invitatoriButtons() {
         return (
             <View>
@@ -309,7 +309,7 @@ export default class LaudesComponent extends Component {
         );
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     introduction() {
         const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
         const showInvitatory = this.state.invitatori ||
@@ -320,7 +320,7 @@ export default class LaudesComponent extends Component {
             const aux_proclamare = 'I proclamaré la vostra lloança.';
 
             return (
-                // TODO: imporve this method... if else.. not good
+                // TODO: [UI Refactor] imporve this method... if else.. not good
                 <View>
                     {CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ?
                         null :
@@ -342,7 +342,7 @@ export default class LaudesComponent extends Component {
         else {
             const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
             const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
-            // TODO: encapsulate
+            // TODO: [UI Refactor] encapsulate
             const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
                 CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
                 CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
@@ -491,7 +491,7 @@ export default class LaudesComponent extends Component {
             const aux_resp_3 = GlobalFunctions.rs(CurrentHoursLiturgy.Laudes.ShortResponsory.ThirdPart);
             const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
-            // TODO: duplicated code
+            // TODO: [UI Refactor] duplicated code
             return (
                 <View>
                     <Text selectable={true} style={this.styles.red}>{'V. '}
@@ -525,7 +525,7 @@ export default class LaudesComponent extends Component {
         const aux_salm = this.salm(CurrentHoursLiturgy.Laudes.EvangelicalChant);
         const aux_gloria = "Glòria.";
 
-        // TODO: duplicated code
+        // TODO: [UI Refactor] duplicated code
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{'Ant. '}
@@ -545,7 +545,7 @@ export default class LaudesComponent extends Component {
         );
     }
 
-    // TODO: duplicated code
+    // TODO: [UI Refactor] duplicated code
     convertN(pregs, papa, bisbe) {
         if (pregs.search("papa N.") !== -1) {
             pregs = pregs.replace("papa N.", "papa " + papa);
@@ -614,7 +614,7 @@ export default class LaudesComponent extends Component {
 
         const aux_intencions = "Aquí es poden afegir altres intencions.";
 
-        // TODO: duplicated code
+        // TODO: [UI Refactor] duplicated code
         return (
             <View>
                 <Text selectable={true} style={this.styles.black}>{introPregs}{':'}</Text>

@@ -39,7 +39,7 @@ export default class VespersComponent extends Component {
             const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
             const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
             const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
-            // TODO: encapsulate
+            // TODO: [UI Refactor] encapsulate
             const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
                 CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
                 CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
@@ -262,7 +262,7 @@ export default class VespersComponent extends Component {
             const aux_resp_3 = GlobalFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.ThirdPart);
             const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
-            // TODO: duplicated code
+            // TODO: [UI Refactor] duplicated code
             return (
                 <View>
                     <Text selectable={true} style={this.styles.red}>{'V. '}
@@ -296,7 +296,7 @@ export default class VespersComponent extends Component {
         const aux_salm = this.salm(CurrentHoursLiturgy.Vespers.EvangelicalChant);
         const aux_gloria = "Glòria.";
 
-        // TODO: duplicated code
+        // TODO: [UI Refactor] duplicated code
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{'Ant. '}
@@ -383,7 +383,7 @@ export default class VespersComponent extends Component {
 
         const aux_intencions = "Aquí es poden afegir altres intencions.";
 
-        // TODO: duplicated code
+        // TODO: [UI Refactor] duplicated code
         return (
             <View>
                 <Text selectable={true} style={this.styles.black}>{introPregs}{':'}</Text>

@@ -44,7 +44,6 @@ export default class SettingsScreen extends Component {
             </View>
           );
       }
-      // TODO: add TODAY vs TOMORROW precedence
       return (
         <View style={styles.scrollContainer}>
           <ScrollView automaticallyAdjustContentInsets={false} style={styles.itemList}>

@@ -18,8 +18,8 @@ import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformatio
 import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
 import {DateManagement} from "../Utils/DateManagement";
 
-// TODO: I don't like the idea of these variables made public to all project
-// TODO: it should be hidden and only controllers should access it
+// TODO: [UI Refactor] I don't like the idea of these variables made public to all project
+//  it should be hidden and only controllers should access it
 export let LastRefreshDate = new Date()
 export let CurrentSettings = new Settings();
 export let CurrentDatabaseInformation = new DatabaseInformation();
@@ -29,9 +29,6 @@ export let CurrentHoursLiturgy = new HoursLiturgy();
 export let CurrentMassLiturgy = new MassLiturgy();
 
 export async function ReloadAllData(date) {
-
-    // TODO: check for all "." / '.' occurrences. Change the way this is code is used
-
     LastRefreshDate = new Date();
     CurrentSettings = await ObtainCurrentSettings(date);
     CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();
