@@ -302,9 +302,10 @@ let GlobalFunctions = {
   },
 
   respTogether(r1,r2){
-    let result = r1 + ' ' + r2;
+    let result = '';
 
     if(r1 && r2){
+      result = r1 + ' ' + r2
       var lastCharacter = r1.charAt(r1.length-1);
       var firstWord = r2.split(" ")[0];
       firstWord=firstWord.replace(",", '');
@@ -318,7 +319,8 @@ let GlobalFunctions = {
         result = r1 + ' ' + r2.charAt(0).toLowerCase() + r2.slice(1);
     }
     else{
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, "respTogether");
+      const errorMessage = `First Part = '${r1}', Second Part = '${r2}'`;
+      Logger.LogError(Logger.LogKeys.GlobalFunctions, "respTogether", new Error(errorMessage));
     }
 
     return result;
