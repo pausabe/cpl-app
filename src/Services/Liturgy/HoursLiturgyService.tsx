@@ -12,7 +12,6 @@ import * as CelebrationInformationService from "./CelebrationInformationService"
 import {Settings} from "../../Models/Settings";
 import LiturgyDayInformation from "../../Models/LiturgyDayInformation";
 import Vespers from "../../Models/HoursLiturgy/Vespers";
-import {CelebrationType} from "../DatabaseEnums";
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
 import * as ConcreteNamesInPrayers from "./ConcreteNamesInPrayersService";
 
@@ -35,7 +34,8 @@ export async function ObtainHoursLiturgy(liturgyMasters: LiturgyMasters, liturgy
 
 export function GetVespersWithLowerPrecedence(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, celebrationInformation: CelebrationInformation, settings : Settings, vespersOptions: VespersOptions): Vespers{
   // Low precedence level value implies more importance
-  if(celebrationInformation.TodayPrecedence <= celebrationInformation.TomorrowPrecedence){
+  const todayIsMoreImportant = celebrationInformation.TodayPrecedence < celebrationInformation.TomorrowPrecedence;
+  if(todayIsMoreImportant){
       return VespersService.MergeVespersWithCelebration(liturgyMasters, liturgyDayInformation.Today, settings, vespersOptions.VespersWithoutCelebration, vespersOptions.TodaySecondVespersWithCelebration);
   }
   else{

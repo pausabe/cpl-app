@@ -1,8 +1,39 @@
 export class DateManagement {
-    static CompareDates(firstDate: Date, secondDate: Date): boolean{
+    static DatesAreTheEqual(firstDate: Date, secondDate: Date): boolean{
         return firstDate.getDate() === secondDate.getDate() &&
             firstDate.getMonth() === secondDate.getMonth() &&
             firstDate.getFullYear() === secondDate.getFullYear();
+    }
+
+    static FirstDateIsBeforeOrEqualToSecondDate(firstDate: Date, secondDate: Date): boolean{
+        if(this.DatesAreTheEqual(firstDate, secondDate)){
+            return true;
+        }
+        if(firstDate.getFullYear() < secondDate.getFullYear()){
+            return true;
+        }
+        if(firstDate.getMonth() < secondDate.getMonth()){
+            return true;
+        }
+        return firstDate.getDate() < secondDate.getDate();
+    }
+
+    static FirstDateIsAfterOrEqualToSecondDate(firstDate: Date, secondDate: Date): boolean{
+        if(this.DatesAreTheEqual(firstDate, secondDate)){
+            return true;
+        }
+        if(firstDate.getFullYear() > secondDate.getFullYear()){
+            return true;
+        }
+        if(firstDate.getMonth() > secondDate.getMonth()){
+            return true;
+        }
+        return firstDate.getDate() > secondDate.getDate();
+    }
+
+    static FirstDateIsInBetweenSecondAndThirdDatesInclusively(firstDate: Date, secondDate: Date, thirdDate: Date): boolean{
+        return this.FirstDateIsAfterOrEqualToSecondDate(firstDate, secondDate) &&
+            this.FirstDateIsBeforeOrEqualToSecondDate(firstDate, thirdDate);
     }
 
     static WeekDayName(num) {

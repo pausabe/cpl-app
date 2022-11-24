@@ -121,7 +121,7 @@ async function HandleAppStateChange(nextAppState, navigation?, setState?){
     const now = new Date();
 
     // Refresh the date if today is different from the last refresh date
-    if(!DateManagement.CompareDates(now, LastRefreshDate)){
+    if(!DateManagement.DatesAreTheEqual(now, LastRefreshDate)){
 
       // Navigate to Home Screen
       navigation.popToTop();
