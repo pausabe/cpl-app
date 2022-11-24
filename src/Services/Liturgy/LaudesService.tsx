@@ -188,9 +188,9 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
             psalmody.ThirdPsalm.HasGloryPrayer = liturgyMasters.LaudesCommonPsalter.ThirdPsalm.HasGloryPrayer;
 
             if(liturgyDayInformation.DayOfTheWeek !== 0){
-                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesFirstAntiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesSecondAntiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesThirdAntiphon;
+                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.FirstAntiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.SecondAntiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.ThirdAntiphon;
             }
             break;
         case SpecificLiturgyTimeType.LentWeeks:

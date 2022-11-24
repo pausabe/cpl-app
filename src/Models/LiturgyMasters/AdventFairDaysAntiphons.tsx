@@ -5,15 +5,15 @@ export default class AdventFairDaysAntiphons {
         if(databaseRow){
             this.Id = databaseRow.id;
             this.WeekDay = databaseRow.diaSetmana;
-            this.LaudesFirstAntiphon = databaseRow.ant1;
-            this.LaudesSecondAntiphon = databaseRow.ant2;
-            this.LaudesThirdAntiphon = databaseRow.ant3;
+            this.FirstAntiphon = databaseRow.ant1;
+            this.SecondAntiphon = databaseRow.ant2;
+            this.ThirdAntiphon = databaseRow.ant3;
         }
     }
 
     Id: number;
     WeekDay: string;
-    LaudesFirstAntiphon: string;
-    LaudesSecondAntiphon: string;
-    LaudesThirdAntiphon: string;
+    FirstAntiphon: string;
+    SecondAntiphon: string;
+    ThirdAntiphon: string;
 }

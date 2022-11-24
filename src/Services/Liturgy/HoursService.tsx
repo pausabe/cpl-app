@@ -525,36 +525,26 @@ function GetFinalPraying(liturgyMasters : LiturgyMasters, liturgyDayInformation 
         finalPraying.NinthValue = celebrationHours.NinthHour.FinalPrayer;
     }
     else {
-        if(liturgyDayInformation.DayOfTheWeek === 0){
-            finalPraying.ThirdValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
-            finalPraying.SixthValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
-            finalPraying.NinthValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
-        }
-        else{
-            finalPraying.ThirdValue = liturgyMasters.CommonHourPsalter.ThirdHourParts.FinalPrayer;
-            finalPraying.SixthValue = liturgyMasters.CommonHourPsalter.SixthHourParts.FinalPrayer;
-            finalPraying.NinthValue = liturgyMasters.CommonHourPsalter.NinthHourParts.FinalPrayer;
-        }
         switch(liturgyDayInformation.SpecificLiturgyTime){
             case SpecificLiturgyTimeType.LentAshes:
-                finalPraying.ThirdValue = liturgyMasters.PartsOfLentTime.ThirdHourParts.FinalPrayer;
-                finalPraying.SixthValue = liturgyMasters.PartsOfLentTime.SixthHourParts.FinalPrayer;
-                finalPraying.NinthValue = liturgyMasters.PartsOfLentTime.NinthHourParts.FinalPrayer;
+                finalPraying.ThirdValue = liturgyMasters.PartsOfLentTime.LaudesFinalPrayer;
+                finalPraying.SixthValue = liturgyMasters.PartsOfLentTime.LaudesFinalPrayer;
+                finalPraying.NinthValue = liturgyMasters.PartsOfLentTime.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.LentWeeks:
-                finalPraying.ThirdValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.ThirdHourParts.FinalPrayer;
-                finalPraying.SixthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.SixthHourParts.FinalPrayer;
-                finalPraying.NinthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.NinthHourParts.FinalPrayer;
+                finalPraying.ThirdValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesFinalPrayer;
+                finalPraying.SixthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesFinalPrayer;
+                finalPraying.NinthValue = liturgyMasters.PartsOfFiveWeeksOfLentTime.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.PalmSunday:
-                finalPraying.ThirdValue = liturgyMasters.PalmSundayParts.ThirdHourParts.FinalPrayer;
-                finalPraying.SixthValue = liturgyMasters.PalmSundayParts.SixthHourParts.FinalPrayer;
-                finalPraying.NinthValue = liturgyMasters.PalmSundayParts.NinthHourParts.FinalPrayer;
+                finalPraying.ThirdValue = liturgyMasters.PalmSundayParts.LaudesFinalPrayer;
+                finalPraying.SixthValue = liturgyMasters.PalmSundayParts.LaudesFinalPrayer;
+                finalPraying.NinthValue = liturgyMasters.PalmSundayParts.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.HolyWeek:
-                finalPraying.ThirdValue = liturgyMasters.PartsOfHolyWeek.ThirdHourParts.FinalPrayer;
-                finalPraying.SixthValue = liturgyMasters.PartsOfHolyWeek.SixthHourParts.FinalPrayer;
-                finalPraying.NinthValue = liturgyMasters.PartsOfHolyWeek.NinthHourParts.FinalPrayer;
+                finalPraying.ThirdValue = liturgyMasters.PartsOfHolyWeek.LaudesFinalPrayer;
+                finalPraying.SixthValue = liturgyMasters.PartsOfHolyWeek.LaudesFinalPrayer;
+                finalPraying.NinthValue = liturgyMasters.PartsOfHolyWeek.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.LentTriduum:
                 finalPraying.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.FinalPrayer;
@@ -567,34 +557,46 @@ function GetFinalPraying(liturgyMasters : LiturgyMasters, liturgyDayInformation 
                 finalPraying.NinthValue = liturgyMasters.PartsOfEasterOctave.NinthHourParts.FinalPrayer;
                 break;
             case SpecificLiturgyTimeType.EasterWeeks:
-                finalPraying.ThirdValue = liturgyMasters.EasterWeekParts.ThirdHourParts.FinalPrayer;
-                finalPraying.SixthValue = liturgyMasters.EasterWeekParts.SixthHourParts.FinalPrayer;
-                finalPraying.NinthValue = liturgyMasters.EasterWeekParts.NinthHourParts.FinalPrayer;
+                finalPraying.ThirdValue = liturgyMasters.EasterWeekParts.LaudesFinalPrayer;
+                finalPraying.SixthValue = liturgyMasters.EasterWeekParts.LaudesFinalPrayer;
+                finalPraying.NinthValue = liturgyMasters.EasterWeekParts.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.AdventWeeks:
-                finalPraying.ThirdValue = liturgyMasters.AdventWeekParts.ThirdHourParts.FinalPrayer;
-                finalPraying.SixthValue = liturgyMasters.AdventWeekParts.SixthHourParts.FinalPrayer;
-                finalPraying.NinthValue = liturgyMasters.AdventWeekParts.NinthHourParts.FinalPrayer;
+                finalPraying.ThirdValue = liturgyMasters.AdventWeekParts.LaudesFinalPrayer;
+                finalPraying.SixthValue = liturgyMasters.AdventWeekParts.LaudesFinalPrayer;
+                finalPraying.NinthValue = liturgyMasters.AdventWeekParts.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.AdventFairs:
-                finalPraying.ThirdValue = liturgyMasters.AdventFairDaysParts.ThirdHourParts.FinalPrayer;
-                finalPraying.SixthValue = liturgyMasters.AdventFairDaysParts.SixthHourParts.FinalPrayer;
-                finalPraying.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.FinalPrayer;
+                finalPraying.ThirdValue = liturgyMasters.AdventFairDaysParts.LaudesFinalPrayer
+                finalPraying.SixthValue = liturgyMasters.AdventFairDaysParts.LaudesFinalPrayer;
+                finalPraying.NinthValue = liturgyMasters.AdventFairDaysParts.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.ChristmasOctave:
                 if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)) {
-                    finalPraying.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.FinalPrayer;
-                    finalPraying.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.FinalPrayer;
-                    finalPraying.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.FinalPrayer;
+                    finalPraying.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
+                    finalPraying.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
+                    finalPraying.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
                 }
                 break;
             case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
-                if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary && liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
-                    finalPraying.ThirdValue = liturgyMasters.ChristmasBeforeEpiphanyParts.ThirdHourParts.FinalPrayer;
-                    finalPraying.SixthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.SixthHourParts.FinalPrayer;
-                    finalPraying.NinthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.NinthHourParts.FinalPrayer;
+                if(liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+                    liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13){
+                    finalPraying.ThirdValue = liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesFinalPrayer;
+                    finalPraying.SixthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesFinalPrayer;
+                    finalPraying.NinthValue = liturgyMasters.ChristmasBeforeEpiphanyParts.LaudesFinalPrayer;
                 }
                 break;
+        }
+
+        if(!StringManagement.HasLiturgyContent(finalPraying.ThirdValue) && liturgyDayInformation.DayOfTheWeek === 0){
+            finalPraying.ThirdValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
+            finalPraying.SixthValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
+            finalPraying.NinthValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
+        }
+        else if(!StringManagement.HasLiturgyContent(finalPraying.ThirdValue)){
+            finalPraying.ThirdValue = liturgyMasters.CommonHourPsalter.ThirdHourParts.FinalPrayer;
+            finalPraying.SixthValue = liturgyMasters.CommonHourPsalter.SixthHourParts.FinalPrayer;
+            finalPraying.NinthValue = liturgyMasters.CommonHourPsalter.NinthHourParts.FinalPrayer;
         }
     }
     return finalPraying;

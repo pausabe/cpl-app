@@ -182,9 +182,9 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.AdventFairs:
             if(liturgyDayInformation.DayOfTheWeek !== 0){
-                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesFirstAntiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesSecondAntiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.LaudesThirdAntiphon;
+                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.FirstAntiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.SecondAntiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.ThirdAntiphon;
             }
             break;
         case SpecificLiturgyTimeType.LentWeeks:
@@ -229,32 +229,34 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
             psalmody.ThirdPsalm.Comment = "-";
             break;
         case SpecificLiturgyTimeType.EasterWeeks:
-            if(liturgyDayInformation.DayOfTheWeek === 6 && liturgyMasters.EasterFirstVespersOfSundayParts.LaudesFirstAntiphon !== "-"){
-                psalmody.FirstPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.LaudesFirstAntiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.LaudesSecondAntiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.LaudesThirdAntiphon;
+            if(liturgyDayInformation.DayOfTheWeek === 6 &&
+                StringManagement.HasLiturgyContent(liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersFirstAntiphon)){
+                psalmody.FirstPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersFirstAntiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersSecondAntiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersThirdAntiphon;
             }
             else if(liturgyDayInformation.DayOfTheWeek === 0){
-                psalmody.FirstPsalm.Antiphon = liturgyMasters.EasterSundayParts.LaudesFirstAntiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.EasterSundayParts.LaudesSecondAntiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.EasterSundayParts.LaudesThirdAntiphon;
+                psalmody.FirstPsalm.Antiphon = liturgyMasters.EasterSundayParts.SecondVespersFirstAntiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.EasterSundayParts.SecondVespersSecondAntiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.EasterSundayParts.SecondVespersThirdAntiphon;
             }
             else{
-                psalmody.FirstPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.LaudesFirstAntiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.LaudesSecondAntiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.LaudesThirdAntiphon;
+                psalmody.FirstPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.VespersFirstAntiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.VespersSecondAntiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.VespersThirdAntiphon;
             }
             break;
         case SpecificLiturgyTimeType.AdventWeeks:
-            if(liturgyDayInformation.DayOfTheWeek === 6 && liturgyMasters.AdventFirstVespersOfSundayParts.LaudesFirstAntiphon !== "-"){
-                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.LaudesFirstAntiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.LaudesSecondAntiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.LaudesThirdAntiphon;
+            if(liturgyDayInformation.DayOfTheWeek === 6 &&
+                StringManagement.HasLiturgyContent(liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersFirstAntiphon)){
+                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersFirstAntiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersSecondAntiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersThirdAntiphon;
             }
             else if(liturgyDayInformation.DayOfTheWeek === 0){
-                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventSundayParts.LaudesFirstAntiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventSundayParts.LaudesSecondAntiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventSundayParts.LaudesThirdAntiphon;
+                psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventSundayParts.SecondVespersFirstAntiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventSundayParts.SecondVespersSecondAntiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventSundayParts.SecondVespersThirdAntiphon;
             }
             break;
         case SpecificLiturgyTimeType.ChristmasOctave:
