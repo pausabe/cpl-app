@@ -6,7 +6,11 @@ import HR from '../../Components/HRComponent';
 import SettingsComponentAdapter from "./SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
 import {SessionLogs} from "../../Utils/Logger";
-import {CurrentCelebrationInformation, CurrentDatabaseInformation} from "../../Services/DataService";
+import {
+    CurrentCelebrationInformation,
+    CurrentDatabaseInformation, CurrentHoursLiturgy,
+    CurrentLiturgyDayInformation
+} from "../../Services/DataService";
 
 let logsPressedTimes;
 
@@ -83,7 +87,7 @@ export default class SettingsScreen extends Component {
                             textAlign: 'center',
                             color: 'grey',
                             fontSize: 11
-                        }}>{`Precedència: avui (${CurrentCelebrationInformation.TodayPrecedence}) demà (${CurrentCelebrationInformation.TomorrowPrecedence})`}</Text>
+                        }}>{`Precedència: avui (${CurrentHoursLiturgy.TodayCelebrationInformation.Precedence}) demà (${CurrentHoursLiturgy.TomorrowCelebrationInformation.Precedence})`}</Text>
                         {this.state.logsVisible &&
                             <View>
                                 <Text

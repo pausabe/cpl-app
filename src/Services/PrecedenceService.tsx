@@ -100,7 +100,6 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
             dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Ordinary)) {
         return 13;
     }
-    console.log("dateLiturgyInformation.CelebrationType === CelebrationType.Fair", dateLiturgyInformation.CelebrationType)
     Logger.LogError(LogKeys.PrecedenceService, "ObtainPrecedenceByLiturgyTime", new Error("Precedence not found"))
     return 999;
 }

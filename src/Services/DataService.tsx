@@ -34,10 +34,12 @@ export async function ReloadAllData(date) {
     CurrentSettings = await ObtainCurrentSettings(date);
     CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();
     CurrentLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(date, CurrentSettings);
-    const liturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
-    CurrentHoursLiturgy = await ObtainHoursLiturgy(liturgyMasters, CurrentLiturgyDayInformation, CurrentSettings);
+    const tomorrowLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(CurrentLiturgyDayInformation.Tomorrow.Date, CurrentSettings);
+    const todayLiturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
+    const tomorrowLiturgyMasters = await ObtainLiturgyMasters(tomorrowLiturgyDayInformation, CurrentSettings);
+    CurrentHoursLiturgy = await ObtainHoursLiturgy(todayLiturgyMasters, tomorrowLiturgyMasters, CurrentLiturgyDayInformation, CurrentSettings);
     CurrentCelebrationInformation = ObtainCurrentCelebrationInformation(CurrentHoursLiturgy);
-    CurrentMassLiturgy = await ObtainMassLiturgy(CurrentLiturgyDayInformation, CurrentCelebrationInformation, CurrentSettings);
+    CurrentMassLiturgy = await ObtainMassLiturgy(CurrentLiturgyDayInformation, CurrentHoursLiturgy.TodayCelebrationInformation, CurrentHoursLiturgy.TomorrowCelebrationInformation, CurrentSettings);
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Total time passed: ', DateManagement.DifferenceBetweenDatesInSeconds(LastRefreshDate, new Date()) + "s");
 }
 
@@ -110,6 +112,6 @@ async function ObtainCurrentLiturgyDayInformation(date: Date, settings : Setting
 
 function ObtainCurrentCelebrationInformation(hoursLiturgy: HoursLiturgy): CelebrationInformation{
     // For now, celebration information is inside hour's data. In the future it should be complete separated
-    return hoursLiturgy.CelebrationInformation;
+    return hoursLiturgy.TodayCelebrationInformation;
 }
 

@@ -660,8 +660,7 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
                 }
 
                 if (day === '-') {
-                    let tomorrowDay = new Date(liturgyDayInformation.Today.Date.getFullYear(), liturgyDayInformation.Today.Date.getMonth(), (liturgyDayInformation.Today.Date.getDate() + 1));
-                    day = DatabaseHelper.GetDateShortDatabaseCode(tomorrowDay, settings.DioceseName, '-', '-');
+                    day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Tomorrow.Date, settings.DioceseName, '-', '-');
                 }
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnities.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                 const saintsSolemnitiesParts = new SaintsSolemnities(row);

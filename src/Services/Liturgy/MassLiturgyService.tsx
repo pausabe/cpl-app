@@ -10,23 +10,21 @@ import * as PrecedenceService from "../PrecedenceService";
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
 
-export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInformation, celebrationInformation: CelebrationInformation, settings: Settings): Promise<MassLiturgy> {
+export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInformation, todayCelebrationInformation: CelebrationInformation, tomorrowCelebrationInformation: CelebrationInformation, settings: Settings): Promise<MassLiturgy> {
     if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
         return GetEasterEve(liturgyDayInformation.Today);
     }
     let massLiturgy = new MassLiturgy();
     massLiturgy.Today = await GetMassLiturgy(liturgyDayInformation.Today, settings);
-    massLiturgy.HasVespers = DecideIfHasVespers(liturgyDayInformation, celebrationInformation);
+    massLiturgy.HasVespers = DecideIfHasVespers(liturgyDayInformation, todayCelebrationInformation, tomorrowCelebrationInformation);
     massLiturgy.Vespers = massLiturgy.HasVespers? await GetVespersMassLiturgy(liturgyDayInformation.Tomorrow, settings) : undefined;
     return massLiturgy;
 }
 
-function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, celebrationInformation: CelebrationInformation): boolean{
+function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, todayCelebrationInformation: CelebrationInformation, tomorrowCelebrationInformation: CelebrationInformation): boolean{
     const todayShouldHaveVespers = liturgyDayInformation.Tomorrow.Date.getDay() === 0 ||
         liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity;
-    const tomorrowIsMoreImportantThanToday =
-        PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Today, celebrationInformation) >=
-        PrecedenceService.ObtainPrecedenceByLiturgyTime(liturgyDayInformation.Tomorrow, celebrationInformation);
+    const tomorrowIsMoreImportantThanToday = todayCelebrationInformation.Precedence >= tomorrowCelebrationInformation.Precedence;
     return todayShouldHaveVespers &&
         tomorrowIsMoreImportantThanToday && 
         liturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday;

@@ -8,7 +8,8 @@ import CelebrationInformation from "./CelebrationInformation";
 import ConcreteNamesInPrayers from "./ConcreteNamesInPrayers";
 
 export default class HoursLiturgy {
-    CelebrationInformation: CelebrationInformation = new CelebrationInformation();
+    TodayCelebrationInformation: CelebrationInformation = new CelebrationInformation();
+    TomorrowCelebrationInformation: CelebrationInformation = new CelebrationInformation();
     ConcreteNamesInPrayers: ConcreteNamesInPrayers = new ConcreteNamesInPrayers();
     Invitation : Invitation = new Invitation();
     Office : Office = new Office();

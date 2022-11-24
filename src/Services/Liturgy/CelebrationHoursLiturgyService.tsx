@@ -21,24 +21,29 @@ import CommonAdventAndChristmasParts from "../../Models/LiturgyMasters/CommonAdv
 import AdventWeekParts from "../../Models/LiturgyMasters/AdventWeekParts";
 import AdventSundayParts from "../../Models/LiturgyMasters/AdventSundayParts";
 
-export function ObtainCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, settings: Settings): HoursLiturgy{
+export function ObtainCelebrationHoursLiturgy(todayLiturgyMasters: LiturgyMasters, tomorrowLiturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, settings: Settings): HoursLiturgy{
+    let hoursLiturgy: HoursLiturgy = BuildHoursLiturgy(todayLiturgyMasters, liturgyDayInformation.Today, settings);
+    hoursLiturgy.TomorrowCelebrationInformation = BuildHoursLiturgy(tomorrowLiturgyMasters, liturgyDayInformation.Tomorrow, settings).TodayCelebrationInformation;
+    hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration =
+        GetFirstVespersWithCelebration(todayLiturgyMasters, liturgyDayInformation.Tomorrow, settings);
+    return hoursLiturgy;
+}
+
+function BuildHoursLiturgy(liturgyMasters: LiturgyMasters, liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings){
     let hoursLiturgy: HoursLiturgy;
 
-    if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay){
+    if(liturgySpecificDayInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay){
         hoursLiturgy = GetSpecialDayHoursLiturgy(liturgyMasters.SpecialDaysParts, settings);
     }
-    else if(liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity){
-        hoursLiturgy = GetSolemnityAndFestivityHoursLiturgy(liturgyMasters.SolemnityAndFestivityParts, liturgyDayInformation.Today, settings);
+    else if(liturgySpecificDayInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SolemnityAndFestivity){
+        hoursLiturgy = GetSolemnityAndFestivityHoursLiturgy(liturgyMasters.SolemnityAndFestivityParts, liturgySpecificDayInformation, settings);
     }
-    else if(liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday){
+    else if(liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday){
         hoursLiturgy = GetEasterSundayHoursLiturgy(liturgyMasters.EasterSunday, settings);
     }
     else{
-        hoursLiturgy = GetNormalCelebrationHoursLiturgy(liturgyMasters, liturgyDayInformation.Today, settings);
+        hoursLiturgy = GetNormalCelebrationHoursLiturgy(liturgyMasters, liturgySpecificDayInformation, settings);
     }
-
-    hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration =
-        GetFirstVespersWithCelebration(liturgyMasters, liturgyDayInformation.Tomorrow, settings);
 
     return hoursLiturgy;
 }
@@ -62,7 +67,7 @@ function GetNormalCelebrationHoursLiturgy(liturgyMasters: LiturgyMasters, liturg
                     hoursLiturgy = saintsMemoriesHoursLiturgy;
                 }
                 else {
-                    hoursLiturgy.CelebrationInformation = saintsMemoriesHoursLiturgy.CelebrationInformation;
+                    hoursLiturgy.TodayCelebrationInformation = saintsMemoriesHoursLiturgy.TodayCelebrationInformation;
                 }
             }
             break;
@@ -109,7 +114,7 @@ function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrow
 function GetEasterSundayHoursLiturgy(easterSunday: EasterSunday, settings: Settings): HoursLiturgy{
     let hoursLiturgy = new HoursLiturgy();
     
-    hoursLiturgy.CelebrationInformation.Title = 'Diumenge de Pasqua';
+    hoursLiturgy.TodayCelebrationInformation.Title = 'Diumenge de Pasqua';
 
     hoursLiturgy.Invitation.InvitationAntiphon = easterSunday.InvitationAntiphon;
     
@@ -187,7 +192,7 @@ function GetEasterSundayHoursLiturgy(easterSunday: EasterSunday, settings: Setti
 function GetSolemnityAndFestivityHoursLiturgy(solemnityAndFestivityParts: SolemnityAndFestivityParts, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): HoursLiturgy{
     let hoursLiturgy = new HoursLiturgy();
 
-    hoursLiturgy.CelebrationInformation = solemnityAndFestivityParts.Celebration;
+    hoursLiturgy.TodayCelebrationInformation = solemnityAndFestivityParts.Celebration;
 
     hoursLiturgy.Invitation.InvitationAntiphon = solemnityAndFestivityParts.InvitationAntiphon;
 
@@ -277,7 +282,7 @@ function GetSolemnityAndFestivityHoursLiturgy(solemnityAndFestivityParts: Solemn
 function GetSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings: Settings): HoursLiturgy{
     let hoursLiturgy = new HoursLiturgy();
 
-    hoursLiturgy.CelebrationInformation = specialDaysParts.Celebration;
+    hoursLiturgy.TodayCelebrationInformation = specialDaysParts.Celebration;
 
     hoursLiturgy.Invitation.InvitationAntiphon = specialDaysParts.InvitationAntiphon;
 
@@ -343,7 +348,7 @@ function GetSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings:
 function GetSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, settings: Settings): HoursLiturgy{
     let hoursLiturgy = new HoursLiturgy();
 
-    hoursLiturgy.CelebrationInformation = saintsSolemnities.Celebration;
+    hoursLiturgy.TodayCelebrationInformation = saintsSolemnities.Celebration;
 
     hoursLiturgy.Invitation.InvitationAntiphon = saintsSolemnities.InvitationAntiphon;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.Invitation.InvitationAntiphon) && saintsSolemnities.CommonOffices !== undefined){
@@ -517,7 +522,7 @@ function GetSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, 
 function GetSaintsMemoriesHoursLiturgy(saintsMemories: SaintsMemories, liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): HoursLiturgy{
     let hoursLiturgy = new HoursLiturgy();
 
-    hoursLiturgy.CelebrationInformation = saintsMemories.Celebration;
+    hoursLiturgy.TodayCelebrationInformation = saintsMemories.Celebration;
 
     hoursLiturgy.Invitation.InvitationAntiphon = saintsMemories.InvitationAntiphon;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.Invitation.InvitationAntiphon) && saintsMemories.CommonOffices !== undefined){

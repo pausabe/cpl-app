@@ -292,7 +292,7 @@ export default class VespersComponent extends Component {
 
     chant() {
         const aux_ant = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.EvangelicalAntiphon);
-        const aux_titol = "Càntic\nLc 1, 68-79\nEl Messies i el seu Precursor";
+        const aux_titol = "Càntic\nLc 1, 46-55\nLa meva ànima magnifica el Senyor";
         const aux_salm = this.salm(CurrentHoursLiturgy.Vespers.EvangelicalChant);
         const aux_gloria = "Glòria.";
 

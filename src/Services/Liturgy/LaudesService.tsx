@@ -335,8 +335,8 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
             }
             else{
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.FirstPsalm.Antiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.FirstPsalm.Antiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.FirstPsalm.Antiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.SecondPsalm.Antiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.ThirdPsalm.Antiphon;
             }
             break;
         case SpecificLiturgyTimeType.ChristmasOctave:
@@ -358,8 +358,8 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
 
             if(liturgyDayInformation.Date.getDate() === 25 && liturgyDayInformation.Date.getMonth() === 11){
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.FirstPsalm.Antiphon;
-                psalmody.SecondPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.FirstPsalm.Antiphon;
-                psalmody.ThirdPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.FirstPsalm.Antiphon;
+                psalmody.SecondPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.SecondPsalm.Antiphon;
+                psalmody.ThirdPsalm.Antiphon = liturgyMasters.LaudesCommonPsalter.ThirdPsalm.Antiphon;
             }
             else {
                 psalmody.FirstPsalm.Antiphon = liturgyMasters.SolemnityAndFestivityParts.LaudesFirstAntiphon;

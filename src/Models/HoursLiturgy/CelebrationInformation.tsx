@@ -4,6 +4,5 @@ export default class CelebrationInformation{
     SpecificClassification: string;
     Diocese : string;
     Category : string;
-    TodayPrecedence: number;
-    TomorrowPrecedence: number;
+    Precedence: number;
 }
