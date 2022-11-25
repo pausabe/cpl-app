@@ -31,43 +31,59 @@ export function MergeVespersWithCelebration(liturgyMasters : LiturgyMasters, lit
         vespers = withCelebrationVespers;
     }
     else{
+        let weUsedSomeCelebrationPart = false;
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.Anthem)){
+            weUsedSomeCelebrationPart = true;
             vespers.Anthem = withCelebrationVespers.Anthem;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.FirstPsalm.Antiphon)){
+            weUsedSomeCelebrationPart = true;
             vespers.FirstPsalm.Antiphon = withCelebrationVespers.FirstPsalm.Antiphon;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.FirstPsalm.Title)){
+            weUsedSomeCelebrationPart = true;
             vespers.FirstPsalm = withCelebrationVespers.FirstPsalm;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.SecondPsalm.Antiphon)){
+            weUsedSomeCelebrationPart = true;
             vespers.SecondPsalm.Antiphon = withCelebrationVespers.SecondPsalm.Antiphon;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.SecondPsalm.Title)){
+            weUsedSomeCelebrationPart = true;
             vespers.SecondPsalm = withCelebrationVespers.SecondPsalm;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.ThirdPsalm.Antiphon)){
+            weUsedSomeCelebrationPart = true;
             vespers.ThirdPsalm.Antiphon = withCelebrationVespers.ThirdPsalm.Antiphon;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.ThirdPsalm.Title)){
+            weUsedSomeCelebrationPart = true;
             vespers.ThirdPsalm = withCelebrationVespers.ThirdPsalm;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.ShortReading.ShortReading)){
+            weUsedSomeCelebrationPart = true;
             vespers.ShortReading = withCelebrationVespers.ShortReading;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.ShortResponsory.FirstPart)){
+            weUsedSomeCelebrationPart = true;
             vespers.ShortResponsory = withCelebrationVespers.ShortResponsory;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.EvangelicalAntiphon)){
+            weUsedSomeCelebrationPart = true;
             vespers.EvangelicalAntiphon = withCelebrationVespers.EvangelicalAntiphon;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.Prayers)){
+            weUsedSomeCelebrationPart = true;
             vespers.Prayers = withCelebrationVespers.Prayers;
         }
         if(StringManagement.HasLiturgyContent(withCelebrationVespers.FinalPrayer)){
+            weUsedSomeCelebrationPart = true;
             vespers.FinalPrayer = withCelebrationVespers.FinalPrayer;
         }
-        vespers.Title = withCelebrationVespers.Title;
+
+        if(weUsedSomeCelebrationPart){
+            vespers.Title = withCelebrationVespers.Title;
+        }
     }
     return vespers;
 }
