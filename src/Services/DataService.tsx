@@ -9,7 +9,7 @@ import {getDatabaseVersion} from "./DatabaseDataService";
 import * as Logger from "../Utils/Logger";
 import {Settings} from "../Models/Settings";
 import DatabaseInformation from "../Models/DatabaseInformation";
-import LiturgyDayInformation from "../Models/LiturgyDayInformation";
+import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {ObtainHoursLiturgy} from "./Liturgy/HoursLiturgyService";
 import {ObtainLiturgyMasters} from "./Liturgy/LiturgyMastersService";
 import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
@@ -18,6 +18,7 @@ import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformatio
 import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
 import {DateManagement} from "../Utils/DateManagement";
 import {GetDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
+import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 
 // TODO: [UI Refactor] I don't like the idea of these variables made public to all project
 //  it should be hidden and only controllers should access it
@@ -103,11 +104,44 @@ async function ObtainCurrentLiturgyDayInformation(date: Date, settings : Setting
     let currentLiturgyDayInformation = new LiturgyDayInformation();
     currentLiturgyDayInformation.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, settings);
     currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Today, settings);
+    currentLiturgyDayInformation.Today.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Today.SpecificLiturgyTime, date);
     const tomorrowDate = new Date(date);
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
     currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, settings);
     currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Tomorrow, settings);
+    currentLiturgyDayInformation.Tomorrow.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime, tomorrowDate);
     return currentLiturgyDayInformation;
+}
+
+function IsSpecialChristmas(specificLiturgyTimeType: SpecificLiturgyTimeType, date: Date): boolean{
+    if(specificLiturgyTimeType === SpecificLiturgyTimeType.Ordinary)
+        return false;
+    if(date.getMonth() === 11){
+        return date.getDate() === 17 ||
+            date.getDate() === 18 ||
+            date.getDate() === 19 ||
+            date.getDate() === 20 ||
+            date.getDate() === 21 ||
+            date.getDate() === 22 ||
+            date.getDate() === 23 ||
+            date.getDate() === 24 ||
+            date.getDate() === 29 ||
+            date.getDate() === 30 ||
+            date.getDate() === 31;
+    }
+    else if(date.getMonth() === 0){
+        return date.getDate() === 2 ||
+            date.getDate() === 3 ||
+            date.getDate() === 4 ||
+            date.getDate() === 5 ||
+            date.getDate() === 7 ||
+            date.getDate() === 8 ||
+            date.getDate() === 9 ||
+            date.getDate() === 10 ||
+            date.getDate() === 11 ||
+            date.getDate() === 12;
+    }
+    return false;
 }
 
 function ObtainCurrentCelebrationInformation(hoursLiturgy: HoursLiturgy): CelebrationInformation{

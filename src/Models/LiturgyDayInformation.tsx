@@ -20,6 +20,7 @@ export class LiturgySpecificDayInformation {
     DayOfTheWeek: number;
     DayOfTheWeekNameShort: string;
     SpecialCelebration: SpecialCelebration = new SpecialCelebration();
+    IsSpecialChristmas: boolean;
 }
 
 class MovedDay{
@@ -35,8 +36,8 @@ export class SpecialCelebration{
         return this._specialDaysMasterIdentifier;
     }
     set SpecialDaysMasterIdentifier(value) {
-        this.updateType();
         this._specialDaysMasterIdentifier = value;
+        this.updateType();
     }
 
     _solemnityAndFestivityMasterIdentifier: number = NoIdentifierNumber;
@@ -44,8 +45,8 @@ export class SpecialCelebration{
         return this._solemnityAndFestivityMasterIdentifier;
     }
     set SolemnityAndFestivityMasterIdentifier(value) {
-        this.updateType();
         this._solemnityAndFestivityMasterIdentifier = value;
+        this.updateType();
     }
 
     _strongTimesMasterIdentifier: number = NoIdentifierNumber;
@@ -53,8 +54,8 @@ export class SpecialCelebration{
         return this._strongTimesMasterIdentifier;
     }
     set StrongTimesMasterIdentifier(value) {
-        this.updateType();
         this._strongTimesMasterIdentifier = value;
+        this.updateType();
     }
 
     updateType(){

@@ -57,7 +57,7 @@ function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, 
     return liturgyDayInformation.CelebrationType === CelebrationType.Memory ||
         liturgyDayInformation.CelebrationType === CelebrationType.Solemnity ||
         liturgyDayInformation.CelebrationType === CelebrationType.Festivity ||
-        IsSpecialChristmas(liturgyDayInformation) ||
+        liturgyDayInformation.IsSpecialChristmas ||
         celebrationIdentifier !== -1;
 }
 
@@ -103,37 +103,6 @@ async function GetVespersMassLiturgy(tomorrowLiturgyDayInformation: LiturgySpeci
     else {
         return await DatabaseDataService.GetHolyDaysMassWithIdentifier(holyDayMassIdentifier);
     }
-}
-
-function IsSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean{
-    if(liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary)
-        return false;
-    if(liturgySpecificDayInformation.Date.getMonth() === 11){
-        return liturgySpecificDayInformation.Date.getDate() === 17 ||
-            liturgySpecificDayInformation.Date.getDate() === 18 ||
-            liturgySpecificDayInformation.Date.getDate() === 19 ||
-            liturgySpecificDayInformation.Date.getDate() === 20 ||
-            liturgySpecificDayInformation.Date.getDate() === 21 ||
-            liturgySpecificDayInformation.Date.getDate() === 22 ||
-            liturgySpecificDayInformation.Date.getDate() === 23 ||
-            liturgySpecificDayInformation.Date.getDate() === 24 ||
-            liturgySpecificDayInformation.Date.getDate() === 29 ||
-            liturgySpecificDayInformation.Date.getDate() === 30 ||
-            liturgySpecificDayInformation.Date.getDate() === 31;
-    }
-    else if(liturgySpecificDayInformation.Date.getMonth() === 0){
-        return liturgySpecificDayInformation.Date.getDate() === 2 ||
-            liturgySpecificDayInformation.Date.getDate() === 3 ||
-            liturgySpecificDayInformation.Date.getDate() === 4 ||
-            liturgySpecificDayInformation.Date.getDate() === 5 ||
-            liturgySpecificDayInformation.Date.getDate() === 7 ||
-            liturgySpecificDayInformation.Date.getDate() === 8 ||
-            liturgySpecificDayInformation.Date.getDate() === 9 ||
-            liturgySpecificDayInformation.Date.getDate() === 10 ||
-            liturgySpecificDayInformation.Date.getDate() === 11 ||
-            liturgySpecificDayInformation.Date.getDate() === 12;
-    }
-    return false;
 }
 
 function GetEasterEve(liturgySpecificDayInformation: LiturgySpecificDayInformation): MassLiturgy {

@@ -18,8 +18,6 @@ export default class SpecialDaysParts extends Solemnity{
         if(databaseRow) {
             this.Id = databaseRow.id;
 
-            this.Celebration.Day = databaseRow.dia;
-            this.Celebration.WeekDay = databaseRow.diaSetmana;
             this.Celebration.Title = databaseRow.nomMemoria;
             this.Celebration.Description = databaseRow.infoMemoria;
             this.Celebration.SpecificClassification = this.GetSpecificClassification(databaseRow.Precedencia);

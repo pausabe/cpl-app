@@ -371,7 +371,7 @@ async function ObtainAdventFairDaysParts(liturgyDayInformation : LiturgyDayInfor
 async function ObtainAdventFairDaysAntiphons(liturgyDayInformation : LiturgyDayInformation) : Promise<AdventFairDaysAntiphons> {
     return await SecureCall(async () => {
         if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
-            let id = liturgyDayInformation.Today.Date.getDate();
+            let id = liturgyDayInformation.Today.Date.getDay();
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(AdventFairDaysAntiphons.MasterName, id);
             return new AdventFairDaysAntiphons(row);
         }

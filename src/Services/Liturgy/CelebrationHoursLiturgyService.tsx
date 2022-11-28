@@ -354,7 +354,6 @@ function GetSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, 
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.Invitation.InvitationAntiphon) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.Invitation.InvitationAntiphon = saintsSolemnities.CommonOffices.InvitationAntiphon;
     }
-
     hoursLiturgy.Office.Anthem = settings.UseLatin? saintsSolemnities.OfficeLatinAnthem : saintsSolemnities.OfficeCatalanAnthem;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.Office.Anthem) && saintsSolemnities.CommonOffices !== undefined){
         hoursLiturgy.Office.Anthem = settings.UseLatin? saintsSolemnities.CommonOffices.OfficeLatinAnthem : saintsSolemnities.CommonOffices.OfficeCatalanAnthem;
@@ -372,8 +371,8 @@ function GetSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, 
         hoursLiturgy.Office.ThirdPsalm = saintsSolemnities.CommonOffices.OfficeThirdPsalm;
     }
     hoursLiturgy.Office.Responsory = saintsSolemnities.OfficeResponsory;
-    if(!StringManagement.HasLiturgyContent(hoursLiturgy.Office.FirstPsalm.Psalm) && saintsSolemnities.CommonOffices !== undefined){
-        hoursLiturgy.Office.FirstPsalm = saintsSolemnities.CommonOffices.OfficeFirstPsalm;
+    if(!StringManagement.HasLiturgyContent(hoursLiturgy.Office.Responsory.Versicle) && saintsSolemnities.CommonOffices !== undefined){
+        hoursLiturgy.Office.Responsory = saintsSolemnities.CommonOffices.OfficeResponsory;
     }
     hoursLiturgy.Office.FirstReading = saintsSolemnities.OfficeFirstReading;
     if(!StringManagement.HasLiturgyContent(hoursLiturgy.Office.FirstReading.Reading) && saintsSolemnities.CommonOffices !== undefined){

@@ -127,20 +127,21 @@ export default class SaintsSolemnities extends Solemnity{
             this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
             this.ThirdHourParts.Responsory.Versicle = databaseRow.responsoriVTercia;
             this.ThirdHourParts.Responsory.Response = databaseRow.responsoriRTercia;
+            this.ThirdHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.SixthHourParts.Antiphon = databaseRow.antMenorSexta;
             this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
             this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
             this.SixthHourParts.Responsory.Versicle = databaseRow.responsoriVSexta;
             this.SixthHourParts.Responsory.Response = databaseRow.responsoriRSexta;
+            this.SixthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.NinthHourParts.Antiphon = databaseRow.antMenorNona;
             this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
             this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
             this.NinthHourParts.Responsory.Versicle = databaseRow.responsoriVNona;
             this.NinthHourParts.Responsory.Response = databaseRow.responsoriRNona;
-
-            this.HoursFinalPrayer = databaseRow.oraFiMenor;
+            this.NinthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.SecondVespersLatinAnthem = databaseRow.himneVespres2Llati;
             this.SecondVespersCatalanAnthem = databaseRow.himneVespres2Cat;
@@ -223,7 +224,6 @@ export default class SaintsSolemnities extends Solemnity{
     ThirdHourParts: HourCommonParts = new HourCommonParts();
     SixthHourParts: HourCommonParts = new HourCommonParts();
     NinthHourParts: HourCommonParts = new HourCommonParts();
-    HoursFinalPrayer: string;
     SecondVespersLatinAnthem: string;
     SecondVespersCatalanAnthem: string;
     SecondVespersFirstPsalm: Psalm = new Psalm();
