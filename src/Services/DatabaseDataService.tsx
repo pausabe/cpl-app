@@ -38,7 +38,7 @@ export async function ObtainLiturgySpecificDayInformation(date: Date, currentSet
     let liturgyDayInformation = new LiturgySpecificDayInformation();
     liturgyDayInformation.Date = date;
     liturgyDayInformation.PentecostDay = await ObtainPentecostDay(liturgyDayInformation.Date);
-    liturgyDayInformation.CelebrationType = DatabaseHelper.GetCelebrationTypeFromTodayLiurgyRow(currentSettings.DioceseName, todayLiturgy);
+    liturgyDayInformation.CelebrationType = DatabaseHelper.GetCelebrationTypeFromTodayLiurgyRow(currentSettings.DioceseCode, todayLiturgy);
     liturgyDayInformation.MovedDay.Date = todayLiturgy.diaMogut;
     liturgyDayInformation.MovedDay.DioceseCode = todayLiturgy.diocesiMogut;
     liturgyDayInformation.LiturgyColor = todayLiturgy.Color;

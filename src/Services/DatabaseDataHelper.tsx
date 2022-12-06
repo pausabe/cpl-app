@@ -1,5 +1,5 @@
 import {DioceseName, PrayingPlace} from "./SettingsService";
-import {DioceseCode} from "./DatabaseEnums";
+import {CelebrationType, DioceseCode} from "./DatabaseEnums";
 
 export function GetDioceseCodeFromDioceseName(dioceseName, place) {
     switch (dioceseName) {
@@ -119,7 +119,7 @@ export function GetDioceseCodeFromDioceseName(dioceseName, place) {
     return DioceseCode.BaD;
 }
 
-export function GetCelebrationTypeFromTodayLiurgyRow(dioceseCode: string, liturgyYearDatabaseRow: any): string{
+export function GetCelebrationTypeFromTodayLiurgyRow(dioceseCode: string, liturgyYearDatabaseRow: any): CelebrationType{
     switch (dioceseCode) {
         case DioceseCode.BaD:
             return liturgyYearDatabaseRow.BaD;

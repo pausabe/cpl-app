@@ -1,4 +1,5 @@
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../Services/CelebrationTimeEnums";
+import {CelebrationType} from "../Services/DatabaseEnums";
 
 export default class LiturgyDayInformation {
     Today : LiturgySpecificDayInformation = new LiturgySpecificDayInformation();
@@ -7,7 +8,7 @@ export default class LiturgyDayInformation {
 
 export class LiturgySpecificDayInformation {
     Date: Date;
-    CelebrationType: string; // '-', 'F', 'S'
+    CelebrationType: CelebrationType;
     MovedDay: MovedDay = new MovedDay();
     LiturgyColor: string;
     PentecostDay: Date;
@@ -78,8 +79,8 @@ export class SpecialCelebration{
 export const NoIdentifierNumber = -1;
 
 export enum SpecialCelebrationTypeEnum{
-    CelebrationNotSpecial,
-    SpecialDay,
-    SolemnityAndFestivity,
-    StrongTime
+    CelebrationNotSpecial = "CelebrationNotSpecial",
+    SpecialDay = "SpecialDay",
+    SolemnityAndFestivity = "SolemnityAndFestivity",
+    StrongTime = "StrongTime"
 }

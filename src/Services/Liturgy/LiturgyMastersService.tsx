@@ -677,17 +677,17 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
             (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory ||
                 liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory ||
                 liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
-            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
+            let masterIdentifierOfVariableDays = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
 
             if (liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory &&
-                saintsMemoryOrSolemnityMasterIdentifier === -1) {
+                masterIdentifierOfVariableDays === -1) {
                 const row = await DatabaseDataService.ObtainFreeVirginMemoryAsync();
                 const saintsMemories = new SaintsMemories(row);
                 saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
                 return saintsMemories;
             }
             else {
-                if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
+                if (masterIdentifierOfVariableDays === -1) {
                     const day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
                     const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsMemories.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                     const saintsMemories = new SaintsMemories(row);
@@ -695,7 +695,7 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
                     return saintsMemories;
                 }
                 else {
-                    const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(SaintsMemories.MasterName, saintsMemoryOrSolemnityMasterIdentifier);
+                    const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(SaintsMemories.MasterName, masterIdentifierOfVariableDays);
                     const saintsMemories = new SaintsMemories(row);
                     saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
                     return saintsMemories;
