@@ -372,7 +372,7 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
 }
 
 function GetTeDeumInformation(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : TeDeumInformation{
-    let teDeumInformationEnabled = liturgyDayInformation.DayOfTheWeek === 0;
+    let teDeumInformationEnabled = false;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.EasterOctave:
             teDeumInformationEnabled = true;
