@@ -2,7 +2,6 @@ import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {CelebrationType} from "./DatabaseEnums";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import {DateManagement} from "../Utils/DateManagement";
-import {logConfigWarningsIOS} from "expo-cli/build/commands/utils/logConfigWarnings";
 
 export function IsHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
     //Divendres de la tercera setmana després de Pentecosta (Divendres després de Corpus) A (166) B (167) C (168)
@@ -60,6 +59,14 @@ export function IsAssumption(date: Date) {
     return date.getMonth() === 7 && date.getDate() === 15;
 }
 
+export function IsImmaculateConception(date: Date) {
+    return date.getMonth() === 11 && date.getDate() === 8;
+}
+
+export function IsSaintJoseph(date: Date) {
+    return date.getMonth() === 2 && date.getDate() === 19;
+}
+
 export function IsSaintTecla(date: Date) {
     return date.getMonth() === 8 && date.getDate() === 23;
 }
@@ -103,8 +110,8 @@ export function GetSaturdayAfterEpiphanyDate(liturgyDateInformation: LiturgySpec
     return saturdayAfterEpiphany;
 }
 
-export function IsAllSaints(liturgyDayInformation: LiturgySpecificDayInformation) {
-    return liturgyDayInformation.Date.getMonth() === 10 && liturgyDayInformation.Date.getDate() === 1;
+export function IsAllSaints(date: Date) {
+    return date.getMonth() === 10 && date.getDate() === 1;
 }
 
 export function IsSantJoan(liturgyDayInformation: LiturgySpecificDayInformation) {

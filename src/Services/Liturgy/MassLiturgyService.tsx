@@ -6,9 +6,9 @@ import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {Settings} from "../../Models/Settings";
 import {CelebrationType, YearType} from "../DatabaseEnums";
 import {StringManagement} from "../../Utils/StringManagement";
-import * as PrecedenceService from "../PrecedenceService";
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
+import * as HolyDaysOfObligationService from "./HolyDaysOfObligationService";
 
 export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInformation, todayCelebrationInformation: CelebrationInformation, tomorrowCelebrationInformation: CelebrationInformation, settings: Settings): Promise<MassLiturgy> {
     if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
@@ -17,43 +17,48 @@ export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInforma
     let massLiturgy = new MassLiturgy();
     massLiturgy.Today = await GetMassLiturgy(liturgyDayInformation.Today, settings);
     massLiturgy.HasVespers = DecideIfHasVespers(liturgyDayInformation, todayCelebrationInformation, tomorrowCelebrationInformation);
-    massLiturgy.Vespers = massLiturgy.HasVespers? await GetVespersMassLiturgy(liturgyDayInformation.Tomorrow, settings) : undefined;
+    massLiturgy.Vespers = massLiturgy.HasVespers ? await GetVespersMassLiturgy(liturgyDayInformation.Tomorrow, settings) : undefined;
     return massLiturgy;
 }
 
-function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, todayCelebrationInformation: CelebrationInformation, tomorrowCelebrationInformation: CelebrationInformation): boolean{
-    const todayShouldHaveVespers = liturgyDayInformation.Tomorrow.Date.getDay() === 0 ||
-        liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity;
-    const tomorrowIsMoreImportantThanToday = todayCelebrationInformation.Precedence >= tomorrowCelebrationInformation.Precedence;
-    return todayShouldHaveVespers &&
-        tomorrowIsMoreImportantThanToday && 
-        liturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday;
+function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, todayCelebrationInformation: CelebrationInformation, tomorrowCelebrationInformation: CelebrationInformation): boolean {
+    if(liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday){
+        return false;
+    }
+
+    const tomorrowIsSunday = liturgyDayInformation.Tomorrow.Date.getDay() === 0;
+    const tomorrowIsHolyDayOfObligation = HolyDaysOfObligationService.IsHolyDaysOfObligation(liturgyDayInformation.Tomorrow.Date);
+    const tomorrowIsHolyDayNotObligatedMoreImportantThanToday = HolyDaysOfObligationService.IsHolyDaysButNotObligated(liturgyDayInformation.Tomorrow.Date) &&
+        tomorrowCelebrationInformation.Precedence < todayCelebrationInformation.Precedence;
+
+    return tomorrowIsSunday ||
+        tomorrowIsHolyDayOfObligation ||
+        tomorrowIsHolyDayNotObligatedMoreImportantThanToday;
 }
 
 async function GetMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
     const celebrationIdentifier = GetCelebrationIdentifier(liturgyDayInformation, settings);
     if (IsCelebrationDay(liturgyDayInformation, celebrationIdentifier)) {
         return GetCelebrationDayLiturgy(liturgyDayInformation, celebrationIdentifier, settings);
-    }
-    else {
+    } else {
         return await DatabaseDataService.GetNormalDaysMassLiturgy(liturgyDayInformation);
     }
 }
 
 function GetCelebrationIdentifier(liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): number {
     let celebrationVariableIdentifier = GetCelebrationVariableIdentifier(liturgyDayInformation);
-    if(celebrationVariableIdentifier !== -1){
+    if (celebrationVariableIdentifier !== -1) {
         return celebrationVariableIdentifier;
     }
-    if(settings.OptionalFestivityEnabled &&
+    if (settings.OptionalFestivityEnabled &&
         (liturgyDayInformation.CelebrationType === CelebrationType.OptionalMemory ||
-        liturgyDayInformation.CelebrationType === CelebrationType.OptionalVirginMemory)) {
+            liturgyDayInformation.CelebrationType === CelebrationType.OptionalVirginMemory)) {
         return GetSpecialOptionalDayIdentifier(liturgyDayInformation.Date)
     }
     return -1;
 }
 
-function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, celebrationIdentifier: number){
+function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, celebrationIdentifier: number) {
     return liturgyDayInformation.CelebrationType === CelebrationType.Memory ||
         liturgyDayInformation.CelebrationType === CelebrationType.Solemnity ||
         liturgyDayInformation.CelebrationType === CelebrationType.Festivity ||
@@ -61,7 +66,7 @@ function IsCelebrationDay(liturgyDayInformation: LiturgySpecificDayInformation, 
         celebrationIdentifier !== -1;
 }
 
-async function GetCelebrationDayLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, celebrationIdentifier: number, settings: Settings): Promise<DayMassLiturgy>{
+async function GetCelebrationDayLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, celebrationIdentifier: number, settings: Settings): Promise<DayMassLiturgy> {
     return MergeLiturgyDays(
         await DatabaseDataService.GetHolyDaysMass(celebrationIdentifier, liturgyDayInformation, settings),
         await DatabaseDataService.GetNormalDaysMassLiturgy(liturgyDayInformation));
@@ -70,10 +75,10 @@ async function GetCelebrationDayLiturgy(liturgyDayInformation: LiturgySpecificDa
 function MergeLiturgyDays(firstLiturgyDay: DayMassLiturgy, secondLiturgyDay: DayMassLiturgy): DayMassLiturgy {
     const firstLiturgyDayHasContent = firstLiturgyDay && StringManagement.HasLiturgyContent(firstLiturgyDay.Gospel.Gospel);
     const secondLiturgyDayHasContent = secondLiturgyDay && StringManagement.HasLiturgyContent(secondLiturgyDay.Gospel.Gospel);
-    if(!firstLiturgyDayHasContent){
+    if (!firstLiturgyDayHasContent) {
         return secondLiturgyDay;
     }
-    if(!secondLiturgyDayHasContent){
+    if (!secondLiturgyDayHasContent) {
         return firstLiturgyDay;
     }
     let dayMassLiturgy = firstLiturgyDay;
@@ -86,7 +91,7 @@ function MergeLiturgyDays(firstLiturgyDay: DayMassLiturgy, secondLiturgyDay: Day
     if (!StringManagement.HasLiturgyContent(dayMassLiturgy.SecondReading.Reading)) {
         dayMassLiturgy.SecondReading = secondLiturgyDay.SecondReading;
     }
-    if(!StringManagement.HasLiturgyContent(dayMassLiturgy.Hallelujah.Hallelujah)){
+    if (!StringManagement.HasLiturgyContent(dayMassLiturgy.Hallelujah.Hallelujah)) {
         dayMassLiturgy.Hallelujah = secondLiturgyDay.Hallelujah;
     }
     if (!StringManagement.HasLiturgyContent(dayMassLiturgy.Gospel.Gospel)) {
@@ -95,12 +100,11 @@ function MergeLiturgyDays(firstLiturgyDay: DayMassLiturgy, secondLiturgyDay: Day
     return dayMassLiturgy;
 }
 
-async function GetVespersMassLiturgy(tomorrowLiturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy>{
+async function GetVespersMassLiturgy(tomorrowLiturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
     const holyDayMassIdentifier = GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation);
     if (holyDayMassIdentifier === -1) {
         return await GetMassLiturgy(tomorrowLiturgyDayInformation, settings);
-    }
-    else {
+    } else {
         return await DatabaseDataService.GetHolyDaysMassWithIdentifier(holyDayMassIdentifier);
     }
 }
@@ -215,7 +219,7 @@ function GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation: LiturgySpeci
 
 function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation): number {
     if (CelebrationIdentifierService.JesusChristHighPriestForever(liturgySpecificDayInformation)) {
-        return liturgySpecificDayInformation.YearIsEven? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI;
+        return liturgySpecificDayInformation.YearIsEven ? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI;
     }
 
     if (CelebrationIdentifierService.IsImmaculateHeartOfTheBlessedVirginMary(liturgySpecificDayInformation) &&
@@ -228,7 +232,7 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
     }
 
     if (CelebrationIdentifierService.BlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation)) {
-        return liturgySpecificDayInformation.YearIsEven? SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaII : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI;
+        return liturgySpecificDayInformation.YearIsEven ? SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaII : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI;
     }
 
     //Diumenge dins l’Octava de Nadal A (146) B (149) C (152)
@@ -297,7 +301,7 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
     return -1;
 }
 
-function GetSpecialOptionalDayIdentifier(date: Date): number{
+function GetSpecialOptionalDayIdentifier(date: Date): number {
     // Pasqua 01-may -> 209 (Sant Josep obrer)
     if (date.getDate() == 1 && date.getMonth() == 4) {
         return SoulKeys.LDSantoral_SantJosepObrer;

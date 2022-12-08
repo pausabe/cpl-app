@@ -132,7 +132,7 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
     }
 
     //19- Tots Sants (1 de novembre) quan cau en diumenge
-    if (CelebrationIdentifier.IsAllSaints(liturgyDayInformation) && date.getDay() === 0) {
+    if (CelebrationIdentifier.IsAllSaints(liturgyDayInformation.Date) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeTotsSants1Novembre;
     }
 

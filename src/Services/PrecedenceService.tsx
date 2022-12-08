@@ -31,7 +31,7 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
             (celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Lord ||
                 celebrationInformation.SpecificClassification === CelebrationSpecificClassification.MotherOfGod ||
                 celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic)) ||
-        CelebrationIdentifierService.IsAllSaints(dateLiturgyInformation)) {
+        CelebrationIdentifierService.IsAllSaints(dateLiturgyInformation.Date)) {
         return 3;
     }
     if (dateLiturgyInformation.CelebrationType === CelebrationType.Solemnity &&
