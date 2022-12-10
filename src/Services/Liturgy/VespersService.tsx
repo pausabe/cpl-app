@@ -22,7 +22,7 @@ export function ObtainVespers(liturgyMasters: LiturgyMasters, liturgyDayInformat
     vespers.Prayers = GetPrayers(liturgyMasters, liturgyDayInformation);
     vespers.FinalPrayer = GetFinalPrayer(liturgyMasters, liturgyDayInformation);
     vespers.EvangelicalChant = liturgyMasters.Various.VespersEvangelicalChant;
-    vespers.Title = liturgyDayInformation.DayOfTheWeek === 6 ? "Primeres vespres de diumenge" : "";
+    vespers.Title = liturgyDayInformation.DayOfTheWeek === 6 && liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum ? "Primeres vespres de diumenge" : "";
     return vespers;
 }
 

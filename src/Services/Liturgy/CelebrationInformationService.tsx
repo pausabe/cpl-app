@@ -1,8 +1,5 @@
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
-import {
-    LiturgySpecificDayInformation,
-    SpecialCelebrationTypeEnum
-} from "../../Models/LiturgyDayInformation";
+import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
 import {CelebrationType} from "../DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
@@ -42,6 +39,9 @@ function BuildCelebrationInformation(liturgySpecificDayInformation: LiturgySpeci
         }
         else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
             celebrationInformation.Title = "Fèria d’Advent";
+        }
+        else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday){
+            celebrationInformation.Title = "Diumenge de Rams";
         }
     }
     return celebrationInformation;

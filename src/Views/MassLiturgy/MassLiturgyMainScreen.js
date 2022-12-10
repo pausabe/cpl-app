@@ -13,9 +13,7 @@ import HR from '../../Components/HRComponent';
 import GlobalKeys from '../../Utils/GlobalKeys';
 import {
     CurrentLiturgyDayInformation,
-    CurrentMassLiturgy,
-    CurrentHoursLiturgy,
-    CurrentSettings
+    CurrentMassLiturgy
 } from "../../Services/DataService";
 import {SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
@@ -178,23 +176,13 @@ export default class MassLiturgyMainScreen extends Component {
                             onPress={this.OnVespersPressed.bind(this)}>
                             <Text style={styles.buttonText}>{"Vespertina"}</Text>
                             <View style={{padding: 1, paddingHorizontal: 5}}>
-                                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.Title) ?
-                                    <View>
-                                        {CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday ?
-                                            <Text numberOfLines={1}
-                                                  style={styles.redCenter}>{CurrentHoursLiturgy.Vespers.Title}</Text>
-                                            : null
-                                        }
-                                    </View>
-                                    :
-                                    <View>
-                                        {CurrentLiturgyDayInformation.Today.Date.getDay() === 6 ?
-                                            <Text numberOfLines={1}
-                                                  style={styles.redCenter}>{"Missa de Diumenge"}</Text>
-                                            : null
-                                        }
-                                    </View>
-                                }
+                                <View>
+                                    {StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.Title) ?
+                                        <Text numberOfLines={1}
+                                              style={styles.redCenter}>{CurrentMassLiturgy.Vespers.Title}</Text>
+                                        : null
+                                    }
+                                </View>
                             </View>
                         </TouchableOpacity>
                     </View>

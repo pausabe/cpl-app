@@ -17,8 +17,15 @@ export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInforma
     }
     let massLiturgy = new MassLiturgy();
     massLiturgy.Today = await GetMassLiturgy(liturgyDayInformation.Today, settings);
+    massLiturgy.Today.Title = todayCelebrationInformation.Title;
     massLiturgy.HasVespers = DecideIfHasVespers(liturgyDayInformation, todayCelebrationInformation, tomorrowCelebrationInformation);
     massLiturgy.Vespers = massLiturgy.HasVespers ? await GetVespersMassLiturgy(liturgyDayInformation.Tomorrow, settings) : undefined;
+    if(massLiturgy.HasVespers && StringManagement.HasLiturgyContent(tomorrowCelebrationInformation.Title)){
+        massLiturgy.Vespers.Title = tomorrowCelebrationInformation.Title;
+    }
+    else if(liturgyDayInformation.Tomorrow.Date.getDay() === 0){
+        massLiturgy.Vespers.Title = "Missa de diumenge";
+    }
     return massLiturgy;
 }
 

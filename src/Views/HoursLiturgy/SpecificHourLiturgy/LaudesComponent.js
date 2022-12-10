@@ -14,6 +14,7 @@ import * as Logger from '../../../Utils/Logger';
 //  actually, it seems that these "views" are view + controller. When I separe it, it will make more sense
 import {CurrentSettings, CurrentHoursLiturgy, CurrentLiturgyDayInformation} from '../../../Services/DataService';
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {StringManagement} from "../../../Utils/StringManagement";
 
 export default class LaudesComponent extends Component {
     constructor(props) {
@@ -378,19 +379,19 @@ export default class LaudesComponent extends Component {
         const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Antiphon);
         const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Title);
         let aux_com1 = "";
-        if (CurrentHoursLiturgy.Laudes.FirstPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Laudes.FirstPsalm.Comment))
             aux_com1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Comment);
         const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.FirstPsalm.Psalm));
         const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Antiphon);
         const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Title));
         let aux_com2 = "";
-        if (CurrentHoursLiturgy.Laudes.SecondPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Laudes.SecondPsalm.Comment))
             aux_com2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Comment);
         const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.SecondPsalm.Psalm));
         const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Antiphon);
         const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Title));
         let aux_com3 = "";
-        if (CurrentHoursLiturgy.Laudes.ThirdPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Laudes.ThirdPsalm.Comment))
             aux_com3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Comment);
         const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Laudes.ThirdPsalm.Psalm));
 
@@ -402,7 +403,7 @@ export default class LaudesComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol1}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Laudes.FirstPsalm.Comment !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Laudes.FirstPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com1}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
@@ -423,7 +424,7 @@ export default class LaudesComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol2}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Laudes.SecondPsalm.Comment !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Laudes.SecondPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com2}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
@@ -444,7 +445,7 @@ export default class LaudesComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol3}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Laudes.com3 !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Laudes.ThirdPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com3}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}

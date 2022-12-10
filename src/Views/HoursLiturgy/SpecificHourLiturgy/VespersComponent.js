@@ -12,6 +12,7 @@ import * as Logger from '../../../Utils/Logger';
 import GlobalViewFunctions from "../../../Utils/GlobalViewFunctions";
 import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {StringManagement} from "../../../Utils/StringManagement";
 
 export default class VespersComponent extends Component {
     constructor(props) {
@@ -149,19 +150,19 @@ export default class VespersComponent extends Component {
         const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Antiphon);
         const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Title);
         let aux_com1 = "";
-        if (CurrentHoursLiturgy.Vespers.FirstPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment))
             aux_com1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment);
         const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Psalm));
         const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Antiphon);
         const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Title));
         let aux_com2 = "";
-        if (CurrentHoursLiturgy.Vespers.SecondPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment))
             aux_com2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment);
         const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Psalm));
         const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Antiphon);
         const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Title));
         let aux_com3 = "";
-        if (CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment))
             aux_com3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment);
         const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Psalm));
 
@@ -173,7 +174,7 @@ export default class VespersComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol1}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Vespers.FirstPsalm.Comment !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com1}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
@@ -194,7 +195,7 @@ export default class VespersComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol2}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Vespers.SecondPsalm.Comment !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com2}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
@@ -215,7 +216,7 @@ export default class VespersComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol3}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Vespers.com3 !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com3}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}

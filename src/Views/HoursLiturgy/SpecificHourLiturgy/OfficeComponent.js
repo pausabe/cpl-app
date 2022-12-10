@@ -13,6 +13,7 @@ import SettingsService from '../../../Services/SettingsService';
 import * as Logger from '../../../Utils/Logger';
 import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {StringManagement} from "../../../Utils/StringManagement";
 
 export default class OfficeComponent extends Component {
     constructor(props) {
@@ -411,19 +412,19 @@ export default class OfficeComponent extends Component {
         const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Antiphon);
         const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Title);
         let aux_com1 = "";
-        if (CurrentHoursLiturgy.Office.FirstPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Office.FirstPsalm.Comment))
             aux_com1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Comment);
         const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.FirstPsalm.Psalm));
         const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Antiphon);
         const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Title));
         let aux_com2 = "";
-        if (CurrentHoursLiturgy.Office.SecondPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Office.SecondPsalm.Comment))
             aux_com2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Comment);
         const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.SecondPsalm.Psalm));
         const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Antiphon);
         const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Title));
         let aux_com3 = "";
-        if (CurrentHoursLiturgy.Office.ThirdPsalm.Comment !== '-')
+        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Office.ThirdPsalm.Comment))
             aux_com3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Comment);
         const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Office.ThirdPsalm.Psalm));
 
@@ -435,7 +436,7 @@ export default class OfficeComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol1}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Office.FirstPsalm.Comment !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Office.FirstPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com1}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
@@ -456,7 +457,7 @@ export default class OfficeComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol2}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Office.SecondPsalm.Comment !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Office.SecondPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com2}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
@@ -477,7 +478,7 @@ export default class OfficeComponent extends Component {
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol3}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Office.com3 !== '-' ?
+                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Office.ThirdPsalm.Comment)?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com3}</Text>
                         {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
