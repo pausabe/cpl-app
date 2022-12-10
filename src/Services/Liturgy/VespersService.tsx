@@ -64,7 +64,8 @@ export function MergeVespersWithCelebration(liturgyMasters: LiturgyMasters, litu
             weUsedSomeCelebrationPart = true;
             vespers.ShortReading = withCelebrationVespers.ShortReading;
         }
-        if (StringManagement.HasLiturgyContent(withCelebrationVespers.ShortResponsory.FirstPart)) {
+        if (StringManagement.HasLiturgyContent(withCelebrationVespers.ShortResponsory.FirstPart) ||
+            StringManagement.HasLiturgyContent(withCelebrationVespers.ShortResponsory.SpecialAntiphon)) {
             weUsedSomeCelebrationPart = true;
             vespers.ShortResponsory = withCelebrationVespers.ShortResponsory;
         }
@@ -115,7 +116,7 @@ function GetAnthem(liturgyMasters: LiturgyMasters, liturgyDayInformation: Liturg
                 anthem = liturgyMasters.CommonPartsOfHolyWeek.VespersCatalanAnthem;
             }
             break;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             if (settings.UseLatin) {
                 anthem = liturgyMasters.PartsOfEasterTriduum.VespersLatinAnthem;
             } else {
@@ -214,7 +215,7 @@ function GetPsalmody(liturgyMasters: LiturgyMasters, liturgyDayInformation: Litu
             psalmody.SecondPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersSecondAntiphon;
             psalmody.ThirdPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersThirdAntiphon;
             break;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             psalmody.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.VespersFirstPsalm;
             psalmody.FirstPsalm.Comment = "-";
             psalmody.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.VespersSecondPsalm;
@@ -294,7 +295,7 @@ function GetShortReading(liturgyMasters: LiturgyMasters, liturgyDayInformation: 
             return liturgyMasters.PalmSundayParts.SecondVespersShortReading;
         case SpecificLiturgyTimeType.HolyWeek:
             return liturgyMasters.PartsOfHolyWeek.VespersShortReading;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             return liturgyMasters.PartsOfEasterTriduum.VespersShortReading;
         case SpecificLiturgyTimeType.EasterOctave:
             return liturgyMasters.PartsOfEasterOctave.VespersShortReading;
@@ -347,7 +348,7 @@ function GetShortResponsory(liturgyMasters: LiturgyMasters, liturgyDayInformatio
                 return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersShortResponsory;
             }
             break;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             return liturgyMasters.PartsOfEasterTriduum.VespersShortResponsory;
         case SpecificLiturgyTimeType.EasterOctave:
             return liturgyMasters.PartsOfEasterOctave.VespersShortResponsory;
@@ -452,7 +453,7 @@ function GetEvangelicalAntiphon(liturgyMasters: LiturgyMasters, liturgyDayInform
         case SpecificLiturgyTimeType.HolyWeek:
             evangelicalAntiphon = liturgyMasters.PartsOfHolyWeek.VespersEvangelicalAntiphon;
             break;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             evangelicalAntiphon = liturgyMasters.PartsOfEasterTriduum.VespersEvangelicalAntiphon;
             break;
         case SpecificLiturgyTimeType.EasterOctave:
@@ -550,7 +551,7 @@ function GetPrayers(liturgyMasters: LiturgyMasters, liturgyDayInformation: Litur
             return liturgyMasters.PalmSundayParts.SecondVespersPrayers;
         case SpecificLiturgyTimeType.HolyWeek:
             return liturgyMasters.PartsOfHolyWeek.VespersPrayers;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             return liturgyMasters.PartsOfEasterTriduum.VespersPrayers;
         case SpecificLiturgyTimeType.EasterOctave:
             return liturgyMasters.PartsOfEasterOctave.VespersPrayers;
@@ -591,7 +592,7 @@ function GetFinalPrayer(liturgyMasters: LiturgyMasters, liturgyDayInformation: L
             return liturgyMasters.PalmSundayParts.SecondVespersFinalPrayer;
         case SpecificLiturgyTimeType.HolyWeek:
             return liturgyMasters.PartsOfHolyWeek.VespersFinalPrayer;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             return liturgyMasters.PartsOfEasterTriduum.VespersFinalPrayer;
         case SpecificLiturgyTimeType.EasterOctave:
             return liturgyMasters.PartsOfEasterOctave.VespersFinalPrayer;

@@ -4,7 +4,7 @@ export enum SpecificLiturgyTimeType{
     LentWeeks = 'Q_SETMANES',
     PalmSunday = 'Q_DIUM_RAMS',
     HolyWeek = 'Q_SET_SANTA',
-    LentTriduum = 'Q_TRIDU',
+    PaschalTriduum = 'Q_TRIDU',
     EasterSunday = 'Q_DIUM_PASQUA',
     EasterOctave = 'P_OCTAVA',
     EasterWeeks = 'P_SETMANES',

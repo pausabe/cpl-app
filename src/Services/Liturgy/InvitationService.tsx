@@ -26,7 +26,7 @@ export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInfo
             case SpecificLiturgyTimeType.HolyWeek:
                 invitation.InvitationAntiphon = liturgyMasters.CommonPartsOfHolyWeek.InvitationAntiphon;
                 break;
-            case SpecificLiturgyTimeType.LentTriduum:
+            case SpecificLiturgyTimeType.PaschalTriduum:
                 invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterTriduum.InvitationAntiphon;
                 break;
             case SpecificLiturgyTimeType.EasterOctave:

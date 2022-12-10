@@ -9,7 +9,7 @@ import {LogKeys} from "../Utils/Logger";
 import {DateManagement} from "../Utils/DateManagement";
 
 export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpecificDayInformation, celebrationInformation: CelebrationInformation): number {
-    if (dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum) {
+    if (dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum) {
         return 1;
     }
     if (CelebrationIdentifierService.CheckCelebration(Celebration.Christmas, dateLiturgyInformation) ||

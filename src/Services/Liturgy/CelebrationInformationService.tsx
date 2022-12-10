@@ -26,7 +26,7 @@ function BuildCelebrationInformation(liturgySpecificDayInformation: LiturgySpeci
         celebrationInformation.Description = "-";
         liturgySpecificDayInformation.CelebrationType = CelebrationType.Fair;
         if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
-            liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum) {
+            liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum) {
             celebrationInformation.Title = DateManagement.WeekDayName(liturgySpecificDayInformation.Date.getDay()) + " Sant";
         }
         else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {

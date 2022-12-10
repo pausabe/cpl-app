@@ -102,7 +102,7 @@ export async function ObtainLiturgyMasters(currentLiturgyDayInformation : Liturg
 
 async function ObtainOfficeCommonPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<OfficeCommonPsalter> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentTriduum &&
+        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
             liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave &&
             liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasOctave) {
             const id = (parseInt(liturgyDayInformation.Today.WeekCycle) - 1) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
@@ -207,8 +207,8 @@ async function ObtainPalmSundayParts(liturgyDayInformation : LiturgyDayInformati
 
 async function ObtainPartsOfHolyWeek(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfHolyWeek> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ||
-            liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
+        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
+            liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek) {
             const id = liturgyDayInformation.Today.Date.getDay();
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfHolyWeek.MasterName, id);
             return new PartsOfHolyWeek(row);
@@ -218,9 +218,9 @@ async function ObtainPartsOfHolyWeek(liturgyDayInformation : LiturgyDayInformati
 
 async function ObtainPartsOfEasterTriduum(liturgyDayInformation : LiturgyDayInformation) : Promise<PartsOfEasterTriduum> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum ||
+        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum ||
             (liturgyDayInformation.Tomorrow.Date.getDay() === 5 &&
-                liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum)) {
+                liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum)) {
             const id = liturgyDayInformation.Today.Date.getDay() - 3;
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(PartsOfEasterTriduum.MasterName, id);
             return new PartsOfEasterTriduum(row);
@@ -412,7 +412,7 @@ async function ObtainSpecialCommonPartsOfEasterSundays(liturgyDayInformation : L
 
 async function ObtainLaudesCommonPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<LaudesCommonPsalter> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentTriduum && liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave) {
+        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum && liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave) {
             let weekCycle = parseInt(liturgyDayInformation.Today.WeekCycle);
             let dayNumber = liturgyDayInformation.Today.Date.getDay();
 
@@ -512,7 +512,7 @@ async function ObtainFiveWeeksOfFirstsVespersOfSundayLentParts(liturgyDayInforma
 
 async function ObtainVespersCommonPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<VespersCommonPsalter> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentTriduum && liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave) {
+        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum && liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave) {
             let weekDayNormalVespers = liturgyDayInformation.Today.Date.getDay() === 6 ? 1 : liturgyDayInformation.Today.Date.getDay() + 2;
             let cicle = parseInt(liturgyDayInformation.Today.WeekCycle);
             if (liturgyDayInformation.Today.Date.getDay() === 6) {
@@ -562,7 +562,7 @@ async function ObtainSolemnityAndFestivityWhenFirstVespersParts(liturgyDayInform
 
 async function ObtainCommonHourPsalter(liturgyDayInformation : LiturgyDayInformation) : Promise<CommonHourPsalter> {
     return await SecureCall(async () => {
-        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentTriduum && liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave) {
+        if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum && liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave) {
             const id = (parseInt(liturgyDayInformation.Today.WeekCycle) - 1) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonHourPsalter.MasterName, id);
             return new CommonHourPsalter(row);
@@ -595,7 +595,7 @@ async function ObtainCommonNightPrayerPsalter(liturgyDayInformation : LiturgyDay
                 liturgyDayInformation.Today.Date.getDay() === 6)) {
             id = 9;
         }
-        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum) {
+        if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum) {
             id = 9;
         }
         const row = await DatabaseDataService.ObtainMasterRowFromDatabase(CommonNightPrayerPsalter.MasterName, id);

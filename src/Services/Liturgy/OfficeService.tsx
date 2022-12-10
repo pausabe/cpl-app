@@ -96,7 +96,7 @@ function GetAnthem(isDarkAnthem: boolean, currentOfficeCommonPsalter : OfficeCom
                 anthem = liturgyMasters.CommonPartsOfHolyWeek.OfficeCatalanAnthem;
             }
             break;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             if(settings.UseLatin){
                 anthem = liturgyMasters.PartsOfEasterTriduum.OfficeLatinAnthem;
             }
@@ -166,7 +166,7 @@ function GetPsalmody(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
     }
 
     switch(liturgyDayInformation.SpecificLiturgyTime){
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             psalmody.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.OfficeFirstPsalm;
             psalmody.FirstPsalm.Comment = "-";
             psalmody.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.OfficeSecondPsalm;
@@ -286,8 +286,8 @@ function GetResponsory(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgy
         case SpecificLiturgyTimeType.PalmSunday:
             return liturgyMasters.PalmSundayParts.OfficeResponsory;
         case SpecificLiturgyTimeType.HolyWeek:
-            return liturgyMasters.PartsOfHolyWeek.OfficeResponsory
-        case SpecificLiturgyTimeType.LentTriduum:
+            return liturgyMasters.PartsOfHolyWeek.OfficeResponsory;
+        case SpecificLiturgyTimeType.PaschalTriduum:
             return liturgyMasters.PartsOfEasterTriduum.OfficeResponsory;
         case SpecificLiturgyTimeType.EasterOctave:
             return liturgyMasters.PartsOfEasterOctave.OfficeResponsory;
@@ -330,7 +330,7 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             readings.FirstReading = liturgyMasters.PartsOfHolyWeek.OfficeFirstReading;
             readings.SecondReading = liturgyMasters.PartsOfHolyWeek.OfficeSecondReading;
             break;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             readings.FirstReading = liturgyMasters.PartsOfEasterTriduum.OfficeFirstReading;
             readings.SecondReading = liturgyMasters.PartsOfEasterTriduum.OfficeSecondReading;
             break;
@@ -418,7 +418,7 @@ function GetFinalPrayer(currentOfficeCommonPsalter : OfficeCommonPsalter, liturg
             return liturgyMasters.PalmSundayParts.LaudesFinalPrayer;
         case SpecificLiturgyTimeType.HolyWeek:
             return liturgyMasters.PartsOfHolyWeek.LaudesFinalPrayer;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             return liturgyMasters.PartsOfEasterTriduum.LaudesFinalPrayer;
         case SpecificLiturgyTimeType.EasterOctave:
             return liturgyMasters.PartsOfEasterOctave.LaudesFinalPrayer;

@@ -137,7 +137,7 @@ export default class NightPrayerComponent extends Component {
             if (this.COMPLETES !== null) {
                 const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
                 const is_special_initial_message =
-                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum &&
+                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum &&
                     CurrentLiturgyDayInformation.Today.Date.getDay() === 6;
                 const aux_special_initial_message = "Avui, només han de dir aquestes Completes els qui no participen en la Vetlla pasqual.";
                 const aux_sigueu = "Sigueu amb nosaltres, Déu nostre.";
@@ -146,7 +146,7 @@ export default class NightPrayerComponent extends Component {
                     CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
                     CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
                     CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentTriduum;
+                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
                 const aux_lloable = "És lloable que aquí es faci examen de consciència.";
                 const aux_acte_pen = this.COMPLETES.PenitentialAct;
                 const aux_himne = GlobalViewFunctions.rs(this.COMPLETES.Anthem);

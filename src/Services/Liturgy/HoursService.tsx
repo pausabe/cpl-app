@@ -103,7 +103,7 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
                     hourAnthems.NinthValue = liturgyMasters.CommonPartsOfHolyWeek.HoursCatalanAnthem;
                 }
                 break;
-            case SpecificLiturgyTimeType.LentTriduum:
+            case SpecificLiturgyTimeType.PaschalTriduum:
                 if(settings.UseLatin){
                     hourAnthems.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.LatinAnthem;
                     hourAnthems.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.LatinAnthem;
@@ -216,7 +216,7 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 psalmody.SixthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.SixthHourAntiphon;
                 psalmody.NinthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.NinthHourAntiphon;
                 break;
-            case SpecificLiturgyTimeType.LentTriduum:
+            case SpecificLiturgyTimeType.PaschalTriduum:
                 psalmody.ThirdValue.HasMultipleAntiphons = false;
                 psalmody.SixthValue.HasMultipleAntiphons = false;
                 psalmody.NinthValue.HasMultipleAntiphons = false;
@@ -284,7 +284,7 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
         psalmody.NinthValue.SecondPsalm = liturgyMasters.CommonHourPsalter.SecondPsalm;
         psalmody.NinthValue.ThirdPsalm = liturgyMasters.CommonHourPsalter.ThirdPsalm;
         switch(liturgyDayInformation.SpecificLiturgyTime){
-            case SpecificLiturgyTimeType.LentTriduum:
+            case SpecificLiturgyTimeType.PaschalTriduum:
                 psalmody.ThirdValue.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.HourPrayerFirstPsalm;
                 psalmody.ThirdValue.FirstPsalm.Comment = "-";
                 psalmody.ThirdValue.FirstPsalm.HasGloryPrayer = true;
@@ -385,7 +385,7 @@ function GetResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformation : 
                 hourAnthems.SixthValue = liturgyMasters.PartsOfHolyWeek.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.PartsOfHolyWeek.NinthHourParts.Responsory;
                 break;
-            case SpecificLiturgyTimeType.LentTriduum:
+            case SpecificLiturgyTimeType.PaschalTriduum:
                 hourAnthems.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.Responsory;
                 hourAnthems.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.Responsory;
                 hourAnthems.NinthValue = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.Responsory;
@@ -469,7 +469,7 @@ function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation 
                 hourShortReading.SixthValue = liturgyMasters.PartsOfHolyWeek.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PartsOfHolyWeek.NinthHourParts.ShortReading;
                 break;
-            case SpecificLiturgyTimeType.LentTriduum:
+            case SpecificLiturgyTimeType.PaschalTriduum:
                 hourShortReading.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.ShortReading;
                 hourShortReading.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.ShortReading;
                 hourShortReading.NinthValue = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.ShortReading;
@@ -547,7 +547,7 @@ function GetFinalPraying(liturgyMasters : LiturgyMasters, liturgyDayInformation 
                 finalPraying.SixthValue = liturgyMasters.PartsOfHolyWeek.LaudesFinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PartsOfHolyWeek.LaudesFinalPrayer;
                 break;
-            case SpecificLiturgyTimeType.LentTriduum:
+            case SpecificLiturgyTimeType.PaschalTriduum:
                 finalPraying.ThirdValue = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.FinalPrayer;
                 finalPraying.SixthValue = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.FinalPrayer;
                 finalPraying.NinthValue = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.FinalPrayer;

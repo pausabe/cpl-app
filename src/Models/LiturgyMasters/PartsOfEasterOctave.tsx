@@ -68,16 +68,17 @@ export default class PartsOfEasterOctave {
             this.ThirdHourParts.Antiphon = databaseRow.antMenorTercia;
             this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
             this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
+            this.ThirdHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.SixthHourParts.Antiphon = databaseRow.antMenorSexta;
             this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
             this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
+            this.SixthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.NinthHourParts.Antiphon = databaseRow.antMenorNona;
             this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
             this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
-
-            this.HoursFinalPrayer = databaseRow.oraFiMenor;
+            this.NinthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.VespersShortReading.Quote = databaseRow.citaLBVespres;
             this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
@@ -113,7 +114,6 @@ export default class PartsOfEasterOctave {
     SixthHourParts: HourCommonParts = new HourCommonParts();
     NinthHourParts: HourCommonParts = new HourCommonParts();
     HoursResponsory: Responsory = new Responsory();
-    HoursFinalPrayer: string;
     VespersShortReading: ShortReading = new ShortReading();
     VespersShortResponsory: ShortResponsory = new ShortResponsory();
     VespersEvangelicalAntiphon: string;

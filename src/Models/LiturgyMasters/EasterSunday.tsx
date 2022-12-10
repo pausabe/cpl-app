@@ -12,7 +12,7 @@ export default class EasterSunday {
             this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
             this.OfficeFirstReading.Reading = databaseRow.lectura1;
             this.OfficeFirstPsalm.Antiphon = databaseRow.ant1Ofici;
-            this.OfficeFirstPsalm.Comment = databaseRow.citaSalm1Ofici;
+            this.OfficeFirstPsalm.Title = databaseRow.citaSalm1Ofici;
             this.OfficeFirstPsalm.Psalm = databaseRow.salm1Ofici;
             this.OfficeFirstPsalm.Prayer = databaseRow.oracioSalm1Ofici;
 
@@ -21,7 +21,7 @@ export default class EasterSunday {
             this.OfficeSecondReading.Title = databaseRow.titolLect2Ofici;
             this.OfficeSecondReading.Reading = databaseRow.lectura2;
             this.OfficeSecondPsalm.Antiphon = databaseRow.ant2Ofici;
-            this.OfficeSecondPsalm.Comment = databaseRow.citaSalm2Ofici;
+            this.OfficeSecondPsalm.Title = databaseRow.citaSalm2Ofici;
             this.OfficeSecondPsalm.Psalm = databaseRow.salm2Ofici;
             this.OfficeSecondPsalm.Prayer = databaseRow.oracioSalm2Ofici;
 
@@ -30,18 +30,20 @@ export default class EasterSunday {
             this.OfficeThirdReading.Title = databaseRow.titolLect3Ofici;
             this.OfficeThirdReading.Reading = databaseRow.lectura3;
             this.OfficeThirdPsalm.Antiphon = databaseRow.ant3Ofici;
-            this.OfficeThirdPsalm.Comment = databaseRow.citaSalm3Ofici;
+            this.OfficeThirdPsalm.Title = databaseRow.citaSalm3Ofici;
             this.OfficeThirdPsalm.Psalm = databaseRow.salm3Ofici;
             this.OfficeThirdPsalm.Prayer = ""; // Missing column
 
-            this.OfficeThirdReading.Reference = databaseRow.referencia4Ofici;
-            this.OfficeThirdReading.Quote = databaseRow.citaLec4Ofici;
-            this.OfficeThirdReading.Title = databaseRow.titolLect4Ofici;
-            this.OfficeThirdReading.Reading = databaseRow.lectura4;
-            this.OfficeThirdPsalm.Antiphon = ""; // Missing column
-            this.OfficeThirdPsalm.Comment = ""; // Missing column
-            this.OfficeThirdPsalm.Psalm = ""; // Missing column
-            this.OfficeThirdPsalm.Prayer = databaseRow.oracioSalm4Ofici;
+            this.OfficeFourthReading.Reference = databaseRow.referencia4Ofici;
+            this.OfficeFourthReading.Quote = databaseRow.citaLec4Ofici;
+            this.OfficeFourthReading.Title = databaseRow.titolLect4Ofici;
+            this.OfficeFourthReading.Reading = databaseRow.lectura4;
+            this.OfficeFourthPsalm.Antiphon = ""; // Missing column
+            this.OfficeFourthPsalm.Title = ""; // Missing column
+            this.OfficeFourthPsalm.Psalm = ""; // Missing column
+            this.OfficeFourthPsalm.Prayer = databaseRow.oracioSalm4Ofici;
+
+            this.OfficeFinalPrayer = databaseRow.oraFiLaudes;
 
             this.InvitationAntiphon = databaseRow.antInvitatori;
 
@@ -89,23 +91,27 @@ export default class EasterSunday {
             this.ThirdHourParts.Antiphon = databaseRow.antMenorTercia;
             this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
             this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
+            this.ThirdHourParts.Responsory.Versicle = databaseRow.responsoriMenorV;
+            this.ThirdHourParts.Responsory.Response = databaseRow.responsoriMenorR;
+            this.ThirdHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.SixthHourParts.LatinAnthem = databaseRow.himneSextaLlati;
             this.SixthHourParts.CatalanAnthem = databaseRow.himneSextaCat;
             this.SixthHourParts.Antiphon = databaseRow.antMenorSexta;
             this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
             this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
+            this.SixthHourParts.Responsory.Versicle = databaseRow.responsoriMenorV;
+            this.SixthHourParts.Responsory.Response = databaseRow.responsoriMenorR;
+            this.SixthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.NinthHourParts.LatinAnthem = databaseRow.himneNonaLlati;
             this.NinthHourParts.CatalanAnthem = databaseRow.himneNonaCat;
             this.NinthHourParts.Antiphon = databaseRow.antMenorNona;
             this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
             this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
-
-            this.HoursResponsory.Versicle = databaseRow.responsoriMenorV;
-            this.HoursResponsory.Response = databaseRow.responsoriMenorR;
-
-            this.HoursFinalPrayer = databaseRow.oraFiMenor;
+            this.NinthHourParts.Responsory.Versicle = databaseRow.responsoriMenorV;
+            this.NinthHourParts.Responsory.Response = databaseRow.responsoriMenorR;
+            this.NinthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.VespersLatinAnthem = databaseRow.himneLlatiVespres;
             this.VespersCatalanAnthem = databaseRow.himneCatVespres;
@@ -148,6 +154,7 @@ export default class EasterSunday {
     OfficeThirdPsalm: EasterOfficePsalm = new EasterOfficePsalm();
     OfficeFourthReading: ReadingOfTheOffice = new ReadingOfTheOffice();
     OfficeFourthPsalm: EasterOfficePsalm = new EasterOfficePsalm();
+    OfficeFinalPrayer; string;
     LaudesLatinAnthem: string;
     LaudesCatalanAnthem: string;
     LaudesFirstPsalm: Psalm = new Psalm();
@@ -164,8 +171,6 @@ export default class EasterSunday {
     ThirdHourParts: HourCommonParts = new HourCommonParts();
     SixthHourParts: HourCommonParts = new HourCommonParts();
     NinthHourParts: HourCommonParts = new HourCommonParts();
-    HoursResponsory: Responsory = new Responsory();
-    HoursFinalPrayer: string;
     VespersLatinAnthem: string;
     VespersCatalanAnthem: string;
     VespersFirstPsalm: Psalm = new Psalm();
@@ -181,7 +186,7 @@ export default class EasterSunday {
 
 class EasterOfficePsalm{
     Antiphon: string;
-    Comment: string;
+    Title: string;
     Psalm: string;
     Prayer: string;
 }

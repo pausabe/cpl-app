@@ -86,6 +86,7 @@ export default class PartsOfEasterTriduum {
             this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
             this.ThirdHourParts.Responsory.Versicle = databaseRow.respVTercia;
             this.ThirdHourParts.Responsory.Response = databaseRow.respRTercia;
+            this.ThirdHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.SixthHourParts.LatinAnthem = databaseRow.himneLlatiSexta;
             this.SixthHourParts.CatalanAnthem = databaseRow.himneCatSexta;
@@ -94,6 +95,7 @@ export default class PartsOfEasterTriduum {
             this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
             this.SixthHourParts.Responsory.Versicle = databaseRow.respVSexta;
             this.SixthHourParts.Responsory.Response = databaseRow.respRSexta;
+            this.SixthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.NinthHourParts.LatinAnthem = databaseRow.himneLlatiNona;
             this.NinthHourParts.CatalanAnthem = databaseRow.himneCatNona;
@@ -102,6 +104,7 @@ export default class PartsOfEasterTriduum {
             this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
             this.NinthHourParts.Responsory.Versicle = databaseRow.respVNona;
             this.NinthHourParts.Responsory.Response = databaseRow.respRNona;
+            this.NinthHourParts.FinalPrayer = databaseRow.oraFiMenor;
 
             this.HourPrayerFirstPsalm.Title = databaseRow.titolSalmMenor1;
             this.HourPrayerFirstPsalm.Psalm = databaseRow.salmMenor1;
@@ -114,8 +117,6 @@ export default class PartsOfEasterTriduum {
             this.HourPrayerThirdPsalm.Title = databaseRow.titolSalmMenor3;
             this.HourPrayerThirdPsalm.Psalm = databaseRow.salmMenor3;
             this.HourPrayerThirdPsalm.HasGloryPrayer = databaseRow.gloriaMenor3 === "1";
-
-            this.HoursFinalPrayer = databaseRow.oraFiMenor;
 
             this.VespersLatinAnthem = databaseRow.himneDSOVespresllati;
             this.VespersCatalanAnthem = databaseRow.himneDSOVespresCat;
@@ -175,7 +176,6 @@ export default class PartsOfEasterTriduum {
     HourPrayerFirstPsalm: Psalm = new Psalm();
     HourPrayerSecondPsalm: Psalm = new Psalm();
     HourPrayerThirdPsalm: Psalm = new Psalm();
-    HoursFinalPrayer: string;
     VespersLatinAnthem: string;
     VespersCatalanAnthem: string;
     VespersFirstPsalm: Psalm = new Psalm();

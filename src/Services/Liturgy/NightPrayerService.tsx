@@ -74,7 +74,7 @@ function GetPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation : Li
         FirstPsalm: liturgyMasters.CommonNightPrayerPsalter.FirstPsalm,
         SecondPsalm: liturgyMasters.CommonNightPrayerPsalter.SecondPsalm
     }
-    if(liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks){
+    if(liturgyDayInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter){
         psalmody.FirstPsalm.Antiphon = "Al·leluia, al·leluia, al·leluia.";
     }
     return psalmody;
@@ -98,7 +98,7 @@ function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformati
                 shortResponsory.SpecialAntiphon = "Crist es féu per nosaltres obedient fins a la mort.";
             }
             break;
-        case SpecificLiturgyTimeType.LentTriduum:
+        case SpecificLiturgyTimeType.PaschalTriduum:
             if(liturgyDayInformation.DayOfTheWeek === 5){
                 shortResponsory.HasSpecialAntiphon = true;
                 shortResponsory.SpecialAntiphon = "Crist es féu per nosaltres obedient fins a la mort i una mort de creu.";
@@ -108,10 +108,12 @@ function GetShortResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformati
                 shortResponsory.SpecialAntiphon = "Crist es féu per nosaltres obedient fins a la mort i una mort de creu. Per això Déu l'ha exalçat i li ha concedit aquell nom que està per damunt de tot altre nom."
             }
             break;
-    }
-    if(liturgyDayInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter){
-        shortResponsory.HasSpecialAntiphon = true;
-        shortResponsory.SpecialAntiphon = "Avui és el dia en què ha obrat el Senyor: alegrem-nos i celebrem-lo, al·leluia.";
+        default:
+            if(liturgyDayInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter){
+                shortResponsory.HasSpecialAntiphon = true;
+                shortResponsory.SpecialAntiphon = "Avui és el dia en què ha obrat el Senyor: alegrem-nos i celebrem-lo, al·leluia.";
+            }
+            break;
     }
     return shortResponsory;
 }

@@ -40,6 +40,8 @@ function BuildHoursLiturgy(liturgyMasters: LiturgyMasters, liturgySpecificDayInf
     }
     else if(liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday){
         hoursLiturgy = GetEasterSundayHoursLiturgy(liturgyMasters.EasterSunday, settings);
+        hoursLiturgy.Office.TeDeumInformation.Anthem = settings.UseLatin? liturgyMasters.Various.TeDeumLatinAnthem : liturgyMasters.Various.TeDeumCatalanAnthem;
+        hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalChant = liturgyMasters.Various.VespersEvangelicalChant;
     }
     else{
         hoursLiturgy = GetNormalCelebrationHoursLiturgy(liturgyMasters, liturgySpecificDayInformation, settings);
@@ -87,7 +89,7 @@ function GetFirstVespersWithCelebration(liturgyMasters: LiturgyMasters, tomorrow
    if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
        return GetPalmSundayFistVespersOfTomorrow(liturgyMasters.PalmSundayParts, liturgyMasters.CommonPartsOfHolyWeek, tomorrowLiturgyInformation, settings);
    }
-   if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum &&
+   if(tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum &&
        tomorrowLiturgyInformation.Date.getDay() === 5) {
        return GetEasterTriduumFistVespersOfTomorrow(liturgyMasters.PartsOfEasterTriduum, settings);
    }
@@ -120,25 +122,26 @@ function GetEasterSundayHoursLiturgy(easterSunday: EasterSunday, settings: Setti
     
     hoursLiturgy.Office.FirstReading = easterSunday.OfficeFirstReading;
     hoursLiturgy.Office.FirstPsalm.Antiphon = easterSunday.OfficeFirstPsalm.Antiphon;
-    hoursLiturgy.Office.FirstPsalm.Comment = easterSunday.OfficeFirstPsalm.Comment;
+    hoursLiturgy.Office.FirstPsalm.Title = easterSunday.OfficeFirstPsalm.Title;
     hoursLiturgy.Office.FirstPsalm.Psalm = easterSunday.OfficeFirstPsalm.Psalm;
     hoursLiturgy.Office.FirstPsalm.Prayer = easterSunday.OfficeFirstPsalm.Prayer;
     hoursLiturgy.Office.SecondReading = easterSunday.OfficeSecondReading;
     hoursLiturgy.Office.SecondPsalm.Antiphon = easterSunday.OfficeSecondPsalm.Antiphon;
-    hoursLiturgy.Office.SecondPsalm.Comment = easterSunday.OfficeSecondPsalm.Comment;
+    hoursLiturgy.Office.SecondPsalm.Title = easterSunday.OfficeSecondPsalm.Title;
     hoursLiturgy.Office.SecondPsalm.Psalm = easterSunday.OfficeSecondPsalm.Psalm;
     hoursLiturgy.Office.SecondPsalm.Prayer = easterSunday.OfficeSecondPsalm.Prayer;
     hoursLiturgy.Office.ThirdReading = easterSunday.OfficeThirdReading;
     hoursLiturgy.Office.ThirdPsalm.Antiphon = easterSunday.OfficeThirdPsalm.Antiphon;
-    hoursLiturgy.Office.ThirdPsalm.Comment = easterSunday.OfficeThirdPsalm.Comment;
+    hoursLiturgy.Office.ThirdPsalm.Title = easterSunday.OfficeThirdPsalm.Title;
     hoursLiturgy.Office.ThirdPsalm.Psalm = easterSunday.OfficeThirdPsalm.Psalm;
     hoursLiturgy.Office.ThirdPsalm.Prayer = easterSunday.OfficeThirdPsalm.Prayer;
     hoursLiturgy.Office.FourthReading = easterSunday.OfficeFourthReading;
     hoursLiturgy.Office.FourthPsalm.Antiphon = easterSunday.OfficeFourthPsalm.Antiphon;
-    hoursLiturgy.Office.FourthPsalm.Comment = easterSunday.OfficeFourthPsalm.Comment;
+    hoursLiturgy.Office.FourthPsalm.Title = easterSunday.OfficeFourthPsalm.Title;
     hoursLiturgy.Office.FourthPsalm.Psalm = easterSunday.OfficeFourthPsalm.Psalm;
     hoursLiturgy.Office.FourthPsalm.Prayer = easterSunday.OfficeFourthPsalm.Prayer;
     hoursLiturgy.Office.TeDeumInformation.Enabled = true;
+    hoursLiturgy.Office.FinalPrayer = easterSunday.OfficeFinalPrayer;
 
     hoursLiturgy.Laudes.Anthem = settings.UseLatin? easterSunday.LaudesLatinAnthem : easterSunday.LaudesCatalanAnthem;
     hoursLiturgy.Laudes.FirstPsalm = easterSunday.LaudesFirstPsalm;
@@ -150,24 +153,27 @@ function GetEasterSundayHoursLiturgy(easterSunday: EasterSunday, settings: Setti
     hoursLiturgy.Laudes.Prayers = easterSunday.LaudesPrayers;
     hoursLiturgy.Laudes.FinalPrayer = easterSunday.LaudesFinalPrayer;
 
-    hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = true;
+    hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
     hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin? easterSunday.ThirdHourParts.LatinAnthem : easterSunday.ThirdHourParts.CatalanAnthem;
+    hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = easterSunday.ThirdHourParts.Antiphon;
     hoursLiturgy.Hours.ThirdHour.FirstPsalm = easterSunday.HourPrayerFirstPsalm;
     hoursLiturgy.Hours.ThirdHour.SecondPsalm = easterSunday.HourPrayerSecondPsalm;
     hoursLiturgy.Hours.ThirdHour.ThirdPsalm = easterSunday.HourPrayerThirdPsalm;
     hoursLiturgy.Hours.ThirdHour.ShortReading = easterSunday.ThirdHourParts.ShortReading;
     hoursLiturgy.Hours.ThirdHour.Responsory = easterSunday.ThirdHourParts.Responsory;
     hoursLiturgy.Hours.ThirdHour.FinalPrayer = easterSunday.ThirdHourParts.FinalPrayer;
-    hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = true;
+    hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
     hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin? easterSunday.SixthHourParts.LatinAnthem : easterSunday.SixthHourParts.CatalanAnthem;
+    hoursLiturgy.Hours.SixthHour.UniqueAntiphon = easterSunday.SixthHourParts.Antiphon;
     hoursLiturgy.Hours.SixthHour.FirstPsalm = easterSunday.HourPrayerFirstPsalm;
     hoursLiturgy.Hours.SixthHour.SecondPsalm = easterSunday.HourPrayerSecondPsalm;
     hoursLiturgy.Hours.SixthHour.ThirdPsalm = easterSunday.HourPrayerThirdPsalm;
     hoursLiturgy.Hours.SixthHour.ShortReading = easterSunday.SixthHourParts.ShortReading;
     hoursLiturgy.Hours.SixthHour.Responsory = easterSunday.SixthHourParts.Responsory;
     hoursLiturgy.Hours.SixthHour.FinalPrayer = easterSunday.SixthHourParts.FinalPrayer;
-    hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = true;
+    hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
     hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin? easterSunday.NinthHourParts.LatinAnthem : easterSunday.NinthHourParts.CatalanAnthem;
+    hoursLiturgy.Hours.NinthHour.UniqueAntiphon = easterSunday.NinthHourParts.Antiphon;
     hoursLiturgy.Hours.NinthHour.FirstPsalm = easterSunday.HourPrayerFirstPsalm;
     hoursLiturgy.Hours.NinthHour.SecondPsalm = easterSunday.HourPrayerSecondPsalm;
     hoursLiturgy.Hours.NinthHour.ThirdPsalm = easterSunday.HourPrayerThirdPsalm;
