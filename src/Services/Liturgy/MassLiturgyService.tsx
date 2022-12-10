@@ -237,10 +237,7 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
     }
 
     //Diumenge dins l’Octava de Nadal A (146) B (149) C (152)
-    if (liturgySpecificDayInformation.Date.getMonth() == 11 &&
-        liturgySpecificDayInformation.Date.getDay() == 0 &&
-        liturgySpecificDayInformation.Date.getDate() >= 26 &&
-        liturgySpecificDayInformation.Date.getDate() <= 31) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.SacredFamily, liturgySpecificDayInformation)) {
         switch (liturgySpecificDayInformation.YearType) {
             case YearType.A:
                 return SoulKeys.LDSantoral_SagradaFamiliaJesusMariaJosepA;
