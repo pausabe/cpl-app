@@ -1,12 +1,11 @@
 import SoulKeys from "./SoulKeys";
-import {
-    LiturgySpecificDayInformation, NoIdentifierNumber,
-    SpecialCelebration
-} from "../Models/LiturgyDayInformation";
+import {LiturgySpecificDayInformation, NoIdentifierNumber, SpecialCelebration} from "../Models/LiturgyDayInformation";
 import {Settings} from "../Models/Settings";
 import {DioceseCode} from "./DatabaseEnums";
 import * as CelebrationIdentifier from "./CelebrationIdentifierService";
+import {Celebration} from "./CelebrationIdentifierService";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
+import {DateManagement} from "../Utils/DateManagement";
 
 export function ObtainSpecialCelebration(liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : SpecialCelebration{
     let specialCelebration = new SpecialCelebration();
@@ -28,64 +27,65 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
     const dioceseCode = settings.DioceseCode;
 
     //1- Sagrada Família quan és el 30 de desembre
-    if (CelebrationIdentifier.IsSacredFamily(date) && date.getDate() === 30) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SacredFamily, liturgyDayInformation) && date.getDate() === 30) {
         return SoulKeys.diesespecials_SagradaFamilia30Desembre;
     }
 
     //2- Mare de Déu (1 gener) quan cau en diumenge
-    if (CelebrationIdentifier.IsMatherOfGod(liturgyDayInformation.Date) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.MatherOfGod, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeMaredeDeu1Gener;
     }
 
-    const auxDay = new Date(date.getFullYear(), date.getMonth(), (date.getDate() - 7));
+    const secondSundayAferChristmas = CelebrationIdentifier.GetSecondSundayAfterChristmas(date);
+    const todayIsSecondSundayAferChristmas = DateManagement.DatesAreTheEqual(date, secondSundayAferChristmas);
 
     //3- Diumenge II de Nadal, quan s’escau el dia 2 de gener
-    if (CelebrationIdentifier.IsSacredFamily(auxDay) && date.getDate() === 2) {
+    if (todayIsSecondSundayAferChristmas && date.getDate() === 2) {
         return SoulKeys.diesespecials_DiumengeIINadal2Gener;
     }
 
     //4- Diumenge II de Nadal, quan s’escau el dia 3 de gener
-    if (CelebrationIdentifier.IsSacredFamily(auxDay) && date.getDate() === 3) {
+    if (todayIsSecondSundayAferChristmas && date.getDate() === 3) {
         return SoulKeys.diesespecials_DiumengeIINadal3Gener;
     }
 
     //5- Diumenge II de Nadal, quan s’escau el dia 4 de gener
-    if (CelebrationIdentifier.IsSacredFamily(auxDay) && date.getDate() === 4) {
+    if (todayIsSecondSundayAferChristmas && date.getDate() === 4) {
         return SoulKeys.diesespecials_DiumengeIINadal4Gener;
     }
 
     //6- Diumenge II de Nadal, quan s’escau el dia 5 de gener
-    if (CelebrationIdentifier.IsSacredFamily(auxDay) && date.getDate() === 5) {
+    if (todayIsSecondSundayAferChristmas && date.getDate() === 5) {
         return SoulKeys.diesespecials_DiumengeIINadal5Gener;
     }
 
     //7- Baptisme del Senyor quan és 7 de gener
-    if (CelebrationIdentifier.IsBaptism(date) && date.getDate() === 7) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.Baptism, liturgyDayInformation) && date.getDate() === 7) {
         return SoulKeys.diesespecials_BaptismeSenyor7Gener;
     }
 
     //8- Presentació del Senyor (2 febrer) quan cau en diumenge
-    if (CelebrationIdentifier.IsLordPresentation(liturgyDayInformation) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.LordPresentation, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengePresentacioSenyor2febrer;
     }
 
     //9- Transfiguració del Senyor (6 agost) quan cau en diumenge
-    if (CelebrationIdentifier.IsLordTransfiguration(liturgyDayInformation) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.LordTransfiguration, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeTransfiguracioSenyor6;
     }
 
     //10- Exaltació Santa Creu (14 de setembre) quan cau en diumenge
-    if (CelebrationIdentifier.IsExaltationHolyCross(liturgyDayInformation) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.ExaltationHolyCross, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeExaltacioSantaCreu14Setembre;
     }
 
     //11- Dedic. Sant Joan del Laterà (9 de novembre) quan cau en diumenge
-    if (CelebrationIdentifier.IsDedicationSantJoanLatera(liturgyDayInformation) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.DedicationSantJoanLatera, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeDedicacioSantJoanLatera9Novembre;
     }
 
     //12- Santa Eulàlia (12 de febrer) quan cau en diumenge i és temps de durant l’any
-    if (CelebrationIdentifier.IsSaintEulalia(liturgyDayInformation) &&
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SaintEulalia, liturgyDayInformation) &&
         date.getDay() === 0 &&
         specificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
         (dioceseCode === DioceseCode.BaV || dioceseCode === DioceseCode.BaC)) {
@@ -93,27 +93,27 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
     }
 
     //13- Sant Joan (24 de juny) quan cau en diumenge
-    if (CelebrationIdentifier.IsSantJoan(liturgyDayInformation) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SaintJohn, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantJoan24Juny;
     }
 
     //14- Sants Pere i Pau (29 de juny) quan cau en diumenge
-    if (CelebrationIdentifier.IsSantsPerePau(date) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SaintsPereAndPau, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantsPerePau29Juny;
     }
 
     //15- Sant Jaume (25 de juliol) quan cau en diumenge
-    if (CelebrationIdentifier.IsSaintJames(date) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SaintJames, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantJaume25Juliol;
     }
 
     //16- Assumpció Maria (15 d’agost) quan cau en diumenge
-    if (CelebrationIdentifier.IsAssumption(date) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.Assumption, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeAssumpcioMaria15Agost;
     }
 
     //17- Sta. Tecla (23 setembre) quan cau en diumenge
-    if (CelebrationIdentifier.IsSaintTecla(date) &&
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SaintTecla, liturgyDayInformation) &&
         (dioceseCode === DioceseCode.TaV || dioceseCode === DioceseCode.TaD) &&
         date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeSantaTecla23Setembre;
@@ -125,14 +125,14 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
         dioceseCode === DioceseCode.GiD || dioceseCode === DioceseCode.LlD || dioceseCode === DioceseCode.SoD ||
         dioceseCode === DioceseCode.TaD || dioceseCode === DioceseCode.ToD || dioceseCode === DioceseCode.UrD ||
         dioceseCode === DioceseCode.ViD;
-    if (CelebrationIdentifier.IsMatherOfGodOfMerce(date) &&
+    if (CelebrationIdentifier.CheckCelebration(Celebration.MatherOfGodOfMerce, liturgyDayInformation) &&
         date.getDay() === 0 &&
         currentDioceseDisplayMatherOfGodOfMerce) {
         return SoulKeys.diesespecials_DiumengeMareDeuMerce24Setembre;
     }
 
     //19- Tots Sants (1 de novembre) quan cau en diumenge
-    if (CelebrationIdentifier.IsAllSaints(liturgyDayInformation.Date) && date.getDay() === 0) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.AllSaints, liturgyDayInformation) && date.getDay() === 0) {
         return SoulKeys.diesespecials_DiumengeTotsSants1Novembre;
     }
 
@@ -211,57 +211,57 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
 
 function ObtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation : LiturgySpecificDayInformation) : number {
     //1- Nadal
-    if (CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
 
     //2- Sagrada Família
-    if (CelebrationIdentifier.IsSacredFamily(liturgyDayInformation.Date)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SacredFamily, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_SagradaFamilia;
     }
 
     //3- Mare de Déu
-    if (CelebrationIdentifier.IsMatherOfGod(liturgyDayInformation.Date)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.MatherOfGod, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_MareDeu;
     }
 
     //4- Epifania
-    if (CelebrationIdentifier.IsEpiphany(liturgyDayInformation.Date)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.Epiphany, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_Epifania;
     }
 
     //5- Baptisme
-    if (CelebrationIdentifier.IsBaptism(liturgyDayInformation.Date)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.Baptism, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_Baptisme;
     }
 
     //6- Ascensió
-    if (CelebrationIdentifier.IsAscension(liturgyDayInformation)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.Ascension, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_Ascensio;
     }
 
     //7- Diumenge pentacosta
-    if (CelebrationIdentifier.IsPentecost(liturgyDayInformation)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.Pentecost, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_DiumengePentacosta;
     }
 
     //8- Santíssima trinitat
-    if (CelebrationIdentifier.IsHolyTrinity(liturgyDayInformation)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.HolyTrinity, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_SantissimaTrinitat;
     }
 
     //9- Santíssim cos i sang de crist
-    if (CelebrationIdentifier.IsBodyAndBlood(liturgyDayInformation)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.BodyAndBlood, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_SantissimCosSangCrist;
     }
 
     //10- Sagrat cor de Jesús
-    if (CelebrationIdentifier.IsSacredHeartOfJesus(liturgyDayInformation)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.SacredHeartOfJesus, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_SagratCorJesus;
     }
 
     //11- Nostre senyor Jesucrist
-    if (CelebrationIdentifier.IsOurLordJesusChrist(liturgyDayInformation)) {
+    if (CelebrationIdentifier.CheckCelebration(Celebration.OurLordJesusChrist, liturgyDayInformation)) {
         return SoulKeys.tempsSolemnitatsFestes_NostreSenyorJesucrist;
     }
 

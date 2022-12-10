@@ -6,6 +6,7 @@ import {Psalm, Responsory, ShortReading} from "../../Models/LiturgyMasters/Commo
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
+import {Celebration} from "../CelebrationIdentifierService";
 
 export function ObtainHours(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationHours : Hours, settings : Settings) : Hours {
     let hours = new Hours();
@@ -159,7 +160,7 @@ function GetHourAnthems(liturgyMasters : LiturgyMasters, liturgyDayInformation :
                 const beforeChristmasConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
                     liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13;
                 const christmasOctaveConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-                    !CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)
+                    !CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)
                 if((liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasBeforeOrdinary || beforeChristmasConditions) &&
                     (liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasOctave || christmasOctaveConditions)){
                     if(settings.UseLatin){
@@ -246,7 +247,7 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
                 const beforeChristmasConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
                     liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13;
                 const christmasOctaveConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-                    !CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)
+                    !CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)
                 if((liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasBeforeOrdinary || beforeChristmasConditions) &&
                     (liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasOctave || christmasOctaveConditions)){
                     psalmody.ThirdValue.HasMultipleAntiphons = false;
@@ -413,7 +414,7 @@ function GetResponsory(liturgyMasters : LiturgyMasters, liturgyDayInformation : 
                 hourAnthems.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.Responsory;
                 break;
             case SpecificLiturgyTimeType.ChristmasOctave:
-                if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)){
+                if(!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)){
                     hourAnthems.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.Responsory;
                     hourAnthems.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.Responsory;
                     hourAnthems.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.Responsory;
@@ -494,7 +495,7 @@ function GetShortReading(liturgyMasters : LiturgyMasters, liturgyDayInformation 
                 hourShortReading.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.ShortReading;
                 break;
             case SpecificLiturgyTimeType.ChristmasOctave:
-                if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)){
+                if(!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)){
                     hourShortReading.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.ShortReading;
                     hourShortReading.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.ShortReading;
                     hourShortReading.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.ShortReading;
@@ -572,7 +573,7 @@ function GetFinalPraying(liturgyMasters : LiturgyMasters, liturgyDayInformation 
                 finalPraying.NinthValue = liturgyMasters.AdventFairDaysParts.LaudesFinalPrayer;
                 break;
             case SpecificLiturgyTimeType.ChristmasOctave:
-                if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)) {
+                if(!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)) {
                     finalPraying.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
                     finalPraying.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
                     finalPraying.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;

@@ -39,7 +39,9 @@ export async function ObtainLiturgySpecificDayInformation(date: Date, currentSet
     liturgyDayInformation.Date = date;
     liturgyDayInformation.PentecostDay = await ObtainPentecostDay(liturgyDayInformation.Date);
     liturgyDayInformation.CelebrationType = DatabaseHelper.GetCelebrationTypeFromTodayLiurgyRow(currentSettings.DioceseCode, todayLiturgy);
-    liturgyDayInformation.MovedDay.Date = todayLiturgy.diaMogut;
+    liturgyDayInformation.MovedDay.OriginDateShortDatabaseCode = todayLiturgy.diaMogut;
+    liturgyDayInformation.MovedDay.TodayIsMoved = await DateIsMoved(liturgyDayInformation.Date);
+    liturgyDayInformation.MovedDay.OriginDate = DatabaseHelper.GetDateFromShortDatabaseCode(todayLiturgy.diaMogut, date.getFullYear());
     liturgyDayInformation.MovedDay.DioceseCode = todayLiturgy.diocesiMogut;
     liturgyDayInformation.LiturgyColor = todayLiturgy.Color;
     liturgyDayInformation.GenericLiturgyTime = todayLiturgy.tempsespecific;
@@ -119,6 +121,19 @@ export async function GetHolyDaysMass(holyDayMassIdentifier: number, liturgySpec
         GetHolyDaysMassWithIdentifier(holyDayMassIdentifier);
 }
 
+export async function GetHolyDaysMassWithIdentifier(holyDayMassIdentifier: number): Promise<DayMassLiturgy> {
+    let query = `SELECT * FROM LDSantoral WHERE id = '${holyDayMassIdentifier}'`;
+    const result = await executeQueryAsync(query);
+    return RowToMassLiturgy(result.rows.item(0));
+}
+
+export async function GetNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation) {
+    let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${liturgyDayInformation.GenericLiturgyTime}' AND DiadelaSetmana = '${liturgyDayInformation.DayOfTheWeekNameShort}' AND NumSet = '${liturgyDayInformation.Week}'`;
+    const result = await executeQueryAsync(query);
+    let index = getNormalDaysMassLiturgyIndex(result, liturgyDayInformation.YearType, liturgyDayInformation.YearIsEven ? "II" : "I", liturgyDayInformation.DayOfTheWeekNameShort);
+    return RowToMassLiturgy(result.rows.item(index));
+}
+
 function RowToMassLiturgy(row): DayMassLiturgy {
     let dayMassLiturgy = new DayMassLiturgy();
     if (row !== undefined) {
@@ -145,24 +160,18 @@ function RowToMassLiturgy(row): DayMassLiturgy {
 }
 
 async function GetHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
-    const dateString = DatabaseHelper.GetDateShortDatabaseCode(liturgySpecificDayInformation.Date, settings.DioceseCode, liturgySpecificDayInformation.MovedDay.Date, liturgySpecificDayInformation.MovedDay.DioceseCode);
+    const dateString = DatabaseHelper.GetDateShortDatabaseCode(liturgySpecificDayInformation.Date, settings.DioceseCode, liturgySpecificDayInformation.MovedDay.OriginDateShortDatabaseCode, liturgySpecificDayInformation.MovedDay.DioceseCode);
     const customizedSpecificTime = liturgySpecificDayInformation.IsSpecialChristmas? 'Especial' : liturgySpecificDayInformation.GenericLiturgyTime
     const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgySpecificDayInformation.YearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${liturgySpecificDayInformation.DayOfTheWeekNameShort}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${liturgySpecificDayInformation.YearIsEven? "II" : "I"}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE (LDSantoral.Categoria = '-' OR LDSantoral.Categoria = '${liturgySpecificDayInformation.CelebrationType}') AND LDSantoral.tempsespecific = '${customizedSpecificTime}'AND LDSantoral.dia = '${dateString}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.DioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
     const result = await executeQueryAsync(query);
     return RowToMassLiturgy(result.rows.item(0));
 }
 
-export async function GetHolyDaysMassWithIdentifier(holyDayMassIdentifier: number): Promise<DayMassLiturgy> {
-    let query = `SELECT * FROM LDSantoral WHERE id = '${holyDayMassIdentifier}'`;
+async function DateIsMoved(date: Date): Promise<boolean>{
+    const movedDateShortDatabaseCode = DatabaseHelper.GetDateShortDatabaseCode(date);
+    const query = `SELECT any, mes, dia FROM anyliturgic WHERE any = '${date.getFullYear()}' AND Mogut = '${movedDateShortDatabaseCode}'`;
     const result = await executeQueryAsync(query);
-    return RowToMassLiturgy(result.rows.item(0));
-}
-
-export async function GetNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation) {
-    let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${liturgyDayInformation.GenericLiturgyTime}' AND DiadelaSetmana = '${liturgyDayInformation.DayOfTheWeekNameShort}' AND NumSet = '${liturgyDayInformation.Week}'`;
-    const result = await executeQueryAsync(query);
-    let index = getNormalDaysMassLiturgyIndex(result, liturgyDayInformation.YearType, liturgyDayInformation.YearIsEven ? "II" : "I", liturgyDayInformation.DayOfTheWeekNameShort);
-    return RowToMassLiturgy(result.rows.item(index));
+    return result.rows.length > 0;
 }
 
 function findCorrectIndexFromSettings(rows, length, diocese, dioceseName, place) {

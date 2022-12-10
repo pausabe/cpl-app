@@ -69,6 +69,7 @@ export class DateManagement {
     }
 
     static DifferenceBetweenDatesInSeconds(smallestDate: Date, biggestDate: Date): number {
+        // @ts-ignore
         return (biggestDate - smallestDate) / 1000;
     }
 }

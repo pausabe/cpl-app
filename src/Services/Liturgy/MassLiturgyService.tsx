@@ -8,6 +8,7 @@ import {CelebrationType, YearType} from "../DatabaseEnums";
 import {StringManagement} from "../../Utils/StringManagement";
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
+import {Celebration} from "../CelebrationIdentifierService";
 import * as HolyDaysOfObligationService from "./HolyDaysOfObligationService";
 
 export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInformation, todayCelebrationInformation: CelebrationInformation, tomorrowCelebrationInformation: CelebrationInformation, settings: Settings): Promise<MassLiturgy> {
@@ -27,8 +28,8 @@ function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, todayC
     }
 
     const tomorrowIsSunday = liturgyDayInformation.Tomorrow.Date.getDay() === 0;
-    const tomorrowIsHolyDayOfObligation = HolyDaysOfObligationService.IsHolyDaysOfObligation(liturgyDayInformation.Tomorrow.Date);
-    const tomorrowIsHolyDayNotObligatedMoreImportantThanToday = HolyDaysOfObligationService.IsHolyDaysButNotObligated(liturgyDayInformation.Tomorrow.Date) &&
+    const tomorrowIsHolyDayOfObligation = HolyDaysOfObligationService.IsHolyDaysOfObligation(liturgyDayInformation.Tomorrow);
+    const tomorrowIsHolyDayNotObligatedMoreImportantThanToday = HolyDaysOfObligationService.IsHolyDaysButNotObligated(liturgyDayInformation.Tomorrow) &&
         tomorrowCelebrationInformation.Precedence < todayCelebrationInformation.Precedence;
 
     return tomorrowIsSunday ||
@@ -196,15 +197,15 @@ function GetEasterEve(liturgySpecificDayInformation: LiturgySpecificDayInformati
 }
 
 function GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation: LiturgySpecificDayInformation): number {
-    if (CelebrationIdentifierService.IsSaintJohnBaptist(tomorrowLiturgyDayInformation.Date))
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.SaintJohnBaptist, tomorrowLiturgyDayInformation))
         return SoulKeys.LDSantoral_NaixamentJoanBaptista;
-    if (CelebrationIdentifierService.IsSantsPerePau(tomorrowLiturgyDayInformation.Date))
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.SaintsPereAndPau, tomorrowLiturgyDayInformation))
         return SoulKeys.LDSantoral_SantsPerePau;
-    if (CelebrationIdentifierService.IsAssumption(tomorrowLiturgyDayInformation.Date))
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.Assumption, tomorrowLiturgyDayInformation))
         return SoulKeys.LDSantoral_AssumpcioBenauradaVergeMaria;
-    if (CelebrationIdentifierService.IsChristmas(tomorrowLiturgyDayInformation.Date))
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.Christmas, tomorrowLiturgyDayInformation))
         return SoulKeys.LDSantoral_Nadal;
-    if (CelebrationIdentifierService.IsPentecost(tomorrowLiturgyDayInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.Pentecost, tomorrowLiturgyDayInformation)) {
         switch (tomorrowLiturgyDayInformation.YearType) {
             case YearType.A:
                 return SoulKeys.LDSantoral_PentecostaA;
@@ -218,20 +219,20 @@ function GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation: LiturgySpeci
 }
 
 function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation): number {
-    if (CelebrationIdentifierService.JesusChristHighPriestForever(liturgySpecificDayInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.JesusChristHighPriestForever, liturgySpecificDayInformation)) {
         return liturgySpecificDayInformation.YearIsEven ? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI;
     }
 
-    if (CelebrationIdentifierService.IsImmaculateHeartOfTheBlessedVirginMary(liturgySpecificDayInformation) &&
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.ImmaculateHeartOfTheBlessedVirginMary, liturgySpecificDayInformation) &&
         liturgySpecificDayInformation.CelebrationType === CelebrationType.Memory) {
         return SoulKeys.LDSantoral_CorImmaculatBenauradaVergeMaria;
     }
 
-    if (CelebrationIdentifierService.IsMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.MotherOfGodFromTheTibbon, liturgySpecificDayInformation)) {
         return SoulKeys.LDSantoral_MareDeuCinta;
     }
 
-    if (CelebrationIdentifierService.BlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.BlessedVirginMaryMotherOfTheChurch, liturgySpecificDayInformation)) {
         return liturgySpecificDayInformation.YearIsEven ? SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaII : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI;
     }
 
@@ -265,7 +266,7 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
         }
     }
 
-    if (CelebrationIdentifierService.IsHolyTrinity(liturgySpecificDayInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.HolyTrinity, liturgySpecificDayInformation)) {
         switch (liturgySpecificDayInformation.YearType) {
             case YearType.A:
                 return SoulKeys.LDSantoral_SolemnitatSantissimaTrinitatA;
@@ -276,7 +277,7 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
         }
     }
 
-    if (CelebrationIdentifierService.IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.HolyBodyAndBloodOfChrist, liturgySpecificDayInformation)) {
         switch (liturgySpecificDayInformation.YearType) {
             case YearType.A:
                 return SoulKeys.LDSantoral_SantissimCosSangCristA;
@@ -287,7 +288,7 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
         }
     }
 
-    if (CelebrationIdentifierService.IsHolyHeartOfJesus(liturgySpecificDayInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.HolyHeartOfJesus, liturgySpecificDayInformation)) {
         switch (liturgySpecificDayInformation.YearType) {
             case YearType.A:
                 return SoulKeys.LDSantoral_SagratCorJesusA;

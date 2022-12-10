@@ -203,9 +203,10 @@ export function IsMovedDiocese(dioceseCode: string, dioceseCodeMoved: string): b
         dioceseCode.charAt(1) === dioceseCodeMoved.charAt(1);
 }
 
-export function GetDateShortDatabaseCode(date: Date, dioceseCode: string, movedDay: string, dioceseCodeMoved: string): string {
-    if (movedDay !== '-' && IsMovedDiocese(dioceseCode, dioceseCodeMoved))
+export function GetDateShortDatabaseCode(date: Date, dioceseCode: string = "-", movedDay: string = "-", dioceseCodeMoved: string = "-"): string {
+    if (movedDay !== '-' && IsMovedDiocese(dioceseCode, dioceseCodeMoved)){
         return movedDay;
+    }
 
     let monthShort;
     switch (date.getMonth()) {
@@ -256,4 +257,61 @@ export function GetDateShortDatabaseCode(date: Date, dioceseCode: string, movedD
     }
 
     return dayShort + "-" + monthShort;
+}
+
+export function GetDateFromShortDatabaseCode(dateString: string, year: number): Date{
+    if(!dateString || !dateString.includes("-")){
+        return undefined
+    }
+
+    // Date
+    const date = parseInt(dateString.split("-")[0]);
+
+    // Month
+    const monthShort = dateString.split("-")[1];
+    let month;
+    switch (monthShort) {
+        case "ene":
+            month = 0;
+            break;
+        case "feb":
+            month = 1;
+            break;
+        case "mar":
+            month = 2;
+            break;
+        case "abr":
+            month = 3;
+            break;
+        case "may":
+            month = 4;
+            break;
+        case "jun":
+            month = 5;
+            break;
+        case "jul":
+            month = 6;
+            break;
+        case "ago":
+            month = 7;
+            break;
+        case "sep":
+            month = 8;
+            break;
+        case "oct":
+            month = 9;
+            break;
+        case "nov":
+            month = 10;
+            break;
+        case "dic":
+            month = 11;
+            break;
+    }
+
+    if(!date || !month){
+        return undefined;
+    }
+
+    return new Date(year, month, date);
 }

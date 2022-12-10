@@ -8,6 +8,7 @@ import {ReadingOfTheOffice, Psalm, Responsory} from "../../Models/LiturgyMasters
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
+import {Celebration} from "../CelebrationIdentifierService";
 
 export function ObtainOffice(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : Office{
     let office = new Office();
@@ -224,7 +225,7 @@ function GetPsalmody(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             }
             break;
         case SpecificLiturgyTimeType.ChristmasOctave:
-            if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)){
+            if(!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)){
                 psalmody.FirstPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstPsalm;
                 psalmody.FirstPsalm.Comment = "-";
                 psalmody.SecondPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondPsalm;
@@ -350,7 +351,7 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
             readings.SecondReading = liturgyMasters.AdventFairDaysParts.OfficeSecondReading;
             break;
         case SpecificLiturgyTimeType.ChristmasOctave:
-            if(!CelebrationIdentifier.IsChristmas(liturgyDayInformation.Date)){
+            if(!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)){
                 readings.FirstReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstReading;
                 readings.SecondReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondReading;
             }

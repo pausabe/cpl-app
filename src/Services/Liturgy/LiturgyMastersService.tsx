@@ -4,7 +4,6 @@ import * as DatabaseDataService from '../DatabaseDataService';
 import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
 import SecureCall from "../../Utils/SecureCall";
 import InvitationCommonPsalter from "../../Models/LiturgyMasters/InvitationCommonPsalter";
-import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import OfficeOfOrdinaryTime from "../../Models/LiturgyMasters/OfficeOfOrdinaryTime";
 import PrayersOfOrdinaryTime from "../../Models/LiturgyMasters/PrayersOfOrdinaryTime";
 import CommonPartsUntilFifthWeekOfLentTime from "../../Models/LiturgyMasters/CommonPartsUntilFifthWeekOfLentTime";
@@ -46,10 +45,11 @@ import LiturgyDayInformation, {
 import {Settings} from "../../Models/Settings";
 import {CelebrationType} from "../DatabaseEnums";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
+import * as CelebrationIdentifier from "../CelebrationIdentifierService";
+import {Celebration} from "../CelebrationIdentifierService";
 import CommonOffice from "../../Models/LiturgyMasters/CommonOffices";
 import Various from "../../Models/LiturgyMasters/Various";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import * as CelebrationIdentifier from "../CelebrationIdentifierService";
 import * as DatabaseHelper from "../DatabaseDataHelper";
 
 export async function ObtainLiturgyMasters(currentLiturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<LiturgyMasters>{
@@ -381,7 +381,7 @@ async function ObtainAdventFairDaysAntiphons(liturgyDayInformation : LiturgyDayI
 async function ObtainChristmasWhenOctaveParts(liturgyDayInformation : LiturgyDayInformation) : Promise<ChristmasWhenOctaveParts> {
     return await SecureCall(async () => {
         if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-            !CelebrationIdentifier.IsChristmas(liturgyDayInformation.Today.Date)) {
+            !CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation.Today)) {
             let id = liturgyDayInformation.Today.Date.getDate() === 1?
                 1 : liturgyDayInformation.Today.Date.getDate() - 25;
             const row = await DatabaseDataService.ObtainMasterRowFromDatabase(ChristmasWhenOctaveParts.MasterName, id);
@@ -425,11 +425,11 @@ async function ObtainLaudesCommonPsalter(liturgyDayInformation : LiturgyDayInfor
             if (liturgyDayInformation.Today.CelebrationType === CelebrationType.Solemnity ||
                 liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity ||
                 christmasOctaveSpecialDays ||
-                CelebrationIdentifier.IsEpiphany(liturgyDayInformation.Today.Date)) {
+                CelebrationIdentifier.CheckCelebration(Celebration.Epiphany, liturgyDayInformation.Today)) {
                 weekCycle = 1;
                 dayNumber = 0;
             }
-            if (CelebrationIdentifier.IsSacredFamily(liturgyDayInformation.Today.Date)) {
+            if (CelebrationIdentifier.CheckCelebration(Celebration.SacredFamily, liturgyDayInformation.Today)) {
                 weekCycle = 2;
                 dayNumber = liturgyDayInformation.Today.Date.getDay();
             }
@@ -622,7 +622,7 @@ async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInforma
                     liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity)) {
             let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
             if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
-                let day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
+                let day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode, liturgyDayInformation.Today.MovedDay.DioceseCode);
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnities.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                 const saintsSolemnitiesParts = new SaintsSolemnities(row);
                 saintsSolemnitiesParts.CommonOffices = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
@@ -654,9 +654,9 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
             }
             else {
                 let day = '-';
-                if (liturgyDayInformation.Tomorrow.MovedDay.Date !== '-' &&
+                if (liturgyDayInformation.Tomorrow.MovedDay.OriginDateShortDatabaseCode !== '-' &&
                     DatabaseHelper.IsMovedDiocese(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode)) {
-                    day = liturgyDayInformation.Tomorrow.MovedDay.Date;
+                    day = liturgyDayInformation.Tomorrow.MovedDay.OriginDateShortDatabaseCode;
                 }
 
                 if (day === '-') {
@@ -688,7 +688,7 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
             }
             else {
                 if (masterIdentifierOfVariableDays === -1) {
-                    const day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.Date, liturgyDayInformation.Today.MovedDay.DioceseCode);
+                    const day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode, liturgyDayInformation.Today.MovedDay.DioceseCode);
                     const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsMemories.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                     const saintsMemories = new SaintsMemories(row);
                     saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);
@@ -739,10 +739,10 @@ async function ObtainCommonOffices(category : string) : Promise<CommonOffice>{
   Return id of #santsMemories or #santsSolemnitats or -1 if there isn't there
 */
 function ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDateInformation : LiturgySpecificDayInformation) {
-    if (CelebrationIdentifierService.IsImmaculateHeartOfTheBlessedVirginMary(liturgyDateInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.ImmaculateHeartOfTheBlessedVirginMary, liturgyDateInformation)) {
         return SoulKeys.santsMemories_CorImmaculatBenauradaVergeMaria;
     }
-    if(CelebrationIdentifierService.IsMotherOfGodFromTheTibbon(liturgyDateInformation.Date)){
+    if(CelebrationIdentifierService.CheckCelebration(Celebration.MotherOfGodFromTheTibbon, liturgyDateInformation)){
         if (liturgyDateInformation.CelebrationType === CelebrationType.Memory) {
             return SoulKeys.santsMemories_MareDeuCinta;
         }
@@ -750,10 +750,10 @@ function ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDateInformatio
             return SoulKeys.santsSolemnitats_MareDeuCinta;
         }
     }
-    if(CelebrationIdentifierService.JesusChristHighPriestForever(liturgyDateInformation)){
+    if(CelebrationIdentifierService.CheckCelebration(Celebration.JesusChristHighPriestForever, liturgyDateInformation)){
         return SoulKeys.santsSolemnitats_JesucristGranSacerdotSempre;
     }
-    if(CelebrationIdentifierService.BlessedVirginMaryMotherOfTheChurch(liturgyDateInformation)){
+    if(CelebrationIdentifierService.CheckCelebration(Celebration.BlessedVirginMaryMotherOfTheChurch, liturgyDateInformation)){
         return SoulKeys.santsMemories_BenauradaVergeMariaMareEsglesia;
     }
     return -1;

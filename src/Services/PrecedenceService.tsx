@@ -1,5 +1,6 @@
 import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
+import {Celebration} from "./CelebrationIdentifierService";
 import {CelebrationSpecificClassification, CelebrationType} from "./DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import CelebrationInformation from "../Models/HoursLiturgy/CelebrationInformation";
@@ -11,11 +12,11 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
     if (dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentTriduum) {
         return 1;
     }
-    if (CelebrationIdentifierService.IsChristmas(dateLiturgyInformation.Date) ||
-        CelebrationIdentifierService.IsEpiphany(dateLiturgyInformation.Date) ||
-        CelebrationIdentifierService.IsAscension(dateLiturgyInformation) ||
-        CelebrationIdentifierService.IsPentecost(dateLiturgyInformation) ||
-        CelebrationIdentifierService.AshWednesday(dateLiturgyInformation) ||
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.Christmas, dateLiturgyInformation) ||
+        CelebrationIdentifierService.CheckCelebration(Celebration.Epiphany, dateLiturgyInformation) ||
+        CelebrationIdentifierService.CheckCelebration(Celebration.Ascension, dateLiturgyInformation) ||
+        CelebrationIdentifierService.CheckCelebration(Celebration.Pentecost, dateLiturgyInformation) ||
+        CelebrationIdentifierService.CheckCelebration(Celebration.AshWednesday, dateLiturgyInformation) ||
         (dateLiturgyInformation.DayOfTheWeek === 0 &&
             (dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent ||
                 dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent ||
@@ -31,7 +32,7 @@ export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpe
             (celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Lord ||
                 celebrationInformation.SpecificClassification === CelebrationSpecificClassification.MotherOfGod ||
                 celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic)) ||
-        CelebrationIdentifierService.IsAllSaints(dateLiturgyInformation.Date)) {
+        CelebrationIdentifierService.CheckCelebration(Celebration.AllSaints, dateLiturgyInformation)) {
         return 3;
     }
     if (dateLiturgyInformation.CelebrationType === CelebrationType.Solemnity &&
