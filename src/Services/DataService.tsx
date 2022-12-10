@@ -53,7 +53,7 @@ async function ObtainCurrentSettings(date: Date) : Promise<Settings>{
         currentSettings.PrayingPlace);
     currentSettings.UseLatin = await SettingsService.getSettingUseLatin() === 'true';
     currentSettings.TextSize = await SettingsService.getSettingTextSize() as number;
-    currentSettings.DarkModeEnabled = DetermineDarkModeIsEnabled(await SettingsService.getSettingTextSize() as string);
+    currentSettings.DarkModeEnabled = DetermineDarkModeIsEnabled(await SettingsService.getSettingDarkMode() as string);
     currentSettings.InvitationPsalmOption = await SettingsService.getSettingNumSalmInv() as string;
     currentSettings.VirginAntiphonOption = await SettingsService.getSettingNumAntMare() as string;
     currentSettings.OptionalFestivityEnabled = await DetermineOptionalFestivityEnabled(date);

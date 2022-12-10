@@ -145,7 +145,7 @@ async function AppearanceHasChanged(param) {
 
 async function CheckSystemDarkMode(colorScheme) {
   try {
-    // It's not always getting the correct color scheme when reopening the app on ios. So I get it from the getColorSheme function
+    // It's not always getting the correct color scheme when reopening the app on ios. So I get it from the getColorScheme function
     colorScheme = Appearance.getColorScheme();
 
     await SettingsService.getSettingDarkMode((r) => {

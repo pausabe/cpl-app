@@ -111,7 +111,7 @@ export default class SettingsService {
         return SettingsService._getStorageValue("textSize", callback, defaultSettings.textSize);
     }
 
-    static getSettingDarkMode(callback){
+    static getSettingDarkMode(callback?){
         return SettingsService._getStorageValue("darkMode", callback, defaultSettings.darkMode);
     }
 
