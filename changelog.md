@@ -1,3 +1,9 @@
+### v6.0.0 (10.12.2022)[79]
+- Fixing some incorrect days
+---
+- Refactor Soul -> Liturgy Services and Models
+- Implemented Precedence System
+
 ### v5.78.5 (05.08.2022)[78]
 - Temporal fix about transfiguration day
 
