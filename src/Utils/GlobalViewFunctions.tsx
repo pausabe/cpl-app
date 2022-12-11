@@ -25,7 +25,7 @@ let GlobalViewFunctions = {
     var bigf4 = "Ell, que amb vós viu i regna en la unitat de l'Esperit Sant, Déu, pels segles dels segles";
     var HMf4 = "Ell, que viu i regna pels segles dels segles";
 
-    oAux = oracio;
+    let oAux = oracio;
 
     if(oAux.search(/\u00AD/g)) {
       oAux = oAux.replace(/\u00AD/g, '');
