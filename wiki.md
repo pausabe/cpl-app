@@ -43,4 +43,4 @@ Therefore, when we...
     3. Update the version name and build number of the manifest (ending in 0, X.X.0)
     4. Build the project (ios -> ipa | android -> apk)
     5. Upload the Builds into the stores
-    6. Push the code changes into master branch
+    6. Push the code changes into master branch when releasing to production channels

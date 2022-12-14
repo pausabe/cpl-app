@@ -1,4 +1,4 @@
-### v6.0.0 (10.12.2022)[79]
+### v6.0.0 (10.12.2022)[82]
 - Fixing some incorrect days
 ---
 - Refactor Soul -> Liturgy Services and Models

@@ -23,13 +23,13 @@
     ],
     "ios": {
       "bundleIdentifier": "cpl.cpl",
-      "buildNumber": "79",
+      "buildNumber": "82",
       "supportsTablet": true,
       "userInterfaceStyle": "automatic"
     },
     "android": {
       "package": "cpl.cpl",
-      "versionCode": 79,
+      "versionCode": 82,
       "userInterfaceStyle": "automatic",
       "icon": "./src/Assets/icon/icon.png",
       "adaptiveIcon": {
