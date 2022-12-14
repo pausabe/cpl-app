@@ -31,6 +31,7 @@ import StorageKeys from "../Services/Storage/StorageKeys";
 import HomeScreenState from './HomeScreenState';
 import {StringManagement} from "../Utils/StringManagement";
 import {DateManagement} from "../Utils/DateManagement";
+import {sleep} from "expo-cli/build/commands/utils/promise";
 
 let LastDatePickerIOSSelected;
 let CurrentState;
@@ -43,7 +44,6 @@ export default function HomeScreenController(props) {
     CurrentState = state;
     useEffect(() => InitialEffect(props, setState), []);
     SetViewWithTheInitialDataLoaded(setState);
-    HideSplashIfItsTime();
     return GetView(props, CurrentState, setState);
   }
   catch (error) {
@@ -101,7 +101,8 @@ function HideSplashIfItsTime(){
     // Letting some extra time to finish rendering everything
     setTimeout(async () => {
       SplashScreenHidden = true;
-      await SplashScreen.hideAsync()
+      await SplashScreen.hideAsync();
+      Logger.Log(Logger.LogKeys.HomeScreenController, "HideSplashIfItsTime", "Splash hidden");
     }, IsLatePrayer() && Platform.OS === "ios"? 0 : 500) // When IsLatePrayer there is some kind of conflict with the Modal, the Splash, the Timeout and the iOS... So, in that case, 0 timeout
   }
 }
@@ -110,6 +111,7 @@ async function SetViewWithTheInitialDataLoaded(setState){
   if(FirstLoad){
     FirstLoad = false;
     await ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true);
+    HideSplashIfItsTime();
   }
 }
 

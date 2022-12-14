@@ -19,6 +19,7 @@ import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
 import {DateManagement} from "../Utils/DateManagement";
 import {GetDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
+import {sleep} from "expo-cli/build/commands/utils/promise";
 
 // TODO: [UI Refactor] I don't like the idea of these variables made public to all project
 //  it should be hidden and only controllers should access it
@@ -31,6 +32,7 @@ export let CurrentHoursLiturgy = new HoursLiturgy();
 export let CurrentMassLiturgy = new MassLiturgy();
 
 export async function ReloadAllData(date) {
+    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Starting reloading data');
     LastRefreshDate = new Date();
     CurrentSettings = await ObtainCurrentSettings(date);
     CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();
@@ -41,7 +43,7 @@ export async function ReloadAllData(date) {
     CurrentHoursLiturgy = await ObtainHoursLiturgy(todayLiturgyMasters, tomorrowLiturgyMasters, CurrentLiturgyDayInformation, CurrentSettings);
     CurrentCelebrationInformation = ObtainCurrentCelebrationInformation(CurrentHoursLiturgy);
     CurrentMassLiturgy = await ObtainMassLiturgy(CurrentLiturgyDayInformation, CurrentHoursLiturgy.TodayCelebrationInformation, CurrentHoursLiturgy.TomorrowCelebrationInformation, CurrentSettings);
-    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Total time passed: ', DateManagement.DifferenceBetweenDatesInSeconds(LastRefreshDate, new Date()) + "s");
+    Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Total time reloading data: ', DateManagement.DifferenceBetweenDatesInSeconds(LastRefreshDate, new Date()) + "s");
 }
 
 async function ObtainCurrentSettings(date: Date) : Promise<Settings>{
