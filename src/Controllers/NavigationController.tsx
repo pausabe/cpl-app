@@ -23,6 +23,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
+import * as Logger from "../Utils/Logger";
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -202,10 +203,15 @@ function Tabs() {
 }
 
 function UpdateModal(IsNecessaryToUpdate){
+    Logger.Log(Logger.LogKeys.NavigationController, "UpdateModal", "IsNecessaryToUpdate?", IsNecessaryToUpdate);
+
+    if(!IsNecessaryToUpdate){
+        return null;
+    }
+
     return (
         <Modal animationType={"fade"}
-               transparent={true}
-               visible={IsNecessaryToUpdate} >
+               transparent={true} >
             <View style={styles.UpdateModalContainer}>
                 <View style={styles.UpdateModalVisiblePartContainer}>
                     <View style={styles.UpdateModalTitleContainer}>

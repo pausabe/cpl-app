@@ -3,7 +3,7 @@ import NavigationController from "./src/Controllers/NavigationController";
 import * as Logger from "./src/Utils/Logger";
 import {useState} from "react";
 
-function ConfigureUpdates(setIsNecessaryToUpdate){
+function ConfigureUpdates(setIsNecessaryToUpdate) {
     useCustomUpdater({
         beforeDownloadCallback: () => StartingToDownloadTheUpdate(setIsNecessaryToUpdate),
         minMsFromCheckingUpdatesAndReloading: 7000
@@ -11,7 +11,7 @@ function ConfigureUpdates(setIsNecessaryToUpdate){
 }
 
 function StartingToDownloadTheUpdate(setIsNecessaryToUpdate) {
-    Logger.Log(Logger.LogKeys.HomeScreenController, "StartingToDownloadTheUpdate", "");
+    Logger.Log(Logger.LogKeys.App, "StartingToDownloadTheUpdate", "");
     setIsNecessaryToUpdate(true);
 }
 
@@ -19,6 +19,6 @@ export default function App() {
     const [isNecessaryToUpdate, setIsNecessaryToUpdate] = useState(false);
     ConfigureUpdates(setIsNecessaryToUpdate);
     return (
-        <NavigationController IsNecessaryToUpdate={isNecessaryToUpdate} />
+        <NavigationController IsNecessaryToUpdate={isNecessaryToUpdate}/>
     );
 }
