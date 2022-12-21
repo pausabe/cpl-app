@@ -1,3 +1,7 @@
+### v6.0.1 (21.12.2022)[82]
+- Fix Sant Josep Mass lectures when 30 december
+- Fix personal prayers suggestion when Vespers
+
 ### v6.0.0 (10.12.2022)[82]
 - Fixing some incorrect days
 ---

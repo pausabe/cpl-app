@@ -328,8 +328,8 @@ export default class VespersComponent extends Component {
         }
         return pregs;
     }
-
-    prayers() {
+    
+    prayers(){
         let allPregs = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.Prayers);
 
         if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
@@ -337,66 +337,75 @@ export default class VespersComponent extends Component {
 
         allPregs = this.convertN(allPregs, CurrentHoursLiturgy.ConcreteNamesInPrayers.Pope, CurrentHoursLiturgy.ConcreteNamesInPrayers.Bishop);
 
-        if (allPregs.match(/—/g, "")) var numGuio = allPregs.match(/—/g, "").length;
-        else return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
-        if (allPregs.match(/\n/g, "")) var numEnter = allPregs.match(/\n/g, "").length;
-        else return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+        if(allPregs.match(/—/g, "")) var numGuio = allPregs.match(/—/g, "").length;
+        else return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+        if(allPregs.match(/\n/g, "")) var numEnter = allPregs.match(/\n/g, "").length;
+        else return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
 
-        if (numEnter !== numGuio * 3 + 3) {//every prayer have 3 spaces and intro have 3 more
-            return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
-        } else {
+        if(numEnter !== numGuio*3+3){//every prayer have 3 spaces and intro have 3 more
+            return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+        }
+        else{
             var introPregs = allPregs.split(":")[0];
-            if (allPregs.search(introPregs + ':') !== -1) {
-                var pregsNoIntro = allPregs.replace(introPregs + ':', '');
-                if (pregsNoIntro !== '') {
-                    while (pregsNoIntro.charAt(0) === '\n' || pregsNoIntro.charAt(0) === ' ') {
-                        pregsNoIntro = pregsNoIntro.substring(1, pregsNoIntro.length);
+            if(allPregs.search(introPregs+':') !== -1){
+                var pregsNoIntro = allPregs.replace(introPregs+':','');
+                if(pregsNoIntro !== ''){
+                    while(pregsNoIntro.charAt(0) === '\n' || pregsNoIntro.charAt(0) === ' '){
+                        pregsNoIntro = pregsNoIntro.substring(1,pregsNoIntro.length);
                     }
                 }
-            } else {
+            }
+            else{
                 Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 1");
-                return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+                return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
             }
 
             var respPregs = pregsNoIntro.split("\n")[0];
-            if (pregsNoIntro.search(respPregs + '\n\n') !== -1) {
-                var pregaries = pregsNoIntro.replace(respPregs + '\n\n', '');
-            } else {
+            if(pregsNoIntro.search(respPregs+'\n\n') !== -1){
+                var pregaries = pregsNoIntro.replace(respPregs+'\n\n','');
+            }
+            else{
                 Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 2");
-                return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+                return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
             }
 
-            if (pregaries.search(": Pare nostre.") !== -1) {
-                pregaries = pregaries.replace(": Pare nostre.", ':');
-            } else {
-                Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 3");
-                return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+            if(pregaries.search(": Pare nostre.") !== -1){
+                pregaries = pregaries.replace(": Pare nostre.",':');
+            }
+            else{
+                if(pregaries.search(":  Pare nostre.") !== -1){
+                    pregaries = pregaries.replace(":  Pare nostre.",':');
+                }
+                else{
+                    Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 3");
+                    return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+                }
             }
 
-            var pregsFinalPart = pregaries.split("—")[numGuio].split(".\n\n")[1];
-            if (pregaries.search('\n\n' + pregsFinalPart) !== -1) {
-                pregaries = pregaries.replace('\n\n' + pregsFinalPart, '');
-            } else {
+            var pregsFinalPart = (pregaries.split("—")[numGuio-1]).split(".\n\n")[1]+'—'+pregaries.split("—")[numGuio];
+            if(pregaries.search('\n\n'+pregsFinalPart) !== -1){
+                pregaries = pregaries.replace('\n\n'+pregsFinalPart,'');
+            }
+            else{
                 Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 4");
-                return (<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
+                return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
             }
         }
 
         const aux_intencions = "Aquí es poden afegir altres intencions.";
 
-        // TODO: [UI Refactor] duplicated code
-        return (
+        return(
             <View>
                 <Text selectable={true} style={this.styles.black}>{introPregs}{':'}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 <Text selectable={true} style={this.styles.blackItalic}>{respPregs}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 <Text selectable={true} style={this.styles.black}>{pregaries}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 <Text selectable={true} style={this.styles.redItalic}>{aux_intencions}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 <Text selectable={true} style={this.styles.black}>{pregsFinalPart}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 <Text selectable={true} style={this.styles.blackItalic}>{"Pare nostre."}</Text>
             </View>
         );
