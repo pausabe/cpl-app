@@ -1,11 +1,10 @@
 import {Appearance} from 'react-native';
-import GlobalViewFunctions from "../Utils/GlobalViewFunctions";
 import SettingsService, {DarkModeOption} from './SettingsService';
 import * as DatabaseDataService from './DatabaseDataService';
+import {getDatabaseVersion} from './DatabaseDataService';
 import * as StorageService from './Storage/StorageService';
 import * as SpecialCelebrationService from './SpecialCelebrationService';
 import StorageKeys from './Storage/StorageKeys';
-import {getDatabaseVersion} from "./DatabaseDataService";
 import * as Logger from "../Utils/Logger";
 import {Settings} from "../Models/Settings";
 import DatabaseInformation from "../Models/DatabaseInformation";
@@ -15,11 +14,12 @@ import {ObtainLiturgyMasters} from "./Liturgy/LiturgyMastersService";
 import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
 import MassLiturgy from "../Models/MassLiturgy";
 import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformation';
-import { ObtainMassLiturgy } from './Liturgy/MassLiturgyService';
+import {ObtainMassLiturgy} from './Liturgy/MassLiturgyService';
 import {DateManagement} from "../Utils/DateManagement";
 import {GetDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
-import {sleep} from "expo-cli/build/commands/utils/promise";
+import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
+import {Celebration} from "./CelebrationIdentifierService";
 
 // TODO: [UI Refactor] I don't like the idea of these variables made public to all project
 //  it should be hidden and only controllers should access it
@@ -102,46 +102,52 @@ async function ObtainCurrentDatabaseInformation() : Promise<DatabaseInformation>
     return databaseInformation;
 }
 
-async function ObtainCurrentLiturgyDayInformation(date: Date, settings : Settings) : Promise<LiturgyDayInformation>{
+async function ObtainCurrentLiturgyDayInformation(date: Date, settings: Settings) : Promise<LiturgyDayInformation>{
     let currentLiturgyDayInformation = new LiturgyDayInformation();
     currentLiturgyDayInformation.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, settings);
     currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Today, settings);
-    currentLiturgyDayInformation.Today.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Today.SpecificLiturgyTime, date);
+    currentLiturgyDayInformation.Today.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Today);
     const tomorrowDate = new Date(date);
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
     currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, settings);
     currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(currentLiturgyDayInformation.Tomorrow, settings);
-    currentLiturgyDayInformation.Tomorrow.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime, tomorrowDate);
+    currentLiturgyDayInformation.Tomorrow.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Tomorrow);
     return currentLiturgyDayInformation;
 }
 
-function IsSpecialChristmas(specificLiturgyTimeType: SpecificLiturgyTimeType, date: Date): boolean{
-    if(specificLiturgyTimeType === SpecificLiturgyTimeType.Ordinary)
+function IsSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean{
+    if(liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary){
         return false;
-    if(date.getMonth() === 11){
-        return date.getDate() === 17 ||
-            date.getDate() === 18 ||
-            date.getDate() === 19 ||
-            date.getDate() === 20 ||
-            date.getDate() === 21 ||
-            date.getDate() === 22 ||
-            date.getDate() === 23 ||
-            date.getDate() === 24 ||
-            date.getDate() === 29 ||
-            date.getDate() === 30 ||
-            date.getDate() === 31;
     }
-    else if(date.getMonth() === 0){
-        return date.getDate() === 2 ||
-            date.getDate() === 3 ||
-            date.getDate() === 4 ||
-            date.getDate() === 5 ||
-            date.getDate() === 7 ||
-            date.getDate() === 8 ||
-            date.getDate() === 9 ||
-            date.getDate() === 10 ||
-            date.getDate() === 11 ||
-            date.getDate() === 12;
+
+    if(CelebrationIdentifierService.CheckCelebration(Celebration.SacredFamily, liturgySpecificDayInformation)){
+        return false;
+    }
+
+    if(liturgySpecificDayInformation.Date.getMonth() === 11){
+        return liturgySpecificDayInformation.Date.getDate() === 17 ||
+            liturgySpecificDayInformation.Date.getDate() === 18 ||
+            liturgySpecificDayInformation.Date.getDate() === 19 ||
+            liturgySpecificDayInformation.Date.getDate() === 20 ||
+            liturgySpecificDayInformation.Date.getDate() === 21 ||
+            liturgySpecificDayInformation.Date.getDate() === 22 ||
+            liturgySpecificDayInformation.Date.getDate() === 23 ||
+            liturgySpecificDayInformation.Date.getDate() === 24 ||
+            liturgySpecificDayInformation.Date.getDate() === 29 ||
+            liturgySpecificDayInformation.Date.getDate() === 30 ||
+            liturgySpecificDayInformation.Date.getDate() === 31;
+    }
+    else if(liturgySpecificDayInformation.Date.getMonth() === 0){
+        return liturgySpecificDayInformation.Date.getDate() === 2 ||
+            liturgySpecificDayInformation.Date.getDate() === 3 ||
+            liturgySpecificDayInformation.Date.getDate() === 4 ||
+            liturgySpecificDayInformation.Date.getDate() === 5 ||
+            liturgySpecificDayInformation.Date.getDate() === 7 ||
+            liturgySpecificDayInformation.Date.getDate() === 8 ||
+            liturgySpecificDayInformation.Date.getDate() === 9 ||
+            liturgySpecificDayInformation.Date.getDate() === 10 ||
+            liturgySpecificDayInformation.Date.getDate() === 11 ||
+            liturgySpecificDayInformation.Date.getDate() === 12;
     }
     return false;
 }
