@@ -1,0 +1,16 @@
+{
+  "build": {
+    "production": {
+      "channel": "production_82"
+    },
+    "test": {
+      "channel": "test_82"
+    },
+    "simulator": {
+      "channel": "simulator",
+      "ios": {
+        "simulator": true
+      }
+    }
+  }
+}

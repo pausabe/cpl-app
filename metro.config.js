@@ -1,16 +1,7 @@
-const defaultAssetExts = require("metro-config/src/defaults/defaults").assetExts;
+const { getDefaultConfig } = require('expo/metro-config');
 
-module.exports = {
-  resolver: {
-    assetExts: [
-      ...defaultAssetExts,
-      // 3D Model formats
-      "dae",
-      "obj",
-      "mtl",
-      // sqlite format
-      "db",
-      "sqlite"
-    ]
-  }
-};
+const config = getDefaultConfig(__dirname);
+
+config.resolver.assetExts.push('db');
+
+module.exports = config;

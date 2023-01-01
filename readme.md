@@ -9,33 +9,28 @@ You will find it in the app markets:
 - [Apple App Store](https://apps.apple.com/es/app/litcat-cpl/id1283136025?l=en)
 - [Android Play Store](https://play.google.com/store/apps/details?id=cpl.cpl)
 
-The app uses a deploy website for the updates. You will find the project here:
+The app uses a deployment website for the updates. You will find the project here:
 https://github.com/pausabe/deploy-cpl
 
-# Necessary Tools
-### Node.js
-    < v17.0.0
-### expo-cli v4.9.1
-    npm install expo-cli@4.9.1
+# Tools
+### expo-dev-client
+    npx expo install expo-dev-client
+### expo-splash-screen
+    npx expo install expo-splash-screen
+### expo-system-ui
+    npx expo install expo-system-ui
+### expo-updates
+    npx expo install expo-updates
+### eas-cli v3.1.1
+    npm install -g eas-cli@3.1.1
 ### Dependencies
     npm install
-### Safe Area
-(for some reason I don't know, we must install the following dependencies manually)
-
-    expo install react-native-safe-area-context@3.2.0
-    expo install react-native-webview@11.15.2
 
 # Docs
 ### Expo Commands
     https://docs.expo.io/workflow/expo-cli/
-### Run
-    expo start
-### Run in cache clean mode
-    expo r -c
 ### app.json properties
     https://docs.expo.io/versions/latest/config/app/#properties
-### Upgrade
-    expo upgrade
 
 # Version Numbers
 BreakingChanges.BuildNumber.OTARelease

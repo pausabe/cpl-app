@@ -16,7 +16,8 @@
     },
     "updates": {
       "enabled": true,
-      "checkAutomatically": "ON_ERROR_RECOVERY"
+      "checkAutomatically": "ON_ERROR_RECOVERY",
+      "url": "https://u.expo.dev/7b28fd03-7a72-47f9-9760-12bbaaa74516"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -36,7 +37,15 @@
         "foregroundImage": "./src/Assets/icon/androidForeground.png",
         "backgroundImage": "./src/Assets/icon/androidBackground.png"
       },
-      "permissions":  []
+      "permissions": []
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7b28fd03-7a72-47f9-9760-12bbaaa74516"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
