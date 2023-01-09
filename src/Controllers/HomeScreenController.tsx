@@ -31,7 +31,7 @@ import StorageKeys from "../Services/Storage/StorageKeys";
 import HomeScreenState from './HomeScreenState';
 import {StringManagement} from "../Utils/StringManagement";
 import {DateManagement} from "../Utils/DateManagement";
-import {sleep} from "expo-cli/build/commands/utils/promise";
+import {useAssets} from "expo-asset";
 
 let LastDatePickerIOSSelected;
 let CurrentState;
@@ -41,9 +41,14 @@ let SplashScreenHidden = false;
 export default function HomeScreenController(props) {
   try {
     const [state, setState] = useState(new HomeScreenState());
+
+    // I'm forced to use hooks to obtain the database because using Asset.loadAsync doesn't work well in EAS build
+    const [databaseAssets, databaseAssetsError] = useAssets([require('../Assets/db/cpl-app.db')]);
+
     CurrentState = state;
-    useEffect(() => InitialEffect(props, setState), []);
-    SetViewWithTheInitialDataLoaded(setState);
+
+    useEffect(() => InitialEffect(props, setState, databaseAssets, databaseAssetsError), [databaseAssets]);
+
     return GetView(props, CurrentState, setState);
   }
   catch (error) {
@@ -69,7 +74,7 @@ function GetView(props, CurrentState, setState){
   }
 }
 
-function InitialEffect(props, setState){
+function InitialEffect(props, setState, databaseAssets, databaseAssetsError) {
   if (!__DEV__) {
     SplashScreen.preventAutoHideAsync();
   }
@@ -82,6 +87,10 @@ function InitialEffect(props, setState){
   let appStateSubscription = AppState.addEventListener('change', (status) => HandleAppStateChange(status, props.navigation, setState));
   let backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', HandleAndroidBack.bind(setState));
   let appearanceSubscription = Appearance.addChangeListener(AppearanceHasChanged);
+
+  if(databaseAssets && databaseAssets[0] && !databaseAssetsError){
+    SetViewWithTheInitialDataLoaded(setState, databaseAssets[0]);
+  }
 
   return () => {
     backHandlerSubscription.remove();
@@ -107,10 +116,10 @@ function HideSplashIfItsTime(){
   }
 }
 
-async function SetViewWithTheInitialDataLoaded(setState){
+async function SetViewWithTheInitialDataLoaded(setState, databaseAsset){
   if(FirstLoad){
     FirstLoad = false;
-    await ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true);
+    await ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true, databaseAsset);
     HideSplashIfItsTime();
   }
 }
@@ -173,9 +182,9 @@ async function ChangeDate(date, setState) {
   await ReloadAllDataAndRefreshView(date, setState);
 }
 
-async function ReloadAllDataAndRefreshView(date, setState, checkLatePopup = false){
+async function ReloadAllDataAndRefreshView(date, setState, checkLatePopup = false, databaseAsset = undefined){
   try {
-    await ReloadAllData(date);
+    await ReloadAllData(date, databaseAsset);
     setState(GetInitialState(checkLatePopup));
   }
   catch(error){

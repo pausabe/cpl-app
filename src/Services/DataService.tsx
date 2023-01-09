@@ -1,6 +1,7 @@
 import {Appearance} from 'react-native';
 import SettingsService, {DarkModeOption} from './SettingsService';
 import * as DatabaseDataService from './DatabaseDataService';
+import * as DatabaseManagerService from './DatabaseManagerService';
 import {getDatabaseVersion} from './DatabaseDataService';
 import * as StorageService from './Storage/StorageService';
 import * as SpecialCelebrationService from './SpecialCelebrationService';
@@ -31,9 +32,10 @@ export let CurrentCelebrationInformation = new CelebrationInformation();
 export let CurrentHoursLiturgy = new HoursLiturgy();
 export let CurrentMassLiturgy = new MassLiturgy();
 
-export async function ReloadAllData(date) {
+export async function ReloadAllData(date, databaseAsset) {
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Starting reloading data');
     LastRefreshDate = new Date();
+    await DatabaseManagerService.OpenDatabase(databaseAsset);
     CurrentSettings = await ObtainCurrentSettings(date);
     CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();
     CurrentLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(date, CurrentSettings);

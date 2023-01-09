@@ -13,7 +13,7 @@ import {CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/D
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
 
-let specificHour: SpecificHour;
+let specificHour;
 let styles;
 
 export default class HoursComponent extends Component {

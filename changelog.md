@@ -1,3 +1,6 @@
+### v7.0.0 (09.01.2023)[84]
+- Migration to EAS Build
+
 ### v6.0.1 (21.12.2022)[82]
 - Fix Sant Josep Mass lectures when 30 december
 - Fix personal prayers suggestion when Vespers

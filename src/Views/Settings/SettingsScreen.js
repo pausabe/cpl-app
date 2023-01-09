@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Platform, ScrollView, TouchableOpacity, Appearance} from 'react-native';
-import Constants from 'expo-constants';
+import {View, Text, StyleSheet, Platform, ScrollView, Appearance} from 'react-native';
+import * as wtf from 'expo-application'
+import * as Updates from 'expo-updates';
 import * as Logger from '../../Utils/Logger';
 import HR from '../../Components/HRComponent';
 import SettingsComponentAdapter from "./SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
 import {SessionLogs} from "../../Utils/Logger";
 import {
-    CurrentCelebrationInformation,
     CurrentDatabaseInformation, CurrentHoursLiturgy,
-    CurrentLiturgyDayInformation
 } from "../../Services/DataService";
 
 let logsPressedTimes;
@@ -67,17 +66,12 @@ export default class SettingsScreen extends Component {
                             textAlign: 'center',
                             color: 'grey',
                             fontSize: 11
-                        }}>{"Versió de l'aplicació: ("}{Platform.OS === "ios" ? Constants.manifest.ios.buildNumber : Constants.manifest.android.versionCode}{")"}{Constants.manifest.version}</Text>
+                        }}>{"Versió de l'aplicació: ("}{wtf.nativeBuildVersion}{") "}{wtf.nativeApplicationVersion}</Text>
                         <Text style={{
                             textAlign: 'center',
                             color: 'grey',
                             fontSize: 11
                         }}>{"Versió de la base de dades: "}{CurrentDatabaseInformation.Version}</Text>
-                        <Text style={{
-                            textAlign: 'center',
-                            color: 'grey',
-                            fontSize: 11
-                        }}>{"OTA("}{Constants.manifest.releaseChannel}{"): "}{Constants.manifest.updates.enabled ? "Sí" : "No"}</Text>
                         <Text style={{
                             textAlign: 'center',
                             color: 'grey',
@@ -88,6 +82,21 @@ export default class SettingsScreen extends Component {
                             color: 'grey',
                             fontSize: 11
                         }}>{`Precedència: avui (${CurrentHoursLiturgy.TodayCelebrationInformation.Precedence}) demà (${CurrentHoursLiturgy.TomorrowCelebrationInformation.Precedence})`}</Text>
+                        <Text style={{
+                            textAlign: 'center',
+                            color: 'grey',
+                            fontSize: 11
+                        }}>{"EAS-runtimeVersion: "}{Updates.runtimeVersion}</Text>
+                        <Text style={{
+                            textAlign: 'center',
+                            color: 'grey',
+                            fontSize: 11
+                        }}>{"EAS-channel: "}{Updates.channel}</Text>
+                        <Text style={{
+                            textAlign: 'center',
+                            color: 'grey',
+                            fontSize: 11
+                        }}>{"EAS-updateId: "}{Updates.updateId}</Text>
                         {this.state.logsVisible &&
                             <View>
                                 <Text

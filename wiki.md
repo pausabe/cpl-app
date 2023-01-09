@@ -2,6 +2,7 @@
 
     npx expo start
     eas build --platform ios --profile simulator
+    eas channel:create
 
 # Deploy
 
@@ -9,6 +10,7 @@
 
     eas build --platform ios --profile production
     eas build --platform android --profile production
+    eas build --platform all --profile production
 
 #### Only OTA (little changes)
 
@@ -18,10 +20,11 @@
 
     production_X
     test_X
+    simulator
 
 #### Instructions
 
-Due some errors, the database cannot be updated using OTA updates.
+Due to some errors, the database cannot be updated using OTA updates.
 Therefore, when we...
 
 - Update only database changes -> Use the Deploy website
@@ -36,10 +39,11 @@ Therefore, when we...
        current version)
     3. Change the version number X.X.(X+1) in app.json
     4. Change the channel name in eas.json with the build number
-    5. Add the changes in the changelog
-    6. Publish using the OTA updates using the correct release-channel (it must be the one used to publish the current
+    5. Create the channel (eas channel:create)
+    6. Add the changes in the changelog
+    7. Publish using the OTA updates using the correct release-channel (it must be the one used to publish the current
        version)
-    7. Push the code changes into the master branch
+    8. Push the code changes into the master branch
 
 - Update code & database (SDK upgrades not included) -> Use expo build with a new release-channel name (prod_channel_47)
     1. Download the latest database from Deploy website (make sure _tables_log registers amount is equal to current
@@ -47,14 +51,13 @@ Therefore, when we...
     2. Copy the database into src/Assets/db/
     3. Update the version name and build number of the manifest (ending in 0, X.X.0)
     4. Change the channel name in eas.json with the build number
-    5. Build the project (ios -> ipa | android -> apk)
-    6. Upload the Builds into the stores
-    7. Push the code changes into master branch when releasing to production channels
+    5. Create the channel (eas channel:create)
+    6. Build the project (ios -> ipa | android -> apk)
+    7. Upload the Builds into the stores
+    8. Push the code changes into master branch when releasing to production channels
 
 # Clear Cache
 
     rm -rf node_modules
     npm cache clean --force
-    yarn cache clean
     npm install
-    rm -rf $TMPDIR/metro-cache

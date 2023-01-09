@@ -1,10 +1,10 @@
 {
   "build": {
     "production": {
-      "channel": "production_82"
+      "channel": "production_84"
     },
     "test": {
-      "channel": "test_82"
+      "channel": "test_84"
     },
     "simulator": {
       "channel": "simulator",

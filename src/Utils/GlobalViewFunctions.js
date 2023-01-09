@@ -92,8 +92,8 @@ let GlobalViewFunctions = {
   },
 
   salmInvExists(salmNum,titols){
-    for(i = 0; i<titols.length; i++){
-      titol = titols[i];
+    for(let i = 0; i<titols.length; i++){
+      let titol = titols[i];
       if(titol && titol.search("Salm "+salmNum) !== -1) return false;
     }
     return true;
