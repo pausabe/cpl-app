@@ -33,17 +33,15 @@ Therefore, when we...
     3. Make the changes in the database
     4. Upload the database changes in the Deploy website
 
-- Update only code changes (SDK upgrades not included) -> Use Expo build and upload the build to the stores
+- Update only code changes (SDK upgrades not included) -> Use EAS updates and upload the build to the stores
     1. Make the code changes
     2. Make sure that we have the correct database under /cpl-app/src/Assets/db/ (it must be the one used to publish the
        current version)
     3. Change the version number X.X.(X+1) in app.json
-    4. Change the channel name in eas.json with the build number
-    5. Create the channel (eas channel:create)
-    6. Add the changes in the changelog
-    7. Publish using the OTA updates using the correct release-channel (it must be the one used to publish the current
+    4. Add the changes in the changelog
+    5. Publish using the EAS updates using the correct --channel (it must be the one used to publish the current
        version)
-    8. Push the code changes into the master branch
+    6. Push the code changes into the master branch
 
 - Update code & database (SDK upgrades not included) -> Use expo build with a new release-channel name (prod_channel_47)
     1. Download the latest database from Deploy website (make sure _tables_log registers amount is equal to current
@@ -52,9 +50,12 @@ Therefore, when we...
     3. Update the version name and build number of the manifest (ending in 0, X.X.0)
     4. Change the channel name in eas.json with the build number
     5. Create the channel (eas channel:create)
-    6. Build the project (ios -> ipa | android -> apk)
-    7. Upload the Builds into the stores
-    8. Push the code changes into master branch when releasing to production channels
+    6. Comment '*.db' line from .gitignore
+    7. Build the project with EAS Build (ios -> ipa | android -> apk)
+    8. Uncomment '*.db' line from .gitignore
+    9. Upload the Builds into the stores
+    10. Add the changes in the changelog
+    11. Push the code changes into master branch when releasing to production channels
 
 # Clear Cache
 

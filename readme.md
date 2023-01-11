@@ -13,11 +13,13 @@ The app uses a deployment website for the updates. You will find the project her
 https://github.com/pausabe/deploy-cpl
 
 # Tools
+### expo-cli v6.1.0
+    npm install -g expo-cli@6.1.0
 ### expo-dev-client
     npx expo install expo-dev-client
-### expo-splash-screen
+### expo-splash-screen (EAS build migration)
     npx expo install expo-splash-screen
-### expo-system-ui
+### expo-system-ui (EAS build migration)
     npx expo install expo-system-ui
 ### expo-updates
     npx expo install expo-updates
@@ -33,4 +35,4 @@ https://github.com/pausabe/deploy-cpl
     https://docs.expo.io/versions/latest/config/app/#properties
 
 # Version Numbers
-BreakingChanges.BuildNumber.OTARelease
+BreakingChanges.NormalChanges.EASUpdate
