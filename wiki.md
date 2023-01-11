@@ -50,7 +50,7 @@ Therefore, when we...
     3. Update the version name and build number of the manifest (ending in 0, X.X.0)
     4. Change the channel name in eas.json with the build number
     5. Create the channel (eas channel:create)
-    6. Comment '*.db' line from .gitignore
+    6. Comment '*.db' line from .gitignore (necessary workaround to avoid a crash when installing the app for the first time)
     7. Build the project with EAS Build (ios -> ipa | android -> apk)
     8. Uncomment '*.db' line from .gitignore
     9. Upload the Builds into the stores
