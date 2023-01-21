@@ -372,8 +372,8 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
     return readings;
 }
 
-function GetTeDeumInformation(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationOffice : Office, settings : Settings) : TeDeumInformation{
-    let teDeumInformationEnabled = false;
+function GetTeDeumInformation(currentOfficeCommonPsalter: OfficeCommonPsalter, liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgySpecificDayInformation, celebrationOffice: Office, settings: Settings): TeDeumInformation{
+    let teDeumInformationEnabled = liturgyDayInformation.Date.getDay() === 0;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.EasterOctave:
             teDeumInformationEnabled = true;

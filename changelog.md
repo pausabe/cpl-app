@@ -1,3 +1,6 @@
+### v7.0.1 (21.01.2023)[84]
+- Fixing Te Deum at Sundays
+
 ### v7.0.0 (11.01.2023)[84]
 - Migration to EAS Build
 
