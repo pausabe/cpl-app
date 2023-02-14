@@ -1,3 +1,7 @@
+### v7.0.2 (14.02.2023)[84]
+- Fixing Te Deum when Lent time
+- Fixing version name
+
 ### v7.0.1 (21.01.2023)[84]
 - Fixing Te Deum at Sundays
 

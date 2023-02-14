@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Platform, ScrollView, Appearance} from 'react-native';
-import * as wtf from 'expo-application'
+import * as ExpoApplication from 'expo-application'
 import * as Updates from 'expo-updates';
 import * as Logger from '../../Utils/Logger';
 import HR from '../../Components/HRComponent';
 import SettingsComponentAdapter from "./SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
 import {SessionLogs} from "../../Utils/Logger";
+import Constants from "expo-constants"
 import {
     CurrentDatabaseInformation, CurrentHoursLiturgy,
 } from "../../Services/DataService";
@@ -39,6 +40,15 @@ export default class SettingsScreen extends Component {
         }
     }
 
+    getVersionName(){
+        try {
+            return Constants.manifest2.extra.expoClient.version
+        }
+        catch (e){
+            return ExpoApplication.nativeApplicationVersion;
+        }
+    }
+
     render() {
         if (!this.state || this.state && !this.state.options) {
             return (
@@ -66,7 +76,7 @@ export default class SettingsScreen extends Component {
                             textAlign: 'center',
                             color: 'grey',
                             fontSize: 11
-                        }}>{"Versió de l'aplicació: ("}{wtf.nativeBuildVersion}{") "}{wtf.nativeApplicationVersion}</Text>
+                        }}>{"Versió de l'aplicació: ("}{ExpoApplication.nativeBuildVersion}{") "}{this.getVersionName()}</Text>
                         <Text style={{
                             textAlign: 'center',
                             color: 'grey',
