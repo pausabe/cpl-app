@@ -1,11 +1,10 @@
 import Office, {TeDeumInformation} from "../../Models/HoursLiturgy/Office";
-import GlobalViewFunctions from "../../Utils/GlobalViewFunctions";
 import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
 import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
-import {ReadingOfTheOffice, Psalm, Responsory} from "../../Models/LiturgyMasters/CommonParts";
-import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
+import {Psalm, ReadingOfTheOffice, Responsory} from "../../Models/LiturgyMasters/CommonParts";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
 import {Celebration} from "../CelebrationIdentifierService";
@@ -373,30 +372,16 @@ function GetReadings(currentOfficeCommonPsalter : OfficeCommonPsalter, liturgyMa
 }
 
 function GetTeDeumInformation(currentOfficeCommonPsalter: OfficeCommonPsalter, liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgySpecificDayInformation, celebrationOffice: Office, settings: Settings): TeDeumInformation{
-    let teDeumInformationEnabled = liturgyDayInformation.Date.getDay() === 0;
+    let teDeumInformationEnabled =
+        liturgyDayInformation.DayOfTheWeek === 0 &&
+        liturgyDayInformation.GenericLiturgyTime !== GenericLiturgyTimeType.Lent;
     switch(liturgyDayInformation.SpecificLiturgyTime){
         case SpecificLiturgyTimeType.EasterOctave:
-            teDeumInformationEnabled = true;
-            break;
-        case SpecificLiturgyTimeType.EasterWeeks:
-            if(liturgyDayInformation.DayOfTheWeek == 0) {
-                teDeumInformationEnabled = true;
-            }
-            break;
-        case SpecificLiturgyTimeType.AdventWeeks:
-            if(liturgyDayInformation.DayOfTheWeek == 0) {
-                teDeumInformationEnabled = true;
-            }
-            break;
         case SpecificLiturgyTimeType.ChristmasOctave:
             teDeumInformationEnabled = true;
             break;
-        case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
-            if(liturgyDayInformation.DayOfTheWeek == 0) {
-                teDeumInformationEnabled = true;
-            }
-            break;
     }
+
     let teDeumInformation = new TeDeumInformation();
     teDeumInformation.Enabled = teDeumInformationEnabled || celebrationOffice.TeDeumInformation.Enabled;
     teDeumInformation.Anthem = settings.UseLatin? liturgyMasters.Various.TeDeumLatinAnthem : liturgyMasters.Various.TeDeumCatalanAnthem;
