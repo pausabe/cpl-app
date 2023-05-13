@@ -31,7 +31,7 @@
     4. Upload the database changes in the Deployment website and publish from there
 
 - EAS Updates (NOT include Expo SDK changes)
-    1. Make the code changes
+    1. Make the code and/or database changes
     2. Make sure that we have the correct database under /cpl-app/src/Assets/db/ (it must be the one used to publish the
        current version)
     3. Change the version number X.X.(X+1) in app.json
@@ -39,7 +39,7 @@
     5. Push the code changes into master
     6. Press 'Update Production Repository' from deploy website Admin tab
     7. Publish using the EAS updates using the correct --channel (it must be the one used to publish the current
-       version). You could also use Deployment website using the last database
+       version). You could also use Deployment website using the last database or the modified one
 
 - Store Updates (include Expo SDK changes)
     1. Download the latest database from Deploy website (make sure _tables_log registers amount is equal to current

@@ -21,6 +21,7 @@ import {GetDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
+import { Asset } from 'expo-asset';
 
 // TODO: [UI Refactor] I don't like the idea of these variables made public to all project
 //  it should be hidden and only controllers should access it
@@ -32,7 +33,7 @@ export let CurrentCelebrationInformation = new CelebrationInformation();
 export let CurrentHoursLiturgy = new HoursLiturgy();
 export let CurrentMassLiturgy = new MassLiturgy();
 
-export async function ReloadAllData(date, databaseAsset) {
+export async function ReloadAllData(date: Date, databaseAsset: Asset) {
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Starting reloading data');
     LastRefreshDate = new Date();
     await DatabaseManagerService.OpenDatabase(databaseAsset);

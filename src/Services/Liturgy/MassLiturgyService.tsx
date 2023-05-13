@@ -215,11 +215,11 @@ function GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation: LiturgySpeci
     if (CelebrationIdentifierService.CheckCelebration(Celebration.Pentecost, tomorrowLiturgyDayInformation)) {
         switch (tomorrowLiturgyDayInformation.YearType) {
             case YearType.A:
-                return SoulKeys.LDSantoral_PentecostaA;
+                return SoulKeys.LDSantoral_PentecostaVespersA;
             case YearType.B:
-                return SoulKeys.LDSantoral_PentecostaB;
+                return SoulKeys.LDSantoral_PentecostaVespersB;
             case YearType.C:
-                return SoulKeys.LDSantoral_PentecostaC;
+                return SoulKeys.LDSantoral_PentecostaVespersC;
         }
     }
     return -1;
@@ -302,6 +302,10 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
             case YearType.C:
                 return SoulKeys.LDSantoral_SagratCorJesusC;
         }
+    }
+
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.Pentecost, liturgySpecificDayInformation)) {
+        return SoulKeys.LDSantoral_Pentecosta;
     }
 
     return -1;

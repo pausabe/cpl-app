@@ -1,3 +1,6 @@
+### v7.0.3 (13.05.2023)[84]
+- Fixing a precedence problem with Pentecost mass data
+
 ### v7.0.2 (14.02.2023)[84]
 - Fixing Te Deum when Lent time
 - Fixing version name
