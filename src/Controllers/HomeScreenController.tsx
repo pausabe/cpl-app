@@ -18,17 +18,17 @@ import HomeScreen from '../Views/HomeScreen';
 import GlobalKeys from '../Utils/GlobalKeys';
 import GlobalViewFunctions from '../Utils/GlobalViewFunctions';
 import * as Logger from '../Utils/Logger';
-import SettingsService from '../Services/SettingsService';
+import SettingsService from '../Services/Settings/SettingsService';
 import {
   ReloadAllData,
   LastRefreshDate,
   CurrentLiturgyDayInformation,
   CurrentSettings,
   CurrentCelebrationInformation, CurrentDatabaseInformation
-} from '../Services/DataService';
+} from '../Services/Data/DataService';
 import * as StorageService from '../Services/Storage/StorageService';
 import StorageKeys from "../Services/Storage/StorageKeys";
-import HomeScreenState from './HomeScreenState';
+import HomeScreenState from '../States/HomeScreenState';
 import {StringManagement} from "../Utils/StringManagement";
 import {DateManagement} from "../Utils/DateManagement";
 import {useAssets} from "expo-asset";
@@ -285,6 +285,7 @@ function HandleGetDataError(error, setState){
   setState(CurrentState.UpdateObtainDataErrorMessage(messageToShow));
 }
 
+// TODO: move this to a new view file
 function HomeScreenViewWithError(currentObtainDataErrorMessage){
   return(
       <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 15 }}>
@@ -293,6 +294,7 @@ function HomeScreenViewWithError(currentObtainDataErrorMessage){
   );
 }
 
+// TODO: move this to a new view file
 function HomeScreenView(navigation, setState){
   if(CurrentLiturgyDayInformation.Today.Date === undefined){
     return null;

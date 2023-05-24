@@ -1,8 +1,8 @@
-import NightPrayer from "../../Models/HoursLiturgy/NightPrayer";
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
-import {Settings} from "../../Models/Settings";
-import {Psalm, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
+import NightPrayer from "../../../Models/HoursLiturgy/NightPrayer";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
+import {LiturgySpecificDayInformation} from "../../../Models/LiturgyDayInformation";
+import {Settings} from "../../../Models/Settings";
+import {Psalm, ShortResponsory} from "../../../Models/LiturgyMasters/CommonParts";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 
 export function ObtainNightPrayer(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : NightPrayer{

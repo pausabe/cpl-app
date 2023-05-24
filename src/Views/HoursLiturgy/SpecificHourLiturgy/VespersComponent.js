@@ -10,8 +10,8 @@ import GLOBAL from '../../../Utils/GlobalKeys';
 import GF from '../../../Utils/GlobalViewFunctions';
 import * as Logger from '../../../Utils/Logger';
 import GlobalViewFunctions from "../../../Utils/GlobalViewFunctions";
-import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
-import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/Data/DataService";
+import {SpecificLiturgyTimeType} from "../../../Services/Data/CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
 
 export default class VespersComponent extends Component {

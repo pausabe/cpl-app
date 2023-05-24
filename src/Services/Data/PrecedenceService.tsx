@@ -1,12 +1,12 @@
-import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
+import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
 import {CelebrationSpecificClassification, CelebrationType} from "./DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
-import CelebrationInformation from "../Models/HoursLiturgy/CelebrationInformation";
-import * as Logger from "../Utils/Logger";
-import {LogKeys} from "../Utils/Logger";
-import {DateManagement} from "../Utils/DateManagement";
+import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
+import * as Logger from "../../Utils/Logger";
+import {LogKeys} from "../../Utils/Logger";
+import {DateManagement} from "../../Utils/DateManagement";
 
 export function ObtainPrecedenceByLiturgyTime(dateLiturgyInformation: LiturgySpecificDayInformation, celebrationInformation: CelebrationInformation): number {
     if (dateLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum ||

@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import HoursLiturgyButtonsComponent from './HoursLiturgyButtonsComponent';
 import GlobalKeys from '../../Utils/GlobalKeys';
-import {CurrentHoursLiturgy, CurrentSettings} from "../../Services/DataService";
+import {CurrentHoursLiturgy, CurrentSettings} from "../../Services/Data/DataService";
 
 export default class HoursLiturgyPrayerMainScreen extends Component {
   constructor(props) {

@@ -1,9 +1,9 @@
-import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
-import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
+import CelebrationInformation from "../../../Models/HoursLiturgy/CelebrationInformation";
+import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../../Models/LiturgyDayInformation";
 import {CelebrationType} from "../DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import {StringManagement} from "../../Utils/StringManagement";
-import {DateManagement} from "../../Utils/DateManagement";
+import {StringManagement} from "../../../Utils/StringManagement";
+import {DateManagement} from "../../../Utils/DateManagement";
 import * as PrecedenceService from "../PrecedenceService";
 
 export function ObtainCelebrationInformation(liturgySpecificDayInformation: LiturgySpecificDayInformation, celebrationInformationFromCelebration: CelebrationInformation): CelebrationInformation {

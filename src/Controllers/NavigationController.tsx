@@ -16,7 +16,7 @@ import DonationScreen from '../Views/DonationScreen';
 import CommentScreen from '../Views/CommentScreen';
 import HoursLiturgyPrayerMainScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerMainScreen';
 import HoursLiturgyPrayerScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerScreen';
-import MassLiturgyMainScreen from '../Views/MassLiturgy/MassLiturgyMainScreen';
+import MassLiturgyMainScreen from '../Controllers/MassLiturgy/MassLiturgyMainViewController';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';

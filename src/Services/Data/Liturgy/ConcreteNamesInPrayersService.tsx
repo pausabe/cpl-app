@@ -1,7 +1,7 @@
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import ConcreteNamesInPrayers from "../../Models/HoursLiturgy/ConcreteNamesInPrayers";
-import {Settings} from "../../Models/Settings";
-import {DioceseName} from "../SettingsService";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
+import ConcreteNamesInPrayers from "../../../Models/HoursLiturgy/ConcreteNamesInPrayers";
+import {Settings} from "../../../Models/Settings";
+import {DioceseName} from "../../Settings/SettingsService";
 
 export function ObtainConcreteNamesInPrayers(liturgyMasters: LiturgyMasters, settings: Settings) : ConcreteNamesInPrayers{
     let concreteNamesInPrayers = new ConcreteNamesInPrayers();

@@ -10,7 +10,7 @@ import {SessionLogs} from "../../Utils/Logger";
 import Constants from "expo-constants"
 import {
     CurrentDatabaseInformation, CurrentHoursLiturgy,
-} from "../../Services/DataService";
+} from "../../Services/Data/DataService";
 
 let logsPressedTimes;
 

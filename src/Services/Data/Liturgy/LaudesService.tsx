@@ -1,11 +1,11 @@
-import Laudes from "../../Models/HoursLiturgy/Laudes";
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
-import {Settings} from "../../Models/Settings";
-import {Psalm, ShortReading, ShortResponsory} from "../../Models/LiturgyMasters/CommonParts";
+import Laudes from "../../../Models/HoursLiturgy/Laudes";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
+import {LiturgySpecificDayInformation} from "../../../Models/LiturgyDayInformation";
+import {Settings} from "../../../Models/Settings";
+import {Psalm, ShortReading, ShortResponsory} from "../../../Models/LiturgyMasters/CommonParts";
 import {YearType} from "../DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import {StringManagement} from "../../Utils/StringManagement";
+import {StringManagement} from "../../../Utils/StringManagement";
 
 export function ObtainLaudes(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationLaudes : Laudes, settings : Settings) : Laudes{
     let laudes = new Laudes();

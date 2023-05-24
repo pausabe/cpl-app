@@ -1,6 +1,6 @@
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
 import {Celebration} from "../CelebrationIdentifierService";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
+import {LiturgySpecificDayInformation} from "../../../Models/LiturgyDayInformation";
 
 export function IsHolyDaysOfObligation(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
     return CelebrationIdentifier.CheckCelebration(Celebration.MatherOfGod, liturgySpecificDayInformation) ||

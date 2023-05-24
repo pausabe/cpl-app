@@ -9,8 +9,8 @@ import HR from '../../../Components/HRComponent';
 import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
 import * as Logger from '../../../Utils/Logger';
 import {SpecificHour} from "../../../Models/HoursLiturgy/Hours";
-import {CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
-import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/Data/DataService";
+import {SpecificLiturgyTimeType} from "../../../Services/Data/CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
 
 let specificHour;

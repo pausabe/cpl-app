@@ -1,4 +1,4 @@
-import * as StorageService from './Storage/StorageService';
+import * as StorageService from '../Storage/StorageService';
 
 export enum DioceseName {
     Andorra = "Andorra",

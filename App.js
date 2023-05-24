@@ -1,4 +1,4 @@
-import {useCustomUpdater} from "./src/Services/UpdaterService";
+import {useCustomUpdater} from "./src/Services/Updates/UpdaterService";
 import NavigationController from "./src/Controllers/NavigationController";
 import * as Logger from "./src/Utils/Logger";
 import {useState} from "react";

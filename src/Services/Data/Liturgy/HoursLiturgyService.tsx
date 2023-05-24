@@ -1,7 +1,7 @@
 import * as CelebrationHoursLiturgyService from "./CelebrationHoursLiturgyService";
-import HoursLiturgy, {VespersOptions} from "../../Models/HoursLiturgy/HoursLiturgy";
-import liturgyDayInformation from "../../Models/LiturgyDayInformation";
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
+import HoursLiturgy, {VespersOptions} from "../../../Models/HoursLiturgy/HoursLiturgy";
+import liturgyDayInformation from "../../../Models/LiturgyDayInformation";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
 import * as InvitationService from "./InvitationService";
 import * as OfficeService from "./OfficeService";
 import * as LaudesService from "./LaudesService";
@@ -9,10 +9,10 @@ import * as VespersService from "./VespersService";
 import * as HoursService from "./HoursService";
 import * as NightPrayerService from "./NightPrayerService";
 import * as CelebrationInformationService from "./CelebrationInformationService";
-import {Settings} from "../../Models/Settings";
-import LiturgyDayInformation from "../../Models/LiturgyDayInformation";
-import Vespers from "../../Models/HoursLiturgy/Vespers";
-import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
+import {Settings} from "../../../Models/Settings";
+import LiturgyDayInformation from "../../../Models/LiturgyDayInformation";
+import Vespers from "../../../Models/HoursLiturgy/Vespers";
+import CelebrationInformation from "../../../Models/HoursLiturgy/CelebrationInformation";
 import * as ConcreteNamesInPrayers from "./ConcreteNamesInPrayersService";
 
 export async function ObtainHoursLiturgy(todayLiturgyMasters: LiturgyMasters, tomorrowLiturgyMasters: LiturgyMasters, liturgyDayInformation: liturgyDayInformation, settings: Settings): Promise<HoursLiturgy> {

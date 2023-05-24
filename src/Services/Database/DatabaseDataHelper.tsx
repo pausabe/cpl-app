@@ -1,4 +1,4 @@
-import {DioceseName, PrayingPlace} from "./SettingsService";
+import {DioceseName, PrayingPlace} from "../Settings/SettingsService";
 import {CelebrationType, DioceseCode} from "./DatabaseEnums";
 
 export function GetDioceseCodeFromDioceseName(dioceseName, place) {

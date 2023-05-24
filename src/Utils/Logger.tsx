@@ -18,7 +18,8 @@ export const LogKeys = {
     SecureCall: { name: "SecureCall", enabled: true },
     PrecedenceService: { name: "PrecedenceService", enabled: true },
     App: { name: "App", enabled: true },
-    NavigationController: { name: "NavigationController", enabled: true }
+    NavigationController: { name: "NavigationController", enabled: true },
+    MassLiturgyMainViewController: { name: "MassLiturgyMainViewController", enabled: true }
 };
 
 export function Debug(message, param){

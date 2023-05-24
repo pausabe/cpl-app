@@ -1,7 +1,7 @@
-import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
+import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {CelebrationType} from "./DatabaseEnums";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
-import {DateManagement} from "../Utils/DateManagement";
+import {DateManagement} from "../../Utils/DateManagement";
 
 export enum Celebration {
     Assumption,

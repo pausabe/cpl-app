@@ -1,8 +1,8 @@
-import Invitation from "../../Models/HoursLiturgy/Invitation";
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
+import Invitation from "../../../Models/HoursLiturgy/Invitation";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
+import {LiturgySpecificDayInformation} from "../../../Models/LiturgyDayInformation";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import {StringManagement} from "../../Utils/StringManagement";
+import {StringManagement} from "../../../Utils/StringManagement";
 
 export function ObtainInvitation(liturgyMasters : LiturgyMasters, liturgyDayInformation : LiturgySpecificDayInformation, celebrationInvitation : Invitation) : Invitation{
     let invitation = new Invitation();

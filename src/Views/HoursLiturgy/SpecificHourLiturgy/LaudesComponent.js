@@ -8,12 +8,12 @@ import {
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
 import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
-import SettingsService from '../../../Services/SettingsService';
+import SettingsService from '../../../Services/Settings/SettingsService';
 import * as Logger from '../../../Utils/Logger';
 // TODO: [UI Refactor] view shouldn't know these "current" variables. Controller should be in charge to prepare it all
 //  actually, it seems that these "views" are view + controller. When I separe it, it will make more sense
-import {CurrentSettings, CurrentHoursLiturgy, CurrentLiturgyDayInformation} from '../../../Services/DataService';
-import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {CurrentSettings, CurrentHoursLiturgy, CurrentLiturgyDayInformation} from '../../../Services/Data/DataService';
+import {SpecificLiturgyTimeType} from "../../../Services/Data/CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
 
 export default class LaudesComponent extends Component {

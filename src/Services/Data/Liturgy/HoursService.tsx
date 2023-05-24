@@ -1,10 +1,10 @@
-import Hours from "../../Models/HoursLiturgy/Hours";
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
-import {Settings} from "../../Models/Settings";
-import {Psalm, Responsory, ShortReading} from "../../Models/LiturgyMasters/CommonParts";
+import Hours from "../../../Models/HoursLiturgy/Hours";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
+import {LiturgySpecificDayInformation} from "../../../Models/LiturgyDayInformation";
+import {Settings} from "../../../Models/Settings";
+import {Psalm, Responsory, ShortReading} from "../../../Models/LiturgyMasters/CommonParts";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import {StringManagement} from "../../Utils/StringManagement";
+import {StringManagement} from "../../../Utils/StringManagement";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
 import {Celebration} from "../CelebrationIdentifierService";
 

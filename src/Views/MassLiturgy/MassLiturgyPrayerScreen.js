@@ -7,9 +7,9 @@ import {
     CurrentLiturgyDayInformation,
     CurrentMassLiturgy,
     CurrentSettings
-} from "../../Services/DataService";
+} from "../../Services/Data/DataService";
 import {YearType} from "../../Services/DatabaseEnums";
-import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../Services/Data/CelebrationTimeEnums";
 
 export default class MassLiturgyPrayerScreen extends Component {
     //PREVIEWS --------------------------------------------------------------------------

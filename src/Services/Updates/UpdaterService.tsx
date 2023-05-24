@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { AppState } from 'react-native'
 import * as Updates from 'expo-updates'
-import * as Logger from "../Utils/Logger";
+import * as Logger from "../../Utils/Logger";
 
 const updater = {
     logs: [],

@@ -11,11 +11,7 @@ import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
 import GlobalKeys from '../../Utils/GlobalKeys';
-import {
-    CurrentLiturgyDayInformation,
-    CurrentMassLiturgy
-} from "../../Services/DataService";
-import {SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
+import {SpecificLiturgyTimeType} from "../../Services/Data/CelebrationTimeEnums";
 import {StringManagement} from "../../Utils/StringManagement";
 import {DateManagement} from "../../Utils/DateManagement";
 import * as StorageService from "../../Services/Storage/StorageService";
@@ -27,95 +23,8 @@ const VESPERS_SELECTOR_TYPES = {
     VESPERS: 'vespers'
 };
 
-export default class MassLiturgyMainScreen extends Component {
-    //CONSTRUCTOR --------------------------------------------------------------------------
-    constructor(props) {
-        super(props);
-
-        this.state = {renderError: false}
-    }
-
-    //PREVIEWS --------------------------------------------------------------------------
-    UNSAFE_componentWillMount() {
-        this.eventEmitter = new EventEmitter();
-    }
-
-    componentDidMount() {
-        this._unsubscribe = this.props.navigation.addListener('focus', () => this.Refresh_Layout());
-    }
-
-    componentWillUnmount() {
-        this._unsubscribe();
-    }
-
-    Refresh_Layout() {
-        this.getCurrentVesperSelection().then((currentVesperSelectorType) => {
-            this.CURRENT_VESPERS_SELECTOR_TYPE = currentVesperSelectorType;
-            try {
-                if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NONE) {
-                    if (CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday &&
-                        CurrentMassLiturgy.HasVespers &&
-                        CurrentLiturgyDayInformation.Today.Date.getHours() >= GlobalKeys.afternoon_hour) {
-                        this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.VESPERS;
-                        this.StoreVesperSelection(VESPERS_SELECTOR_TYPES.VESPERS);
-                    }
-                    else{
-                        this.CURRENT_VESPERS_SELECTOR_TYPE = VESPERS_SELECTOR_TYPES.NORMAL;
-                        this.StoreVesperSelection(VESPERS_SELECTOR_TYPES.NORMAL);
-                    }
-                }
-
-                let need_lectura2 = false;
-                if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.NORMAL) {
-                    need_lectura2 = StringManagement.HasLiturgyContent(CurrentMassLiturgy.Today.SecondReading.Reading);
-                } else if (this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS && CurrentMassLiturgy.Vespers) {
-                    need_lectura2 = StringManagement.HasLiturgyContent(CurrentMassLiturgy.Vespers.SecondReading.Reading);
-                }
-
-                this.setState({need_lectura2: need_lectura2});
-
-            } catch (error) {
-                Logger.LogError(Logger.LogKeys.Screens, "Refresh_Layout", error);
-                this.setState({renderError: true})
-            }
-        });
-
-    }
-
-    getCurrentVesperSelection() {
-        return new Promise((resolve) => {
-            StorageService.GetData(StorageKeys.CurrentMassVespersSelector).then((currentMassVesperSelector) => {
-                if (currentMassVesperSelector &&
-                    currentMassVesperSelector.includes("_") &&
-                    currentMassVesperSelector.split("_")[0] === DateManagement.GetDateKeyToBeStored(CurrentLiturgyDayInformation.Today.Date) &&
-                    currentMassVesperSelector.split("_")[1] !== 'undefined') {
-                    resolve(currentMassVesperSelector.split("_")[1]);
-                }
-                else{
-                    resolve(VESPERS_SELECTOR_TYPES.NONE);
-                }
-            });
-        });
-    }
-
-    //CALLBACKS ----------------------------------------------------------------------------
-    On_Button_Pressed(prayer_type, need_lectura2) {
-        const title = "Missa";
-
-        const params = {
-            title: title,
-            props: {
-                type: prayer_type,
-                events: this.eventEmitter,
-                need_lectura2: need_lectura2,
-                useVespersTexts: this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS
-            },
-        };
-        this.props.navigation.navigate('LDDisplay', params);
-    }
-
-    //RENDER -------------------------------------------------------------------------------
-    render() {
+export default function MassLiturgyMainView(props) {
+   
         try {
 
             if (this.state == null) {
@@ -214,11 +123,6 @@ export default class MassLiturgyMainScreen extends Component {
         } catch (error) {
             Logger.LogError(Logger.LogKeys.Screens, "OnVespersPressed", error);
         }
-    }
-
-    StoreVesperSelection(vesperSelectorType) {
-        const stringDate = DateManagement.GetDateKeyToBeStored(CurrentLiturgyDayInformation.Today.Date);
-        StorageService.StoreData(StorageKeys.CurrentMassVespersSelector, stringDate + '_' + vesperSelectorType);
     }
 
     Buttons(need_lectura2) {

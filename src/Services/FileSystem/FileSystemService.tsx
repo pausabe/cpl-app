@@ -1,6 +1,6 @@
 import * as FileSystem from "expo-file-system";
-import * as Logger from "../Utils/Logger";
-import {StringManagement} from "../Utils/StringManagement";
+import * as Logger from "../../Utils/Logger";
+import {StringManagement} from "../../Utils/StringManagement";
 
 export class FileSystemService{
     static async CopyFile(fromPath: string, toPath: string) : Promise<void> {

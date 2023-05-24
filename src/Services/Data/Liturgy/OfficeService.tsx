@@ -1,11 +1,11 @@
-import Office, {TeDeumInformation} from "../../Models/HoursLiturgy/Office";
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
-import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../Models/LiturgyDayInformation";
-import {Settings} from "../../Models/Settings";
-import OfficeCommonPsalter from "../../Models/LiturgyMasters/OfficeCommonPsalter";
-import {Psalm, ReadingOfTheOffice, Responsory} from "../../Models/LiturgyMasters/CommonParts";
+import Office, {TeDeumInformation} from "../../../Models/HoursLiturgy/Office";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
+import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../../Models/LiturgyDayInformation";
+import {Settings} from "../../../Models/Settings";
+import OfficeCommonPsalter from "../../../Models/LiturgyMasters/OfficeCommonPsalter";
+import {Psalm, ReadingOfTheOffice, Responsory} from "../../../Models/LiturgyMasters/CommonParts";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import {StringManagement} from "../../Utils/StringManagement";
+import {StringManagement} from "../../../Utils/StringManagement";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
 import {Celebration} from "../CelebrationIdentifierService";
 

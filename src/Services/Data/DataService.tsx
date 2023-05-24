@@ -1,23 +1,23 @@
 import {Appearance} from 'react-native';
-import SettingsService, {DarkModeOption} from './SettingsService';
+import SettingsService, {DarkModeOption} from '../Settings/SettingsService';
 import * as DatabaseDataService from './DatabaseDataService';
 import * as DatabaseManagerService from './DatabaseManagerService';
 import {getDatabaseVersion} from './DatabaseDataService';
-import * as StorageService from './Storage/StorageService';
+import * as StorageService from '../Storage/StorageService';
 import * as SpecialCelebrationService from './SpecialCelebrationService';
-import StorageKeys from './Storage/StorageKeys';
-import * as Logger from "../Utils/Logger";
-import {Settings} from "../Models/Settings";
-import DatabaseInformation from "../Models/DatabaseInformation";
-import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
+import StorageKeys from '../Storage/StorageKeys';
+import * as Logger from "../../Utils/Logger";
+import {Settings} from "../../Models/Settings";
+import DatabaseInformation from "../../Models/DatabaseInformation";
+import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import {ObtainHoursLiturgy} from "./Liturgy/HoursLiturgyService";
 import {ObtainLiturgyMasters} from "./Liturgy/LiturgyMastersService";
-import HoursLiturgy from "../Models/HoursLiturgy/HoursLiturgy";
-import MassLiturgy from "../Models/MassLiturgy";
-import CelebrationInformation from '../Models/HoursLiturgy/CelebrationInformation';
+import HoursLiturgy from "../../Models/HoursLiturgy/HoursLiturgy";
+import MassLiturgy from "../../Models/MassLiturgy";
+import CelebrationInformation from '../../Models/HoursLiturgy/CelebrationInformation';
 import {ObtainMassLiturgy} from './Liturgy/MassLiturgyService';
-import {DateManagement} from "../Utils/DateManagement";
-import {GetDioceseCodeFromDioceseName} from "./DatabaseDataHelper";
+import {DateManagement} from "../../Utils/DateManagement";
+import {GetDioceseCodeFromDioceseName} from "../Database/DatabaseDataHelper";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
@@ -25,13 +25,13 @@ import { Asset } from 'expo-asset';
 
 // TODO: [UI Refactor] I don't like the idea of these variables made public to all project
 //  it should be hidden and only controllers should access it
-export let LastRefreshDate = new Date()
+/*export let LastRefreshDate = new Date()
 export let CurrentSettings = new Settings();
 export let CurrentDatabaseInformation = new DatabaseInformation();
 export let CurrentLiturgyDayInformation = new LiturgyDayInformation();
 export let CurrentCelebrationInformation = new CelebrationInformation();
 export let CurrentHoursLiturgy = new HoursLiturgy();
-export let CurrentMassLiturgy = new MassLiturgy();
+export let CurrentMassLiturgy = new MassLiturgy();*/
 
 export async function ReloadAllData(date: Date, databaseAsset: Asset) {
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Starting reloading data');

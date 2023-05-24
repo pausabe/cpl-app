@@ -6,9 +6,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import HR from '../../Components/HRComponent';
-import {CurrentHoursLiturgy, CurrentLiturgyDayInformation} from "../../Services/DataService";
+import {CurrentHoursLiturgy, CurrentLiturgyDayInformation} from "../../Services/Data/DataService";
 import {StringManagement} from "../../Utils/StringManagement";
-import {SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
+import {SpecificLiturgyTimeType} from "../../Services/Data/CelebrationTimeEnums";
 
 export default class HoursLiturgyButtonsComponent extends Component {
   render() {

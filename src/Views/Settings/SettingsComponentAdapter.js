@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SettingsService, {DarkModeOption, DioceseName, PrayingPlace} from '../../Services/SettingsService';
+import SettingsService, {DarkModeOption, DioceseName, PrayingPlace} from '../../Services/Settings/SettingsService';
 import SettingsComponent from '../../Components/SettingsComponent';
 
 export default class SettingsComponentAdapter{

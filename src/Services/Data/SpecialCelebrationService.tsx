@@ -1,11 +1,11 @@
 import SoulKeys from "./SoulKeys";
-import {LiturgySpecificDayInformation, NoIdentifierNumber, SpecialCelebration} from "../Models/LiturgyDayInformation";
-import {Settings} from "../Models/Settings";
+import {LiturgySpecificDayInformation, NoIdentifierNumber, SpecialCelebration} from "../../Models/LiturgyDayInformation";
+import {Settings} from "../../Models/Settings";
 import {DioceseCode} from "./DatabaseEnums";
 import * as CelebrationIdentifier from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
-import {DateManagement} from "../Utils/DateManagement";
+import {DateManagement} from "../../Utils/DateManagement";
 
 export function ObtainSpecialCelebration(liturgyDayInformation : LiturgySpecificDayInformation, settings : Settings) : SpecialCelebration{
     let specialCelebration = new SpecialCelebration();

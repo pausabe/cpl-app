@@ -9,10 +9,10 @@ import {
 import HR from '../../../Components/HRComponent';
 import GlobalKeys from '../../../Utils/GlobalKeys';
 import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
-import SettingsService from '../../../Services/SettingsService';
+import SettingsService from '../../../Services/Settings/SettingsService';
 import * as Logger from '../../../Utils/Logger';
-import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
-import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
+import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/Data/DataService";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../../Services/Data/CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
 
 export default class NightPrayerComponent extends Component {

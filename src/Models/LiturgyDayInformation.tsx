@@ -1,4 +1,4 @@
-import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../Services/CelebrationTimeEnums";
+import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../Services/Data/CelebrationTimeEnums";
 import {CelebrationType} from "../Services/DatabaseEnums";
 
 export default class LiturgyDayInformation {

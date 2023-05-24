@@ -1,19 +1,17 @@
-export default class HomeScreenState {
+import StateBase from './StateBase';
+
+export default class HomeScreenState extends StateBase{
     constructor(
         latePopupIsVisible?: boolean,
         celebrationIsVisible?: boolean,
         dateTimePickerIsVisible?: boolean,
-        obtainDataErrorMessage?: string) {
+        obtainDataErrorMessage?: string){
+        super();
         this.Initialized = true;
         this.LatePopupIsVisible = latePopupIsVisible;
         this.CelebrationIsVisible = celebrationIsVisible;
         this.DateTimePickerIsVisible = dateTimePickerIsVisible;
         this.ObtainDataErrorMessage = obtainDataErrorMessage;
-    }
-
-    private GetClone() : HomeScreenState{
-        // It's necessary to return a clone, otherwise won't refresh the view
-        return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
     }
 
     UpdateCelebrationVisibility(celebrationIsVisible) : HomeScreenState{

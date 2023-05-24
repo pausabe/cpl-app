@@ -6,7 +6,7 @@ import Laudes from './SpecificHourLiturgy/LaudesComponent'
 import Vespres from './SpecificHourLiturgy/VespersComponent'
 import HoraMenor from './SpecificHourLiturgy/HoursComponent'
 import Completes from './SpecificHourLiturgy/NightPrayerComponent'
-import {CurrentSettings, CurrentHoursLiturgy} from '../../Services/DataService';
+import {CurrentSettings, CurrentHoursLiturgy} from '../../Services/Data/DataService';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 
 export default class HoursLiturgyPrayerScreen extends Component {

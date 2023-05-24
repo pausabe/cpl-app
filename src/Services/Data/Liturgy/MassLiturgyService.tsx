@@ -1,12 +1,12 @@
 import SoulKeys from '../SoulKeys';
 import * as DatabaseDataService from '../DatabaseDataService';
-import MassLiturgy, {DayMassLiturgy, MassGospel} from "../../Models/MassLiturgy";
-import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
+import MassLiturgy, {DayMassLiturgy, MassGospel} from "../../../Models/MassLiturgy";
+import LiturgyDayInformation, {LiturgySpecificDayInformation} from "../../../Models/LiturgyDayInformation";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import {Settings} from "../../Models/Settings";
+import {Settings} from "../../../Models/Settings";
 import {CelebrationType, YearType} from "../DatabaseEnums";
-import {StringManagement} from "../../Utils/StringManagement";
-import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
+import {StringManagement} from "../../../Utils/StringManagement";
+import CelebrationInformation from "../../../Models/HoursLiturgy/CelebrationInformation";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
 import {Celebration} from "../CelebrationIdentifierService";
 import * as HolyDaysOfObligationService from "./HolyDaysOfObligationService";

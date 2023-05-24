@@ -1,25 +1,25 @@
-import HoursLiturgy from "../../Models/HoursLiturgy/HoursLiturgy";
-import LiturgyMasters from "../../Models/LiturgyMasters/LiturgyMasters";
+import HoursLiturgy from "../../../Models/HoursLiturgy/HoursLiturgy";
+import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
 import LiturgyDayInformation, {
     LiturgySpecificDayInformation,
     SpecialCelebrationTypeEnum
-} from "../../Models/LiturgyDayInformation";
-import {Settings} from "../../Models/Settings";
+} from "../../../Models/LiturgyDayInformation";
+import {Settings} from "../../../Models/Settings";
 import {CelebrationType, YearType} from "../DatabaseEnums";
-import Vespers from "../../Models/HoursLiturgy/Vespers";
+import Vespers from "../../../Models/HoursLiturgy/Vespers";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
-import SaintsSolemnities from "../../Models/LiturgyMasters/SaintsSolemnities";
-import SaintsMemories from "../../Models/LiturgyMasters/SaintsMemories";
-import SpecialDaysParts from "../../Models/LiturgyMasters/SpecialDaysParts";
-import EasterSunday from "../../Models/LiturgyMasters/EasterSunday";
-import SolemnityAndFestivityParts from "../../Models/LiturgyMasters/SolemnityAndFestivityParts";
-import {StringManagement} from "../../Utils/StringManagement";
-import PalmSundayParts from "../../Models/LiturgyMasters/PalmSundayParts";
-import CommonPartsOfHolyWeek from "../../Models/LiturgyMasters/CommonPartsOfHolyWeek";
-import PartsOfEasterTriduum from "../../Models/LiturgyMasters/PartsOfEasterTriduum";
-import CommonAdventAndChristmasParts from "../../Models/LiturgyMasters/CommonAdventAndChristmasParts";
-import AdventWeekParts from "../../Models/LiturgyMasters/AdventWeekParts";
-import AdventSundayParts from "../../Models/LiturgyMasters/AdventSundayParts";
+import SaintsSolemnities from "../../../Models/LiturgyMasters/SaintsSolemnities";
+import SaintsMemories from "../../../Models/LiturgyMasters/SaintsMemories";
+import SpecialDaysParts from "../../../Models/LiturgyMasters/SpecialDaysParts";
+import EasterSunday from "../../../Models/LiturgyMasters/EasterSunday";
+import SolemnityAndFestivityParts from "../../../Models/LiturgyMasters/SolemnityAndFestivityParts";
+import {StringManagement} from "../../../Utils/StringManagement";
+import PalmSundayParts from "../../../Models/LiturgyMasters/PalmSundayParts";
+import CommonPartsOfHolyWeek from "../../../Models/LiturgyMasters/CommonPartsOfHolyWeek";
+import PartsOfEasterTriduum from "../../../Models/LiturgyMasters/PartsOfEasterTriduum";
+import CommonAdventAndChristmasParts from "../../../Models/LiturgyMasters/CommonAdventAndChristmasParts";
+import AdventWeekParts from "../../../Models/LiturgyMasters/AdventWeekParts";
+import AdventSundayParts from "../../../Models/LiturgyMasters/AdventSundayParts";
 
 export function ObtainCelebrationHoursLiturgy(todayLiturgyMasters: LiturgyMasters, tomorrowLiturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgyDayInformation, settings: Settings): HoursLiturgy{
     let hoursLiturgy: HoursLiturgy = BuildHoursLiturgy(todayLiturgyMasters, liturgyDayInformation.Today, settings);
