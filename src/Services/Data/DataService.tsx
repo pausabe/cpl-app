@@ -1,8 +1,8 @@
 import {Appearance} from 'react-native';
 import SettingsService, {DarkModeOption} from '../Settings/SettingsService';
-import * as DatabaseDataService from './DatabaseDataService';
-import * as DatabaseManagerService from './DatabaseManagerService';
-import {getDatabaseVersion} from './DatabaseDataService';
+import * as DatabaseDataService from '../Database/DatabaseDataService';
+import * as DatabaseManagerService from '../Database/DatabaseManagerService';
+import {getDatabaseVersion} from '../Database/DatabaseDataService';
 import * as StorageService from '../Storage/StorageService';
 import * as SpecialCelebrationService from './SpecialCelebrationService';
 import StorageKeys from '../Storage/StorageKeys';
@@ -23,15 +23,13 @@ import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
 import { Asset } from 'expo-asset';
 
-// TODO: [UI Refactor] I don't like the idea of these variables made public to all project
-//  it should be hidden and only controllers should access it
-/*export let LastRefreshDate = new Date()
+export let LastRefreshDate = new Date()
 export let CurrentSettings = new Settings();
 export let CurrentDatabaseInformation = new DatabaseInformation();
 export let CurrentLiturgyDayInformation = new LiturgyDayInformation();
 export let CurrentCelebrationInformation = new CelebrationInformation();
 export let CurrentHoursLiturgy = new HoursLiturgy();
-export let CurrentMassLiturgy = new MassLiturgy();*/
+export let CurrentMassLiturgy = new MassLiturgy();
 
 export async function ReloadAllData(date: Date, databaseAsset: Asset) {
     Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Starting reloading data');

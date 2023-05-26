@@ -19,7 +19,8 @@ export const LogKeys = {
     PrecedenceService: { name: "PrecedenceService", enabled: true },
     App: { name: "App", enabled: true },
     NavigationController: { name: "NavigationController", enabled: true },
-    MassLiturgyMainViewController: { name: "MassLiturgyMainViewController", enabled: true }
+    MassLiturgyMainViewController: { name: "MassLiturgyMainViewController", enabled: true },
+    MassLiturgyMainView: { name: "MassLiturgyMainView", enabled: true }
 };
 
 export function Debug(message, param){

@@ -10,6 +10,7 @@ import MassLiturgyMainState from "../../States/MassLiturgyMainState";
 import MassLiturgy from '../../Models/MassLiturgy';
 import LiturgyDayInformation from '../../Models/LiturgyDayInformation';
 import MassLiturgyMainView from '../../Views/MassLiturgy/MassLiturgyMainView';
+import * as DataService from '../../Services/Data/DataService';
 
 export enum VespersSelectorType {
     None = 'none',
@@ -18,25 +19,42 @@ export enum VespersSelectorType {
 };
 let CurrentState: MassLiturgyMainState;
 
+export enum MassPrayer{
+    VetllaPasquaLecturesSalms = "VetllaPasquaLecturesSalms",
+    VetllaPasquaEvangeli = "VetllaPasquaEvangeli",
+    PalmSunday = "Rams",
+    FirstReading = "1Lect",
+    Psalm = "Salm",
+    SecondReading = "2Lect",
+    Gospel = "Evangeli"
+}
+
 export default function MassLiturgyMainViewController() {
     try {
         const [state, setState] = useState(new MassLiturgyMainState());
         CurrentState = state;
 
         SetInitialState(setState);
-        return MassLiturgyMainView(CurrentState);
+        return MassLiturgyMainView({
+            ViewState: CurrentState, 
+            MassLiturgy: DataService.CurrentMassLiturgy,
+            LiturgyDayInformation: DataService.CurrentLiturgyDayInformation,
+            VesperSelectorChanged: VesperSelectorChangedHandler,
+            PrayerSelected: PrayerSelectedHandler
+        });
     } catch (error) {
         Logger.LogError(Logger.LogKeys.MassLiturgyMainViewController, "MassLiturgyMainViewController", error);
-        return null;
     }
 }
 
 async function SetInitialState(setState){
-    let currentMassLiturgy = await TODO();
-    let currentLiturgyDayInformation = await TODO();
-    let currentVespersSelectorType = await GetCurrentVespersSelectorType(currentMassLiturgy, currentLiturgyDayInformation);
+    let currentVespersSelectorType = await GetCurrentVespersSelectorType(DataService.CurrentMassLiturgy, DataService.CurrentLiturgyDayInformation);
+    SetStateWithVespersSelectionInformation(setState, currentVespersSelectorType);
+}
+
+function SetStateWithVespersSelectionInformation(setState, currentVespersSelectorType: VespersSelectorType){
     CurrentState = CurrentState.UpdateVespersSelectorType(currentVespersSelectorType);
-    CurrentState = CurrentState.UpdateIsNecessarySecondReading(GetNeedForSecondLecture(currentVespersSelectorType, currentMassLiturgy));
+    CurrentState = CurrentState.UpdateIsNecessarySecondReading(GetNeedForSecondLecture(currentVespersSelectorType, DataService.CurrentMassLiturgy));
     setState(CurrentState);
 }
 
@@ -83,4 +101,15 @@ function GetNeedForSecondLecture(currentVesperSelectorType: VespersSelectorType,
         return StringManagement.HasLiturgyContent(currentMassLiturgy.Vespers.SecondReading.Reading);
     }
 }
-    
+
+function VesperSelectorChangedHandler(desiredVesperSelectorType: VespersSelectorType){
+    // TODO: date...
+    SaveVesperSelection(desiredVesperSelectorType);
+    // TODO: setState...
+    SetStateWithVespersSelectionInformation(desiredVesperSelectorType);
+}
+
+function PrayerSelectedHandler(desiredMassPrayer: MassPrayer){
+
+}
+   
