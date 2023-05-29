@@ -5,7 +5,7 @@ import LiturgyDayInformation, {
     SpecialCelebrationTypeEnum
 } from "../../../Models/LiturgyDayInformation";
 import {Settings} from "../../../Models/Settings";
-import {CelebrationType, YearType} from "../DatabaseEnums";
+import {CelebrationType, YearType} from "../../Database/DatabaseEnums";
 import Vespers from "../../../Models/HoursLiturgy/Vespers";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import SaintsSolemnities from "../../../Models/LiturgyMasters/SaintsSolemnities";

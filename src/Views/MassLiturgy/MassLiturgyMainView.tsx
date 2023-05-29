@@ -24,6 +24,8 @@ export default function MassLiturgyMainView(props: {
     VesperSelectorChanged: any; 
     PrayerSelected: any }) {
     try {
+        console.log("refreshing view");
+        
         // TODO: move repeated things (background, safe area...) to a common place for all 3 main views
         return (
             <SafeAreaView style={{flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor}}>
@@ -31,7 +33,7 @@ export default function MassLiturgyMainView(props: {
                     <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')}
                                         style={styles.backgroundImage} blurRadius={5}>
                         <View style={{flex: 1,}}>
-                            {props.MassLiturgy.HasVespers ?
+                            {props.ViewState.HasVespers ?
                                 <View style={styles.liturgiaContainerVespers}>
                                     { VespersSelectorView(props.MassLiturgy, props.ViewState.VespersSelectorType, props.VesperSelectorChanged) }
                                 </View>
@@ -56,18 +58,21 @@ function VespersSelectorView(massLiturgy: MassLiturgy, currentVesperSelectorType
         return null;
     }
 
+    console.log("currentVesperSelectorType", currentVesperSelectorType);
+    
+
     return (
         <View style={styles.buttons_containerVespers}>
             <TouchableOpacity
                 style={currentVesperSelectorType === VespersSelectorType.Vespers? 
                     styles.buttonContainer : styles.buttonContainerPressedLeft}
-                onPress={ OnVesperSelectorPressed.bind(this, VesperSelectorChanged, VespersSelectorType.Normal) }>
+                onPress={ () => OnVesperSelectorPressed(VesperSelectorChanged, VespersSelectorType.Normal) }>
                 <Text style={styles.buttonText}>{"Avui"}</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={currentVesperSelectorType === VespersSelectorType.Vespers? 
                     styles.buttonContainerPressedRight : styles.buttonContainer}
-                onPress={ OnVesperSelectorPressed.bind(this, VesperSelectorChanged, VespersSelectorType.Vespers) }>
+                onPress={ () => OnVesperSelectorPressed(VesperSelectorChanged, VespersSelectorType.Vespers) }>
                 <Text style={styles.buttonText}>{"Vespertina"}</Text>
                 <View style={{padding: 1, paddingHorizontal: 5}}>
                     <View>
@@ -92,17 +97,19 @@ function OnVesperSelectorPressed(VesperSelectorChanged: any, desiredVesperSelect
 }
 
 function ButtonsView(liturgyDayInformation: LiturgyDayInformation, needForSecondLecture: Boolean, PrayerSelected: any) {
+    console.log("buttons view");
+    
     return (
         <View style={styles.buttons_container}>
             {liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ?
                 <View style={{flex: 1}}>
                     <TouchableOpacity style={styles.buttonContainer}
-                                        onPress={ OnPrayerSelected.bind(this, PrayerSelected, MassPrayer.VetllaPasquaLecturesSalms) }>
+                                        onPress={ () => OnPrayerSelected(PrayerSelected, MassPrayer.VetllaPasquaLecturesSalms) }>
                         <Text style={styles.buttonText}>{"Lectures i salms"}</Text>
                     </TouchableOpacity>
                     <HR margin_horizontal={20}/>
                     <TouchableOpacity style={styles.buttonContainer}
-                                        onPress={ OnPrayerSelected.bind(this, PrayerSelected, MassPrayer.VetllaPasquaEvangeli) }>
+                                        onPress={ () => OnPrayerSelected(PrayerSelected, MassPrayer.VetllaPasquaEvangeli) }>
                         <Text style={styles.buttonText}>{"Evangeli"}</Text>
                     </TouchableOpacity>
                     <HR margin_horizontal={20}/>
@@ -112,7 +119,7 @@ function ButtonsView(liturgyDayInformation: LiturgyDayInformation, needForSecond
                     {liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ?
                         <View style={{flex: 1}}>
                             <TouchableOpacity style={styles.buttonContainer}
-                                                onPress={ OnPrayerSelected.bind(this, PrayerSelected, MassPrayer.PalmSunday) }>
+                                                onPress={ () => OnPrayerSelected(PrayerSelected, MassPrayer.PalmSunday) }>
                                 <Text style={styles.buttonText}>{"Benedicció dels Rams"}</Text>
                             </TouchableOpacity>
                             <HR margin_horizontal={20}/>
@@ -120,26 +127,26 @@ function ButtonsView(liturgyDayInformation: LiturgyDayInformation, needForSecond
                         :
                         null}
                     <TouchableOpacity style={styles.buttonContainer}
-                                        onPress={ OnPrayerSelected.bind(this, PrayerSelected, MassPrayer.FirstReading) }>
+                                        onPress={ () => OnPrayerSelected(PrayerSelected, MassPrayer.FirstReading) }>
                         <Text style={styles.buttonText}>{"Primera lectura"}</Text>
                     </TouchableOpacity>
                     <HR margin_horizontal={20}/>
                     <TouchableOpacity style={styles.buttonContainer}
-                                        onPress={ OnPrayerSelected.bind(this, MassPrayer.Psalm) }>
+                                        onPress={ () => OnPrayerSelected(PrayerSelected, MassPrayer.Psalm) }>
                         <Text style={styles.buttonText}>{"Salm"}</Text>
                     </TouchableOpacity>
                     <HR margin_horizontal={20}/>
                     {needForSecondLecture ?
                         <View style={{flex: 1}}>
                             <TouchableOpacity style={styles.buttonContainer}
-                                                onPress={ OnPrayerSelected.bind(this, PrayerSelected, MassPrayer.SecondReading) }>
+                                                onPress={ () => OnPrayerSelected(PrayerSelected, MassPrayer.SecondReading) }>
                                 <Text style={styles.buttonText}>{"Segona lectura"}</Text>
                             </TouchableOpacity>
                             <HR margin_horizontal={20}/>
                         </View>
                         : null}
                     <TouchableOpacity style={styles.buttonContainer}
-                                        onPress={ OnPrayerSelected.bind(this, PrayerSelected, MassPrayer.Gospel) }>
+                                        onPress={() => OnPrayerSelected(PrayerSelected, MassPrayer.Gospel)}>
                         <Text style={styles.buttonText}>{"Evangeli"}</Text>
                     </TouchableOpacity>
                 </View>
@@ -150,9 +157,9 @@ function ButtonsView(liturgyDayInformation: LiturgyDayInformation, needForSecond
 
 function OnPrayerSelected(PrayerSelected: any, desiredMassPrayer: MassPrayer) {
     try {
-        PrayerSelected(desiredMassPrayer);
+        PrayerSelected(desiredMassPrayer, PrayerSelected);
     } catch (error) {
-        Logger.LogError(Logger.LogKeys.MassLiturgyMainView, "OnVespersPressed", error);
+        Logger.LogError(Logger.LogKeys.MassLiturgyMainView, "OnPrayerSelected", error);
     }
 }
 

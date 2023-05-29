@@ -1,8 +1,8 @@
 import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
-import * as Logger from "../Utils/Logger";
+import * as Logger from "../../Utils/Logger";
 import {Asset} from "expo-asset";
-import {FileSystemService} from "./FileSystemService";
+import {FileSystemService} from "../FileSystem/FileSystemService";
 import {SQLResultSet} from "expo-sqlite";
 
 let CPLDataBase = undefined;

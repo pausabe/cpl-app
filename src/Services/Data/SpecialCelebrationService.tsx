@@ -1,7 +1,7 @@
 import SoulKeys from "./SoulKeys";
 import {LiturgySpecificDayInformation, NoIdentifierNumber, SpecialCelebration} from "../../Models/LiturgyDayInformation";
 import {Settings} from "../../Models/Settings";
-import {DioceseCode} from "./DatabaseEnums";
+import {DioceseCode} from "../Database/DatabaseEnums";
 import * as CelebrationIdentifier from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";

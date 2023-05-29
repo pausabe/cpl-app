@@ -1,7 +1,7 @@
 import {HourCommonParts, Psalm, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 import CommonOffice from "./CommonOffices";
 import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
-import {CelebrationSpecificClassification} from "../../Services/DatabaseEnums";
+import {CelebrationSpecificClassification} from "../../Services/Database/DatabaseEnums";
 
 export default class SaintsMemories {
     static MasterName: string = "santsMemories";

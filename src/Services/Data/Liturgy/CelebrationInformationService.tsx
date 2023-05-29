@@ -1,6 +1,6 @@
 import CelebrationInformation from "../../../Models/HoursLiturgy/CelebrationInformation";
 import {LiturgySpecificDayInformation, SpecialCelebrationTypeEnum} from "../../../Models/LiturgyDayInformation";
-import {CelebrationType} from "../DatabaseEnums";
+import {CelebrationType} from "../../Database/DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
 import {DateManagement} from "../../../Utils/DateManagement";

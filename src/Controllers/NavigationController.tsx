@@ -24,6 +24,7 @@ import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-naviga
 import { createStackNavigator } from '@react-navigation/stack'
 import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
 import * as Logger from "../Utils/Logger";
+import { AppView, ViewTitle } from '../Services/Navigation/NavigationViewsKeys';
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -295,10 +296,10 @@ function NavigationContainerView(IsNecessaryToUpdate){
                         }}
                     />
                     <Stack.Screen
-                        name="LDDisplay"
+                        name={AppView.MassLiturgyMainView}
                         component={MassLiturgyPrayerScreen}
                         options={() => ({
-                            title: "Missa",
+                            title: ViewTitle.MassLiturgyMainView,
                             animationEnabled: Platform.OS === "ios",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,

@@ -1,4 +1,4 @@
-import {CelebrationSpecificClassification} from "../../Services/DatabaseEnums";
+import {CelebrationSpecificClassification} from "../../Services/Database/DatabaseEnums";
 
 export default class Solemnity{
     protected GetSpecificClassification(precedence: string) {

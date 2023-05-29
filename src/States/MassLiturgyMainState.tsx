@@ -16,6 +16,12 @@ export default class MassLiturgyMainState extends StateBase{
         return this.GetClone();
     }
 
+    UpdateHasVespers(hasVespers: Boolean): MassLiturgyMainState{
+        this.HasVespers = hasVespers;
+        return this.GetClone();
+    }
+
     VespersSelectorType: VespersSelectorType;
     IsNecessarySecondReading: Boolean;
+    HasVespers: Boolean;
 }

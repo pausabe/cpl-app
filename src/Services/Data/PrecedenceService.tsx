@@ -1,7 +1,7 @@
 import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
-import {CelebrationSpecificClassification, CelebrationType} from "./DatabaseEnums";
+import {CelebrationSpecificClassification, CelebrationType} from "../Database/DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import CelebrationInformation from "../../Models/HoursLiturgy/CelebrationInformation";
 import * as Logger from "../../Utils/Logger";

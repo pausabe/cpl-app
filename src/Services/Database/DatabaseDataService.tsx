@@ -1,10 +1,10 @@
-import * as Logger from '../Utils/Logger';
+import * as Logger from '../../Utils/Logger';
 import {executeQueryAsync} from "./DatabaseManagerService";
-import {Settings} from '../Models/Settings';
-import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
-import {DayMassLiturgy} from "../Models/MassLiturgy";
-import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
-import {DioceseName, PrayingPlace} from "./SettingsService";
+import {Settings} from '../../Models/Settings';
+import {LiturgySpecificDayInformation} from "../../Models/LiturgyDayInformation";
+import {DayMassLiturgy} from "../../Models/MassLiturgy";
+import {SpecificLiturgyTimeType} from "../Data/CelebrationTimeEnums";
+import {DioceseName, PrayingPlace} from "../Settings/SettingsService";
 import {DioceseCode} from "./DatabaseEnums";
 import * as DatabaseHelper from "./DatabaseDataHelper";
 

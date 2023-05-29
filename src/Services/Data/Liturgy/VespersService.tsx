@@ -3,7 +3,7 @@ import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
 import {LiturgySpecificDayInformation} from "../../../Models/LiturgyDayInformation";
 import {Settings} from "../../../Models/Settings";
 import {Psalm, ShortReading, ShortResponsory} from "../../../Models/LiturgyMasters/CommonParts";
-import {YearType} from "../DatabaseEnums";
+import {YearType} from "../../Database/DatabaseEnums";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";

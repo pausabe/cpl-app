@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons'; 
 import GLOBAL from "../Utils/GlobalKeys";
 import {CurrentCelebrationInformation, CurrentLiturgyDayInformation, CurrentSettings} from "../Services/Data/DataService";
-import {CelebrationType, YearType} from "../Services/DatabaseEnums";
+import {CelebrationType, YearType} from "../Services/Database/DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../Services/Data/CelebrationTimeEnums";
 import {StringManagement} from "../Utils/StringManagement";
 

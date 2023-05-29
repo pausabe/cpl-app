@@ -1,6 +1,6 @@
 import LiturgyMasters from "../../../Models/LiturgyMasters/LiturgyMasters";
 import SoulKeys from '../SoulKeys';
-import * as DatabaseDataService from '../DatabaseDataService';
+import * as DatabaseDataService from '../../Database/DatabaseDataService';
 import OfficeCommonPsalter from "../../../Models/LiturgyMasters/OfficeCommonPsalter";
 import SecureCall from "../../../Utils/SecureCall";
 import InvitationCommonPsalter from "../../../Models/LiturgyMasters/InvitationCommonPsalter";
@@ -43,7 +43,7 @@ import LiturgyDayInformation, {
     SpecialCelebrationTypeEnum
 } from "../../../Models/LiturgyDayInformation";
 import {Settings} from "../../../Models/Settings";
-import {CelebrationType} from "../DatabaseEnums";
+import {CelebrationType} from "../../Database/DatabaseEnums";
 import * as CelebrationIdentifierService from "../CelebrationIdentifierService";
 import * as CelebrationIdentifier from "../CelebrationIdentifierService";
 import {Celebration} from "../CelebrationIdentifierService";

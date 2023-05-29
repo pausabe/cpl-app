@@ -1,7 +1,7 @@
 import {HourCommonParts, Psalm, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
 import CommonOffice from "./CommonOffices";
 import CelebrationInformation from "../HoursLiturgy/CelebrationInformation";
-import {CelebrationSpecificClassification, CelebrationType} from "../../Services/DatabaseEnums";
+import {CelebrationSpecificClassification, CelebrationType} from "../../Services/Database/DatabaseEnums";
 import Solemnity from "./Solemnity";
 
 export default class SaintsSolemnities extends Solemnity{
