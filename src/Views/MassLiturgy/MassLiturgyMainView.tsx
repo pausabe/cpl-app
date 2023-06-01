@@ -22,7 +22,7 @@ export default function MassLiturgyMainView(props: {
     VesperSelectorChanged: any; 
     PrayerSelected: any }) {
     try {
-        console.log("[provisional log] Rendering MassLiturgyMainView");
+        console.log("[provisional log] Rendering MassLiturgyMainView"); //TODO: remove me
 
         return MainViewBase.BaseContainer(
             <View style={{flex: 1,}}>

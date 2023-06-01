@@ -11,7 +11,7 @@ import {
 import {YearType} from "../../Services/Database/DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../Services/Data/CelebrationTimeEnums";
 
-export default class MassLiturgyPrayerScreen extends Component {
+export default class MassLiturgyPrayerView extends Component {
     //PREVIEWS --------------------------------------------------------------------------
     UNSAFE_componentWillMount() {
         this.screen_props = this.props.route.params.props;

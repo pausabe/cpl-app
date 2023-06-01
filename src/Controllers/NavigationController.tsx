@@ -10,7 +10,7 @@ import {
     ActivityIndicator
 } from 'react-native';
 import GLOBAL from "../Utils/GlobalKeys";
-import HomeScreen from '../Controllers/HomeScreenController';
+import HomeScreen from './HomeViewController';
 import SettingsScreen from '../Views/Settings/SettingsScreen';
 import DonationScreen from '../Views/DonationScreen';
 import CommentScreen from '../Views/CommentScreen';
@@ -22,7 +22,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
+import MassLiturgyPrayerView from '../Views/MassLiturgy/MassLiturgyPrayerView';
 import * as Logger from "../Utils/Logger";
 import { AppView, ViewTitle } from '../Services/Navigation/NavigationViewsKeys';
 
@@ -297,7 +297,7 @@ function NavigationContainerView(IsNecessaryToUpdate){
                     />
                     <Stack.Screen
                         name={AppView.MassLiturgyPrayerView}
-                        component={MassLiturgyPrayerScreen}
+                        component={MassLiturgyPrayerView}
                         options={() => ({
                             title: ViewTitle.MassLiturgyPrayerView,
                             animationEnabled: Platform.OS === "ios",

@@ -21,6 +21,128 @@ import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../Services/Data/
 import {StringManagement} from "../Utils/StringManagement";
 import MainViewBase from './MainViewBase';
 
+
+function GetView(props, CurrentState, setState) {
+  const thereIsSomeError = StringManagement.HasLiturgyContent(CurrentState.ObtainDataErrorMessage);
+  if (!CurrentState.Initialized || thereIsSomeError) {
+    return null;
+  }
+  else {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        {thereIsSomeError ?
+          HomeScreenViewWithError(CurrentState.ObtainDataErrorMessage)
+          :
+          HomeScreenView(props.navigation, setState)}
+      </SafeAreaView>
+    );
+  }
+}
+function HomeScreenViewWithError(currentObtainDataErrorMessage){
+  return(
+      <View style={{ flex: 1, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', paddingHorizontal: 15 }}>
+        <Text style={{ fontSize: 17, color: 'black', textAlign: 'center' }}>{currentObtainDataErrorMessage}</Text>
+      </View>
+  );
+}
+
+function HomeScreenView(navigation, setState){
+  if(CurrentLiturgyDayInformation.Today.Date === undefined){
+    return null;
+  }
+  const yesterday = DateManagement.GetYesterday(CurrentLiturgyDayInformation.Today.Date);
+  const today = CurrentLiturgyDayInformation.Today.Date;
+  const minDatePicker = CurrentDatabaseInformation.MinimumSelectableDate;
+  const maxDatePicker = CurrentDatabaseInformation.MaximumSelectableDate;
+  return (
+      <View style={{ flex: 1 }}>
+
+        <HomeScreen
+            ViewData={CurrentState.GlobalDataToShow}
+            santPressed={CurrentState.CelebrationIsVisible}
+            santCB={() => HandleOnSantPressedCallback(setState)}
+            lliureCB={(freePrayerEnabled) => HandleOnSwitchFreePrayerPressed(freePrayerEnabled, setState)}
+            navigation={navigation} />
+        <View>
+          { Platform.OS === "ios" ?
+              <Modal
+                  animationType="fade" // slide, fade, none
+                  transparent={true}
+                  visible={CurrentState.DateTimePickerIsVisible === true}>
+                <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={() => HandleDatePickerIOSCancel(setState)}>
+                  <TouchableOpacity activeOpacity={1} style={{margin: 10, marginHorizontal: 30, backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white', borderRadius: 20, padding: 10, paddingBottom: 20, shadowColor: '#000', shadowOffset: {width: 0,height: 2,}}}>
+                    <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
+                      <DateTimePicker
+                          mode="date"
+                          display="inline" //spinner, compact, inline
+                          onChange={DatePickerChange.bind(setState)}
+                          value={today}
+                          minimumDate={minDatePicker}
+                          maximumDate={maxDatePicker}
+                      />
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSCancel(setState)}>
+                        <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
+                      </TouchableOpacity >
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSToday(setState)}>
+                        <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSAccept(setState)}>
+                        <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </TouchableOpacity>
+                </TouchableOpacity>
+              </Modal>
+              :
+              <View>
+                {CurrentState.DateTimePickerIsVisible === true &&
+                    <DateTimePicker
+                        mode={"date"}
+                        display={"default"} // default, spinner, calendar
+                        onChange={(event, date) => DatePickerChange(event, date, setState)}
+                        value={today}
+                        minimumDate={minDatePicker}
+                        maximumDate={maxDatePicker}
+                    />
+                }
+              </View>
+          }
+
+        </View>
+
+        <Modal animationType={"fade"} // slide, fade, none
+               transparent={true}
+               visible={CurrentState.LatePopupIsVisible === true} >
+          <TouchableOpacity activeOpacity={1} style={styles.LatePrayerWholeModal} onPress={() => HandleOnTodayPressed(setState)}>
+            <TouchableOpacity activeOpacity={1} style={styles.LatePrayerInsideModal}>
+              <View style={{ paddingTop: 15}}>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Ja estem a dia " + today.getDate() + " de " + GlobalViewFunctions.getMonthText(today.getMonth()) + "."}</Text>
+                <Text style={{ color: 'grey', fontSize: 18, textAlign: 'center', }}>{"Vols la litúrgia d’ahir dia " + yesterday.getDate() + " de " + GlobalViewFunctions.getMonthText(yesterday.getMonth()) + "?"}</Text>
+              </View>
+
+              <View style={{ paddingTop: 15, flexDirection: 'row', justifyContent: 'center'}}>
+                <TouchableOpacity onPress={() => HandleOnYesterdayPressed(yesterday, setState)} style={{ paddingRight: 20}}>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{"Sí, la d'ahir dia"}</Text>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, fontWeight: '600', textAlign: 'center', }}>{yesterday.getDate() + "/" + (yesterday.getMonth() + 1) + "/" + yesterday.getFullYear()}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => HandleOnTodayPressed(setState)}>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{"No, la d'avui dia"}</Text>
+                  <Text style={{ color: 'rgb(14, 122, 254)', fontSize: 17, textAlign: 'center', }}>{today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()}</Text>
+                </TouchableOpacity>
+              </View>
+
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </Modal>
+
+        <StatusBar style="light" />
+
+      </View>
+  );
+}
+
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -187,6 +309,8 @@ export default class HomeScreen extends Component {
   }
 
   render() {
+
+    console.log("[provisional log] Rendering HomeView"); //TODO: remove me
     try {
       const date_getdate = CurrentLiturgyDayInformation.Today.Date.getDate();
       const date_getmonth = CurrentLiturgyDayInformation.Today.Date.getMonth();
@@ -484,3 +608,32 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
 });
+
+const styles = StyleSheet.create({
+  DatePickerWholeModal: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 10,
+    backgroundColor: 'rgba(0,0,0,0.4)'
+  },
+  LatePrayerWholeModal: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingTop: 10,
+    backgroundColor: 'rgba(0,0,0,0.4)'
+  },
+  LatePrayerInsideModal: {
+    margin: 10,
+    marginHorizontal: 30,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 10,
+    paddingBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    }
+  }
+});
+
