@@ -19,6 +19,7 @@ import {CurrentCelebrationInformation, CurrentLiturgyDayInformation, CurrentSett
 import {CelebrationType, YearType} from "../Services/Database/DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../Services/Data/CelebrationTimeEnums";
 import {StringManagement} from "../Utils/StringManagement";
+import MainViewBase from './MainViewBase';
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -192,15 +193,13 @@ export default class HomeScreen extends Component {
       const date_getfullyear = CurrentLiturgyDayInformation.Today.Date.getFullYear();
       const date_getday = CurrentLiturgyDayInformation.Today.Date.getDay();
       this.switchValue = CurrentSettings.OptionalFestivityEnabled;
-      return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
-          <ImageBackground source={require('../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-            {this.Top_Info(date_getdate, date_getmonth, date_getfullyear)}
-            {this.Info_Liturgica(date_getday)}
-            {this.Cel_Info()}
-          </ImageBackground>
-        </SafeAreaView>
-      )
+      return MainViewBase.BaseContainer(
+        <View style={{flex: 1}}>
+          {this.Top_Info(date_getdate, date_getmonth, date_getfullyear)}
+          {this.Info_Liturgica(date_getday)}
+          {this.Cel_Info()}
+        </View>
+      );
     }
     catch (error) {
       Logger.LogError(Logger.LogKeys.Screens, "render", error);
@@ -436,19 +435,6 @@ function fontsize(){
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    backgroundColor: 'rgb(5, 169, 176)',
-    width: null,
-    height: null,
-  },
-
-
-
-
-
-
-
   infoContainer: {
     flex: 1.3,
     justifyContent: 'flex-end',
@@ -469,10 +455,6 @@ const styles = StyleSheet.create({
     flex: 2.5,
     paddingTop: 10,
   },
-
-
-
-
   two_buttons: {
     paddingHorizontal: 30,
     alignItems: 'center'

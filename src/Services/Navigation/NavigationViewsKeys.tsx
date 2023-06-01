@@ -1,7 +1,7 @@
 export enum AppView{
-    MassLiturgyMainView = "LDDisplay"
+    MassLiturgyPrayerView = "LDDisplay"
 };
 
 export enum ViewTitle{
-    MassLiturgyMainView = "Missa"
+    MassLiturgyPrayerView = "Missa"
 }

@@ -3,12 +3,9 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
-    ImageBackground,
     TouchableOpacity
 } from 'react-native';
 import * as Logger from '../../Utils/Logger';
-import GlobalKeys from '../../Utils/GlobalKeys';
 import {StringManagement} from "../../Utils/StringManagement";
 import MassLiturgyMainState from '../../States/MassLiturgyMainState';
 import MassLiturgy from '../../Models/MassLiturgy';
@@ -16,6 +13,7 @@ import { MassPrayer, VespersSelectorType } from '../../Controllers/MassLiturgy/M
 import HR from '../../Components/HRComponent';
 import LiturgyDayInformation from '../../Models/LiturgyDayInformation';
 import { SpecificLiturgyTimeType } from '../../Services/Data/CelebrationTimeEnums';
+import MainViewBase from '../MainViewBase';
 
 export default function MassLiturgyMainView(props: { 
     ViewState: MassLiturgyMainState; 
@@ -24,29 +22,22 @@ export default function MassLiturgyMainView(props: {
     VesperSelectorChanged: any; 
     PrayerSelected: any }) {
     try {
-        console.log("refreshing view");
-        
-        // TODO: move repeated things (background, safe area...) to a common place for all 3 main views
-        return (
-            <SafeAreaView style={{flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor}}>
-                {
-                    <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')}
-                                        style={styles.backgroundImage} blurRadius={5}>
-                        <View style={{flex: 1,}}>
-                            {props.ViewState.HasVespers ?
-                                <View style={styles.liturgiaContainerVespers}>
-                                    { VespersSelectorView(props.MassLiturgy, props.ViewState.VespersSelectorType, props.VesperSelectorChanged) }
-                                </View>
-                                :
-                                null }
-                            <View style={props.ViewState.IsNecessarySecondReading? styles.liturgiaContainer_need_lectura2 : styles.liturgiaContainer}>
-                                { ButtonsView(props.LiturgyDayInformation, props.ViewState.IsNecessarySecondReading, props.PrayerSelected) }
-                            </View>
-                        </View>
-                    </ImageBackground>
-                }
-            </SafeAreaView>
-        );
+        console.log("[provisional log] Rendering MassLiturgyMainView");
+
+        return MainViewBase.BaseContainer(
+            <View style={{flex: 1,}}>
+                {props.ViewState.HasVespers ?
+                    <View style={styles.liturgiaContainerVespers}>
+                        { VespersSelectorView(props.MassLiturgy, props.ViewState.VespersSelectorType, props.VesperSelectorChanged) }
+                    </View>
+                    :
+                    null }
+                <View style={props.ViewState.IsNecessarySecondReading? styles.liturgiaContainer_need_lectura2 : styles.liturgiaContainer}>
+                    { ButtonsView(props.LiturgyDayInformation, props.ViewState.IsNecessarySecondReading, props.PrayerSelected) }
+                </View>
+            </View>
+            );
+
     } catch (error) {
         Logger.LogError(Logger.LogKeys.MassLiturgyMainView, "MassLiturgyMainView", error);
         return null;
@@ -57,9 +48,6 @@ function VespersSelectorView(massLiturgy: MassLiturgy, currentVesperSelectorType
     if (!massLiturgy.HasVespers) {
         return null;
     }
-
-    console.log("currentVesperSelectorType", currentVesperSelectorType);
-    
 
     return (
         <View style={styles.buttons_containerVespers}>
@@ -97,8 +85,6 @@ function OnVesperSelectorPressed(VesperSelectorChanged: any, desiredVesperSelect
 }
 
 function ButtonsView(liturgyDayInformation: LiturgyDayInformation, needForSecondLecture: Boolean, PrayerSelected: any) {
-    console.log("buttons view");
-    
     return (
         <View style={styles.buttons_container}>
             {liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ?
@@ -180,12 +166,6 @@ const styles = StyleSheet.create({
         flex: 6,
         marginVertical: 70,
         marginHorizontal: 30,
-    },
-    backgroundImage: {
-        flex: 1,
-        backgroundColor: 'rgb(5, 169, 176)',
-        width: null,
-        height: null,
     },
     buttons_container: {
         flex: 1,

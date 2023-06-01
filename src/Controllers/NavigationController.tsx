@@ -296,10 +296,10 @@ function NavigationContainerView(IsNecessaryToUpdate){
                         }}
                     />
                     <Stack.Screen
-                        name={AppView.MassLiturgyMainView}
+                        name={AppView.MassLiturgyPrayerView}
                         component={MassLiturgyPrayerScreen}
                         options={() => ({
-                            title: ViewTitle.MassLiturgyMainView,
+                            title: ViewTitle.MassLiturgyPrayerView,
                             animationEnabled: Platform.OS === "ios",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,

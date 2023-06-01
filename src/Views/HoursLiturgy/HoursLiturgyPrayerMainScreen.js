@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {
   View,
-  SafeAreaView,
   StyleSheet,
-  ImageBackground,
 } from 'react-native';
 import HoursLiturgyButtonsComponent from './HoursLiturgyButtonsComponent';
-import GlobalKeys from '../../Utils/GlobalKeys';
 import {CurrentHoursLiturgy, CurrentSettings} from "../../Services/Data/DataService";
+import MainViewBase from '../MainViewBase';
 
 export default class HoursLiturgyPrayerMainScreen extends Component {
   constructor(props) {
@@ -53,27 +51,18 @@ export default class HoursLiturgyPrayerMainScreen extends Component {
   }
 
   render() {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor }}>
-          {
-            <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
-              {CurrentHoursLiturgy.Vespers === undefined ?
-                null :
-                <View style={styles.liturgiaContainer}>
-                  <HoursLiturgyButtonsComponent
-                    oficiCB={this.LHButtonCB.bind(this, "Ofici", false)}
-                    laudesCB={this.LHButtonCB.bind(this, "Laudes", false)}
-                    terciaCB={this.LHButtonCB.bind(this, "Tèrcia", false)}
-                    sextaCB={this.LHButtonCB.bind(this, "Sexta", false)}
-                    nonaCB={this.LHButtonCB.bind(this, "Nona", false)}
-                    vespresCB={this.LHButtonCB.bind(this, "Vespres", false)}
-                    completesCB={this.LHButtonCB.bind(this, "Completes", false)} />
-                </View>
-              }
-            </ImageBackground>
-          }
-      </SafeAreaView>
-    );
+    return MainViewBase.BaseContainer(!CurrentHoursLiturgy.Vespers ? null :
+        <View style={styles.liturgiaContainer}>
+          <HoursLiturgyButtonsComponent
+            oficiCB={this.LHButtonCB.bind(this, "Ofici", false)}
+            laudesCB={this.LHButtonCB.bind(this, "Laudes", false)}
+            terciaCB={this.LHButtonCB.bind(this, "Tèrcia", false)}
+            sextaCB={this.LHButtonCB.bind(this, "Sexta", false)}
+            nonaCB={this.LHButtonCB.bind(this, "Nona", false)}
+            vespresCB={this.LHButtonCB.bind(this, "Vespres", false)}
+            completesCB={this.LHButtonCB.bind(this, "Completes", false)} />
+        </View>
+      );
   }
 }
 
@@ -81,11 +70,5 @@ const styles = StyleSheet.create({
   liturgiaContainer: {
     flex: 6,
     margin: 30,
-  },
-  backgroundImage: {
-    flex: 1,
-    backgroundColor: 'rgb(5, 169, 176)',
-    width: null,
-    height: null,
   },
 });

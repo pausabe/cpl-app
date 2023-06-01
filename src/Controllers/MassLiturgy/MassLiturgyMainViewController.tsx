@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useState} from 'react';
+import {useState} from 'react';
 import * as Logger from '../../Utils/Logger';
 import GlobalKeys from '../../Utils/GlobalKeys';
 import {SpecificLiturgyTimeType} from "../../Services/Data/CelebrationTimeEnums";
@@ -39,16 +39,14 @@ export default function MassLiturgyMainViewController(props: any) {
         
         useFocusEffect(
             React.useCallback(() => {
-                SetInitialState(() => setState);
+                SetInitialState(setState);
             }, []));
-
-        //SetInitialState(() => setState);
         
         return MassLiturgyMainView({
             ViewState: CurrentState, 
             MassLiturgy: DataService.CurrentMassLiturgy,
             LiturgyDayInformation: DataService.CurrentLiturgyDayInformation,
-            VesperSelectorChanged: () => (desiredVesperSelectorType: VespersSelectorType) => VesperSelectorChangedHandler(() => setState, DataService.CurrentLiturgyDayInformation.Today.Date, desiredVesperSelectorType),
+            VesperSelectorChanged: (desiredVesperSelectorType: VespersSelectorType) => VesperSelectorChangedHandler(setState, DataService.CurrentLiturgyDayInformation.Today.Date, desiredVesperSelectorType),
             PrayerSelected: (desiredMassPrayer: MassPrayer) => PrayerSelectedHandler(CurrentState.VespersSelectorType, props.navigation, desiredMassPrayer)
         });
     } catch (error) {
@@ -56,21 +54,16 @@ export default function MassLiturgyMainViewController(props: any) {
     }
 }
 
-async function SetInitialState(setState: () => Dispatch<SetStateAction<MassLiturgyMainState>>){
-    console.log("set inital");
-    
+async function SetInitialState(setState){
     let currentVespersSelectorType = await GetCurrentVespersSelectorType(DataService.CurrentMassLiturgy, DataService.CurrentLiturgyDayInformation);
-    SetStateWithVespersSelectionInformation(() => setState, currentVespersSelectorType);
+    SetStateWithVespersSelectionInformation(setState, currentVespersSelectorType);
 }
 
 function SetStateWithVespersSelectionInformation(setState, currentVespersSelectorType: VespersSelectorType){
     CurrentState = CurrentState.UpdateVespersSelectorType(currentVespersSelectorType);
     CurrentState = CurrentState.UpdateIsNecessarySecondReading(GetNeedForSecondLecture(currentVespersSelectorType, DataService.CurrentMassLiturgy));
     CurrentState = CurrentState.UpdateHasVespers(DataService.CurrentMassLiturgy.HasVespers);
-    console.log("setstatewith", CurrentState.VespersSelectorType);
-    console.log("has vespers", DataService.CurrentMassLiturgy.HasVespers);
-    
-    // TODO: this is not making refresh the view...
+
     setState(CurrentState);
 }
 
@@ -119,21 +112,17 @@ function GetNeedForSecondLecture(currentVesperSelectorType: VespersSelectorType,
 }
 
 function VesperSelectorChangedHandler(setState: any, date: Date, desiredVesperSelectorType: VespersSelectorType){
-    console.log("vesperhandle");
-    
     SaveVesperSelection(desiredVesperSelectorType, date);
-    SetStateWithVespersSelectionInformation(() => setState, desiredVesperSelectorType);
+    SetStateWithVespersSelectionInformation(setState, desiredVesperSelectorType);
 }
 
 function PrayerSelectedHandler(currentVespersSelectorType: VespersSelectorType, navigation: any, desiredMassPrayer: MassPrayer){
-    navigation.navigate(AppView.MassLiturgyMainView, {
-        title: ViewTitle.MassLiturgyMainView,
+    navigation.navigate(AppView.MassLiturgyPrayerView, {
+        title: ViewTitle.MassLiturgyPrayerView,
         props: {
             type: desiredMassPrayer,
-            // TODO: ??? events: this.eventEmitter,
             need_lectura2: GetNeedForSecondLecture(currentVespersSelectorType, DataService.CurrentMassLiturgy),
             useVespersTexts: currentVespersSelectorType === VespersSelectorType.Vespers
         },
     });
 }
-   
