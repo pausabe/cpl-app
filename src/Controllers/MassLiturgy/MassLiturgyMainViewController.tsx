@@ -46,8 +46,10 @@ export default function MassLiturgyMainViewController(props: any) {
             ViewState: CurrentState, 
             MassLiturgy: DataService.CurrentMassLiturgy,
             LiturgyDayInformation: DataService.CurrentLiturgyDayInformation,
-            VesperSelectorChanged: (desiredVesperSelectorType: VespersSelectorType) => VesperSelectorChangedHandler(setState, DataService.CurrentLiturgyDayInformation.Today.Date, desiredVesperSelectorType),
-            PrayerSelected: (desiredMassPrayer: MassPrayer) => PrayerSelectedHandler(CurrentState.VespersSelectorType, props.navigation, desiredMassPrayer)
+            handlers: {
+                VesperSelectorChanged: (desiredVesperSelectorType: VespersSelectorType) => VesperSelectorChangedHandler(setState, DataService.CurrentLiturgyDayInformation.Today.Date, desiredVesperSelectorType),
+                PrayerSelected: (desiredMassPrayer: MassPrayer) => PrayerSelectedHandler(CurrentState.VespersSelectorType, props.navigation, desiredMassPrayer)
+            }
         });
     } catch (error) {
         Logger.LogError(Logger.LogKeys.MassLiturgyMainViewController, "MassLiturgyMainViewController", error);

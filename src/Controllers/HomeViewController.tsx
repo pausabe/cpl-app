@@ -18,20 +18,20 @@ import {
 } from '../Services/Data/DataService';
 import * as StorageService from '../Services/Storage/StorageService';
 import StorageKeys from "../Services/Storage/StorageKeys";
-import HomeScreenState from '../States/HomeScreenState';
+import HomeViewState from '../States/HomeViewState';
 import { StringManagement } from "../Utils/StringManagement";
 import { DateManagement } from "../Utils/DateManagement";
 import { useAssets } from "expo-asset";
 import HomeView from '../Views/HomeView';
 
 let LastDatePickerIOSSelected: Date;
-let CurrentState: HomeScreenState;
+let CurrentState: HomeViewState;
 let FirstLoad = true;
 let SplashScreenHidden = false;
 
 export default function HomeViewController(props) {
   try {
-    const [state, setState] = useState(new HomeScreenState());
+    const [state, setState] = useState(new HomeViewState());
     CurrentState = state;
 
     // I'm forced to use hooks to obtain the database because using Asset.loadAsync doesn't work well in EAS build
@@ -58,7 +58,7 @@ function InitialEffect(props, setState, databaseAssets, databaseAssetsError) {
   });
 
    // TODO: keys
-  let appStateSubscription = AppState.addEventListener('change', (status) => HandleAppStateChange(status, props.navigation, setState));
+  let appStateSubscription = AppState.addEventListener('change', (status) => AppStateChangedHandler(status, props.navigation, setState));
   let backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', AndroidBackPressedHandler.bind(setState));
   let appearanceSubscription = Appearance.addChangeListener(AppearanceChangedHandler);
 
@@ -97,9 +97,117 @@ async function SetViewWithTheInitialDataLoaded(setState, databaseAsset) {
     await ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true, databaseAsset);
     HideSplashIfItsTime();
   }
+}  
+
+async function ChangeDate(date, setState) {
+  if (date === null || date === undefined) {
+    date = CurrentLiturgyDayInformation.Today.Date;
+  }
+  await ReloadAllDataAndRefreshView(date, setState);
 }
 
-async function HandleAppStateChange(nextAppState, navigation?, setState?) {
+async function ReloadAllDataAndRefreshView(date, setState, checkLatePopup = false, databaseAsset = undefined) {
+  try {
+    await ReloadAllData(date, databaseAsset);
+    setState(GetInitialState(checkLatePopup));
+  }
+  catch (error) {
+    SetError(error, setState);
+  }
+}
+
+function HandleCalendarPressed(setState) {
+  LastDatePickerIOSSelected = undefined;
+  setState(CurrentState.UpdateDateTimePickerVisibility(true));
+}
+
+function GetInitialState(checkLatePopup) {
+  let initialState = new HomeViewState();
+  try {
+    if (CurrentLiturgyDayInformation !== undefined && CurrentSettings !== undefined) {
+      initialState = new HomeViewState(
+        checkLatePopup ? IsLatePrayer() : false,
+        false,
+        false,
+        "");
+    }
+  }
+  catch (error) {
+    Logger.LogError(Logger.LogKeys.HomeScreenController, "GetInitialState", error);
+  }
+  return initialState;
+}
+
+function SetError(error, setState) {
+  Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", error);
+  // TODO: keys
+  const messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
+  setState(CurrentState.UpdateObtainDataErrorMessage(messageToShow));
+}
+
+async function DatePickerChangedHandler(event, date, setState) {
+  if (Platform.OS === "ios") {
+    LastDatePickerIOSSelected = date;
+  }
+  else {
+    setState(CurrentState.UpdateDateTimePickerVisibility(false));
+    if (date !== CurrentLiturgyDayInformation.Today.Date) {
+      await ChangeDate(date, setState);
+    }
+  }
+}
+
+async function DatePickerIOSAcceptedHandler(setState) {
+  if (LastDatePickerIOSSelected !== CurrentLiturgyDayInformation.Today.Date) {
+    await ChangeDate(LastDatePickerIOSSelected, setState)
+  }
+}
+
+function DatePickerIOSCanceledHandler(setState) {
+  setState(CurrentState.UpdateDateTimePickerVisibility(false));
+}
+
+async function DatePickerIOSTodaySelectedHandler(setState) {
+  const now = new Date();
+  if (now !== CurrentLiturgyDayInformation.Today.Date) {
+    await ChangeDate(now, setState)
+  }
+}
+
+function OnSantPressedHandler(setState) {
+  if (StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Title)) {
+    setState(CurrentState.UpdateCelebrationVisibility(!CurrentState.CelebrationIsVisible));
+  }
+}
+
+async function OnYesterdayPressedHandler(yesterday, setState) {
+  await ChangeDate(yesterday, setState);
+}
+
+function OnTodayPressedHandler(setState) {
+  setState(CurrentState.UpdateLatePopupVisibility(false));
+}
+
+async function OnSwitchFreePrayerPressedHandler(optionalPrayerEnabled, setState) {
+  if (optionalPrayerEnabled) {
+    const stringDate = DateManagement.GetDateKeyToBeStored(CurrentLiturgyDayInformation.Today.Date);
+    await StorageService.StoreData(StorageKeys.OptionalFestivity, stringDate);
+  }
+  else {
+    await StorageService.StoreData(StorageKeys.OptionalFestivity, 'none');
+  }
+  CurrentSettings.OptionalFestivityEnabled = optionalPrayerEnabled;
+  await ChangeDate(CurrentLiturgyDayInformation.Today.Date, setState);
+}
+
+// TODO: move to a "Base" or "Main" controller?
+
+function IsLatePrayer() {
+  const hour = new Date().getHours();
+  return hour >= 0 && hour < GlobalKeys.late_prayer;
+}
+
+async function AppStateChangedHandler(nextAppState, navigation?, setState?) {
   if (nextAppState === 'active') {  // TODO: keys
     const now = new Date();
 
@@ -134,114 +242,4 @@ function AndroidBackPressedHandler(setState) {
   if (CurrentState.CelebrationIsVisible && CurrentState.GlobalDataToShow.celebracio.text !== '-') {
     setState(CurrentState.UpdateCelebrationVisibility(false))
   }
-}
-
-async function ChangeDate(date, setState) {
-  if (date === null || date === undefined) {
-    date = CurrentLiturgyDayInformation.Today.Date;
-  }
-  await ReloadAllDataAndRefreshView(date, setState);
-}
-
-async function ReloadAllDataAndRefreshView(date, setState, checkLatePopup = false, databaseAsset = undefined) {
-  try {
-    await ReloadAllData(date, databaseAsset);
-    setState(GetInitialState(checkLatePopup));
-  }
-  catch (error) {
-    HandleGetDataError(error, setState);
-  }
-}
-
-function HandleCalendarPressed(setState) {
-  LastDatePickerIOSSelected = undefined;
-  setState(CurrentState.UpdateDateTimePickerVisibility(true));
-}
-
-function GetInitialState(checkLatePopup) {
-  let initialState = new HomeScreenState();
-  try {
-    if (CurrentLiturgyDayInformation !== undefined && CurrentSettings !== undefined) {
-      initialState = new HomeScreenState(
-        checkLatePopup ? IsLatePrayer() : false,
-        false,
-        false,
-        "");
-    }
-  }
-  catch (error) {
-    Logger.LogError(Logger.LogKeys.HomeScreenController, "GetInitialState", error);
-  }
-  return initialState;
-}
-
-function IsLatePrayer() {
-  const hour = new Date().getHours();
-  return hour >= 0 && hour < GlobalKeys.late_prayer;
-}
-
-async function DatePickerChange(event, date, setState) {
-  if (Platform.OS === "ios") {
-    LastDatePickerIOSSelected = date;
-  }
-  else {
-    setState(CurrentState.UpdateDateTimePickerVisibility(false));
-    if (date !== CurrentLiturgyDayInformation.Today.Date) {
-      await ShowDate(date, setState);
-    }
-  }
-}
-
-async function HandleDatePickerIOSAccept(setState) {
-  if (LastDatePickerIOSSelected !== CurrentLiturgyDayInformation.Today.Date) {
-    await ShowDate(LastDatePickerIOSSelected, setState)
-  }
-}
-
-function HandleDatePickerIOSCancel(setState) {
-  setState(CurrentState.UpdateDateTimePickerVisibility(false));
-}
-
-async function HandleDatePickerIOSToday(setState) {
-  const now = new Date();
-  if (now !== CurrentLiturgyDayInformation.Today.Date) {
-    await ShowDate(now, setState)
-  }
-}
-
-async function ShowDate(date, setState) {
-  Logger.Log(Logger.LogKeys.HomeScreenController, "ShowDate", "date: ", date);
-  await ChangeDate(date, setState);
-}
-
-function HandleOnSantPressedCallback(setState) {
-  if (StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Title)) {
-    setState(CurrentState.UpdateCelebrationVisibility(!CurrentState.CelebrationIsVisible));
-  }
-}
-
-async function HandleOnYesterdayPressed(yesterday, setState) {
-  await ShowDate(yesterday, setState);
-}
-
-function HandleOnTodayPressed(setState) {
-  setState(CurrentState.UpdateLatePopupVisibility(false));
-}
-
-async function HandleOnSwitchFreePrayerPressed(optionalPrayerEnabled, setState) {
-  if (optionalPrayerEnabled) {
-    const stringDate = DateManagement.GetDateKeyToBeStored(CurrentLiturgyDayInformation.Today.Date);
-    await StorageService.StoreData(StorageKeys.OptionalFestivity, stringDate);
-  }
-  else {
-    await StorageService.StoreData(StorageKeys.OptionalFestivity, 'none');
-  }
-  CurrentSettings.OptionalFestivityEnabled = optionalPrayerEnabled;
-  await ChangeDate(CurrentLiturgyDayInformation.Today.Date, setState);
-}
-
-function HandleGetDataError(error, setState) {
-  Logger.LogError(Logger.LogKeys.HomeScreenController, "HandleGetDataError", error);
-  const messageToShow = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
-  setState(CurrentState.UpdateObtainDataErrorMessage(messageToShow));
 }

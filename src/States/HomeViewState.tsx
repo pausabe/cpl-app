@@ -1,6 +1,6 @@
 import StateBase from './StateBase';
 
-export default class HomeScreenState extends StateBase{
+export default class HomeViewState extends StateBase{
     constructor(
         latePopupIsVisible?: boolean,
         celebrationIsVisible?: boolean,
@@ -14,22 +14,22 @@ export default class HomeScreenState extends StateBase{
         this.ObtainDataErrorMessage = obtainDataErrorMessage;
     }
 
-    UpdateCelebrationVisibility(celebrationIsVisible) : HomeScreenState{
+    UpdateCelebrationVisibility(celebrationIsVisible) : HomeViewState{
         this.CelebrationIsVisible = celebrationIsVisible;
         return this.GetClone();
     }
 
-    UpdateLatePopupVisibility(latePopupIsVisible) : HomeScreenState{
+    UpdateLatePopupVisibility(latePopupIsVisible) : HomeViewState{
         this.LatePopupIsVisible = latePopupIsVisible;
         return this.GetClone();
     }
 
-    UpdateDateTimePickerVisibility(dateTimePickerIsVisible) : HomeScreenState{
+    UpdateDateTimePickerVisibility(dateTimePickerIsVisible) : HomeViewState{
         this.DateTimePickerIsVisible = dateTimePickerIsVisible;
         return this.GetClone();
     }
 
-    UpdateObtainDataErrorMessage(obtainDataErrorMessage) : HomeScreenState{
+    UpdateObtainDataErrorMessage(obtainDataErrorMessage) : HomeViewState{
         this.ObtainDataErrorMessage = obtainDataErrorMessage;
         return this.GetClone();
     }

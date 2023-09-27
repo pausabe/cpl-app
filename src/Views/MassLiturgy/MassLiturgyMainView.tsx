@@ -16,32 +16,29 @@ import { SpecificLiturgyTimeType } from '../../Services/Data/CelebrationTimeEnum
 import MainViewBase from '../MainViewBase';
 
 export default function MassLiturgyMainView(props: { 
-    ViewState: MassLiturgyMainState; 
-    MassLiturgy: MassLiturgy; 
+    ViewState: MassLiturgyMainState,
+    MassLiturgy: MassLiturgy,
     LiturgyDayInformation: LiturgyDayInformation,
-    VesperSelectorChanged: any; 
-    PrayerSelected: any }) {
-    try {
-        console.log("[provisional log] Rendering MassLiturgyMainView"); //TODO: remove me
+    handlers: {
+        VesperSelectorChanged: any,
+        PrayerSelected: any 
+    }}) {
 
-        return MainViewBase.BaseContainer(
-            <View style={{flex: 1,}}>
-                {props.ViewState.HasVespers ?
-                    <View style={styles.liturgiaContainerVespers}>
-                        { VespersSelectorView(props.MassLiturgy, props.ViewState.VespersSelectorType, props.VesperSelectorChanged) }
-                    </View>
-                    :
-                    null }
-                <View style={props.ViewState.IsNecessarySecondReading? styles.liturgiaContainer_need_lectura2 : styles.liturgiaContainer}>
-                    { ButtonsView(props.LiturgyDayInformation, props.ViewState.IsNecessarySecondReading, props.PrayerSelected) }
+    console.log("[provisional log] Rendering MassLiturgyMainView"); //TODO: remove me
+
+    return MainViewBase.BaseContainer(
+        <View style={{flex: 1,}}>
+            {props.ViewState.HasVespers ?
+                <View style={styles.liturgiaContainerVespers}>
+                    { VespersSelectorView(props.MassLiturgy, props.ViewState.VespersSelectorType, props.handlers.VesperSelectorChanged) }
                 </View>
+                :
+                null }
+            <View style={props.ViewState.IsNecessarySecondReading? styles.liturgiaContainer_need_lectura2 : styles.liturgiaContainer}>
+                { ButtonsView(props.LiturgyDayInformation, props.ViewState.IsNecessarySecondReading, props.handlers.PrayerSelected) }
             </View>
-            );
-
-    } catch (error) {
-        Logger.LogError(Logger.LogKeys.MassLiturgyMainView, "MassLiturgyMainView", error);
-        return null;
-    }
+        </View>
+        );
 }
 
 function VespersSelectorView(massLiturgy: MassLiturgy, currentVesperSelectorType: VespersSelectorType, VesperSelectorChanged: any) {
@@ -74,14 +71,6 @@ function VespersSelectorView(massLiturgy: MassLiturgy, currentVesperSelectorType
             </TouchableOpacity>
         </View>
     );
-}
-
-function OnVesperSelectorPressed(VesperSelectorChanged: any, desiredVesperSelectorType: VespersSelectorType) {
-    try {
-        VesperSelectorChanged(desiredVesperSelectorType);
-    } catch (error) {
-        Logger.LogError(Logger.LogKeys.MassLiturgyMainView, "OnVesperSelectorPressed", error);
-    }
 }
 
 function ButtonsView(liturgyDayInformation: LiturgyDayInformation, needForSecondLecture: Boolean, PrayerSelected: any) {
@@ -141,6 +130,14 @@ function ButtonsView(liturgyDayInformation: LiturgyDayInformation, needForSecond
     )
 }
 
+function OnVesperSelectorPressed(VesperSelectorChanged: any, desiredVesperSelectorType: VespersSelectorType) {
+    try {
+        VesperSelectorChanged(desiredVesperSelectorType);
+    } catch (error) {
+        Logger.LogError(Logger.LogKeys.MassLiturgyMainView, "OnVesperSelectorPressed", error);
+    }
+}
+
 function OnPrayerSelected(PrayerSelected: any, desiredMassPrayer: MassPrayer) {
     try {
         PrayerSelected(desiredMassPrayer, PrayerSelected);
@@ -148,7 +145,6 @@ function OnPrayerSelected(PrayerSelected: any, desiredMassPrayer: MassPrayer) {
         Logger.LogError(Logger.LogKeys.MassLiturgyMainView, "OnPrayerSelected", error);
     }
 }
-
 
 const styles = StyleSheet.create({
     liturgiaContainer: {
