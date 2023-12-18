@@ -1,3 +1,6 @@
+### v7.0.4 (18.12.2023)[84]
+- Fix vesper selection when having the same precedence
+
 ### v7.0.3 (13.05.2023)[84]
 - Fixing a precedence problem with Pentecost mass data
 
