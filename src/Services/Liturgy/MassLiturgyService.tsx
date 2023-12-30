@@ -23,7 +23,7 @@ export async function ObtainMassLiturgy(liturgyDayInformation: LiturgyDayInforma
     if(massLiturgy.HasVespers && StringManagement.HasLiturgyContent(tomorrowCelebrationInformation.Title)){
         massLiturgy.Vespers.Title = tomorrowCelebrationInformation.Title;
     }
-    else if(liturgyDayInformation.Tomorrow.Date.getDay() === 0){
+    else if(massLiturgy.HasVespers && liturgyDayInformation.Tomorrow.Date.getDay() === 0){
         massLiturgy.Vespers.Title = "Missa de diumenge";
     }
     return massLiturgy;
@@ -33,15 +33,23 @@ function DecideIfHasVespers(liturgyDayInformation: LiturgyDayInformation, todayC
     if(liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday){
         return false;
     }
+    
+    const tomorrowIsSunday = 
+        liturgyDayInformation.Tomorrow.Date.getDay() === 0
 
-    const tomorrowIsSunday = liturgyDayInformation.Tomorrow.Date.getDay() === 0;
     const tomorrowIsHolyDayOfObligation = HolyDaysOfObligationService.IsHolyDaysOfObligation(liturgyDayInformation.Tomorrow);
-    const tomorrowIsHolyDayNotObligatedMoreImportantThanToday = HolyDaysOfObligationService.IsHolyDaysButNotObligated(liturgyDayInformation.Tomorrow) &&
+    const tomorrowIsHolyDayNotObligatedMoreImportantThanToday =
+        HolyDaysOfObligationService.IsHolyDaysButNotObligated(liturgyDayInformation.Tomorrow) &&
         tomorrowCelebrationInformation.Precedence < todayCelebrationInformation.Precedence;
-
-    return tomorrowIsSunday ||
+    const tomorrowWeMustGoToMass =
+        tomorrowIsSunday ||
         tomorrowIsHolyDayOfObligation ||
         tomorrowIsHolyDayNotObligatedMoreImportantThanToday;
+
+    const todaysMassIsMoreImportantThanTomorrows = 
+        todayCelebrationInformation.Precedence < tomorrowCelebrationInformation.Precedence;
+    
+    return tomorrowWeMustGoToMass && !todaysMassIsMoreImportantThanTomorrows;
 }
 
 async function GetMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): Promise<DayMassLiturgy> {
