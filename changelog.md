@@ -1,3 +1,7 @@
+### v7.0.5 (30.12.2023)[84]
+- Fix showing mass vesper selector when having a lower precedence
+- Fix hours antiphons when special days
+
 ### v7.0.4 (18.12.2023)[84]
 - Fix vesper selection when having the same precedence
 
