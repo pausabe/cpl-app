@@ -197,67 +197,83 @@ function GetHoursPsalmody(liturgyMasters : LiturgyMasters, liturgyDayInformation
         psalmody.NinthValue.UniqueAntiphon = celebrationHours.NinthHour.UniqueAntiphon;
     }
     else {
-        switch(liturgyDayInformation.SpecificLiturgyTime){
-            case SpecificLiturgyTimeType.LentAshes:
-            case SpecificLiturgyTimeType.LentWeeks:
-                psalmody.ThirdValue.HasMultipleAntiphons = false;
-                psalmody.SixthValue.HasMultipleAntiphons = false;
-                psalmody.NinthValue.HasMultipleAntiphons = false;
-                psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.ThirdHourAntiphon;
-                psalmody.SixthValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.SixthHourAntiphon;
-                psalmody.NinthValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.NinthHourAntiphon;
-                break;
-            case SpecificLiturgyTimeType.PalmSunday:
-            case SpecificLiturgyTimeType.HolyWeek:
-                psalmody.ThirdValue.HasMultipleAntiphons = false;
-                psalmody.SixthValue.HasMultipleAntiphons = false;
-                psalmody.NinthValue.HasMultipleAntiphons = false;
-                psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.ThirdHourAntiphon;
-                psalmody.SixthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.SixthHourAntiphon;
-                psalmody.NinthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.NinthHourAntiphon;
-                break;
-            case SpecificLiturgyTimeType.PaschalTriduum:
-                psalmody.ThirdValue.HasMultipleAntiphons = false;
-                psalmody.SixthValue.HasMultipleAntiphons = false;
-                psalmody.NinthValue.HasMultipleAntiphons = false;
-                psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.Antiphon;
-                psalmody.SixthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.Antiphon;
-                psalmody.NinthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.Antiphon;
-                break;
-            case SpecificLiturgyTimeType.EasterOctave:
-                psalmody.ThirdValue.HasMultipleAntiphons = false;
-                psalmody.SixthValue.HasMultipleAntiphons = false;
-                psalmody.NinthValue.HasMultipleAntiphons = false;
-                psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.ThirdHourParts.Antiphon;
-                psalmody.SixthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.SixthHourParts.Antiphon;
-                psalmody.NinthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.NinthHourParts.Antiphon;
-                break;
-            case SpecificLiturgyTimeType.EasterWeeks:
-                psalmody.ThirdValue.HasMultipleAntiphons = false;
-                psalmody.SixthValue.HasMultipleAntiphons = false;
-                psalmody.NinthValue.HasMultipleAntiphons = false;
-                psalmody.ThirdValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
-                psalmody.SixthValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
-                psalmody.NinthValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
-                break;
-            case SpecificLiturgyTimeType.AdventWeeks:
-            case SpecificLiturgyTimeType.ChristmasOctave:
-            case SpecificLiturgyTimeType.AdventFairs:
-            case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
-                const beforeChristmasConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-                    liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13;
-                const christmasOctaveConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-                    !CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)
-                if((liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasBeforeOrdinary || beforeChristmasConditions) &&
-                    (liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasOctave || christmasOctaveConditions)){
+        if(StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.FirstPsalm.Antiphon)) {
+            psalmody.ThirdValue.HasMultipleAntiphons = false;
+            psalmody.ThirdValue.FirstPsalm.Antiphon = celebrationHours.ThirdHour.FirstPsalm.Antiphon;
+            psalmody.ThirdValue.SecondPsalm.Antiphon = celebrationHours.ThirdHour.SecondPsalm.Antiphon;
+            psalmody.ThirdValue.ThirdPsalm.Antiphon = celebrationHours.ThirdHour.ThirdPsalm.Antiphon;
+            psalmody.SixthValue.HasMultipleAntiphons = false;
+            psalmody.SixthValue.FirstPsalm.Antiphon = celebrationHours.SixthHour.FirstPsalm.Antiphon;
+            psalmody.SixthValue.SecondPsalm.Antiphon = celebrationHours.SixthHour.SecondPsalm.Antiphon;
+            psalmody.SixthValue.ThirdPsalm.Antiphon = celebrationHours.SixthHour.ThirdPsalm.Antiphon;
+            psalmody.NinthValue.HasMultipleAntiphons = false;
+            psalmody.NinthValue.FirstPsalm.Antiphon = celebrationHours.NinthHour.FirstPsalm.Antiphon;
+            psalmody.NinthValue.SecondPsalm.Antiphon = celebrationHours.NinthHour.SecondPsalm.Antiphon;
+            psalmody.NinthValue.ThirdPsalm.Antiphon = celebrationHours.NinthHour.ThirdPsalm.Antiphon;
+        }
+        else{
+            switch(liturgyDayInformation.SpecificLiturgyTime){
+                case SpecificLiturgyTimeType.LentAshes:
+                case SpecificLiturgyTimeType.LentWeeks:
                     psalmody.ThirdValue.HasMultipleAntiphons = false;
                     psalmody.SixthValue.HasMultipleAntiphons = false;
                     psalmody.NinthValue.HasMultipleAntiphons = false;
-                    psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.CommonAdventAndChristmasParts.ThirdHourAntiphon;
-                    psalmody.SixthValue.UniqueAntiphon = liturgyMasters.CommonAdventAndChristmasParts.SixthHourAntiphon;
-                    psalmody.NinthValue.UniqueAntiphon = liturgyMasters.CommonAdventAndChristmasParts.NinthHourAntiphon;
-                }
-                break;
+                    psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.ThirdHourAntiphon;
+                    psalmody.SixthValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.SixthHourAntiphon;
+                    psalmody.NinthValue.UniqueAntiphon = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.NinthHourAntiphon;
+                    break;
+                case SpecificLiturgyTimeType.PalmSunday:
+                case SpecificLiturgyTimeType.HolyWeek:
+                    psalmody.ThirdValue.HasMultipleAntiphons = false;
+                    psalmody.SixthValue.HasMultipleAntiphons = false;
+                    psalmody.NinthValue.HasMultipleAntiphons = false;
+                    psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.ThirdHourAntiphon;
+                    psalmody.SixthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.SixthHourAntiphon;
+                    psalmody.NinthValue.UniqueAntiphon = liturgyMasters.CommonPartsOfHolyWeek.NinthHourAntiphon;
+                    break;
+                case SpecificLiturgyTimeType.PaschalTriduum:
+                    psalmody.ThirdValue.HasMultipleAntiphons = false;
+                    psalmody.SixthValue.HasMultipleAntiphons = false;
+                    psalmody.NinthValue.HasMultipleAntiphons = false;
+                    psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.ThirdHourParts.Antiphon;
+                    psalmody.SixthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.SixthHourParts.Antiphon;
+                    psalmody.NinthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterTriduum.NinthHourParts.Antiphon;
+                    break;
+                case SpecificLiturgyTimeType.EasterOctave:
+                    psalmody.ThirdValue.HasMultipleAntiphons = false;
+                    psalmody.SixthValue.HasMultipleAntiphons = false;
+                    psalmody.NinthValue.HasMultipleAntiphons = false;
+                    psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.ThirdHourParts.Antiphon;
+                    psalmody.SixthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.SixthHourParts.Antiphon;
+                    psalmody.NinthValue.UniqueAntiphon = liturgyMasters.PartsOfEasterOctave.NinthHourParts.Antiphon;
+                    break;
+                case SpecificLiturgyTimeType.EasterWeeks:
+                    psalmody.ThirdValue.HasMultipleAntiphons = false;
+                    psalmody.SixthValue.HasMultipleAntiphons = false;
+                    psalmody.NinthValue.HasMultipleAntiphons = false;
+                    psalmody.ThirdValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
+                    psalmody.SixthValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
+                    psalmody.NinthValue.UniqueAntiphon = "Al·leluia, al·leluia, al·leluia.";
+                    break;
+                case SpecificLiturgyTimeType.AdventWeeks:
+                case SpecificLiturgyTimeType.ChristmasOctave:
+                case SpecificLiturgyTimeType.AdventFairs:
+                case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
+                    const beforeChristmasConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+                        liturgyDayInformation.Date.getMonth() == 0 && liturgyDayInformation.Date.getDate() != 13;
+                    const christmasOctaveConditions = liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
+                        !CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)
+                    if((liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasBeforeOrdinary || beforeChristmasConditions) &&
+                        (liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasOctave || christmasOctaveConditions)){
+                        psalmody.ThirdValue.HasMultipleAntiphons = false;
+                        psalmody.SixthValue.HasMultipleAntiphons = false;
+                        psalmody.NinthValue.HasMultipleAntiphons = false;
+                        psalmody.ThirdValue.UniqueAntiphon = liturgyMasters.CommonAdventAndChristmasParts.ThirdHourAntiphon;
+                        psalmody.SixthValue.UniqueAntiphon = liturgyMasters.CommonAdventAndChristmasParts.SixthHourAntiphon;
+                        psalmody.NinthValue.UniqueAntiphon = liturgyMasters.CommonAdventAndChristmasParts.NinthHourAntiphon;
+                    }
+                    break;
+            }
         }
     }
 

@@ -313,7 +313,8 @@ function GetSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings:
     hoursLiturgy.Laudes.FinalPrayer = specialDaysParts.LaudesFinalPrayer;
 
     hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin? specialDaysParts.ThirdHourParts.LatinAnthem : specialDaysParts.ThirdHourParts.CatalanAnthem;
-    hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = true;
+    hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
+    hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = specialDaysParts.ThirdHourParts.Antiphon;
     hoursLiturgy.Hours.ThirdHour.FirstPsalm = specialDaysParts.HoursFirstPsalm;
     hoursLiturgy.Hours.ThirdHour.SecondPsalm = specialDaysParts.HoursSecondPsalm;
     hoursLiturgy.Hours.ThirdHour.ThirdPsalm = specialDaysParts.HoursThirdPsalm;
@@ -321,7 +322,8 @@ function GetSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings:
     hoursLiturgy.Hours.ThirdHour.Responsory = specialDaysParts.ThirdHourParts.Responsory;
     hoursLiturgy.Hours.ThirdHour.FinalPrayer = specialDaysParts.ThirdHourParts.FinalPrayer;
     hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin? specialDaysParts.SixthHourParts.LatinAnthem : specialDaysParts.SixthHourParts.CatalanAnthem;
-    hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = true;
+    hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
+    hoursLiturgy.Hours.SixthHour.UniqueAntiphon = specialDaysParts.SixthHourParts.Antiphon;
     hoursLiturgy.Hours.SixthHour.FirstPsalm = specialDaysParts.HoursFirstPsalm;
     hoursLiturgy.Hours.SixthHour.SecondPsalm = specialDaysParts.HoursSecondPsalm;
     hoursLiturgy.Hours.SixthHour.ThirdPsalm = specialDaysParts.HoursThirdPsalm;
@@ -329,7 +331,8 @@ function GetSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings:
     hoursLiturgy.Hours.SixthHour.Responsory = specialDaysParts.SixthHourParts.Responsory;
     hoursLiturgy.Hours.SixthHour.FinalPrayer = specialDaysParts.SixthHourParts.FinalPrayer;
     hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin? specialDaysParts.NinthHourParts.LatinAnthem : specialDaysParts.NinthHourParts.CatalanAnthem;
-    hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = true;
+    hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
+    hoursLiturgy.Hours.NinthHour.UniqueAntiphon = specialDaysParts.NinthHourParts.Antiphon;
     hoursLiturgy.Hours.NinthHour.FirstPsalm = specialDaysParts.HoursFirstPsalm;
     hoursLiturgy.Hours.NinthHour.SecondPsalm = specialDaysParts.HoursSecondPsalm;
     hoursLiturgy.Hours.NinthHour.ThirdPsalm = specialDaysParts.HoursThirdPsalm;
