@@ -3,7 +3,7 @@
     "name": "CPL",
     "description": "This application helps up to pray with biblical texts that the Lord Jesus himself used to pray. Currently it is only available in Catalan.",
     "slug": "CPLApp",
-    "version": "7.0.5",
+    "version": "7.0.6",
     "orientation": "portrait",
     "icon": "./src/Assets/icon/icon.png",
     "githubUrl": "https://github.com/pausabe/cpl-app",

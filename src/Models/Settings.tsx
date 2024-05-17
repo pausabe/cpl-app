@@ -8,4 +8,5 @@ export class Settings{
     InvitationPsalmOption: string;
     VirginAntiphonOption: string;
     OptionalFestivityEnabled: boolean;
+    DioceseCode2Letters: string;
 }

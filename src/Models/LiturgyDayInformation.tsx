@@ -28,7 +28,7 @@ class MovedDay{
     TodayIsMoved: boolean;
     OriginDateShortDatabaseCode: string;
     OriginDate: Date;
-    DioceseCode: string
+    DioceseCode2Letters: string
 }
 
 export class SpecialCelebration{

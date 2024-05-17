@@ -1,3 +1,6 @@
+### v7.0.6 (17.05.2024)[84]
+- Fix moved days when moved only for specific dioceses
+
 ### v7.0.5 (30.12.2023)[84]
 - Fix showing mass vesper selector when having a lower precedence
 - Fix hours antiphons when special days

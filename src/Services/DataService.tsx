@@ -22,6 +22,7 @@ import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import * as CelebrationIdentifierService from "./CelebrationIdentifierService";
 import {Celebration} from "./CelebrationIdentifierService";
 import { Asset } from 'expo-asset';
+import {DioceseCode} from "./DatabaseEnums";
 
 // TODO: [UI Refactor] I don't like the idea of these variables made public to all project
 //  it should be hidden and only controllers should access it
@@ -56,6 +57,7 @@ async function ObtainCurrentSettings(date: Date) : Promise<Settings>{
     currentSettings.DioceseCode = GetDioceseCodeFromDioceseName(
         currentSettings.DioceseName,
         currentSettings.PrayingPlace);
+    currentSettings.DioceseCode2Letters = currentSettings.DioceseCode === DioceseCode.Andorra ? currentSettings.DioceseCode : currentSettings.DioceseCode.substring(0, 2);
     currentSettings.UseLatin = await SettingsService.getSettingUseLatin() === 'true';
     currentSettings.TextSize = await SettingsService.getSettingTextSize() as number;
     currentSettings.DarkModeEnabled = DetermineDarkModeIsEnabled(await SettingsService.getSettingDarkMode() as string);

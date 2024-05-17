@@ -199,12 +199,11 @@ export function IsMovedDiocese(dioceseCode: string, dioceseCodeMoved: string): b
         return false;
     if (dioceseCodeMoved === '*') return true;
     if (dioceseCode === dioceseCodeMoved) return true;
-    return dioceseCode.charAt(0) === dioceseCodeMoved.charAt(0) &&
-        dioceseCode.charAt(1) === dioceseCodeMoved.charAt(1);
+    return dioceseCode === dioceseCodeMoved;
 }
 
-export function GetDateShortDatabaseCode(date: Date, dioceseCode: string = "-", movedDay: string = "-", dioceseCodeMoved: string = "-"): string {
-    if (movedDay !== '-' && IsMovedDiocese(dioceseCode, dioceseCodeMoved)){
+export function GetDateShortDatabaseCode(date: Date, dioceseCode2Letters: string = "-", movedDay: string = "-", dioceseCodeMoved: string = "-"): string {
+    if (movedDay !== '-' && IsMovedDiocese(dioceseCode2Letters, dioceseCodeMoved)){
         return movedDay;
     }
 

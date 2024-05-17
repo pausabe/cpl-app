@@ -51,6 +51,7 @@ import CommonOffice from "../../Models/LiturgyMasters/CommonOffices";
 import Various from "../../Models/LiturgyMasters/Various";
 import {SpecificLiturgyTimeType} from "../CelebrationTimeEnums";
 import * as DatabaseHelper from "../DatabaseDataHelper";
+import {StringManagement} from "../../Utils/StringManagement";
 
 export async function ObtainLiturgyMasters(currentLiturgyDayInformation : LiturgyDayInformation, settings : Settings) : Promise<LiturgyMasters>{
     const liturgyMasters = new LiturgyMasters();
@@ -619,10 +620,11 @@ async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInforma
             liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SolemnityAndFestivity &&
                 liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay &&
                 (liturgyDayInformation.Today.CelebrationType === CelebrationType.Solemnity ||
-                    liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity)) {
+                    liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity) ||
+                        StringManagement.HasLiturgyContent(liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode)) {
             let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
             if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
-                let day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode, liturgyDayInformation.Today.MovedDay.DioceseCode);
+                let day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseCode2Letters, liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode, liturgyDayInformation.Today.MovedDay.DioceseCode2Letters);
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnities.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                 const saintsSolemnitiesParts = new SaintsSolemnities(row);
                 saintsSolemnitiesParts.CommonOffices = await ObtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
@@ -655,7 +657,7 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
             else {
                 let day = '-';
                 if (liturgyDayInformation.Tomorrow.MovedDay.OriginDateShortDatabaseCode !== '-' &&
-                    DatabaseHelper.IsMovedDiocese(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode)) {
+                    DatabaseHelper.IsMovedDiocese(settings.DioceseName, liturgyDayInformation.Tomorrow.MovedDay.DioceseCode2Letters)) {
                     day = liturgyDayInformation.Tomorrow.MovedDay.OriginDateShortDatabaseCode;
                 }
 
@@ -688,7 +690,7 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
             }
             else {
                 if (masterIdentifierOfVariableDays === -1) {
-                    const day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode, liturgyDayInformation.Today.MovedDay.DioceseCode);
+                    const day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseName, liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode, liturgyDayInformation.Today.MovedDay.DioceseCode2Letters);
                     const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsMemories.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
                     const saintsMemories = new SaintsMemories(row);
                     saintsMemories.CommonOffices = await ObtainCommonOffices(saintsMemories.Celebration.Category);

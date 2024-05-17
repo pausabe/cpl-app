@@ -46,7 +46,7 @@ export function CheckCelebration(celebration: Celebration, liturgySpecificDayInf
 
     let isCelebrationWhenNotMoved = false;
     let isCelebrationWhenMoved = false;
-
+    let isCelebrationThatCantBeMoved = false;
 
     switch (celebration) {
         // Can be moved
@@ -130,45 +130,59 @@ export function CheckCelebration(celebration: Celebration, liturgySpecificDayInf
         // Never will be moved
         case Celebration.HolyHeartOfJesus:
             isCelebrationWhenNotMoved = IsHolyHeartOfJesus(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.Pentecost:
             isCelebrationWhenNotMoved = IsPentecost(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.HolyBodyAndBloodOfChrist:
             isCelebrationWhenNotMoved = IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.HolyTrinity:
             isCelebrationWhenNotMoved = IsHolyTrinity(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.BodyAndBlood:
             isCelebrationWhenNotMoved = IsBodyAndBlood(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.SacredHeartOfJesus:
             isCelebrationWhenNotMoved = IsSacredHeartOfJesus(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.OurLordJesusChrist:
             isCelebrationWhenNotMoved = IsOurLordJesusChrist(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.AshWednesday:
             isCelebrationWhenNotMoved = IsAshWednesday(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.ImmaculateHeartOfTheBlessedVirginMary:
             isCelebrationWhenNotMoved = IsImmaculateHeartOfTheBlessedVirginMary(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.MotherOfGodFromTheTibbon:
             isCelebrationWhenNotMoved = IsMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.JesusChristHighPriestForever:
             isCelebrationWhenNotMoved = IsJesusChristHighPriestForever(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.BlessedVirginMaryMotherOfTheChurch:
             isCelebrationWhenNotMoved = IsBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.Ascension:
             isCelebrationWhenNotMoved = IsAscension(liturgySpecificDayInformation);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.SacredFamily:
             isCelebrationWhenNotMoved = IsSacredFamily(liturgySpecificDayInformation.Date);
+            isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
 
     }
@@ -176,9 +190,18 @@ export function CheckCelebration(celebration: Celebration, liturgySpecificDayInf
     if (todayWeCelebrateAMovedDay) {
         return isCelebrationWhenMoved;
     }
-    if (liturgySpecificDayInformation.MovedDay.TodayIsMoved) {
+
+    // The following variable is used to help the situation 
+    //  of having 2 celebrations in the same day and we want to move one of them but celebrate the other.
+    // For example, if today is 26-may 2024 in SF will be in a HolyTrinity Sunday but also SF Cathedral Celebration.
+    // In this case, we want to move the Cathedral Celebration but celebrate HolyTrinity.
+    let todayIsMovedButAlsoIsCelebrationThatCantBeMoved = 
+        liturgySpecificDayInformation.MovedDay.TodayIsMoved && isCelebrationThatCantBeMoved;
+    
+    if (liturgySpecificDayInformation.MovedDay.TodayIsMoved && !todayIsMovedButAlsoIsCelebrationThatCantBeMoved) {
         return false;
     }
+    
     return isCelebrationWhenNotMoved;
 }
 
