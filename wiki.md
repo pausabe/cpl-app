@@ -1,8 +1,8 @@
 # Useful commands
 
-    npx expo start
-    eas build --platform ios --profile simulator
-    eas channel:create
+    npx expo # Start the project
+    eas build --platform ios --profile simulator # Build the project for simulator
+    eas channel:create # Create a new channel
 
 # Deploy
 
