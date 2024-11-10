@@ -3,7 +3,6 @@ import * as SQLite from 'expo-sqlite';
 import * as Logger from "../Utils/Logger";
 import {Asset} from "expo-asset";
 import {FileSystemService} from "./FileSystemService";
-import {SQLResultSet} from "expo-sqlite";
 
 let CPLDataBase = undefined;
 
@@ -15,10 +14,10 @@ export async function OpenDatabase(databaseAsset: Asset) {
         throw 'There is no database to open';
     }
     Logger.Log(Logger.LogKeys.DatabaseManagerService, "OpenDatabase", `Opening database '${databaseName}'`);
-    CPLDataBase = SQLite.openDatabase(databaseName);
+    CPLDataBase = await SQLite.openDatabaseAsync(databaseName);
 }
 
-export function executeQueryAsync(query): Promise<SQLResultSet> {
+export function executeQueryAsync(query): Promise<any> {
     return new Promise((resolve, reject) =>
         executeQuery(
             query,
@@ -32,9 +31,14 @@ async function executeQuery(query, callback, errorCallback) {
     if (CPLDataBase === undefined) {
         throw new Error("You must call OpenDatabase function to execute queries")
     }
-    _executeQuery(query)
-        .then((result) => callback && callback(result))
-        .catch((error) => errorCallback && errorCallback(error));
+
+    try {
+        const result = await _executeQuery(query);
+        callback && callback(result);
+    }
+    catch (error) {
+        errorCallback && errorCallback(error);
+    }
 }
 
 async function DatabaseExists(databaseName) {
@@ -81,17 +85,11 @@ function DatabaseNameFromUri(uri) {
     return uri.split("/").pop();
 }
 
-function _executeQuery(query): Promise<SQLResultSet> {
-    return new Promise((resolve, reject) => {
-        CPLDataBase.transaction((tx) => {
-            tx.executeSql(
-                query,
-                [],
-                (SQLTransaction, SQLResultSet) => resolve(SQLResultSet),
-                (SQLTransaction, SQLError) => {
-                    Logger.LogError(Logger.LogKeys.DatabaseManagerService, "_executeQuery", new Error("error in query (" + query + "): " + SQLError.message));
-                    reject(SQLError);
-                });
-        });
-    });
+async function _executeQuery(query: string): Promise<any> {
+    try {
+        return await CPLDataBase.getAllAsync(query);
+    } catch (error) {
+        Logger.LogError(Logger.LogKeys.DatabaseManagerService, "_executeQuery", new Error(`Error in query (${query}): ${error.message}`));
+        throw error;
+    }
 }

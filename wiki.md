@@ -1,6 +1,6 @@
 # Useful commands
 
-    npx expo # Start the project
+    npx expo # Start the project, make sure to be using "Expo Go" (Press s to switch between modes)
     eas build --platform ios --profile simulator # Build the project for simulator
     eas channel:create # Create a new channel
 
