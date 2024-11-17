@@ -53,7 +53,7 @@ export default function HomeScreenController(props) {
   }
   catch (error) {
     Logger.LogError(Logger.LogKeys.HomeScreenController, "HomeScreenController", error);
-    return null;
+    return HomeScreenViewWithError("Error carregant les dades");
   }
 }
 
@@ -170,10 +170,16 @@ async function CheckSystemDarkMode(colorScheme) {
 }
 
 function HandleAndroidBack(setState) {
-  if (CurrentState.CelebrationIsVisible && CurrentState.GlobalDataToShow.celebracio.text !== '-') {
-    setState(CurrentState.UpdateCelebrationVisibility(false))
+  if (
+      CurrentState.CelebrationIsVisible &&
+      CurrentState.GlobalDataToShow &&
+      CurrentState.GlobalDataToShow.celebracio &&
+      CurrentState.GlobalDataToShow.celebracio.text !== '-'
+  ) {
+    setState(CurrentState.UpdateCelebrationVisibility(false));
   }
 }
+
 
 async function ChangeDate(date, setState) {
   if (date === null || date === undefined){

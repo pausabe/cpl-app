@@ -25,7 +25,6 @@
     "@types/jest": "^29.2.4",
     "@types/node": "^18.11.18",
     "@types/react-dom": "~18.2.25",
-    "@types/react-native": "~0.69.16",
     "expo": "~51.0.39",
     "expo-application": "~5.9.1",
     "expo-asset": "~10.0.10",

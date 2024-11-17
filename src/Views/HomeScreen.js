@@ -402,7 +402,7 @@ export default class HomeScreen extends Component {
           <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: 10, justifyContent: 'flex-start', }}>
             <TouchableOpacity style={styles.two_buttons} onPress={this.On_Comment_Press.bind(this)}>
               <Icon
-                name="ios-mail"
+                name="mail"
                 size={75}
               color={'rgb(50, 50, 50)'} 
               />
@@ -412,7 +412,7 @@ export default class HomeScreen extends Component {
           <View style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 10, justifyContent: 'flex-start', }}>
             <TouchableOpacity style={styles.two_buttons} onPress={this.On_Give_Press.bind(this)}>
               <Icon
-                name="ios-card"
+                name="card"
                 size={75}
                 //color={'#424242'}
                 //color={'black'}

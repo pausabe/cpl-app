@@ -6,6 +6,12 @@
     "test": {
       "channel": "test_84"
     },
+    "apk": {
+      "channel": "apk_84",
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "simulator": {
       "channel": "simulator",
       "ios": {
