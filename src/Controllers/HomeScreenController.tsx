@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -31,7 +31,7 @@ import StorageKeys from "../Services/Storage/StorageKeys";
 import HomeScreenState from './HomeScreenState';
 import {StringManagement} from "../Utils/StringManagement";
 import {DateManagement} from "../Utils/DateManagement";
-import {useAssets} from "expo-asset";
+import {useSQLiteContext} from "expo-sqlite";
 
 let LastDatePickerIOSSelected;
 let CurrentState;
@@ -41,13 +41,22 @@ let SplashScreenHidden = false;
 export default function HomeScreenController(props) {
   try {
     const [state, setState] = useState(new HomeScreenState());
-
-    // I'm forced to use hooks to obtain the database because using Asset.loadAsync doesn't work well in EAS build
-    const [databaseAssets, databaseAssetsError] = useAssets([require('../Assets/db/cpl-app.db')]);
-
+    const databaseAsset = useSQLiteContext();
     CurrentState = state;
 
-    useEffect(() => InitialEffect(props, setState, databaseAssets, databaseAssetsError), [databaseAssets]);
+    useEffect(() => {
+      async function initialize() {
+        try {
+          if(databaseAsset) {
+            await InitialEffect(props, setState, databaseAsset);
+          }
+        } catch (error) {
+          console.error('Error loading database:', error);
+        }
+      }
+
+      initialize();
+    }, []);
 
     return GetView(props, CurrentState, setState);
   }
@@ -74,9 +83,9 @@ function GetView(props, CurrentState, setState){
   }
 }
 
-function InitialEffect(props, setState, databaseAssets, databaseAssetsError) {
+async function InitialEffect(props, setState, databaseAsset) {
   if (!__DEV__) {
-    SplashScreen.preventAutoHideAsync();
+    await SplashScreen.preventAutoHideAsync();
   }
 
   props.navigation.setParams({
@@ -88,8 +97,8 @@ function InitialEffect(props, setState, databaseAssets, databaseAssetsError) {
   let backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', HandleAndroidBack.bind(setState));
   let appearanceSubscription = Appearance.addChangeListener(AppearanceHasChanged);
 
-  if(databaseAssets && databaseAssets[0] && !databaseAssetsError){
-    SetViewWithTheInitialDataLoaded(setState, databaseAssets[0]);
+  if (databaseAsset){
+    await SetViewWithTheInitialDataLoaded(setState, databaseAsset);
   }
 
   return () => {
@@ -117,7 +126,7 @@ function HideSplashIfItsTime(){
 }
 
 async function SetViewWithTheInitialDataLoaded(setState, databaseAsset){
-  if(FirstLoad){
+  if (FirstLoad){
     FirstLoad = false;
     await ReloadAllDataAndRefreshView(new Date(/*2019, 9, 23*/), setState, true, databaseAsset);
     HideSplashIfItsTime();

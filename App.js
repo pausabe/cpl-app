@@ -2,6 +2,7 @@ import {useCustomUpdater} from "./src/Services/UpdaterService";
 import NavigationController from "./src/Controllers/NavigationController";
 import * as Logger from "./src/Utils/Logger";
 import {useState} from "react";
+import {SQLiteProvider} from "expo-sqlite";
 
 function ConfigureUpdates(setIsNecessaryToUpdate) {
     useCustomUpdater({
@@ -19,6 +20,8 @@ export default function App() {
     const [isNecessaryToUpdate, setIsNecessaryToUpdate] = useState(false);
     ConfigureUpdates(setIsNecessaryToUpdate);
     return (
-        <NavigationController IsNecessaryToUpdate={isNecessaryToUpdate}/>
+        <SQLiteProvider databaseName="cpl-app.db" assetSource={{ assetId: require('./src/Assets/db/cpl-app.db') }}>
+            <NavigationController IsNecessaryToUpdate={isNecessaryToUpdate}/>
+        </SQLiteProvider>
     );
 }
