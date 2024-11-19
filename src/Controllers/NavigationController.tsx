@@ -254,7 +254,9 @@ function NavigationContainerView(IsNecessaryToUpdate){
                             animationEnabled: Platform.OS === "ios",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
-                            headerBackTitleVisible: false
+                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
+                            headerBackTitleVisible: false,
+                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
                     <Stack.Screen
@@ -265,7 +267,9 @@ function NavigationContainerView(IsNecessaryToUpdate){
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
                             animationEnabled: Platform.OS === "ios",
-                            headerBackTitleVisible: false
+                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
+                            headerBackTitleVisible: false,
+                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
                     <Stack.Screen
@@ -276,7 +280,9 @@ function NavigationContainerView(IsNecessaryToUpdate){
                             animationEnabled: Platform.OS === "ios",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
-                            headerBackTitleVisible: false
+                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
+                            headerBackTitleVisible: false,
+                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
                     <Stack.Screen
@@ -290,7 +296,9 @@ function NavigationContainerView(IsNecessaryToUpdate){
                                 animationEnabled: Platform.OS === "ios",
                                 headerStyle: {backgroundColor: GLOBAL.barColor},
                                 headerTintColor: GLOBAL.itemsBarColor,
-                                headerBackTitleVisible: false
+                                headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
+                                headerBackTitleVisible: false,
+                                headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                             });
                         }}
                     />
@@ -302,7 +310,9 @@ function NavigationContainerView(IsNecessaryToUpdate){
                             animationEnabled: Platform.OS === "ios",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
-                            headerBackTitleVisible: false
+                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
+                            headerBackTitleVisible: false,
+                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
                 </Stack.Navigator>

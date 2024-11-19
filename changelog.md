@@ -1,3 +1,6 @@
+## v8.0.0 (19.11.2024)[89]
+- Upgrade libraries
+
 ### v7.0.6 (17.05.2024)[84]
 - Fix moved days when moved only for specific dioceses
 

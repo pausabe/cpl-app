@@ -37,6 +37,7 @@ let LastDatePickerIOSSelected;
 let CurrentState;
 let FirstLoad = true;
 let SplashScreenHidden = false;
+SplashScreen.preventAutoHideAsync();
 
 export default function HomeScreenController(props) {
   try {
@@ -84,10 +85,6 @@ function GetView(props, CurrentState, setState){
 }
 
 async function InitialEffect(props, setState, databaseAsset) {
-  if (!__DEV__) {
-    await SplashScreen.preventAutoHideAsync();
-  }
-
   props.navigation.setParams({
     calPres: () => HandleCalendarPressed(setState),
     Refresh_Date: () => ReloadAllDataAndRefreshView(CurrentLiturgyDayInformation.Today.Date, setState),

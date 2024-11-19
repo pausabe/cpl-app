@@ -45,17 +45,14 @@
     1. Download the latest database from Deploy website (make sure _tables_log registers amount is equal to current
        published database version. Could not be when I rerun the Deploy website)
     2. Copy the database into src/Assets/db/
-    3. Update the version name and build number of the manifest (ending in 0, X.X.0)
+    3. Update the version name and build number from app.json (ending in 0, X.X.0)
     4. Change the channel name in eas.json with the build number
     5. Create the channel (eas channel:create)
-    6. Comment '*.db' line from .gitignore (necessary workaround to avoid a crash when installing the app for the first
-       time)
-    7. Build the project with EAS Build (ios -> ipa | android -> apk)
-    8. Uncomment '*.db' line from .gitignore
-    9. Upload the Builds into the stores
-    10. Add the changes in the changelog
-    11. Push the code changes into master branch when releasing to production channels
-    12. Press 'Update Production Repository' from deploy website Admin tab
+    6. Build the project with EAS Build (eas build --platform all --profile production)
+    7. Upload the Builds into the stores
+    8. Add the changes in the changelog
+    9. Push the code changes into master branch when releasing to production channels
+    10. Press 'Update Production Repository' from deploy website Admin tab
 
 # Clear Cache
 
