@@ -33,7 +33,7 @@ export default class CommentScreen extends Component {
     return (
       <View style={styles.container}>
         <WebView
-          source={{uri: 'https://mescpl.cpl.es/contacte/'}}
+          source={{uri: 'https://www.cpl.es/contacto/'}}
           startInLoadingState={true}
           renderError={() => this.Internet_Error() }
         />

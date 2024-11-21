@@ -32,7 +32,7 @@ export default class DonationScreen extends Component {
     return (
       <View style={styles.container}>
         <WebView
-          source={{uri: 'https://mescpl.cpl.es/donacions/'}}
+          source={{uri: 'https://buy.stripe.com/6oE16v3LV6oa7VC4gg'}}
           startInLoadingState={true}
           renderError={() => this.Internet_Error() }
         />

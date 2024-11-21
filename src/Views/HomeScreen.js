@@ -163,7 +163,7 @@ export default class HomeScreen extends Component {
   On_Give_Press() {
     try {
       if(Platform.OS === "ios"){
-        Linking.openURL('https://mescpl.cpl.es/donacions/');
+        Linking.openURL('https://buy.stripe.com/6oE16v3LV6oa7VC4gg');
       }
       else{
         this.props.navigation.navigate('Donation');
