@@ -53,7 +53,7 @@
     8. Add the changes in the changelog
     9. Push the code changes into master branch when releasing to production channels
     10. Press 'Update Production Repository' from deploy website Admin tab
-    11. It may fail because the server need to upgrade some tools like npx expo, eas-cli (eas -v) or node (node -v). 
+    11. It may fail because the server need to upgrade some tools like npx expo (npm list expo), eas-cli (eas -v) or node (node -v). 
          Create a test channel and test every script inside the server host
 
 # Clear Cache
