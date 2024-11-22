@@ -31,7 +31,7 @@ import StorageKeys from "../Services/Storage/StorageKeys";
 import HomeScreenState from './HomeScreenState';
 import {StringManagement} from "../Utils/StringManagement";
 import {DateManagement} from "../Utils/DateManagement";
-import {useSQLiteContext} from "expo-sqlite";
+import {useAssets} from "expo-asset";
 
 let LastDatePickerIOSSelected;
 let CurrentState;
@@ -42,14 +42,14 @@ SplashScreen.preventAutoHideAsync();
 export default function HomeScreenController(props) {
   try {
     const [state, setState] = useState(new HomeScreenState());
-    const databaseAsset = useSQLiteContext();
+    const [databaseAssets, databaseAssetsError] = useAssets([require('../Assets/db/cpl-app.db')]);
     CurrentState = state;
 
     useEffect(() => {
       async function initialize() {
         try {
-          if(databaseAsset) {
-            await InitialEffect(props, setState, databaseAsset);
+          if (!databaseAssetsError) {
+            await InitialEffect(props, setState, databaseAssets);
           }
         } catch (error) {
           console.error('Error loading database:', error);
@@ -57,7 +57,7 @@ export default function HomeScreenController(props) {
       }
 
       initialize();
-    }, []);
+    }, [databaseAssets]);
 
     return GetView(props, CurrentState, setState);
   }
@@ -84,7 +84,7 @@ function GetView(props, CurrentState, setState){
   }
 }
 
-async function InitialEffect(props, setState, databaseAsset) {
+async function InitialEffect(props, setState, databaseAssets) {
   props.navigation.setParams({
     calPres: () => HandleCalendarPressed(setState),
     Refresh_Date: () => ReloadAllDataAndRefreshView(CurrentLiturgyDayInformation.Today.Date, setState),
@@ -94,8 +94,8 @@ async function InitialEffect(props, setState, databaseAsset) {
   let backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', HandleAndroidBack.bind(setState));
   let appearanceSubscription = Appearance.addChangeListener(AppearanceHasChanged);
 
-  if (databaseAsset){
-    await SetViewWithTheInitialDataLoaded(setState, databaseAsset);
+  if(databaseAssets && databaseAssets[0]){
+    SetViewWithTheInitialDataLoaded(setState, databaseAssets[0]);
   }
 
   return () => {

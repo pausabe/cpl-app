@@ -43,7 +43,7 @@
 
 - Store Updates (include Expo SDK changes)
     1. Download the latest database from Deploy website (make sure _tables_log registers amount is equal to current
-       published database version. Could not be when I rerun the Deploy website)
+      published database version. Could not be when I rerun the Deploy website)
     2. Copy the database into src/Assets/db/
     3. Update the version name and build number from app.json (ending in 0, X.X.0)
     4. Change the channel name in eas.json with the build number
@@ -53,6 +53,8 @@
     8. Add the changes in the changelog
     9. Push the code changes into master branch when releasing to production channels
     10. Press 'Update Production Repository' from deploy website Admin tab
+    11. It may fail because the server need to upgrade some tools like npx expo, eas-cli (eas -v) or node (node -v). 
+         Create a test channel and test every script inside the server host
 
 # Clear Cache
 

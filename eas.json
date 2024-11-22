@@ -7,7 +7,7 @@
       "channel": "test_89"
     },
     "apk": {
-      "channel": "apk",
+      "channel": "apk_89",
       "android": {
         "buildType": "apk"
       }
