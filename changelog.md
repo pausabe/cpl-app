@@ -1,3 +1,6 @@
+## v8.0.2 (22.11.2024)[89]
+- Fix database updates
+
 ## v8.0.1 (21.11.2024)[89]
 - Update database
 - Fix Comment and Give links
