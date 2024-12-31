@@ -37,7 +37,7 @@ let LastDatePickerIOSSelected;
 let CurrentState;
 let FirstLoad = true;
 let SplashScreenHidden = false;
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 export default function HomeScreenController(props) {
   try {
