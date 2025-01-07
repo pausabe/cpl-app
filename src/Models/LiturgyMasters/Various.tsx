@@ -54,6 +54,7 @@ export default class Various {
             this.VicBishop = databaseTable[48].oracio;
             this.AndorraBishop = databaseTable[49].oracio;
             this.MallorcaBishop = databaseTable[50].oracio;
+            this.MenorcaBishop = databaseTable[51].oracio;
         }
     }
     Psalm94: string;
@@ -107,4 +108,5 @@ export default class Various {
     VicBishop: string;
     AndorraBishop: string;
     MallorcaBishop: string;
+    MenorcaBishop: string;
 }

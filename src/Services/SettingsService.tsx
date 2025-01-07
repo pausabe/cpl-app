@@ -6,6 +6,7 @@ export enum DioceseName {
     Girona = "Girona",
     Lleida = "Lleida",
     Mallorca = "Mallorca",
+    Menorca = "Menorca",
     SantFeliu = "Sant Feliu de Llobregat",
     Solsona = "Solsona",
     Tarragona = "Tarragona",

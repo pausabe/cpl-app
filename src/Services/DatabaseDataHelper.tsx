@@ -115,6 +115,16 @@ export function GetDioceseCodeFromDioceseName(dioceseName, place) {
                     return DioceseCode.MaV;
             }
             break;
+        case DioceseName.Menorca:
+            switch (place) {
+                case PrayingPlace.Diocese:
+                    return DioceseCode.MeD;
+                case PrayingPlace.Cathedral:
+                    return DioceseCode.MeC;
+                case PrayingPlace.City:
+                    return DioceseCode.MeV;
+            }
+            break;
     }
     return DioceseCode.BaD;
 }
@@ -189,6 +199,12 @@ export function GetCelebrationTypeFromTodayLiurgyRow(dioceseCode: string, liturg
             return liturgyYearDatabaseRow.MaC;
         case DioceseCode.Andorra:
             return liturgyYearDatabaseRow.Andorra;
+        case DioceseCode.MeD:
+            return liturgyYearDatabaseRow.MeD;
+        case DioceseCode.MeV:
+            return liturgyYearDatabaseRow.MeV;
+        case DioceseCode.MeC:
+            return liturgyYearDatabaseRow.MeC;
     }
 
     return liturgyYearDatabaseRow.BaD;

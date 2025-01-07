@@ -49,7 +49,10 @@ export enum DioceseCode{
     Andorra = 'Andorra',
     MaD = 'MaD',
     MaV = 'MaV',
-    MaC = 'MaC'
+    MaC = 'MaC',
+    MeD = 'MeD',
+    MeV = 'MeV',
+    MeC = 'MeC'
 }
 
 export enum YearType{

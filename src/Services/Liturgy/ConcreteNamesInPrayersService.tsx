@@ -45,6 +45,9 @@ export function ObtainConcreteNamesInPrayers(liturgyMasters: LiturgyMasters, set
         case DioceseName.Mallorca:
             concreteNamesInPrayers.Bishop = liturgyMasters.Various.MallorcaBishop;
             break;
+        case DioceseName.Menorca:
+            concreteNamesInPrayers.Bishop = liturgyMasters.Various.MenorcaBishop;
+            break;
     }
 
     return concreteNamesInPrayers;

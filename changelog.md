@@ -1,3 +1,6 @@
+## v8.0.2 (07.01.2025)[89]
+- Add Menorca
+
 ## v8.0.2 (22.11.2024)[89]
 - Fix database updates
 
