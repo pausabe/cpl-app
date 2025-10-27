@@ -206,6 +206,11 @@ function ObtainSpecialDaysMasterIdentifier(liturgyDayInformation : LiturgySpecif
         return SoulKeys.diesespecials_24DesembreDissabte;
     }
 
+    //34- Commemoració de Tots els Fidels Difunts (2 de novembre) quan cau en diumenge
+    if (date.getMonth() === 10 && date.getDate() === 2 && date.getDay() === 0) {
+        return SoulKeys.diesespecials_CommemoracioTotsFidelsDifunts;
+    }
+
     return NoIdentifierNumber;
 }
 

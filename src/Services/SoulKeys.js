@@ -101,6 +101,7 @@ module.exports = {
     diesespecials_24DesembreDijous: 31,
     diesespecials_24DesembreDivendres: 32,
     diesespecials_24DesembreDissabte: 33,
+    diesespecials_CommemoracioTotsFidelsDifunts: 34,
 
     tempsSolemnitatsFestes_Nadal: 1,
     tempsSolemnitatsFestes_SagradaFamilia: 2,
