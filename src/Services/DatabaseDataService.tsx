@@ -157,6 +157,7 @@ function RowToMassLiturgy(row): DayMassLiturgy {
         dayMassLiturgy.Gospel.Title = row.EvangeliTitol;
         dayMassLiturgy.Gospel.Gospel = row.EvangeliText;
         dayMassLiturgy.HasCreed = row.credo === '1';
+        dayMassLiturgy.videoUrl = row.videoUrl || '';
     }
     return dayMassLiturgy;
 }

@@ -13,6 +13,7 @@ export class DayMassLiturgy{
     Hallelujah: Hallelujah = new Hallelujah();
     Gospel: MassGospel = new MassGospel();
     HasCreed: boolean;
+    videoUrl: string = '';
 
     // Easter Eve
     SecondPsalm: MassPsalm = new MassPsalm();

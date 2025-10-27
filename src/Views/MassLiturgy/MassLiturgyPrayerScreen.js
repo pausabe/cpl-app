@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import { View, ScrollView, Text, Platform, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Text, Platform, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { WebView } from 'react-native-webview';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import HR from '../../Components/HRComponent';
 import * as Logger from '../../Utils/Logger';
@@ -406,10 +407,15 @@ export default class MassLiturgyPrayerScreen extends Component {
             CurrentMassLiturgy.Vespers.HasCreed ||
             (!this.state.DisplayVespers && CurrentMassLiturgy.Today.HasCreed));
         var aleluia_quote = (this.state.DisplayVespers ? CurrentMassLiturgy.Vespers.Hallelujah.Quote !== '-'? CurrentMassLiturgy.Vespers.Hallelujah.Quote : "" : CurrentMassLiturgy.Today.Hallelujah.Quote !== '-'? CurrentMassLiturgy.Today.Hallelujah.Quote : "")
+        const videoUrl = this.state.DisplayVespers ? CurrentMassLiturgy.Vespers.videoUrl : CurrentMassLiturgy.Today.videoUrl;
+        
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{"Evangeli"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
+                
+                {this.renderYoutubeVideo(videoUrl)}
+                
                 {(CurrentLiturgyDayInformation.Today.GenericLiturgyTime !== GenericLiturgyTimeType.Lent && CurrentLiturgyDayInformation.Today.GenericLiturgyTime !== GenericLiturgyTimeType.PaschalTriduum) ?
                     <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{aleluia_quote}</Text>
                     :
@@ -498,7 +504,89 @@ export default class MassLiturgyPrayerScreen extends Component {
     }
 
     CredoText() {
-        return <Text selectable={true} style={this.styles.blackJustified}>{"Crec en un Déu\nPare totpoderós,\ncreador del cel i de la terra.\n\nI en Jesucrist, únic Fill seu i Senyor nostre;\nel qual fou concebut per obra de l’Esperit Sant,\nnasqué de Maria Verge;\npatí sota el poder de Ponç Pilat,\nfou crucificat, mort i sepultat;\ndavallà als inferns,\nressuscità el tercer dia d’entre els morts;\nse’n pujà al cel,\nseu a la dreta de Déu Pare totpoderós;\ni d’allí ha de venir a judicar els vius i els morts.\n\nCrec en l’Esperit Sant;\nla santa Mare Església catòlica,\nla comunió dels sants;\nla remissió dels pecats;\nla resurrecció de la carn;\nla vida perdurable. Amén."}</Text>;
+        return <Text selectable={true} style={this.styles.blackJustified}>{"Crec en un Déu\nPare totpoderós,\ncreador del cel i de la terra.\n\nI en Jesucrist, únic Fill seu i Senyor nostre;\nel qual fou concebut per obra de l'Esperit Sant,\nnasqué de Maria Verge;\npatí sota el poder de Ponç Pilat,\nfou crucificat, mort i sepultat;\ndavallà als inferns,\nressuscità el tercer dia d'entre els morts;\nse'n pujà al cel,\nseu a la dreta de Déu Pare totpoderós;\ni d'allí ha de venir a judicar els vius i els morts.\n\nCrec en l'Esperit Sant;\nla santa Mare Església catòlica,\nla comunió dels sants;\nla remissió dels pecats;\nla resurrecció de la carn;\nla vida perdurable. Amén."}</Text>;
+    }
+
+    // Extract YouTube video ID from URL
+    getYoutubeVideoId(url) {
+        if (!url) return null;
+        
+        // Remove any tracking parameters (like si=...)
+        const cleanUrl = url.split('?')[0] + (url.includes('?v=') ? '?v=' + url.split('?v=')[1].split('&')[0] : '');
+        
+        // Regular expressions for different YouTube URL formats
+        const patterns = [
+            /(?:youtube\.com\/watch\?v=)([^&]+)/,
+            /(?:youtube\.com\/embed\/)([^?&]+)/,
+            /(?:youtu\.be\/)([^?&]+)/,
+            /(?:youtube\.com\/v\/)([^?&]+)/
+        ];
+        
+        for (let pattern of patterns) {
+            const match = cleanUrl.match(pattern);
+            if (match && match[1]) {
+                // Clean the video ID from any remaining parameters
+                return match[1].split('?')[0].split('&')[0];
+            }
+        }
+        
+        return null;
+    }
+
+    // Render YouTube video player
+    renderYoutubeVideo(videoUrl) {
+        if (!videoUrl || videoUrl === '' || videoUrl === '-') {
+            return null;
+        }
+
+        const videoId = this.getYoutubeVideoId(videoUrl);
+        if (!videoId) {
+            return null;
+        }
+
+        const { width } = Dimensions.get('window');
+        const videoWidth = width - 20; // Subtract horizontal padding
+        const videoHeight = (videoWidth * 9) / 16; // 16:9 aspect ratio
+
+        // Using nocookie domain and enabling js-api for better compatibility
+        const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
+        
+        return (
+            <View style={{ 
+                marginVertical: 10, 
+                backgroundColor: '#f0f0f0',
+                borderRadius: 8,
+                overflow: 'hidden'
+            }}>
+                <View style={{ 
+                    width: videoWidth, 
+                    height: videoHeight,
+                    backgroundColor: '#e0e0e0',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <ActivityIndicator 
+                        size="large" 
+                        color="#999999" 
+                        style={{ position: 'absolute' }}
+                    />
+                    <WebView
+                        style={{ 
+                            width: videoWidth, 
+                            height: videoHeight,
+                            backgroundColor: 'transparent'
+                        }}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}
+                        source={{ uri: embedUrl }}
+                        allowsFullscreenVideo={true}
+                        mediaPlaybackRequiresUserAction={false}
+                        allowsInlineMediaPlayback={true}
+                        startInLoadingState={false}
+                    />
+                </View>
+            </View>
+        );
     }
 
     //------------------------------------------------------------------------------------
