@@ -13,6 +13,7 @@ export default class SettingsComponentAdapter{
         options.push(await SettingsComponentAdapter.getSettingsComponentDarkMode(callback));
         options.push(await SettingsComponentAdapter.getSettingsComponentDiocesis(callback));
         options.push(await SettingsComponentAdapter.getSettingsComponentLloc(callback));
+        options.push(await SettingsComponentAdapter.getSettingsComponentShowVideos(callback));
         return options;
     }
 
@@ -29,6 +30,14 @@ export default class SettingsComponentAdapter{
         return (<SettingsComponent selectorComponent="switch" name="Memòries lliures" id="prayLliures" key="prayLliures"
                                    value={value} callback={(id, value) => {
             SettingsService.setSettingPrayLliures(value, this.refreshHome.bind(this, RH));
+        }}/>);
+    }
+
+    static async getSettingsComponentShowVideos(RH){
+        let value = await SettingsService.getSettingShowVideos() === "true";
+        return (<SettingsComponent selectorComponent="switch" name="Vídeo de llengua de signes a l’Evangeli" id="showVideos" key="showVideos"
+                                   value={value} callback={(id, value) => {
+            SettingsService.setSettingShowVideos(value ? "true" : "false", this.refreshHome.bind(this, RH));
         }}/>);
     }
 

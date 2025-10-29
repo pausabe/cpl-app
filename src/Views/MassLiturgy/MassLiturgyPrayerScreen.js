@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { View, ScrollView, Text, Platform, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
-import { WebView } from 'react-native-webview';
+import YoutubePlayer from 'react-native-youtube-iframe';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import HR from '../../Components/HRComponent';
 import * as Logger from '../../Utils/Logger';
@@ -9,6 +9,7 @@ import {
     CurrentMassLiturgy,
     CurrentSettings
 } from "../../Services/DataService";
+import SettingsService from "../../Services/SettingsService";
 import {YearType} from "../../Services/DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
 
@@ -17,6 +18,10 @@ export default class MassLiturgyPrayerScreen extends Component {
     UNSAFE_componentWillMount() {
         this.screen_props = this.props.route.params.props;
         this.eventEmitter = this.screen_props.events;
+
+        SettingsService.getSettingShowVideos().then(value => {
+            this.setState({ showVideos: value === "true" });
+        });
 
         this.setState({
             Need_Lect2: this.screen_props.need_lectura2,
@@ -28,7 +33,9 @@ export default class MassLiturgyPrayerScreen extends Component {
             Lect2: this.screen_props.type === '2Lect',
             Evangeli: this.screen_props.type === 'Evangeli',
             DisplayVespers: this.screen_props.useVespersTexts,
-            evangeliType: 'normal'
+            evangeliType: 'normal',
+            showVideos: true,
+            videoLoading: true
         })
     }
 
@@ -414,7 +421,7 @@ export default class MassLiturgyPrayerScreen extends Component {
                 <Text selectable={true} style={this.styles.red}>{"Evangeli"}</Text>
                 {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
                 
-                {this.renderYoutubeVideo(videoUrl)}
+                {this.state.showVideos && this.renderYoutubeVideo(videoUrl)}
                 
                 {(CurrentLiturgyDayInformation.Today.GenericLiturgyTime !== GenericLiturgyTimeType.Lent && CurrentLiturgyDayInformation.Today.GenericLiturgyTime !== GenericLiturgyTimeType.PaschalTriduum) ?
                     <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{aleluia_quote}</Text>
@@ -545,46 +552,49 @@ export default class MassLiturgyPrayerScreen extends Component {
         }
 
         const { width } = Dimensions.get('window');
-        const videoWidth = width - 20; // Subtract horizontal padding
-        const videoHeight = (videoWidth * 9) / 16; // 16:9 aspect ratio
+        const videoWidth = width - 20;
 
-        // Using nocookie domain and enabling js-api for better compatibility
-        const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1`;
-        
         return (
             <View style={{ 
-                marginVertical: 10, 
-                backgroundColor: '#f0f0f0',
+                marginTop: 0,
+                marginBottom: 20,
                 borderRadius: 8,
                 overflow: 'hidden'
             }}>
-                <View style={{ 
-                    width: videoWidth, 
-                    height: videoHeight,
-                    backgroundColor: '#e0e0e0',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}>
-                    <ActivityIndicator 
-                        size="large" 
-                        color="#999999" 
-                        style={{ position: 'absolute' }}
-                    />
-                    <WebView
-                        style={{ 
-                            width: videoWidth, 
-                            height: videoHeight,
-                            backgroundColor: 'transparent'
-                        }}
-                        javaScriptEnabled={true}
-                        domStorageEnabled={true}
-                        source={{ uri: embedUrl }}
-                        allowsFullscreenVideo={true}
-                        mediaPlaybackRequiresUserAction={false}
-                        allowsInlineMediaPlayback={true}
-                        startInLoadingState={false}
-                    />
-                </View>
+                {this.state.videoLoading && (
+                    <View style={{
+                        position: 'absolute',
+                        width: videoWidth,
+                        height: videoWidth * (9 / 16),
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 10,
+                        backgroundColor: '#e0e0e0'
+                    }}>
+                        <ActivityIndicator 
+                            size="large" 
+                            color="#999999"
+                        />
+                    </View>
+                )}
+                <YoutubePlayer
+                    height={videoWidth * (9 / 16)}
+                    play={false}
+                    videoId={videoId}
+                    onChangeState={(state) => {
+                        if (state === 'ready' || state === 'playing' || state === 'paused') {
+                            this.setState({ videoLoading: false });
+                        } else if (state === 'buffering') {
+                            this.setState({ videoLoading: true });
+                        } else if (state === 'error') {
+                            this.setState({ videoLoading: false });
+                            Logger.LogError(Logger.LogKeys.Screens, "YouTube player error", "Error loading video");
+                        }
+                    }}
+                    onReady={() => {
+                        this.setState({ videoLoading: false });
+                    }}
+                />
             </View>
         );
     }

@@ -53,7 +53,8 @@ const defaultSettings = {
     dayStart: "0", //Values from 0 to 3 allowed, which means 00:00AM, 01:00AM, 02:00AM and 03:00AM
     salmInvitatori: InvitationPsalmOption.Psalm94,
     antMare: VirginAntiphonOption.Antiphon1,
-    darkMode: DarkModeOption.System
+    darkMode: DarkModeOption.System,
+    showVideos: "false"
 };
 
 export default class SettingsService {
@@ -136,6 +137,10 @@ export default class SettingsService {
         return SettingsService._getStorageValue("antMare", callback, defaultSettings.antMare);
     }
 
+    static getSettingShowVideos(callback?){
+        return SettingsService._getStorageValue("showVideos", callback, defaultSettings.showVideos);
+    }
+
     static setSettingShowGlories(value, callback){
         return SettingsService._setValueIfValid("showGlories", value,
             (val) => val || !val,
@@ -199,6 +204,12 @@ export default class SettingsService {
             (val) => {
                 return findValueInObject(VirginAntiphonOption, val);
             }, undefined);
+    }
+
+    static setSettingShowVideos(value, callback){
+        return SettingsService._setValueIfValid("showVideos", value,
+            (val) => val === "true" || val === "false",
+            callback);
     }
 
 }
