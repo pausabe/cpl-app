@@ -62,7 +62,7 @@ async function GetMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformati
 }
 
 function GetCelebrationIdentifier(liturgyDayInformation: LiturgySpecificDayInformation, settings: Settings): number {
-    let celebrationVariableIdentifier = GetCelebrationVariableIdentifier(liturgyDayInformation);
+    let celebrationVariableIdentifier = GetCelebrationVariableIdentifier(liturgyDayInformation, settings);
     if (celebrationVariableIdentifier !== -1) {
         return celebrationVariableIdentifier;
     }
@@ -233,7 +233,7 @@ function GetSpecialVespersIdentifier(tomorrowLiturgyDayInformation: LiturgySpeci
     return -1;
 }
 
-function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation): number {
+function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings): number {
     if (CelebrationIdentifierService.CheckCelebration(Celebration.JesusChristHighPriestForever, liturgySpecificDayInformation)) {
         return liturgySpecificDayInformation.YearIsEven ? SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreII : SoulKeys.LDSantoral_JesucristGranSacerdotPerSempreI;
     }
@@ -243,7 +243,7 @@ function GetCelebrationVariableIdentifier(liturgySpecificDayInformation: Liturgy
         return SoulKeys.LDSantoral_CorImmaculatBenauradaVergeMaria;
     }
 
-    if (CelebrationIdentifierService.CheckCelebration(Celebration.MotherOfGodFromTheTibbon, liturgySpecificDayInformation)) {
+    if (CelebrationIdentifierService.CheckCelebration(Celebration.MotherOfGodFromTheTibbon, liturgySpecificDayInformation, settings)) {
         return SoulKeys.LDSantoral_MareDeuCinta;
     }
 

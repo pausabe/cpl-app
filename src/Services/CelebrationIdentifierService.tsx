@@ -2,6 +2,8 @@ import {LiturgySpecificDayInformation} from "../Models/LiturgyDayInformation";
 import {CelebrationType} from "./DatabaseEnums";
 import {SpecificLiturgyTimeType} from "./CelebrationTimeEnums";
 import {DateManagement} from "../Utils/DateManagement";
+import {Settings} from "../Models/Settings";
+import {DioceseName} from "./SettingsService";
 
 export enum Celebration {
     Assumption,
@@ -39,7 +41,7 @@ export enum Celebration {
     SacredFamily
 }
 
-export function CheckCelebration(celebration: Celebration, liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+export function CheckCelebration(celebration: Celebration, liturgySpecificDayInformation: LiturgySpecificDayInformation, settings?: Settings): boolean {
     const dateWhenNotMoved = liturgySpecificDayInformation.Date;
     const dateWhenMoved = liturgySpecificDayInformation.MovedDay.OriginDate;
     const todayWeCelebrateAMovedDay = dateWhenMoved !== undefined;
@@ -165,7 +167,7 @@ export function CheckCelebration(celebration: Celebration, liturgySpecificDayInf
             isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.MotherOfGodFromTheTibbon:
-            isCelebrationWhenNotMoved = IsMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date);
+            isCelebrationWhenNotMoved = IsMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date, settings);
             isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
             break;
         case Celebration.JesusChristHighPriestForever:
@@ -405,9 +407,13 @@ function IsImmaculateHeartOfTheBlessedVirginMary(liturgySpecificDayInformation: 
     return false;
 }
 
-function IsMotherOfGodFromTheTibbon(date: Date): boolean {
+function IsMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
     //santsMemories M - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
     //santsSolemnitats S - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
+    // This celebration is specific to the Diocese of Tortosa
+    if (settings && settings.DioceseName !== DioceseName.Tortosa) {
+        return false;
+    }
     const auxDay = new Date(date.getFullYear(), 8, 2);
     let b = true;
     let dies = 0;

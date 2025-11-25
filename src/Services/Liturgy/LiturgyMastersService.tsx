@@ -622,7 +622,7 @@ async function ObtainSaintsSolemnities(liturgyDayInformation : LiturgyDayInforma
                 (liturgyDayInformation.Today.CelebrationType === CelebrationType.Solemnity ||
                     liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity) ||
                         StringManagement.HasLiturgyContent(liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode)) {
-            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
+            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today, settings);
             if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
                 let day = DatabaseHelper.GetDateShortDatabaseCode(liturgyDayInformation.Today.Date, settings.DioceseCode2Letters, liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode, liturgyDayInformation.Today.MovedDay.DioceseCode2Letters);
                 const row = await DatabaseDataService.ObtainSolemnitiesAndMemoriesAsync(SaintsSolemnities.MasterName, day, settings.DioceseCode, settings.PrayingPlace, settings.DioceseName, liturgyDayInformation.Today.GenericLiturgyTime);
@@ -647,7 +647,7 @@ async function ObtainSaintsSolemnitiesWhenFirstsVespersParts(liturgyDayInformati
             liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay &&
             (liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity ||
                 liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Festivity)) {
-            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Tomorrow);
+            let saintsMemoryOrSolemnityMasterIdentifier = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Tomorrow, settings);
             if (saintsMemoryOrSolemnityMasterIdentifier !== -1) {
                 const row = DatabaseDataService.ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(SaintsSolemnities.MasterName, saintsMemoryOrSolemnityMasterIdentifier);
                 const saintsSolemnitiesParts = new SaintsSolemnities(row);
@@ -679,7 +679,7 @@ async function ObtainSaintsMemories(liturgyDayInformation : LiturgyDayInformatio
             (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory ||
                 liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory ||
                 liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)) {
-            let masterIdentifierOfVariableDays = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today);
+            let masterIdentifierOfVariableDays = ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDayInformation.Today, settings);
 
             if (liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory &&
                 masterIdentifierOfVariableDays === -1) {
@@ -740,11 +740,11 @@ async function ObtainCommonOffices(category : string) : Promise<CommonOffice>{
 /*
   Return id of #santsMemories or #santsSolemnitats or -1 if there isn't there
 */
-function ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDateInformation : LiturgySpecificDayInformation) {
+function ObtainSaintsMemoriesOrSolemnitiesMasterIdentifier(liturgyDateInformation : LiturgySpecificDayInformation, settings: Settings) {
     if (CelebrationIdentifierService.CheckCelebration(Celebration.ImmaculateHeartOfTheBlessedVirginMary, liturgyDateInformation)) {
         return SoulKeys.santsMemories_CorImmaculatBenauradaVergeMaria;
     }
-    if(CelebrationIdentifierService.CheckCelebration(Celebration.MotherOfGodFromTheTibbon, liturgyDateInformation)){
+    if(CelebrationIdentifierService.CheckCelebration(Celebration.MotherOfGodFromTheTibbon, liturgyDateInformation, settings)){
         if (liturgyDateInformation.CelebrationType === CelebrationType.Memory) {
             return SoulKeys.santsMemories_MareDeuCinta;
         }
