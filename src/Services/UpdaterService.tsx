@@ -22,21 +22,17 @@ export const doUpdateIfAvailable = async (beforeDownloadCallback, throwUpdateErr
 
     try {
         Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', "Checking for updates...");
-        let checkingTime = new Date();
         const { isAvailable } = await Updates.checkForUpdateAsync()
 
         Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', `Update available? ${isAvailable}`);
         if (!isAvailable && !force) return false
 
-        Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', "Fetching Update");
-        beforeDownloadCallback && beforeDownloadCallback()
+        Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', "Fetching Update in background");
+        // Descarga la actualización en background sin bloquear ni reiniciar
         await Updates.fetchUpdateAsync()
-
-        const msFromChecking = new Date().getMilliseconds() - checkingTime.getMilliseconds();
-        setTimeout(async () => {
-            Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', "Update fetched, reloading...");
-            await Updates.reloadAsync()
-        },msFromChecking < minMsFromCheckingUpdatesAndReloading? (minMsFromCheckingUpdatesAndReloading - msFromChecking) : 0);
+        Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', "Update fetched successfully. Will be applied on next app restart.");
+        
+        return true
 
     } catch (e) {
         Logger.LogError(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', e);
@@ -50,17 +46,15 @@ export const useCustomUpdater = ({
                                      minRefreshSeconds = updater.default_min_refresh_interval,
                                      showDebugInConsole = false,
                                      beforeCheckCallback = null,
-                                     beforeDownloadCallback = null,
                                      afterCheckCallback = null,
                                      throwUpdateErrors = false,
-                                     minMsFromCheckingUpdatesAndReloading = 0,
                                  } = {}) => {
     const appState = useRef(AppState.currentState)
 
     updater.showDebugInConsole = showDebugInConsole
 
     useEffect(() => {
-        updateOnStartup && doUpdateIfAvailable(beforeDownloadCallback, throwUpdateErrors, false, minMsFromCheckingUpdatesAndReloading)
+        updateOnStartup && doUpdateIfAvailable(null, throwUpdateErrors, false, 0)
 
         const subscription = AppState.addEventListener('change', _handleAppStateChange)
         return () => {
@@ -81,7 +75,7 @@ export const useCustomUpdater = ({
         }
 
         beforeCheckCallback && beforeCheckCallback()
-        await doUpdateIfAvailable(beforeDownloadCallback, throwUpdateErrors, false, minMsFromCheckingUpdatesAndReloading)
+        await doUpdateIfAvailable(null, throwUpdateErrors, false, 0)
         afterCheckCallback && afterCheckCallback()
     }
 }

@@ -32,7 +32,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 export default function NavigationController(props){
-    return NavigationContainerView(props.IsNecessaryToUpdate);
+    return NavigationContainerView();
 }
 
 function getHeaderTitle(route) {
@@ -202,36 +202,10 @@ function Tabs() {
     );
 }
 
-function UpdateModal(IsNecessaryToUpdate){
-    Logger.Log(Logger.LogKeys.NavigationController, "UpdateModal", "IsNecessaryToUpdate?", IsNecessaryToUpdate);
-
-    if(!IsNecessaryToUpdate){
-        return null;
-    }
-
-    return (
-        <Modal animationType={"fade"}
-               transparent={true} >
-            <View style={styles.UpdateModalContainer}>
-                <View style={styles.UpdateModalVisiblePartContainer}>
-                    <View style={styles.UpdateModalTitleContainer}>
-                        <Text style={styles.UpdateModalTitle}>{"Nova actualització"}</Text>
-                    </View>
-                    <View style={styles.UpdateModalTextContainer}>
-                        <Text style={styles.UpdateModalText}>{"S'està actualitzant l'aplicació.\nQuan finalitzi es reiniciarà automàticament"}</Text>
-                    </View>
-                    <ActivityIndicator size="small" color={GLOBAL.barColor}/>
-                </View>
-            </View>
-        </Modal>
-    );
-}
-
-function NavigationContainerView(IsNecessaryToUpdate){
+function NavigationContainerView(){
     return (
         <NavigationContainer >
             <View style={{flex: 1}}>
-                {UpdateModal(IsNecessaryToUpdate)}
                 <Stack.Navigator>
                     <Stack.Screen
                         name="Home"
