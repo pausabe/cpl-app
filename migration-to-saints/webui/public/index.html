@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8" />
+<title>Migració català: cpl-app → saints-app / litcal</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<header>
+  <h1>Migració de contingut català</h1>
+  <p>cpl-app → saints-app + litcal — panell per executar el pipeline pas a pas i veure els resultats.</p>
+</header>
+
+<main>
+
+  <section class="card" id="stage1">
+    <h2>1. Generar calendaris candidats <small>(cpl-app.db → candidats crus)</small></h2>
+    <p>Llegeix <code>santsSolemnitats</code> i <code>santsMemories</code> de cpl-app i proposa, per a cada diòcesi
+       catalana + un fitxer compartit, quines celebracions caldria afegir a litcal. Encara no filtra res: alguns
+       d'aquests candidats ja existeixen a litcal (pas 2 s'encarrega d'això).</p>
+    <button data-action="stage1">Executar</button>
+    <span class="status" data-status="stage1"></span>
+    <div class="results" data-results="stage1"></div>
+  </section>
+
+  <section class="card" id="stage2">
+    <h2>2. Filtrar contra litcal existent <small>(descartar duplicats del calendari universal)</small></h2>
+    <p>Resol un any sencer amb el calendari real <code>spain</code> de litcal i descarta qualsevol candidat la data
+       del qual ja tingui una celebració — així no dupliquem el calendari universal (Anunciació, Assumpció...) que
+       cpl-app també guarda en català. Promou a <code>catalonia.json</code> el que comparteixen ≥3 diòcesis.</p>
+    <button data-action="stage2">Provar (sense escriure)</button>
+    <button class="danger" data-action="stage2-write">Escriure de veritat a litcal/src/data/calendars/</button>
+    <span class="status" data-status="stage2"></span>
+    <div class="results" data-results="stage2"></div>
+  </section>
+
+  <section class="card" id="loaders">
+    <h2>3. Registrar els calendaris nous a litcal</h2>
+    <p>Regenera <code>src/generated/calendar-loader.ts</code> perquè litcal reconegui els fitxers escrits al pas 2.
+       Cal fer-ho un cop després d'escriure de veritat.</p>
+    <button data-action="generate-loaders">Executar</button>
+    <span class="status" data-status="generate-loaders"></span>
+    <div class="results" data-results="generate-loaders"></div>
+  </section>
+
+  <section class="card" id="laudes">
+    <h2>4. Extreure Laudes de mostra <small>(prova el motor real de cpl-app en Node)</small></h2>
+    <p>Executa la lògica real de cpl-app (no una reimplementació) per a uns dies coneguts i mostra el text català
+       resultant, per comprovar que tot encaixa abans de fer l'extracció completa.</p>
+    <button data-action="laudes">Executar</button>
+    <span class="status" data-status="laudes"></span>
+    <div class="results" data-results="laudes"></div>
+  </section>
+
+  <section class="card" id="dropped">
+    <h2>Informe: sants omesos (últim càlcul del pas 2)</h2>
+    <p>Llista completa dels candidats descartats perquè la data ja tenia una celebració a litcal — inclou l'id
+       existent amb qui "xoca", per poder revisar a ull si és un duplicat real o dos sants coincidint en data.</p>
+    <button data-action="dropped-report">Carregar informe guardat</button>
+    <span class="status" data-status="dropped-report"></span>
+    <div class="results" data-results="dropped-report"></div>
+  </section>
+
+</main>
+
+<script src="/app.js"></script>
+</body>
+</html>

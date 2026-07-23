@@ -52,6 +52,7 @@ const REPRESENTATIVE_YEAR = argValue('--year', '2025');
 const LITCAL_CALENDARS_DIR = path.resolve(
   argValue('--out', '/Users/pau/projects/saints/litcal/src/data/calendars')
 );
+const JSON_OUT = argValue('--json', null);
 
 // ---------------------------------------------------------------------------
 // litcal's Rank / Precedence enums, copied verbatim from
@@ -313,6 +314,27 @@ function main() {
     if (cal.warnings.length) {
       console.log(`  ${cal.warnings.length} warning(s), e.g.: ${cal.warnings[0]}`);
     }
+  }
+
+  if (JSON_OUT) {
+    const summary = {
+      representativeYear: REPRESENTATIVE_YEAR,
+      rowsSkipped: skipped,
+      calendars: Object.fromEntries(
+        Object.entries(calendars).map(([calId, cal]) => [
+          calId,
+          {
+            parent: cal.parent,
+            ruleCount: cal.rules.length,
+            warnings: cal.warnings,
+            rules: cal.rules,
+          },
+        ])
+      ),
+    };
+    fs.mkdirSync(path.dirname(JSON_OUT), { recursive: true });
+    fs.writeFileSync(JSON_OUT, JSON.stringify(summary, null, 2), 'utf8');
+    console.log(`\nWrote JSON summary to ${JSON_OUT}`);
   }
 
   if (DRY_RUN) {
