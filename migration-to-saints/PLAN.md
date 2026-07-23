@@ -185,11 +185,28 @@ tenien una celebració existent aquell dia — descartats.
    i **promou a `catalonia.json`** qualsevol celebració repetida en ≥3 fitxers de diòcesi
    (llindar heurístic, revisable).
 
-Resultat final escrit: **37 celebracions nou a `catalonia.json`** (inclou Mare de Déu de
-Montserrat — confirma exactament el forat que la recerca inicial de litcal ja havia
-detectat) **+ 2-12 per fitxer de diòcesi** (Santa Eulàlia només a Barcelona/Sant
-Feliu/Terrassa, Mare de Déu de la Mercè promoguda al fitxer compartit, dedicacions de
-catedrals, sants locals com Sant Narcís de Girona, Sant Ot d'Urgell...).
+**Dues correccions més trobades i aplicades** (totes al mateix
+`litcal/scripts/build-catalan-calendars.ts`, veure el commit `Fix false positives in the
+Catalan calendar collision filter` a la branca `catalan-calendars`):
+1. El filtre comparava contra **un sol any**, així que festes **mòbils** (relatives a
+   Pentecosta, com "Nostre Senyor Jesucrist, Summe i Etern Sacerdot") que aquell any
+   concret queien coincidint amb un sant fix de cpl-app feien descartar el candidat per
+   error. Ara es comprova 3 anys seguits i només compta com a "existeix de veritat" si
+   el MATEIX id hi surt el MATEIX dia en els 3.
+2. Dues memòries opcionals poden conviure perfectament el mateix dia (és normal, tria el
+   celebrant) i un candidat que **superi en rang** el que ja hi ha (p.ex. una Solemnitat
+   patronal per sobre d'una Festa universal) no és un duplicat — litcal ja ordena per
+   precedència. Ara només es descarta si l'existent té rang ≥ al candidat.
+3. Un fitxer de diòcesi sense celebracions pròpies (Andorra) s'havia de SEGUIR escrivint
+   (encara que buit) perquè el seu `parent: diocese-urgell` quedi registrat — si no,
+   l'herència es trencava en silenci.
+
+**Resultat final escrit**: **180 celebracions noves a `catalonia.json`** (Montserrat,
+Núria...) **+ 1-18 per diòcesi** (Meritxell d'Andorra ara surt correctament per sobre de
+la Nativitat universal, Santa Eulàlia només a Barcelona/Sant Feliu/Terrassa, Sant
+Josepmaria Escrivà recuperat, dedicacions de catedrals, sants locals...). Verificat amb
+`resolveDay` real per a Montserrat, Eulàlia, Meritxell i l'herència d'Andorra→Urgell.
+`npm run generate-loaders` executat — els 13 calendaris nous ja són carregables.
 
 **Limitació coneguda, conservadora (no perillosa, però incompleta)**: el filtre actual
 descarta un candidat si **qualsevol** celebració ja existeix aquell dia, encara que sigui
