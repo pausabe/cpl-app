@@ -4,12 +4,15 @@
 // resolution (same technique as laudes.extract.test.js) to get the Catalan text, then
 // writes it into commons/ca/<table>.json under the SAME numeric id that all_laudes.json
 // already assigns for that field on that day (shared across es/it/ca — see PLAN.md
-// section 2). Upsert semantics: first value seen for a given numeric id wins; if a later
-// date produces a DIFFERENT value for an id already set, it's logged as a conflict for
-// human review rather than silently overwritten (a stable id can legitimately be reused
-// across many different days sharing the same season-common content, so seeing it again
-// is expected — a conflict means cpl's content disagrees with itself across those days,
-// worth a look).
+// section 2).
+//
+// Resolution policy (see PLAN.md 6b): an id is only written if EVERY date that
+// references it agrees on the same value. If cpl-app computes different content for
+// the same shared id on different dates (confirmed real for Christmas Octave, likely
+// also Holy Week/Easter — cpl-app and the existing es/it index disagree on which
+// psalter belongs there), the id is left OUT of commons/ca entirely and reported in
+// join-pending-review.json instead of guessing — it'll render as blank/"not found" in
+// the app for every day that shares that slot until someone resolves it manually.
 //
 // Run with: npx jest migration-to-saints/join-laudes.test.js --silent
 // (takes a minute or two for a 3-year window — one full cpl-app resolution per date)
@@ -23,7 +26,7 @@ const ALL_LAUDES_PATH = path.resolve(
   '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts/all_laudes.json'
 );
 const OUTPUT_DIR = path.resolve(__dirname, 'output/commons-ca');
-const CONFLICTS_PATH = path.resolve(__dirname, 'output/join-conflicts.json');
+const PENDING_PATH = path.resolve(__dirname, 'output/join-pending-review.json');
 
 const DIOCESE_NAME = 'Barcelona';
 const PRAYING_PLACE = 'Diòcesi';
@@ -163,31 +166,33 @@ describe('Laudes content join: cpl-app -> saints-app commons/ca', () => {
     const allLaudes = JSON.parse(fs.readFileSync(ALL_LAUDES_PATH, 'utf8'));
     const settings = buildSettings({ dioceseName: DIOCESE_NAME, prayingPlace: PRAYING_PLACE });
 
-    const commons = {
-      himnos: {},
-      salmos_citas: {},
-      salmos_antifonas: {},
-      salmos_textos: {},
-      lectura_breve_citas: {},
-      lectura_breve_textos: {},
-      responsorios: {},
-      cantico_evangelico_antifonas: {},
-      preces_intro: {},
-      preces_respuesta: {},
-      preces_contenido: {},
-      oraciones_finales: {},
-    };
-    const conflicts = [];
+    const TABLES = [
+      'himnos', 'salmos_citas', 'salmos_antifonas', 'salmos_textos',
+      'lectura_breve_citas', 'lectura_breve_textos', 'responsorios',
+      'cantico_evangelico_antifonas', 'preces_intro', 'preces_respuesta',
+      'preces_contenido', 'oraciones_finales',
+    ];
+    // Two-pass: first collect EVERY (table, id) -> [{value, date}, ...] observation
+    // across the whole range, then decide per id whether all observed values agree.
+    // If an id sees more than one distinct value across different dates, cpl-app and
+    // the existing es/it index disagree about what belongs in that (shared!) slot for
+    // at least one of those dates (see PLAN.md 6b — confirmed real for Christmas
+    // Octave, likely also Holy Week/Easter). We can't tell which date is "wrong"
+    // without a manual liturgical review, and because the id is shared, writing ANY
+    // single value would silently make it wrong for the other date(s) that use the
+    // same slot. So: leave it out of commons/ca entirely (renders as blank/"not
+    // found" in the app, same as it already does for any other missing id) and report
+    // it as pending review, rather than guessing.
+    const observations = {};
+    for (const table of TABLES) observations[table] = new Map(); // id -> Map(value -> [dates])
 
-    function upsert(table, id, value, date) {
+    function observe(table, id, value, date) {
       if (id === undefined || id === null || id === -1 || value === undefined || value === null || value === '') return;
       const key = String(id);
-      const existing = commons[table][key];
-      if (existing === undefined) {
-        commons[table][key] = value;
-      } else if (existing !== value) {
-        conflicts.push({ table, id: key, date, existingPreview: existing.slice(0, 80), newPreview: value.slice(0, 80) });
-      }
+      let byValue = observations[table].get(key);
+      if (!byValue) observations[table].set(key, (byValue = new Map()));
+      if (!byValue.has(value)) byValue.set(value, []);
+      byValue.get(value).push(date);
     }
 
     const dates = Object.keys(manifest).sort();
@@ -203,56 +208,81 @@ describe('Laudes content join: cpl-app -> saints-app commons/ca', () => {
       const laudes = await resolveLaudes(date, settings);
       processed++;
 
-      upsert('himnos', entry.himno, laudes.Anthem, dateStr);
+      observe('himnos', entry.himno, laudes.Anthem, dateStr);
       if (laudes.FirstPsalm) {
-        upsert('salmos_citas', entry.primer_salmo_cita, laudes.FirstPsalm.Title, dateStr);
-        upsert('salmos_antifonas', entry.primer_salmo_antifona, laudes.FirstPsalm.Antiphon, dateStr);
-        upsert('salmos_textos', entry.primer_salmo_texto, laudes.FirstPsalm.Psalm, dateStr);
+        observe('salmos_citas', entry.primer_salmo_cita, laudes.FirstPsalm.Title, dateStr);
+        observe('salmos_antifonas', entry.primer_salmo_antifona, laudes.FirstPsalm.Antiphon, dateStr);
+        observe('salmos_textos', entry.primer_salmo_texto, laudes.FirstPsalm.Psalm, dateStr);
       }
       if (laudes.SecondPsalm) {
-        upsert('salmos_citas', entry.segundo_salmo_cita, laudes.SecondPsalm.Title, dateStr);
-        upsert('salmos_antifonas', entry.segundo_salmo_antifona, laudes.SecondPsalm.Antiphon, dateStr);
-        upsert('salmos_textos', entry.segundo_salmo_texto, laudes.SecondPsalm.Psalm, dateStr);
+        observe('salmos_citas', entry.segundo_salmo_cita, laudes.SecondPsalm.Title, dateStr);
+        observe('salmos_antifonas', entry.segundo_salmo_antifona, laudes.SecondPsalm.Antiphon, dateStr);
+        observe('salmos_textos', entry.segundo_salmo_texto, laudes.SecondPsalm.Psalm, dateStr);
       }
       if (laudes.ThirdPsalm) {
-        upsert('salmos_citas', entry.tercer_salmo_cita, laudes.ThirdPsalm.Title, dateStr);
-        upsert('salmos_antifonas', entry.tercer_salmo_antifona, laudes.ThirdPsalm.Antiphon, dateStr);
-        upsert('salmos_textos', entry.tercer_salmo_texto, laudes.ThirdPsalm.Psalm, dateStr);
+        observe('salmos_citas', entry.tercer_salmo_cita, laudes.ThirdPsalm.Title, dateStr);
+        observe('salmos_antifonas', entry.tercer_salmo_antifona, laudes.ThirdPsalm.Antiphon, dateStr);
+        observe('salmos_textos', entry.tercer_salmo_texto, laudes.ThirdPsalm.Psalm, dateStr);
       }
       if (laudes.ShortReading) {
-        upsert('lectura_breve_citas', entry.lectura_biblica_cita, laudes.ShortReading.Quote, dateStr);
-        upsert('lectura_breve_textos', entry.lectura_biblica, laudes.ShortReading.ShortReading, dateStr);
+        observe('lectura_breve_citas', entry.lectura_biblica_cita, laudes.ShortReading.Quote, dateStr);
+        observe('lectura_breve_textos', entry.lectura_biblica, laudes.ShortReading.ShortReading, dateStr);
       }
       const resp = expandResponsory(laudes.ShortResponsory);
       if (resp && resp.parts && Array.isArray(entry.responsorios)) {
-        entry.responsorios.forEach((id, i) => upsert('responsorios', id, resp.parts[i], dateStr));
+        entry.responsorios.forEach((id, i) => observe('responsorios', id, resp.parts[i], dateStr));
       }
-      upsert('cantico_evangelico_antifonas', entry.cantico_evangelico_antifona, laudes.EvangelicalAntiphon, dateStr);
+      observe('cantico_evangelico_antifonas', entry.cantico_evangelico_antifona, laudes.EvangelicalAntiphon, dateStr);
       const prayers = parsePrayers(laudes.Prayers);
       if (prayers) {
-        upsert('preces_intro', entry.preces_intro, prayers.intro, dateStr);
-        upsert('preces_respuesta', entry.preces_respuesta, prayers.respuesta, dateStr);
+        observe('preces_intro', entry.preces_intro, prayers.intro, dateStr);
+        observe('preces_respuesta', entry.preces_respuesta, prayers.respuesta, dateStr);
         if (Array.isArray(entry.preces_contenido)) {
           entry.preces_contenido.forEach((id, i) => {
             const item = prayers.contenido[i];
-            if (item) upsert('preces_contenido', id, `${item.peticion}\n${item.cierre}`, dateStr);
+            if (item) observe('preces_contenido', id, `${item.peticion}\n${item.cierre}`, dateStr);
           });
         }
       }
-      upsert('oraciones_finales', entry.oracion_final, laudes.FinalPrayer, dateStr);
+      observe('oraciones_finales', entry.oracion_final, laudes.FinalPrayer, dateStr);
+    }
+
+    // --- Resolve: single distinct value per id -> write it. Multiple -> pending. ---
+    const commons = {};
+    const pending = {};
+    for (const table of TABLES) {
+      commons[table] = {};
+      pending[table] = [];
+      for (const [id, byValue] of observations[table]) {
+        if (byValue.size === 1) {
+          commons[table][id] = [...byValue.keys()][0];
+        } else {
+          pending[table].push({
+            id,
+            affectedDates: [...byValue.values()].flat().sort(),
+            variants: [...byValue.entries()].map(([value, dates]) => ({
+              value,
+              preview: value.slice(0, 100),
+              dates,
+            })),
+          });
+        }
+      }
     }
 
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     for (const [table, data] of Object.entries(commons)) {
       fs.writeFileSync(path.join(OUTPUT_DIR, `${table}.json`), JSON.stringify(data, null, 2), 'utf8');
     }
-    fs.writeFileSync(CONFLICTS_PATH, JSON.stringify(conflicts, null, 2), 'utf8');
+    fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2), 'utf8');
 
+    const totalResolved = Object.values(commons).reduce((n, t) => n + Object.keys(t).length, 0);
+    const totalPending = Object.values(pending).reduce((n, t) => n + t.length, 0);
     console.log(`Processed ${processed} dates.`);
-    for (const [table, data] of Object.entries(commons)) {
-      console.log(`  ${table}: ${Object.keys(data).length} ids`);
+    for (const table of TABLES) {
+      console.log(`  ${table}: ${Object.keys(commons[table]).length} resolved, ${pending[table].length} pending`);
     }
-    console.log(`Conflicts: ${conflicts.length} (see ${CONFLICTS_PATH})`);
+    console.log(`Total: ${totalResolved} resolved, ${totalPending} pending review (see ${PENDING_PATH})`);
 
     expect(processed).toBeGreaterThan(0);
   }, 300000);

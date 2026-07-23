@@ -143,13 +143,24 @@ async function handleJoinLaudes(req, res, body) {
       coverage[f.replace(/\.json$/, '')] = Object.keys(readJsonSafe(path.join(commonsDir, f)) || {}).length;
     }
   }
-  const conflicts = readJsonSafe(path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-conflicts.json')) || [];
+  const pending =
+    readJsonSafe(path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-pending-review.json')) || {};
+  const pendingByTable = Object.fromEntries(
+    Object.entries(pending).map(([table, items]) => [table, items.length])
+  );
+  const pendingSample = Object.entries(pending)
+    .flatMap(([table, items]) => items.map((item) => ({ table, ...item })))
+    .slice(0, 30);
+  const pendingCount = Object.values(pendingByTable).reduce((a, b) => a + b, 0);
   sendJson(res, joinResult.code === 0 ? 200 : 500, {
     ok: joinResult.code === 0,
+    start,
+    end,
     log: manifestResult.stdout + manifestResult.stderr + '\n' + joinResult.stdout + joinResult.stderr,
     coverage,
-    conflictCount: conflicts.length,
-    conflictSample: conflicts.slice(0, 30),
+    pendingCount,
+    pendingByTable,
+    pendingSample,
   });
 }
 

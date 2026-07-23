@@ -71,6 +71,14 @@ button:hover { filter: brightness(1.05); }
 button:disabled { opacity: 0.5; cursor: default; }
 button.danger { color: var(--danger); border-color: var(--danger); }
 
+.date-range { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem; font-size: 0.85rem; flex-wrap: wrap; }
+.date-range label { display: flex; align-items: center; gap: 0.35rem; color: var(--muted); }
+.date-range input[type="date"] {
+  background: var(--mono-bg); color: var(--text); border: 1px solid var(--border);
+  border-radius: 5px; padding: 0.25rem 0.4rem; font-size: 0.85rem;
+}
+.date-range .hint { color: var(--muted); font-size: 0.78rem; }
+
 .status { font-size: 0.85rem; color: var(--muted); margin-left: 0.25rem; }
 .status.ok { color: #3a7a3a; }
 .status.error { color: var(--danger); }

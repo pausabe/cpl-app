@@ -245,11 +245,22 @@ de Nadal/Setmana Santa/Pasqua, on `LaudesService` té moltes branques especials 
 temporada), cpl-app i ES discrepen genuïnament sobre quin salteri toca**, no és un error
 d'aparellament d'IDs.
 
-**No s'ha escrit res a `saints-app/commons/ca` encara** — amb un 5.435/~4400 ids una taxa
-de conflicte així fa que "primer valor vist guanya" no sigui prou fiable per confiar-hi
-sense revisió. El fitxer `migration-to-saints/output/join-conflicts.json` (i la targeta 5
-del panell web) llisten cada conflicte amb les dues versions, per revisar-los. Sortida
-generada (no escrita a saints-app) a `migration-to-saints/output/commons-ca/*.json`.
+**Política de resolució (decidit)**: en lloc de "primer valor vist guanya + avisa", ara es
+recullen TOTES les observacions de cada ID abans de decidir res. Si totes les dates que
+fan servir un mateix ID estan d'acord, s'escriu. Si n'hi ha alguna que discrepa, l'ID es
+deixa **totalment fora** de `commons/ca` (no s'escriu cap dels dos valors) i es reporta a
+`migration-to-saints/output/join-pending-review.json` amb totes les variants trobades i
+quants dies en depenen. Com que l'ID és compartit entre totes les dates que l'usen, no hi
+ha manera d'triar "el bo" sense revisió humana sense arriscar-se a equivocar-se per a les
+altres dates que comparteixen la mateixa casella — de moment aquests dies simplement
+sortiran buits a l'app (el mateix "no trobat" que ja passa amb qualsevol ID no traduït).
+
+Amb la finestra 2024-01-01—2026-12-30: **1.162 IDs pendents** de ~5.700 (la resta,
+resolts i escrits a `migration-to-saints/output/commons-ca/*.json`, encara no copiats a
+`saints-app`). Exemple real (ID 63 de `salmos_citas`, 218 dies l'usen): 208 coincideixen
+en "Salm 62, 2-9" i uns 10 discrepen clarament (6 al voltant de Nadal amb "Salm 117", i
+uns quants casos aïllats amb altres salms) — el panell web (targeta 5, amb selector de
+rang de dates) mostra aquest desglossament per a cada ID pendent.
 
 ## 7. Pendent (per ordre recomanat)
 

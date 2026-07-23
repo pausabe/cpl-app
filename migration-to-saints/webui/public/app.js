@@ -133,19 +133,23 @@ function renderDroppedReport(data) {
 function renderJoinLaudes(data) {
   const el = resultsEl('join-laudes');
   if (!data) return;
-  let html = `<div class="summary-line">Conflictes detectats: <b>${data.conflictCount ?? 0}</b></div>`;
+  let html = `<div class="summary-line">Rang: <b>${escapeHtml(data.start)} → ${escapeHtml(data.end)}</b></div>`;
+  html += `<div class="summary-line">Pendents de revisió (ids amb contingut contradictori — es deixen buits, no s'escriuen): <b>${data.pendingCount ?? 0}</b></div>`;
   if (data.coverage) {
-    html += '<table><tr><th>Taula</th><th>IDs omplerts</th></tr>';
+    html += '<table><tr><th>Taula</th><th>IDs resolts</th><th>IDs pendents</th></tr>';
     for (const [table, count] of Object.entries(data.coverage)) {
-      html += `<tr><td>${table}.json</td><td>${count}</td></tr>`;
+      html += `<tr><td>${table}.json</td><td>${count}</td><td>${(data.pendingByTable && data.pendingByTable[table]) || 0}</td></tr>`;
     }
     html += '</table>';
   }
-  if (data.conflictSample && data.conflictSample.length) {
-    html += `<details><summary>Veure mostra de conflictes (primers ${data.conflictSample.length})</summary>`;
-    html += '<table><tr><th>Taula</th><th>ID</th><th>Data</th><th>Ja tenia</th><th>Nou valor</th></tr>';
-    for (const c of data.conflictSample) {
-      html += `<tr><td>${escapeHtml(c.table)}</td><td>${escapeHtml(c.id)}</td><td>${escapeHtml(c.date)}</td><td>${escapeHtml(c.existingPreview)}</td><td>${escapeHtml(c.newPreview)}</td></tr>`;
+  if (data.pendingSample && data.pendingSample.length) {
+    html += `<details><summary>Veure mostra de pendents (primers ${data.pendingSample.length})</summary>`;
+    html += '<table><tr><th>Taula</th><th>ID</th><th>Dies afectats</th><th>Variants trobades</th></tr>';
+    for (const p of data.pendingSample) {
+      const variantsHtml = (p.variants || [])
+        .map((v) => `<div><i>${v.dates.length} dia(es):</i> ${escapeHtml(v.preview)}</div>`)
+        .join('');
+      html += `<tr><td>${escapeHtml(p.table)}</td><td>${escapeHtml(p.id)}</td><td>${p.affectedDates.length}</td><td>${variantsHtml}</td></tr>`;
     }
     html += '</table></details>';
   }
@@ -164,7 +168,11 @@ document.addEventListener('click', async (e) => {
     renderStage2(await runAction('stage2-write', { body: { write: true } }));
   } else if (action === 'generate-loaders') renderGenerateLoaders(await runAction('generate-loaders'));
   else if (action === 'laudes') renderLaudes(await runAction('laudes'));
-  else if (action === 'join-laudes') renderJoinLaudes(await runAction('join-laudes'));
+  else if (action === 'join-laudes') {
+    const start = document.getElementById('join-start').value;
+    const end = document.getElementById('join-end').value;
+    renderJoinLaudes(await runAction('join-laudes', { body: { start, end } }));
+  }
   else if (action === 'dropped-report') {
     const res = await fetch('/api/dropped-report');
     renderDroppedReport(await res.json());

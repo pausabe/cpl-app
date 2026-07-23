@@ -59,7 +59,12 @@
        ja assumeix l'índex compartit d'ES per a aquell mateix dia (confirmat, no és un
        bug de l'script). Els resultats es guarden a <code>output/commons-ca/</code> i
        <b>encara no s'escriuen a saints-app</b> fins revisar els conflictes.</p>
-    <button data-action="join-laudes">Executar (2024-01-01 a 2026-12-30)</button>
+    <div class="date-range">
+      <label>Des de <input type="date" id="join-start" value="2024-01-01" /></label>
+      <label>Fins a <input type="date" id="join-end" value="2026-12-30" /></label>
+      <span class="hint">(cpl-app.db només cobreix 2017-2026; deixa almenys un dia de marge amb l'any 2027)</span>
+    </div>
+    <button data-action="join-laudes">Executar</button>
     <span class="status" data-status="join-laudes"></span>
     <div class="results" data-results="join-laudes"></div>
   </section>
