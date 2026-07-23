@@ -1,0 +1,191 @@
+[
+  {
+    "date": "2026-07-22",
+    "today": {
+      "SpecificLiturgyTime": "O_ORDINAR",
+      "Week": "16",
+      "WeekCycle": "4",
+      "YearType": "A",
+      "CelebrationType": "F"
+    },
+    "celebrationTitle": "Santa Brígida, religiosa, patrona d’Europa",
+    "laudes": {
+      "FirstPsalm": {
+        "Antiphon": "La meva ànima s’ha enamorat de vós, em sosté la vostra mà.",
+        "Title": "Salm 62, 2-9",
+        "Comment": "-",
+        "Psalm": "Vós, Senyor, sou el meu Déu, de bon matí jo us cerco.   *\nTot jo tinc set de vós, \nper vós es desviu el meu cor,    *\ncom terra eixuta sense una gota d’aigua.\n\nJo us contemplava al vostre santuari    *\nquan us veia gloriós i poderós. \nL’amor que em teniu val més que la vida;    *\nper això els meus llavis us lloaran.\n\nQue tota la vida us pugui beneir    *\ni alçar les mans lloant el vostre nom.\nSaciat del bo i millor,    *\nus lloaré amb el goig als llavis.\n\nQuan des del llit us recordo,    *\npasso les nits pensant en vós, \nperquè vós m’heu ajudat,    *\ni sóc feliç sota les vostres ales.\n\nLa meva ànima s’ha enamorat de vós,    * \nem sosté la vostra mà.",
+        "HasGloryPrayer": true
+      },
+      "SecondPsalm": {
+        "Antiphon": "La mà de Déu t’ha fet valenta, sempre més seràs beneïda.",
+        "Title": "Càntic\nDn 3, 57-88.56",
+        "Comment": "-",
+        "Psalm": "Beneïu el Senyor, totes les criatures,    *\ncanteu-li lloances per sempre. \nBeneïu-lo, àngels del Senyor,    *\nbeneïu, cels, el Senyor. \nBeneïu el Senyor, aigües de l’espai,    *\nbeneïu-lo, estols del Senyor. \nBeneïu el Senyor, sol i lluna,    *\nbeneïu-lo, estrelles del cel.\n\nBeneïu el Senyor, pluges i rosades,    *\nbeneïu-lo, tots els vents.\nBeneïu el Senyor, foc i calor,    *\nbeneïu-lo, freds i gelades. \nBeneïu el Senyor, rosades i gebre,    *\nbeneïu-lo, glaç i freds. \nBeneïu el Senyor, neus i geleres,    *\nbeneïu-lo, dies i nits. \nBeneïu el Senyor, llum i tenebres,    *\nbeneïu-lo, núvols i llamps.\n\nQue la terra beneeixi el Senyor,    *\nque li canti lloances per sempre. \nBeneïu el Senyor, muntanyes i turons,    *\nvegetació de la terra, beneeix-lo. \nBeneïu, fonts, el Senyor,    *\nbeneïu-lo, rius i mars. \nBeneïu el Senyor, peixos i monstres marins,    *\nbeneïu-lo, tots els ocells. \nBeneïu el Senyor, feres i ramats,    *\ncanteu-li lloances per sempre.\n\nBeneïu el Senyor, tots els homes,    *\nbeneeix-lo, poble d’Israel. \nBeneïu-lo, sacerdots del Senyor,    *\nbeneïu-lo, servents del Senyor. \nBeneïu el Senyor, sants i humils de cor,    *\nànimes i esperits dels justos, beneïu-lo. \nBeneïu el Senyor, Hananies, Azaries i Misael,    *\ncanteu-li lloances per sempre.\n\nBeneïm el Pare i el Fill amb l’Esperit Sant,    *\ncantem-li lloances per sempre. \nSou beneït, Senyor, al firmament del cel.    *\nGlòria i lloança per sempre.",
+        "HasGloryPrayer": false
+      },
+      "ThirdPsalm": {
+        "Antiphon": "Amb quin goig, Senyor, enaltiré el vostre amor!",
+        "Title": "Salm 149",
+        "Comment": "-",
+        "Psalm": "Canteu al Senyor un càntic nou,    *\ncanteu les seves lloances davant dels qui l’estimen. \nSe sent feliç Israel del qui l’ha creat,    *\ns’alegren del seu rei els fills de Sió.\n\nLloen el seu nom, el lloen tot dansant,    *\nacompanyen els seus cants\namb els tambors i les cítares. \nPerquè el Senyor estima el seu poble,    *\ncoronarà de triomf els humils.\n\nEls fidels celebren la seva glòria,    *\ndes dels seus rengles aclamen plens de goig;\nmentre els seus llavis glorifiquen Déu,    * \ntenen a les mans espases de dos talls,\n\nper fer justícia entre els pobles,    * \nper reprendre i castigar les nacions,\nencadenant els seus reis,    * \nemmanillant els poderosos.\n\nExecutar la sentència que està escrita    *\nés la glòria reservada als qui l’estimen. ",
+        "HasGloryPrayer": true
+      },
+      "ShortReading": {
+        "Quote": "Rm 12, 1-2",
+        "ShortReading": "Germans, per l’amor entranyable que Déu ens té, us demano que li oferiu tot el que sou, com una víctima viva, santa i agradable. Això ha de ser el vostre culte veritable. No us emmotlleu al món present; transformeu-vos renovellant la vostra manera de veure les coses, perquè pugueu reconèixer quina és la voluntat de Déu: reconèixer allò que és bo, agradable a Déu i perfecte."
+      },
+      "ShortResponsory": {
+        "FirstPart": "Déu l’assisteix,",
+        "SecondPart": "Déu la defensa sempre.",
+        "ThirdPart": "És amb ella i la manté ferma."
+      },
+      "Anthem": "Oh venerable pietat del Crist que,\nvolent fer ofrena dels humans al Pare,\nde modes varis l’Esperit envies\npels cors atraure!\n\nCrist, és volença vostra que germini\nmoltes vegades l’amor sant i eximi\nen els qui amb l’aigua vostra feu renéixer\nde Déu veríssim.\n\nVós els crideu, i animosos corren,\ntot ho abandonen, i per guia us volen\npel camí regi de la creu, buscant sols\nd’arribar al Pare.\n\nAixí aquest vostre sant, glatint l’Empiri,\nse us adheria de tot cor i amb força,\ni desitjava, de virtut, les belles\ncimes atènyer.\n\nLloa a Déu Pare i a vós Crist, bell príncep,\ni a la Sagrada Flama igual lloança,\nque amb cor magnànim deu ingent mesura\nal qui ben dóna. Amén.",
+      "EvangelicalAntiphon": "El Senyor és la meva heretat, el Senyor és bo per als qui el cerquen.",
+      "Prayers": "Germans, aclamem, amb totes les dones santes, Jesucrist, el nostre Salvador, tot invocant-lo i dient:\nJesús, Senyor, veniu.\n\nJesús, Senyor, que perdonàreu totes les culpes a la pecadora, perquè havia estimat molt, \n—\tperdoneu també les nostres, que són moltes.\n\nJesús, Senyor, a qui les santes dones servien i acompanyaven en els camins missioners,\n—\tdeixeu-nos seguir, Senyor, darrere vostre.\n\nJesús, Senyor, bon mestre, a qui Maria escoltava quan Marta servia,\n—\tconcediu-nos el do de servir-vos per la fe i la caritat.\n\nJesús, Senyor, que anomenàreu germà i germana i mare a tots els qui complien la vostra voluntat,\n—\tajudeu-nos a complaure-us sempre de paraula i d’obra.\n\nFidels a la recomanació del Salvador, diguem al nostre Pare: Pare nostre.",
+      "FinalPrayer": "Oh Déu, que vau guiar santa Brígida pels diversos camins de la vida, i de manera admirable, quan contemplava la Passió del vostre Fill, li vau ensenyar la saviesa de la creu; concediu-nos que, seguint dignament la vostra crida, puguem cercar-vos a vós en totes les coses. Per nostre Senyor Jesucrist.",
+      "EvangelicalChant": "Beneït sigui el Senyor, Déu d’Israel,\nha visitat el seu poble i l’ha redimit.\nFa que s’aixequi un salvador poderós\na la casa de David, el seu servent,\ncom ho havia anunciat, de temps antic,\nper boca dels seus sants profetes.\n\nAixí ens salva, alliberant-nos dels enemics, \nde les mans dels qui ens volen mal,\nmogut per l’amor que el fa fidel als nostres pares,    \ni pel record de l’aliança santa,\nque jurà al nostre pare Abraham,\n\nprometent de concedir-nos que, sense por, \nlliures dels enemics, li donem culte \namb santedat i justícia tota la vida.\n\nI a tu, infant, et diran profeta de l’Altíssim, \nperquè aniràs al davant del Senyor\na preparar els seus camins.\n\nFaràs saber al poble que li ve la salvació,\nel perdó dels seus pecats,\nper l’amor entranyable del nostre Déu.\n\nPerquè ens estima, ens visitarà un sol, que ve del cel,\nper il·luminar els qui viuen a la fosca, \na les ombres de la mort,\ni guiar els nostres passos per camins de pau."
+    }
+  },
+  {
+    "date": "2026-02-11",
+    "today": {
+      "SpecificLiturgyTime": "O_ORDINAR",
+      "Week": "5",
+      "WeekCycle": "1",
+      "YearType": "A",
+      "CelebrationType": "M"
+    },
+    "celebrationTitle": "Santa Eulàlia, verge i màrtir",
+    "laudes": {
+      "FirstPsalm": {
+        "Antiphon": "Desvetlleu-vos, arpa i lira meva; vull desvetllar l’aurora.",
+        "Title": "Salm 56 \nPregària confiada enmig de la persecució",
+        "Comment": "Aquest salm canta la passió del Senyor (St. Agustí)",
+        "Psalm": "Compadiu-vos de mi, Déu meu, compadiu-vos de mi! *\nEn vós trobo refugi, \nm’acullo a l’ombra de les vostres ales,    *\nfins que passin aquests mals.\n\nClamo al Déu Altíssim,    *\nal Déu que tant m’afavoreix. \nM’enviarà des del cel un salvador,    †\nconfondrà els perseguidors\nque ja em tenien a la mà;    *\nDéu em dóna prova d’un amor fidel.   \n\nEstic voltat de lleons,    *\ncapaços de devorar-me; \nles seves dents són llances i fletxes,    *\nla seva llengua, una espasa esmolada.\n\nAlceu-vos cel amunt, Déu meu,    *\ni ompliu la terra de la vostra glòria.\n\nHavien parat un llaç als meus peus,    *\ni ells mateixos s’hi han agafat; \nhavien obert un clot davant meu,    *\ni ells mateixos hi han caigut.\n\nEl meu cor se sent segur, Déu meu,    * \nse sent segur el meu cor.\nTocaré i cantaré:    *\t\ndesvetlla’t, cor, inspira’t,\ndesvetlleu-vos, arpa i lira meva,    *\nvull desvetllar l’aurora.\n\t\nUs lloaré enmig dels pobles, Senyor,    *\nus cantaré davant de les nacions.\nEl vostre amor és gran fins al cel,    *\narriba als núvols la vostra lleialtat.\n\nAlceu-vos cel amunt, Déu meu,    *\ni ompliu la terra de la vostra glòria.",
+        "HasGloryPrayer": true
+      },
+      "SecondPsalm": {
+        "Antiphon": "Diu el Senyor: L’abundor de casa meva saciarà el meu poble.",
+        "Title": "Càntic\nJr 31, 10-14\nFelicitat del poble redimit",
+        "Comment": "Jesús havia de morir... per aplegar tots junts els fills de Déu dispersos (Jo 11, 51.52)",
+        "Psalm": "Escolteu, estrangers, una paraula del Senyor,    *\nanuncieu-la lluny, a les illes:\n«El qui havia dispersat Israel l’aplegarà,    *\ni el guardarà com un pastor el seu ramat;\nel Senyor ha redimit Israel,    *\nl’allibera de les mans dels més forts.\n\nVindran a les altures de Sió cridant de goig,    †\nsota la llum de l’abundor del Senyor:    *\noli, vi novell i cries dels ramats.\nViuran com els horts amarats d’aigua,   *\nno patiran mai més d’escassetat.\n\nDansaran d’alegria les noies    *\ni estaran contents joves i vells;\ncanviaré el dol en dies de festa,    *\nels consolaré de les penes i els alegraré;\nsatisfaré amb el bo i millor la fam dels sacerdots,    *\ni l’abundor de casa meva saciarà el meu poble.»",
+        "HasGloryPrayer": true
+      },
+      "ThirdPsalm": {
+        "Antiphon": "És gran el Senyor; no ens cansem de lloar-lo a la ciutat del nostre Déu. ",
+        "Title": "Salm 47\nHimne a la glòria del Senyor en la seva ciutat",
+        "Comment": "Em transportà dalt una muntanya gran... i m’ensenyà la ciutat santa de Jerusalem (Ap 21, 10)",
+        "Psalm": "És gran el Senyor, no ens cansem de lloar-lo    *\na la ciutat del nostre Déu. \nLa seva muntanya santa és admirable,    *\nés el goig de tot el món.\n\nLa muntanya de Sió és a tocar del cel,    *\nés la ciutat del rei dels reis; \nDéu sobresurt com un castell    *\nenmig dels seus merlets.\n\nUns reis s’havien aliat per atacar-la junts.    †\nS’han esverat només de veure-la,    * \ni han fugit desconcertats;\n\nels ha agafat allà mateix un tremolor,    * \nun dolor, com a la dona quan infanta,\nigual que les ventades de llevant    *\nquan estavellen els vaixells de Tarsís. \n\nHo havíem sentit a dir, i ara ho hem vist:    *\nla ciutat del nostre Déu, \nla ciutat del Senyor de l’univers,    *\nDéu la manté ferma per sempre.\n\nDéu nostre, evoquem el record del vostre amor,    *\nenmig del temple; \nsou conegut d’un cap a l’altre de la terra,    †\nsou lloat pertot arreu,    *\nel vostre braç escampa la bondat.\n\nS’alegra la muntanya de Sió,    †\nestan de festa les viles de Judà,    * \ni celebren els vostres determinis.\n\nRecorreu les muralles de Sió;    * \ncompteu les seves torres,\nmireu les seves fortificacions,    †\nresseguiu-ne els  merlets,    * \ni podreu dir després als vostres fills:\n\n«Aquest és el Senyor,\nel nostre Déu per sempre més;    * \nell és el nostre guia.»",
+        "HasGloryPrayer": true
+      },
+      "ShortReading": {
+        "Quote": "Is 66, 1-2",
+        "ShortReading": "Això diu el Senyor: El cel és el meu tron, i la terra és l’escambell dels meus peus. ¿On podríeu construir-me una casa? ¿A quin lloc podria jo residir? ¿No ho ha fet tot la meva mà i per això tot existeix, diu l’oracle del Senyor? Però jo poso els meus ulls sobre el desvalgut i afligit, que tremola en sentir les meves paraules."
+      },
+      "ShortResponsory": {
+        "FirstPart": "Clamo amb tot el cor: ",
+        "SecondPart": "Senyor, escolteu-me. ",
+        "ThirdPart": "Vull complir els vostres decrets.",
+        "HasSpecialAntiphon": false
+      },
+      "Anthem": "Mireu com neix el sol daurat! \ni l’home es dol, s’avergonyeix,\na plena llum es penedeix,\nperquè s’adona que ha pecat. \n\nQue fugi ja la fosca nit\ndels nostres ulls, tan encegats,\nque ens ha portat per mals camins\ntot aquest temps prop del parany.\n\nQue aquesta llum ens porti pau\ni faci purs els nostres cors,\nno parlem més amb mots d’engany\ni no enfosquim la veritat.\n\nOh, si passés aquest nou jorn\nsense mentida en el parlar,\nsense pecat en nostres ulls,\nsense cap taca al nostre cos!\n\nHi ha Algú que ens mira des del cel\ni va observant com actuem,\ndes del matí fins al captard,\navui i sempre i cada jorn.\n\nLloança es doni al Pare etern,\ni a Jesucrist, el Fill de Déu,\namb l’Esperit Sant, defensor,\nara i per segles sense fi. \nAmén.",
+      "EvangelicalAntiphon": "Celebrem amb goig el martiri de santa Eulàlia, patrona nostra; ella, triomfant per la seva fe, ha deixat ja aquest món i regna per sempre amb Crist, al·leluia.",
+      "Prayers": "Donem gràcies a Crist, que ens concedeix la llum d’aquest nou dia, i diguem-li:\nSenyor, beneïu-nos i santifiqueu-nos.\n\nVós us oferíreu com a víctima pels nostres pecats:\n—\trebeu les obres i els propòsits d’aquest dia que comença.\n\nVós alegreu els nostres ulls amb el do de la llum nova:\n—\tbrilleu en el nostre cor com l’estel del matí.\n\nConcediu-nos un esperit magnànim amb tothom,\n—\tperquè siguem imitadors vostres.\n\nFeu-nos experimentar, Senyor, la vostra misericòrdia,\n—\tque el vostre goig sigui la nostra fortalesa.\n\nCloguem la nostra pregària amb les paraules que Jesucrist ens va ensenyar: Pare nostre.",
+      "FinalPrayer": "Vós, Senyor, que heu volgut que la sang dels màrtirs fecundés les primeres llavors de la predicació evangèlica sembrades a la nostra terra; feu que, els qui avui celebrem amb alegria el martiri de la verge santa Eulàlia, ens gloriem sempre de ser cristians i perseverem fins a la mort ferms en la fe. Per nostre Senyor Jesucrist.",
+      "EvangelicalChant": "Beneït sigui el Senyor, Déu d’Israel,\nha visitat el seu poble i l’ha redimit.\nFa que s’aixequi un salvador poderós\na la casa de David, el seu servent,\ncom ho havia anunciat, de temps antic,\nper boca dels seus sants profetes.\n\nAixí ens salva, alliberant-nos dels enemics, \nde les mans dels qui ens volen mal,\nmogut per l’amor que el fa fidel als nostres pares,    \ni pel record de l’aliança santa,\nque jurà al nostre pare Abraham,\n\nprometent de concedir-nos que, sense por, \nlliures dels enemics, li donem culte \namb santedat i justícia tota la vida.\n\nI a tu, infant, et diran profeta de l’Altíssim, \nperquè aniràs al davant del Senyor\na preparar els seus camins.\n\nFaràs saber al poble que li ve la salvació,\nel perdó dels seus pecats,\nper l’amor entranyable del nostre Déu.\n\nPerquè ens estima, ens visitarà un sol, que ve del cel,\nper il·luminar els qui viuen a la fosca, \na les ombres de la mort,\ni guiar els nostres passos per camins de pau."
+    }
+  },
+  {
+    "date": "2026-12-13",
+    "today": {
+      "SpecificLiturgyTime": "A_SETMANES",
+      "Week": "3",
+      "WeekCycle": "3",
+      "YearType": "B",
+      "CelebrationType": "M"
+    },
+    "celebrationTitle": "Sant Joan de la Creu, prevere i doctor de l’Església",
+    "laudes": {
+      "FirstPsalm": {
+        "Title": "Salm 83\nAmor al temple del Senyor",
+        "Comment": "No tenim aquí la ciutat que ha de durar per sempre, sinó que en busquem una que encara ha de venir (He 13, 14)",
+        "Psalm": "Que n’és, d’amable, el vostre temple,    *\nSenyor de l’univers. \nTot jo sospiro i em deleixo    *\npels atris del Senyor. \n\nPle de goig, i amb tot el cor,    * \naclamo el Déu que m’és vida. \n\nFins l’ocell hi ha trobat casa,    †\nl’oreneta s’hi fa un niu    *\non posar la fillada, \nprop dels vostres altars,    †\nSenyor de l’univers,    *\nrei meu i Déu meu.\n\nFeliç el qui viu a casa vostra    *\nlloant-vos cada dia. \nFeliços els qui s’acullen als vostres murs;    *\nemprenen amb amor el camí.\n\nQuan passen per valls eixutes,    †\nels són com un oasi    *\nbeneït amb les pluges primerenques. \nEntren al primer i al segon mur,    *\nfins a veure Déu a Sió.\n\nSenyor de l’univers, escolteu la meva súplica,    *\nescolteu, Déu de Jacob. \nDéu nostre, mireu amb amor el vostre Ungit,    *\nfixeu-vos en el rei que ens protegeix.\n\nM’estimo més un dia als vostres atris    *\nque mil a casa meva; \nquedar-me al portal de la casa del meu Déu,    *\nmés que viure amb els injustos.\n\nPerquè el Senyor, protecció nostra i escut,    *\nens dóna la gràcia i la glòria; \nel Senyor no refusa cap bé    *\nal qui viu honradament.  \n\nSenyor de l’univers,    *\nfeliç l’home que confia en vós!",
+        "HasGloryPrayer": true,
+        "Antiphon": "Feliç el qui viu a casa vostra, Senyor."
+      },
+      "SecondPsalm": {
+        "Title": "Càntic\nIs 2, 2-5\nLa muntanya del temple del Senyor al cim de les muntanyes\n",
+        "Comment": "Totes les nacions vindran a adorar-vos (Ap 15, 4)",
+        "Psalm": "Als darrers temps \ns’alçarà ferma    †\nla muntanya del temple del Senyor    * \nal cim de les muntanyes \ni per damunt dels turons.\n\nTotes les nacions hi afluiran,    *\nhi aniran tots els pobles dient: \n«Veniu, pugem a la muntanya del Senyor,    *\nal temple del Déu de Jacob, \nque ens ensenyi els seus camins    *\ni seguim les seves rutes, \nperquè, de Sió, en surt l’ensenyament,    *\nde Jerusalem, l’oracle del Senyor.»\n\nEll posarà pau entre les nacions    *\ni apaivagarà tots els pobles, \nforjaran relles de les seves espases    *\ni falçs de les seves llances.\n\nCap nació no empunyarà l’espasa contra una altra,    *\nni s’entrenaran mai més a fer la guerra.\n\nCasa de Jacob, veniu,    *\ncaminem a la llum del Senyor.",
+        "HasGloryPrayer": true,
+        "Antiphon": "Veniu, pugem a la muntanya del Senyor."
+      },
+      "ThirdPsalm": {
+        "Title": "Salm 95\nEl Senyor és rei i jutge de tota la terra",
+        "Comment": "Cantaven un càntic nou davant el tron, en presència de l’Anyell (cf. Ap 14, 3)",
+        "Psalm": "Canteu al Senyor un càntic nou,    *\ncanteu al Senyor, arreu de la terra, \ncanteu al Senyor, beneïu el seu nom,    *\nanuncieu de dia en dia que ens ha salvat, \nconteu a les nacions la seva glòria,    *\nconteu a tots els pobles els seus prodigis.\n\nEl Senyor és gran, és digne de ser lloat,    *\nés més temible que tots els déus; \nperquè els déus dels pobles són no-res,    *\nperò el Senyor ha fet el cel.\n\nGlòria i majestat fan guàrdia davant d’ell,    * \npoder i esplendor l’assisteixen al seu temple.\nDoneu al Senyor, famílies dels pobles,    * \ndoneu al Senyor honor i majestat,\ntributeu al Senyor l’honor del seu nom,    * \nentreu als seus atris portant-li ofrenes.\n\nAdoreu el Senyor, s’apareix la seva santedat.    * \nQue tremoli davant d’ell tota la terra.\nDigueu a tots els pobles: «El Senyor és rei!»    †\nManté ferm tot el món, incommovible,    * \nsentencia amb raó les causes dels pobles.\n\nEl cel se n’alegra, la terra hi fa festa,    * \nbramula el mar amb tot el que s’hi mou,\njubilen els camps amb tot el que hi ha,    * \ncriden de goig els arbres del bosc,\n\nen veure que ve el Senyor,    *\nque ve a judicar la terra; \njudicarà tot el món amb justícia,    *\ntots els pobles amb la seva veritat.",
+        "HasGloryPrayer": true,
+        "Antiphon": "Canteu al Senyor, beneïu el seu nom."
+      },
+      "ShortReading": {
+        "Quote": "Is 2, 3",
+        "ShortReading": "Veniu, pugem a la muntanya del Senyor, al temple del Déu de Jacob, que ens ensenyi els seus camins i seguim les seves rutes, perquè, de Sió, en surt l’ensenyament; de Jerusalem, l’oracle del Senyor."
+      },
+      "ShortResponsory": {
+        "FirstPart": "Sobre teu, Jerusalem,",
+        "SecondPart": "Apareixerà el Senyor.",
+        "ThirdPart": "I clarejarà com l’alba la seva glòria."
+      },
+      "Anthem": "Sents la veu clara com retruny,\ntota tenebra repel·lint?\nEsquivem lluny els somnis vans,\nJesús ja brilla dalt del cel.\n\nDesvetlla’t ja, cor ensopit,\nno restis més mig ajagut;\nja resplendeix el nou estel\nque tot perill esvairà.\n\nMira l’Anyell que ens és tramès\nper deslliurar-nos dels pecats.\nTots ben units, amb cor sincer,\npreguem que ens doni el seu perdó.\n\nQue, quan de nou vindrà, fulgent,\ni el món d’esglai s’encongirà,\nno ens doni el càstig merescut,\nsinó que ens rebi, pietós.\n\nGlòria a vós, oh Pare sant,\ni al vostre Fill victoriós,\namb l’Esperit, foc lluminós,\nsigui per segles infinits. \nAmén.",
+      "EvangelicalAntiphon": "Déu sobirà vindrà del cel, té a la seva mà el poder i la glòria.",
+      "Prayers": "Crist, el Senyor, Fill de Déu viu, llum resplendor de la llum, ens menarà a la llum perquè vegem la seva santedat. Supliquem-li amb confiança: \nJesús, Senyor, veniu. \n\nLlum sempre viva, que brilleu per esvair la nostra tenebra, \n—\tdesvetlleu, Crist, la nostra fe adormida.\n\nFeu que visquem segurs tot aquest dia \n—\tamb l’alegria de la vostra claror.\n\nEnsenyeu-nos a viure amb tal dolcesa i humilitat de cor, \n—\tque edifiquem tots els homes.\n\nVeniu a crear-nos un món nou, \n—\ton regni la justícia i la pau.\n\nDemanem, amb la pregària que Jesús ens ensenyà, que el Regne de Déu arribi a tothom: Pare nostre.",
+      "FinalPrayer": "Oh Déu, vós heu inspirat a sant Joan, prevere, una abnegació perfecta de si mateix i un amor extraordinari a la creu; concediu-nos de seguir constantment les seves petjades i així arribar a la contemplació eterna de la vostra glòria. Per nostre Senyor Jesucrist.",
+      "EvangelicalChant": "Beneït sigui el Senyor, Déu d’Israel,\nha visitat el seu poble i l’ha redimit.\nFa que s’aixequi un salvador poderós\na la casa de David, el seu servent,\ncom ho havia anunciat, de temps antic,\nper boca dels seus sants profetes.\n\nAixí ens salva, alliberant-nos dels enemics, \nde les mans dels qui ens volen mal,\nmogut per l’amor que el fa fidel als nostres pares,    \ni pel record de l’aliança santa,\nque jurà al nostre pare Abraham,\n\nprometent de concedir-nos que, sense por, \nlliures dels enemics, li donem culte \namb santedat i justícia tota la vida.\n\nI a tu, infant, et diran profeta de l’Altíssim, \nperquè aniràs al davant del Senyor\na preparar els seus camins.\n\nFaràs saber al poble que li ve la salvació,\nel perdó dels seus pecats,\nper l’amor entranyable del nostre Déu.\n\nPerquè ens estima, ens visitarà un sol, que ve del cel,\nper il·luminar els qui viuen a la fosca, \na les ombres de la mort,\ni guiar els nostres passos per camins de pau."
+    }
+  },
+  {
+    "date": "2026-04-04",
+    "today": {
+      "SpecificLiturgyTime": "Q_DIUM_PASQUA",
+      "Week": "1",
+      "WeekCycle": "1",
+      "YearType": "A",
+      "CelebrationType": "S"
+    },
+    "celebrationTitle": "Diumenge de Pasqua",
+    "laudes": {
+      "FirstPsalm": {
+        "Antiphon": "Crist ha ressuscitat i ha il·luminat el seu poble, que ell va redimir amb la seva sang, al·leluia.",
+        "Title": "Salm 62, 2-9",
+        "Psalm": "Vós, Senyor, sou el meu Déu, de bon matí jo us cerco.   *\nTot jo tinc set de vós, \nper vós es desviu el meu cor,    *\ncom terra eixuta sense una gota d’aigua.\n\nJo us contemplava al vostre santuari    *\nquan us veia gloriós i poderós. \nL’amor que em teniu val més que la vida;    *\nper això els meus llavis us lloaran.\n\nQue tota la vida us pugui beneir    *\ni alçar les mans lloant el vostre nom.\nSaciat del bo i millor,    *\nus lloaré amb el goig als llavis.\n\nQuan des del llit us recordo,    *\npasso les nits pensant en vós, \nperquè vós m’heu ajudat,    *\ni sóc feliç sota les vostres ales.\n\nLa meva ànima s’ha enamorat de vós,    * \nem sosté la vostra mà.",
+        "HasGloryPrayer": true
+      },
+      "SecondPsalm": {
+        "Antiphon": "El nostre Redemptor ha ressuscitat del se­pulcre; cantem un himne al Senyor Déu nostre, al·le­luia.",
+        "Title": "Càntic\nDn 3, 57-88.56",
+        "Psalm": "Beneïu el Senyor, totes les criatures,    *\ncanteu-li lloances per sempre. \nBeneïu-lo, àngels del Senyor,    *\nbeneïu, cels, el Senyor. \nBeneïu el Senyor, aigües de l’espai,    *\nbeneïu-lo, estols del Senyor. \nBeneïu el Senyor, sol i lluna,    *\nbeneïu-lo, estrelles del cel. \n\nBeneïu el Senyor, pluges i rosades,    *\nbeneïu-lo, tots els vents.\nBeneïu el Senyor, foc i calor,    *\nbeneïu-lo, freds i gelades. \nBeneïu el Senyor, rosades i gebre,    *\nbeneïu-lo, glaç i freds. \nBeneïu el Senyor, neus i geleres,    *\nbeneïu-lo, dies i nits. \nBeneïu el Senyor, llum i tenebres,    *\nbeneïu-lo, núvols i llamps.\n\nQue la terra beneeixi el Senyor,    *\nque li canti lloances per sempre. \nBeneïu el Senyor, muntanyes i turons,    *\nvegetació de la terra, beneeix-lo. \nBeneïu, fonts, el Senyor,    *\nbeneïu-lo, rius i mars. \nBeneïu el Senyor, peixos i monstres marins,    *\nbeneïu-lo, tots els ocells. \nBeneïu el Senyor, feres i ramats,    *\ncanteu-li lloances per sempre.\n\nBeneïu el Senyor, tots els homes,    *\nbeneeix-lo, poble d’Israel. \nBeneïu-lo, sacerdots del Senyor,    *\nbeneïu-lo, servents del Senyor. \nBeneïu el Senyor, sants i humils de cor,    *\nànimes i esperits dels justos, beneïu-lo. \nBeneïu el Senyor, Hananies, Azaries i Misael,    *\ncanteu-li lloances per sempre.\n\nBeneïm el Pare i el Fill amb l’Esperit Sant,    *\ncantem-li lloances per sempre. \nSou beneït, Senyor, al firmament del cel.    *\nGlòria i lloança per sempre.",
+        "HasGloryPrayer": false
+      },
+      "ThirdPsalm": {
+        "Antiphon": "Al·leluia, el Senyor ha ressuscitat, com us havia dit, al·leluia.",
+        "Title": "Salm 149",
+        "Psalm": "Canteu al Senyor un càntic nou,    *\ncanteu les seves lloances davant dels qui l’estimen. \nSe sent feliç Israel del qui l’ha creat,    *\ns’alegren del seu rei els fills de Sió.\n\nLloen el seu nom, el lloen tot dansant,    *\nacompanyen els seus cants\namb els tambors i les cítares. \nPerquè el Senyor estima el seu poble,    *\ncoronarà de triomf els humils.\n\nEls fidels celebren la seva glòria,    *\ndes dels seus rengles aclamen plens de goig;\nmentre els seus llavis glorifiquen Déu,    * \ntenen a les mans espases de dos talls,\n\nper fer justícia entre els pobles,    * \nper reprendre i castigar les nacions,\nencadenant els seus reis,    * \nemmanillant els poderosos.\n\nExecutar la sentència que està escrita    *\nés la glòria reservada als qui l’estimen.",
+        "HasGloryPrayer": true
+      },
+      "ShortReading": {
+        "Quote": "Fets 10, 40-43",
+        "ShortReading": "Déu ressuscità Jesús el tercer dia, i concedí que s’aparegués, no a tot el poble, sinó a uns testimonis que, des d’abans, Déu havia escollit, és a dir, a nosal­tres, que hem menjat i hem begut amb ell després que ell hagué ressuscitat d’entre els morts. Ell ens ordenà que prediquéssim al poble assegurant que ell és el qui Déu ha destinat a ser jutge de vius i de morts. Tots els profetes donen testimoni a favor seu anunciant que tothom qui creu en ell rep el perdó dels pecats gràcies al seu nom."
+      },
+      "ShortResponsory": {
+        "HasSpecialAntiphon": true,
+        "SpecialAntiphon": "Avui és el dia en què ha obrat el Senyor: ale­grem-nos i celebrem-lo, al·leluia."
+      },
+      "Anthem": "L’aurora envermelleix el cel,\nressona l’aire, ple de cants,\nel món s’enjoia triomfant,\nudola i clama el negre avern.\n\nDavalla el Rei totpoderós\nal trist paratge de la mort,\nper emportar-se’n tots els sants\nvers el seu Regne, a viure amb ell.\n\nGuarden la tomba molts soldats\ni una gran llosa sepulcral;\nmes, ell s’aixeca triomfant\ni venç la mort per sempre més.\n\nNo ploreu més ni us entristiu,\nvostre dolor, ja ha durat prou!\n–proclama un àngel resplendent–\nque el Salvador ha ressuscitat!\n\nSigueu, Jesús, perennement\nel goig pasqual dels nostres cors,\ni als triomfs vostres agregueu\nels renascuts al do diví.\n\nA vós, Jesús, glorifiquem \nque resplendiu vencent la mort,\namb l’etern Pare i l’Esperit,\nara i per segles sense fi. \nAmén.",
+      "EvangelicalAntiphon": "El diumenge molt de matí, arribaren al sepulcre a la sortida del sol, al·leluia.",
+      "Prayers": "Adorem Crist, autor de la vida, que Déu ha ressusci­tat d’entre els morts i que ens ressuscitarà amb el seu poder, i diguem-li:\nCrist, vida nostra, salveu-nos.\n\nCrist, llum que brilla en les tenebres, Senyor de la vida i santificador de tots els homes,\n—\tfeu que esmercem aquest dia en la vostra lloança.\n\nSenyor, que heu sofert la passió i la creu,\n—\tfeu que, sofrint i morint amb vós, també amb vós ressuscitem.\n\nFill del Pare, mestre i germà nostre, que ens heu fet casa reial i sacerdots per al nostre Déu,\n—\tfeu que amb goig pasqual us oferim el sacrifici de lloança.\n\nRei de la glòria, nosaltres esperem el dia de la vostra manifestació,\n—\tfeu que puguem contemplar-vos gloriós i esdeve­nir semblants a vós.\n\nInvoquem ara el Pare amb les paraules que l’Esperit del Senyor ressuscitat posa als nostres llavis: Pare nostre.",
+      "FinalPrayer": "Oh Déu, avui per mitjà del vostre Unigènit, vencedor de la mort, ens heu obert les portes de l’eternitat; feu que els qui celebrem la solemnitat de la resurrecció del Senyor, renovats pel vostre Esperit, ressuscitem en la llum de la vida. Per nostre Senyor Jesucrist.",
+      "EvangelicalChant": "Beneït sigui el Senyor, Déu d’Israel,\nha visitat el seu poble i l’ha redimit.\nFa que s’aixequi un salvador poderós\na la casa de David, el seu servent,\ncom ho havia anunciat, de temps antic,\nper boca dels seus sants profetes.\n\nAixí ens salva, alliberant-nos dels enemics, \nde les mans dels qui ens volen mal,\nmogut per l’amor que el fa fidel als nostres pares,    \ni pel record de l’aliança santa,\nque jurà al nostre pare Abraham,\n\nprometent de concedir-nos que, sense por, \nlliures dels enemics, li donem culte \namb santedat i justícia tota la vida.\n\nI a tu, infant, et diran profeta de l’Altíssim, \nperquè aniràs al davant del Senyor\na preparar els seus camins.\n\nFaràs saber al poble que li ve la salvació,\nel perdó dels seus pecats,\nper l’amor entranyable del nostre Déu.\n\nPerquè ens estima, ens visitarà un sol, que ve del cel,\nper il·luminar els qui viuen a la fosca, \na les ombres de la mort,\ni guiar els nostres passos per camins de pau."
+    }
+  }
+]

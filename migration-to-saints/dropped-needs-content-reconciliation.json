@@ -1,0 +1,4938 @@
+[
+  {
+    "calendar": "catalonia",
+    "date": "3-25",
+    "catalanName": "Anunciació del Senyor",
+    "candidateId": "anunciacio_del_senyor",
+    "existing": [
+      {
+        "id": "annunciation_of_the_lord",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "3-25",
+    "catalanName": "Anunciació del Senyor",
+    "candidateId": "anunciacio_del_senyor_0325",
+    "existing": [
+      {
+        "id": "annunciation_of_the_lord",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-15",
+    "catalanName": "Assumpció de la Benaurada Verge Maria",
+    "candidateId": "assumpcio_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "assumption_of_the_blessed_virgin_mary",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-22",
+    "catalanName": "Benaurada Verge Maria Reina",
+    "candidateId": "benaurada_verge_maria_reina",
+    "existing": [
+      {
+        "id": "queenship_of_the_blessed_virgin_mary",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-2",
+    "catalanName": "Commemoració de tots els fidels difunts",
+    "candidateId": "commemoracio_de_tots_els_fidels_difunts",
+    "existing": [
+      {
+        "id": "commemoration_of_all_the_faithful_departed",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-5",
+    "catalanName": "Dedicació de la Basílica de Santa Maria",
+    "candidateId": "dedicacio_de_la_basilica_de_santa_maria",
+    "existing": [
+      {
+        "id": "dedication_of_the_basilica_of_saint_mary_major",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-9",
+    "catalanName": "Dedicació de la Basílica del Laterà",
+    "candidateId": "dedicacio_de_la_basilica_del_latera",
+    "existing": [
+      {
+        "id": "dedication_of_the_lateran_basilica",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-18",
+    "catalanName": "Dedicació de les Basíliques dels Sants Pere i Pau, apòstols",
+    "candidateId": "dedicacio_de_les_basiliques_dels_sants_pere_i_pau_apostols",
+    "existing": [
+      {
+        "id": "dedication_of_the_basilicas_of_saints_peter_and_paul_apostles",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-17",
+    "catalanName": "Els set sants fundadors de l’orde dels Servites",
+    "candidateId": "els_set_sants_fundadors_de_l_orde_dels_servites",
+    "existing": [
+      {
+        "id": "seven_holy_founders_of_the_servite_order",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-17",
+    "catalanName": "Els set sants fundadors de l’orde dels Servites",
+    "candidateId": "els_set_sants_fundadors_de_l_orde_dels_servites_0217",
+    "existing": [
+      {
+        "id": "seven_holy_founders_of_the_servite_order",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-14",
+    "catalanName": "Exaltació de la Santa Creu",
+    "candidateId": "exaltacio_de_la_santa_creu",
+    "existing": [
+      {
+        "id": "exaltation_of_the_holy_cross",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-8",
+    "catalanName": "Immaculada Concepció de la Benaurada Verge Maria",
+    "candidateId": "immaculada_concepcio_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "immaculate_conception_of_the_blessed_virgin_mary",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-13",
+    "catalanName": "Mare de Déu de Fàtima",
+    "candidateId": "mare_de_deu_de_fatima",
+    "existing": [
+      {
+        "id": "our_lady_of_fatima",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-13",
+    "catalanName": "Mare de Déu de Fàtima",
+    "candidateId": "mare_de_deu_de_fatima_0513",
+    "existing": [
+      {
+        "id": "our_lady_of_fatima",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-12",
+    "catalanName": "Mare de Déu de Guadalupe",
+    "candidateId": "mare_de_deu_de_guadalupe",
+    "existing": [
+      {
+        "id": "our_lady_of_guadalupe",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-10",
+    "catalanName": "Mare de Déu de Loreto",
+    "candidateId": "mare_de_deu_de_loreto",
+    "existing": [
+      {
+        "id": "our_lady_of_loreto",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "eulalia_of_merida_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-11",
+    "catalanName": "Mare de Déu de Lourdes",
+    "candidateId": "mare_de_deu_de_lourdes",
+    "existing": [
+      {
+        "id": "our_lady_of_lourdes",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-11",
+    "catalanName": "Mare de Déu de Lourdes",
+    "candidateId": "mare_de_deu_de_lourdes_0211",
+    "existing": [
+      {
+        "id": "our_lady_of_lourdes",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-16",
+    "catalanName": "Mare de Déu del Carme",
+    "candidateId": "mare_de_deu_del_carme",
+    "existing": [
+      {
+        "id": "our_lady_of_mount_carmel",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-12",
+    "catalanName": "Mare de Déu del Pilar",
+    "candidateId": "mare_de_deu_del_pilar",
+    "existing": [
+      {
+        "id": "our_lady_of_the_pillar",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-7",
+    "catalanName": "Mare de Déu del Roser",
+    "candidateId": "mare_de_deu_del_roser",
+    "existing": [
+      {
+        "id": "our_lady_of_the_rosary",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-15",
+    "catalanName": "Mare de Déu dels Dolors",
+    "candidateId": "mare_de_deu_dels_dolors",
+    "existing": [
+      {
+        "id": "our_lady_of_sorrows",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-29",
+    "catalanName": "Martiri de sant Joan Baptista",
+    "candidateId": "martiri_de_sant_joan_baptista",
+    "existing": [
+      {
+        "id": "passion_of_saint_john_the_baptist",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-24",
+    "catalanName": "Naixement de sant Joan Baptista",
+    "candidateId": "naixement_de_sant_joan_baptista",
+    "existing": [
+      {
+        "id": "nativity_of_john_the_baptist",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-21",
+    "catalanName": "Presentació de la Benaurada Verge Maria",
+    "candidateId": "presentacio_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "presentation_of_the_blessed_virgin_mary",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-2",
+    "catalanName": "Presentació del Senyor",
+    "candidateId": "presentacio_del_senyor",
+    "existing": [
+      {
+        "id": "presentation_of_the_lord",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-28",
+    "catalanName": "Sant Agustí, bisbe i doctor de l’Església",
+    "candidateId": "sant_agusti_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "augustine_of_hippo_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-27",
+    "catalanName": "Sant Agustí de Canterbury, bisbe",
+    "candidateId": "sant_agusti_de_canterbury_bisbe",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-27",
+    "catalanName": "Sant Agustí de Canterbury, bisbe",
+    "candidateId": "sant_agusti_de_canterbury_bisbe_0527",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-1",
+    "catalanName": "Sant Alfons Maria de Liguori, bisbe i doctor de l’Església",
+    "candidateId": "sant_alfons_maria_de_liguori_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "alphonsus_mary_liguori_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-30",
+    "catalanName": "Sant Andreu, apòstol",
+    "candidateId": "sant_andreu_apostol",
+    "existing": [
+      {
+        "id": "andrew_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-30",
+    "catalanName": "Sant Andreu, apòstol",
+    "candidateId": "sant_andreu_apostol_1130",
+    "existing": [
+      {
+        "id": "andrew_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-17",
+    "catalanName": "Sant Antoni, abat",
+    "candidateId": "sant_antoni_abat",
+    "existing": [
+      {
+        "id": "anthony_of_egypt_abbot",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-13",
+    "catalanName": "Sant Antoni de Pàdua, prevere i doctor de l’Església",
+    "candidateId": "sant_antoni_de_padua_prevere_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "immaculate_heart_of_mary",
+        "rank": "MEMORIAL"
+      },
+      {
+        "id": "anthony_of_padua_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-24",
+    "catalanName": "Sant Antoni Maria Claret i Clarà, bisbe",
+    "candidateId": "sant_antoni_maria_claret_i_clara_bisbe",
+    "existing": [
+      {
+        "id": "anthony_mary_claret_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-2",
+    "catalanName": "Sant Atanasi, bisbe i doctor de l’Església",
+    "candidateId": "sant_atanasi_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "athanasius_of_alexandria_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-24",
+    "catalanName": "Sant Bartomeu, apòstol",
+    "candidateId": "sant_bartomeu_apostol",
+    "existing": [
+      {
+        "id": "bartholomew_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-11",
+    "catalanName": "Sant Benet, abat, patró d’Europa",
+    "candidateId": "sant_benet_abat_patro_d_europa",
+    "existing": [
+      {
+        "id": "benedict_of_nursia_abbot",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-11",
+    "catalanName": "Sant Bernabé, apòstol",
+    "candidateId": "sant_bernabe_apostol",
+    "existing": [
+      {
+        "id": "barnabas_apostle",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-11",
+    "catalanName": "Sant Bernabé, apòstol",
+    "candidateId": "sant_bernabe_apostol_0611",
+    "existing": [
+      {
+        "id": "barnabas_apostle",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-20",
+    "catalanName": "Sant Bernardí de Siena, prevere",
+    "candidateId": "sant_bernardi_de_siena_prevere",
+    "existing": [
+      {
+        "id": "bernardine_of_siena_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-20",
+    "catalanName": "Sant Bernardí de Siena, prevere",
+    "candidateId": "sant_bernardi_de_siena_prevere_0520",
+    "existing": [
+      {
+        "id": "bernardine_of_siena_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-20",
+    "catalanName": "Sant Bernat, abat i doctor de l’Església",
+    "candidateId": "sant_bernat_abat_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "bernard_of_clairvaux_abbot",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-3",
+    "catalanName": "Sant Blai, bisbe i màrtir",
+    "candidateId": "sant_blai_bisbe_i_martir",
+    "existing": [
+      {
+        "id": "blaise_of_sebaste_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "ansgar_of_hamburg_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-15",
+    "catalanName": "Sant Bonaventura, bisbe i doctor de l’Església",
+    "candidateId": "sant_bonaventura_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "bonaventure_of_bagnoregio_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-5",
+    "catalanName": "Sant Bonifaci, bisbe i màrtir",
+    "candidateId": "sant_bonifaci_bisbe_i_martir",
+    "existing": [
+      {
+        "id": "boniface_of_mainz_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-5",
+    "catalanName": "Sant Bonifaci, bisbe i màrtir",
+    "candidateId": "sant_bonifaci_bisbe_i_martir_0605",
+    "existing": [
+      {
+        "id": "boniface_of_mainz_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-6",
+    "catalanName": "Sant Bru, prevere",
+    "candidateId": "sant_bru_prevere",
+    "existing": [
+      {
+        "id": "bruno_of_cologne_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-14",
+    "catalanName": "Sant Calixt I, papa i màrtir",
+    "candidateId": "sant_calixt_i_papa_i_martir",
+    "existing": [
+      {
+        "id": "callistus_i_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-14",
+    "catalanName": "Sant Camil de Lel·lis, prevere",
+    "candidateId": "sant_camil_de_lellis_prevere",
+    "existing": [
+      {
+        "id": "camillus_de_lellis_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-4",
+    "catalanName": "Sant Carles Borromeo, bisbe",
+    "candidateId": "sant_carles_borromeo_bisbe",
+    "existing": [
+      {
+        "id": "charles_borromeo_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "3-4",
+    "catalanName": "Sant Casimir",
+    "candidateId": "sant_casimir",
+    "existing": [
+      {
+        "id": "casimir_of_poland",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "3-4",
+    "catalanName": "Sant Casimir",
+    "candidateId": "sant_casimir_0304",
+    "existing": [
+      {
+        "id": "casimir_of_poland",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-27",
+    "catalanName": "Sant Ciril d’Alexandria, bisbe i doctor de l’Església",
+    "candidateId": "sant_ciril_d_alexandria_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "cyril_of_alexandria_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-23",
+    "catalanName": "Sant Climent I, papa i màrtir",
+    "candidateId": "sant_climent_i_papa_i_martir",
+    "existing": [
+      {
+        "id": "clement_i_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "columban_of_luxeuil_abbot",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-23",
+    "catalanName": "Sant Columbà, abat",
+    "candidateId": "sant_columba_abat",
+    "existing": [
+      {
+        "id": "clement_i_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "columban_of_luxeuil_abbot",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-11",
+    "catalanName": "Sant Damas I, papa",
+    "candidateId": "sant_damas_i_papa",
+    "existing": [
+      {
+        "id": "damasus_i_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-8",
+    "catalanName": "Sant Domènec de Guzmán, prevere",
+    "candidateId": "sant_domenec_de_guzman_prevere",
+    "existing": [
+      {
+        "id": "dominic_de_guzman_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-9",
+    "catalanName": "Sant Efrem, diaca i doctor de l’Església",
+    "candidateId": "sant_efrem_diaca_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "ephrem_the_syrian_deacon",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-9",
+    "catalanName": "Sant Efrem, diaca i doctor de l’Església",
+    "candidateId": "sant_efrem_diaca_i_doctor_de_l_esglesia_0609",
+    "existing": [
+      {
+        "id": "ephrem_the_syrian_deacon",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-26",
+    "catalanName": "Sant Esteve, protomàrtir",
+    "candidateId": "sant_esteve_protomartir",
+    "existing": [
+      {
+        "id": "stephen_the_first_martyr",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-9",
+    "catalanName": "Sant Eulogi de Còrdova, prevere i màrtir",
+    "candidateId": "sant_eulogi_de_cordova_prevere_i_martir",
+    "existing": [
+      {
+        "id": "eulogius_of_cordoba_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-9",
+    "catalanName": "Sant Eulogi de Còrdova, prevere i màrtir",
+    "candidateId": "sant_eulogi_de_cordova_prevere_i_martir_0109",
+    "existing": [
+      {
+        "id": "eulogius_of_cordoba_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-19",
+    "catalanName": "Sant Ezequiel Moreno Díaz, bisbe",
+    "candidateId": "sant_ezequiel_moreno_diaz_bisbe",
+    "existing": [
+      {
+        "id": "john_eudes_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "ezequiel_moreno_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-20",
+    "catalanName": "Sant Fabià, papa i màrtir",
+    "candidateId": "sant_fabia_papa_i_martir",
+    "existing": [
+      {
+        "id": "fabian_i_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "sebastian_of_milan_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "fructuosus_of_tarragona_bishop_and_augurius_of_tarragona_and_eulogius_of_tarragona_deacons_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-26",
+    "catalanName": "Sant Felip Neri, prevere",
+    "candidateId": "sant_felip_neri_prevere",
+    "existing": [
+      {
+        "id": "philip_neri_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-26",
+    "catalanName": "Sant Felip Neri, prevere",
+    "candidateId": "sant_felip_neri_prevere_0526",
+    "existing": [
+      {
+        "id": "philip_neri_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-30",
+    "catalanName": "Sant Ferran",
+    "candidateId": "sant_ferran",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-30",
+    "catalanName": "Sant Ferran",
+    "candidateId": "sant_ferran_0530",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-3",
+    "catalanName": "Sant Francesc de Borja, prevere",
+    "candidateId": "sant_francesc_de_borja_prevere",
+    "existing": [
+      {
+        "id": "francis_borgia_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-24",
+    "catalanName": "Sant Francesc de Sales, bisbe i doctor de l’Església",
+    "candidateId": "sant_francesc_de_sales_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "francis_de_sales_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-3",
+    "catalanName": "Sant Francesc Xavier, prevere",
+    "candidateId": "sant_francesc_xavier_prevere",
+    "existing": [
+      {
+        "id": "francis_xavier_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-7",
+    "catalanName": "Sant Gaietà, prevere",
+    "candidateId": "sant_gaieta_prevere",
+    "existing": [
+      {
+        "id": "sixtus_ii_pope_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "cajetan_of_thiene_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-19",
+    "catalanName": "Sant Gener, bisbe i màrtir",
+    "candidateId": "sant_gener_bisbe_i_martir",
+    "existing": [
+      {
+        "id": "januarius_i_of_benevento_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-27",
+    "catalanName": "Sant Gregori de Narek, abat i doctor de l'Església",
+    "candidateId": "sant_gregori_de_narek_abat_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "gregory_of_narek_abbot",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-27",
+    "catalanName": "Sant Gregori de Narek, abat i doctor de l'Església",
+    "candidateId": "sant_gregori_de_narek_abat_i_doctor_de_l_esglesia_0227",
+    "existing": [
+      {
+        "id": "gregory_of_narek_abbot",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-3",
+    "catalanName": "Sant Gregori el Gran, papa i doctor de l’Església",
+    "candidateId": "sant_gregori_el_gran_papa_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "gregory_i_the_great_pope",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-13",
+    "catalanName": "Sant Hilari, bisbe i doctor de l’Església",
+    "candidateId": "sant_hilari_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "hilary_of_poitiers_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-17",
+    "catalanName": "Sant Ignasi d’Antioquia, bisbe i màrtir",
+    "candidateId": "sant_ignasi_d_antioquia_bisbe_i_martir",
+    "existing": [
+      {
+        "id": "ignatius_of_antioch_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-31",
+    "catalanName": "Sant Ignasi de Loiola, prevere",
+    "candidateId": "sant_ignasi_de_loiola_prevere",
+    "existing": [
+      {
+        "id": "ignatius_of_loyola_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-23",
+    "catalanName": "Sant Ildefons, bisbe",
+    "candidateId": "sant_ildefons_bisbe",
+    "existing": [
+      {
+        "id": "ildephonsus_of_toledo_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "4-26",
+    "catalanName": "Sant Isidor, bisbe i doctor de l’Església",
+    "candidateId": "sant_isidor_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "isidore_of_seville_bishop",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-15",
+    "catalanName": "Sant Isidre llaurador",
+    "candidateId": "sant_isidre_llaurador",
+    "existing": [
+      {
+        "id": "isidore_the_farmer",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-15",
+    "catalanName": "Sant Isidre llaurador",
+    "candidateId": "sant_isidre_llaurador_0515",
+    "existing": [
+      {
+        "id": "isidore_the_farmer",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-25",
+    "catalanName": "Sant Jaume, apòstol, patró d’Espanya",
+    "candidateId": "sant_jaume_apostol_patro_d_espanya",
+    "existing": [
+      {
+        "id": "james_apostle",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-30",
+    "catalanName": "Sant Jeroni, prevere i doctor de l’Església",
+    "candidateId": "sant_jeroni_prevere_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "jerome_of_stridon_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-27",
+    "catalanName": "Sant Joan, apòstol i evangelista",
+    "candidateId": "sant_joan_apostol_i_evangelista",
+    "existing": [
+      {
+        "id": "holy_family_of_jesus_mary_and_joseph",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-31",
+    "catalanName": "Sant Joan Bosco, prevere",
+    "candidateId": "sant_joan_bosco_prevere",
+    "existing": [
+      {
+        "id": "john_bosco_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-10",
+    "catalanName": "Sant Joan d’Àvila, prevere i doctor de l’Església",
+    "candidateId": "sant_joan_d_avila_prevere_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "john_of_avila_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-4",
+    "catalanName": "Sant Joan Damascè, prevere i doctor de l’Església",
+    "candidateId": "sant_joan_damasce_prevere_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "john_damascene_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-23",
+    "catalanName": "Sant Joan de Capestrano, prevere",
+    "candidateId": "sant_joan_de_capestrano_prevere",
+    "existing": [
+      {
+        "id": "john_of_capistrano_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-9",
+    "catalanName": "Sant Joan Dídac Cuauhtlatoatzin",
+    "candidateId": "sant_joan_didac_cuauhtlatoatzin",
+    "existing": [
+      {
+        "id": "juan_diego_cuauhtlatoatzin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-19",
+    "catalanName": "Sant Joan Eudes, prevere",
+    "candidateId": "sant_joan_eudes_prevere",
+    "existing": [
+      {
+        "id": "john_eudes_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "ezequiel_moreno_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-9",
+    "catalanName": "Sant Joan Leonardi, prevere",
+    "candidateId": "sant_joan_leonardi_prevere",
+    "existing": [
+      {
+        "id": "denis_of_paris_bishop_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_leonardi_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-4",
+    "catalanName": "Sant Joan Maria Vianney, prevere",
+    "candidateId": "sant_joan_maria_vianney_prevere",
+    "existing": [
+      {
+        "id": "john_mary_vianney_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-22",
+    "catalanName": "Sant Joan Pau II, papa",
+    "candidateId": "sant_joan_pau_ii_papa",
+    "existing": [
+      {
+        "id": "john_paul_ii_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-11",
+    "catalanName": "Sant Joan XXIII, papa",
+    "candidateId": "sant_joan_xxiii_papa",
+    "existing": [
+      {
+        "id": "mary_soledad_torres_acosta_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "4-23",
+    "catalanName": "Sant Jordi, màrtir, patró secundari de Catalunya",
+    "candidateId": "sant_jordi_martir_patro_secundari_de_catalunya",
+    "existing": [
+      {
+        "id": "george_of_lydda_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "adalbert_of_prague_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-12",
+    "catalanName": "Sant Josafat, bisbe i màrtir",
+    "candidateId": "sant_josafat_bisbe_i_martir",
+    "existing": [
+      {
+        "id": "josaphat_kuntsevych_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "3-19",
+    "catalanName": "Sant Josep, espòs de la Benaurada Verge Maria",
+    "candidateId": "sant_josep_espos_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "joseph_spouse_of_mary",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-1",
+    "catalanName": "Sant Josep obrer",
+    "candidateId": "sant_josep_obrer",
+    "existing": [
+      {
+        "id": "joseph_the_worker",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-1",
+    "catalanName": "Sant Justí, màrtir",
+    "candidateId": "sant_justi_martir",
+    "existing": [
+      {
+        "id": "justin_martyr",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-1",
+    "catalanName": "Sant Justí, màrtir",
+    "candidateId": "sant_justi_martir_0601",
+    "existing": [
+      {
+        "id": "justin_martyr",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-13",
+    "catalanName": "Sant Leandre, bisbe",
+    "candidateId": "sant_leandre_bisbe",
+    "existing": [
+      {
+        "id": "leander_of_seville_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-10",
+    "catalanName": "Sant Lleó el Gran, papa i doctor de l’Església",
+    "candidateId": "sant_lleo_el_gran_papa_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "leo_i_the_great_pope",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-21",
+    "catalanName": "Sant Llorenç de Bríndisi, prevere i doctor de l’Església",
+    "candidateId": "sant_llorenc_de_brindisi_prevere_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "lawrence_of_brindisi_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-10",
+    "catalanName": "Sant Llorenç, diaca i màrtir",
+    "candidateId": "sant_llorenc_diaca_i_martir",
+    "existing": [
+      {
+        "id": "lawrence_of_rome_deacon",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-25",
+    "catalanName": "Sant Lluís de França",
+    "candidateId": "sant_lluis_de_franca",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "4-28",
+    "catalanName": "Sant Lluís Maria Grignion de Montfort, prevere",
+    "candidateId": "sant_lluis_maria_grignion_de_montfort_prevere",
+    "existing": [
+      {
+        "id": "peter_chanel_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "louis_grignion_de_montfort_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "4-25",
+    "catalanName": "Sant Marc, evangelista",
+    "candidateId": "sant_marc_evangelista",
+    "existing": [
+      {
+        "id": "mark_evangelist",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-3",
+    "catalanName": "Sant Martí de Porres, religiós",
+    "candidateId": "sant_marti_de_porres_religios",
+    "existing": [
+      {
+        "id": "martin_de_porres_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-11",
+    "catalanName": "Sant Martí de Tours, bisbe",
+    "candidateId": "sant_marti_de_tours_bisbe",
+    "existing": [
+      {
+        "id": "martin_of_tours_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-21",
+    "catalanName": "Sant Mateu, apòstol i evangelista",
+    "candidateId": "sant_mateu_apostol_i_evangelista",
+    "existing": [
+      {
+        "id": "matthew_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-14",
+    "catalanName": "Sant Maties, apòstol",
+    "candidateId": "sant_maties_apostol",
+    "existing": [
+      {
+        "id": "matthias_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-14",
+    "catalanName": "Sant Maties, apòstol",
+    "candidateId": "sant_maties_apostol_0514",
+    "existing": [
+      {
+        "id": "matthias_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-14",
+    "catalanName": "Sant Maximilià Maria Kolbe, prevere i màrtir",
+    "candidateId": "sant_maximilia_maria_kolbe_prevere_i_martir",
+    "existing": [
+      {
+        "id": "maximilian_mary_raymund_kolbe_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-6",
+    "catalanName": "Sant Norbert, bisbe",
+    "candidateId": "sant_norbert_bisbe",
+    "existing": [
+      {
+        "id": "norbert_of_xanten_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-6",
+    "catalanName": "Sant Norbert, bisbe",
+    "candidateId": "sant_norbert_bisbe_0606",
+    "existing": [
+      {
+        "id": "norbert_of_xanten_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-3",
+    "catalanName": "Sant Òscar, bisbe",
+    "candidateId": "sant_oscar_bisbe",
+    "existing": [
+      {
+        "id": "blaise_of_sebaste_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "ansgar_of_hamburg_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-12",
+    "catalanName": "Sant Pancraç, màrtir",
+    "candidateId": "sant_pancrac_martir",
+    "existing": [
+      {
+        "id": "nereus_of_terracina_and_achilleus_of_terracina_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "pancras_of_rome_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-12",
+    "catalanName": "Sant Pancraç, màrtir",
+    "candidateId": "sant_pancrac_martir_0512",
+    "existing": [
+      {
+        "id": "nereus_of_terracina_and_achilleus_of_terracina_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "pancras_of_rome_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-17",
+    "catalanName": "Sant Pasqual Bailón, religiós",
+    "candidateId": "sant_pasqual_bailon_religios",
+    "existing": [
+      {
+        "id": "ascension_of_the_lord",
+        "rank": "SOLEMNITY"
+      },
+      {
+        "id": "paschal_baylon_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-17",
+    "catalanName": "Sant Pasqual Bailón, religiós",
+    "candidateId": "sant_pasqual_bailon_religios_0517",
+    "existing": [
+      {
+        "id": "ascension_of_the_lord",
+        "rank": "SOLEMNITY"
+      },
+      {
+        "id": "paschal_baylon_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-29",
+    "catalanName": "Sant Pau VI, papa",
+    "candidateId": "sant_pau_vi_papa",
+    "existing": [
+      {
+        "id": "paul_vi_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-29",
+    "catalanName": "Sant Pau VI, papa",
+    "candidateId": "sant_pau_vi_papa_0529",
+    "existing": [
+      {
+        "id": "paul_vi_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-26",
+    "catalanName": "Sant Pelai, màrtir",
+    "candidateId": "sant_pelai_martir",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "4-28",
+    "catalanName": "Sant Pere Chanel, prevere i màrtir",
+    "candidateId": "sant_pere_chanel_prevere_i_martir",
+    "existing": [
+      {
+        "id": "peter_chanel_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "louis_grignion_de_montfort_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-9",
+    "catalanName": "Sant Pere Claver, prevere",
+    "candidateId": "sant_pere_claver_prevere",
+    "existing": [
+      {
+        "id": "peter_claver_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-30",
+    "catalanName": "Sant Pere Crisòleg, bisbe i doctor de l’Església",
+    "candidateId": "sant_pere_crisoleg_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-21",
+    "catalanName": "Sant Pere Damià, bisbe i doctor de l’Església",
+    "candidateId": "sant_pere_damia_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "peter_damian_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-21",
+    "catalanName": "Sant Pere Damià, bisbe i doctor de l’Església",
+    "candidateId": "sant_pere_damia_bisbe_i_doctor_de_l_esglesia_0221",
+    "existing": [
+      {
+        "id": "peter_damian_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-23",
+    "catalanName": "Sant Pius de Pietrelcina, prevere",
+    "candidateId": "sant_pius_de_pietrelcina_prevere",
+    "existing": [
+      {
+        "id": "pius_francesco_forgione_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "4-30",
+    "catalanName": "Sant Pius V, papa",
+    "candidateId": "sant_pius_v_papa",
+    "existing": [
+      {
+        "id": "pius_v_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-21",
+    "catalanName": "Sant Pius X, papa",
+    "candidateId": "sant_pius_x_papa",
+    "existing": [
+      {
+        "id": "pius_x_pope",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-7",
+    "catalanName": "Sant Ramon de Penyafort, prevere",
+    "candidateId": "sant_ramon_de_penyafort_prevere",
+    "existing": [
+      {
+        "id": "raymond_of_penyafort_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-17",
+    "catalanName": "Sant Robert Bel·larmino, bisbe i doctor de l’Església",
+    "candidateId": "sant_robert_bellarmino_bisbe_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "hildegard_of_bingen_abbess",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "robert_bellarmine_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-19",
+    "catalanName": "Sant Romuald, abat",
+    "candidateId": "sant_romuald_abat",
+    "existing": [
+      {
+        "id": "romuald_of_ravenna_abbot",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-20",
+    "catalanName": "Sant Sebastià, màrtir",
+    "candidateId": "sant_sebastia_martir",
+    "existing": [
+      {
+        "id": "fabian_i_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "sebastian_of_milan_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "fructuosus_of_tarragona_bishop_and_augurius_of_tarragona_and_eulogius_of_tarragona_deacons_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-3",
+    "catalanName": "Sant Tomàs, apòstol",
+    "candidateId": "sant_tomas_apostol",
+    "existing": [
+      {
+        "id": "thomas_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-28",
+    "catalanName": "Sant Tomàs d’Aquino, prevere i doctor de l’Església",
+    "candidateId": "sant_tomas_d_aquino_prevere_i_doctor_de_l_esglesia",
+    "existing": [
+      {
+        "id": "thomas_aquinas_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-10",
+    "catalanName": "Sant Tomàs de Villanueva, bisbe",
+    "candidateId": "sant_tomas_de_villanueva_bisbe",
+    "existing": [
+      {
+        "id": "thomas_of_villanova_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-22",
+    "catalanName": "Sant Vicenç, diaca i màrtir",
+    "candidateId": "sant_vicenc_diaca_i_martir",
+    "existing": [
+      {
+        "id": "vincent_of_saragossa_deacon",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-24",
+    "catalanName": "Sant Xarbel Makluf, prevere",
+    "candidateId": "sant_xarbel_makluf_prevere",
+    "existing": [
+      {
+        "id": "sharbel_makhluf_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-5",
+    "catalanName": "Santa Àgata, verge i màrtir",
+    "candidateId": "santa_agata_verge_i_martir",
+    "existing": [
+      {
+        "id": "agatha_of_sicily_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-5",
+    "catalanName": "Santa Àgata, verge i màrtir",
+    "candidateId": "santa_agata_verge_i_martir_0205",
+    "existing": [
+      {
+        "id": "agatha_of_sicily_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-27",
+    "catalanName": "Santa Àngela de Mèrici, verge",
+    "candidateId": "santa_angela_de_merici_verge",
+    "existing": [
+      {
+        "id": "angela_merici_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-23",
+    "catalanName": "Santa Brígida, religiosa, patrona d’Europa",
+    "candidateId": "santa_brigida_religiosa_patrona_d_europa",
+    "existing": [
+      {
+        "id": "bridget_of_sweden_religious",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-25",
+    "catalanName": "Santa Caterina d’Alexandria, verge i màrtir",
+    "candidateId": "santa_caterina_d_alexandria_verge_i_martir",
+    "existing": [
+      {
+        "id": "catherine_of_alexandria_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "4-29",
+    "catalanName": "Santa Caterina de Siena, verge i doctora de l’Església, patrona d’Europa",
+    "candidateId": "santa_caterina_de_siena_verge_i_doctora_de_l_esglesia_patrona_d_europa",
+    "existing": [
+      {
+        "id": "catherine_of_siena_virgin",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-22",
+    "catalanName": "Santa Cecília, verge i màrtir",
+    "candidateId": "santa_cecilia_verge_i_martir",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_king_of_the_universe",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-11",
+    "catalanName": "Santa Clara, verge",
+    "candidateId": "santa_clara_verge",
+    "existing": [
+      {
+        "id": "clare_of_assisi_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-10",
+    "catalanName": "Santa Escolàstica, verge",
+    "candidateId": "santa_escolastica_verge",
+    "existing": [
+      {
+        "id": "scholastica_of_nursia_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-10",
+    "catalanName": "Santa Escolàstica, verge",
+    "candidateId": "santa_escolastica_verge_0210",
+    "existing": [
+      {
+        "id": "scholastica_of_nursia_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-10",
+    "catalanName": "Santa Eulàlia de Mèrida, verge i màrtir",
+    "candidateId": "santa_eulalia_de_merida_verge_i_martir",
+    "existing": [
+      {
+        "id": "our_lady_of_loreto",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "eulalia_of_merida_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-16",
+    "catalanName": "Santa Hedvig, religiosa",
+    "candidateId": "santa_hedvig_religiosa",
+    "existing": [
+      {
+        "id": "hedwig_of_silesia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "margaret_mary_alacoque_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-17",
+    "catalanName": "Santa Hildegarda de Bingen, verge i doctora de l'Església",
+    "candidateId": "santa_hildegarda_de_bingen_verge_i_doctora_de_l_esglesia",
+    "existing": [
+      {
+        "id": "hildegard_of_bingen_abbess",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "robert_bellarmine_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-17",
+    "catalanName": "Santa Isabel d’Hongria, religiosa",
+    "candidateId": "santa_isabel_d_hongria_religiosa",
+    "existing": [
+      {
+        "id": "elizabeth_of_hungary_religious",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-4",
+    "catalanName": "Santa Isabel de Portugal",
+    "candidateId": "santa_isabel_de_portugal",
+    "existing": [
+      {
+        "id": "elizabeth_of_portugal",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-12",
+    "catalanName": "Santa Joana Francesca de Chantal, religiosa",
+    "candidateId": "santa_joana_francesca_de_chantal_religiosa",
+    "existing": [
+      {
+        "id": "jane_frances_de_chantal_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-16",
+    "catalanName": "Santa Margarida Maria Alacoque, verge",
+    "candidateId": "santa_margarida_maria_alacoque_verge",
+    "existing": [
+      {
+        "id": "hedwig_of_silesia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "margaret_mary_alacoque_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-22",
+    "catalanName": "Santa Maria Magdalena",
+    "candidateId": "santa_maria_magdalena",
+    "existing": [
+      {
+        "id": "mary_magdalene",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-15",
+    "catalanName": "Santa Maria Miquela del Santíssim Sagrament, verge",
+    "candidateId": "santa_maria_miquela_del_santissim_sagrament_verge",
+    "existing": [
+      {
+        "id": "maria_micaela_of_the_blessed_sacrament_desmaisieres_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-11",
+    "catalanName": "Santa Maria Soledat Torres Acosta, verge",
+    "candidateId": "santa_maria_soledat_torres_acosta_verge",
+    "existing": [
+      {
+        "id": "mary_soledad_torres_acosta_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-27",
+    "catalanName": "Santa Mònica",
+    "candidateId": "santa_monica",
+    "existing": [
+      {
+        "id": "monica_of_hippo",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-22",
+    "catalanName": "Santa Rita de Càssia, religiosa",
+    "candidateId": "santa_rita_de_cassia_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-22",
+    "catalanName": "Santa Rita de Càssia, religiosa",
+    "candidateId": "santa_rita_de_cassia_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-9",
+    "catalanName": "Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
+    "candidateId": "santa_teresa_beneta_de_la_creu_verge_i_martir_patrona_d_europa",
+    "existing": [
+      {
+        "id": "teresa_benedicta_of_the_cross_stein_virgin",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-15",
+    "catalanName": "Santa Teresa de Jesús, verge i doctora de l’Església",
+    "candidateId": "santa_teresa_de_jesus_verge_i_doctora_de_l_esglesia",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_of_avila_virgin",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-1",
+    "catalanName": "Santa Teresa de l’Infant Jesús, verge i doctora de l’Església",
+    "candidateId": "santa_teresa_de_l_infant_jesus_verge_i_doctora_de_l_esglesia",
+    "existing": [
+      {
+        "id": "therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-3",
+    "catalanName": "Santíssim Nom de Jesús",
+    "candidateId": "santissim_nom_de_jesus",
+    "existing": [
+      {
+        "id": "most_holy_name_of_jesus",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-12",
+    "catalanName": "Santíssim Nom de Maria",
+    "candidateId": "santissim_nom_de_maria",
+    "existing": [
+      {
+        "id": "most_holy_name_of_mary",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-9",
+    "catalanName": "Sants Agustí Zhao Rong, prevere, i companys, màrtirs",
+    "candidateId": "sants_agusti_zhao_rong_prevere_i_companys_martirs",
+    "existing": [
+      {
+        "id": "augustine_zhao_rong_priest_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-24",
+    "catalanName": "Sants Andreu Dũng-Lac, prevere, i companys, màrtirs",
+    "candidateId": "sants_andreu_dung_lac_prevere_i_companys_martirs",
+    "existing": [
+      {
+        "id": "andrew_dung_lac_priest_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-2",
+    "catalanName": "Sants Àngels de la Guarda",
+    "candidateId": "sants_angels_de_la_guarda",
+    "existing": [
+      {
+        "id": "holy_guardian_angels",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-29",
+    "catalanName": "Sants arcàngels Miquel, Gabriel i Rafael",
+    "candidateId": "sants_arcangels_miquel_gabriel_i_rafael",
+    "existing": [
+      {
+        "id": "michael_gabriel_and_raphael_archangels",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "1-2",
+    "catalanName": "Sants Basili el Gran i Gregori Nazianzè, bisbes i doctors de l’Església",
+    "candidateId": "sants_basili_el_gran_i_gregori_nazianze_bisbes_i_doctors_de_l_esglesia",
+    "existing": [
+      {
+        "id": "basil_the_great_and_gregory_nazianzen_bishops",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-3",
+    "catalanName": "Sants Carles Luanga i companys, màrtirs",
+    "candidateId": "sants_carles_luanga_i_companys_martirs",
+    "existing": [
+      {
+        "id": "charles_lwanga_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-3",
+    "catalanName": "Sants Carles Luanga i companys, màrtirs",
+    "candidateId": "sants_carles_luanga_i_companys_martirs_0603",
+    "existing": [
+      {
+        "id": "charles_lwanga_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-14",
+    "catalanName": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
+    "candidateId": "sants_ciril_monjo_i_metodi_bisbe_patrons_d_europa",
+    "existing": [
+      {
+        "id": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-14",
+    "catalanName": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
+    "candidateId": "sants_ciril_monjo_i_metodi_bisbe_patrons_d_europa_0214",
+    "existing": [
+      {
+        "id": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-16",
+    "catalanName": "Sants Corneli, papa, i Cebrià, bisbe, màrtirs",
+    "candidateId": "sants_corneli_papa_i_cebria_bisbe_martirs",
+    "existing": [
+      {
+        "id": "cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "9-26",
+    "catalanName": "Sants Cosme i Damià, màrtirs",
+    "candidateId": "sants_cosme_i_damia_martirs",
+    "existing": [
+      {
+        "id": "cosmas_of_cilicia_and_damian_of_cilicia_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-21",
+    "catalanName": "Sants Cristòfor Magallanes, prevere, i companys, màrtirs",
+    "candidateId": "sants_cristofor_magallanes_prevere_i_companys_martirs",
+    "existing": [
+      {
+        "id": "christopher_magallanes_priest_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-21",
+    "catalanName": "Sants Cristòfor Magallanes, prevere, i companys, màrtirs",
+    "candidateId": "sants_cristofor_magallanes_prevere_i_companys_martirs_0521",
+    "existing": [
+      {
+        "id": "christopher_magallanes_priest_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-9",
+    "catalanName": "Sants Dionís, bisbe, i companys, màrtirs",
+    "candidateId": "sants_dionis_bisbe_i_companys_martirs",
+    "existing": [
+      {
+        "id": "denis_of_paris_bishop_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_leonardi_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "12-28",
+    "catalanName": "Sants Innocents, màrtirs",
+    "candidateId": "sants_innocents_martirs",
+    "existing": [
+      {
+        "id": "holy_innocents_martyrs",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-22",
+    "catalanName": "Sants Joan Fisher, bisbe, i Tomàs More, màrtirs",
+    "candidateId": "sants_joan_fisher_bisbe_i_tomas_more_martirs",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-2",
+    "catalanName": "Sants Marcel·lí i Pere, màrtirs",
+    "candidateId": "sants_marcelli_i_pere_martirs",
+    "existing": [
+      {
+        "id": "marcellinus_of_rome_and_peter_the_exorcist_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-2",
+    "catalanName": "Sants Marcel·lí i Pere, màrtirs",
+    "candidateId": "sants_marcelli_i_pere_martirs_0602",
+    "existing": [
+      {
+        "id": "marcellinus_of_rome_and_peter_the_exorcist_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "7-29",
+    "catalanName": "Sants Marta, Maria i Llàtzer",
+    "candidateId": "sants_marta_maria_i_llatzer",
+    "existing": [
+      {
+        "id": "martha_of_bethany_mary_of_bethany_and_lazarus_of_bethany",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-12",
+    "catalanName": "Sants Nereu i Aquileu, màrtirs",
+    "candidateId": "sants_nereu_i_aquileu_martirs",
+    "existing": [
+      {
+        "id": "nereus_of_terracina_and_achilleus_of_terracina_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "pancras_of_rome_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-12",
+    "catalanName": "Sants Nereu i Aquileu, màrtirs",
+    "candidateId": "sants_nereu_i_aquileu_martirs_0512",
+    "existing": [
+      {
+        "id": "nereus_of_terracina_and_achilleus_of_terracina_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "pancras_of_rome_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-6",
+    "catalanName": "Sants Pau Miki i companys, màrtirs",
+    "candidateId": "sants_pau_miki_i_companys_martirs",
+    "existing": [
+      {
+        "id": "paul_miki_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "2-6",
+    "catalanName": "Sants Pau Miki i companys, màrtirs",
+    "candidateId": "sants_pau_miki_i_companys_martirs_0206",
+    "existing": [
+      {
+        "id": "paul_miki_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-29",
+    "catalanName": "Sants Pere i Pau, apòstols",
+    "candidateId": "sants_pere_i_pau_apostols",
+    "existing": [
+      {
+        "id": "peter_and_paul_apostles",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-6",
+    "catalanName": "Sants Pere Poveda Castroverde i Innocenci de la Immaculada Canoura Arnau, preveres, i companys, màrtirs",
+    "candidateId": "sants_pere_poveda_castroverde_i_innocenci_de_la_immaculada_canoura_arnau_preveres_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_poveda_and_innocent_of_mary_immaculate_canoura_priests_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-13",
+    "catalanName": "Sants Poncià, papa, i Hipòlit, prevere, màrtirs",
+    "candidateId": "sants_poncia_papa_i_hipolit_prevere_martirs",
+    "existing": [
+      {
+        "id": "pontian_i_pope_and_hippolytus_of_rome_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "6-30",
+    "catalanName": "Sants protomàrtirs de l’Església romana",
+    "candidateId": "sants_protomartirs_de_l_esglesia_romana",
+    "existing": [
+      {
+        "id": "first_martyrs_of_the_holy_roman_church",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "10-28",
+    "catalanName": "Sants Simó i Judes, apòstols",
+    "candidateId": "sants_simo_i_judes_apostols",
+    "existing": [
+      {
+        "id": "simon_and_jude_apostles",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-7",
+    "catalanName": "Sants Sixt II, papa, i companys, màrtirs",
+    "candidateId": "sants_sixt_ii_papa_i_companys_martirs",
+    "existing": [
+      {
+        "id": "sixtus_ii_pope_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "cajetan_of_thiene_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "11-1",
+    "catalanName": "Tots Sants",
+    "candidateId": "tots_sants",
+    "existing": [
+      {
+        "id": "all_saints",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "8-6",
+    "catalanName": "Transfiguració del Senyor",
+    "candidateId": "transfiguracio_del_senyor",
+    "existing": [
+      {
+        "id": "transfiguration_of_the_lord",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-31",
+    "catalanName": "Visitació de la Benaurada Verge Maria",
+    "candidateId": "visitacio_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "most_holy_trinity",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "catalonia",
+    "date": "5-31",
+    "catalanName": "Visitació de la Benaurada Verge Maria",
+    "candidateId": "visitacio_de_la_benaurada_verge_maria_0531",
+    "existing": [
+      {
+        "id": "most_holy_trinity",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-andorra",
+    "date": "9-8",
+    "catalanName": "Mare de Déu de Meritxell",
+    "candidateId": "mare_de_deu_de_meritxell",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "6-6",
+    "catalanName": "Beat Josep M. Peris i Polo, prevere i màrtir",
+    "candidateId": "beat_josep_m_peris_i_polo_prevere_i_martir",
+    "existing": [
+      {
+        "id": "norbert_of_xanten_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "6-6",
+    "catalanName": "Beat Josep M. Peris i Polo, prevere i màrtir",
+    "candidateId": "beat_josep_m_peris_i_polo_prevere_i_martir_0606",
+    "existing": [
+      {
+        "id": "norbert_of_xanten_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "5-27",
+    "catalanName": "Beat Josep Tous i Soler, prevere",
+    "candidateId": "beat_josep_tous_i_soler_prevere",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "5-27",
+    "catalanName": "Beat Josep Tous i Soler, prevere",
+    "candidateId": "beat_josep_tous_i_soler_prevere_0527",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere_0530",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "7-30",
+    "catalanName": "Beats Joan Antoni Burró i Mas, religiós, i companys, màrtirs",
+    "candidateId": "beats_joan_antoni_burro_i_mas_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "11-18",
+    "catalanName": "Dedicació de la Catedral de Barcelona",
+    "candidateId": "dedicacio_de_la_catedral_de_barcelona",
+    "existing": [
+      {
+        "id": "dedication_of_the_basilicas_of_saints_peter_and_paul_apostles",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "11-6",
+    "catalanName": "Sant Sever, bisbe i màrtir",
+    "candidateId": "sant_sever_bisbe_i_martir",
+    "existing": [
+      {
+        "id": "peter_poveda_and_innocent_of_mary_immaculate_canoura_priests_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "9-19",
+    "catalanName": "Santa Maria de Cervelló, verge",
+    "candidateId": "santa_maria_de_cervello_verge",
+    "existing": [
+      {
+        "id": "januarius_i_of_benevento_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-barcelona",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "7-30",
+    "catalanName": "Beats Cosme Brun i Ararà, religiós, i companys, màrtirs",
+    "candidateId": "beats_cosme_brun_i_arara_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "8-13",
+    "catalanName": "Beats Jaume Falgarona i Vilanova, religiós, i companys, màrtirs",
+    "candidateId": "beats_jaume_falgarona_i_vilanova_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "pontian_i_pope_and_hippolytus_of_rome_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "9-21",
+    "catalanName": "Dedicació de la Catedral de Girona",
+    "candidateId": "dedicacio_de_la_catedral_de_girona",
+    "existing": [
+      {
+        "id": "matthew_apostle",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "8-1",
+    "catalanName": "Sant Feliu, màrtir",
+    "candidateId": "sant_feliu_martir",
+    "existing": [
+      {
+        "id": "alphonsus_mary_liguori_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "6-2",
+    "catalanName": "Sants Germà, Paulí, Just i Sici, màrtirs",
+    "candidateId": "sants_germa_pauli_just_i_sici_martirs",
+    "existing": [
+      {
+        "id": "marcellinus_of_rome_and_peter_the_exorcist_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-girona",
+    "date": "6-2",
+    "catalanName": "Sants Germà, Paulí, Just i Sici, màrtirs",
+    "candidateId": "sants_germa_pauli_just_i_sici_martirs_0602",
+    "existing": [
+      {
+        "id": "marcellinus_of_rome_and_peter_the_exorcist_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "8-13",
+    "catalanName": "Beats Josep M. Ormo i Seró, religiós, i companys, màrtirs",
+    "candidateId": "beats_josep_m_ormo_i_sero_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "pontian_i_pope_and_hippolytus_of_rome_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "5-28",
+    "catalanName": "Dedicació de la Catedral de Lleida",
+    "candidateId": "dedicacio_de_la_catedral_de_lleida",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "5-28",
+    "catalanName": "Dedicació de la Catedral de Lleida",
+    "candidateId": "dedicacio_de_la_catedral_de_lleida_0528",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "10-2",
+    "catalanName": "Mare de Déu de l’Acadèmia",
+    "candidateId": "mare_de_deu_de_l_academia",
+    "existing": [
+      {
+        "id": "holy_guardian_angels",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "10-2",
+    "catalanName": "Mare de Déu de l’Acadèmia",
+    "candidateId": "mare_de_deu_de_l_academia_1002",
+    "existing": [
+      {
+        "id": "holy_guardian_angels",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "1-28",
+    "catalanName": "Sant Valeri, bisbe",
+    "candidateId": "sant_valeri_bisbe",
+    "existing": [
+      {
+        "id": "thomas_aquinas_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-lleida",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "7-14",
+    "catalanName": "Beat Gaspar de Bono, prevere",
+    "candidateId": "beat_gaspar_de_bono_prevere",
+    "existing": [
+      {
+        "id": "camillus_de_lellis_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "7-21",
+    "catalanName": "Beat Simó Reynés, prevere, i companys, màrtirs",
+    "candidateId": "beat_simo_reynes_prevere_i_companys_martirs",
+    "existing": [
+      {
+        "id": "lawrence_of_brindisi_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "2-27",
+    "catalanName": "Beata Francinaina de la Mare de Déu dels Dolors de Maria, verge",
+    "candidateId": "beata_francinaina_de_la_mare_de_deu_dels_dolors_de_maria_verge",
+    "existing": [
+      {
+        "id": "gregory_of_narek_abbot",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "10-1",
+    "catalanName": "Dedicació de la Seu de Mallorca",
+    "candidateId": "dedicacio_de_la_seu_de_mallorca",
+    "existing": [
+      {
+        "id": "therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "12-8",
+    "catalanName": "Immaculada Concepció de la Benaurada Verge Maria",
+    "candidateId": "immaculada_concepcio_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "immaculate_conception_of_the_blessed_virgin_mary",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "9-12",
+    "catalanName": "La Mare de Déu de Lluc",
+    "candidateId": "la_mare_de_deu_de_lluc",
+    "existing": [
+      {
+        "id": "most_holy_name_of_mary",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "8-26",
+    "catalanName": "Sant Juníper Serra, prevere",
+    "candidateId": "sant_juniper_serra_prevere",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "9-9",
+    "catalanName": "Sant Pere Claver, prevere",
+    "candidateId": "sant_pere_claver_prevere",
+    "existing": [
+      {
+        "id": "peter_claver_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "1-20",
+    "catalanName": "Sant Sebastià, màrtir",
+    "candidateId": "sant_sebastia_martir",
+    "existing": [
+      {
+        "id": "fabian_i_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "sebastian_of_milan_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "fructuosus_of_tarragona_bishop_and_augurius_of_tarragona_and_eulogius_of_tarragona_deacons_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-mallorca",
+    "date": "1-21",
+    "catalanName": "Santa Agnès, verge i màrtir",
+    "candidateId": "santa_agnes_verge_i_martir",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-menorca",
+    "date": "11-6",
+    "catalanName": "Beat Joan Huguet i beat Josep Castell, preveres, beat Àngel de Ferreries, i companys màrtirs",
+    "candidateId": "beat_joan_huguet_i_beat_josep_castell_preveres_beat_angel_de_ferreries_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_poveda_and_innocent_of_mary_immaculate_canoura_priests_and_companions_martyrs",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-menorca",
+    "date": "10-24",
+    "catalanName": "Sant Alonso Rodríguez, religiós",
+    "candidateId": "sant_alonso_rodriguez_religios",
+    "existing": [
+      {
+        "id": "anthony_mary_claret_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-menorca",
+    "date": "1-17",
+    "catalanName": "Sant Antoni, abat",
+    "candidateId": "sant_antoni_abat",
+    "existing": [
+      {
+        "id": "anthony_of_egypt_abbot",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-menorca",
+    "date": "6-11",
+    "catalanName": "Santa Maria Rosa Molas i Vallvé",
+    "candidateId": "santa_maria_rosa_molas_i_vallve",
+    "existing": [
+      {
+        "id": "barnabas_apostle",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-menorca",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "6-6",
+    "catalanName": "Beat Josep M. Peris i Polo, prevere i màrtir",
+    "candidateId": "beat_josep_m_peris_i_polo_prevere_i_martir",
+    "existing": [
+      {
+        "id": "norbert_of_xanten_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "6-6",
+    "catalanName": "Beat Josep M. Peris i Polo, prevere i màrtir",
+    "candidateId": "beat_josep_m_peris_i_polo_prevere_i_martir_0606",
+    "existing": [
+      {
+        "id": "norbert_of_xanten_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-27",
+    "catalanName": "Beat Josep Tous i Soler, prevere",
+    "candidateId": "beat_josep_tous_i_soler_prevere",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-27",
+    "catalanName": "Beat Josep Tous i Soler, prevere",
+    "candidateId": "beat_josep_tous_i_soler_prevere_0527",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere_0530",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "7-30",
+    "catalanName": "Beats Cristí Roca i Huguet, prevere, Constanci Roca i Huguet, religiós, i companys, màrtirs",
+    "candidateId": "beats_cristi_roca_i_huguet_prevere_constanci_roca_i_huguet_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-26",
+    "catalanName": "Dedicació de la Catedral de Sant Feliu de Llobregat",
+    "candidateId": "dedicacio_de_la_catedral_de_sant_feliu_de_llobregat",
+    "existing": [
+      {
+        "id": "philip_neri_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-26",
+    "catalanName": "Dedicació de la Catedral de Sant Feliu de Llobregat",
+    "candidateId": "dedicacio_de_la_catedral_de_sant_feliu_de_llobregat_0526",
+    "existing": [
+      {
+        "id": "philip_neri_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-28",
+    "catalanName": "Sant Felip Neri, prevere",
+    "candidateId": "sant_felip_neri_prevere",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-28",
+    "catalanName": "Sant Felip Neri, prevere",
+    "candidateId": "sant_felip_neri_prevere_0528",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "9-19",
+    "catalanName": "Santa Maria de Cervelló, verge",
+    "candidateId": "santa_maria_de_cervello_verge",
+    "existing": [
+      {
+        "id": "januarius_i_of_benevento_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-sant-feliu-de-llobregat",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "8-13",
+    "catalanName": "Beats Antoni Dalmau i Rosich, religiós, i companys, màrtirs",
+    "candidateId": "beats_antoni_dalmau_i_rosich_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "pontian_i_pope_and_hippolytus_of_rome_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "11-10",
+    "catalanName": "Dedicació de la Catedral de Solsona",
+    "candidateId": "dedicacio_de_la_catedral_de_solsona",
+    "existing": [
+      {
+        "id": "leo_i_the_great_pope",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "11-3",
+    "catalanName": "Sant Ermengol, bisbe",
+    "candidateId": "sant_ermengol_bisbe",
+    "existing": [
+      {
+        "id": "martin_de_porres_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "11-3",
+    "catalanName": "Sant Ermengol, bisbe",
+    "candidateId": "sant_ermengol_bisbe_1103",
+    "existing": [
+      {
+        "id": "martin_de_porres_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "5-28",
+    "catalanName": "Sant Just, bisbe",
+    "candidateId": "sant_just_bisbe",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "5-28",
+    "catalanName": "Sant Just, bisbe",
+    "candidateId": "sant_just_bisbe_0528",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-solsona",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "7-30",
+    "catalanName": "Beats Eusebi Forcades i Ferraté i Antoni Llauradó i Parisi, religiosos, i companys, màrtirs",
+    "candidateId": "beats_eusebi_forcades_i_ferrate_i_antoni_llaurado_i_parisi_religiosos_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "8-13",
+    "catalanName": "Beats Tomàs Capdevila i Miró, religiós, i companys, màrtirs",
+    "candidateId": "beats_tomas_capdevila_i_miro_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "pontian_i_pope_and_hippolytus_of_rome_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "7-4",
+    "catalanName": "Dedicació de la Catedral de Tarragona",
+    "candidateId": "dedicacio_de_la_catedral_de_tarragona",
+    "existing": [
+      {
+        "id": "elizabeth_of_portugal",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "1-27",
+    "catalanName": "Sant Enric d’Ossó i Cervelló, prevere",
+    "candidateId": "sant_enric_d_osso_i_cervello_prevere",
+    "existing": [
+      {
+        "id": "angela_merici_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "8-19",
+    "catalanName": "Sant Magí, màrtir",
+    "candidateId": "sant_magi_martir",
+    "existing": [
+      {
+        "id": "john_eudes_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "ezequiel_moreno_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "6-12",
+    "catalanName": "Santa Maria Rosa Molas i Vallvé, verge",
+    "candidateId": "santa_maria_rosa_molas_i_vallve_verge",
+    "existing": [
+      {
+        "id": "most_sacred_heart_of_jesus",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "6-12",
+    "catalanName": "Santa Maria Rosa Molas i Vallvé, verge",
+    "candidateId": "santa_maria_rosa_molas_i_vallve_verge_0612",
+    "existing": [
+      {
+        "id": "most_sacred_heart_of_jesus",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "9-23",
+    "catalanName": "Santa Tecla, verge i màrtir",
+    "candidateId": "santa_tecla_verge_i_martir",
+    "existing": [
+      {
+        "id": "pius_francesco_forgione_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "9-23",
+    "catalanName": "Santa Tecla, verge i màrtir",
+    "candidateId": "santa_tecla_verge_i_martir_0923",
+    "existing": [
+      {
+        "id": "pius_francesco_forgione_priest",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tarragona",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "5-27",
+    "catalanName": "Beat Josep Tous i Soler, prevere",
+    "candidateId": "beat_josep_tous_i_soler_prevere",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "5-27",
+    "catalanName": "Beat Josep Tous i Soler, prevere",
+    "candidateId": "beat_josep_tous_i_soler_prevere_0527",
+    "existing": [
+      {
+        "id": "augustine_of_canterbury_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere_0530",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "12-10",
+    "catalanName": "Dedicació de la Catedral de Terrassa",
+    "candidateId": "dedicacio_de_la_catedral_de_terrassa",
+    "existing": [
+      {
+        "id": "our_lady_of_loreto",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "eulalia_of_merida_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "10-19",
+    "catalanName": "Mare de Déu de la Salut",
+    "candidateId": "mare_de_deu_de_la_salut",
+    "existing": [
+      {
+        "id": "john_de_brebeuf_isaac_jogues_priests_and_companions_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "paul_of_the_cross_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "peter_of_alcantara_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "12-9",
+    "catalanName": "Mare de Déu de Loreto",
+    "candidateId": "mare_de_deu_de_loreto",
+    "existing": [
+      {
+        "id": "juan_diego_cuauhtlatoatzin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "12-9",
+    "catalanName": "Santa Eulàlia de Mèrida, verge i màrtir",
+    "candidateId": "santa_eulalia_de_merida_verge_i_martir",
+    "existing": [
+      {
+        "id": "juan_diego_cuauhtlatoatzin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "9-19",
+    "catalanName": "Santa Maria de Cervelló, verge",
+    "candidateId": "santa_maria_de_cervello_verge",
+    "existing": [
+      {
+        "id": "januarius_i_of_benevento_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-terrassa",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "7-30",
+    "catalanName": "Beats Tobies Borràs i Romeu, religiós, i companys, màrtirs",
+    "candidateId": "beats_tobies_borras_i_romeu_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "1-27",
+    "catalanName": "Sant Enric d’Ossó i Cervelló, prevere",
+    "candidateId": "sant_enric_d_osso_i_cervello_prevere",
+    "existing": [
+      {
+        "id": "angela_merici_virgin",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "1-23",
+    "catalanName": "Sant Francesc Gil de Federich i Sans, prevere i màrtir",
+    "candidateId": "sant_francesc_gil_de_federich_i_sans_prevere_i_martir",
+    "existing": [
+      {
+        "id": "ildephonsus_of_toledo_bishop",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "5-29",
+    "catalanName": "Sant Pere Màrtir Sans i Jordà, bisbe i màrtir",
+    "candidateId": "sant_pere_martir_sans_i_jorda_bisbe_i_martir",
+    "existing": [
+      {
+        "id": "paul_vi_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "5-29",
+    "catalanName": "Sant Pere Màrtir Sans i Jordà, bisbe i màrtir",
+    "candidateId": "sant_pere_martir_sans_i_jorda_bisbe_i_martir_0529",
+    "existing": [
+      {
+        "id": "paul_vi_pope",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "6-12",
+    "catalanName": "Santa Maria Rosa Molas i Vallvé, verge",
+    "candidateId": "santa_maria_rosa_molas_i_vallve_verge",
+    "existing": [
+      {
+        "id": "most_sacred_heart_of_jesus",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "6-12",
+    "catalanName": "Santa Maria Rosa Molas i Vallvé, verge",
+    "candidateId": "santa_maria_rosa_molas_i_vallve_verge_0612",
+    "existing": [
+      {
+        "id": "most_sacred_heart_of_jesus",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-tortosa",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "1-11",
+    "catalanName": "Beata Anna Maria Janer i Anglarill, verge",
+    "candidateId": "beata_anna_maria_janer_i_anglarill_verge",
+    "existing": [
+      {
+        "id": "baptism_of_the_lord",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "1-11",
+    "catalanName": "Beata Anna Maria Janer i Anglarill, verge",
+    "candidateId": "beata_anna_maria_janer_i_anglarill_verge_0111",
+    "existing": [
+      {
+        "id": "baptism_of_the_lord",
+        "rank": "SOLEMNITY"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "8-12",
+    "catalanName": "Beats Eusebi Codina i Millà, Ramon Illa i Salvia i Sebastià Riera i Corominas, religiosos, i companys màrtirs",
+    "candidateId": "beats_eusebi_codina_i_milla_ramon_illa_i_salvia_i_sebastia_riera_i_corominas_religiosos_i_companys_martirs",
+    "existing": [
+      {
+        "id": "jane_frances_de_chantal_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "7-24",
+    "catalanName": "Beats Josep Sala i Picó, prevere, i companys, màrtirs",
+    "candidateId": "beats_josep_sala_i_pico_prevere_i_companys_martirs",
+    "existing": [
+      {
+        "id": "sharbel_makhluf_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "8-13",
+    "catalanName": "Beats Josep Tàpies i Sala i companys, preveres, màrtirs",
+    "candidateId": "beats_josep_tapies_i_sala_i_companys_preveres_martirs",
+    "existing": [
+      {
+        "id": "pontian_i_pope_and_hippolytus_of_rome_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "7-30",
+    "catalanName": "Beats Protasi Cubells i Minguell, religiós, i companys, màrtirs",
+    "candidateId": "beats_protasi_cubells_i_minguell_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "10-23",
+    "catalanName": "Dedicació de la Catedral d’Urgell",
+    "candidateId": "dedicacio_de_la_catedral_d_urgell",
+    "existing": [
+      {
+        "id": "john_of_capistrano_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "9-8",
+    "catalanName": "Mare de Déu de Núria",
+    "candidateId": "mare_de_deu_de_nuria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "11-3",
+    "catalanName": "Sant Ermengol, bisbe",
+    "candidateId": "sant_ermengol_bisbe",
+    "existing": [
+      {
+        "id": "martin_de_porres_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "5-28",
+    "catalanName": "Sant Just, bisbe",
+    "candidateId": "sant_just_bisbe",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "5-28",
+    "catalanName": "Sant Just, bisbe",
+    "candidateId": "sant_just_bisbe_0528",
+    "existing": [
+      {
+        "id": "our_lord_jesus_christ_the_eternal_high_priest",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-urgell",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "5-30",
+    "catalanName": "Beat Pere Tarrés i Claret, prevere",
+    "candidateId": "beat_pere_tarres_i_claret_prevere_0530",
+    "existing": [
+      {
+        "id": "ferdinand_iii_of_castile",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "7-30",
+    "catalanName": "Beats Francesc Xavier Ponsa i Casallarch, religiós, i companys, màrtirs",
+    "candidateId": "beats_francesc_xavier_ponsa_i_casallarch_religios_i_companys_martirs",
+    "existing": [
+      {
+        "id": "peter_chrysologus_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "8-13",
+    "catalanName": "Beats Pere Cunill i Padró, prevere, i companys, màrtirs",
+    "candidateId": "beats_pere_cunill_i_padro_prevere_i_companys_martirs",
+    "existing": [
+      {
+        "id": "pontian_i_pope_and_hippolytus_of_rome_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "9-17",
+    "catalanName": "Dedicació de la Catedral de Vic",
+    "candidateId": "dedicacio_de_la_catedral_de_vic",
+    "existing": [
+      {
+        "id": "hildegard_of_bingen_abbess",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "robert_bellarmine_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "9-8",
+    "catalanName": "Naixement de la Benaurada Verge Maria",
+    "candidateId": "naixement_de_la_benaurada_verge_maria",
+    "existing": [
+      {
+        "id": "nativity_of_the_blessed_virgin_mary",
+        "rank": "FEAST"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "7-4",
+    "catalanName": "Sant Antoni Maria Zaccaria, prevere",
+    "candidateId": "sant_antoni_maria_zaccaria_prevere",
+    "existing": [
+      {
+        "id": "elizabeth_of_portugal",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "8-25",
+    "catalanName": "Sant Josep de Calassanç, prevere",
+    "candidateId": "sant_josep_de_calassanc_prevere",
+    "existing": [
+      {
+        "id": "louis_ix_of_france",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joseph_of_calasanz_priest",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "6-26",
+    "catalanName": "Sant Josepmaria Escrivà de Balaguer, prevere",
+    "candidateId": "sant_josepmaria_escriva_de_balaguer_prevere",
+    "existing": [
+      {
+        "id": "pelagius_of_cordoba_martyr",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "6-22",
+    "catalanName": "Sant Paulí de Nola, bisbe",
+    "candidateId": "sant_pauli_de_nola_bisbe",
+    "existing": [
+      {
+        "id": "paulinus_of_nola_bishop",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "john_fisher_bishop_and_thomas_more_martyrs",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "11-3",
+    "catalanName": "Sant Pere Almató i Ribera, prevere i màrtir",
+    "candidateId": "sant_pere_almato_i_ribera_prevere_i_martir",
+    "existing": [
+      {
+        "id": "martin_de_porres_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "5-22",
+    "catalanName": "Santa Joaquima de Vedruna i Vidal, religiosa",
+    "candidateId": "santa_joaquima_de_vedruna_i_vidal_religiosa_0522",
+    "existing": [
+      {
+        "id": "rita_of_cascia_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      },
+      {
+        "id": "joaquina_of_saint_francis_of_assisi_de_vedruna_religious",
+        "rank": "OPTIONAL_MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "8-26",
+    "catalanName": "Santa Teresa Jornet, verge",
+    "candidateId": "santa_teresa_jornet_verge",
+    "existing": [
+      {
+        "id": "teresa_of_jesus_jornet_ibars_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  },
+  {
+    "calendar": "diocese-vic",
+    "date": "1-21",
+    "catalanName": "Sants Fructuós, bisbe, i Auguri i Eulogi, diaques, màrtirs",
+    "candidateId": "sants_fructuos_bisbe_i_auguri_i_eulogi_diaques_martirs",
+    "existing": [
+      {
+        "id": "agnes_of_rome_virgin",
+        "rank": "MEMORIAL"
+      }
+    ]
+  }
+]
