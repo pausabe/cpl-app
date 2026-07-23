@@ -52,6 +52,18 @@
     <div class="results" data-results="laudes"></div>
   </section>
 
+  <section class="card" id="join-laudes">
+    <h2>5. Fer el join de contingut de Laudes <small>(cpl-app → commons/ca, 3 anys)</small></h2>
+    <p><b>Atenció:</b> aquest pas ja detecta un problema real de qualitat de dades —
+       de vegades el salteri que calcula cpl-app per a un dia no coincideix amb el que
+       ja assumeix l'índex compartit d'ES per a aquell mateix dia (confirmat, no és un
+       bug de l'script). Els resultats es guarden a <code>output/commons-ca/</code> i
+       <b>encara no s'escriuen a saints-app</b> fins revisar els conflictes.</p>
+    <button data-action="join-laudes">Executar (2024-01-01 a 2026-12-30)</button>
+    <span class="status" data-status="join-laudes"></span>
+    <div class="results" data-results="join-laudes"></div>
+  </section>
+
   <section class="card" id="dropped">
     <h2>Informe: sants omesos (últim càlcul del pas 2)</h2>
     <p>Llista completa dels candidats descartats perquè la data ja tenia una celebració a litcal — inclou l'id

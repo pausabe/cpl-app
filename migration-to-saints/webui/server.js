@@ -115,6 +115,44 @@ async function handleLaudes(req, res) {
   sendJson(res, result.code === 0 ? 200 : 500, { ok: result.code === 0, log: result.stdout + result.stderr, sample });
 }
 
+async function handleJoinLaudes(req, res, body) {
+  const start = (body && body.start) || '2024-01-01';
+  const end = (body && body.end) || '2026-12-30';
+  const manifestPath = path.join(RUN_DIR, 'date-to-key-manifest.json');
+  const allLaudesPath =
+    '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts/all_laudes.json';
+
+  const manifestResult = await runCommand(
+    'npx',
+    ['tsx', 'scripts/build-date-to-key-manifest.ts', allLaudesPath, start, end, manifestPath, 'spain'],
+    LITCAL_ROOT
+  );
+  if (manifestResult.code !== 0) {
+    return sendJson(res, 500, { ok: false, stage: 'manifest', log: manifestResult.stdout + manifestResult.stderr });
+  }
+
+  const joinResult = await runCommand(
+    'npx',
+    ['jest', 'migration-to-saints/join-laudes.test.js', '--silent'],
+    CPL_APP_ROOT
+  );
+  const commonsDir = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
+  const coverage = {};
+  if (fs.existsSync(commonsDir)) {
+    for (const f of fs.readdirSync(commonsDir)) {
+      coverage[f.replace(/\.json$/, '')] = Object.keys(readJsonSafe(path.join(commonsDir, f)) || {}).length;
+    }
+  }
+  const conflicts = readJsonSafe(path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-conflicts.json')) || [];
+  sendJson(res, joinResult.code === 0 ? 200 : 500, {
+    ok: joinResult.code === 0,
+    log: manifestResult.stdout + manifestResult.stderr + '\n' + joinResult.stdout + joinResult.stderr,
+    coverage,
+    conflictCount: conflicts.length,
+    conflictSample: conflicts.slice(0, 30),
+  });
+}
+
 function handleDroppedReport(req, res) {
   const report = readJsonSafe(path.join(CPL_APP_ROOT, 'migration-to-saints/dropped-needs-content-reconciliation.json'));
   sendJson(res, 200, { report });
@@ -140,6 +178,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && req.url === '/api/stage2') return handleStage2(req, res, await readBody(req));
     if (req.method === 'POST' && req.url === '/api/generate-loaders') return handleGenerateLoaders(req, res);
     if (req.method === 'POST' && req.url === '/api/laudes') return handleLaudes(req, res);
+    if (req.method === 'POST' && req.url === '/api/join-laudes') return handleJoinLaudes(req, res, await readBody(req));
     if (req.method === 'GET' && req.url === '/api/dropped-report') return handleDroppedReport(req, res);
     return serveStatic(req, res);
   } catch (e) {

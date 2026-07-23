@@ -221,23 +221,66 @@ guarda a `cpl-app/migration-to-saints/dropped-needs-content-reconciliation.json`
 requereix una revisió humana ràpida (algú que conegui els sants pot distingir "és el
 mateix sant" de "coincidència de data" en segons) abans de decidir quins recuperar.
 
+## 6b. Join de contingut de Laudes fet — i un problema real de qualitat trobat
+
+Fet i provat (`litcal/scripts/build-date-to-key-manifest.ts` + `cpl-app/migration-to-saints/join-laudes.test.js`,
+exposats al panell web com a passos 5): per 2024-01-01—2026-12-30 (1086 dies vàlids), s'ha
+extret contingut real per a totes les taules de Laudes (himnos, salms, lectura breu,
+responsoris, precs, oració final). `invitacion_padrenuestro` s'ha resolt a banda: com que
+ES només recicla 26 fórmules genèriques (no és contingut per dia), s'han traduït a mà a
+`migration-to-saints/static-translations/invitacion_padrenuestro.ca.json` en lloc de
+forçar la frase única de cpl en una casella compartida amb altres dies.
+
+**Trobat, confirmat, NO és un bug de l'script**: 5.435 conflictes (un mateix ID numèric
+d'ES rebent contingut català diferent segons la data). Verificat amb un cas concret:
+`mary_mother_of_god__ANY` (1 de gener) i `bridget_of_sweden_religious__ANY` (23 de juliol)
+tots dos apunten als IDs 63/64/65 de `salmos_citas`/`salmos_textos` — ES hi té el mateix
+contingut fix per a tots dos dies (Salm 62 / Càntic Dn 3,57-88 / Salm 149, el salteri
+festiu habitual), i cpl-app ho calcula bé per al 23 de juliol però per l'1 de gener calcula
+un salteri diferent (Salm 117 / Càntic Dn 3,52-57 / Salm 150) — probablement perquè el
+Gener 1 cau dins l'Octava de Nadal i la branca `ChristmasOctave` de `LaudesService.tsx`
+tria un salteri propi de l'octava en lloc del salteri festiu genèric que ES assumeix per
+a les solemnitats. És a dir: **per a alguns dies (previsiblement concentrats a l'entorn
+de Nadal/Setmana Santa/Pasqua, on `LaudesService` té moltes branques especials per
+temporada), cpl-app i ES discrepen genuïnament sobre quin salteri toca**, no és un error
+d'aparellament d'IDs.
+
+**No s'ha escrit res a `saints-app/commons/ca` encara** — amb un 5.435/~4400 ids una taxa
+de conflicte així fa que "primer valor vist guanya" no sigui prou fiable per confiar-hi
+sense revisió. El fitxer `migration-to-saints/output/join-conflicts.json` (i la targeta 5
+del panell web) llisten cada conflicte amb les dues versions, per revisar-los. Sortida
+generada (no escrita a saints-app) a `migration-to-saints/output/commons-ca/*.json`.
+
 ## 7. Pendent (per ordre recomanat)
 
-1. Resoldre els 3 punts oberts de la secció 5 amb un parell de dies reals idèntics
-   (no només temàticament semblants) comparant `commons/es/*` amb l'extracció de cpl.
-2. Fer la comprovació anti-col·lisió de la secció 6 (`getCelebrationCatalog`) abans
-   d'escriure res a `litcal/src/data/calendars/`.
-3. Amb 1-2 resolts: escriure el script de join complet (data real → litcal id/cicle →
-   IDs numèrics → text de cpl) i córrer-lo per a una finestra de 3 anys (per cobrir els
-   3 cicles dominicals A/B/C i les 2 paritats de cicle feial en un sol pas) sobre
-   `cpl-app.db` (rang disponible: 2017-2026).
-4. Escriure el resultat a `saints-app/src/store/db/day_specific_texts/commons/ca/*.json`.
-5. Afegir `ca` a `saints-app`: `src/constants/languages.ts` (`AVAILABLE_LANGUAGES`),
-   `src/config/calendarLanguageRestrictions.ts` (afegir `"ca"` a `spain: [...]`, o crear
-   una entrada pròpia per `catalonia`/diòcesis un cop calen), `LanguageSelectionModal.vue`.
-6. Repetir 3-4 per a la resta d'hores (Ofici, Vespres, Hora intermèdia, Invitatori,
-   Completes) i per a `generic_texts/ca/*` (literals — aquests no surten de cpl-app.db,
-   cal traduir-los a banda).
+1. **Investigar la divergència Nadal/Pasqua/Setmana Santa** (secció 6b) — revisar quines
+   branques de `LaudesService.tsx` (i les seves germanes Vespres/Ofici/Hores) trien un
+   salteri diferent del que ES assumeix per a solemnitats/octaves, i decidir per cada
+   cas si cpl-app té raó (i llavors caldria corregir/documentar que ES ho tenia diferent)
+   o si cal preferir sempre el patró d'ES quan hi hagi conflicte per a aquestes
+   categories concretes de contingut "comú reutilitzat".
+2. Un cop hi hagi criteri per als conflictes: escriure el resultat final a
+   `saints-app/src/store/db/day_specific_texts/commons/ca/*.json` (còpia directa dels
+   fitxers a `migration-to-saints/output/commons-ca/*.json` un cop nets de conflictes) +
+   copiar `commons/es/himnos_latinos.json` tal qual a `commons/ca/` (el llatí no depèn de
+   l'idioma de l'app, no cal extreure'l de cpl-app) + copiar
+   `static-translations/invitacion_padrenuestro.ca.json` a
+   `commons/ca/invitacion_padrenuestro.json`.
+3. ~~Afegir `ca` a `saints-app`~~ — **fet**: `src/constants/languages.ts`,
+   `src/config/calendarLanguageRestrictions.ts` (`ca` a `spain` + entrada pròpia per
+   `catalonia`/cada diòcesi), `LanguageSelectionModal.vue` + `FlagCaIcon.vue`, branca
+   `catalan-language-support` a saints-app. Seleccionar `ca` avui mostra text de
+   "no trobat" gairebé a tot arreu fins que el pas 2 escrigui contingut real.
+4. Publicar `litcal` amb els calendaris catalans (branca `catalan-calendars`, actualment
+   `2.4.4` al `main` remot; els calendaris nous viuen sense publicar) i actualitzar
+   `saints-app`'s `package.json` (`"@saints-app/litcal": "2.4.5"` → la versió nova) —
+   sense això, `catalonia`/`diocese-*` no existeixen encara per a `saints-app` encara que
+   el codi ja hi faci referència.
+5. Repetir el join (script ja genèric, només cal canviar `all_laudes.json` per
+   `all_oficio.json`/`all_visperas.json`/etc. i el mapatge de camps corresponent) per a
+   la resta d'hores (Ofici, Vespres, Hora intermèdia, Invitatori, Completes) i per a
+   `generic_texts/ca/*` (literals — aquests no surten de cpl-app.db, cal traduir-los
+   a banda, com s'ha fet amb `invitacion_padrenuestro`).
 
 ## 8. Com re-córrer el que ja existeix
 

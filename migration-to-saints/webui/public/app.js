@@ -130,6 +130,29 @@ function renderDroppedReport(data) {
   resultsEl('dropped-report').innerHTML = renderDroppedTable(data && data.report) || '<p class="summary-line">Cap informe guardat trobat.</p>';
 }
 
+function renderJoinLaudes(data) {
+  const el = resultsEl('join-laudes');
+  if (!data) return;
+  let html = `<div class="summary-line">Conflictes detectats: <b>${data.conflictCount ?? 0}</b></div>`;
+  if (data.coverage) {
+    html += '<table><tr><th>Taula</th><th>IDs omplerts</th></tr>';
+    for (const [table, count] of Object.entries(data.coverage)) {
+      html += `<tr><td>${table}.json</td><td>${count}</td></tr>`;
+    }
+    html += '</table>';
+  }
+  if (data.conflictSample && data.conflictSample.length) {
+    html += `<details><summary>Veure mostra de conflictes (primers ${data.conflictSample.length})</summary>`;
+    html += '<table><tr><th>Taula</th><th>ID</th><th>Data</th><th>Ja tenia</th><th>Nou valor</th></tr>';
+    for (const c of data.conflictSample) {
+      html += `<tr><td>${escapeHtml(c.table)}</td><td>${escapeHtml(c.id)}</td><td>${escapeHtml(c.date)}</td><td>${escapeHtml(c.existingPreview)}</td><td>${escapeHtml(c.newPreview)}</td></tr>`;
+    }
+    html += '</table></details>';
+  }
+  html += logBlock(data.log);
+  el.innerHTML = html;
+}
+
 document.addEventListener('click', async (e) => {
   const btn = e.target.closest('button[data-action]');
   if (!btn) return;
@@ -141,6 +164,7 @@ document.addEventListener('click', async (e) => {
     renderStage2(await runAction('stage2-write', { body: { write: true } }));
   } else if (action === 'generate-loaders') renderGenerateLoaders(await runAction('generate-loaders'));
   else if (action === 'laudes') renderLaudes(await runAction('laudes'));
+  else if (action === 'join-laudes') renderJoinLaudes(await runAction('join-laudes'));
   else if (action === 'dropped-report') {
     const res = await fetch('/api/dropped-report');
     renderDroppedReport(await res.json());
