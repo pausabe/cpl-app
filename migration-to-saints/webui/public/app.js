@@ -163,10 +163,112 @@ function renderMigrator(data) {
   el.innerHTML = html;
 }
 
+// --- Pending explorer ---
+const PE_PALETTE = ['#e07a5f', '#3d5a80', '#8a9b68', '#c9a227', '#6b4e8e', '#4a7c7c', '#b5545a', '#5b7fa6'];
+let peItems = [];
+
+function pePopulateTableFilter() {
+  const select = document.getElementById('pe-table');
+  const tables = [...new Set(peItems.map((i) => i.table))].sort();
+  select.innerHTML = '<option value="">Totes les taules</option>' + tables.map((t) => `<option value="${t}">${t}</option>`).join('');
+}
+
+function peBalanceRatio(item) {
+  const counts = item.variants.map((v) => v.tags.length).sort((a, b) => b - a);
+  const total = counts.reduce((a, b) => a + b, 0);
+  return total ? counts[0] / total : 1; // 1 = all agree on one dominant variant, lower = more split
+}
+
+function peRenderList() {
+  const table = document.getElementById('pe-table').value;
+  const search = document.getElementById('pe-search').value.trim().toLowerCase();
+  const sort = document.getElementById('pe-sort').value;
+
+  let items = peItems.filter((i) => {
+    if (table && i.table !== table) return false;
+    if (!search) return true;
+    if (i.id.toLowerCase().includes(search)) return true;
+    return i.variants.some((v) => v.preview.toLowerCase().includes(search));
+  });
+
+  if (sort === 'count-desc') items = items.slice().sort((a, b) => b.affectedCount - a.affectedCount);
+  else if (sort === 'variants-desc') items = items.slice().sort((a, b) => b.variants.length - a.variants.length);
+  else if (sort === 'balance') items = items.slice().sort((a, b) => peBalanceRatio(a) - peBalanceRatio(b));
+
+  const total = items.length;
+  const shown = items.slice(0, 200);
+
+  document.querySelector('[data-results="pe-summary"]').innerHTML =
+    `Mostrant <b>${shown.length}</b> de <b>${total}</b> pendents (d'un total de ${peItems.length}). Afina la cerca o la taula si en falten.`;
+
+  const el = resultsEl('pending-explorer');
+  el.innerHTML = shown.map((item, idx) => peRenderItem(item, idx)).join('');
+}
+
+function peRenderItem(item, idx) {
+  const total = item.variants.reduce((a, v) => a + v.tags.length, 0) || 1;
+  const bar = item.variants
+    .map((v, i) => {
+      const pct = ((v.tags.length / total) * 100).toFixed(1);
+      const color = PE_PALETTE[i % PE_PALETTE.length];
+      return `<div class="pe-bar-seg" style="width:${pct}%;background:${color}" title="${escapeHtml(v.preview)} — ${v.tags.length}×"></div>`;
+    })
+    .join('');
+  const details = item.variants
+    .map((v, i) => {
+      const color = PE_PALETTE[i % PE_PALETTE.length];
+      const tags = v.tags.slice(0, 40).map((t) => `<span>${escapeHtml(t)}</span>`).join('');
+      const more = v.tags.length > 40 ? `<span>+${v.tags.length - 40} més</span>` : '';
+      return `<div class="pe-variant">
+        <div class="pe-variant-head"><span class="pe-variant-swatch" style="background:${color}"></span> ${v.tags.length} ocurrència(es)</div>
+        <div class="pe-variant-text">${escapeHtml(v.preview)}</div>
+        <div class="pe-variant-tags">${tags}${more}</div>
+      </div>`;
+    })
+    .join('');
+  return `<div class="pe-item" data-pe-idx="${idx}">
+    <div class="pe-item-header" data-pe-toggle="${idx}">
+      <span class="pe-caret">▶</span>
+      <span class="pe-item-title">${escapeHtml(item.table)}.json — <b>${escapeHtml(item.id)}</b></span>
+      <div class="pe-bar">${bar}</div>
+      <span class="pe-item-count">${item.affectedCount} afectats · ${item.variants.length} variants</span>
+    </div>
+    <div class="pe-detail">${details}</div>
+  </div>`;
+}
+
+document.getElementById('pe-table').addEventListener('change', () => peItems.length && peRenderList());
+document.getElementById('pe-sort').addEventListener('change', () => peItems.length && peRenderList());
+document.getElementById('pe-search').addEventListener('input', () => peItems.length && peRenderList());
+
+async function peLoad() {
+  setStatus('pe-load', 'Carregant...');
+  try {
+    const res = await fetch('/api/pending-report');
+    const data = await res.json();
+    peItems = data.items || [];
+    pePopulateTableFilter();
+    peRenderList();
+    setStatus('pe-load', `Fet (${peItems.length} pendents)`, 'ok');
+  } catch (e) {
+    setStatus('pe-load', 'Error de connexió', 'error');
+  }
+}
+
 document.addEventListener('click', async (e) => {
+  const toggle = e.target.closest('[data-pe-toggle]');
+  if (toggle) {
+    toggle.closest('.pe-item').classList.toggle('open');
+    return;
+  }
+
   const btn = e.target.closest('button[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
+  if (action === 'pe-load') {
+    await peLoad();
+    return;
+  }
   if (action === 'stage1') renderStage1(await runAction('stage1'));
   else if (action === 'stage2') renderStage2(await runAction('stage2', { body: { write: false } }));
   else if (action === 'stage2-write') {

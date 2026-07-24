@@ -114,3 +114,40 @@ details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
 .laudes-day .field { margin-bottom: 0.4rem; }
 .laudes-day .field-label { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; }
 .laudes-day .field-value { white-space: pre-wrap; font-size: 0.88rem; }
+
+.explorer-controls {
+  display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.8rem;
+}
+.explorer-controls select, .explorer-controls input[type="text"] {
+  background: var(--mono-bg); color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.35rem 0.5rem; font-size: 0.85rem;
+}
+.explorer-controls input[type="text"] { flex: 1; min-width: 180px; }
+
+.pe-summary { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.6rem; }
+
+.pe-item {
+  border: 1px solid var(--border); border-radius: 8px; margin-bottom: 0.6rem;
+  overflow: hidden; background: var(--card-bg);
+}
+.pe-item-header {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem; cursor: pointer;
+}
+.pe-item-header:hover { background: var(--accent-bg); }
+.pe-item-title { font-size: 0.85rem; flex-shrink: 0; }
+.pe-item-title b { color: var(--accent); }
+.pe-item-count { font-size: 0.78rem; color: var(--muted); flex-shrink: 0; white-space: nowrap; }
+.pe-bar { flex: 1; display: flex; height: 14px; border-radius: 4px; overflow: hidden; min-width: 80px; }
+.pe-bar-seg { height: 100%; }
+.pe-caret { color: var(--muted); font-size: 0.7rem; flex-shrink: 0; transition: transform 0.15s; }
+.pe-item.open .pe-caret { transform: rotate(90deg); }
+
+.pe-detail { display: none; padding: 0 0.8rem 0.8rem; border-top: 1px solid var(--border); }
+.pe-item.open .pe-detail { display: block; }
+
+.pe-variant { margin-top: 0.6rem; padding: 0.5rem 0.6rem; border-radius: 6px; background: var(--mono-bg); }
+.pe-variant-head { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; }
+.pe-variant-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.pe-variant-text { white-space: pre-wrap; font-size: 0.88rem; }
+.pe-variant-tags { margin-top: 0.35rem; font-size: 0.72rem; color: var(--muted); }
+.pe-variant-tags span { display: inline-block; background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.05rem 0.35rem; margin: 0.1rem 0.2rem 0 0; }

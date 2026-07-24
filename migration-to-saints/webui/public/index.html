@@ -76,6 +76,28 @@
     <div class="results" data-results="migrator"></div>
   </section>
 
+  <section class="card" id="pending-explorer">
+    <h2>6. Explorador de pendents <small>(per entendre, cas per cas, per què no s'exporta)</small></h2>
+    <p>Cada fitxa és un ID que <b>no</b> s'ha pogut exportar perquè no totes les dates/hores
+       que hi apunten donen el mateix text. La barra mostra la proporció de cada variant
+       trobada — una barra quasi tota d'un color amb un bocinet petit sol un cas com el
+       de l'Octava de Nadal (un dia rar trenca el consens); una barra partida a la meitat
+       vol dir que de debò hi ha dues versions competint.</p>
+    <div class="explorer-controls">
+      <select id="pe-table"><option value="">Totes les taules</option></select>
+      <input type="text" id="pe-search" placeholder="Cerca per ID o per text..." />
+      <select id="pe-sort">
+        <option value="count-desc">Més dies/hores afectats primer</option>
+        <option value="balance">Casos més ambigus primer (variants més empatades)</option>
+        <option value="variants-desc">Més variants diferents primer</option>
+      </select>
+      <button data-action="pe-load">Carregar pendents</button>
+      <span class="status" data-status="pe-load"></span>
+    </div>
+    <div class="pe-summary" data-results="pe-summary"></div>
+    <div class="pe-list" data-results="pending-explorer"></div>
+  </section>
+
   <section class="card" id="dropped">
     <h2>Informe: sants omesos (últim càlcul del pas 2)</h2>
     <p>Llista completa dels candidats descartats perquè la data ja tenia una celebració a litcal — inclou l'id

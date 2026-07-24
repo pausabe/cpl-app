@@ -231,6 +231,13 @@ async function handleMigratorRun(req, res, body, { exportToSaintsApp }) {
   sendJson(res, result.ok ? 200 : 500, { ...result, start, end, hours, exported: exportToSaintsApp, exportReport });
 }
 
+function handlePendingReport(req, res) {
+  const pending =
+    readJsonSafe(path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-pending-review.json')) || {};
+  const items = Object.entries(pending).flatMap(([table, list]) => list.map((item) => ({ table, ...item })));
+  sendJson(res, 200, { items });
+}
+
 function handleDroppedReport(req, res) {
   const report = readJsonSafe(path.join(CPL_APP_ROOT, 'migration-to-saints/dropped-needs-content-reconciliation.json'));
   sendJson(res, 200, { report });
@@ -261,6 +268,7 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && req.url === '/api/migrator/export')
       return handleMigratorRun(req, res, await readBody(req), { exportToSaintsApp: true });
     if (req.method === 'GET' && req.url === '/api/dropped-report') return handleDroppedReport(req, res);
+    if (req.method === 'GET' && req.url === '/api/pending-report') return handlePendingReport(req, res);
     return serveStatic(req, res);
   } catch (e) {
     sendJson(res, 500, { ok: false, error: String(e) });
