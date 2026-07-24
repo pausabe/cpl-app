@@ -52,21 +52,28 @@
     <div class="results" data-results="laudes"></div>
   </section>
 
-  <section class="card" id="join-laudes">
-    <h2>5. Fer el join de contingut de Laudes <small>(cpl-app → commons/ca, 3 anys)</small></h2>
-    <p><b>Atenció:</b> aquest pas ja detecta un problema real de qualitat de dades —
-       de vegades el salteri que calcula cpl-app per a un dia no coincideix amb el que
-       ja assumeix l'índex compartit d'ES per a aquell mateix dia (confirmat, no és un
-       bug de l'script). Els resultats es guarden a <code>output/commons-ca/</code> i
-       <b>encara no s'escriuen a saints-app</b> fins revisar els conflictes.</p>
+  <section class="card" id="migrator">
+    <h2>5. Migrador → saints-app <small>(exporta tot el que es pugui validar automàticament)</small></h2>
+    <p>Per a cada casella de contingut compartida amb es/it, comprova que <b>totes</b> les
+       dates que hi apunten (a totes les Hores seleccionades) donen el mateix text en
+       català. Si coincideixen, es pot exportar. Si no (p.ex. l'Octava de Nadal), es deixa
+       <b>pendent</b> — no s'escriu ni una versió ni l'altra — i es queda en blanc a
+       l'app fins que algú ho revisi a mà. "Calcular" només mostra el resultat; "Exportar"
+       escriu de veritat a <code>saints-app/.../commons/ca/</code>.</p>
     <div class="date-range">
-      <label>Des de <input type="date" id="join-start" value="2024-01-01" /></label>
-      <label>Fins a <input type="date" id="join-end" value="2026-12-30" /></label>
-      <span class="hint">(cpl-app.db només cobreix 2017-2026; deixa almenys un dia de marge amb l'any 2027)</span>
+      <label>Des de <input type="date" id="mig-start" value="2024-01-01" /></label>
+      <label>Fins a <input type="date" id="mig-end" value="2026-12-30" /></label>
+      <span class="hint">(cpl-app.db només cobreix 2017-2026)</span>
     </div>
-    <button data-action="join-laudes">Executar</button>
-    <span class="status" data-status="join-laudes"></span>
-    <div class="results" data-results="join-laudes"></div>
+    <div class="date-range">
+      <label><input type="checkbox" id="mig-hour-laudes" checked /> Laudes</label>
+      <label><input type="checkbox" id="mig-hour-vespers" checked /> Vespres</label>
+      <span class="hint">(Ofici, Hora intermèdia, Invitatori i Completes: pendents d'afegir)</span>
+    </div>
+    <button data-action="mig-calculate">Calcular (no escriu res)</button>
+    <button class="danger" data-action="mig-export">Exportar a saints-app</button>
+    <span class="status" data-status="migrator"></span>
+    <div class="results" data-results="migrator"></div>
   </section>
 
   <section class="card" id="dropped">

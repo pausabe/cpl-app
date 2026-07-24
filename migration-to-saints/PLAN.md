@@ -262,6 +262,22 @@ en "Salm 62, 2-9" i uns 10 discrepen clarament (6 al voltant de Nadal amb "Salm 
 uns quants casos aïllats amb altres salms) — el panell web (targeta 5, amb selector de
 rang de dates) mostra aquest desglossament per a cada ID pendent.
 
+**Segon patró trobat, diferent del de Nadal (revisant els pendents amb el migrador
+Laudes+Vespres)**: bona part dels pendents NO són "cpl-app s'equivoca un dia concret" —
+són dies `__MEMORY_FERIAL1`/`__MEMORY_FERIAL2` (memòria opcional sense textos propis,
+p.ex. `anthony_of_egypt_abbot__MEMORY_FERIAL1`, `isidore_the_farmer__MEMORY_FERIAL1`).
+Per aquests dies, ES reutilitza deliberadament un **conjunt petit i genèric** de lectures
+breus/salms "comuns" (el mateix ID 100 de `lectura_breve_citas` = "Rm 12, 1-2" per a
+Brígida de Suècia I per a sant Antoni Abat, per exemple), mentre que **cpl-app dona una
+lectura pròpia i diferent per a cada sant** encara que ES el tracti com "ferial genèric".
+No és que un dels dos vagi errat — són dues decisions editorials diferents (ES: contingut
+comú i reciclat per a memòries sense pròpies; cpl: contingut propi per a cada sant). Cal
+decidir si per a `ca` volem seguir el conveni d'ES (menys feina, es podria traduir el
+petit conjunt de "comuns" a mà, com s'ha fet amb `invitacion_padrenuestro`) o aprofitar
+que cpl dona contingut més ric i encunyar IDs nous per a aquests casos. Pendent de
+decidir — de moment el migrador els deixa igualment en blanc/pendents, correcte i segur
+per continuar.
+
 ## 7. Pendent (per ordre recomanat)
 
 1. **Investigar la divergència Nadal/Pasqua/Setmana Santa** (secció 6b) — revisar quines

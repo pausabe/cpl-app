@@ -19,27 +19,28 @@ function logBlock(log) {
   return `<details><summary>Sortida completa</summary><pre class="log">${escapeHtml(log)}</pre></details>`;
 }
 
-async function runAction(action, { method = 'POST', body } = {}) {
+async function runAction(action, { method = 'POST', body, endpoint, displayKey } = {}) {
+  const key = displayKey || action;
   const buttons = document.querySelectorAll(`[data-action="${action}"]`);
   buttons.forEach((b) => (b.disabled = true));
-  setStatus(action, 'Executant...');
-  resultsEl(action).innerHTML = '';
+  setStatus(key, 'Executant...');
+  resultsEl(key).innerHTML = '';
   try {
-    const res = await fetch(`/api/${action.replace('-write', '')}`, {
+    const res = await fetch(`/api/${endpoint || action.replace('-write', '')}`, {
       method,
       headers: body ? { 'Content-Type': 'application/json' } : undefined,
       body: body ? JSON.stringify(body) : undefined,
     });
     const data = await res.json();
     if (data.ok === false) {
-      setStatus(action, 'Error', 'error');
+      setStatus(key, 'Error', 'error');
     } else {
-      setStatus(action, 'Fet', 'ok');
+      setStatus(key, 'Fet', 'ok');
     }
     return data;
   } catch (e) {
-    setStatus(action, 'Error de connexió', 'error');
-    resultsEl(action).innerHTML = `<pre class="log">${escapeHtml(String(e))}</pre>`;
+    setStatus(key, 'Error de connexió', 'error');
+    resultsEl(key).innerHTML = `<pre class="log">${escapeHtml(String(e))}</pre>`;
     return null;
   } finally {
     buttons.forEach((b) => (b.disabled = false));
@@ -130,26 +131,31 @@ function renderDroppedReport(data) {
   resultsEl('dropped-report').innerHTML = renderDroppedTable(data && data.report) || '<p class="summary-line">Cap informe guardat trobat.</p>';
 }
 
-function renderJoinLaudes(data) {
-  const el = resultsEl('join-laudes');
+function renderMigrator(data) {
+  const el = resultsEl('migrator');
   if (!data) return;
-  let html = `<div class="summary-line">Rang: <b>${escapeHtml(data.start)} → ${escapeHtml(data.end)}</b></div>`;
-  html += `<div class="summary-line">Pendents de revisió (ids amb contingut contradictori — es deixen buits, no s'escriuen): <b>${data.pendingCount ?? 0}</b></div>`;
+  const totalResolved = data.coverage ? Object.values(data.coverage).reduce((a, b) => a + b, 0) : 0;
+  let html = `<div class="summary-line">Rang: <b>${escapeHtml(data.start)} → ${escapeHtml(data.end)}</b> · Hores: <b>${(data.hours || []).join(', ')}</b></div>`;
+  html += `<div class="summary-line">Migrat (coincideix a totes les dates): <b>${totalResolved}</b> ids · Pendent de revisió (es deixa en blanc): <b>${data.pendingCount ?? 0}</b> ids</div>`;
+  if (data.exported) {
+    const r = data.exportReport || {};
+    html += `<div class="summary-line" style="color:#3a7a3a"><b>Exportat a saints-app.</b> Fitxers escrits: ${(r.filesWritten || []).length} · claus noves: ${r.keysAdded ?? 0} · claus actualitzades: ${r.keysChanged ?? 0}</div>`;
+  }
   if (data.coverage) {
-    html += '<table><tr><th>Taula</th><th>IDs resolts</th><th>IDs pendents</th></tr>';
+    html += '<table><tr><th>Taula</th><th>Migrats</th><th>Pendents</th></tr>';
     for (const [table, count] of Object.entries(data.coverage)) {
       html += `<tr><td>${table}.json</td><td>${count}</td><td>${(data.pendingByTable && data.pendingByTable[table]) || 0}</td></tr>`;
     }
     html += '</table>';
   }
   if (data.pendingSample && data.pendingSample.length) {
-    html += `<details><summary>Veure mostra de pendents (primers ${data.pendingSample.length})</summary>`;
-    html += '<table><tr><th>Taula</th><th>ID</th><th>Dies afectats</th><th>Variants trobades</th></tr>';
+    html += `<details><summary>Veure mostra de pendents, ordenats pels que afecten més dies (primers ${data.pendingSample.length})</summary>`;
+    html += '<table><tr><th>Taula</th><th>ID</th><th>Dies/hores afectats</th><th>Variants trobades</th></tr>';
     for (const p of data.pendingSample) {
       const variantsHtml = (p.variants || [])
-        .map((v) => `<div><i>${v.dates.length} dia(es):</i> ${escapeHtml(v.preview)}</div>`)
+        .map((v) => `<div><i>${v.tags.length}×:</i> ${escapeHtml(v.preview)}</div>`)
         .join('');
-      html += `<tr><td>${escapeHtml(p.table)}</td><td>${escapeHtml(p.id)}</td><td>${p.affectedDates.length}</td><td>${variantsHtml}</td></tr>`;
+      html += `<tr><td>${escapeHtml(p.table)}</td><td>${escapeHtml(p.id)}</td><td>${p.affectedCount}</td><td>${variantsHtml}</td></tr>`;
     }
     html += '</table></details>';
   }
@@ -168,10 +174,15 @@ document.addEventListener('click', async (e) => {
     renderStage2(await runAction('stage2-write', { body: { write: true } }));
   } else if (action === 'generate-loaders') renderGenerateLoaders(await runAction('generate-loaders'));
   else if (action === 'laudes') renderLaudes(await runAction('laudes'));
-  else if (action === 'join-laudes') {
-    const start = document.getElementById('join-start').value;
-    const end = document.getElementById('join-end').value;
-    renderJoinLaudes(await runAction('join-laudes', { body: { start, end } }));
+  else if (action === 'mig-calculate' || action === 'mig-export') {
+    const start = document.getElementById('mig-start').value;
+    const end = document.getElementById('mig-end').value;
+    const hours = [];
+    if (document.getElementById('mig-hour-laudes').checked) hours.push('Laudes');
+    if (document.getElementById('mig-hour-vespers').checked) hours.push('Vespers');
+    if (action === 'mig-export' && !confirm('Això escriurà de veritat a saints-app/.../commons/ca/. Continuar?')) return;
+    const endpoint = action === 'mig-export' ? 'migrator/export' : 'migrator/calculate';
+    renderMigrator(await runAction(action, { body: { start, end, hours }, endpoint, displayKey: 'migrator' }));
   }
   else if (action === 'dropped-report') {
     const res = await fetch('/api/dropped-report');

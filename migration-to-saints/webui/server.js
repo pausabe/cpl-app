@@ -16,6 +16,11 @@ const { spawn } = require('child_process');
 const PORT = parseInt(process.argv[2], 10) || 4848;
 const CPL_APP_ROOT = path.resolve(__dirname, '..', '..');
 const LITCAL_ROOT = '/Users/pau/projects/saints/litcal';
+const SAINTS_APP_ROOT = '/Users/pau/projects/saints/saints-app';
+const DAY_TEXTS_DIR = path.join(SAINTS_APP_ROOT, 'src/store/db/day_specific_texts');
+const SAINTS_APP_COMMONS_CA = path.join(DAY_TEXTS_DIR, 'commons/ca');
+const SAINTS_APP_COMMONS_ES = path.join(DAY_TEXTS_DIR, 'commons/es');
+const STATIC_TRANSLATIONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/static-translations');
 const RUN_DIR = path.join(__dirname, 'run');
 const CANDIDATES_DIR = path.join(RUN_DIR, 'candidates');
 const STAGE1_JSON = path.join(RUN_DIR, 'stage1-summary.json');
@@ -24,9 +29,9 @@ const PUBLIC_DIR = path.join(__dirname, 'public');
 
 fs.mkdirSync(RUN_DIR, { recursive: true });
 
-function runCommand(cmd, args, cwd) {
+function runCommand(cmd, args, cwd, extraEnv) {
   return new Promise((resolve) => {
-    const child = spawn(cmd, args, { cwd });
+    const child = spawn(cmd, args, { cwd, env: extraEnv ? { ...process.env, ...extraEnv } : process.env });
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', (d) => (stdout += d.toString()));
@@ -115,12 +120,9 @@ async function handleLaudes(req, res) {
   sendJson(res, result.code === 0 ? 200 : 500, { ok: result.code === 0, log: result.stdout + result.stderr, sample });
 }
 
-async function handleJoinLaudes(req, res, body) {
-  const start = (body && body.start) || '2024-01-01';
-  const end = (body && body.end) || '2026-12-30';
+async function runContentJoinPipeline({ start, end, hours }) {
   const manifestPath = path.join(RUN_DIR, 'date-to-key-manifest.json');
-  const allLaudesPath =
-    '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts/all_laudes.json';
+  const allLaudesPath = path.join(DAY_TEXTS_DIR, 'all_laudes.json');
 
   const manifestResult = await runCommand(
     'npx',
@@ -128,13 +130,14 @@ async function handleJoinLaudes(req, res, body) {
     LITCAL_ROOT
   );
   if (manifestResult.code !== 0) {
-    return sendJson(res, 500, { ok: false, stage: 'manifest', log: manifestResult.stdout + manifestResult.stderr });
+    return { ok: false, log: manifestResult.stdout + manifestResult.stderr };
   }
 
   const joinResult = await runCommand(
     'npx',
-    ['jest', 'migration-to-saints/join-laudes.test.js', '--silent'],
-    CPL_APP_ROOT
+    ['jest', 'migration-to-saints/join-content.test.js', '--silent'],
+    CPL_APP_ROOT,
+    { HOURS: hours.join(',') }
   );
   const commonsDir = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
   const coverage = {};
@@ -150,18 +153,82 @@ async function handleJoinLaudes(req, res, body) {
   );
   const pendingSample = Object.entries(pending)
     .flatMap(([table, items]) => items.map((item) => ({ table, ...item })))
-    .slice(0, 30);
+    .sort((a, b) => b.affectedCount - a.affectedCount)
+    .slice(0, 40);
   const pendingCount = Object.values(pendingByTable).reduce((a, b) => a + b, 0);
-  sendJson(res, joinResult.code === 0 ? 200 : 500, {
+  return {
     ok: joinResult.code === 0,
-    start,
-    end,
     log: manifestResult.stdout + manifestResult.stderr + '\n' + joinResult.stdout + joinResult.stderr,
     coverage,
     pendingCount,
     pendingByTable,
     pendingSample,
-  });
+  };
+}
+
+// Copies migration-to-saints/output/commons-ca/*.json (the RESOLVED, non-pending
+// content) + the hand-translated static tables + es's language-invariant Latin hymns
+// into saints-app's real commons/ca/. Merges into whatever is already there rather than
+// overwriting the whole file, so re-running after a manual fix in saints-app doesn't
+// clobber it (our own keys always win, since they're the ones that passed the
+// agree-across-every-date check).
+function exportResolvedContentToSaintsApp() {
+  fs.mkdirSync(SAINTS_APP_COMMONS_CA, { recursive: true });
+  const report = { filesWritten: [], keysAdded: 0, keysChanged: 0 };
+
+  const commonsDir = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
+  if (fs.existsSync(commonsDir)) {
+    for (const f of fs.readdirSync(commonsDir)) {
+      const src = readJsonSafe(path.join(commonsDir, f)) || {};
+      if (Object.keys(src).length === 0) continue;
+      const destPath = path.join(SAINTS_APP_COMMONS_CA, f);
+      const dest = readJsonSafe(destPath) || {};
+      for (const [k, v] of Object.entries(src)) {
+        if (!(k in dest)) report.keysAdded++;
+        else if (dest[k] !== v) report.keysChanged++;
+        dest[k] = v;
+      }
+      fs.writeFileSync(destPath, JSON.stringify(dest, null, 2), 'utf8');
+      report.filesWritten.push(f);
+    }
+  }
+
+  if (fs.existsSync(STATIC_TRANSLATIONS_DIR)) {
+    for (const f of fs.readdirSync(STATIC_TRANSLATIONS_DIR)) {
+      const targetName = f.replace('.ca.json', '.json');
+      const src = readJsonSafe(path.join(STATIC_TRANSLATIONS_DIR, f)) || {};
+      const destPath = path.join(SAINTS_APP_COMMONS_CA, targetName);
+      const dest = readJsonSafe(destPath) || {};
+      for (const [k, v] of Object.entries(src)) {
+        if (!(k in dest)) report.keysAdded++;
+        dest[k] = v;
+      }
+      fs.writeFileSync(destPath, JSON.stringify(dest, null, 2), 'utf8');
+      report.filesWritten.push(targetName);
+    }
+  }
+
+  const latinSrc = path.join(SAINTS_APP_COMMONS_ES, 'himnos_latinos.json');
+  const latinDest = path.join(SAINTS_APP_COMMONS_CA, 'himnos_latinos.json');
+  if (fs.existsSync(latinSrc) && !fs.existsSync(latinDest)) {
+    fs.copyFileSync(latinSrc, latinDest);
+    report.filesWritten.push('himnos_latinos.json (còpia d’es, invariant)');
+  }
+
+  return report;
+}
+
+async function handleMigratorRun(req, res, body, { exportToSaintsApp }) {
+  const start = (body && body.start) || '2024-01-01';
+  const end = (body && body.end) || '2026-12-30';
+  const hours = (body && body.hours && body.hours.length) ? body.hours : ['Laudes', 'Vespers'];
+
+  const result = await runContentJoinPipeline({ start, end, hours });
+  let exportReport = null;
+  if (result.ok && exportToSaintsApp) {
+    exportReport = exportResolvedContentToSaintsApp();
+  }
+  sendJson(res, result.ok ? 200 : 500, { ...result, start, end, hours, exported: exportToSaintsApp, exportReport });
 }
 
 function handleDroppedReport(req, res) {
@@ -189,7 +256,10 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'POST' && req.url === '/api/stage2') return handleStage2(req, res, await readBody(req));
     if (req.method === 'POST' && req.url === '/api/generate-loaders') return handleGenerateLoaders(req, res);
     if (req.method === 'POST' && req.url === '/api/laudes') return handleLaudes(req, res);
-    if (req.method === 'POST' && req.url === '/api/join-laudes') return handleJoinLaudes(req, res, await readBody(req));
+    if (req.method === 'POST' && req.url === '/api/migrator/calculate')
+      return handleMigratorRun(req, res, await readBody(req), { exportToSaintsApp: false });
+    if (req.method === 'POST' && req.url === '/api/migrator/export')
+      return handleMigratorRun(req, res, await readBody(req), { exportToSaintsApp: true });
     if (req.method === 'GET' && req.url === '/api/dropped-report') return handleDroppedReport(req, res);
     return serveStatic(req, res);
   } catch (e) {
