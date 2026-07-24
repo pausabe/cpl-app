@@ -70,6 +70,25 @@
       <label><input type="checkbox" id="mig-hour-vespers" checked /> Vespres</label>
       <span class="hint">(Ofici, Hora intermèdia, Invitatori i Completes: pendents d'afegir)</span>
     </div>
+    <div class="date-range">
+      <label>Diòcesi (litcal i cpl es resolen amb aquesta, per no confondre els dies propis amb els genèrics)
+        <select id="mig-diocese">
+          <option value="Barcelona">Barcelona</option>
+          <option value="Girona">Girona</option>
+          <option value="Lleida">Lleida</option>
+          <option value="Mallorca">Mallorca</option>
+          <option value="Menorca">Menorca</option>
+          <option value="Sant Feliu de Llobregat">Sant Feliu de Llobregat</option>
+          <option value="Solsona">Solsona</option>
+          <option value="Tarragona">Tarragona</option>
+          <option value="Terrassa">Terrassa</option>
+          <option value="Tortosa">Tortosa</option>
+          <option value="Urgell">Urgell</option>
+          <option value="Vic">Vic</option>
+          <option value="Andorra">Andorra</option>
+        </select>
+      </label>
+    </div>
     <button data-action="mig-calculate">Calcular (no escriu res)</button>
     <button class="danger" data-action="mig-export">Exportar a saints-app</button>
     <span class="status" data-status="migrator"></span>

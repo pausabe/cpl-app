@@ -120,13 +120,37 @@ async function handleLaudes(req, res) {
   sendJson(res, result.code === 0 ? 200 : 500, { ok: result.code === 0, log: result.stdout + result.stderr, sample });
 }
 
-async function runContentJoinPipeline({ start, end, hours }) {
+// Maps cpl-app's own DioceseName values (as used in join-content.test.js's
+// SettingsService mock and in cpl-app.db) to the matching litcal calendar id, so the
+// manifest is resolved with the SAME diocese cpl-app is impersonating. Without this,
+// litcal was being asked "what day is this?" using the plain 'spain' chain — which
+// doesn't know about Eulàlia, Montserrat, etc. — while cpl-app answered as a specific
+// diocese, so diocese-only content was getting silently filed under the wrong (generic
+// ferial/universal) shared slot instead of being recognized as its own thing.
+const DIOCESE_TO_CALENDAR_ID = {
+  Barcelona: 'diocese-barcelona',
+  Girona: 'diocese-girona',
+  Lleida: 'diocese-lleida',
+  Mallorca: 'diocese-mallorca',
+  Menorca: 'diocese-menorca',
+  'Sant Feliu de Llobregat': 'diocese-sant-feliu-de-llobregat',
+  Solsona: 'diocese-solsona',
+  Tarragona: 'diocese-tarragona',
+  Terrassa: 'diocese-terrassa',
+  Tortosa: 'diocese-tortosa',
+  Urgell: 'diocese-urgell',
+  Vic: 'diocese-vic',
+  Andorra: 'diocese-andorra',
+};
+
+async function runContentJoinPipeline({ start, end, hours, diocese }) {
   const manifestPath = path.join(RUN_DIR, 'date-to-key-manifest.json');
   const allLaudesPath = path.join(DAY_TEXTS_DIR, 'all_laudes.json');
+  const calendarId = DIOCESE_TO_CALENDAR_ID[diocese] || 'spain';
 
   const manifestResult = await runCommand(
     'npx',
-    ['tsx', 'scripts/build-date-to-key-manifest.ts', allLaudesPath, start, end, manifestPath, 'spain'],
+    ['tsx', 'scripts/build-date-to-key-manifest.ts', allLaudesPath, start, end, manifestPath, calendarId],
     LITCAL_ROOT
   );
   if (manifestResult.code !== 0) {
@@ -137,7 +161,7 @@ async function runContentJoinPipeline({ start, end, hours }) {
     'npx',
     ['jest', 'migration-to-saints/join-content.test.js', '--silent'],
     CPL_APP_ROOT,
-    { HOURS: hours.join(',') }
+    { HOURS: hours.join(','), DIOCESE: diocese }
   );
   const commonsDir = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
   const coverage = {};
@@ -222,13 +246,14 @@ async function handleMigratorRun(req, res, body, { exportToSaintsApp }) {
   const start = (body && body.start) || '2024-01-01';
   const end = (body && body.end) || '2026-12-30';
   const hours = (body && body.hours && body.hours.length) ? body.hours : ['Laudes', 'Vespers'];
+  const diocese = (body && body.diocese) || 'Barcelona';
 
-  const result = await runContentJoinPipeline({ start, end, hours });
+  const result = await runContentJoinPipeline({ start, end, hours, diocese });
   let exportReport = null;
   if (result.ok && exportToSaintsApp) {
     exportReport = exportResolvedContentToSaintsApp();
   }
-  sendJson(res, result.ok ? 200 : 500, { ...result, start, end, hours, exported: exportToSaintsApp, exportReport });
+  sendJson(res, result.ok ? 200 : 500, { ...result, start, end, hours, diocese, exported: exportToSaintsApp, exportReport });
 }
 
 function handlePendingReport(req, res) {

@@ -29,7 +29,7 @@ const DAY_TEXTS_DIR = '/Users/pau/projects/saints/saints-app/src/store/db/day_sp
 const OUTPUT_DIR = path.resolve(__dirname, 'output/commons-ca');
 const PENDING_PATH = path.resolve(__dirname, 'output/join-pending-review.json');
 
-const DIOCESE_NAME = 'Barcelona';
+const DIOCESE_NAME = process.env.DIOCESE || 'Barcelona';
 const PRAYING_PLACE = 'Diòcesi';
 
 // Which Hours to join, and where each one's existing index lives. All of them share

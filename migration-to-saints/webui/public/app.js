@@ -135,7 +135,7 @@ function renderMigrator(data) {
   const el = resultsEl('migrator');
   if (!data) return;
   const totalResolved = data.coverage ? Object.values(data.coverage).reduce((a, b) => a + b, 0) : 0;
-  let html = `<div class="summary-line">Rang: <b>${escapeHtml(data.start)} → ${escapeHtml(data.end)}</b> · Hores: <b>${(data.hours || []).join(', ')}</b></div>`;
+  let html = `<div class="summary-line">Rang: <b>${escapeHtml(data.start)} → ${escapeHtml(data.end)}</b> · Hores: <b>${(data.hours || []).join(', ')}</b> · Diòcesi: <b>${escapeHtml(data.diocese)}</b></div>`;
   html += `<div class="summary-line">Migrat (coincideix a totes les dates): <b>${totalResolved}</b> ids · Pendent de revisió (es deixa en blanc): <b>${data.pendingCount ?? 0}</b> ids</div>`;
   if (data.exported) {
     const r = data.exportReport || {};
@@ -282,9 +282,10 @@ document.addEventListener('click', async (e) => {
     const hours = [];
     if (document.getElementById('mig-hour-laudes').checked) hours.push('Laudes');
     if (document.getElementById('mig-hour-vespers').checked) hours.push('Vespers');
+    const diocese = document.getElementById('mig-diocese').value;
     if (action === 'mig-export' && !confirm('Això escriurà de veritat a saints-app/.../commons/ca/. Continuar?')) return;
     const endpoint = action === 'mig-export' ? 'migrator/export' : 'migrator/calculate';
-    renderMigrator(await runAction(action, { body: { start, end, hours }, endpoint, displayKey: 'migrator' }));
+    renderMigrator(await runAction(action, { body: { start, end, hours, diocese }, endpoint, displayKey: 'migrator' }));
   }
   else if (action === 'dropped-report') {
     const res = await fetch('/api/dropped-report');

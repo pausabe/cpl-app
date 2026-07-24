@@ -262,6 +262,24 @@ en "Salm 62, 2-9" i uns 10 discrepen clarament (6 al voltant de Nadal amb "Salm 
 uns quants casos aïllats amb altres salms) — el panell web (targeta 5, amb selector de
 rang de dates) mostra aquest desglossament per a cada ID pendent.
 
+**Bug real trobat i corregit (gràcies a una pregunta de l'usuari)**: el migrador resolia
+sempre amb `calendarId: 'spain'` — el mateix que ES/IT — sense tenir en compte els
+calendaris nous de Catalunya/diòcesi que ja existien a `litcal` des de la secció 6. Això
+volia dir que dies genuïnament propis d'una diòcesi (p.ex. Santa Eulàlia a Barcelona,
+12 de febrer) `litcal` els veia com un dia ferial qualsevol ("dijous normal de la 5a
+setmana"), mentre que cpl-app (configurat per a aquesta mateixa diòcesi) sí que donava
+el contingut propi d'Eulàlia — i el script els arxivava sota la casella ferial genèrica,
+compartida per molts altres dijous sense cap relació. Corregit fent que el manifest es
+resolgui amb el `calendarId` de la diòcesi corresponent (`diocese-barcelona`, etc. — nou
+selector de diòcesi al panell), mapat des del nom de diòcesi de cpl-app. Amb això,
+Eulàlia/Montserrat ara resolen al SEU propi id de litcal, que no existeix a
+`all_laudes.json`/`all_visperas.json`, així que simplement se salten (no s'exporten,
+tampoc contaminen res) fins que es decideixi encunyar-los ids propis.
+
+Resultat mesurat (Barcelona, 2024-01-01—2026-12-30): de 3.086 a **2.667 pendents**, de
+5.364 a **5.712 resolts**. Verificat que cap clau ja exportada abans quedés "contaminada"
+(cap de les claus que ja hi havia a `saints-app` és ara pendent) abans de re-exportar.
+
 **Segon patró trobat, diferent del de Nadal (revisant els pendents amb el migrador
 Laudes+Vespres)**: bona part dels pendents NO són "cpl-app s'equivoca un dia concret" —
 són dies `__MEMORY_FERIAL1`/`__MEMORY_FERIAL2` (memòria opcional sense textos propis,
