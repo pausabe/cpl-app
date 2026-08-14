@@ -23,8 +23,16 @@
 const path = require('path');
 const fs = require('fs');
 const { DatabaseSync } = require('node:sqlite');
+const { textKey } = require('./lib/text-key');
+const { mergeCitationHeadings } = require('./lib/citation-headings');
+
+// Tables whose values are psalm/canticle headings ("Salm 50\nOració de penediment"), the
+// only ones where the proper/psalter spelling split applies. The biblical citations of
+// lectura_breve_citas are not headings and show none of it.
+const CITATION_TABLES = new Set(['salmos_citas']);
 
 const MANIFEST_PATH = path.resolve(__dirname, 'webui/run/date-to-key-manifest.json');
+const CELL_MAP_PATH = path.resolve(__dirname, 'output/app-cell-map.json');
 const DAY_TEXTS_DIR = '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts';
 const OUTPUT_DIR = path.resolve(__dirname, 'output/commons-ca');
 const PENDING_PATH = path.resolve(__dirname, 'output/join-pending-review.json');
@@ -34,11 +42,43 @@ const PRAYING_PLACE = 'Diòcesi';
 
 // Which Hours to join, and where each one's existing index lives. All of them share
 // the SAME commons/ca/<table>.json id space.
+//
+// `observe` defaults to observeHour (the full Laudes/Vespers field set). The Invitatory
+// is shaped differently — its all_invitatorios.json entry is a single `{ val: <id> }`
+// pointing at one antiphon line, not the ~20 fields of an Hour — so it brings its own.
 const HOURS_CONFIG = {
   Laudes: { allXFile: 'all_laudes.json' },
   Vespers: { allXFile: 'all_visperas.json' },
+  Invitation: {
+    allXFile: 'all_invitatorios.json',
+    observe: (entry, hourData, tag, observe) =>
+      observe('invitatorios', entry.val, hourData.InvitationAntiphon, tag),
+  },
+  // Not an Hour: the celebration's own name, shown as the header of every Hour page.
+  // Its index (all_celebrations.json) keys on the bare litcal id with no `__CYCLE`
+  // suffix, which the shared prefix lookup already handles (prefix === whole key).
+  //
+  // Only PROPER celebrations (a named saint/feast) are taken. For a ferial id like
+  // `ordinary_time_1_wednesday` the es/it index stores the weekday's own name
+  // ("Miércoles de la 1ª semana del Tiempo Ordinario"), but cpl-app's Title for that
+  // same date reports the optional memorial that happens to fall on it ("Sant Hilari").
+  // Writing that would pin one saint's name onto every recurrence of that weekday
+  // forever — and the agreement check can't catch it, because it is consistently
+  // wrong rather than inconsistent. Verified against ids 10/11/13/19/20 (see PLAN 6d).
+  Celebration: {
+    allXFile: 'all_celebrations.json',
+    dataKey: 'TodayCelebrationInformation',
+    isFerialKey: (key) =>
+      /^(ordinary_time|advent|lent|easter|christmas_time|holy_week|octave)_/.test(key) ||
+      /_after_epiphany$|_after_ash_wednesday$/.test(key) ||
+      key === 'second_sunday_after_christmas',
+    observe: (entry, data, tag, observe, key) => {
+      if (HOURS_CONFIG.Celebration.isFerialKey(key)) return;
+      observe('celebration_names', entry.name, data.Title, tag);
+    },
+  },
 };
-const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers')
+const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Invitation,Celebration')
   .split(',')
   .map((h) => h.trim())
   .filter((h) => HOURS_CONFIG[h]);
@@ -175,13 +215,63 @@ const TABLES = [
   'himnos', 'salmos_citas', 'salmos_antifonas', 'salmos_textos',
   'lectura_breve_citas', 'lectura_breve_textos', 'responsorios',
   'cantico_evangelico_antifonas', 'preces_intro', 'preces_respuesta',
-  'preces_contenido', 'oraciones_finales',
+  'preces_contenido', 'oraciones_finales', 'invitatorios', 'celebration_names',
 ];
+
+// Which commons table each index field points at — used only to check that the cell map
+// and observeHour agree about it.
+const FIELD_TABLE = {
+  himno: 'himnos',
+  primer_salmo_cita: 'salmos_citas', primer_salmo_antifona: 'salmos_antifonas', primer_salmo_texto: 'salmos_textos',
+  segundo_salmo_cita: 'salmos_citas', segundo_salmo_antifona: 'salmos_antifonas', segundo_salmo_texto: 'salmos_textos',
+  tercer_salmo_cita: 'salmos_citas', tercer_salmo_antifona: 'salmos_antifonas', tercer_salmo_texto: 'salmos_textos',
+  lectura_biblica_cita: 'lectura_breve_citas', lectura_biblica: 'lectura_breve_textos',
+  responsorios: 'responsorios', cantico_evangelico_antifona: 'cantico_evangelico_antifonas',
+  preces_intro: 'preces_intro', preces_respuesta: 'preces_respuesta', preces_contenido: 'preces_contenido',
+  oracion_final: 'oraciones_finales',
+};
 
 describe('Content join: cpl-app -> saints-app commons/ca', () => {
   test('extracts Catalan text for every mapped numeric id, across all configured Hours', async () => {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const settings = buildSettings({ dioceseName: DIOCESE_NAME, prayingPlace: PRAYING_PLACE });
+
+    // Which cell the app REALLY reads for each field of each day, measured by running
+    // saints-app itself (app-id-probe.js, see PLAN 8d). The index says which cell applies
+    // by default; the stores override it (December 17–24 take their psalms from the
+    // ordinary weekday, Holy Thursday resolves to a different celebration id, `-1` means
+    // "fall back to the ferial part"...). Reading the index alone files those days'
+    // content under cells the app never opens, which manufactures conflicts.
+    const cellMap = (() => {
+      try {
+        return JSON.parse(fs.readFileSync(CELL_MAP_PATH, 'utf8')).days || {};
+      } catch {
+        console.warn(
+          `No hi ha ${CELL_MAP_PATH}. Es farà servir l'índex directament, que dona caselles ` +
+            `equivocades als dies amb excepcions (PLAN 8c). Genera'l amb app-id-probe.js --range.`
+        );
+        return {};
+      }
+    })();
+    const cellMapUse = { fromMap: 0, fromIndex: 0, noEntry: 0 };
+
+    // The probe reports cells as "table/id"; observeHour wants the plain id per field and
+    // already knows the table. A field landing in an unexpected table would mean the two
+    // sides disagree about what that field is, so it is reported instead of coerced.
+    const tableMismatch = new Set();
+    function entryFromCells(cells) {
+      const entry = {};
+      for (const [field, cell] of Object.entries(cells)) {
+        const list = Array.isArray(cell) ? cell : [cell];
+        const expected = FIELD_TABLE[field];
+        for (const c of list) {
+          const [table] = c.split('/');
+          if (expected && table !== expected) tableMismatch.add(`${field}: ${table} ≠ ${expected}`);
+        }
+        entry[field] = Array.isArray(cell) ? list.map((c) => c.split('/')[1]) : list[0].split('/')[1];
+      }
+      return entry;
+    }
 
     const allXByHour = {};
     const keysByPrefixByHour = {};
@@ -200,17 +290,30 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // observation across the whole range and every configured Hour, then decide per id
     // whether all observed values agree. If not, the id is left out of commons/ca
     // entirely and reported as pending (see file header).
+    // Grouped by textKey, not by the raw string: cpl-app stores the same text with
+    // cosmetic whitespace differences between copies, and keying those apart turns one
+    // unanimous text into a fake conflict (see lib/text-key.js). Each group keeps the raw
+    // spellings it saw so the value written out stays byte-exact cpl-app output.
     const observations = {};
-    for (const table of TABLES) observations[table] = new Map(); // id -> Map(value -> [ "date/hour", ... ])
+    for (const table of TABLES) observations[table] = new Map(); // id -> Map(textKey -> group)
 
     function observe(table, id, value, tag) {
       if (id === undefined || id === null || id === -1 || value === undefined || value === null || value === '') return;
       const key = String(id);
       let byValue = observations[table].get(key);
       if (!byValue) observations[table].set(key, (byValue = new Map()));
-      if (!byValue.has(value)) byValue.set(value, []);
-      byValue.get(value).push(tag);
+      const vk = textKey(value);
+      let group = byValue.get(vk);
+      if (!group) byValue.set(vk, (group = { raws: new Map(), tags: [] }));
+      group.raws.set(value, (group.raws.get(value) || 0) + 1);
+      group.tags.push(tag);
     }
+
+    // The spelling cpl-app produced most often; ties go to the first one seen. Any of them
+    // would do — they differ only in blanks — but "the most common one" is a rule, not a
+    // coin flip, so re-running the join can't silently swap the whitespace of a text.
+    const representative = (group) =>
+      [...group.raws.entries()].reduce((a, b) => (b[1] > a[1] ? b : a))[0];
 
     function observeHour(entry, hourData, tag) {
       observe('himnos', entry.himno, hourData.Anthem, tag);
@@ -252,11 +355,35 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       observe('oraciones_finales', entry.oracion_final, hourData.FinalPrayer, tag);
     }
 
+    // cpl-app.db only holds a fixed span of liturgical years. A manifest date outside it
+    // makes cpl-app's own services throw on an empty row (e.g. ObtainPentecostDay reading
+    // result[0].mes of nothing), which used to kill the whole run over a single edge day.
+    // Skip those days and report them instead.
+    const rangeDb = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
+    const coveredYears = new Set(
+      rangeDb.prepare('SELECT DISTINCT any AS y FROM anyliturgic').all().map((r) => String(r.y))
+    );
+    rangeDb.close();
+
     const dates = Object.keys(manifest).sort();
     let processed = 0;
+    const skippedOutOfRange = [];
+    const failedDates = [];
     for (const dateStr of dates) {
       const { litcalId } = manifest[dateStr];
       if (!litcalId) continue;
+      // Resolving day D reaches two days ahead: D's first Vespers needs D+1, and
+      // building D+1's own information asks for ITS tomorrow, D+2. So all three years
+      // must be in the DB or cpl-app throws on an empty row.
+      const year = dateStr.slice(0, 4);
+      const yearsNeeded = [0, 1, 2].map((offset) => {
+        const dd = new Date(Date.UTC(+year, +dateStr.slice(5, 7) - 1, +dateStr.slice(8, 10) + offset));
+        return String(dd.getUTCFullYear());
+      });
+      if (!yearsNeeded.every((y2) => coveredYears.has(y2))) {
+        skippedOutOfRange.push(dateStr);
+        continue;
+      }
 
       // Does at least one configured hour have a matching entry for this litcalId?
       // If none do, skip resolving cpl-app for this date entirely (saves time).
@@ -265,14 +392,45 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
 
       const [y, m, d] = dateStr.split('-').map(Number);
       const date = new Date(y, m - 1, d);
-      const hoursLiturgy = await resolveHoursLiturgy(date, settings);
+      let hoursLiturgy;
+      try {
+        hoursLiturgy = await resolveHoursLiturgy(date, settings);
+      } catch (e) {
+        // A single day cpl-app can't resolve must not throw away a 10-year run: record
+        // it and carry on, so the failures are visible as data instead of a stack trace.
+        failedDates.push({ date: dateStr, error: String(e && e.message ? e.message : e) });
+        continue;
+      }
       processed++;
 
       for (const hour of applicableHours) {
         const key = keysByPrefixByHour[hour].get(litcalId);
-        const entry = allXByHour[hour][key];
-        const hourData = hoursLiturgy[hour];
-        if (entry && hourData) observeHour(entry, hourData, `${dateStr} (${hour})`);
+        const hourData = hoursLiturgy[HOURS_CONFIG[hour].dataKey || hour];
+        const observeFn = HOURS_CONFIG[hour].observe;
+
+        // Measured cells win over the index whenever the probe covered this day/hour.
+        // The Invitatory and the celebration name are not probed (they live in other
+        // stores), so they keep using the index.
+        let entry;
+        const probed = !HOURS_CONFIG[hour].observe && cellMap[dateStr] && cellMap[dateStr].hours
+          ? cellMap[dateStr].hours[hour]
+          : null;
+        if (probed && probed.__noEntry) {
+          // The app shows nothing here (no entry in the shared index): observing anything
+          // would attribute cpl-app's text to a cell nobody reads.
+          cellMapUse.noEntry++;
+          continue;
+        } else if (probed) {
+          entry = entryFromCells(probed);
+          cellMapUse.fromMap++;
+        } else {
+          entry = allXByHour[hour][key];
+          cellMapUse.fromIndex++;
+        }
+
+        if (!entry || !hourData) continue;
+        if (observeFn) observeFn(entry, hourData, `${dateStr} (${hour})`, observe, key);
+        else observeHour(entry, hourData, `${dateStr} (${hour})`);
       }
     }
 
@@ -282,17 +440,30 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     for (const table of TABLES) {
       commons[table] = {};
       pending[table] = [];
-      for (const [id, byValue] of observations[table]) {
+      for (const [id, rawByValue] of observations[table]) {
+        // Psalm headings are printed with or without their descriptive line depending on
+        // whether the psalmody is proper or from the psalter. saints-app has one cell for
+        // both, so the two spellings are pooled into the fullest one (lib/citation-headings.js).
+        const byValue = CITATION_TABLES.has(table)
+          ? mergeCitationHeadings(rawByValue, representative)
+          : rawByValue;
         if (byValue.size === 1) {
-          commons[table][id] = [...byValue.keys()][0];
+          commons[table][id] = representative([...byValue.values()][0]);
         } else {
           pending[table].push({
             id,
-            affectedCount: [...byValue.values()].flat().length,
-            variants: [...byValue.entries()].map(([value, tags]) => ({
-              preview: value.slice(0, 100),
-              tags,
-            })),
+            affectedCount: [...byValue.values()].reduce((n, g) => n + g.tags.length, 0),
+            variants: [...byValue.values()].map((group) => {
+              const value = representative(group);
+              return {
+                // Long enough to actually judge the difference in the review queue: at
+                // 100 chars two hymns or two intercessions often look identical because
+                // only their opening line fits.
+                preview: value.slice(0, 300),
+                truncated: value.length > 300,
+                tags: group.tags,
+              };
+            }),
           });
         }
       }
@@ -307,6 +478,33 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     const totalResolved = Object.values(commons).reduce((n, t) => n + Object.keys(t).length, 0);
     const totalPending = Object.values(pending).reduce((n, t) => n + t.length, 0);
     console.log(`Hours: ${HOURS_TO_RUN.join(', ')}. Processed ${processed} dates.`);
+    console.log(
+      `Caselles: ${cellMapUse.fromMap} hores des del mapa mesurat, ${cellMapUse.fromIndex} des de l'índex, ` +
+        `${cellMapUse.noEntry} saltades (l'app no hi mostra res).`
+    );
+    if (tableMismatch.size) {
+      console.warn(`⚠️  camps del mapa amb taula inesperada: ${[...tableMismatch].join(' · ')}`);
+    }
+    if (skippedOutOfRange.length) {
+      console.log(
+        `Skipped ${skippedOutOfRange.length} date(s) outside cpl-app.db's range ` +
+          `(${skippedOutOfRange[0]} … ${skippedOutOfRange[skippedOutOfRange.length - 1]}).`
+      );
+    }
+    fs.writeFileSync(
+      path.resolve(__dirname, 'output/join-skipped-dates.json'),
+      JSON.stringify({ skippedOutOfRange, failedDates }, null, 2),
+      'utf8'
+    );
+    if (failedDates.length) {
+      const byError = {};
+      for (const f of failedDates) (byError[f.error] = byError[f.error] || []).push(f.date);
+      console.log(`cpl-app failed to resolve ${failedDates.length} date(s):`);
+      for (const [err, dates] of Object.entries(byError)) {
+        console.log(`  ${dates.length}× ${err}`);
+        console.log(`     ${dates.slice(0, 12).join(', ')}${dates.length > 12 ? ` (+${dates.length - 12})` : ''}`);
+      }
+    }
     for (const table of TABLES) {
       console.log(`  ${table}: ${Object.keys(commons[table]).length} resolved, ${pending[table].length} pending`);
     }
