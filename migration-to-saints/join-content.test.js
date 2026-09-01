@@ -25,6 +25,10 @@ const fs = require('fs');
 const { DatabaseSync } = require('node:sqlite');
 const { textKey } = require('./lib/text-key');
 const { mergeCitationHeadings } = require('./lib/citation-headings');
+const memorialFerial = require('./lib/memorial-ferial');
+// The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
+// is answered in the same vocabulary the join observes in — and can't drift from it.
+const { extractHourFields } = require('./lib/cpl-day-resolver');
 
 // Tables whose values are psalm/canticle headings ("Salm 50\nOració de penediment"), the
 // only ones where the proper/psalter spelling split applies. The biblical citations of
@@ -120,6 +124,9 @@ const SpecialCelebrationService = require('../src/Services/SpecialCelebrationSer
 const CelebrationIdentifierService = require('../src/Services/CelebrationIdentifierService');
 const { ObtainLiturgyMasters } = require('../src/Services/Liturgy/LiturgyMastersService');
 const { ObtainHoursLiturgy } = require('../src/Services/Liturgy/HoursLiturgyService');
+const LaudesService = require('../src/Services/Liturgy/LaudesService');
+const VespersService = require('../src/Services/Liturgy/VespersService');
+const Laudes = require('../src/Models/HoursLiturgy/Laudes').default;
 const { Settings } = require('../src/Models/Settings');
 const LiturgyDayInformation = require('../src/Models/LiturgyDayInformation').default;
 const { DioceseCode } = require('../src/Services/DatabaseEnums');
@@ -171,7 +178,20 @@ async function resolveHoursLiturgy(date, settings) {
   const tomorrowLdi = await obtainLiturgyDayInformation(ldi.Tomorrow.Date, settings);
   const todayMasters = await ObtainLiturgyMasters(ldi, settings);
   const tomorrowMasters = await ObtainLiturgyMasters(tomorrowLdi, settings);
-  return ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
+
+  // The same day with the celebration taken out, to tell a proper text from a weekday one
+  // field by field (lib/memorial-ferial.js). Taken BEFORE the merge runs and via a fresh
+  // call: hoursLiturgy.VespersOptions.VespersWithoutCelebration looks like the same thing
+  // but MergeVespersWithCelebration mutates that object in place (`let vespers =
+  // withoutCelebrationVespers`), so by the time it's read here it IS the rendered Vespers
+  // and ferialFields marks every field ferial — every switch-day's real content then gets
+  // filed under the "_Ferial" measured cell instead of its own (see PLAN, review paranys).
+  const ferial = {
+    Laudes: LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings),
+    Vespers: VespersService.ObtainVespers(todayMasters, ldi.Today, settings),
+  };
+  const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
+  return { hoursLiturgy, ferial };
 }
 
 // --- Prayers-blob parser (confirmed against bridget_of_sweden_religious, 2026-07-23 —
@@ -259,7 +279,14 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // already knows the table. A field landing in an unexpected table would mean the two
     // sides disagree about what that field is, so it is reported instead of coerced.
     const tableMismatch = new Set();
-    function entryFromCells(cells) {
+    function entryFromCells(measured, options) {
+      // On a memorial that keeps the weekday psalmody the app carries two offices, and most
+      // of what cpl-app renders belongs to the ferial one — so that is the cell its text
+      // goes in. Filing it under the memorial cell instead puts a ferial text where the
+      // common lives, it disagrees with every other date sharing that cell, and the id is
+      // dropped as conflicted forever: cpl-app can never supply it. `fromFerial` says which
+      // fields really came from the weekday, per value. See lib/memorial-ferial.js.
+      const cells = memorialFerial.cellsForCplApp(measured, options);
       const entry = {};
       for (const [field, cell] of Object.entries(cells)) {
         const list = Array.isArray(cell) ? cell : [cell];
@@ -298,7 +325,13 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     for (const table of TABLES) observations[table] = new Map(); // id -> Map(textKey -> group)
 
     function observe(table, id, value, tag) {
-      if (id === undefined || id === null || id === -1 || value === undefined || value === null || value === '') return;
+      // `-1` is the index saying "this entry has no text here, take it from the other tab",
+      // not a cell. It arrives as a number from the index and as the STRING "-1" from the
+      // measured cell map, and comparing only against the number let the string through:
+      // every such field was filed under a cell literally called "-1", where texts from
+      // unrelated days piled up and reported themselves as one enormous conflict
+      // (`salmos_citas/-1`: 2751 observations, 120 variants).
+      if (id === undefined || id === null || String(id) === '-1' || value === undefined || value === null || value === '') return;
       const key = String(id);
       let byValue = observations[table].get(key);
       if (!byValue) observations[table].set(key, (byValue = new Map()));
@@ -393,8 +426,9 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       const [y, m, d] = dateStr.split('-').map(Number);
       const date = new Date(y, m - 1, d);
       let hoursLiturgy;
+      let ferialHours;
       try {
-        hoursLiturgy = await resolveHoursLiturgy(date, settings);
+        ({ hoursLiturgy, ferial: ferialHours } = await resolveHoursLiturgy(date, settings));
       } catch (e) {
         // A single day cpl-app can't resolve must not throw away a 10-year run: record
         // it and carry on, so the failures are visible as data instead of a stack trace.
@@ -421,7 +455,10 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           cellMapUse.noEntry++;
           continue;
         } else if (probed) {
-          entry = entryFromCells(probed);
+          entry = entryFromCells(probed, {
+            allXKey: key,
+            fromFerial: memorialFerial.ferialFields(extractHourFields(hourData), extractHourFields(ferialHours[hour])),
+          });
           cellMapUse.fromMap++;
         } else {
           entry = allXByHour[hour][key];
