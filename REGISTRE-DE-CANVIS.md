@@ -13,9 +13,8 @@ Els dossiers llargs viuen a `migration-to-saints/cpl-bugs/` (errors de cpl-app) 
 `migration-to-saints/tooling-bugs/` (errors de les nostres eines). Aquí hi ha la fitxa curta i
 els enllaços.
 
-> **Els enllaços de GitHub de cpl-app encara no funcionen**: la branca `catalan-migration` no
-> està pujada a `origin`. Fins que s'hi pugi, la manera fiable de veure un commit és
-> `git show <sha>` en local. Els de saints-app i litcal sí que són a `origin`.
+Tots els commits d'aquest fitxer són a `origin`: cpl-app a la branca `catalan-migration`,
+saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 
 ---
 
