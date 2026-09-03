@@ -26,6 +26,11 @@ const { DatabaseSync } = require('node:sqlite');
 const { textKey } = require('./lib/text-key');
 const { mergeCitationHeadings } = require('./lib/citation-headings');
 const memorialFerial = require('./lib/memorial-ferial');
+// The Common of the Saints, the second source: cpl-app never renders it on a memorial, so
+// without this the Catalan half of saints-app's memorial tab can never be filled. See
+// lib/common-office.js and decisions/D-001-el-comu-a-les-memories.md.
+const commonOffice = require('./lib/common-office');
+const { fingerprint } = require('./lib/citation-key');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
 const { extractHourFields } = require('./lib/cpl-day-resolver');
@@ -82,6 +87,10 @@ const HOURS_CONFIG = {
     },
   },
 };
+// A comma-separated list of dates, to validate a change without waiting for the whole
+// 10-year window. Empty means every date in the manifest, which is the real run.
+const ONLY_DATES = (process.env.DATES || '').split(',').map((d) => d.trim()).filter(Boolean);
+
 const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Invitation,Celebration')
   .split(',')
   .map((h) => h.trim())
@@ -191,7 +200,7 @@ async function resolveHoursLiturgy(date, settings) {
     Vespers: VespersService.ObtainVespers(todayMasters, ldi.Today, settings),
   };
   const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
-  return { hoursLiturgy, ferial };
+  return { hoursLiturgy, ferial, ldi };
 }
 
 // Mirrors HoursLiturgyService.tsx's private TomorrowIsMoreImportant/HasLiturgyContent: the
@@ -216,26 +225,10 @@ function vespersComeFromTomorrow(hoursLiturgy) {
   return tomorrowPrecedence < todayPrecedence;
 }
 
-// --- Prayers-blob parser (confirmed against bridget_of_sweden_religious, 2026-07-23 —
-// see PLAN.md section 5): first paragraph minus its last line = intro; that last line =
-// the refrain (preces_respuesta); middle paragraphs each split on the em-dash into
-// (petition, closing) = preces_contenido entries; final paragraph = the Pare Nostre
-// intro (handled separately, via a static translated table, not from this parse).
-function parsePrayers(blob) {
-  if (!blob) return null;
-  const paragraphs = blob.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
-  if (paragraphs.length < 2) return null;
-  const firstLines = paragraphs[0].split('\n').map((l) => l.trim()).filter(Boolean);
-  const intro = firstLines.slice(0, -1).join('\n');
-  const respuesta = firstLines[firstLines.length - 1];
-  const middle = paragraphs.slice(1, -1);
-  const contenido = middle.map((p) => {
-    const idx = p.indexOf('—');
-    if (idx === -1) return { peticion: p.trim(), cierre: '' };
-    return { peticion: p.slice(0, idx).trim(), cierre: p.slice(idx + 1).replace(/^\t/, '').trim() };
-  });
-  return { intro, respuesta, contenido };
-}
+// The prayers blob is parsed in lib/common-office.js — the Common's own blob has the same
+// shape, and the two must come apart identically or a Common petition and a rendered one
+// would never compare equal.
+const { parsePrayers } = commonOffice;
 
 function expandResponsory(r) {
   if (!r) return null;
@@ -301,14 +294,14 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // already knows the table. A field landing in an unexpected table would mean the two
     // sides disagree about what that field is, so it is reported instead of coerced.
     const tableMismatch = new Set();
-    function entryFromCells(measured, options) {
+    function entryFromCells(measured, options, which = 0) {
       // On a memorial that keeps the weekday psalmody the app carries two offices, and most
       // of what cpl-app renders belongs to the ferial one — so that is the cell its text
       // goes in. Filing it under the memorial cell instead puts a ferial text where the
       // common lives, it disagrees with every other date sharing that cell, and the id is
       // dropped as conflicted forever: cpl-app can never supply it. `fromFerial` says which
       // fields really came from the weekday, per value. See lib/memorial-ferial.js.
-      const cells = memorialFerial.cellsForCplApp(measured, options);
+      const cells = memorialFerial.cellsForMode(measured, options, which);
       const entry = {};
       for (const [field, cell] of Object.entries(cells)) {
         const list = Array.isArray(cell) ? cell : [cell];
@@ -370,6 +363,131 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     const representative = (group) =>
       [...group.raws.entries()].reduce((a, b) => (b[1] > a[1] ? b : a))[0];
 
+    // --- Segona font: el Comú dels sants -------------------------------------------------
+    //
+    // Els dies de memòria, cpl-app resa la fèria i el seu text va a la casella ferial. La
+    // casella de la pestanya del sant es queda sense ningú que la pugui omplir: cpl-app no
+    // demana mai el Comú (`Categoria = '0000'`, vegeu decisions/D-001). En castellà aquella
+    // pestanya SÍ que mostra el Comú, i el 3 de setembre de 2026 es va decidir que el català
+    // hi faci igual. Això és el que l'omple.
+    const commonsDb = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
+    const { commons: commonRows, byCategoria: commonsByCategoria } = commonOffice.loadCommons(commonsDb);
+    const esTableCache = {};
+    function esTable(table) {
+      if (!(table in esTableCache)) {
+        try {
+          esTableCache[table] = JSON.parse(fs.readFileSync(path.join(DAY_TEXTS_DIR, `commons/es/${table}.json`), 'utf8'));
+        } catch {
+          esTableCache[table] = {};
+        }
+      }
+      return esTableCache[table];
+    }
+    const esValue = (table, id) => {
+      const t = esTable(table);
+      const ids = Array.isArray(id) ? id : [id];
+      const parts = ids.map((i) => (t[String(i)] == null ? '' : String(t[String(i)])));
+      return parts.every((x) => x === '') ? null : parts.join('\u0000');
+    };
+    const esShortReadingCitations = esTable('lectura_breve_citas');
+    const citeKey = (value) => {
+      const f = value ? fingerprint(value) : null;
+      return f ? f.token : null;
+    };
+    const commonPools = new Map();   // "títol|sufix|cita" -> { row, pool, pickedBy }
+    const commonStats = { days: 0, cells: 0, sameAsFerial: 0, properNoEvidence: 0, noCommon: new Map() };
+    // Which ids the Common supplied. The export treats these as additive only: they may fill
+    // an empty cell but never change one that already carries Catalan text — see
+    // export-to-saints-app.js. Without that, a cell whose only observation in this run is the
+    // Common wins unopposed and silently replaces content an earlier run got right.
+    const commonSourced = {};
+
+    function commonForDay({ title, suffix, hour, citation }) {
+      const cacheKey = `${title}|${suffix}|${hour}|${citation || ''}`;
+      if (commonPools.has(cacheKey)) return commonPools.get(cacheKey);
+      const picked = commonOffice.pickCommonRow({
+        title, suffix, commons: commonRows, byCategoria: commonsByCategoria,
+        want: citation ? { [hour]: citation } : {},
+        citeKey,
+      });
+      const result = picked.row
+        ? { row: picked.row, pool: commonOffice.poolByField(picked.row), pickedBy: picked.pickedBy }
+        : null;
+      commonPools.set(cacheKey, result);
+      return result;
+    }
+
+    // `memorialEntry` holds the memorial tab's cells. Only the fields cpl-app took from the
+    // weekday are written: for those the cell is genuinely unclaimed. For a field cpl-app
+    // supplies itself — the collect always, the Benedictus antiphon on 153 of the 527
+    // memorials — its own text already owns that cell and the Common must not overwrite it.
+    function markCommonSourced(table, id) {
+      const key = String(id).split('/').pop();
+      (commonSourced[table] = commonSourced[table] || new Set()).add(key);
+    }
+
+    // Returns the fields the Common actually wrote, so a caller on a single-tab day knows
+    // which of cpl-app's own fields it must now withhold.
+    function observeCommonHour(memorialEntry, ferialEntry, hour, fromFerial, tag, day, opts = {}) {
+      const taken = new Set();
+      if (!memorialEntry || !fromFerial || !fromFerial.size) return taken;
+      const citation = citeKey(esShortReadingCitations[String(memorialEntry.lectura_biblica_cita)]);
+      const picked = commonForDay({ ...day, hour, citation });
+      if (!picked) {
+        commonStats.noCommon.set(day.title, (commonStats.noCommon.get(day.title) || 0) + 1);
+        return taken;
+      }
+      const pool = picked.pool[hour];
+      if (!pool) return taken;
+      // One tab only: the Common displaces text instead of filling a gap, so it has to earn
+      // the field on the Spanish citation, not on the title. See lib/common-office.js.
+      const overrides = opts.properOnly
+        ? commonOffice.commonOverrides({ pool, fromFerial, pickedBy: picked.pickedBy })
+        : null;
+      if (overrides && !overrides.size) { commonStats.properNoEvidence++; return taken; }
+      let wrote = 0;
+      for (const [field, value] of Object.entries(pool)) {
+        if (!fromFerial.has(field)) continue;
+        if (overrides && !overrides.has(field)) continue;
+        const table = FIELD_TABLE[field];
+        const id = memorialEntry[field];
+        if (!table || id === undefined || id === null) continue;
+        // The premise of writing the Common here is that the saint's tab shows something the
+        // weekday's does not. The Spanish index says whether that is true on this day, and it
+        // is not always: on several Eastertide memorials it points the memorial's preces at
+        // the SEASON's cell, the same one the ferial tab uses (`preces_intro/1218`, "Oremos a
+        // Cristo, que resucitado de entre los muertos…", 24 day-hours). Writing the Common
+        // there would overwrite content that is already right, in a cell the weekday also
+        // owns. So: only where the two tabs really differ in Spanish.
+        if (!opts.properOnly) {
+          const esMemorial = esValue(table, id);
+          const esFerial = esValue(table, ferialEntry[field]);
+          if (esMemorial === null || (esFerial !== null && esMemorial === esFerial)) {
+            commonStats.sameAsFerial++;
+            continue;
+          }
+        }
+        if (Array.isArray(value)) {
+          if (!Array.isArray(id)) continue;
+          value.forEach((v, i) => {
+            if (commonOffice.usable(v) && id[i] !== undefined) {
+              observe(table, id[i], v, tag);
+              markCommonSourced(table, id[i]);
+              wrote++;
+              taken.add(field);
+            }
+          });
+        } else if (commonOffice.usable(value)) {
+          observe(table, id, value, tag);
+          markCommonSourced(table, id);
+          wrote++;
+          taken.add(field);
+        }
+      }
+      if (wrote) { commonStats.days++; commonStats.cells += wrote; }
+      return taken;
+    }
+
     function observeHour(entry, hourData, tag) {
       observe('himnos', entry.himno, hourData.Anthem, tag);
       if (hourData.FirstPsalm) {
@@ -420,7 +538,8 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     );
     rangeDb.close();
 
-    const dates = Object.keys(manifest).sort();
+    const dates = Object.keys(manifest).sort()
+      .filter((d) => !ONLY_DATES.length || ONLY_DATES.includes(d));
     let processed = 0;
     const skippedOutOfRange = [];
     const failedDates = [];
@@ -450,8 +569,9 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       const date = new Date(y, m - 1, d);
       let hoursLiturgy;
       let ferialHours;
+      let dayInfo;
       try {
-        ({ hoursLiturgy, ferial: ferialHours } = await resolveHoursLiturgy(date, settings));
+        ({ hoursLiturgy, ferial: ferialHours, ldi: dayInfo } = await resolveHoursLiturgy(date, settings));
       } catch (e) {
         // A single day cpl-app can't resolve must not throw away a 10-year run: record
         // it and carry on, so the failures are visible as data instead of a stack trace.
@@ -480,6 +600,8 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         // The Invitatory and the celebration name are not probed (they live in other
         // stores), so they keep using the index.
         let entry;
+        let fromFerial = null;
+        let memorialEntry = null;
         const probed = !HOURS_CONFIG[hour].observe && cellMap[dateStr] && cellMap[dateStr].hours
           ? cellMap[dateStr].hours[hour]
           : null;
@@ -489,10 +611,12 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           cellMapUse.noEntry++;
           continue;
         } else if (probed) {
-          entry = entryFromCells(probed, {
-            allXKey: key,
-            fromFerial: memorialFerial.ferialFields(extractHourFields(hourData), extractHourFields(ferialHours[hour])),
-          });
+          fromFerial = memorialFerial.ferialFields(extractHourFields(hourData), extractHourFields(ferialHours[hour]));
+          const options = { allXKey: key, fromFerial };
+          entry = entryFromCells(probed, options);
+          // Only where the app really shows the two tabs: elsewhere index 1 is the cell of
+          // the weekday this day displaced, which is not this day's content at all.
+          if (memorialFerial.hasSwitch(key)) memorialEntry = entryFromCells(probed, options, 1);
           cellMapUse.fromMap++;
         } else {
           entry = allXByHour[hour][key];
@@ -501,7 +625,32 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
 
         if (!entry || !hourData) continue;
         if (observeFn) observeFn(entry, hourData, `${dateStr} (${hour})`, observe, key);
-        else observeHour(entry, hourData, `${dateStr} (${hour})`);
+        else {
+          const dayForCommon = {
+            title: hoursLiturgy.TodayCelebrationInformation && hoursLiturgy.TodayCelebrationInformation.Title,
+            suffix: commonOffice.seasonSuffix(dayInfo && dayInfo.Today && dayInfo.Today.SpecificLiturgyTime),
+          };
+          if (memorialFerial.isProperOnly(key)) {
+            // No second tab: the memorial's cell IS the only cell, so cpl-app's weekday text
+            // and the Common are two answers for one slot rather than one each. The Common
+            // goes first because what it takes decides what cpl-app must not fill — leaving
+            // both in would put the weekday's reading in a cell the Common owns, which is
+            // what kept `lectura_breve_citas/66` conflicted (MIGRA-004).
+            const taken = observeCommonHour(entry, entry, hour, fromFerial,
+              `${dateStr} (${hour}, Comú)`, dayForCommon, { properOnly: true });
+            let mine = entry;
+            if (taken.size) {
+              mine = { ...entry };
+              for (const field of taken) delete mine[field];
+            }
+            observeHour(mine, hourData, `${dateStr} (${hour})`);
+          } else {
+            observeHour(entry, hourData, `${dateStr} (${hour})`);
+            if (memorialEntry) {
+              observeCommonHour(memorialEntry, entry, hour, fromFerial, `${dateStr} (${hour}, Comú)`, dayForCommon);
+            }
+          }
+        }
       }
     }
 
@@ -580,6 +729,28 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         console.log(`  ${dates.length}× ${err}`);
         console.log(`     ${dates.slice(0, 12).join(', ')}${dates.length > 12 ? ` (+${dates.length - 12})` : ''}`);
       }
+    }
+    commonsDb.close();
+    console.log(
+      `Comú dels sants: ${commonStats.cells} caselles observades en ${commonStats.days} hores de memòria ` +
+        `(la pestanya del sant, que cpl-app no omple mai).`
+    );
+    fs.writeFileSync(
+      path.resolve(__dirname, 'output/join-common-sourced.json'),
+      JSON.stringify(Object.fromEntries(Object.entries(commonSourced).map(([t, ids]) => [t, [...ids].sort()])), null, 2),
+      'utf8'
+    );
+    if (commonStats.sameAsFerial) {
+      console.log(
+        `  no escrites perquè en castellà la pestanya del sant hi diu el mateix que la ferial: ${commonStats.sameAsFerial}`
+      );
+    }
+    if (commonStats.noCommon.size) {
+      const worst = [...commonStats.noCommon.entries()].sort((a, b) => b[1] - a[1]);
+      console.log(
+        `  sense Comú inferit: ${worst.length} celebracions · ` +
+          worst.slice(0, 6).map(([t, n]) => `${t} (${n})`).join(' · ')
+      );
     }
     for (const table of TABLES) {
       console.log(`  ${table}: ${Object.keys(commons[table]).length} resolved, ${pending[table].length} pending`);

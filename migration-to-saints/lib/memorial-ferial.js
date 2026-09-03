@@ -17,7 +17,13 @@
 // That is a deliberate editorial choice, not a gap: the Catalan reference edition
 // (liturgiadeleshores.cat) serves the same thing, and OGLH 235b allows it — on a memorial
 // the hymn, short reading, responsory and intercessions are taken "from the common OR from
-// the current weekday" when they are not proper.
+// the current weekday" when they are not proper. Investigated in full and left alone:
+// decisions/D-001-el-comu-a-les-memories.md.
+//
+// saints-app is a different surface, though, and its memorial tab does show the Common — in
+// Spanish today, and in Catalan by the decision of 3 September 2026. cpl-app can never
+// supply that half, so the join takes it straight from `OficisComuns` instead: see
+// lib/common-office.js, and `cellsForMode(..., 1)` below for the cell it goes in.
 //
 // So on those days most of cpl-app's text belongs in the FERIAL cell. Filing it under the
 // memorial cell instead puts a ferial text where the common lives, where it disagrees with
@@ -77,6 +83,29 @@ function hasSwitch(allXKey) {
   return SWITCH_CYCLE.test(allXKey || '');
 }
 
+// The other kind of memorial: one whose office is proper, so saints-app shows a SINGLE tab
+// (`LaudesPage.vue`: `isTodayMemory && cycle !== "MEMORY_PROPER"` is what reaches for the
+// `_Ferial` twin, so with this cycle there is none). Seven celebrations carry it — Agnès,
+// Basili i Gregori Nazianzè, els Àngels Custodis, Martí de Tours, la Mare de Déu dels Dolors,
+// la Mare de Déu del Roser i el Martiri de sant Joan Baptista.
+//
+// These days are the blind spot of everything above. cpl-app still takes most of the Hour
+// from the weekday — 17 of the 20 fields on 2 January — but `hasSwitch` says no, so
+// `cellPair` hands back `[own, null]` and that weekday text is filed under the memorial's
+// own cell, which is exactly the mistake the header warns about. It cost
+// `lectura_breve_citas/66` and `/3355`, where nine 2-Januarys put the Christmas weekday's
+// reading into a cell 158 other dates fill with the Common of Pastors, and both ids stayed
+// conflicted forever (MIGRA-004).
+//
+// There is no ferial cell to redirect into here, so the fix is not a wider regexp: on these
+// days the Common takes the field and cpl-app's weekday text is not observed at all. Which
+// fields, and on what evidence, is `commonOverrides` in lib/common-office.js. That the
+// Catalan of saints-app then prays the Common on those seven days with no way back to the
+// weekday is a decision, not a side effect: decisions/D-002-el-comu-als-oficis-propis.md.
+function isProperOnly(allXKey) {
+  return /__MEMORY_PROPER$/.test(allXKey || '');
+}
+
 // For one field of one measured hour, returns `[cell, otherMode]` in whatever shape the
 // probe stored (a "table/id" string, or a list of them):
 //   - `cell` is the one cpl-app's text belongs in, to join into and to compare against
@@ -92,16 +121,26 @@ function cellPair(measured, field, { fromFerial, allXKey } = {}) {
   return fromFerial && fromFerial.has(field) ? [ferial, own] : [own, ferial];
 }
 
-// The whole hour at once, for callers that just want the cells to write into. Drops the
-// `_Ferial` keys, which have been folded into their base field.
-function cellsForCplApp(measured, options) {
+// The whole hour at once, in one of the two modes. Drops the `_Ferial` keys, which have been
+// folded into their base field.
+//
+// `which` is 0 for the cells cpl-app's own text belongs in, 1 for the other tab's. Mode 1 is
+// only meaningful for the fields cpl-app took from the weekday: there the pair is
+// `[ferial, memorial]`, so index 1 is the memorial cell — the one nobody fills, because
+// cpl-app never reaches for the Common. That is the cell the Common is written into.
+// For a field cpl-app supplies itself the pair is `[memorial, ferial]` and index 1 is the
+// weekday's cell, which belongs to the weekday and must not be touched — so callers gate on
+// `fromFerial` rather than on this function.
+function cellsForMode(measured, options, which = 0) {
   const out = {};
   for (const field of Object.keys(measured)) {
     if (field.endsWith('_Ferial')) continue;
-    const [cell] = cellPair(measured, field, options);
-    if (cell !== undefined) out[field] = cell;
+    const cell = cellPair(measured, field, options)[which];
+    if (cell !== undefined && cell !== null) out[field] = cell;
   }
   return out;
 }
 
-module.exports = { ferialFields, hasSwitch, cellPair, cellsForCplApp };
+const cellsForCplApp = (measured, options) => cellsForMode(measured, options, 0);
+
+module.exports = { ferialFields, hasSwitch, isProperOnly, cellPair, cellsForCplApp, cellsForMode };

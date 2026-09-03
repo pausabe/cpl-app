@@ -1,0 +1,133 @@
+#!/usr/bin/env node
+// Writes the resolved Catalan content into saints-app's real `commons/ca/`.
+//
+// This is the last step of the panel's "refresh" pipeline, and it used to live only inside
+// `webui/server.js` — a file that starts an HTTP server the moment it is required, so the
+// export could not be run on its own. That mattered the first time the join was re-run from
+// the terminal: the only way to publish the result was to make the panel redo the entire
+// pipeline, litcal build included. Now the panel requires this and so can a person:
+//
+//     node migration-to-saints/export-to-saints-app.js [--dry-run]
+//
+// It MERGES rather than overwrites, so a manual fix made in saints-app survives a re-export
+// of untouched keys — but our own keys always win, because they are the ones that passed the
+// join's "every observation of this id agrees" check. A file that came out empty is skipped,
+// never used to blank the destination.
+
+const fs = require('fs');
+const path = require('path');
+
+const CPL_APP_ROOT = path.resolve(__dirname, '..');
+const SAINTS_APP_ROOT = '/Users/pau/projects/saints/saints-app';
+const DAY_TEXTS_DIR = path.join(SAINTS_APP_ROOT, 'src/store/db/day_specific_texts');
+const SAINTS_APP_COMMONS_CA = path.join(DAY_TEXTS_DIR, 'commons/ca');
+const SAINTS_APP_COMMONS_ES = path.join(DAY_TEXTS_DIR, 'commons/es');
+const STATIC_TRANSLATIONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/static-translations');
+const COMMONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
+const COMMON_SOURCED = path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-common-sourced.json');
+
+function readJsonSafe(p) {
+  try {
+    return JSON.parse(fs.readFileSync(p, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+// Ids the Common supplied rather than cpl-app (written by the join). These are ADDITIVE
+// ONLY: they may fill an empty cell, never change one that already carries Catalan text.
+//
+// The join's usual rule — ours wins, because it survived "every observation of this id
+// agrees" — does not hold for them. cpl-app never renders these cells, so the Common is the
+// only voice in the room and wins unopposed, including over a value an earlier run got
+// right. Measured on the first full run: of 49 keys it would have changed, some were real
+// corrections (`responsorios/2789`, where the Spanish reads "Que todos los pueblos proclamen
+// la sabiduría de los santos" and the stored Catalan said "Sobre teu, Jerusalem") and some
+// were plain wrong (`preces_contenido/9519`, the Thursday Eucharist petitions, which the
+// Spanish keeps and the Common would have replaced). Telling those apart needs a judgement
+// this script has no business making, so it makes neither: it keeps what is there and
+// reports the disagreement.
+function exportResolvedContentToSaintsApp({ dryRun = false } = {}) {
+  if (!dryRun) fs.mkdirSync(SAINTS_APP_COMMONS_CA, { recursive: true });
+  const report = { filesWritten: [], keysAdded: 0, keysChanged: 0, commonHeld: [], perFile: {}, dryRun };
+  const commonSourced = readJsonSafe(COMMON_SOURCED) || {};
+
+  const write = (destPath, dest, name) => {
+    if (!dryRun) fs.writeFileSync(destPath, JSON.stringify(dest, null, 2), 'utf8');
+    report.filesWritten.push(name);
+  };
+
+  if (fs.existsSync(COMMONS_DIR)) {
+    for (const f of fs.readdirSync(COMMONS_DIR).sort()) {
+      const src = readJsonSafe(path.join(COMMONS_DIR, f)) || {};
+      if (Object.keys(src).length === 0) continue;
+      const destPath = path.join(SAINTS_APP_COMMONS_CA, f);
+      const dest = readJsonSafe(destPath) || {};
+      const table = f.replace('.json', '');
+      const fromCommon = new Set(commonSourced[table] || []);
+      const before = { added: 0, changed: 0, held: 0, total: Object.keys(dest).length };
+      for (const [k, v] of Object.entries(src)) {
+        if (!(k in dest)) { report.keysAdded++; before.added++; }
+        else if (dest[k] !== v) {
+          if (fromCommon.has(k)) {
+            report.commonHeld.push({ table, id: k, kept: dest[k], common: v });
+            before.held++;
+            continue;
+          }
+          report.keysChanged++; before.changed++;
+        }
+        dest[k] = v;
+      }
+      report.perFile[f] = { ...before, after: Object.keys(dest).length };
+      write(destPath, dest, f);
+    }
+  }
+
+  if (fs.existsSync(STATIC_TRANSLATIONS_DIR)) {
+    for (const f of fs.readdirSync(STATIC_TRANSLATIONS_DIR).sort()) {
+      const targetName = f.replace('.ca.json', '.json');
+      const src = readJsonSafe(path.join(STATIC_TRANSLATIONS_DIR, f)) || {};
+      const destPath = path.join(SAINTS_APP_COMMONS_CA, targetName);
+      const dest = readJsonSafe(destPath) || {};
+      for (const [k, v] of Object.entries(src)) {
+        if (!(k in dest)) report.keysAdded++;
+        dest[k] = v;
+      }
+      write(destPath, dest, targetName);
+    }
+  }
+
+  const latinSrc = path.join(SAINTS_APP_COMMONS_ES, 'himnos_latinos.json');
+  const latinDest = path.join(SAINTS_APP_COMMONS_CA, 'himnos_latinos.json');
+  if (fs.existsSync(latinSrc) && !fs.existsSync(latinDest)) {
+    if (!dryRun) fs.copyFileSync(latinSrc, latinDest);
+    report.filesWritten.push('himnos_latinos.json (còpia d’es, invariant)');
+  }
+
+  return report;
+}
+
+module.exports = { exportResolvedContentToSaintsApp, SAINTS_APP_COMMONS_CA };
+
+if (require.main === module) {
+  const dryRun = process.argv.includes('--dry-run');
+  const r = exportResolvedContentToSaintsApp({ dryRun });
+  console.log(dryRun ? 'ASSAIG — no s’ha escrit res\n' : `-> ${SAINTS_APP_COMMONS_CA}\n`);
+  for (const [f, s] of Object.entries(r.perFile)) {
+    const delta = [
+      s.added ? `+${s.added} noves` : '',
+      s.changed ? `${s.changed} canviades` : '',
+      s.held ? `${s.held} del Comú retingudes (la casella ja tenia text)` : '',
+    ].filter(Boolean).join(' · ') || 'sense canvis';
+    console.log(`  ${f.replace('.json', '').padEnd(30)} ${String(s.total).padStart(5)} → ${String(s.after).padStart(5)}   ${delta}`);
+  }
+  console.log(`\n${r.filesWritten.length} fitxers · ${r.keysAdded} claus noves · ${r.keysChanged} actualitzades`);
+  if (r.commonHeld.length) {
+    const out = path.join(CPL_APP_ROOT, 'migration-to-saints/output/export-common-held.json');
+    if (!dryRun) fs.writeFileSync(out, JSON.stringify(r.commonHeld, null, 2), 'utf8');
+    console.log(
+      `\n${r.commonHeld.length} caselles on el Comú discrepa del que ja hi ha. No s'han tocat: ` +
+        `s'ha conservat el text existent.\n  -> ${out}`
+    );
+  }
+}
