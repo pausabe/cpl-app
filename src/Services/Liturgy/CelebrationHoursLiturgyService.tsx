@@ -32,6 +32,10 @@ export function ObtainCelebrationHoursLiturgy(todayLiturgyMasters: LiturgyMaster
 function BuildHoursLiturgy(liturgyMasters: LiturgyMasters, liturgySpecificDayInformation: LiturgySpecificDayInformation, settings: Settings){
     let hoursLiturgy: HoursLiturgy;
 
+    console.log('liturgySpecificDayInformation: ', liturgySpecificDayInformation);
+    console.log('SpecialCelebration: ', liturgySpecificDayInformation.SpecialCelebration);
+    console.log('SpecialCelebrationType: ', liturgySpecificDayInformation.SpecialCelebration?.SpecialCelebrationType);
+
     if(liturgySpecificDayInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay){
         hoursLiturgy = GetSpecialDayHoursLiturgy(liturgyMasters.SpecialDaysParts, settings);
     }
@@ -234,32 +238,99 @@ function GetSolemnityAndFestivityHoursLiturgy(solemnityAndFestivityParts: Solemn
     hoursLiturgy.Laudes.FinalPrayer = solemnityAndFestivityParts.LaudesFinalPrayer;
 
     hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin? solemnityAndFestivityParts.ThirdHourParts.LatinAnthem : solemnityAndFestivityParts.ThirdHourParts.CatalanAnthem;
-    hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
-    hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = solemnityAndFestivityParts.ThirdHourParts.Antiphon;
-    hoursLiturgy.Hours.ThirdHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
-    hoursLiturgy.Hours.ThirdHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
-    hoursLiturgy.Hours.ThirdHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
     hoursLiturgy.Hours.ThirdHour.ShortReading = solemnityAndFestivityParts.ThirdHourParts.ShortReading;
     hoursLiturgy.Hours.ThirdHour.Responsory = solemnityAndFestivityParts.ThirdHourParts.Responsory;
     hoursLiturgy.Hours.ThirdHour.FinalPrayer = solemnityAndFestivityParts.ThirdHourParts.FinalPrayer;
+    
+    if(liturgyDayInformation.CelebrationType === CelebrationType.Solemnity){
+        hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
+        hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = solemnityAndFestivityParts.ThirdHourParts.Antiphon;
+        hoursLiturgy.Hours.ThirdHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
+        hoursLiturgy.Hours.ThirdHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
+        hoursLiturgy.Hours.ThirdHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
+    }
+    else {
+        // avoid antiphon at festivity
+
+        console.log('hoursLiturgy.Hours.ThirdHour.FirstPsalm: ', hoursLiturgy.Hours.ThirdHour.FirstPsalm);
+        hoursLiturgy.Hours.ThirdHour.FirstPsalm.Title = solemnityAndFestivityParts.HoursFirstPsalm.Title;
+        hoursLiturgy.Hours.ThirdHour.FirstPsalm.Comment = solemnityAndFestivityParts.HoursFirstPsalm.Comment;
+        hoursLiturgy.Hours.ThirdHour.FirstPsalm.Psalm = solemnityAndFestivityParts.HoursFirstPsalm.Psalm;
+        hoursLiturgy.Hours.ThirdHour.FirstPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursFirstPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.ThirdHour.FirstPsalm.Prayer = solemnityAndFestivityParts.HoursFirstPsalm.Prayer;
+        hoursLiturgy.Hours.ThirdHour.SecondPsalm.Title = solemnityAndFestivityParts.HoursSecondPsalm.Title;
+        hoursLiturgy.Hours.ThirdHour.SecondPsalm.Comment = solemnityAndFestivityParts.HoursSecondPsalm.Comment;
+        hoursLiturgy.Hours.ThirdHour.SecondPsalm.Psalm = solemnityAndFestivityParts.HoursSecondPsalm.Psalm;
+        hoursLiturgy.Hours.ThirdHour.SecondPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursSecondPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.ThirdHour.SecondPsalm.Prayer = solemnityAndFestivityParts.HoursSecondPsalm.Prayer;
+        hoursLiturgy.Hours.ThirdHour.ThirdPsalm.Title = solemnityAndFestivityParts.HoursThirdPsalm.Title;
+        hoursLiturgy.Hours.ThirdHour.ThirdPsalm.Comment = solemnityAndFestivityParts.HoursThirdPsalm.Comment;
+        hoursLiturgy.Hours.ThirdHour.ThirdPsalm.Psalm = solemnityAndFestivityParts.HoursThirdPsalm.Psalm;
+        hoursLiturgy.Hours.ThirdHour.ThirdPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursThirdPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.ThirdHour.ThirdPsalm.Prayer = solemnityAndFestivityParts.HoursThirdPsalm.Prayer;
+    }
+    
     hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin? solemnityAndFestivityParts.SixthHourParts.LatinAnthem : solemnityAndFestivityParts.SixthHourParts.CatalanAnthem;
-    hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
-    hoursLiturgy.Hours.SixthHour.UniqueAntiphon = solemnityAndFestivityParts.SixthHourParts.Antiphon;
-    hoursLiturgy.Hours.SixthHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
-    hoursLiturgy.Hours.SixthHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
-    hoursLiturgy.Hours.SixthHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
     hoursLiturgy.Hours.SixthHour.ShortReading = solemnityAndFestivityParts.SixthHourParts.ShortReading;
     hoursLiturgy.Hours.SixthHour.Responsory = solemnityAndFestivityParts.SixthHourParts.Responsory;
     hoursLiturgy.Hours.SixthHour.FinalPrayer = solemnityAndFestivityParts.SixthHourParts.FinalPrayer;
+    
+    if(liturgyDayInformation.CelebrationType === CelebrationType.Solemnity){
+        hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
+        hoursLiturgy.Hours.SixthHour.UniqueAntiphon = solemnityAndFestivityParts.SixthHourParts.Antiphon;
+        hoursLiturgy.Hours.SixthHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
+        hoursLiturgy.Hours.SixthHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
+        hoursLiturgy.Hours.SixthHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
+    }
+    else {
+        // avoid antiphon at festivity
+        hoursLiturgy.Hours.SixthHour.FirstPsalm.Title = solemnityAndFestivityParts.HoursFirstPsalm.Title;
+        hoursLiturgy.Hours.SixthHour.FirstPsalm.Comment = solemnityAndFestivityParts.HoursFirstPsalm.Comment;
+        hoursLiturgy.Hours.SixthHour.FirstPsalm.Psalm = solemnityAndFestivityParts.HoursFirstPsalm.Psalm;
+        hoursLiturgy.Hours.SixthHour.FirstPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursFirstPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.SixthHour.FirstPsalm.Prayer = solemnityAndFestivityParts.HoursFirstPsalm.Prayer;
+        hoursLiturgy.Hours.SixthHour.SecondPsalm.Title = solemnityAndFestivityParts.HoursSecondPsalm.Title;
+        hoursLiturgy.Hours.SixthHour.SecondPsalm.Comment = solemnityAndFestivityParts.HoursSecondPsalm.Comment;
+        hoursLiturgy.Hours.SixthHour.SecondPsalm.Psalm = solemnityAndFestivityParts.HoursSecondPsalm.Psalm;
+        hoursLiturgy.Hours.SixthHour.SecondPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursSecondPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.SixthHour.SecondPsalm.Prayer = solemnityAndFestivityParts.HoursSecondPsalm.Prayer;
+        hoursLiturgy.Hours.SixthHour.ThirdPsalm.Title = solemnityAndFestivityParts.HoursThirdPsalm.Title;
+        hoursLiturgy.Hours.SixthHour.ThirdPsalm.Comment = solemnityAndFestivityParts.HoursThirdPsalm.Comment;
+        hoursLiturgy.Hours.SixthHour.ThirdPsalm.Psalm = solemnityAndFestivityParts.HoursThirdPsalm.Psalm;
+        hoursLiturgy.Hours.SixthHour.ThirdPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursThirdPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.SixthHour.ThirdPsalm.Prayer = solemnityAndFestivityParts.HoursThirdPsalm.Prayer;
+    }
+    
     hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin? solemnityAndFestivityParts.NinthHourParts.LatinAnthem : solemnityAndFestivityParts.NinthHourParts.CatalanAnthem;
-    hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
-    hoursLiturgy.Hours.NinthHour.UniqueAntiphon = solemnityAndFestivityParts.NinthHourParts.Antiphon;
-    hoursLiturgy.Hours.NinthHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
-    hoursLiturgy.Hours.NinthHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
-    hoursLiturgy.Hours.NinthHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
     hoursLiturgy.Hours.NinthHour.ShortReading = solemnityAndFestivityParts.NinthHourParts.ShortReading;
     hoursLiturgy.Hours.NinthHour.Responsory = solemnityAndFestivityParts.NinthHourParts.Responsory;
     hoursLiturgy.Hours.NinthHour.FinalPrayer = solemnityAndFestivityParts.NinthHourParts.FinalPrayer;
+    
+    if(liturgyDayInformation.CelebrationType === CelebrationType.Solemnity){
+        hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
+        hoursLiturgy.Hours.NinthHour.UniqueAntiphon = solemnityAndFestivityParts.NinthHourParts.Antiphon;
+        hoursLiturgy.Hours.NinthHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
+        hoursLiturgy.Hours.NinthHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
+        hoursLiturgy.Hours.NinthHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
+    }
+    else {
+        // avoid antiphon at festivity
+        hoursLiturgy.Hours.NinthHour.FirstPsalm.Title = solemnityAndFestivityParts.HoursFirstPsalm.Title;
+        hoursLiturgy.Hours.NinthHour.FirstPsalm.Comment = solemnityAndFestivityParts.HoursFirstPsalm.Comment;
+        hoursLiturgy.Hours.NinthHour.FirstPsalm.Psalm = solemnityAndFestivityParts.HoursFirstPsalm.Psalm;
+        hoursLiturgy.Hours.NinthHour.FirstPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursFirstPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.NinthHour.FirstPsalm.Prayer = solemnityAndFestivityParts.HoursFirstPsalm.Prayer;
+        hoursLiturgy.Hours.NinthHour.SecondPsalm.Title = solemnityAndFestivityParts.HoursSecondPsalm.Title;
+        hoursLiturgy.Hours.NinthHour.SecondPsalm.Comment = solemnityAndFestivityParts.HoursSecondPsalm.Comment;
+        hoursLiturgy.Hours.NinthHour.SecondPsalm.Psalm = solemnityAndFestivityParts.HoursSecondPsalm.Psalm;
+        hoursLiturgy.Hours.NinthHour.SecondPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursSecondPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.NinthHour.SecondPsalm.Prayer = solemnityAndFestivityParts.HoursSecondPsalm.Prayer;
+        hoursLiturgy.Hours.NinthHour.ThirdPsalm.Title = solemnityAndFestivityParts.HoursThirdPsalm.Title;
+        hoursLiturgy.Hours.NinthHour.ThirdPsalm.Comment = solemnityAndFestivityParts.HoursThirdPsalm.Comment;
+        hoursLiturgy.Hours.NinthHour.ThirdPsalm.Psalm = solemnityAndFestivityParts.HoursThirdPsalm.Psalm;
+        hoursLiturgy.Hours.NinthHour.ThirdPsalm.HasGloryPrayer = solemnityAndFestivityParts.HoursThirdPsalm.HasGloryPrayer;
+        hoursLiturgy.Hours.NinthHour.ThirdPsalm.Prayer = solemnityAndFestivityParts.HoursThirdPsalm.Prayer;
+    }
 
     hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem =
         settings.UseLatin? solemnityAndFestivityParts.SecondVespersLatinAnthem : solemnityAndFestivityParts.SecondVespersCatalanAnthem;
