@@ -1,10 +1,21 @@
 {
   "days": [
     {
-      "date": "2026-09-02",
-      "title": null,
-      "common": null,
-      "missing": 2,
+      "date": "2026-09-03",
+      "title": "Sant Gregori el Gran, papa i doctor de l’Església",
+      "common": {
+        "categoria": "06cO",
+        "name": "COMÚ DE PASTORS: PER UN PAPA",
+        "pickedBy": "citation",
+        "family": [
+          "06aO",
+          "06bO",
+          "06cO",
+          "06dO"
+        ],
+        "titleWouldSay": "Comú de doctors de l’Església"
+      },
+      "missing": 1,
       "covered": 0,
       "citationChecks": [],
       "proposals": []

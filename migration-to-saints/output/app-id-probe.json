@@ -1,7 +1,7 @@
 [
   {
-    "date": "2026-12-18",
-    "litcalId": "advent_december_18",
+    "date": "2026-05-31",
+    "litcalId": "most_holy_trinity",
     "state": {
       "Laudes": {
         "loadingState": "loaded",
@@ -16,196 +16,75 @@
       "Laudes": {
         "himno": {
           "table": "himnos",
-          "id": "83"
+          "id": "301"
         },
         "himno_latino": {
           "table": "himnos_latinos",
-          "id": "9943"
+          "id": "9911"
         },
         "cycle": {
           "text": "ANY"
         },
         "primer_salmo_cita": {
           "table": "salmos_citas",
-          "id": "72"
+          "id": "63"
         },
         "primer_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "104"
+          "id": "758"
         },
         "primer_salmo_texto": {
           "table": "salmos_textos",
-          "id": "73"
+          "id": "64"
         },
         "segundo_salmo_cita": {
           "table": "salmos_citas",
-          "id": "73"
+          "id": "64"
         },
         "segundo_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "105"
+          "id": "759"
         },
         "segundo_salmo_texto": {
           "table": "salmos_textos",
-          "id": "74"
+          "id": "65"
         },
         "tercer_salmo_cita": {
           "table": "salmos_citas",
-          "id": "74"
+          "id": "65"
         },
         "tercer_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "106"
+          "id": "760"
         },
         "tercer_salmo_texto": {
           "table": "salmos_textos",
-          "id": "75"
+          "id": "66"
         },
         "lectura_biblica_cita": {
           "table": "lectura_breve_citas",
-          "id": "201"
+          "id": "297"
         },
         "lectura_biblica": {
           "table": "lectura_breve_textos",
-          "id": "202"
+          "id": "298"
         },
         "responsorios": [
           {
             "table": "responsorios",
-            "id": "245"
+            "id": "3368"
           },
           {
             "table": "responsorios",
-            "id": "246"
+            "id": "3369"
           },
           {
             "table": "responsorios",
-            "id": "247"
+            "id": "3370"
           },
           {
             "table": "responsorios",
-            "id": "248"
-          },
-          {
-            "table": "responsorios",
-            "id": "249"
-          },
-          {
-            "table": "responsorios",
-            "id": "250"
-          }
-        ],
-        "cantico_evangelico_antifona": {
-          "table": "cantico_evangelico_antifonas",
-          "id": "420"
-        },
-        "preces_intro": {
-          "table": "preces_intro",
-          "id": "223"
-        },
-        "preces_respuesta": {
-          "table": "preces_respuesta",
-          "id": "14"
-        },
-        "preces_contenido": [
-          {
-            "table": "preces_contenido",
-            "id": "3461"
-          },
-          {
-            "table": "preces_contenido",
-            "id": "3462"
-          },
-          {
-            "table": "preces_contenido",
-            "id": "3463"
-          },
-          {
-            "table": "preces_contenido",
-            "id": "3464"
-          }
-        ],
-        "invitacion_padrenuestro": {
-          "table": "invitacion_padrenuestro",
-          "id": "25"
-        },
-        "oracion_final": {
-          "table": "oraciones_finales",
-          "id": "481"
-        }
-      },
-      "Vespers": {
-        "himno": {
-          "table": "himnos",
-          "id": "3737"
-        },
-        "himno_latino": {
-          "table": "himnos_latinos",
-          "id": "9944"
-        },
-        "cycle": {
-          "text": "ANY"
-        },
-        "primer_salmo_cita": {
-          "table": "salmos_citas",
-          "id": "80"
-        },
-        "primer_salmo_antifona": {
-          "table": "salmos_antifonas",
-          "id": "104"
-        },
-        "primer_salmo_texto": {
-          "table": "salmos_textos",
-          "id": "81"
-        },
-        "segundo_salmo_cita": {
-          "table": "salmos_citas",
-          "id": "11035"
-        },
-        "segundo_salmo_antifona": {
-          "table": "salmos_antifonas",
-          "id": "105"
-        },
-        "segundo_salmo_texto": {
-          "table": "salmos_textos",
-          "id": "11036"
-        },
-        "tercer_salmo_cita": {
-          "table": "salmos_citas",
-          "id": "11036"
-        },
-        "tercer_salmo_antifona": {
-          "table": "salmos_antifonas",
-          "id": "106"
-        },
-        "tercer_salmo_texto": {
-          "table": "salmos_textos",
-          "id": "11037"
-        },
-        "lectura_biblica_cita": {
-          "table": "lectura_breve_citas",
-          "id": "3490"
-        },
-        "lectura_biblica": {
-          "table": "lectura_breve_textos",
-          "id": "3491"
-        },
-        "responsorios": [
-          {
-            "table": "responsorios",
-            "id": "13859"
-          },
-          {
-            "table": "responsorios",
-            "id": "13860"
-          },
-          {
-            "table": "responsorios",
-            "id": "13861"
-          },
-          {
-            "table": "responsorios",
-            "id": "13862"
+            "id": "3371"
           },
           {
             "table": "responsorios",
@@ -213,57 +92,182 @@
           },
           {
             "table": "responsorios",
-            "id": "13864"
+            "id": "3373"
           }
         ],
         "cantico_evangelico_antifona": {
           "table": "cantico_evangelico_antifonas",
-          "id": "1516"
+          "id": "238"
         },
         "preces_intro": {
           "table": "preces_intro",
-          "id": "1319"
+          "id": "232"
         },
         "preces_respuesta": {
           "table": "preces_respuesta",
-          "id": "1319"
+          "id": "232"
         },
         "preces_contenido": [
           {
             "table": "preces_contenido",
-            "id": "8749"
+            "id": "2333"
           },
           {
             "table": "preces_contenido",
-            "id": "8750"
+            "id": "2334"
           },
           {
             "table": "preces_contenido",
-            "id": "8751"
+            "id": "2335"
           },
           {
             "table": "preces_contenido",
-            "id": "8752"
+            "id": "2336"
           },
           {
             "table": "preces_contenido",
-            "id": "8753"
+            "id": "2337"
           }
         ],
         "invitacion_padrenuestro": {
           "table": "invitacion_padrenuestro",
-          "id": "1121"
+          "id": "20"
         },
         "oracion_final": {
           "table": "oraciones_finales",
-          "id": "481"
+          "id": "299"
+        }
+      },
+      "Vespers": {
+        "himno": {
+          "table": "himnos",
+          "id": "3955"
+        },
+        "himno_latino": {
+          "table": "himnos_latinos",
+          "id": "9910"
+        },
+        "cycle": {
+          "text": "ANY"
+        },
+        "primer_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "11025"
+        },
+        "primer_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "9944"
+        },
+        "primer_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "11026"
+        },
+        "segundo_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "11089"
+        },
+        "segundo_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "9945"
+        },
+        "segundo_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "11090"
+        },
+        "tercer_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "11027"
+        },
+        "tercer_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "9946"
+        },
+        "tercer_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "11028"
+        },
+        "lectura_biblica_cita": {
+          "table": "lectura_breve_citas",
+          "id": "3586"
+        },
+        "lectura_biblica": {
+          "table": "lectura_breve_textos",
+          "id": "3587"
+        },
+        "responsorios": [
+          {
+            "table": "responsorios",
+            "id": "17181"
+          },
+          {
+            "table": "responsorios",
+            "id": "17182"
+          },
+          {
+            "table": "responsorios",
+            "id": "17183"
+          },
+          {
+            "table": "responsorios",
+            "id": "17184"
+          },
+          {
+            "table": "responsorios",
+            "id": "17185"
+          },
+          {
+            "table": "responsorios",
+            "id": "17186"
+          }
+        ],
+        "cantico_evangelico_antifona": {
+          "table": "cantico_evangelico_antifonas",
+          "id": "1334"
+        },
+        "preces_intro": {
+          "table": "preces_intro",
+          "id": "1328"
+        },
+        "preces_respuesta": {
+          "table": "preces_respuesta",
+          "id": "232"
+        },
+        "preces_contenido": [
+          {
+            "table": "preces_contenido",
+            "id": "7360"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7361"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7362"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7363"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7364"
+          }
+        ],
+        "invitacion_padrenuestro": {
+          "table": "invitacion_padrenuestro",
+          "id": "1208"
+        },
+        "oracion_final": {
+          "table": "oraciones_finales",
+          "id": "299"
         }
       }
     }
   },
   {
-    "date": "2026-08-12",
-    "litcalId": "ordinary_time_19_wednesday",
+    "date": "2026-09-03",
+    "litcalId": "gregory_i_the_great_pope",
     "state": {
       "Laudes": {
         "loadingState": "loaded",
@@ -278,247 +282,741 @@
       "Laudes": {
         "himno": {
           "table": "himnos",
-          "id": "94"
+          "id": "849"
         },
         "himno_latino": {
           "table": "himnos_latinos",
-          "id": "9502"
+          "id": "9835"
         },
         "cycle": {
-          "text": "ANY"
+          "text": "MEMORY_FERIAL1"
         },
         "primer_salmo_cita": {
           "table": "salmos_citas",
-          "id": "35"
+          "id": "-1"
         },
         "primer_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "137"
+          "id": "-1"
         },
         "primer_salmo_texto": {
           "table": "salmos_textos",
-          "id": "36"
+          "id": "-1"
         },
         "segundo_salmo_cita": {
           "table": "salmos_citas",
-          "id": "139"
+          "id": "-1"
         },
         "segundo_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "138"
+          "id": "-1"
         },
         "segundo_salmo_texto": {
           "table": "salmos_textos",
-          "id": "140"
+          "id": "-1"
         },
         "tercer_salmo_cita": {
           "table": "salmos_citas",
-          "id": "140"
+          "id": "-1"
         },
         "tercer_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "139"
+          "id": "-1"
         },
         "tercer_salmo_texto": {
           "table": "salmos_textos",
-          "id": "141"
+          "id": "-1"
         },
         "lectura_biblica_cita": {
           "table": "lectura_breve_citas",
-          "id": "90"
+          "id": "66"
         },
         "lectura_biblica": {
           "table": "lectura_breve_textos",
-          "id": "91"
+          "id": "67"
         },
         "responsorios": [
           {
             "table": "responsorios",
-            "id": "1606"
+            "id": "1460"
           },
           {
             "table": "responsorios",
-            "id": "1607"
+            "id": "1461"
           },
           {
             "table": "responsorios",
-            "id": "1608"
+            "id": "1462"
           },
           {
             "table": "responsorios",
-            "id": "1609"
+            "id": "1463"
           },
           {
             "table": "responsorios",
-            "id": "1610"
+            "id": "1464"
           },
           {
             "table": "responsorios",
-            "id": "1611"
+            "id": "1465"
           }
         ],
         "cantico_evangelico_antifona": {
           "table": "cantico_evangelico_antifonas",
-          "id": "31"
+          "id": "251"
         },
         "preces_intro": {
           "table": "preces_intro",
-          "id": "25"
+          "id": "1"
         },
         "preces_respuesta": {
           "table": "preces_respuesta",
-          "id": "25"
+          "id": "1"
         },
         "preces_contenido": [
           {
             "table": "preces_contenido",
-            "id": "1103"
+            "id": "998"
           },
           {
             "table": "preces_contenido",
-            "id": "1104"
+            "id": "999"
           },
           {
             "table": "preces_contenido",
-            "id": "1105"
+            "id": "1000"
           },
           {
             "table": "preces_contenido",
-            "id": "1106"
+            "id": "1001"
           }
         ],
         "invitacion_padrenuestro": {
           "table": "invitacion_padrenuestro",
-          "id": "25"
+          "id": "15"
         },
         "oracion_final": {
           "table": "oraciones_finales",
-          "id": "92"
+          "id": "312"
+        },
+        "himno_Ferial": {
+          "table": "himnos",
+          "id": "132"
+        },
+        "himno_latino_Ferial": {
+          "table": "himnos_latinos",
+          "id": "9514"
+        },
+        "primer_salmo_cita_Ferial": {
+          "table": "salmos_citas",
+          "id": "66"
+        },
+        "primer_salmo_antifona_Ferial": {
+          "table": "salmos_antifonas",
+          "id": "65"
+        },
+        "primer_salmo_texto_Ferial": {
+          "table": "salmos_textos",
+          "id": "67"
+        },
+        "segundo_salmo_cita_Ferial": {
+          "table": "salmos_citas",
+          "id": "67"
+        },
+        "segundo_salmo_antifona_Ferial": {
+          "table": "salmos_antifonas",
+          "id": "66"
+        },
+        "segundo_salmo_texto_Ferial": {
+          "table": "salmos_textos",
+          "id": "68"
+        },
+        "tercer_salmo_cita_Ferial": {
+          "table": "salmos_citas",
+          "id": "68"
+        },
+        "tercer_salmo_antifona_Ferial": {
+          "table": "salmos_antifonas",
+          "id": "67"
+        },
+        "tercer_salmo_texto_Ferial": {
+          "table": "salmos_textos",
+          "id": "69"
+        },
+        "lectura_biblica_cita_Ferial": {
+          "table": "lectura_breve_citas",
+          "id": "128"
+        },
+        "lectura_biblica_Ferial": {
+          "table": "lectura_breve_textos",
+          "id": "129"
+        },
+        "responsorios_Ferial": [
+          {
+            "table": "responsorios",
+            "id": "2324"
+          },
+          {
+            "table": "responsorios",
+            "id": "2325"
+          },
+          {
+            "table": "responsorios",
+            "id": "2326"
+          },
+          {
+            "table": "responsorios",
+            "id": "2327"
+          },
+          {
+            "table": "responsorios",
+            "id": "2328"
+          },
+          {
+            "table": "responsorios",
+            "id": "2329"
+          }
+        ],
+        "preces_intro_Ferial": {
+          "table": "preces_intro",
+          "id": "63"
+        },
+        "preces_respuesta_Ferial": {
+          "table": "preces_respuesta",
+          "id": "63"
+        },
+        "preces_contenido_Ferial": [
+          {
+            "table": "preces_contenido",
+            "id": "1601"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "1602"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "1603"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "1604"
+          }
+        ],
+        "invitacion_padrenuestro_Ferial": {
+          "table": "invitacion_padrenuestro",
+          "id": "1"
+        },
+        "cantico_evangelico_antifona_Ferial": {
+          "table": "cantico_evangelico_antifonas",
+          "id": "69"
         }
       },
       "Vespers": {
         "himno": {
           "table": "himnos",
-          "id": "3748"
+          "id": "1049"
         },
         "himno_latino": {
           "table": "himnos_latinos",
-          "id": "9503"
+          "id": "9835"
         },
         "cycle": {
-          "text": "ANY"
+          "text": "MEMORY_FERIAL1"
         },
         "primer_salmo_cita": {
           "table": "salmos_citas",
-          "id": "3423"
+          "id": "-1"
         },
         "primer_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "9323"
+          "id": "-1"
         },
         "primer_salmo_texto": {
           "table": "salmos_textos",
-          "id": "3424"
+          "id": "-1"
         },
         "segundo_salmo_cita": {
           "table": "salmos_citas",
-          "id": "3424"
+          "id": "-1"
         },
         "segundo_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "9324"
+          "id": "-1"
         },
         "segundo_salmo_texto": {
           "table": "salmos_textos",
-          "id": "3425"
+          "id": "-1"
         },
         "tercer_salmo_cita": {
           "table": "salmos_citas",
-          "id": "11072"
+          "id": "-1"
         },
         "tercer_salmo_antifona": {
           "table": "salmos_antifonas",
-          "id": "9325"
+          "id": "-1"
         },
         "tercer_salmo_texto": {
           "table": "salmos_textos",
-          "id": "11073"
+          "id": "-1"
         },
         "lectura_biblica_cita": {
           "table": "lectura_breve_citas",
-          "id": "3379"
+          "id": "3355"
         },
         "lectura_biblica": {
           "table": "lectura_breve_textos",
-          "id": "3380"
+          "id": "3356"
         },
         "responsorios": [
           {
             "table": "responsorios",
-            "id": "15402"
+            "id": "15245"
           },
           {
             "table": "responsorios",
-            "id": "15403"
+            "id": "15246"
           },
           {
             "table": "responsorios",
-            "id": "15404"
+            "id": "15247"
           },
           {
             "table": "responsorios",
-            "id": "15405"
+            "id": "15248"
           },
           {
             "table": "responsorios",
-            "id": "15406"
+            "id": "15249"
           },
           {
             "table": "responsorios",
-            "id": "15407"
+            "id": "15250"
           }
         ],
         "cantico_evangelico_antifona": {
           "table": "cantico_evangelico_antifonas",
-          "id": "1127"
+          "id": "1347"
         },
         "preces_intro": {
           "table": "preces_intro",
-          "id": "1121"
+          "id": "1097"
         },
         "preces_respuesta": {
           "table": "preces_respuesta",
-          "id": "1121"
+          "id": "1097"
         },
         "preces_contenido": [
           {
             "table": "preces_contenido",
-            "id": "5836"
+            "id": "5702"
           },
           {
             "table": "preces_contenido",
-            "id": "5837"
+            "id": "5703"
           },
           {
             "table": "preces_contenido",
-            "id": "5838"
+            "id": "5704"
           },
           {
             "table": "preces_contenido",
-            "id": "5839"
+            "id": "5705"
           },
           {
             "table": "preces_contenido",
-            "id": "5840"
+            "id": "5706"
           }
         ],
         "invitacion_padrenuestro": {
           "table": "invitacion_padrenuestro",
-          "id": "1121"
+          "id": "1111"
         },
         "oracion_final": {
           "table": "oraciones_finales",
-          "id": "3746"
+          "id": "312"
+        },
+        "himno_Ferial": {
+          "table": "himnos",
+          "id": "3806"
+        },
+        "himno_latino_Ferial": {
+          "table": "himnos_latinos",
+          "id": "9515"
+        },
+        "primer_salmo_cita_Ferial": {
+          "table": "salmos_citas",
+          "id": "10774"
+        },
+        "primer_salmo_antifona_Ferial": {
+          "table": "salmos_antifonas",
+          "id": "9251"
+        },
+        "primer_salmo_texto_Ferial": {
+          "table": "salmos_textos",
+          "id": "10775"
+        },
+        "segundo_salmo_cita_Ferial": {
+          "table": "salmos_citas",
+          "id": "10775"
+        },
+        "segundo_salmo_antifona_Ferial": {
+          "table": "salmos_antifonas",
+          "id": "9252"
+        },
+        "segundo_salmo_texto_Ferial": {
+          "table": "salmos_textos",
+          "id": "10776"
+        },
+        "tercer_salmo_cita_Ferial": {
+          "table": "salmos_citas",
+          "id": "11030"
+        },
+        "tercer_salmo_antifona_Ferial": {
+          "table": "salmos_antifonas",
+          "id": "9253"
+        },
+        "tercer_salmo_texto_Ferial": {
+          "table": "salmos_textos",
+          "id": "11031"
+        },
+        "lectura_biblica_cita_Ferial": {
+          "table": "lectura_breve_citas",
+          "id": "3437"
+        },
+        "lectura_biblica_Ferial": {
+          "table": "lectura_breve_textos",
+          "id": "3438"
+        },
+        "responsorios_Ferial": [
+          {
+            "table": "responsorios",
+            "id": "17283"
+          },
+          {
+            "table": "responsorios",
+            "id": "17284"
+          },
+          {
+            "table": "responsorios",
+            "id": "17285"
+          },
+          {
+            "table": "responsorios",
+            "id": "17286"
+          },
+          {
+            "table": "responsorios",
+            "id": "17287"
+          },
+          {
+            "table": "responsorios",
+            "id": "17288"
+          }
+        ],
+        "preces_intro_Ferial": {
+          "table": "preces_intro",
+          "id": "1179"
+        },
+        "preces_respuesta_Ferial": {
+          "table": "preces_respuesta",
+          "id": "1179"
+        },
+        "preces_contenido_Ferial": [
+          {
+            "table": "preces_contenido",
+            "id": "7445"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7446"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7447"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7448"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "7449"
+          }
+        ],
+        "invitacion_padrenuestro_Ferial": {
+          "table": "invitacion_padrenuestro",
+          "id": "1097"
+        },
+        "cantico_evangelico_antifona_Ferial": {
+          "table": "cantico_evangelico_antifonas",
+          "id": "1179"
+        },
+        "oracion_final_Ferial": {
+          "table": "oraciones_finales",
+          "id": "3804"
+        }
+      }
+    }
+  },
+  {
+    "date": "2026-01-02",
+    "litcalId": "basil_the_great_and_gregory_nazianzen_bishops",
+    "state": {
+      "Laudes": {
+        "loadingState": "loaded",
+        "errorCode": null
+      },
+      "Vespers": {
+        "loadingState": "loaded",
+        "errorCode": null
+      }
+    },
+    "hours": {
+      "Laudes": {
+        "himno": {
+          "table": "himnos",
+          "id": "800"
+        },
+        "himno_latino": {
+          "table": "himnos_latinos",
+          "id": "9872"
+        },
+        "cycle": {
+          "text": "MEMORY_FERIAL2"
+        },
+        "primer_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "72"
+        },
+        "primer_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "164"
+        },
+        "primer_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "73"
+        },
+        "segundo_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "166"
+        },
+        "segundo_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "165"
+        },
+        "segundo_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "167"
+        },
+        "tercer_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "155"
+        },
+        "tercer_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "166"
+        },
+        "tercer_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "156"
+        },
+        "lectura_biblica_cita": {
+          "table": "lectura_breve_citas",
+          "id": "66"
+        },
+        "lectura_biblica": {
+          "table": "lectura_breve_textos",
+          "id": "67"
+        },
+        "responsorios": [
+          {
+            "table": "responsorios",
+            "id": "2843"
+          },
+          {
+            "table": "responsorios",
+            "id": "2844"
+          },
+          {
+            "table": "responsorios",
+            "id": "2845"
+          },
+          {
+            "table": "responsorios",
+            "id": "2846"
+          },
+          {
+            "table": "responsorios",
+            "id": "2847"
+          },
+          {
+            "table": "responsorios",
+            "id": "2848"
+          }
+        ],
+        "cantico_evangelico_antifona": {
+          "table": "cantico_evangelico_antifonas",
+          "id": "55"
+        },
+        "preces_intro": {
+          "table": "preces_intro",
+          "id": "1"
+        },
+        "preces_respuesta": {
+          "table": "preces_respuesta",
+          "id": "1"
+        },
+        "preces_contenido": [
+          {
+            "table": "preces_contenido",
+            "id": "1968"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "1969"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "1970"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "1971"
+          }
+        ],
+        "invitacion_padrenuestro": {
+          "table": "invitacion_padrenuestro",
+          "id": "21"
+        },
+        "oracion_final": {
+          "table": "oraciones_finales",
+          "id": "210"
+        }
+      },
+      "Vespers": {
+        "himno": {
+          "table": "himnos",
+          "id": "1000"
+        },
+        "himno_latino": {
+          "table": "himnos_latinos",
+          "id": "9861"
+        },
+        "cycle": {
+          "text": "MEMORY_FERIAL2"
+        },
+        "primer_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "11026"
+        },
+        "primer_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "10697"
+        },
+        "primer_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "11027"
+        },
+        "segundo_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "11128"
+        },
+        "segundo_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "10698"
+        },
+        "segundo_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "10122"
+        },
+        "tercer_salmo_cita": {
+          "table": "salmos_citas",
+          "id": "11036"
+        },
+        "tercer_salmo_antifona": {
+          "table": "salmos_antifonas",
+          "id": "10699"
+        },
+        "tercer_salmo_texto": {
+          "table": "salmos_textos",
+          "id": "11037"
+        },
+        "lectura_biblica_cita": {
+          "table": "lectura_breve_citas",
+          "id": "3505"
+        },
+        "lectura_biblica": {
+          "table": "lectura_breve_textos",
+          "id": "3506"
+        },
+        "responsorios": [
+          {
+            "table": "responsorios",
+            "id": "16650"
+          },
+          {
+            "table": "responsorios",
+            "id": "16651"
+          },
+          {
+            "table": "responsorios",
+            "id": "16652"
+          },
+          {
+            "table": "responsorios",
+            "id": "16653"
+          },
+          {
+            "table": "responsorios",
+            "id": "13"
+          },
+          {
+            "table": "responsorios",
+            "id": "16655"
+          }
+        ],
+        "cantico_evangelico_antifona": {
+          "table": "cantico_evangelico_antifonas",
+          "id": "1245"
+        },
+        "preces_intro": {
+          "table": "preces_intro",
+          "id": "1097"
+        },
+        "preces_respuesta": {
+          "table": "preces_respuesta",
+          "id": "1097"
+        },
+        "preces_contenido": [
+          {
+            "table": "preces_contenido",
+            "id": "6900"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "6901"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "6902"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "6903"
+          },
+          {
+            "table": "preces_contenido",
+            "id": "6904"
+          }
+        ],
+        "invitacion_padrenuestro": {
+          "table": "invitacion_padrenuestro",
+          "id": "1102"
+        },
+        "oracion_final": {
+          "table": "oraciones_finales",
+          "id": "210"
         }
       }
     }
