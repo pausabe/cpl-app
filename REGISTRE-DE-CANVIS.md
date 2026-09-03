@@ -26,6 +26,10 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [CPL-LIT-002](#cpl-lit-002) | 2026-08-15 | cpl-app | **dades (BD)** | **Sí** | `6726622` |
 | [CPL-LIT-003](#cpl-lit-003) | 2026-09-02 | cpl-app | **dades (BD)** | **Sí** | `9f472d8` |
 | [MIGRA-001](#migra-001) | 2026-09-01 | eines | codi | No — va al git | `a3e4d52` |
+| [MIGRA-002](#migra-002) | 2026-09-03 | eines | codi | No — va al git | — |
+| [MIGRA-003](#migra-003) | 2026-09-03 | eines | codi | No — va al git | — |
+| [EINA-comu](#eina-comu) | 2026-09-03 | eines | codi | No — va al git | — |
+| [SA-04](#sa-04) | 2026-09-03 | saints-app | contingut | Es regenera | — |
 | [EINA-espais](#eina-espais) | 2026-08-14 | eines | codi | No — va al git | `f2f68fc` |
 | [EINA-diocesi](#eina-diocesi) | 2026-07-24 | eines | codi | No — va al git | `d849c7f` |
 | [SA-01](#sa-01) | 2026-08-11 | saints-app | funcionalitat | No | `2d3772d5f` |
@@ -33,6 +37,12 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [SA-03](#sa-03) | 2026-09-01 | saints-app | contingut | Es regenera | `f28389733` |
 | [LC-01…05](#litcal) | 2026-07-23 → 08-11 | litcal | codi | No | 5 commits |
 | [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **proposat** | — pendent de resposta | — |
+| [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **proposat** | — pendent d'enviar | — |
+| [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
+| [SA-05](#sa-05) | 2026-09-03 | saints-app | contingut | Es regenera | — |
+| [SA-06](#sa-06) | 2026-09-03 | saints-app | merge | No — va al git | `1a35a54a6` |
+| [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
+| [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 
 **Errors de cpl-app trobats fins ara: 3.** Dos són de dades i un de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -163,6 +173,124 @@ Ambròs.
 **Pendent**: `migration-to-saints/cpl-day.test.js` encara té el control ferial trencat. Per
 això la skill `revisio-dia` fa servir `review/resolve-cpl-days.test.js` i no aquell.
 
+<a id="eina-comu"></a>
+## EINA-comu
+
+**El join agafa el Comú dels sants per a la pestanya del sant** · 3 de setembre de 2026
+
+No és cap error: és **la decisió D-001 executada**. Els dies de memòria, cpl-app resa la fèria
+i el seu text va a la casella ferial; la casella de la pestanya del sant es quedava sense
+ningú que la pogués omplir, perquè cpl-app no demana mai el Comú. En castellà aquella pestanya
+ja mostra el Comú, i s'ha decidit que el català hi faci igual. **El català de saints-app se
+separa aquí de cpl-app a posta.**
+
+| | |
+|---|---|
+| Decisió | [D-001](#d-001) · [dossier](migration-to-saints/decisions/D-001-el-comu-a-les-memories.md) |
+| Codi | `migration-to-saints/lib/common-office.js` (nou) · `lib/memorial-ferial.js` (`cellsForMode`) · `join-content.test.js` (segona font) · `review/commons-proposal.js` i `review/build-report.js` |
+| Test | `migration-to-saints/common-office.test.js` — 14 tests: **la direcció** (el text de cpl-app a la casella ferial i el Comú a la del sant, mai a l'inrevés), la tria del Comú, i **l'estació**, amb el respons pasqual que ha de dur Al·leluia |
+| Com es tria el Comú | Per la **cita** de la casella castellana, que identifica la família, i el títol desempata dins seu ([MIGRA-003](#migra-003)) |
+| Efecte | Passada sencera (3.250 dates): **11.188 caselles** observades del Comú en 754 hores de memòria. Ids resolts **6.087 → 7.266 (+1.179)**; pendents **771 → 813 (+42)** |
+| D'on surt el +1.179 | **+989 del Comú** — sobretot `responsorios` i `preces_contenido`. Els altres **+190** no hi tenen res a veure: són `celebration_names` (+132) i `invitatorios` (+58), que la passada base no duia perquè es va córrer sense aquelles dues Hores. `himnos`, `oraciones_finales` i els tres `salmos_*` no es mouen gens, que és el que ha de passar: el Comú no els toca |
+| Els 42 nous conflictes | Cap n'és un id que abans es resolgués. Són caselles que dues celebracions comparteixen volent Comuns diferents — p. ex. `cantico_evangelico_antifonas/1103`, que un prevere i un bisbe es reparteixen i on `antMaria` és l'únic camp que difereix entre `06aO` i `06b/c/dO`. El join els reté, que és el que ha de fer |
+| Sense Comú inferit | 2 celebracions: Sant Francesc d'Assís (7 hores) i Naixement de sant Joan Baptista (2). Es queden com estaven |
+| El 3-09-2026 | «sense dades» **20 → 1** (només `invitacion_padrenuestro/1111`, que el join no observa per a ningú). Camps amb text català **24/57 → 43/57 (42% → 75%)**. Contingut: segueix **0 divergències** |
+| Exportat | Sí: **877 claus noves, 0 modificades** a `saints-app/.../commons/ca/` — vegeu [SA-04](#sa-04) |
+
+### Dos defectes propis, trobats verificant l'exportació abans d'escriure-la
+
+L'assaig d'exportació deia **63 claus que canviarien de valor**. Cap canvi de valor era
+esperable —això havia de ser additiu— i mirar-les una a una va destapar dues coses:
+
+**1 · `seasonSuffix()` estava trencat per a totes les estacions.** Provava `/PASQUA/`, `/LENT/`
+i `/ADVENT/` contra els codis reals de `SpecificLiturgyTimeType`, que són `P_SETMANES`,
+`Q_SETMANES`, `A_SETMANES`, `N_OCTAVA`… Cap no encaixava i **tot queia a temps ordinari**. Ve
+heretat de `commons-proposal.js` i era inofensiu mentre només proposava sobre un dia
+ordinari; deixa de ser-ho quan el join hi escriu. Es veia a `responsorios/2777` (10 de maig,
+temps pasqual): hi posava el respons del Comú de pastors ordinari quan el castellà de la
+mateixa casella acaba «Aleluya, aleluya». Corregit amb una taula dels codis de veritat, amb el
+cas de `Q_DIUM_PASQUA` —el diumenge de Pasqua, arxivat sota el prefix de Quaresma— explícit.
+
+**2 · El Comú no sempre és el que va a la casella del sant.** L'índex castellà, en alguns dies
+de Pasqua, apunta els precs de la memòria a la casella **de l'estació**, la mateixa que fa
+servir la fèria (`preces_intro/1218`, «Oremos a Cristo, que resucitado de entre los muertos…»,
+24 hores-dia). Hi ha un primer filtre —no escriure quan en castellà les dues pestanyes diuen
+el mateix, 13 casos— però no ho enxampa tot: `preces_contenido/9519-9523` són els precs
+eucarístics del dijous i el castellà els conserva.
+
+Per això el Comú és **additiu i prou**: pot omplir una casella buida, mai canviar-ne una que
+ja tingui text català. La regla habitual del join —guanya el nostre, que ha passat el
+«totes les observacions coincideixen»— no val aquí, perquè cpl-app no renderitza mai aquestes
+caselles i el Comú és l'única veu de la sala. Les **49 caselles on discrepa** queden a
+`output/export-common-held.json` amb el text conservat i el que proposava el Comú, per
+mirar-les una a una. N'hi ha de les dues menes: `responsorios/2789` és una **correcció de
+veritat** (el castellà diu «Que todos los pueblos proclamen la sabiduría de los santos» i el
+català desat deia «Sobre teu, Jerusalem»), i `preces_contenido/9519` seria un **error**.
+
+**La revisió no ho compta com a divergència, i no per casualitat**: l'eix de contingut compara
+cpl-app contra la casella on va el seu text, que és la ferial (`fromFerial`), i el Comú va a
+la del sant, que aquell eix no mira mai. L'informe ara ho diu en veu alta a cada dia de
+memòria en lloc de callar-ho.
+
+## MIGRA-002
+
+**L'empremta de cites llegia l'ordinal del llibre com si fos el capítol** · 3 de setembre de 2026
+
+`fingerprint()`, que contesta «les dues apps citen la mateixa lectura?», treia el capítol
+esborrant el que hi hagués abans de la primera xifra. Amb un llibre que comença per ordinal no
+esborra res, i el capítol que en surt és l'ordinal: `1Pe 5, 1-4` i `1Pe 1, 22-23` donaven totes
+dues `1PET|1`. **Un detector que no detectava**: dues lectures diferents comparaven iguals i el
+dia sortia net.
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/tooling-bugs/MIGRA-002.md](migration-to-saints/tooling-bugs/MIGRA-002.md) |
+| Fix | `migration-to-saints/lib/citation-key.js` — el nom del llibre es talla amb el mateix patró amb què `bookKey()` el reconeix |
+| Test | `migration-to-saints/citation-key.test.js` — sense el pedaç en cauen 3 de 7 |
+| Abast | 225 de les 1.179 cites de l'índex castellà comencen per ordinal; **52 capítols** de 11 llibres quedaven reduïts a 11 empremtes (13 de 1 Corintis, 9 de 2 Corintis, 5 de 1 Pere…) |
+| De passada | `stripMarkup`, `bareReference`, `bookKey` i `fingerprint` surten de `review/build-rows.js` —que s'autoexecuta i no exportava res— cap a `lib/citation-key.js`, i ara les comparteixen la revisió i la proposta del Comú |
+| Efecte | El 3-09-2026 no canvia (la casella comparada per cita era `Ap 11`, sense ordinal). Les revisions anteriors **no** s'han tornat a passar |
+
+## MIGRA-003
+
+**La proposta del Comú triava el Comú pel títol i desquadrava les llistes** · 3 de setembre de 2026
+
+Dos errors a `commons-proposal.js`, tots dos visibles el mateix dia. Amb sant Gregori «papa i
+**doctor** de l'Església», l'heurística del títol agafava el Comú de doctors quan la casella
+castellana germana diu, amb la cita, que és el de pastors — i els 10 responsoris del dia
+sortien mal proposats. I la posició dins d'una llista es comptava en lloc de llegir-se, de
+manera que una casella ja plena al mig feia lliscar totes les de darrere: a la 6/6 del
+responsori hi anava a parar el «Glòria al Pare» de la 5/6.
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/tooling-bugs/MIGRA-003.md](migration-to-saints/tooling-bugs/MIGRA-003.md) |
+| Fix | `migration-to-saints/review/commons-proposal.js` — `pickCommonRow()`: la cita tria la família del Comú i el títol desempata dins seu; i cada casella agafa la seva posició del camp `index` |
+| Depèn de | [MIGRA-002](#migra-002): amb la comparació de cites pròpia que hi havia, `He` (ca) i `Hb` (es) no eren el mateix llibre i la prova no disparava mai |
+| Prova | Les 10 caselles de responsori del 3-09-2026 encaixen una a una amb el castellà, i el Comú triat passa de `07aO` a `06cO` |
+| Efecte | La proposta del dia passa de 19 caselles amb el Comú equivocat a 19 amb el bo. No s'ha aplicat res a saints-app |
+
+<a id="migra-004"></a>
+## MIGRA-004
+
+**A les memòries d'ofici propi, el text ferial de cpl-app s'arxiva a la casella del Comú** · 3 de setembre de 2026 · **obert**
+
+| | |
+|---|---|
+| Component | `migration-to-saints/lib/memorial-ferial.js` · `hasSwitch()` |
+| Gravetat | Mitjana. No escriu res de dolent —les caselles queden retingudes, no mal omplertes— però les reté per sempre |
+| Estat | **Corregit** el 3 de setembre de 2026, el mateix dia que es va trobar |
+| Decisió que l'empara | [D-002](#d-002) · [dossier](migration-to-saints/decisions/D-002-el-comu-als-oficis-propis.md) |
+| Símptoma | `hasSwitch()` només reconeix els cicles `MEMORY_FERIAL1` i `MEMORY_FERIAL2`. Les celebracions amb cicle `MEMORY_PROPER` no hi entren, i com que allà saints-app no té pestanya ferial (`LaudesPage.vue:576`, `cycle !== "MEMORY_PROPER"`), `cellPair()` retorna `[own, null]` i el text ferial de cpl-app va a parar a la casella del sant, on hi viu el Comú |
+| Quantes són | **6** a `dev`: Agnès, Àngels Custodis, Martí de Tours, Mare de Déu dels Dolors, Mare de Déu del Roser, Martiri de sant Joan Baptista. Eren 7: Basili i Gregori Nazianzè —l'exemple amb què es va trobar— **els va reclassificar eprex a `MEMORY_FERIAL2`**, cosa que no es va veure fins a portar `dev` ([SA-06](#sa-06)) |
+| Prova | `lectura_breve_citas/66` i `/3355` les comparteixen el 2 de gener (Basili i Gregori Nazianzè) i el 3 de setembre (Gregori el Gran). Totes dues són del Comú de pastors, i el castellà de les dues caselles diu exactament `Hb 13, 7-9a` i `1 P 5, 1-4` — o sigui que l'índex d'eprex és correcte. Qui hi posa `Is 49, 8-9` i `Col 1, 13-15` (la fèria de Nadal) som nosaltres, i les 9 i 8 dates que discrepen són **tots 2 de gener** |
+| Fix | `lib/memorial-ferial.js` → `isProperOnly()` · `lib/common-office.js` → `commonOverrides()` · `join-content.test.js`, on el Comú passa **abans** que `observeHour` i el que es queda decideix què no s'observa |
+| La guarda | El Comú només es queda un camp si la cita de la lectura breu **castellana** nomena la seva família (`pickedBy` = `citation` o `title+citation`). Si el castellà hi dugués la lectura de la fèria, cap família no encaixaria i el dia es quedaria com estava. I només els set camps del pou: **els salms i l'himne no s'hi toquen** |
+| Test | `migration-to-saints/common-office.test.js` — 6 tests nous (20 en total). Detector comprovat: treure la guarda de la cita fa caure «no pren res si la cita castellana no nomena cap Comú» |
+| Efecte | Mesurat sobre l'índex de `dev` amb la sonda refeta, corrent el join amb el pedaç i sense: ids resolts **7.179 → 7.188**, pendents **791 → 782**. Comú observat: 10.793 → **10.896** caselles, en 729 → **745** hores. Els **9 ids** són tots `preces_contenido` de **sant Martí de Tours** (`2264`-`2267` a Laudes, `7273`-`7277` a Vespres) |
+| Compte | Els guanys grossos del dia —el 3-09 passa de 43/57 a **53/57** i de 13 conflictes a **3**— són sobretot de [SA-06](#sa-06) i de la sonda refeta, **no** d'aquest fix |
+| Exportat | Sí — vegeu [SA-05](#sa-05) |
+
 ## EINA-espais
 
 **El join inventava conflictes a partir d'un text escrit de dues maneres** · 14 d'agost de 2026
@@ -220,6 +348,82 @@ La fitxa és idèntica a la del diumenge en 16 dels 20 camps: es va clonar d'all
 Quan respongui: si diu que sí, cal **tornar a passar la sonda** abans del join, perquè el join
 escriu on la sonda mesura, no on ho diu l'índex.
 
+<a id="eprex-002"></a>
+## EPREX-002
+
+**El 31 de maig, saints-app resa a Vespres l'ofici de l'Ascensió en comptes del de la Visitació** · 3 de setembre de 2026
+
+L'entrada `visitation_of_mary__ANY` de `all_visperas.json` és idèntica a
+`ascension_of_the_lord_1v__ANY` —les I Vespres de l'Ascensió— en **16 dels 20 camps**, i el
+respons i els precs dels que resten també són de l'Ascensió amb ids diferents. L'única peça
+pròpia de la festa és l'oració final. Afecta **totes les llengües**, castellà inclòs. Laudes del
+mateix dia és correcte: el defecte és d'una sola entrada.
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/eprex-bugs/EPREX-002.md](migration-to-saints/eprex-bugs/EPREX-002.md) |
+| Estat | **Proposat, pendent d'enviar.** El missatge per a en Fernando és al final del dossier, en castellà |
+| Fix | Repunteig d'ids a `all_visperas.json`, entrada `visitation_of_mary__ANY`. Dues antífones sí que demanen contingut nou |
+| Prova | La fitxa és una còpia de les I Vespres de l'Ascensió (16/20 camps idèntics), i cap dels 8 anys no és una Ascensió · l'Assumpció i el Roser ja apunten al Comú de la Mare de Déu (`4577`/`3424`/`11042`) i la Visitació és l'única mariana que no · Al·leluia en temps ordinari (31-05 de 2021, 2022 i 2024) · les antífones bones `11021` i `840` són **òrfenes**, com les `10964`-`10966` d'EPREX-001 |
+| Efecte a la migració | Desbloqueja `salmos_citas/11030`, `salmos_antifonas/9253` i `salmos_textos/11031` — 235 dies del manifest. Es veu el 3-09-2026 |
+
+Com a EPREX-001: si s'accepta, cal **tornar a passar la sonda** abans del join.
+
+# Qüestions tancades sense canvi
+
+Preguntes que semblaven un error i, investigades a fons, **no ho eren**. Hi són perquè el cost
+de tornar-les a obrir d'aquí a tres mesos és més alt que el d'aquestes deu línies. Van a
+`migration-to-saints/decisions/`.
+
+<a id="d-001"></a>
+## D-001
+
+**El Comú a les memòries: `Categoria = '0000'` no és un error de cpl-app** · 3 de setembre de 2026
+
+Les 527 files de `santsMemories` tenen `Categoria = '0000'`, i 508 diuen `-` («del Comú») a la
+lectura breu, el responsori i els precs. Com que
+[`LiturgyMastersService.tsx:745`](src/Services/Liturgy/LiturgyMastersService.tsx#L745) descarta
+el `'0000'`, cpl-app no va mai a `OficisComuns` i resa la fèria. Semblava un forat de dades de
+508 files. **No ho és.**
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/decisions/D-001-el-comu-a-les-memories.md](migration-to-saints/decisions/D-001-el-comu-a-les-memories.md) |
+| Veredicte | **4 — no és error.** Cap canvi a cpl-app ni a la base de dades |
+| Prova | **OGLH 235b**: la lectura breu, les antífones i els precs, si no són propis, «se tomarán **del Común o de la feria correspondiente**» — les dues opcions són lícites · i `liturgiadeleshores.cat`, la font catalana oficial, resa **la fèria** el 3-09-2026, amb els precs de Vespres iguals als de cpl-app paraula per paraula |
+| Per contrast | El castellà (`idteologia`) i l'anglès (`universalis`) sí que prenen el Comú. És una **diferència d'ús entre edicions**, no un error de ningú |
+| Efecte a la migració | Les ~19 caselles buides per dia de memòria **no** es desbloquegen tocant la base de dades. Si s'han d'omplir, és fent que el join culli `OficisComuns` per a la pestanya del sant de saints-app — decisió de saints-app, no de cpl-app |
+
+De passada en van sortir dues coses. Que **cpl-app és més correcte que la font de referència**
+a les antífones del Benedictus i del Magníficat: l'OGLH 235b les fa obligatòries si són
+pròpies, sant Gregori en té, i `liturgiadeleshores.cat` hi posa les del saltiri. I que, si mai
+es culla el Comú, **s'ha de triar per la cita de la casella castellana i no pel títol** de la
+memòria: amb sant Gregori, «papa i doctor» fa que l'heurística del títol agafi el Comú de
+doctors quan la cita (`Hb 13, 7-9a`) diu que és el de pastors.
+
+<a id="d-002"></a>
+## D-002
+
+**Als set dies d'ofici propi, el català de saints-app resa el Comú i perd la fèria** · 3 de setembre de 2026
+
+Set memòries —Agnès, Basili i Gregori Nazianzè, els Àngels de la Guarda, Martí de Tours, la
+Mare de Déu dels Dolors, la Mare de Déu del Roser i el Martiri de sant Joan Baptista— tenen
+cicle `MEMORY_PROPER` i **no duen pestanya ferial**: la casella del sant i la de la fèria són
+la mateixa. Allà el Comú i el text ferial de cpl-app no es reparteixen res, competeixen, i la
+casella es quedava buida en català.
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/decisions/D-002-el-comu-als-oficis-propis.md](migration-to-saints/decisions/D-002-el-comu-als-oficis-propis.md) |
+| Decidit | En Pau, el 3-09-2026: **el català imita el criteri litúrgic d'eprex**; cpl-app no es toca |
+| Conseqüència que consta | Aquells set dies l'usuari català de saints-app **no podrà arribar a l'ofici ferial de cap manera**. Qui el vulgui l'ha de resar a cpl-app |
+| Per què és lícit | OGLH 235b, «del Comú **o** de la fèria». És el que ja fa el castellà avui |
+| Límits | Només els set camps del pou del Comú —**els salms i l'himne no s'hi toquen** (OGLH 235a)— i només si la cita castellana nomena la família del Comú |
+| Codi | [MIGRA-004](#migra-004) · exportació [SA-05](#sa-05) |
+
+Va en la mateixa direcció que la [D-001](#d-001), però sense xarxa: allà la fèria era a un toc
+de distància, i aquí no hi és.
+
 # Canvis a saints-app
 
 Repositori `Saints-App/saints-app`. Aquí no hi hem corregit cap error litúrgic: el que hi hem
@@ -232,6 +436,53 @@ fet és **posar-hi el català**.
 <a id="sa-02"></a>
 ### SA-02 · Primera exportació dels textos catalans (`commons/ca`) · 2026-08-11
 `abc5c1caf` — [GitHub](https://github.com/Saints-App/saints-app/commit/abc5c1cafbda8f9ec31bfe42cd01cb412081fd7f) · 14 fitxers, 5.016 línies
+
+<a id="sa-04"></a>
+### SA-04 · El Comú dels sants, en català, a la pestanya del sant · 2026-09-03
+Sense committejar encara. **877 claus noves, 0 modificades** a `commons/ca/`: `preces_contenido`
++424, `responsorios` +421, `cantico_evangelico_antifonas` +18, `lectura_breve_*` +5 cadascun,
+`preces_intro`/`preces_respuesta` +2. Generat per [EINA-comu](#eina-comu); escrit amb
+`node migration-to-saints/export-to-saints-app.js`. **El català se separa aquí de cpl-app a
+posta** — decisió [D-001](#d-001).
+
+<a id="sa-05"></a>
+### SA-05 · Reexportació sobre l'índex de `dev` · 2026-09-03
+Sense committejar encara, i **damunt de la mateixa feina sense committejar de [SA-04](#sa-04)**.
+**25 claus noves, 1 actualitzada**: `himnos` +13, `salmos_citas` +3, `salmos_antifonas` +2,
+`salmos_textos` +2, i +1 a `cantico_evangelico_antifonas`, `lectura_breve_citas`,
+`lectura_breve_textos`, `preces_intro` i `preces_respuesta`.
+
+L'única «actualitzada» és `salmos_textos/3424`, i **és només de blancs**: `textKey()` diu que és
+el mateix text. Ha canviat el representant perquè, amb la sonda refeta, les observacions són unes
+altres.
+
+Recull el merge de [SA-06](#sa-06), la sonda refeta i [MIGRA-004](#migra-004). Els sis dies
+d'ofici propi **perden l'ofici ferial** dins de saints-app, que és el que diu la decisió
+[D-002](#d-002).
+
+<a id="sa-06"></a>
+### SA-06 · `dev` entra a la branca catalana · 2026-09-03
+`1a35a54a6` — merge de `origin/dev` (100 commits) a `catalan-language-support-dev`. HEAD d'abans:
+`53a1c84a2`, per si cal desfer.
+
+**Per què calia.** La branca anava 100 commits enrere i l'índex s'havia mogut molt: **30 claus
+`_1v` fora**, **31 entrades de Laudes i 35 de Vespres amb una casella base repuntada**, i 8
+passades `chore(texts)` d'eprex. La sonda (`app-cell-map.json`) era del **12 d'agost**: el join
+escriu on la sonda diu que l'app llegeix, o sigui que estàvem escrivint contra un índex vell.
+
+| | |
+|---|---|
+| El canvi gros | PR #1694 (`1582-fix-1v`): les Primeres Vespres deixen de ser una clau `<celebració>_1v__ANY` i passen a camps `*_PrimerasVisperas` dins de l'entrada de la celebració |
+| Ens afecta el codi? | **No.** Cap eina nostra no depèn de `_1v`, i el manifest de litcal en té zero |
+| Conflicte | Un: `LanguageSelectionModal.vue`, que nosaltres havíem tocat a [SA-01](#sa-01) i `dev` esborra. Resolt **a favor de `dev`**: el substitueix `OnboardingLanguageStep.vue`, que recorre `AVAILABLE_LANGUAGES`, i el català hi és perquè `constants/languages.ts` s'ha fusionat sense conflicte. SA-01 sobreviu al refactor sense tocar res |
+| Cura | L'override local `"@saints-app/litcal": "file:../litcal"` es va desar a l'stash abans del merge i recuperar després. `textsBaseVersion` passa a `20260901-200603` |
+| Conseqüència | Cal **tornar a passar la sonda i el join**, i tornar a mesurar [MIGRA-004](#migra-004) |
+
+**El que això va canviar de la feina del mateix dia:** a `dev`, `basil_the_great_and_gregory_nazianzen_bishops`
+ja **no és `MEMORY_PROPER`** sinó `MEMORY_FERIAL2` — eprex l'ha reclassificat. El 2 de gener,
+doncs, ja té pestanya ferial. MIGRA-004 segueix fent falta (queden **6** celebracions
+`MEMORY_PROPER`, no 7), però l'exemple amb què es va trobar ja no val i els números s'han de
+refer.
 
 <a id="sa-03"></a>
 ### SA-03 · Reexportació de Vespres després de MIGRA-001 · 2026-09-01

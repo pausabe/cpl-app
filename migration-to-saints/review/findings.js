@@ -389,6 +389,135 @@ const FINDINGS = [
       promptable: true,
     },
   },
+  {
+    id: 'F11',
+    verdict: 2,
+    days: ['2026-09-03'],
+    hours: ['Vespers'],
+    headline: 'La Visitació resa les I Vespres de l’Ascensió, i per això reté el càntic del dijous',
+    detail:
+      'Des del refactor de Primeres Vespres (PR #1694), que va treure el sufix <code>_1v</code> ' +
+      'de l’identificador i les va passar a camps <code>*_PrimerasVisperas</code> dins de la ' +
+      'celebració, això es llegeix directament: <strong>16 dels 20 camps de ' +
+      '<code>visitation_of_mary__ANY</code> són, id per id, els <code>*_PrimerasVisperas</code> ' +
+      'de <code>ascension_of_the_lord__ANY</code></strong>. Dels quatre que resten, el respons i ' +
+      'els precs també són de l’Ascensió amb ids diferents; l’única peça pròpia de la festa és ' +
+      'l’oració final. I la Visitació és una <em>festa</em>, que no en té, de I Vespres. Es veu ' +
+      'el 3 de setembre perquè el càntic de l’Ascensió i el del dijous del saltiri comparteixen ' +
+      'casella. Verificat contra <code>origin/dev</code>: l’entrada no ha canviat gens.',
+    table: {
+      head: ['camp', 'cpl-app (31 de maig)', 'saints-app'],
+      rows: [
+        ['1r salm', 'Salm 121', 'Salmo 112 · salmos_citas/11031'],
+        ['Ant. 1', '«Maria entrà a casa de Zacaries i saludà Elisabet»', '«Salí del Padre y he venido al mundo… » · salmos_antifonas/10271'],
+        ['2n salm', 'Salm 126', 'Salmo 116 · salmos_citas/152'],
+        ['Ant. 2', '«…el nen ha saltat d’entusiasme dins les meves entranyes»', '«El Señor Jesús… subió al cielo» · salmos_antifonas/10272'],
+        ['Càntic', 'Ef 1, 3-10', 'Ap 11, 17-18; 12, 10b-12a · salmos_citas/11030'],
+        ['Ant. 3', '«Ets beneïda entre les dones…»', '«Nadie ha subido al cielo…» · salmos_antifonas/10273'],
+        ['Lectura breu', '—', 'Ef 2, 4-6 · lectura_breve_citas/3695'],
+        ['Ant. Magníficat', '«Totes les generacions em diran benaurada…»', '«Padre, he manifestado tu nombre… Aleluya» · 1443'],
+        ['Himne', '—', '«¿Y dejas, Pastor santo…» · himnos/3835'],
+      ],
+    },
+    why:
+      'La casella <code>salmos_citas/11030</code> la comparteixen 235 dies: 229 hi volen el ' +
+      'càntic d’Ap 11, 17-18 —el del dijous— i 6 hi volen Ef 1, 3-10. Els 6 són exactament els ' +
+      '31 de maig en què cpl-app celebra la Visitació. Mentre això no es reparteixi, les tres ' +
+      'caselles del 3r càntic de les Vespres del 3 de setembre (<code>11030</code>, ' +
+      '<code>9253</code>, <code>salmos_textos/11031</code>) queden retingudes per a sempre: ' +
+      'cpl-app hi aporta dos textos i el join no pot triar.',
+    proof: [
+      ['Prova interna · la casella bona ja existeix', 'A <code>dev</code>, l’Assumpció, la Immaculada, la Nativitat de Maria i la Mare de Déu dels Dolors apunten <strong>totes quatre</strong> les Vespres a <code>salmos_citas/4577</code> (Salm 121), <code>3424</code> (Salm 126) i <code>11042</code> (Ef 1, 3-10) —el Comú de la Mare de Déu— amb antífones pròpies de cadascuna. La Visitació és l’única festa mariana que no hi apunta.', null],
+      ['Prova interna · de qui és la còpia', 'Ho diu l’entrada de l’Ascensió: <code>himno_PrimerasVisperas</code> 3835, <code>primer_salmo_cita_PrimerasVisperas</code> 11031, <code>segundo_salmo_cita_PrimerasVisperas</code> 152, <code>tercer_salmo_cita_PrimerasVisperas</code> 11030, <code>lectura_biblica_cita_PrimerasVisperas</code> 3695, <code>cantico_evangelico_antifona_PrimerasVisperas</code> 1443 — tots ells els camps homònims de la Visitació. I cap dels 8 anys del manifest no és una Ascensió: el 2018 va ser el 10 de maig, el 2019 el 30, el 2021 el 13.', null],
+      ['Prova interna · Al·leluia fora de lloc', 'Les tres antífones de saints-app acaben en «Aleluya». El 31 de maig de 2024 ja era temps ordinari (Pentecosta, el 19 de maig), i el 31 de maig de 2022 i de 2021 també.', null],
+      ['Prova interna · les antífones bones són òrfenes', '<code>salmos_antifonas/11021</code> «María entró en casa de Zacarías y saludó a Isabel» i <code>/840</code> «Bendita tú entre las mujeres, y bendito el fruto de tu vientre» existeixen a <code>commons/es</code> i <strong>no les referencia cap celebració</strong> dels deu <code>all_*.json</code>. Són, literalment, les antífones 1a i 3a que cpl-app resa el 31 de maig. La mateixa signatura que <a href="migration-to-saints/eprex-bugs/EPREX-001.md">EPREX-001</a>.', null],
+      ['cpl-app, els 6 anys', 'Salm 121 · Salm 126 · Ef 1, 3-10, amb les antífones pròpies de la Visitació. No varia cap any.', null],
+    ],
+    fix: {
+      where: 'eprex · all_visperas.json, entrada visitation_of_mary__ANY',
+      summary:
+        'Repuntar les Vespres de la Visitació al Comú de la Mare de Déu, que ja existeix i que ' +
+        'l’Assumpció i el Roser ja fan servir. Les antífones han de ser les pròpies de la ' +
+        'Visitació, no les de cap altra festa mariana.',
+      table: {
+        head: ['camp', 'ara (= I Vespres de l’Ascensió)', 'hauria de ser'],
+        rows: [
+          ['primer_salmo_cita / _texto', '11031 / 11032', '4577 / 4578'],
+          ['segundo_salmo_cita / _texto', '152 / 153', '3424 / 3425'],
+          ['tercer_salmo_cita / _texto', '11030 / 11031', '11042 / 11043'],
+          ['salmos_antifonas 1-3', '10271-10273 (Ascensió)', '11021 · ? · 840 — les 1a i 3a ja hi són, òrfenes; la 2a («…el nen ha saltat d’entusiasme…») no s’ha trobat'],
+          ['cantico_evangelico_antifona', '1443 (Ascensió)', 'pròpia de la Visitació'],
+          ['lectura_biblica_cita', '3695 (Ef 2, 4-6)', 'la del Comú de la Mare de Déu'],
+          ['himno', '3835 (Ascensió)', 'el de la Visitació o el del Comú'],
+        ],
+      },
+      note:
+        'Només les Vespres. Laudes del 31 de maig és correcte i propi de la Visitació — himne ' +
+        '«Y salta el pequeño Juan en el seno de Isabel», antífona «María se puso en camino», ' +
+        'lectura Jl 2, 27-3, 1—, o sigui que el defecte és d’una sola entrada. Un cop repuntada, ' +
+        'les tres caselles retingudes del 3 de setembre es resolen soles.',
+      promptable: true,
+    },
+  },
+  {
+    id: 'F12',
+    verdict: 3,
+    days: ['2026-09-03'],
+    hours: ['Laudes', 'Vespers'],
+    headline: 'A les memòries d’ofici propi, el text ferial de cpl-app s’arxiva a la casella del Comú',
+    resolved: 'MIGRA-004, corregit el 3 de setembre de 2026',
+    detail:
+      'La regla de <code>lib/memorial-ferial.js</code> —el text que cpl-app pren de la fèria va ' +
+      'a la casella ferial, i el Comú a la del sant— està tancada darrere de ' +
+      '<code>hasSwitch()</code>, que només reconeix els cicles <code>MEMORY_FERIAL1</code> i ' +
+      '<code>MEMORY_FERIAL2</code>. Les 7 celebracions amb cicle <code>MEMORY_PROPER</code> no ' +
+      'hi entren: com que allà saints-app no té pestanya ferial, <code>cellPair()</code> retorna ' +
+      '<code>[own, null]</code> i el text ferial de cpl-app acaba a la casella del sant, on el ' +
+      'Comú ja hi és. És exactament el que la capçalera del fitxer avisa que no s’ha de fer.',
+    table: {
+      head: ['casella', 'què hi ha en castellà', 'què hi posa el 2 de gener', 'què hi posa el 3 de setembre'],
+      rows: [
+        ['lectura_breve_citas/66 (Laudes)', 'Hb 13, 7-9a', 'Is 49, 8-9 — fèria de Nadal (9 dates)', 'He 13, 7-9a — Comú de pastors (158 dates)'],
+        ['lectura_breve_citas/3355 (Vespres)', '1 P 5, 1-4', 'Col 1, 13-15 — fèria de Nadal (8 dates)', '1Pe 5, 1-4 — Comú de pastors (106 dates)'],
+      ],
+    },
+    why:
+      'El 2 de gener, sants Basili el Gran i Gregori Nazianzè, la fila de <code>santsMemories</code> ' +
+      'du <code>Categoria = "0000"</code> i <code>citaLBLaudes = "-"</code>, igual que sant ' +
+      'Gregori el Gran: cpl-app resa la lectura de la fèria de Nadal. Però el cicle és ' +
+      '<code>MEMORY_PROPER</code>, no <code>MEMORY_FERIAL1</code>, i el join no redirigeix. Les ' +
+      'dues memòries són del Comú de pastors —bisbes i papa comparteixen lectura breu a ' +
+      '<code>OficisComuns</code>: Hb 13, 7-9a i 1Pe 5, 1-4 per a 06a, 06b, 06c i 06d— i per això ' +
+      'saints-app les fa compartir casella, correctament. La col·lisió no és de l’índex: és ' +
+      'nostra. Reté 4 de les 13 caselles del 3 de setembre.',
+    proof: [
+      ['El cicle', '<code>all_laudes.json</code>: 494 claus, 7 amb <code>MEMORY_PROPER</code> — Agnès, Basili i Gregori Nazianzè, Àngels Custodis, Martí de Tours, Mare de Déu dels Dolors, Mare de Déu del Roser, Martiri de sant Joan Baptista.', null],
+      ['Que no hi ha pestanya ferial', '<code>LaudesPage.vue:576</code> — <code>if (dateStore.isTodayMemory && data.value.cycle !== "MEMORY_PROPER") value = data.value[`${field}_Ferial`]</code>. Amb <code>MEMORY_PROPER</code> no hi ha <code>_Ferial</code> on posar-ho.', null],
+      ['Que el Comú és el bo', '<code>OficisComuns</code>, les 15 files 06* (prevere, bisbe, papa, diversos) porten totes <code>citaLBLaudes = "He 13, 7-9a"</code> i <code>citaLBVespres = "1Pe 5, 1-4"</code>. El castellà de <code>lectura_breve_citas/66</code> i <code>/3355</code> diu exactament això.', null],
+      ['La minoria, perseguida', 'Les 9 dates que discrepen a <code>/66</code> són tots 2 de gener (2017-2026, menys el 2022); les 8 de <code>/3355</code>, també.', null],
+    ],
+    fix: {
+      where: 'migration-to-saints/lib/memorial-ferial.js · lib/common-office.js · join-content.test.js',
+      summary:
+        'Quan el dia no té pestanya ferial i el camp és <code>fromFerial</code>, <strong>descartar ' +
+        'l’observació</strong> en comptes d’arxivar-la a la casella del sant, i deixar que el Comú ' +
+        'ompli aquella casella com ja fa als dies <code>MEMORY_FERIAL*</code>. No n’hi ha prou ' +
+        'd’eixamplar la regexp de <code>hasSwitch()</code>: allà no hi ha cap casella ferial on ' +
+        'redirigir el text.',
+      note:
+        '<strong>Ja fet</strong> (MIGRA-004, 3-09-2026): <code>isProperOnly()</code> a ' +
+        '<code>lib/memorial-ferial.js</code> i <code>commonOverrides()</code> a ' +
+        '<code>lib/common-office.js</code>, amb 6 tests nous a <code>common-office.test.js</code>. ' +
+        'El Comú només es queda el camp si la cita castellana nomena la seva família, i llavors ' +
+        'el text ferial de cpl-app no s’observa. Mesurat sobre l’índex de <code>dev</code> amb la ' +
+        'sonda refeta: ids resolts 7.179 → 7.188, pendents 791 → 782 — els 9 són ' +
+        '<code>preces_contenido</code> de sant Martí de Tours. El 2 de gener, que era l’exemple ' +
+        'amb què es va trobar, ja no hi entra: eprex l’ha reclassificat a ' +
+        '<code>MEMORY_FERIAL2</code>, o sigui que en queden 6 i no 7. Decisió: ' +
+        'decisions/D-002-el-comu-als-oficis-propis.md.',
+      promptable: false,
+    },
+  },
 ];
 
 const VERDICTS = {

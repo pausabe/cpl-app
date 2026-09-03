@@ -67,9 +67,10 @@ function findingBlock(f, date) {
   const v = VERDICTS[f.verdict];
   const tbl = (t) => t ? `<div class="tw"><table><thead><tr>${t.head.map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead>
     <tbody>${t.rows.map((r) => `<tr>${r.map((c, i) => `<td${i ? '' : ' class="k"'}>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : '';
-  return `<div class="finding ${v.cls}" id="${f.id}-${date}">
+  return `<div class="finding ${v.cls}${f.resolved ? ' done' : ''}" id="${f.id}-${date}">
     <p class="fh"><a class="fid" href="#${f.id}-${date}">${f.id}</a>
       <span class="vp ${v.cls}">${esc(v.label)}</span>
+      ${f.resolved ? `<span class="vp done">corregit</span>` : ''}
       <strong>${esc(f.headline.replace(/`/g, ''))}</strong></p>
     <p class="fd">${f.detail}</p>
     ${tbl(f.table)}
@@ -79,7 +80,7 @@ function findingBlock(f, date) {
         ${f.why ? `<p>${f.why}</p>` : ''}
         ${f.impact ? `<p><strong>Conseqüència:</strong> ${f.impact}</p>` : ''}
         ${f.proof && f.proof.length ? `<ul class="pl">${f.proof.map(([k, t, u]) => `<li><strong>${esc(k)}</strong> — ${t}${u ? ` <a href="${esc(u)}" target="_blank" rel="noopener">font ↗</a>` : ''}</li>`).join('')}</ul>` : ''}
-        ${f.fix ? `<p class="fixline"><span class="who">correcció proposada</span> ${f.fix.summary} ${f.fix.where !== '—' ? `<code>${esc(f.fix.where)}</code>` : ''}</p>` : ''}
+        ${f.fix ? `<p class="fixline"><span class="who">${f.resolved ? 'correcció aplicada' : 'correcció proposada'}</span> ${f.fix.summary} ${f.fix.where !== '—' ? `<code>${esc(f.fix.where)}</code>` : ''}</p>` : ''}
         ${f.fix && f.fix.diff ? `<pre><code>${esc(f.fix.diff)}</code></pre>` : ''}
         ${f.fix ? tbl(f.fix.table) : ''}
         ${f.fix && f.fix.note ? `<p class="note">${f.fix.note}</p>` : ''}
@@ -142,6 +143,12 @@ function dayBlock(day) {
     </header>
 
     ${fs_.length ? `<div class="fs">${fs_.map((f) => findingBlock(f, day.date)).join('')}</div>` : ''}
+
+    ${day.tabsDiffer ? `<p class="note">Dia de memòria: la pestanya del sant de saints-app segueix
+      el <strong>Comú</strong> i cpl-app resa la fèria. Les dues coses són lícites (OGLH 235b) i
+      la diferència és <strong>volguda</strong> — decisió D-001. Per això la comparació d'aquí
+      sota es fa contra la casella ferial, que és on va el text de cpl-app; el Comú va a la
+      casella del sant, que cpl-app no omple mai.</p>` : ''}
 
     <div class="prog">
       <div class="bar" role="img" aria-label="${c.have} fetes, ${c.conflict} retingudes, ${hv.covered} per collir, ${nosource} sense font, de ${c.total}">
@@ -264,6 +271,8 @@ td.k{font-weight:600;white-space:nowrap}
   border:1px solid currentColor;white-space:nowrap}
 .vp.v1{color:var(--v1)} .vp.v2{color:var(--v2)} .vp.v3{color:var(--v3)}
 .vp.v4{color:var(--v4)} .vp.v5{color:var(--v5)}
+.vp.done{color:var(--v4);border-style:dashed}
+.finding.done{border-left-style:dashed}
 .fd{font-size:.88rem;color:var(--ink2);margin:.15rem 0 0}
 .more summary{cursor:pointer;font-size:.78rem;color:var(--mut);padding:.3rem 0}
 .more summary:hover{color:var(--ac)}
