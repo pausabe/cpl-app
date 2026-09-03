@@ -115,6 +115,276 @@ details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
 .laudes-day .field-label { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; }
 .laudes-day .field-value { white-space: pre-wrap; font-size: 0.88rem; }
 
+/* Refresh card */
+.card.highlight { border-color: var(--accent); box-shadow: 0 1px 0 var(--accent-bg), 0 0 0 3px var(--accent-bg); }
+button.primary { background: var(--accent); color: var(--card-bg); font-weight: 600; }
+
+.link-box { background: var(--mono-bg); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.9rem; margin-bottom: 0.9rem; }
+.link-toggle { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; }
+.link-state { font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.5; }
+.link-state .good { color: #3a7a3a; font-weight: 600; }
+.link-state .bad { color: var(--danger); font-weight: 600; }
+.link-note { font-size: 0.78rem !important; margin: 0.45rem 0 0 !important; }
+
+.refresh-buttons { display: flex; align-items: center; gap: 0.1rem; flex-wrap: wrap; }
+
+.rs-warn { background: var(--accent-bg); border: 1px solid var(--accent); border-radius: 6px; padding: 0.6rem 0.8rem; font-size: 0.82rem; line-height: 1.5; margin-bottom: 0.6rem; }
+
+.rs-step { border-left: 3px solid var(--border); padding: 0.45rem 0 0.45rem 0.7rem; margin-bottom: 0.35rem; }
+.rs-step.running { border-left-color: var(--accent); }
+.rs-step.ok { border-left-color: #3a7a3a; }
+.rs-step.fail { border-left-color: var(--danger); }
+.rs-step.idle { opacity: 0.5; }
+.rs-head { display: flex; align-items: center; gap: 0.5rem; font-size: 0.88rem; }
+.rs-icon { width: 1rem; flex-shrink: 0; text-align: center; }
+.rs-step.ok .rs-icon { color: #3a7a3a; }
+.rs-step.fail .rs-icon { color: var(--danger); }
+.rs-label { flex: 1; }
+.rs-time { font-size: 0.75rem; color: var(--muted); }
+.rs-summary { font-size: 0.82rem; color: var(--accent); margin-top: 0.2rem; padding-left: 1.5rem; }
+.rs-step details { padding-left: 1.5rem; }
+.spin { display: inline-block; animation: spin 1s linear infinite; color: var(--accent); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Advanced tools: the step-by-step pipeline, out of the way until you ask for it. */
+details.advanced { margin: 0; }
+details.advanced > summary {
+  background: var(--card-bg); border: 1px dashed var(--border); border-radius: 10px;
+  padding: 0.7rem 1rem; font-size: 0.95rem; color: var(--text); font-weight: 600;
+}
+details.advanced > summary:hover { border-color: var(--accent); }
+details.advanced .adv-hint { font-weight: 400; color: var(--muted); font-size: 0.82rem; }
+.advanced-body { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.25rem; }
+
+/* Month calendar */
+.cal-nav { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+.cal-title { font-size: 1rem; font-weight: 600; min-width: 9rem; }
+.cal-legend { display: flex; gap: 0.7rem; margin-left: auto; font-size: 0.72rem; color: var(--muted); flex-wrap: wrap; }
+.cal-legend span { display: flex; align-items: center; gap: 0.25rem; }
+.cal-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.dc-seg.dc-none { background: var(--border); }
+
+.cal-summary { margin-bottom: 0.6rem; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-wd { text-align: center; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; padding-bottom: 0.2rem; }
+
+.cal-day {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; padding: 0.5rem 0.2rem; margin: 0; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--mono-bg); color: var(--text);
+  min-height: 3.2rem;
+}
+.cal-day:hover { filter: brightness(1.08); border-color: var(--accent); }
+.cal-day.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
+.cal-num { font-size: 0.9rem; font-weight: 600; }
+.cal-pct { font-size: 0.7rem; opacity: 0.85; }
+
+/* Colour buckets. Text stays dark on all of them, so they are readable in both themes. */
+.cal-day.cal-100 { background: #7db87d; border-color: #5a9a5a; color: #10240f; }
+.cal-day.cal-70  { background: #b9cf83; border-color: #9ab55f; color: #1d2410; }
+.cal-day.cal-40  { background: #e8cd7a; border-color: #c9a227; color: #2a2109; }
+.cal-day.cal-1   { background: #e5a97f; border-color: #c97f4d; color: #2a1607; }
+.cal-day.cal-0   { background: #d98b84; border-color: #b5545a; color: #2a0d0b; }
+.cal-day.cal-none { background: var(--border); color: var(--muted); }
+.cal-day.cal-out { background: transparent; border-style: dashed; color: var(--muted); cursor: default; }
+
+/* Day inspector */
+.dc-head { margin-bottom: 1rem; }
+.dc-verdict { display: inline-block; font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+.dc-verdict.good { color: #3a7a3a; }
+.dc-verdict.bad { color: var(--danger); }
+.dc-verdict.unknown { color: var(--muted); }
+.dc-bar { display: flex; height: 12px; border-radius: 4px; overflow: hidden; margin: 0.5rem 0; background: var(--mono-bg); }
+.dc-seg { height: 100%; }
+.dc-seg.dc-ok { background: #3a7a3a; }
+.dc-seg.dc-conflict { background: #c9a227; }
+.dc-seg.dc-missing { background: var(--danger); }
+.dc-seg.dc-notyet { background: #3d5a80; }
+
+/* One folded block per Hour; open it to get the field table. */
+.dc-hour { margin-top: 0.6rem; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.dc-hour-empty { padding: 0.6rem 0.8rem; }
+.dc-hour-empty h3 { margin: 0 0 0.4rem; font-size: 0.95rem; }
+.dc-hour > summary.dc-hour-head {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.8rem;
+  cursor: pointer; font-size: 0.9rem; color: var(--text); list-style: none;
+}
+.dc-hour > summary::-webkit-details-marker { display: none; }
+.dc-hour > summary:hover { background: var(--accent-bg); }
+.dc-hour[open] > summary { border-bottom: 1px solid var(--border); }
+.dc-hour[open] .pe-caret { transform: rotate(90deg); }
+.dc-hour-name { font-weight: 600; flex-shrink: 0; }
+.dc-hour-count { font-size: 0.78rem; color: var(--muted); flex-shrink: 0; white-space: nowrap; }
+.dc-bar-inline { flex: 1; height: 10px; margin: 0; min-width: 60px; }
+.dc-table { margin: 0; table-layout: fixed; }
+.dc-table th:nth-child(1), .dc-table td:nth-child(1) { width: 24%; }
+.dc-table th:nth-child(2), .dc-table td:nth-child(2) { width: 15%; }
+.dc-table th:nth-child(4), .dc-table td:nth-child(4) { width: 23%; font-size: 0.78rem; color: var(--muted); }
+/* The pill wraps rather than spilling over the value column if the window gets narrow. */
+.dc-table .dc-pill { display: inline-block; white-space: normal; }
+.dc-table td { overflow-wrap: anywhere; }
+.dc-expandable { cursor: pointer; }
+.dc-expandable:hover { background: var(--accent-bg); }
+.dc-expandable .dc-cell-value::after { content: ' ⤢'; color: var(--muted); font-size: 0.75em; }
+.dc-row.open .dc-cell-value::after { content: ' ⤡'; }
+.dc-snip-alt { color: var(--muted); font-style: italic; }
+.dc-snip-none { color: var(--muted); }
+.dc-full > td { background: var(--mono-bg); }
+.dc-fulltext { white-space: pre-wrap; font-size: 0.88rem; line-height: 1.45; padding: 0.2rem 0; }
+.dc-id { color: var(--muted); font-size: 0.75rem; }
+.dc-pill { font-size: 0.72rem; border-radius: 4px; padding: 0.05rem 0.4rem; white-space: nowrap; }
+.dc-pill.dc-ok { color: #3a7a3a; border: 1px solid #3a7a3a; }
+.dc-pill.dc-conflict { color: #8a6d0f; border: 1px solid #c9a227; }
+.dc-pill.dc-missing { color: var(--danger); border: 1px solid var(--danger); }
+.dc-pill.dc-notyet { color: #3d5a80; border: 1px solid #3d5a80; }
+/* Fade a passing field's bookkeeping, never its text — the text is what you came to read. */
+.dc-ok-row td:nth-child(1),
+.dc-ok-row td:nth-child(2),
+.dc-ok-row td:nth-child(4) { opacity: 0.6; }
+
+.dc-why-impact { margin-top: 0.25rem; color: var(--danger); }
+.dc-why-impact.ok { color: #3a7a3a; }
+.dc-why-impact b { font-weight: 700; }
+.dc-why-blame { margin-top: 0.25rem; padding-left: 0.45rem; border-left: 2px solid var(--border); }
+.dc-why-blame.missing { border-left-color: var(--danger); }
+
+/* Calendar diagnosis: what this day celebrates, and whose fault its gaps are. */
+.dc-cel {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; background: var(--card-bg);
+}
+.dc-cel-none { color: var(--muted); font-size: 0.85rem; }
+.dc-cel-row { display: flex; gap: 0.6rem; align-items: baseline; font-size: 0.88rem; padding: 0.1rem 0; }
+.dc-cel-label { color: var(--muted); flex: 0 0 9rem; }
+.dc-cel-value { overflow-wrap: anywhere; }
+.dc-cel-rank { color: var(--muted); font-size: 0.78rem; margin-left: 0.3rem; }
+.dc-cel-verdict { margin-top: 0.45rem; font-size: 0.88rem; font-weight: 600; }
+.dc-cel-verdict.missing { color: var(--danger); }
+.dc-cel-verdict.mismatch { color: #8a6d0f; }
+.dc-cel-verdict.ferial-drift, .dc-cel-verdict.not-applied { color: var(--muted); }
+.dc-cel-suggest { margin-top: 0.3rem; font-size: 0.82rem; color: var(--muted); }
+
+.dc-blame { margin-top: 0.7rem; border-top: 1px solid var(--border); padding-top: 0.5rem; }
+.dc-blame-head { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 0.35rem; }
+.dc-blame-row {
+  display: grid; grid-template-columns: 11rem minmax(0, 1fr); gap: 0.2rem 0.7rem;
+  font-size: 0.85rem; padding: 0.25rem 0; border-left: 2px solid var(--border); padding-left: 0.5rem;
+}
+.dc-blame-row.missing { border-left-color: var(--danger); }
+.dc-blame-row.mismatch { border-left-color: #c9a227; }
+.dc-blame-count { color: var(--muted); font-size: 0.78rem; white-space: nowrap; }
+.dc-blame-title { font-weight: 600; }
+.dc-blame-why { grid-column: 2; color: var(--muted); font-size: 0.8rem; }
+
+/* Folded remainders ("…i N més"): the counter IS the control that unfolds them, so it has
+   to read as clickable while staying quiet enough not to compete with the list it hides.
+   The wrapper is display:contents so the hidden items rejoin the parent's flex/grid flow
+   untouched when shown — no wrapper box between a chip row and its chips. */
+.dc-rest { display: contents; }
+.dc-rest[hidden] { display: none; }
+.dc-more {
+  font: inherit; font-size: 0.78rem; color: var(--muted); background: none; border: 0;
+  padding: 0 0.15rem; cursor: pointer;
+  text-decoration: underline dotted; text-underline-offset: 2px;
+}
+.dc-more:hover { color: var(--accent); text-decoration-style: solid; }
+.dc-more.open { color: var(--accent); }
+.dc-more-block { display: block; margin: 0.25rem 0 0 0.5rem; padding: 0; text-align: left; }
+
+/* "What fails today": one row per hour+status, with a chip per broken cell. */
+.dc-fail {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; background: var(--card-bg);
+}
+.dc-fail-row {
+  display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 0.3rem 0.7rem;
+  align-items: baseline; padding: 0.3rem 0; font-size: 0.85rem;
+}
+.dc-fail-row + .dc-fail-row { border-top: 1px dashed var(--border); }
+.dc-fail-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.dc-jump {
+  font: inherit; font-size: 0.78rem; cursor: pointer;
+  border: 1px solid var(--border); border-radius: 999px; padding: 0.05rem 0.55rem;
+  background: var(--mono-bg); color: var(--text);
+}
+.dc-jump:hover { background: var(--accent-bg); border-color: var(--muted); }
+.dc-fail-chips .dc-more { align-self: center; }
+.dc-fail-pending { color: var(--muted); }
+.dc-fail-note { font-size: 0.8rem; }
+.dc-fail-foot { margin-top: 0.5rem; padding-top: 0.45rem; border-top: 1px solid var(--border); font-size: 0.82rem; }
+.dc-fail-hint { color: var(--muted); }
+
+/* Lands the eye after a chip scrolls the page to a row deep inside an Hour. */
+@keyframes dc-flash { from { background: var(--accent-bg); } to { background: transparent; } }
+.dc-flash > td { animation: dc-flash 1.6s ease-out; }
+@media (prefers-reduced-motion: reduce) { .dc-flash > td { animation: none; } }
+
+@media (max-width: 700px) {
+  .dc-fail-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Conflict drill-down: the concrete days that share a contested cell. */
+.dc-impact { padding: 0.3rem 0; font-size: 0.85rem; }
+.dc-impact-loading { color: var(--muted); font-style: italic; }
+.dc-imp-head { margin-bottom: 0.6rem; line-height: 1.5; }
+.dc-imp-title { margin-bottom: 0.35rem; }
+.dc-imp-ref { color: var(--muted); margin-bottom: 0.35rem; }
+.dc-imp-ref-text { display: block; color: var(--text); white-space: pre-wrap; border-left: 3px solid var(--accent); padding-left: 0.6rem; margin-top: 0.2rem; }
+.dc-imp-verdict-line { background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.45rem 0.6rem; }
+.dc-imp-es { border-left-color: #3d5a80; }
+.dc-ok-txt { color: #3a7a3a; }
+.dc-bad-txt { color: var(--danger); }
+.dc-imp-table { margin: 0; font-size: 0.82rem; table-layout: fixed; }
+.dc-imp-table th:nth-child(1), .dc-imp-table td:nth-child(1) { width: 26%; }
+.dc-imp-table th:nth-child(2), .dc-imp-table td:nth-child(2) { width: 8%; }
+.dc-imp-table th:nth-child(3), .dc-imp-table td:nth-child(3) { width: 16%; }
+.dc-imp-table td { background: var(--card-bg); }
+.dc-imp-row.is-mine td { background: var(--accent-bg); }
+.dc-imp-cel { line-height: 1.35; }
+.dc-imp-days { text-align: right; color: var(--muted); }
+.dc-imp-verdict { font-size: 0.72rem; border-radius: 4px; padding: 0.05rem 0.4rem; white-space: nowrap; }
+.dc-imp-verdict.dc-imp-same { color: #3a7a3a; border: 1px solid #3a7a3a; }
+.dc-imp-verdict.dc-imp-differs { color: var(--danger); border: 1px solid var(--danger); }
+.dc-imp-verdict.dc-imp-varies { color: #8a6d0f; border: 1px solid #c9a227; }
+/* Rows that agree are context, not news: keep them readable but visually quiet. */
+.dc-imp-row.dc-imp-same:not(.is-mine) td { opacity: 0.65; }
+.dc-imp-text { margin-bottom: 0.4rem; }
+.dc-imp-text:last-child { margin-bottom: 0; }
+.dc-imp-text-head { font-size: 0.75rem; color: var(--muted); display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; }
+.dc-imp-text-body { white-space: pre-wrap; line-height: 1.4; }
+.dc-imp-text.is-ref .dc-imp-text-body { color: var(--muted); }
+.dc-imp-dates { font-size: 0.72rem; color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.dc-imp-tag { font-size: 0.68rem; border-radius: 4px; padding: 0.02rem 0.35rem; }
+.dc-imp-tag.ok { color: #3a7a3a; border: 1px solid #3a7a3a; }
+.dc-imp-tag.bad { color: var(--danger); border: 1px solid var(--danger); }
+.dc-imp-tag.mine { color: var(--accent); border: 1px solid var(--accent); }
+
+/* Review queue */
+.review-totals { margin-bottom: 0.8rem; }
+.rv-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem; }
+.rv-chip { font-size: 0.75rem; color: var(--muted); background: var(--mono-bg); border: 1px solid var(--border); border-radius: 999px; padding: 0.1rem 0.55rem; }
+.rv-chip b { color: var(--text); }
+.rv-bar { height: 8px; border-radius: 4px; background: var(--mono-bg); overflow: hidden; }
+.rv-bar-fill { height: 100%; background: #3a7a3a; transition: width 0.2s; }
+
+.rv-item .pe-item-header { flex-wrap: wrap; }
+.rv-kind { font-size: 0.72rem; color: var(--muted); background: var(--mono-bg); border-radius: 4px; padding: 0.05rem 0.4rem; flex-shrink: 0; }
+.rv-badge { font-size: 0.7rem; border-radius: 4px; padding: 0.05rem 0.4rem; flex-shrink: 0; }
+.rv-badge.pending { color: var(--muted); border: 1px solid var(--border); }
+.rv-badge.done { color: #3a7a3a; border: 1px solid #3a7a3a; }
+.rv-badge.stale { color: var(--danger); border: 1px solid var(--danger); }
+.rv-item .pe-item-title { flex: 1; min-width: 200px; }
+
+.rv-tables { font-size: 0.78rem; color: var(--muted); margin-top: 0.6rem; }
+.rv-choices { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.5rem 0; }
+.rv-choice { font-size: 0.78rem; padding: 0.25rem 0.6rem; margin: 0; }
+.rv-choice.active { background: var(--accent); color: var(--card-bg); font-weight: 600; }
+.rv-note-wrap { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.6rem; }
+.rv-note { flex: 1; background: var(--mono-bg); color: var(--text); border: 1px solid var(--border); border-radius: 5px; padding: 0.25rem 0.45rem; font-size: 0.8rem; }
+.rv-id-block { border-top: 1px solid var(--border); padding-top: 0.5rem; margin-top: 0.5rem; }
+.rv-id-head { font-size: 0.8rem; margin-bottom: 0.3rem; }
+.bad { color: var(--danger); }
+
 .explorer-controls {
   display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 0.8rem;
 }
@@ -151,3 +421,72 @@ details summary { cursor: pointer; color: var(--muted); font-size: 0.85rem; }
 .pe-variant-text { white-space: pre-wrap; font-size: 0.88rem; }
 .pe-variant-tags { margin-top: 0.35rem; font-size: 0.72rem; color: var(--muted); }
 .pe-variant-tags span { display: inline-block; background: var(--card-bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.05rem 0.35rem; margin: 0.1rem 0.2rem 0 0; }
+
+/* --- Day comparator: the same day read in both apps ---------------------------------- */
+/* Built for reading long liturgical text, not for scanning a table: generous line height,
+   text never truncated, and the two columns collapse to one on a narrow window. */
+
+.dcmp { margin-top: 1rem; border-top: 2px solid var(--border); padding-top: 0.8rem; }
+.dcmp-head { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-start; justify-content: space-between; margin-bottom: 0.5rem; }
+.dcmp-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5rem; }
+.dcmp-date { font-size: 1.05rem; font-weight: 600; }
+.dcmp-cel { font-size: 0.85rem; color: var(--muted); }
+.dcmp-cel.same { color: var(--text); font-weight: 600; font-size: 0.95rem; }
+.dcmp-controls { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; font-size: 0.8rem; }
+.dcmp-warn { background: var(--accent-bg); border-left: 3px solid var(--accent); padding: 0.5rem 0.7rem; font-size: 0.82rem; margin-bottom: 0.6rem; }
+
+.dcmp-hour { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 0.6rem; background: var(--card-bg); }
+.dcmp-hour-head { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; font-size: 0.9rem; }
+.dcmp-hour-head::-webkit-details-marker { display: none; }
+.dcmp-hour[open] > .dcmp-hour-head .pe-caret { transform: rotate(90deg); }
+.dcmp-hour-counts { color: var(--muted); font-size: 0.78rem; }
+
+.dcmp-row { border-top: 1px solid var(--border); padding: 0.5rem 0.7rem; }
+.dcmp-row-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem; margin-bottom: 0.3rem; }
+.dcmp-label { font-size: 0.82rem; font-weight: 600; }
+.dcmp-note { font-size: 0.72rem; color: var(--muted); }
+.dcmp-pill { font-size: 0.68rem; border-radius: 4px; padding: 0.05rem 0.4rem; white-space: nowrap; }
+.dcmp-pill.dcmp-same { color: #3a7a3a; border: 1px solid #3a7a3a; }
+.dcmp-pill.dcmp-diff { color: var(--danger); border: 1px solid var(--danger); }
+.dcmp-pill.dcmp-onlycpl { color: #8a6d0f; border: 1px solid #c9a227; }
+.dcmp-pill.dcmp-onlyapp { color: #3d5a80; border: 1px solid #3d5a80; }
+.dcmp-pill.dcmp-ferial,
+.dcmp-pill.dcmp-none { color: var(--muted); border: 1px solid var(--border); }
+
+/* An identical field is bookkeeping, not news: keep it readable but let the eye slide past. */
+.dcmp-row.dcmp-same .dcmp-row-head { opacity: 0.65; }
+.dcmp-row.dcmp-ferial { opacity: 0.7; }
+.dcmp-row.dcmp-diff { background: linear-gradient(to right, var(--accent-bg), transparent 60%); }
+
+.dcmp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+@media (max-width: 720px) { .dcmp-cols { grid-template-columns: 1fr; } }
+.dcmp-col { min-width: 0; }
+.dcmp-col-head { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 0.2rem; }
+.dcmp-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.88rem; line-height: 1.5; }
+.dcmp-single { max-width: 60rem; }
+.dcmp-muted { color: var(--muted); font-size: 0.8rem; }
+.dcmp-empty { color: var(--muted); font-size: 0.8rem; font-style: italic; }
+/* Literally what the phone prints when the id isn't in commons/ca. */
+.dcmp-notfound { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.78rem; color: var(--danger); background: var(--mono-bg); border-radius: 4px; padding: 0.3rem 0.45rem; }
+.dcmp-why { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+.dcmp-fold > summary { cursor: pointer; list-style: none; color: var(--muted); font-size: 0.8rem; }
+.dcmp-fold > summary::-webkit-details-marker { display: none; }
+.dcmp-fold[open] > summary .pe-caret { transform: rotate(90deg); }
+/* The two sides are picked separately, so they are labelled separately — never a single
+   "diocese" control that silently drives both. */
+.dcmp-picker { flex-wrap: wrap; align-items: flex-end; gap: 0.6rem; }
+.dcmp-side { display: flex; flex-direction: column; gap: 0.15rem; font-size: 0.78rem; color: var(--muted); }
+.dcmp-side select { font-size: 0.8rem; }
+.dcmp-sides { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+.dcmp-side-tag { font-size: 0.75rem; color: var(--muted); background: var(--mono-bg); border: 1px solid var(--border); border-radius: 6px; padding: 0.15rem 0.5rem; }
+.dcmp-side-tag b { color: var(--text); }
+.dcmp-side-tag code { font-size: 0.72rem; }
+.dcmp-altmatch { margin-top: 0.5rem; padding: 0.4rem 0.6rem; border-left: 3px solid #3a7a3a; background: var(--mono-bg); border-radius: 0 4px 4px 0; }
+.dcmp-altmatch-head { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.2rem; }
+.dcmp-notfound-inline { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.72rem; color: var(--danger); }
+/* Dates in a conflict drill-down are buttons into the comparator, not decoration. */
+.dc-date-chip { font: inherit; font-size: 0.75rem; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--accent); background: none; border: 1px solid var(--border); border-radius: 4px; padding: 0.02rem 0.3rem; cursor: pointer; }
+.dc-date-chip:hover { background: var(--accent-bg); border-color: var(--accent); }
+.dc-imp-dates .dc-more { font-size: 0.75rem; }
+/* Where you were sent: strong enough to find after a scroll, quiet enough to read past. */
+.dcmp-row.focused { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 4px; }

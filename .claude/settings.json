@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(DATES=2026-08-20,2026-08-21,2026-08-22,2026-08-23,2026-08-24 DIOCESE=Barcelona PRAYING_PLACE=Diòcesi HOURS=Laudes,Vespers OUT=/private/tmp/claude-501/-Users-pau-projects-personal-cpl-app/f0681a77-2753-47ee-a2bc-35af19c4a003/scratchpad/cpl-days.json npx jest migration-to-saints/cpl-day.test.js --silent)"
+    ]
+  }
+}

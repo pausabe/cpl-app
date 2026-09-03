@@ -14,6 +14,9 @@ const DatabaseDataHelper = require('../../src/Services/DatabaseDataHelper');
 const SpecialCelebrationService = require('../../src/Services/SpecialCelebrationService');
 const { ObtainLiturgyMasters } = require('../../src/Services/Liturgy/LiturgyMastersService');
 const { ObtainHoursLiturgy } = require('../../src/Services/Liturgy/HoursLiturgyService');
+const LaudesService = require('../../src/Services/Liturgy/LaudesService');
+const Laudes = require('../../src/Models/HoursLiturgy/Laudes').default;
+const { ferialFields } = require('./memorial-ferial');
 const { Settings } = require('../../src/Models/Settings');
 const LiturgyDayInformation = require('../../src/Models/LiturgyDayInformation').default;
 const { DioceseCode } = require('../../src/Services/DatabaseEnums');
@@ -73,7 +76,15 @@ async function resolveDay(date, settings) {
   const todayMasters = await ObtainLiturgyMasters(ldi, settings);
   const tomorrowMasters = await ObtainLiturgyMasters(tomorrowLdi, settings);
   const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
-  return { liturgyDayInformation: ldi, hoursLiturgy };
+
+  // The same day with the celebration taken out, so a caller can tell a proper text from a
+  // weekday one field by field (lib/memorial-ferial.js). Laudes has to be asked for;
+  // Vespers without the celebration is already one of the options just computed.
+  const ferial = {
+    Laudes: LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings),
+    Vespers: hoursLiturgy.VespersOptions.VespersWithoutCelebration,
+  };
+  return { liturgyDayInformation: ldi, hoursLiturgy, ferial };
 }
 
 // --- Prayers blob -> its parts (same parse as the join; see join-content.test.js) --------
@@ -161,7 +172,7 @@ function extractHourFields(hourData) {
 async function resolveDayForComparison(dateStr, { diocese = 'Barcelona', prayingPlace = 'Diòcesi', hours = ['Laudes', 'Vespers'] } = {}) {
   const [y, m, d] = dateStr.split('-').map(Number);
   const settings = buildSettings({ dioceseName: diocese, prayingPlace });
-  const { liturgyDayInformation, hoursLiturgy } = await resolveDay(new Date(y, m - 1, d), settings);
+  const { liturgyDayInformation, hoursLiturgy, ferial } = await resolveDay(new Date(y, m - 1, d), settings);
   const today = liturgyDayInformation.Today;
 
   const out = {
@@ -180,9 +191,15 @@ async function resolveDayForComparison(dateStr, { diocese = 'Barcelona', praying
       saintsAbbreviation: today.SaintsAbbreviation,
     },
     hours: {},
+    // Per Hour, the fields cpl-app took from the weekday rather than from the celebration.
+    // On a day where saints-app offers both offices this is what says which of its two tabs
+    // each field should be read against (lib/memorial-ferial.js); everywhere else it is
+    // just true and unused.
+    ferialFields: {},
   };
   for (const hour of hours) {
     out.hours[hour] = extractHourFields(hoursLiturgy[hour]);
+    out.ferialFields[hour] = [...ferialFields(out.hours[hour], extractHourFields(ferial[hour]))];
   }
   // Not one of the Hours the inspector walks field by field, but it is the first thing the
   // app shows in the morning, so it travels with the day.

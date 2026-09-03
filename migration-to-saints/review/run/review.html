@@ -1,0 +1,192 @@
+<title>Revisió litúrgica 2 de setembre de 2026</title>
+<style>
+:root{
+  --bg:#FCFCFB; --sf:#FFFFFF; --sf2:#F5F4F1;
+  --ink:#171614; --ink2:#443F39; --mut:#6E6A63; --rl:#E3E0DA;
+  --ac:#9E2B25;
+  --v1:#8A5A00; --v2:#9E2B25; --v3:#B4761A; --v4:#4F7A52; --v5:#4A6D8C;
+  --badbg:#FBF1F0; --outbg:#ECE9E3;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --serif:Georgia,"Iowan Old Style","Palatino Linotype",Palatino,serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141312; --sf:#1C1A18; --sf2:#232120;
+  --ink:#EDEAE4; --ink2:#C3BDB4; --mut:#948E85; --rl:#332F2B;
+  --ac:#D9564E;
+  --v1:#C99A3A; --v2:#D9564E; --v3:#D3963A; --v4:#7FA983; --v5:#7C9DBB;
+  --badbg:#2A1C1A; --outbg:#2A2724;
+}}
+:root[data-theme="dark"]{
+  --bg:#141312; --sf:#1C1A18; --sf2:#232120;
+  --ink:#EDEAE4; --ink2:#C3BDB4; --mut:#948E85; --rl:#332F2B;
+  --ac:#D9564E;
+  --v1:#C99A3A; --v2:#D9564E; --v3:#D3963A; --v4:#7FA983; --v5:#7C9DBB;
+  --badbg:#2A1C1A; --outbg:#2A2724;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.w{max-width:54rem;margin:0 auto;padding:2.6rem 1.4rem 5rem}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.2}
+h1{font-family:var(--serif);font-size:1.9rem;font-weight:400;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-size:1.35rem;font-weight:400;margin:0 0 .8rem}
+h3{font-size:1.12rem;font-weight:600}
+h4{font-size:.82rem;font-weight:650;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}
+p{margin:.5rem 0}
+a{color:var(--ac)}
+code{font-family:var(--mono);font-size:.85em;background:var(--sf2);padding:.08em .32em;border-radius:3px}
+pre{background:var(--sf2);border:1px solid var(--rl);border-radius:6px;padding:.7rem .9rem;
+  overflow-x:auto;margin:.7rem 0}
+pre code{background:none;padding:0;font-size:.78rem;line-height:1.5}
+.mut,.note{color:var(--mut)}
+.note{font-size:.85rem;font-style:italic}
+.sub{color:var(--ink2);font-size:.95rem;margin:.5rem 0 0}
+.tw{overflow-x:auto;margin:.6rem 0}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--mut);padding:.3rem .6rem .3rem 0;border-bottom:1px solid var(--rl)}
+td{padding:.35rem .6rem .35rem 0;border-bottom:1px solid var(--rl);vertical-align:top}
+td.k{font-weight:600;white-space:nowrap}
+
+/* day */
+.day{background:var(--sf);border:1px solid var(--rl);border-radius:9px;
+  padding:1.25rem 1.35rem;margin:1rem 0}
+.day>header{display:flex;justify-content:space-between;align-items:flex-start;
+  gap:1rem;flex-wrap:wrap}
+.dt h3{font-size:1.15rem}
+.cel{font-size:.9rem;color:var(--ink2);margin:.15rem 0 0}
+.st{font-size:.78rem;font-weight:650;padding:.2rem .6rem;border-radius:99px;
+  border:1px solid currentColor;white-space:nowrap}
+.st.good{color:var(--v4)} .st.bad{color:var(--v2)} .st.note-st{color:var(--ink2)}
+.st.open{color:var(--v5)} .ref.open{color:var(--v5);font-weight:600}
+.openw{color:var(--v5)}
+.sts{display:flex;gap:.35rem;flex-wrap:wrap}
+
+/* finding, inside its day */
+.fs{margin-top:1rem;display:grid;gap:.7rem}
+.finding{border-left:3px solid var(--rl);padding:.15rem 0 .15rem .85rem}
+.finding.v1{border-left-color:var(--v1)} .finding.v2{border-left-color:var(--v2)}
+.finding.v3{border-left-color:var(--v3)} .finding.v4{border-left-color:var(--v4)}
+.finding.v5{border-left-color:var(--v5)}
+.fh{display:flex;gap:.45rem;align-items:baseline;flex-wrap:wrap;margin:0 0 .2rem;font-size:.95rem}
+.fid{font-family:var(--mono);font-size:.7rem;font-weight:700;color:var(--mut);text-decoration:none}
+.vp{font-size:.66rem;font-weight:650;padding:.08rem .4rem;border-radius:99px;
+  border:1px solid currentColor;white-space:nowrap}
+.vp.v1{color:var(--v1)} .vp.v2{color:var(--v2)} .vp.v3{color:var(--v3)}
+.vp.v4{color:var(--v4)} .vp.v5{color:var(--v5)}
+.fd{font-size:.88rem;color:var(--ink2);margin:.15rem 0 0}
+.more summary{cursor:pointer;font-size:.78rem;color:var(--mut);padding:.3rem 0}
+.more summary:hover{color:var(--ac)}
+.mb{font-size:.87rem;color:var(--ink2);border-top:1px solid var(--rl);padding-top:.5rem}
+.pl{margin:.3rem 0;padding-left:1rem}
+.pl li{margin:.3rem 0}
+.fixline{background:var(--sf2);border-radius:5px;padding:.45rem .6rem}
+
+/* progress */
+.prog{margin:1rem 0 0}
+.bar{display:flex;height:7px;border-radius:99px;overflow:hidden;background:var(--outbg);
+  border:1px solid var(--rl)}
+.sg{display:block;height:100%}
+.sg.have{background:var(--v4)} .sg.blk{background:var(--v3)}
+.sg.hav{background:repeating-linear-gradient(135deg,var(--v5) 0 4px,
+  color-mix(in srgb,var(--v5) 40%,transparent) 4px 8px)}
+.lg{font-size:.76rem;color:var(--ink2);margin:.45rem 0 0;display:flex;
+  flex-wrap:wrap;gap:.1rem .85rem;align-items:baseline}
+.k{display:inline-block;width:.55rem;height:.55rem;border-radius:2px;margin-right:.3rem}
+.k.have{background:var(--v4)} .k.blk{background:var(--v3)}
+.k.hav{background:repeating-linear-gradient(135deg,var(--v5) 0 3px,
+  color-mix(in srgb,var(--v5) 40%,transparent) 3px 6px)}
+.k.out{background:var(--outbg);border:1px solid var(--rl)}
+.pc{margin-left:auto;color:var(--mut)}
+
+/* fields */
+.camps{margin-top:.9rem;border-top:1px solid var(--rl);padding-top:.5rem}
+.camps>summary,.fold>summary{cursor:pointer;font-size:.78rem;color:var(--mut);padding:.25rem 0}
+.camps>summary:hover,.fold>summary:hover{color:var(--ac)}
+.hr{margin-top:.8rem}
+.hr h4{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap;
+  padding-bottom:.25rem;border-bottom:1px solid var(--rl)}
+.hc{font-size:.72rem;font-weight:400;text-transform:none;letter-spacing:0}
+.fl{list-style:none;margin:.3rem 0;padding:0}
+.fr{padding:.28rem 0;font-size:.85rem;border-bottom:1px solid var(--rl)}
+.fr:last-child{border-bottom:0}
+.fr.ok{color:var(--ink2)}
+.cell{font-family:var(--mono);font-size:.68rem;color:var(--mut);background:var(--sf2);
+  padding:.05em .32em;border-radius:3px}
+.ref{font-family:var(--mono);font-size:.68rem;font-weight:700;text-decoration:none;
+  border:1px solid currentColor;border-radius:99px;padding:0 .3em}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.6rem;
+  margin:.4rem 0 .2rem;padding:.55rem;background:var(--badbg);border-radius:5px}
+.who{font-size:.62rem;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);
+  font-weight:650;display:block}
+.lit{font-family:var(--serif);font-size:.87rem;margin:.1rem 0 0}
+
+/* prompts */
+.pr{background:var(--sf);border:1px solid var(--rl);border-radius:9px;padding:1.1rem 1.25rem;
+  margin:.8rem 0}
+.pr>h3{font-size:1rem;display:flex;gap:.5rem;align-items:baseline;flex-wrap:wrap}
+.pr pre{max-height:22rem;overflow:auto}
+hr{height:1px;background:var(--rl);border:0;margin:2.6rem 0 1.4rem}
+
+a:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:3px}
+@media (max-width:600px){.w{padding:1.6rem 1rem 3rem}.pc{margin-left:0}}
+</style>
+
+<div class="w">
+
+<h1>Revisió litúrgica · 2 de setembre de 2026</h1>
+<p class="sub">52 camps comparats entre cpl-app i saints-app · <strong>0 divergeixen</strong> ·
+42 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
+Diòcesi de Barcelona.</p>
+
+<article class="day" id="d2026-09-02">
+    <header>
+      <div class="dt">
+        <h3>2 de setembre · dimecres</h3>
+        <p class="cel">fèria</p>
+      </div>
+      <div class="sts"><span class="st good">cap divergència</span></div>
+    </header>
+
+    
+
+    <div class="prog">
+      <div class="bar" role="img" aria-label="47 fetes, 9 retingudes, 0 per collir, 2 sense font, de 58">
+        <span class="sg have" style="width:81.03448275862068%"></span>
+        <span class="sg blk" style="width:15.517241379310345%"></span>
+        <span class="sg hav" style="width:0%"></span>
+      </div>
+      <p class="lg">
+        <span class="k have"></span>47 fetes
+        <span class="k blk"></span>9 retingudes
+        
+        <span class="k out"></span>2 sense font
+        <span class="pc">84% de 56 assolibles</span>
+      </p>
+    </div>
+
+    <details class="camps"><summary>Els 52 camps, un per un</summary><section class="hr">
+      <h4>Laudes <span class="hc">25 camps, tots coincideixen</span></h4>
+      
+      <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/108</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/107</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/109</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/109</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/108</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/110</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/110</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/109</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/111</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/80</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/81</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/5941</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/5942</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/5943</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/5944</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/5945</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/5946</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/21</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/15</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/15</span></span></li><li class="fr ok"><span>Precs — peticions (1/4) <span class="cell">preces_contenido/4122</span></span></li><li class="fr ok"><span>Precs — peticions (2/4) <span class="cell">preces_contenido/4123</span></span></li><li class="fr ok"><span>Precs — peticions (3/4) <span class="cell">preces_contenido/4124</span></span></li><li class="fr ok"><span>Precs — peticions (4/4) <span class="cell">preces_contenido/4125</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/82</span></span></li></ul></details>
+    </section><section class="hr">
+      <h4>Vespres <span class="hc">27 camps, tots coincideixen</span></h4>
+      
+      <details class="fold"><summary>27 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/11070</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9293</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/11071</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/143</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9294</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/144</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11072</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/9295</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11073</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3369</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3370</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/19766</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/19767</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/19768</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/19769</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/19770</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/19771</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1117</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1111</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1111</span></span></li><li class="fr ok"><span>Precs — peticions (1/6) <span class="cell">preces_contenido/9569</span></span></li><li class="fr ok"><span>Precs — peticions (2/6) <span class="cell">preces_contenido/9570</span></span></li><li class="fr ok"><span>Precs — peticions (3/6) <span class="cell">preces_contenido/9571</span></span></li><li class="fr ok"><span>Precs — peticions (4/6) <span class="cell">preces_contenido/9572</span></span></li><li class="fr ok"><span>Precs — peticions (5/6) <span class="cell">preces_contenido/9573</span></span></li><li class="fr ok"><span>Precs — peticions (6/6) <span class="cell">preces_contenido/9574</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/3736</span></span></li></ul></details>
+    </section></details>
+  </article>
+
+<hr>
+<h2 id="prompts">Què fer ara</h2>
+<p class="sub">La revisió no toca res. Cada correcció va amb un prompt per enganxar en un fil
+nou, que ja porta les proves a dins perquè no s'hagi de tornar a investigar.</p>
+
+
+<hr>
+<p class="note">cpl-app resolt amb els seus Serveis reals sobre <code>cpl-app.db</code>;
+saints-app llegit per la casella que l'app fa servir de veritat, mesurada amb la sonda.
+Les caselles en conflicte s'obren per veure qui hi discrepa encara que caigui fora dels dies
+revisats. Diferències d'espais, accents o abreviatura de cita no compten
+(<code>lib/text-key.js</code>).</p>
+</div>

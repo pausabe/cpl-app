@@ -13,6 +13,103 @@
 
 <main>
 
+  <section class="card highlight" id="refresh">
+    <h2>Refrescar <small>(deixa el teu eprex local veient l'últim estat de la migració)</small></h2>
+    <p>Encadena tot el pipeline en l'ordre correcte. Fes servir el rang de dates, les hores i la
+       diòcesi configurats a la targeta <b>5</b> (dins d'<b>Eines avançades</b>, al final de la
+       pàgina) — aquest panell no els duplica per no tenir dues fonts de veritat.</p>
+
+    <div class="link-box">
+      <label class="link-toggle">
+        <input type="checkbox" id="link-litcal" />
+        <span>eprex llegeix <b>litcal</b> de local (<code>file:../litcal</code>)</span>
+      </label>
+      <div class="link-state" data-results="link-status">Comprovant...</div>
+      <p class="link-note">Activar-ho edita <code>saints-app/package.json</code> i executa <code>bun install</code>.
+         Es recorda la versió que hi havia per poder-ho desfer des d'aquí mateix.</p>
+    </div>
+
+    <div class="refresh-buttons">
+      <button class="primary" data-action="refresh-all">✨ Refrescar-ho tot</button>
+      <button data-action="refresh-litcal">Regenerar litcal ca</button>
+      <button data-action="refresh-content">Regenerar eprex ca</button>
+      <span class="status" data-status="refresh"></span>
+    </div>
+    <div class="results" data-results="refresh"></div>
+  </section>
+
+  <section class="card" id="daycheck">
+    <h2>Inspector de dia <small>(aquest dia concret, sortirà bé o sabem que hi falta res?)</small></h2>
+    <p>Recorre el mateix camí que fa l'app — data → id de litcal → clau de l'índex → ids numèrics
+       de cada camp → el fitxer <code>commons/ca</code> que l'app llegeix de veritat — i etiqueta
+       cada camp, <b>amb el text que hi sortirà</b>. Un dia és <b>100%</b> només si tots els camps
+       de totes les Hores tenen text català a saints-app.</p>
+    <div class="cal-nav">
+      <button data-action="cal-prev">‹</button>
+      <span class="cal-title" data-results="cal-title">—</span>
+      <button data-action="cal-next">›</button>
+      <span class="status" data-status="cal"></span>
+      <span class="cal-legend">
+        <span><i class="dc-seg dc-ok"></i> complet</span>
+        <span><i class="dc-seg dc-conflict"></i> parcial</span>
+        <span><i class="dc-seg dc-missing"></i> buit</span>
+        <span><i class="dc-seg dc-none"></i> fora de l'índex</span>
+      </span>
+    </div>
+    <div class="cal-summary" data-results="cal-summary"></div>
+    <div class="cal-grid" data-results="calendar"></div>
+
+    <div class="date-range">
+      <label>O una data concreta <input type="date" id="dc-date" /></label>
+      <button data-action="dc-check">Comprovar</button>
+      <span class="status" data-status="dc-check"></span>
+    </div>
+    <div class="results" data-results="daycheck"></div>
+  </section>
+
+  <section class="card" id="daycompare">
+    <h2>Llegir un dia a les dues apps <small>(el text de cpl-app al costat del de saints-app)</small></h2>
+    <p>Tria un dia i com vols que sigui <b>cada costat</b>: a cpl-app se li diu de quina diòcesi resa,
+       i a saints-app quin calendari litúrgic i quin idioma ha de fer servir. Els dos costats són
+       independents a propòsit: apunta'ls al mateix lloc per veure si el dia sortirà bé en català,
+       o creua'ls per llegir com queda en castellà, o què celebra una diòcesi que una altra no.</p>
+    <div class="date-range dcmp-picker">
+      <label>Dia <input type="date" id="dcmp-date" /></label>
+      <label class="dcmp-side">cpl-app · diòcesi
+        <select id="dcmp-diocese"></select>
+      </label>
+      <label class="dcmp-side">cpl-app · lloc
+        <select id="dcmp-praying-place">
+          <option value="Diòcesi">Diòcesi</option>
+          <option value="Ciutat">Ciutat</option>
+          <option value="Catedral">Catedral</option>
+        </select>
+      </label>
+      <label class="dcmp-side">saints-app · calendari
+        <select id="dcmp-calendar"></select>
+      </label>
+      <label class="dcmp-side">saints-app · idioma
+        <select id="dcmp-lang"></select>
+      </label>
+      <button data-action="dc-compare">Llegir el dia</button>
+      <span class="status" data-status="dc-compare"></span>
+    </div>
+    <div class="results" data-results="daycompare"></div>
+  </section>
+
+  <section class="card" id="dropped">
+    <h2>Informe: sants omesos <small>(descartats a propòsit, pendents de decidir com resoldre'ls)</small></h2>
+    <p>Llista completa dels candidats descartats perquè la data ja tenia una celebració a litcal — inclou l'id
+       existent amb qui "xoca", per poder revisar a ull si és un duplicat real o dos sants coincidint en data.</p>
+    <button data-action="dropped-report">Carregar informe guardat</button>
+    <span class="status" data-status="dropped-report"></span>
+    <div class="results" data-results="dropped-report"></div>
+  </section>
+
+  <details class="advanced">
+    <summary>Eines avançades <span class="adv-hint">(el pipeline pas a pas: 1–7. El botó de refrescar ja els encadena per tu)</span></summary>
+    <div class="advanced-body">
+
   <section class="card" id="stage1">
     <h2>1. Generar calendaris candidats <small>(cpl-app.db → candidats crus)</small></h2>
     <p>Llegeix <code>santsSolemnitats</code> i <code>santsMemories</code> de cpl-app i proposa, per a cada diòcesi
@@ -61,9 +158,11 @@
        l'app fins que algú ho revisi a mà. "Calcular" només mostra el resultat; "Exportar"
        escriu de veritat a <code>saints-app/.../commons/ca/</code>.</p>
     <div class="date-range">
-      <label>Des de <input type="date" id="mig-start" value="2024-01-01" /></label>
+      <label>Des de <input type="date" id="mig-start" value="2017-01-01" /></label>
       <label>Fins a <input type="date" id="mig-end" value="2026-12-30" /></label>
-      <span class="hint">(cpl-app.db només cobreix 2017-2026)</span>
+      <span class="hint">cpl-app.db cobreix <b>2017–2026</b> (10 anys = cada cicle A/B/C observat 3+ cops).
+        Escurçar el rang va més ràpid però fa <b>indistingibles</b> les causes dels pendents: amb 3 anys,
+        cada any cau en un cicle diferent i no es pot saber si el text varia pel cicle o per una altra cosa.</span>
     </div>
     <div class="date-range">
       <label><input type="checkbox" id="mig-hour-laudes" checked /> Laudes</label>
@@ -117,14 +216,36 @@
     <div class="pe-list" data-results="pending-explorer"></div>
   </section>
 
-  <section class="card" id="dropped">
-    <h2>Informe: sants omesos (últim càlcul del pas 2)</h2>
-    <p>Llista completa dels candidats descartats perquè la data ja tenia una celebració a litcal — inclou l'id
-       existent amb qui "xoca", per poder revisar a ull si és un duplicat real o dos sants coincidint en data.</p>
-    <button data-action="dropped-report">Carregar informe guardat</button>
-    <span class="status" data-status="dropped-report"></span>
-    <div class="results" data-results="dropped-report"></div>
+  <section class="card" id="review">
+    <h2>7. Cua de revisió <small>(el 20% que no es pot automatitzar, empaquetat en decisions)</small></h2>
+    <p>Els mateixos conflictes de la targeta 6, però agrupats per <b>la causa</b> que els provoca:
+       una mateixa festa on cpl i ES no s'entenen, o una casella que ES recicla entre dies diferents
+       (p.ex. el saltiri de 4 setmanes del Temps Ordinari). Així el que eren milers d'ids passen a
+       ser unes centenes de preguntes, i les grosses en resolen desenes de cop.</p>
+    <p>Les decisions es guarden a <code>migration-to-saints/review-decisions.json</code> (fitxer
+       normal, versionable i editable a mà) i <b>sobreviuen a tornar a córrer el migrador</b>. Si les
+       dades de sota canvien, el paquet queda marcat com a <b>desactualitzat</b> en lloc de mantenir
+       una resposta que ja no correspon.</p>
+
+    <div class="review-totals" data-results="review-totals"></div>
+
+    <div class="explorer-controls">
+      <select id="rv-kind"><option value="">Totes les causes</option></select>
+      <select id="rv-decision">
+        <option value="">Qualsevol estat</option>
+        <option value="pending">Només sense revisar</option>
+        <option value="decided">Només ja decidits</option>
+        <option value="stale">Només desactualitzats</option>
+      </select>
+      <input type="text" id="rv-search" placeholder="Cerca per festa, taula o etiqueta..." />
+      <button data-action="rv-load">Carregar cua</button>
+      <span class="status" data-status="rv-load"></span>
+    </div>
+    <div class="pe-list" data-results="review"></div>
   </section>
+
+    </div>
+  </details>
 
 </main>
 

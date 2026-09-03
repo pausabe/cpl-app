@@ -194,6 +194,28 @@ async function resolveHoursLiturgy(date, settings) {
   return { hoursLiturgy, ferial };
 }
 
+// Mirrors HoursLiturgyService.tsx's private TomorrowIsMoreImportant/HasLiturgyContent: the
+// exact rule cpl-app itself uses to decide whether today's rendered Vespers are actually
+// tomorrow's First Vespers (a solemnity/feast whose evening office pre-empts today's own or
+// ferial one, per OGLH 61). Needed here — not exported by the app — because the join must
+// know NOT to file that content under today's litcalId: saints-app has no First Vespers slot
+// (review/findings.js F5), so today's shared cell must not be polluted with tomorrow's
+// content, which is what corrupts it for every other date that legitimately shares it (F6).
+function hasLiturgyContent(value) {
+  return value !== undefined && value !== '' && value !== '-';
+}
+
+function vespersComeFromTomorrow(hoursLiturgy) {
+  const todayPrecedence = hoursLiturgy.TodayCelebrationInformation.Precedence;
+  const tomorrowPrecedence = hoursLiturgy.TomorrowCelebrationInformation.Precedence;
+  const todaySecond = hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration;
+  const tomorrowFirst = hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration;
+  if (todayPrecedence === tomorrowPrecedence) {
+    return hasLiturgyContent(tomorrowFirst.EvangelicalAntiphon) && !hasLiturgyContent(todaySecond.EvangelicalAntiphon);
+  }
+  return tomorrowPrecedence < todayPrecedence;
+}
+
 // --- Prayers-blob parser (confirmed against bridget_of_sweden_religious, 2026-07-23 —
 // see PLAN.md section 5): first paragraph minus its last line = intro; that last line =
 // the refrain (preces_respuesta); middle paragraphs each split on the em-dash into
@@ -402,6 +424,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     let processed = 0;
     const skippedOutOfRange = [];
     const failedDates = [];
+    let skippedVespersFromTomorrow = 0;
     for (const dateStr of dates) {
       const { litcalId } = manifest[dateStr];
       if (!litcalId) continue;
@@ -436,8 +459,19 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         continue;
       }
       processed++;
+      const vespersFromTomorrow = vespersComeFromTomorrow(hoursLiturgy);
 
       for (const hour of applicableHours) {
+        if (hour === 'Vespers' && vespersFromTomorrow) {
+          // These are D+1's First Vespers (OGLH 61 pre-empts D's own/ferial office), not
+          // D's — filing them under D's litcalId is exactly F6: it hands D's shared cell a
+          // text from an unrelated celebration, which then reads as a "conflict" against
+          // every other date that legitimately shares it. saints-app has no First Vespers
+          // slot to file them under instead (F5), so for now they're left unobserved
+          // rather than attributed to the wrong id.
+          skippedVespersFromTomorrow++;
+          continue;
+        }
         const key = keysByPrefixByHour[hour].get(litcalId);
         const hourData = hoursLiturgy[HOURS_CONFIG[hour].dataKey || hour];
         const observeFn = HOURS_CONFIG[hour].observe;
@@ -519,6 +553,11 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       `Caselles: ${cellMapUse.fromMap} hores des del mapa mesurat, ${cellMapUse.fromIndex} des de l'índex, ` +
         `${cellMapUse.noEntry} saltades (l'app no hi mostra res).`
     );
+    if (skippedVespersFromTomorrow) {
+      console.log(
+        `Vespres no observades per ser Primeres Vespres de l'endemà (F5/F6): ${skippedVespersFromTomorrow}.`
+      );
+    }
     if (tableMismatch.size) {
       console.warn(`⚠️  camps del mapa amb taula inesperada: ${[...tableMismatch].join(' · ')}`);
     }

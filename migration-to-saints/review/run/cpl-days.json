@@ -1,0 +1,137 @@
+{
+  "diocese": "Barcelona",
+  "prayingPlace": "Diòcesi",
+  "hours": [
+    "Laudes",
+    "Vespers"
+  ],
+  "days": {
+    "2026-09-02": {
+      "date": "2026-09-02",
+      "diocese": "Barcelona",
+      "prayingPlace": "Diòcesi",
+      "celebration": {
+        "title": null,
+        "celebrationType": "-",
+        "specificLiturgyTime": "O_ORDINAR",
+        "week": "22",
+        "weekCycle": "2",
+        "yearType": "A"
+      },
+      "hours": {
+        "Laudes": {
+          "himno": "Oh Déu, autor del firmament,\nque il·lumineu la fosca nit\namb fils de lluna i amb el sol\nfeu jubilosos tots els jorns,\n\nla nit llangueix a poc a poc,\ni neix un dia resplendent;\nun viure nou ens omple el cor\namb la claror del més enllà.\n\nRetorna un dia jubilós\nque endinsa els cants als nostres cors,\ni amb el desig del paradís\nsentim que arreu floreix la pau.\n\nNo ens diuen res els goigs del món;\nsols un desig: veure-us talment\nque l’esperit, extasiat,\nsenti que es troba prop de vós.\n\nI, mentre el dia va avançant,\nla fe enforteixi les arrels\ni, amb esperança, el nostre amor\nsigui un volcà espiritual.\n\nDeu-nos-ho, Pare pietós,\ni vós, el Fill, al Pare igual\nque amb l’Esperit Sant, defensor,\nregneu per segles sense fi. \nAmén.",
+          "primer_salmo_cita": "Salm 76\nRecord de les proeses del Senyor",
+          "primer_salmo_antifona": "És sant el vostre obrar, Senyor; ¿quin déu és gran com ho és el nostre?",
+          "primer_salmo_texto": "Que pugi a Déu el meu clam,    *\nque pugi a Déu i que ell m’escolti.\nUs cerco, Senyor, en dies de perill,    †\ni a les nits no em canso d’alçar les mans a vós,    * \nperò la meva ànima no troba consol. \n\nQuan recordo el que Déu havia fet, sospiro,    * \nem sento defallir sempre que hi penso;\nno arribo a aclucar els ulls,    *\ni em torbo tant, que ni goso parlar;\n\npenso en les èpoques llunyanes, \nrecordo els temps antics,    †\nde nit rumio dintre meu, * \ni em pregunto a mi mateix:\n\n«¿És que el Senyor ens ha abandonat per sempre,    *\nja no ens serà propici mai més? \n¿Ha deixat per sempre d’estimar-nos,    *\ni ha anul·lat d’ara endavant les seves promeses? \n¿És que Déu s’ha oblidat de compadir,    *\ni la severitat li endureix el cor?»\n\nI exclamo: «És per això que sofreixo:    *\nla mà de l’Altíssim ja no actua com abans.»\nRecordo de nou les gestes del Senyor,    *\ntots aquells fets meravellosos;\nrepasso dintre meu les vostres obres,    *\ni penso en les vostres proeses.\n\nDéu meu, era sant el vostre obrar,   *\n¿quin déu era gran com ho era el nostre?\nVós, el Déu dels prodigis,    *\nrevelàveu als pobles el vostre poder. \n\nEl vostre braç es va rescatar un poble,    *\nla fillada de Jacob i de Josep. \nEn veure-us, les ones s’arremolinaren,    *\ni tota la mar s’esvalotà; \nels núvols es desferen en aiguats,    †\nvan roncar les nuvolades,    *\ni brunzien les vostres fletxes.\n\nRodolava el retruny del vostre tro,    †\nels llamps il·luminaven l’univers,    * \nla terra tremolava i trontollava. \n\nPel mig de la mar us vau obrir camí,    †\ni l’oceà es convertí en lloc de pas    * \nde les vostres petjades invisibles.\n\nVau conduir com un ramat el vostre poble,    * \nsota el guiatge de Moisès i d’Aharon. ",
+          "segundo_salmo_cita": "Càntic\n1S 2, 1-10\nExultança dels humils en Déu",
+          "segundo_salmo_antifona": "De tot cor celebro el Senyor; és ell qui abaixa o enalteix.",
+          "segundo_salmo_texto": "Celebro de tot cor el Senyor,    *\ni alço el meu front en honor d’ell. \nLa meva boca es riu dels enemics,    *\nfeliç de veure que ell m’ha salvat. \nNingú no és sant com el Senyor,    *\ncap roca no salva com el nostre Déu.  \n\nNo digueu tantes paraules arrogants,    *\ni que no us surtin de la boca aquestes insolències,\nperquè el Senyor, Déu que tot ho sap,    * \nté sospesat tot el que feu.\n\nAls millors soldats, els tremola l’arc,    *\nmentre els més covards s’armen de valor;\nels qui tenien pa de sobres es lloguen per menjar,    * \nmentre als afamats ja no els falta aliment;\nla dona estèril infanta set fills,    * \nmentre decau la mare fecunda. \n\nÉs el Senyor qui dóna mort o vida,    *\nqui enfonsa dins el país dels morts o en treu fora. \nÉs el Senyor qui dóna pobresa o riquesa,    *\nqui abaixa o enalteix.\n\nAixeca de la pols el desvalgut,    *\ntreu el pobre de la cendra, \nper asseure’l entre els poderosos,    *\ni donar-li possessió d’un soli gloriós.\n\nEls pilars de la terra són del Senyor,    * \ni ha posat damunt d’ells els continents.\nEll guarda els passos dels qui l’estimen,    †\nmentre els injustos\nqueden immòbils a les tenebres,    * \nningú no triomfa per la pròpia força.\n\nEl Senyor desconcerta els rebels,   *\nl’Altíssim, des del cel, els fa sentir el tro;\nel Senyor judica el món d’un cap a l’altre;    †\ndóna la victòria al seu rei,    * \nalça el front del seu ungit.",
+          "tercer_salmo_cita": "Salm 96\nGlòria del Senyor, rei de justícia",
+          "tercer_salmo_antifona": "El Senyor és rei, la terra ho celebra.",
+          "tercer_salmo_texto": "El Senyor és rei. La terra ho celebra,   *\nse n’alegren totes les illes. \nFoscor i nuvolades vetllen entorn d’ell,    *\njustícia i raó sostenen el seu tron. \n\nDavant d’ell avança un foc    *\ni abrusa els enemics tot al voltant. \nEls seus llamps enlluernen tot el món,    *\ni la terra, en veure-ho, s’estremeix. \n\nEs fonen com cera les muntanyes    *\ndavant del Senyor de tota la terra. \nEl cel proclama la seva justícia,    *\ni tots els pobles contemplen la seva glòria.\n\nQueden avergonyits tots els idòlatres,    †\nque es gloriaven de falses divinitats;    * \ntots els àngels es prosternen davant d’ell.\n\nSió se n’alegra en sentir-ho,    *\nestan de festa les viles de Judà, \ni celebren els vostres determinis,    *\nperquè vós sou el Senyor, \nl’Altíssim sobre tota la terra,    *\ni excels per damunt de tots els déus.\n\nEl Senyor estima els qui detesten el mal,    †\nguarda la vida dels fidels,    * \nels deslliura de les mans dels injustos.\n\nApunta per als justos la llum,   *\ni l’alegria per als rectes de cor. \nJustos, celebreu festes en honor del Senyor,    *\nenaltiu el record de la seva santedat.",
+          "lectura_biblica_cita": "Rm 8, 35.37",
+          "lectura_biblica": "¿Qui serà capaç d’allunyar-nos del Crist, que tant ens estima? ¿Els contratemps, la por, les persecucions, la fam o la nuesa, els perills, la mort sagnant? Però de tot això en sortim fàcilment vencedors amb l’ajut d’aquell que ens estima.",
+          "responsorios": [
+            "℣. Beneiré el Senyor  * En tot moment. ",
+            "℟. Beneiré el Senyor  En tot moment.",
+            "℣. Tindré sempre als llavis la seva lloança.",
+            "℟. En tot moment. ",
+            "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+            "℟. Beneiré el Senyor  En tot moment."
+          ],
+          "cantico_evangelico_antifona": "Donem culte al Senyor amb santedat tota la vida.",
+          "preces_intro": "Beneït sigui Déu, salvador nostre, que va prometre de quedar-se en la seva Església fins a la fi dels temps. Diguem-li amb agraïment:",
+          "preces_respuesta": "Senyor, quedeu-vos amb nosaltres.",
+          "preces_contenido": [
+            "Senyor, quedeu-vos amb nosaltres tot el dia,\nque no se’ns pongui mai el sol de la vostra gràcia.",
+            "Accepteu aquesta jornada que us consagrem,\ni feu que el mal no entri en les nostres obres ni en les nostres intencions.",
+            "Que tot el dia siguem sal de la terra i llum del món,\ni bon exemple per als qui ens envolten.",
+            "Que l’Esperit Sant encengui els nostres cors i obri els nostres llavis,\nperquè perseverem sempre en la vostra gràcia i en la vostra lloança."
+          ],
+          "invitacion_padrenuestro": "Lloem el Senyor i supliquem-lo amb les mateixes paraules de Crist: Pare nostre.",
+          "oracion_final": "Il·lumineu, Senyor, els nostres cors amb la resplendor de la vostra llum, perquè, seguint el camí dels vostres manaments, no siguem mai víctimes de l’error. Per nostre Senyor Jesucrist."
+        },
+        "Vespers": {
+          "himno": "El sol, ponent-se a poc a poc,\ndeixa entristit muntanyes, camps,\ni mars, i ens diu, però: Demà\ntot serà llum un altre cop.\n\nBo i admirant-se’n els humans,\nCreador pròvid, doneu lleis\nal curs d’un jorn i un altre jorn\nper claror i fosca canviar.\n\nI, mentre prem la tenebror\namb el silenci el cel, decau\nla vigoria en el treball\ni es cerca l’hora del repòs.\n\nNosaltres, rics de fe i esper,\nsiguem dotats d’aquella llum\ndel vostre Verb, que és l’esplendor\ndel goig del Pare, el goig total.\n\nEll és el sol que no coneix\nni el bes de l’alba ni el ponent;\namb ell la terra es vol cobrir,\namb ell els cels riuen de goig.\n\nFeu que fruïm d’aquesta llum\nmeravellosa eternament,\ncreant nous càntics per a vós,\namb vostre Fill i l’Esperit. \nAmén.",
+          "primer_salmo_cita": "Salm 61\nLa pau en Déu",
+          "primer_salmo_antifona": "Esperem que es compleixi feliçment la nostra esperança, que es manifesti la glòria del nostre Salvador.",
+          "primer_salmo_texto": "Només en Déu reposa la meva ànima,    *\nd’ell em ve la salvació. \nNomés ell és la roca que em salva,    *\nés el castell on em trobo segur.\n\nFins quan us llançareu contra un home    * \nvosaltres, tots junts, per enderrocar-lo,\ncom una muralla a punt de caure,    * \ncom una tàpia que s’esfondra.\n\nSols pensen com podran enganyar,    *\ncom podran tirar-me a terra; \nmentre beneeixen amb la boca,    *\nmaleeixen dintre seu.\n\nReposa només en Déu, ànima meva,    *\nd’ell em ve tota esperança. \nNomés ell és la roca que em salva,    *\nés el castell on em trobo segur. \n\nEn Déu tinc la salvació i la glòria,    † \nés la meva roca inexpugnable;    * \ntrobo en Déu el meu refugi.\n\nVosaltres, poble reunit, confieu en ell,    †\nesplaieu, davant d’ell el vostre cor:    * \nDéu és el nostre refugi.\n\nLa gent senzilla són com el fum,    * \ni els nobles són només aparença;\ntots plegats a les balances    * \nno pesen més que el vent.\n\nNo us refieu dels diners mal adquirits,    *\nno us il·lusioneu amb béns robats; \nsi augmentàveu les riqueses,    *\nno hi poseu el cor.\n\nDéu ha parlat,\ni he entès dues coses:    *\nQue de Déu és el poder\ni l’amor és del Senyor; \ni que vós pagueu cadascú    *\nsegons les seves obres.",
+          "segundo_salmo_cita": "Salm 66 \nInvitació als pobles a lloar Déu",
+          "segundo_salmo_antifona": "Que Déu ens faci veure la claror de la seva mirada i ens beneeixi.",
+          "segundo_salmo_texto": "Que Déu s’apiadi de nosaltres i ens beneeixi,    * \nque ens faci veure la claror de la seva mirada.\nLa terra coneixerà els vostres designis,   * \ni tots els pobles veuran la salvació.\n\nQue us lloïn les nacions, Déu nostre,    *\nque us lloïn tots els pobles alhora.\n\nQue s’alegrin els pobles i cridin de goig.    *\nVós regiu el món amb justícia, \nregiu les nacions amb rectitud,    *\ni guieu els pobles de la terra.\n\nQue us lloïn les nacions, Déu nostre,    * \nque us lloïn tots els pobles alhora.\n\nLa terra ha donat el seu fruit,    *\nel Senyor, el nostre Déu, ens beneeix.\nQue Déu ens beneeixi,    *\ni el venerin d’un cap a l’altre de la terra.",
+          "tercer_salmo_cita": "Càntic\nCol 1, 12-20\nCrist, engendrat abans de tota la creació, és la primícia dels qui retornen d’entre els morts\n",
+          "tercer_salmo_antifona": "Per ell Déu ha creat l’univers, i tot es manté unit en ell.",
+          "tercer_salmo_texto": "Donem gràcies al Pare,    †\nque ens ha fet dignes de tenir part\nen l’heretat del poble sant,    * \nen el Regne de la llum.\n\nEll ens alliberà del poder de les tenebres    † \ni ens traspassà al Regne del seu Fill estimat,    * \nen qui tenim el nostre rescat,\nel perdó dels nostres pecats.\n\nEll és imatge del Déu invisible,    †\nengendrat abans de tota la creació,    *\nja que Déu ha creat totes les coses per ell,\ntant les del cel com les de la terra,    † \ntant les visibles com les invisibles,    * \ntrons, sobirans, governs i potestats.\n\nDéu ha creat tot l’univers per ell i l’ha destinat a ell. * \nEll existeix abans que tot,\ni tot es manté unit gràcies a ell. \n\nEll és també el cap del cos, que és l’Església.     † \nEll n’és l’origen,\nés la primícia dels qui retornen d’entre els morts, * \nperquè ell ha de ser en tot el primer.\n\nDéu volgué que residís en ell\nla plenitud de tot el que existeix;    * \nper ell Déu volgué reconciliar-se tot l’univers, \nposant la pau en tot el que hi ha\ntant a la terra com al cel,    * \nper la sang de la creu de Jesucrist.",
+          "lectura_biblica_cita": "1Pe 5, 5b-7",
+          "lectura_biblica": "Revestiu-vos tots de sentiments d’humilitat els uns pels altres, perquè als descreguts, que de tot fan burla, Déu els correspon burlant-se’n, però als humils, els concedeix el seu favor. Per això, humilieu-vos, i sotmeteu-vos a la mà poderosa de Déu, que ell us exaltarà quan serà l’hora. Deixeu el vostre destí a les seves mans: ell s’ocuparà de vosaltres.",
+          "responsorios": [
+            "℣. Guardeu-me, Senyor,  * Com la nineta dels ulls. ",
+            "℟. Guardeu-me, Senyor,  Com la nineta dels ulls.",
+            "℣. Protegiu-me a l’ombra de les vostres ales. ",
+            "℟. Com la nineta dels ulls. ",
+            "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+            "℟. Guardeu-me, Senyor,  Com la nineta dels ulls."
+          ],
+          "cantico_evangelico_antifona": "Les obres del vostre braç són potents. Disperseu, Senyor, els superbs i exalceu els humils.",
+          "preces_intro": "Cantem, germans, al nostre Déu, que es complau a omplir de favors el seu poble. Supliquem-li amb fervor:",
+          "preces_respuesta": "Multipliqueu, Senyor, la gràcia i la pau.",
+          "preces_contenido": [
+            "Déu etern, mil anys als vostres ulls són com un dia que ja ha passat;\nfeu que no ens oblidem que la vida és com la flor que ha tret florida al matí i al vespre es marceix i s’asseca.",
+            "Doneu el veritable mannà al vostre poble perquè no passi fam,\ni l’aigua viva perquè no passi mai més set.",
+            "Que els vostres fidels busquin i assaboreixin els dons celestials\ni us glorifiquin en el treball i en el descans.",
+            "Concediu-nos el bon temps,\nperquè les collites siguin abundoses.",
+            "Que els difunts frueixin de la vostra presència,\ni nosaltres amb ells us contemplem per sempre."
+          ],
+          "invitacion_padrenuestro": "Gràcies a Crist, el Fill estimat, també nosaltres hem esdevingut fills del Pare i podem dir: Pare nostre.",
+          "oracion_final": "Senyor, el vostre nom és sant i l’amor que ens teniu s’estén de generació en generació; escolteu el poble que us suplica i concediu-li que us glorifiqui amb una lloança eterna. Per nostre Senyor Jesucrist."
+        }
+      },
+      "ferialFields": {
+        "Laudes": [
+          "himno",
+          "primer_salmo_cita",
+          "primer_salmo_antifona",
+          "primer_salmo_texto",
+          "segundo_salmo_cita",
+          "segundo_salmo_antifona",
+          "segundo_salmo_texto",
+          "tercer_salmo_cita",
+          "tercer_salmo_antifona",
+          "tercer_salmo_texto",
+          "lectura_biblica_cita",
+          "lectura_biblica",
+          "responsorios",
+          "cantico_evangelico_antifona",
+          "preces_intro",
+          "preces_respuesta",
+          "preces_contenido",
+          "invitacion_padrenuestro",
+          "oracion_final"
+        ],
+        "Vespers": [
+          "himno",
+          "primer_salmo_cita",
+          "primer_salmo_antifona",
+          "primer_salmo_texto",
+          "segundo_salmo_cita",
+          "segundo_salmo_antifona",
+          "segundo_salmo_texto",
+          "tercer_salmo_cita",
+          "tercer_salmo_antifona",
+          "tercer_salmo_texto",
+          "lectura_biblica_cita",
+          "lectura_biblica",
+          "responsorios",
+          "cantico_evangelico_antifona",
+          "preces_intro",
+          "preces_respuesta",
+          "preces_contenido",
+          "invitacion_padrenuestro",
+          "oracion_final"
+        ]
+      },
+      "invitatory": "Aclameu el Senyor, arreu de la terra, doneu culte al Senyor amb cants de festa."
+    }
+  }
+}

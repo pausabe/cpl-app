@@ -27,7 +27,7 @@
 //     calendar except its own patronal feast", DatabaseDataService.tsx).
 //
 // Usage:
-//   node migration-to-saints/generate-catalan-calendars.js [--out <litcal-repo-path>] [--year 2025] [--dry-run]
+//   node migration-to-saints/generate-catalan-calendars.js [--out <litcal-repo-path>] [--dry-run]
 //
 // Idempotency: this script only READS cpl-app.db and WRITES whole calendar JSON files —
 // re-running it after a small cpl-app.db update simply regenerates the same files from
@@ -48,7 +48,6 @@ function argValue(flag, fallback) {
   return i !== -1 && argv[i + 1] ? argv[i + 1] : fallback;
 }
 const DRY_RUN = argv.includes('--dry-run');
-const REPRESENTATIVE_YEAR = argValue('--year', '2025');
 const LITCAL_CALENDARS_DIR = path.resolve(
   argValue('--out', '/Users/pau/projects/saints/litcal/src/data/calendars')
 );
@@ -167,32 +166,47 @@ function main() {
 
   // --- Build (dioceseD-code, month, day) -> CelebrationType lookup from anyliturgic,
   //     needed only for santsMemories (Solemnitats already carries its own `Cat`).
-  const anyliturgicRows = db
-    .prepare(`SELECT mes, dia FROM anyliturgic WHERE any = ? LIMIT 1`)
-    .all(REPRESENTATIVE_YEAR);
-  if (anyliturgicRows.length === 0) {
-    console.error(`No anyliturgic rows found for year ${REPRESENTATIVE_YEAR}; pick a year within 2017-2026.`);
-    process.exit(1);
-  }
+  //
+  // Read across EVERY year in the table, not one representative year. `anyliturgic` is a
+  // per-year almanac, so its rank column says what was celebrated on that date IN THAT
+  // YEAR: a memory whose date fell on a Sunday, or under a solemnity, is written as '-'
+  // for that year alone. Asking a single year therefore reports "this memory does not
+  // exist" for every celebration unlucky enough to be suppressed in it, and the
+  // celebration silently never reaches litcal — which is how "Témpores d'acció de
+  // gràcies i de petició" (05-oct, a Sunday in 2025) went missing, taking ~8% of all the
+  // join's cell conflicts with it. 53 celebrations were being dropped this way.
+  //
+  // The rank kept is the HIGHEST observed over the window, because a suppressed year says
+  // nothing about the celebration's own rank — only about what outranked it that year.
   const diocesePlaceCodes = [
     ...DIOCESES.map((d) => `${d.prefix}D`),
     ...DIOCESES.map((d) => `${d.prefix}V`), // fetched for completeness/diagnostics only
     'Andorra',
   ];
-  const rankLookup = {}; // rankLookup[code]["m-d"] = 'S'|'F'|'M'|'L'|'V'|'-'
   const cols = diocesePlaceCodes.map((c) => `"${c}"`).join(', ');
-  const yearRows = db.prepare(`SELECT mes, dia, ${cols} FROM anyliturgic WHERE any = ?`).all(REPRESENTATIVE_YEAR);
+  const yearRows = db.prepare(`SELECT any, mes, dia, ${cols} FROM anyliturgic`).all();
+  if (yearRows.length === 0) {
+    console.error('anyliturgic is empty — nothing to cross-reference santsMemories against.');
+    process.exit(1);
+  }
+  const yearsSeen = [...new Set(yearRows.map((r) => r.any))].sort();
+  // Higher wins: a date reported as both 'L' and 'M' across years is a real memory that
+  // some year downgraded, not an optional one that some year promoted.
+  const RANK_ORDER = { V: 1, L: 2, M: 3, F: 4, S: 5 };
+  const rankLookup = {}; // rankLookup[code]["m-d"] = 'S'|'F'|'M'|'L'|'V'
   for (const code of diocesePlaceCodes) rankLookup[code] = {};
   for (const row of yearRows) {
     const key = `${row.mes}-${row.dia}`;
     for (const code of diocesePlaceCodes) {
-      rankLookup[code][key] = row[code];
+      const v = row[code];
+      if (!v || v === '-' || !RANK_ORDER[v]) continue;
+      const current = rankLookup[code][key];
+      if (!current || RANK_ORDER[v] > RANK_ORDER[current]) rankLookup[code][key] = v;
     }
   }
   function memoryRank(dioceseDCode, month, day) {
     const key = `${month}-${day}`;
-    const v = rankLookup[dioceseDCode] && rankLookup[dioceseDCode][key];
-    return v && v !== '-' ? v : null;
+    return (rankLookup[dioceseDCode] && rankLookup[dioceseDCode][key]) || null;
   }
 
   // --- Load source rows (diocese-level `XxD` + generic `-` + Andorra only; see header) ---
@@ -306,7 +320,7 @@ function main() {
   }
 
   // --- Report + write ---
-  console.log(`Representative year used for Memory rank lookup: ${REPRESENTATIVE_YEAR}`);
+  console.log(`Memory ranks cross-referenced against anyliturgic years ${yearsSeen[0]}-${yearsSeen[yearsSeen.length - 1]} (highest rank per date wins)`);
   console.log(`Rows skipped (unparseable / unmapped / no rank found): ${skipped}`);
   console.log();
   for (const [calId, cal] of Object.entries(calendars)) {
@@ -318,7 +332,7 @@ function main() {
 
   if (JSON_OUT) {
     const summary = {
-      representativeYear: REPRESENTATIVE_YEAR,
+      anyliturgicYears: yearsSeen,
       rowsSkipped: skipped,
       calendars: Object.fromEntries(
         Object.entries(calendars).map(([calId, cal]) => [
@@ -362,4 +376,6 @@ function main() {
   console.log('\nNext step in litcal repo: npm run generate-loaders (or npm run build) to pick up the new calendars.');
 }
 
-main();
+module.exports = { slugify };
+
+if (require.main === module) main();
