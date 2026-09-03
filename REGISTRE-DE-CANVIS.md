@@ -32,6 +32,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [SA-02](#sa-02) | 2026-08-11 | saints-app | contingut | Es regenera | `abc5c1caf` |
 | [SA-03](#sa-03) | 2026-09-01 | saints-app | contingut | Es regenera | `f28389733` |
 | [LC-01…05](#litcal) | 2026-07-23 → 08-11 | litcal | codi | No | 5 commits |
+| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **proposat** | — pendent de resposta | — |
 
 **Errors de cpl-app trobats fins ara: 3.** Dos són de dades i un de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -192,6 +193,32 @@ mateix text** més el Salm 56.
 | Efecte | Tot el contingut de `commons-ca/` es va tornar a generar |
 
 ---
+
+# Propostes a eprex (pendents)
+
+Troballes que són **error de saints-app/eprex**, no nostres. No les apliquem: es proposen, i
+qui decideix és eprex. Van a `migration-to-saints/eprex-bugs/`.
+
+<a id="eprex-001"></a>
+## EPREX-001
+
+**El 2 de novembre, saints-app resa el diumenge en comptes de l'Ofici de Difunts** · 3 de setembre de 2026
+
+A la Commemoració de tots els fidels difunts, la fitxa de saints-app dona la salmòdia del
+Diumenge XXXI del temps ordinari, amb antífones acabades en «Aleluya» — a Laudes i a Vespres.
+La fitxa és idèntica a la del diumenge en 16 dels 20 camps: es va clonar d'allà. Afecta
+**totes les llengües**, castellà inclòs.
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/eprex-bugs/EPREX-001.md](migration-to-saints/eprex-bugs/EPREX-001.md) |
+| Estat | **Enviat a en Fernando el 3-09-2026, pendent de resposta** |
+| Fix | Cap encara. És repunteig d'ids a `all_visperas.json` i `all_laudes.json`; no cal contingut nou |
+| Prova | La fitxa és una còpia del diumenge · el 2026-11-02 és dilluns i tampoc és la fèria · el botó d'Ofici de Difunts de la mateixa app ja porta el text bo · les antífones `10964`/`10965`/`10966` són òrfenes |
+| Efecte a la migració | Desbloquejaria `salmos_citas/11025` i companyia. Però ens obrirà un conflicte nou a `salmos_antifonas/906` — vegeu el dossier |
+
+Quan respongui: si diu que sí, cal **tornar a passar la sonda** abans del join, perquè el join
+escriu on la sonda mesura, no on ho diu l'índex.
 
 # Canvis a saints-app
 
