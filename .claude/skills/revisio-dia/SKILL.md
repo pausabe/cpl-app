@@ -24,8 +24,9 @@ feines amb riscos diferents.
 | **4** | no és error | només s'informa |
 | **5** | no ho sé | només s'informa, amb el que falta per decidir |
 
-**El llistó per dir «error»**: fonts externes en 2-3 idiomes. Sense proves el veredicte és
-**5**, mai una conjectura. Val també la prova interna: si eprex ja té la casella bona per a
+**El llistó per dir «error»**: fonts externes en 2-3 idiomes — però només per a la
+**identitat** litúrgica del camp, no per a la seva redacció catalana; per a això, vegeu el
+parany 7. Sense proves el veredicte és **5**, mai una conjectura. Val també la prova interna: si eprex ja té la casella bona per a
 una celebració germana, això és prova sense sortir de les dades.
 
 ## Com córrer-la
@@ -97,6 +98,11 @@ Els prompts van al final, perquè són el que es fa després de llegir, no mentr
    «2C 12, 9b-10» ≡ «2 Co 12, 9b-10». Cal treure `Cf.` i el marcador `Càntic`.
 6. Les antífones de diumenge duen **els tres cicles en una sola casella**; cpl-app en dona un
    per data. Conflicte estructural, no error de ningú.
+7. **La concordança entre llengües no prova res sobre la redacció catalana.** El castellà,
+   l'anglès i l'italià poden coincidir els tres i el català continuar tenint raó: són
+   diferències d'edició (D-001, D-003). Per a dir que un **text** català és dolent, l'única
+   prova és el **volum imprès** del CPL — que en Pau té. Per a dir que una **estructura** és
+   dolenta (quin salm, quina setmana del salteri, quin ofici), les fonts externes sí que valen.
 
 ## On són les coses
 

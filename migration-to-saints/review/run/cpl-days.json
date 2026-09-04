@@ -6,13 +6,13 @@
     "Vespers"
   ],
   "days": {
-    "2026-09-03": {
-      "date": "2026-09-03",
+    "2026-09-04": {
+      "date": "2026-09-04",
       "diocese": "Barcelona",
       "prayingPlace": "Diòcesi",
       "celebration": {
-        "title": "Sant Gregori el Gran, papa i doctor de l’Església",
-        "celebrationType": "M",
+        "title": null,
+        "celebrationType": "-",
         "specificLiturgyTime": "O_ORDINAR",
         "week": "22",
         "weekCycle": "2",
@@ -20,75 +20,76 @@
       },
       "hours": {
         "Laudes": {
-          "himno": "Apòstol ans del poble anglès\ni ara dels àngels companyó,\noh sant Gregori, com llavors,\naideu el poble ja creient.\n\nMoltes riqueses desdenyeu\ni tota glòria del món\nper seguir el Crist en pobretat,\nque ell per nosaltres pobre es féu.\n\nEl Crist, pontífex sobirà,\ndavant sa Església us posà:\naixí de Pere al lloc pugeu\ni d’ell preneu també el model.\n\nDe l’Escriptura els punts obscurs\nexcel·lentment vós expliqueu,\ni és la mateixa Veritat\nqui els seus enigmes us resol.\n\nOh sant pontífex, tan preclar,\nllum de l’Església i decor,\nno abandoneu en els perills\nels qui amb tant zel vau instruir.\n\nAl Pare ingènit lloament,\na l’Unigènit esplendor,\ni de tots dos a l'Esperit\nsigui la summa majestat. \nAmén.",
-          "primer_salmo_cita": "Salm 79\nPregària per la renovació d’Israel",
-          "primer_salmo_antifona": "Desvetlleu, Senyor, el vostre poder, veniu a salvar-nos.",
-          "primer_salmo_texto": "Pastor d’Israel, escolteu-nos,    *\nvós que guieu com un ramat els fills de Josep. \nVós que teniu querubins per carrossa,    †\nresplendiu davant d’Efraïm,    *\nde Benjamí i de Manasés; \ndesvetlleu el vostre poder,    *\nveniu a salvar-nos. \n\nDéu de l’univers, renoveu-nos,    †\nfeu-nos veure la claror de la vostra mirada,    *\ni serem salvats.\n\nSenyor, Déu de l’univers,    † \n¿fins quan estareu irritat    * \nmentre us suplica el vostre poble?\n\nHa de pastar amb llàgrimes el pa,    *\nha de beure a glops els seus plors. \nEns heu deixat a les disputes dels veïns,    *\nels enemics es riuen de nosaltres.\n\nDéu de l’univers, renoveu-nos,    †\nfeu-nos veure la claror de la vostra mirada,    * \ni serem salvats.\n\nUn cep vau portar d’Egipte,    *\nper plantar-lo, traguéreu els nadius.\nLi havíeu deixat el terreny net,    * \nva arrelar-hi, va omplir tot el país.\n\nEls seus pàmpols cobriren d’ombra les muntanyes,    *\namb la ufana dels sarments \ncobrí els cedres més alts; \nels seus brots van créixer fins al mar,    *\nels seus plançons, fins al Gran Riu.\n\n¿Com és que heu derrocat la seva tanca,    *\nperquè l’esfulli qualsevol vianant? \nHi entren els senglars a devastar-lo    *\ni els animals salvatges hi pasturen.  \n\nDéu de l’univers,    *\ngireu des del cel els vostres ulls, \nveniu i visiteu aquesta vinya,    †\nque la vostra mà havia plantat    *\ni havia fet robusta i forta. \n\nUna mirada vostra d’amenaça,    *\ni ni rastre quedarà dels qui la tallen i la cremen.\nQue la vostra mà reposi    †\nsobre l’home que serà el vostre braç dret,    *\nel fill de l’home a qui vós doneu la força.\n\nNo ens apartarem mai més de vós;    †\nguardeu-nos vós la vida    * \nperquè invoquem el vostre nom.\n\nSenyor, Déu de l’univers, renoveu-nos;    †\nfeu-nos veure la claror de la vostra mirada    * \ni serem salvats.",
-          "segundo_salmo_cita": "Càntic\nIs 12, 1-6\nAlegria exultant del poble redimit",
-          "segundo_salmo_antifona": "El Senyor ha fet coses glorioses: publiqueu-ho per tota la terra.",
-          "segundo_salmo_texto": "Us dono gràcies, Senyor;    *\nus havíeu irritat contra mi, \nperò us heu desdit del vostre rigor    *\ni m’heu consolat.\n\nEll és el Déu que em salva,    *\nconfio, no m’espanto. \nDel Senyor em ve la força i el triomf,    *\nés ell qui m’ha salvat.\n\nCantant de goig sortirem a buscar l’aigua    †\nde les fonts de salvació,    * \ni direm aquell dia: \n\n«Enaltiu el Senyor, proclameu el seu nom,    * \nfeu conèixer entre els pobles les seves gestes.\nRecordeu que el seu nom és Excels,    †\ncanteu al Senyor que ha fet coses glorioses.    *\nQue ho publiquin per tota la terra.\n\nPoble de Sió, aclama’l ple de goig,    †\nperquè el Sant d’Israel    * \nés gran a la teva ciutat.»",
-          "tercer_salmo_cita": "Salm 80 \nRenovació solemne del pacte",
-          "tercer_salmo_antifona": "Celebreu la festa, honorant Déu, la nostra força.  ",
-          "tercer_salmo_texto": "Celebreu la festa, honorant Déu, la nostra força,    * \naclameu el Déu de Jacob.\n\nEntoneu càntics, tocant els tambors,    *\nles arpes sonores i les cítares. \nA la lluna nova toqueu els corns,    *\nanunciant la diada de lluna plena.\n\nAixí ho té prescrit Israel,    *\nés festa ritual del Déu de Jacob; \nun precepte que imposà als fills de Josep    *\nquan sortien de la terra d’Egipte.\n\nSento un parlar que m’és desconegut:    †\n«Li he tret el pes de les espatlles,    *\ni els cabassos de les mans. \nHas cridat quan et veies oprimit,    †\nt’he salvat, t’he respost en el tro misteriós,    *\nt’he provat a les fonts de Meribà.\n\nEscolta, poble meu, el que jo et mano.   *\nTant de bo m’escoltessis, Israel! \nNo tinguis déus estrangers,    *\nno adoris els déus dels pagans.\nJo sóc el Senyor, el teu Déu,    †\nque t’he tret de la terra d’Egipte;    * \nobre la boca, que jo te l’ompliré.»  \n\nPerò el meu poble no escolta la meva veu,    *\nIsrael no vol fer cas de mi; \ni els abandono al seu cor obstinat,    *\nal grat dels seus capricis.\n\nTant de bo que el meu poble d’Israel    *\nm’escoltés i seguís els meus camins. \nEn un instant serien vençuts els enemics,    *\ngiraria la mà contra els qui l’oprimeixen.\n\nEls enemics del Senyor se li sotmetrien,    * \nfóra aquest el seu destí per sempre;\nl’alimentaria amb la flor del blat    * \ni amb la mel abundant de les roques.",
-          "lectura_biblica_cita": "Rm 14, 17-19",
-          "lectura_biblica": "El Regne de Déu no consisteix pas en tal menjar o tal beguda, sinó en la justícia, la pau i l’alegria que vénen de l’Esperit Sant. El servidor de Crist que obté aquests fruits és acceptat per Déu i reconegut pels homes. Busquem, doncs, el que ens porta la pau i l’aprofitament d’uns i altres.",
+          "himno": "Oh Déu, que sou la llum del cel\ni autor de llum, que, recolzat\nal braç del Pare, desplegueu\namb mà preclara el firmament:\n\nL’aurora amaga ja els estels\nroges flamades aixecant,\ni, amb boires riques d’humitat,\nla terra amb rous va batejant.\n\nJa, de la nit, l’ombra decreix,\nla tenebror abandona el cel,\ni lucífer, signe de vós,\ndesvetlla el dia encar dorment.\n\nDia dels dies sou, oh Déu,\ni de la llum vós sou la llum;\nÚnic, en tot sou poderós,\ni poderós en Trinitat.\n\nAra us preguem, oh Salvador,\ni, reverents, us adorem,\nlloant el Pare i l’Esperit\namb nostres veus i amb nostres cors. \nAmén. ",
+          "primer_salmo_cita": "Salm 50 \nOració de penediment",
+          "primer_salmo_antifona": "Un esperit que es penedeix, vós, Déu meu, no el menyspreeu.",
+          "primer_salmo_texto": "Compadiu-vos de mi, Déu meu, \nvós que estimeu tant;    *\nper la vostra gran misericòrdia, \nesborreu les meves faltes; \nrenteu-me ben bé de les culpes,    *\npurifiqueu-me dels pecats.\n\nAra reconec les meves faltes,    *\ntinc sempre present el meu pecat. \nContra vós, contra vós sol he pecat,   *\ni he fet el que és dolent als vostres ulls.\n\nÉreu just quan donàveu la sentència,    * \nirreprensible en el vostre veredicte.\nVós sabeu que he nascut en la culpa,    * \nque la mare m’engendrà pecador.\n\nVós estimeu la veritat al fons del cor,   * \ndintre de mi m’ensenyeu a tenir seny.\nAspergiu-me amb hisop, que quedi pur;    * \nrenteu-me, i seré més blanc que la neu.\n\nDeixeu-me sentir els crits de festa.    *\nQuin goig aquests ossos que havíeu fet pols!\nAparteu la mirada dels meus pecats,    * \nesborreu les meves culpes. \n\nDéu meu, creeu en mi un cor ben pur,    *\nfeu renéixer en mi un esperit ferm. \nNo em llanceu de la vostra presència,    *\nni em prengueu el vostre esperit sant.\n\nTorneu-me el goig de la vostra salvació,    * \nque em sostingui un esperit magnànim.\nEnsenyaré els vostres camins als pecadors,    *\ni tornaran a vós els qui us han abandonat. \n\nNo em demaneu compte de la sang que he vessat,    †\ni aclamaré el vostre perdó,   *\nDéu meu, Déu que em salveu. \nObriu-me els llavis, Senyor,   *\ni proclamaré la vostra lloança.\n\nLes víctimes no us satisfan,   *\nsi us oferia un holocaust, no me’l voldríeu. \nLa víctima que ofereixo és un cor penedit;    †\nun esperit que es penedeix,    *\nvós, Déu meu, no el menyspreeu.\n\nAfavoriu Sió amb la vostra benvolença,    * \nreconstruïu les muralles de Jerusalem.\nLlavors acceptareu els sacrificis,    †\nl’ofrena sencera dels holocaustos,    * \nllavors oferiran vedells al vostre altar.",
+          "segundo_salmo_cita": "Càntic\nHa 3, 2-4.13a.15-19\nDéu ve a judicar els pobles",
+          "segundo_salmo_antifona": "Si us enutgeu, Senyor, no us oblideu de compadir.",
+          "segundo_salmo_texto": "Senyor, he sentit el que havíeu fet,    * \nhe vist, Senyor, la vostra obra.\nManifesteu-la al nostre temps,    †\nal nostre temps feu-la conèixer,    * \nen enutjar-vos, no us oblideu de compadir.\n\nDes de Teman s’acosta Déu,    *\nel Sant arriba des de la muntanya de Faran; \nla seva glòria cobreix el cel,    *\ni amb la seva majestat omple la terra; \nde sota, és resplendent com el foc,    *\ndos raigs li surten de la mà.\n\nSortiu a salvar el vostre poble    * \ni a socórrer el vostre Ungit.\nMar enllà trepitgeu els cavalls dels impius,    * \ndins l’aigua escumejant de l’oceà.\n\nHo escolto i se’m remouen les entranyes,    *\nxisclo d’estupor quan ho sento, \nm’arriba als ossos l’esgarrifança,    *\nsento que em tremolen els passos, \ni em planyo pel dia del desastre    *\nque caurà sobre el poble que ens mou guerra.\n\nCert que la figuera no fa fruit,    *\nni tindrem la collita dels ceps; \nl’olivera no ha pensat a produir,   *\ni els camps no donen res per a menjar; \nno queda cap ovella als corrals    *\nni cap bou a les estables, \n\nperò jo celebraré el Senyor,    * \nfeliç de veure que Déu em salva.\nEl Senyor sobirà m’ha fet valent,    †\ni amb peus lleugers com els dels cérvols,    * \nm’encamina cap als cims invencibles.",
+          "tercer_salmo_cita": "Salm 147\nHimne a Déu, restaurador de la ciutat santa",
+          "tercer_salmo_antifona": "Glorifica el Senyor, Jerusalem.",
+          "tercer_salmo_texto": "Glorifica el Senyor, Jerusalem,    *\nSió, canta lloances al teu Déu, \nque assegura les teves portes    *\ni beneeix dintre teu els teus fills, \nmanté la pau al teu territori    *\ni et sacia amb la flor del blat.\n\nEnvia ordres a la terra,    *\ni la seva paraula corre de pressa, no es detura. \nTira neu com flocs de llana,    *\nescampa com cendra la gebrada;\n\nllança el seu glaç com molles de pa,    * \nsi les aigües es gelen de tanta fredor,\ndóna una ordre, i les fon tot seguit,    *\nfa bufar els seus vents, i l’aigua s’escola.\n\nAnuncia les seves paraules als fills de Jacob,    * \nals fills d’Israel, els seus decrets i decisions.\nNo ha obrat així amb cap altre poble,    * \nno els ha fet conèixer les seves decisions.",
+          "lectura_biblica_cita": "Ef 2, 13-16",
+          "lectura_biblica": "Aleshores éreu lluny, però ara la sang del Crist us ha apropat. Ell és la nostra pau. De dos pobles, n’ha fet un de sol, ja que ell ha destruït la barrera que els separava i els mantenia enemics, abolint en el seu propi cos la Llei i els preceptes. Així ha posat pau entre tots dos pobles i ha creat una nova humanitat centrada en ell. Per la seva mort en la creu ha fet morir l’enemistat i, units en un sol cos, els ha reconciliats tots dos amb Déu.",
           "responsorios": [
-            "℣. Així que em llevo, Senyor,  * Ja penso en vós.",
-            "℟. Així que em llevo, Senyor,  Ja penso en vós.",
-            "℣. Perquè vós m’heu ajudat.",
-            "℟. Ja penso en vós.",
+            "℣. Clamo al Déu Altíssim,  * I ell m’enviarà des del cel un salvador.",
+            "℟. Clamo al Déu Altíssim,  I ell m’enviarà des del cel un salvador.",
+            "℣. Invoco el Déu, que tant m’afavoreix.",
+            "℟. I ell m’enviarà des del cel un salvador.",
             "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
-            "℟. Així que em llevo, Senyor,  Ja penso en vós."
+            "℟. Clamo al Déu Altíssim,  I ell m’enviarà des del cel un salvador."
           ],
-          "cantico_evangelico_antifona": "El pastor eximi sant Gregori ens va donar el model i la regla de la vida pastoral.",
-          "preces_intro": "Beneïm Déu, Pare nostre, que protegeix els seus fills i escolta les seves oracions. Demanem-li amb tota humilitat:",
-          "preces_respuesta": "Senyor, il·lumineu-nos.",
+          "cantico_evangelico_antifona": "Ens visitarà un sol que ve del cel per l’amor entranyable del nostre Déu.",
+          "preces_intro": "Adorem Crist, que amb la seva sang s’ha ofert ell mateix al Pare, per l’Esperit Sant, i ens purifica de les obres que porten a la mort, i diguem-li de tot cor:",
+          "preces_respuesta": "La nostra pau, Senyor, és complir la vostra voluntat.",
           "preces_contenido": [
-            "Gràcies, Senyor, perquè ens il·lumineu amb la llum del vostre Fill;\nque ella aclareixi avui tots els nostres passos.",
-            "Que la vostra saviesa ens condueixi,\nperquè caminem cap a vós amb una vida nova.",
-            "Enfortiu-nos per suportar valents les contrarietats\ni servir-vos amb constància i grandesa d’ànima.",
-            "Dirigiu avui els nostres pensaments, sentiments i actuacions\ni feu-nos dòcils a la vostra providència."
+            "De vós hem rebut, Déu bondadós, el dia que comença;\nfeu que sigui també per a nosaltres el començament d’una nova vida.",
+            "Vós, que heu creat l’univers i el conserveu amb la vostra providència,\najudeu-nos a descobrir la vostra presència en la creació.",
+            "Vós, que segellàreu amb la vostra sang l’Aliança nova i eterna,\nfeu que ens hi conservem fidels complint els vostres manaments.",
+            "Quan moríreu a la creu, brollà sang i aigua del vostre costat;\namb aquest riu de salvació renteu els nostres pecats i alegreu la ciutat de Déu."
           ],
-          "invitacion_padrenuestro": "Deixem que l’Esperit de Déu, infós en els nostres cors, clami juntament amb el nostre esperit, tot dient: Pare nostre.",
-          "oracion_final": "Oh Déu, vós teniu cura de molts pobles i els conduïu amb amor; per la intercessió de sant Gregori, papa, concediu l’esperit de saviesa als qui heu confiat el guiatge de l’Església, perquè el progrés de les ovelles en la santedat sigui el goig etern dels pastors. Per nostre Senyor Jesucrist."
+          "invitacion_padrenuestro": "El perdó de Déu és la causa del nostre goig; demanem, doncs, al Senyor que perdoni les nostres culpes: Pare nostre.",
+          "oracion_final": "Feu, oh Déu totpoderós, que puguem cantar eternament, amb tots els sants, la lloança que us oferim en començar el dia. Per nostre Senyor Jesucrist."
         },
         "Vespers": {
-          "himno": "Apòstol ans del poble anglès\ni ara dels àngels companyó,\noh sant Gregori, com llavors,\naideu el poble ja creient.\n\nMoltes riqueses desdenyeu\ni tota glòria del món\nper seguir el Crist en pobretat,\nque ell per nosaltres pobre es féu.\n\nEl Crist, pontífex sobirà,\ndavant sa Església us posà:\naixí de Pere al lloc pugeu\ni d’ell preneu també el model.\n\nDe l’Escriptura els punts obscurs\nexcel·lentment vós expliqueu,\ni és la mateixa Veritat\nqui els seus enigmes us resol.\n\nOh sant pontífex, tan preclar,\nllum de l’Església i decor,\nno abandoneu en els perills\nels qui amb tant zel vau instruir.\n\nAl Pare ingènit lloament,\na l’Unigènit esplendor,\ni de tots dos a l'Esperit\nsigui la summa majestat. \nAmén.",
-          "primer_salmo_cita": "Salm 71 - I\nLa potestat reial del Messies",
-          "primer_salmo_antifona": "T’he fet llum de tots els pobles, perquè la meva salvació arribi d’un cap a l’altre de la terra.",
-          "primer_salmo_texto": "Déu meu, doneu al rei el vostre dret;    * \ndoneu al príncep la vostra rectitud.\nQue governi amb justícia el vostre poble,   *\nque sigui recte amb els humils.\n\nQue les muntanyes duguin pau al poble,    *\nque duguin benestar els  turons. \nQue els humils es vegin emparats,    †\ni salvats els fills dels pobres,    *\nque desfaci els opressors.\n\nQue duri com el sol i la lluna,    *\nsegles i més segles. \nQue faci el bé com la pluja a l’herbei,    *\ncom els ruixats assaonen la terra.\n\nQue el benestar floreixi als seus dies,    *\ni mesos i anys abundi la pau. \nQue domini des d’un mar a l’altre,   *\ndes del Gran Riu fins a l’extrem del país.\n\nEls adversaris li faran homenatge,    *\nels enemics s’abaixaran fins a la pols. \nLi portaran obsequis les illes\ni els reis de Tarsís;    *\nels reis d’Aràbia i de Sabà\nli oferiran presents.\n\nLi faran homenatge tots els reis,    * \nse li sotmetran tots els pobles.",
-          "segundo_salmo_cita": "Salm 71 - II",
-          "segundo_salmo_antifona": "El Senyor salvarà de la mort els pobres, els rescatarà del poder dels violents.",
-          "segundo_salmo_texto": "Salvarà els pobres que reclamen,    * \nels desvalguts que no tenen defensor.\n\nS’apiadarà dels pobres i dels febles,    *\nels salvarà de la mort; \nels rescatarà del poder dels violents,   *\nestimant com un tresor la seva vida.\n\nQue visqui i li donin l’or d’Aràbia,    † \nque preguin per ell tots els dies    *\ni no parin mai de beneir-lo.\n\nQue els blats abundin al seu país,    *\ni onegin per les muntanyes; \nque floreixin i granin com al Líban,    *\ni en cullin com l’herba del camp.  \n \nQue es perpetuï el seu nom,    *\ni duri com el sol. \nQue les famílies del país, per beneir-se,    *\nes valguin del seu nom; \nque se’n valguin tots els pobles de la terra    *\nper augurar-se la felicitat.\n\nBeneït sigui el Senyor, Déu d’Israel,    *\nl’únic que fa meravelles; \nsigui sempre beneït el seu nom gloriós;    *\nque la seva glòria ompli la terra.\nAmén, amén.",
-          "tercer_salmo_cita": "Càntic\nAp 11, 17-18; 12, 10b-12a\nEl judici de Déu",
-          "tercer_salmo_antifona": "Ara és l’hora de la victòria del nostre Déu, és l’hora del seu Regne.",
-          "tercer_salmo_texto": "Gràcies, Senyor, Déu de l’univers, \nque sou i éreu,    †\nperquè ja heu pres el vostre gran poder    * \ni heu instaurat el vostre regne.\n\nLes nacions estaven furioses,    †\nperò ara ha arribat el vostre dia,    * \nl’hora de judicar els morts:\nl’hora de recompensar els vostres servents\nels profetes,    †\nel poble sant\ni tots els qui han reverenciat el vostre nom, \ngrans o petits,    * \nl’hora de destruir els destructors de la terra.\n\nAra és l’hora de la victòria del nostre Déu,    †\nl’hora del seu poder i del seu regne,    *\ni el seu Messies ja governa, \nperquè l’acusador dels nostres germans,    †\nque els acusava nit i dia davant el nostre Déu,    *\nha estat expulsat.\n\nElls l’han vençut per la sang de l’Anyell    *\ni pel testimoniatge del seu martiri, \nja que no van estimar tant la vida \nque els fes por la mort.    *\nAlegreu-vos-en, cel i tots els qui hi habiteu.",
-          "lectura_biblica_cita": "1Pe 1, 22-23",
-          "lectura_biblica": "Vosaltres, que heu acceptat la veritat, us heu purificat per poder-vos estimar sincerament com a germans. Per això, estimeu-vos de cor els uns als altres, sense desistir mai del vostre amor. Penseu que heu nascut de nou, no d’una paternitat humana, que dóna una vida mortal, sinó de la Paraula viva i eterna de Déu, que dóna la vida per sempre.",
+          "himno": "Després d’onze hores de claror,\nel dia al vespre ja se’n va;\ncantem, doncs, ara de bon grat\nl’himne degut del nostre cor.\n\nTranscorregué el treball diürn,\npel qual, oh Crist, ens vau llogar;\ndeu, de la vinya, als jornalers\nels dons promesos, divinals.\n\nAls, per un sou, ara cridats,\nen el futur gratifiqueu;\nsalveu-nos ara en el treball\ni renoveu-nos després d’ell.\n\nDonem al Crist, rei piadós,\ni al Pare, glòria i honor\namb l’Esperit Sant, defensor,\nara i per segles sense fi. \nAmén.",
+          "primer_salmo_cita": "Salm 114\nCàntic d’acció de gràcies",
+          "primer_salmo_antifona": "Allibereu de la mort, Senyor, la meva vida; allibereu els meus peus de donar un pas en fals.",
+          "primer_salmo_texto": "Estimo de tot cor el Senyor:    *\nel Senyor ha escoltat la meva súplica,\nha escoltat el meu clam    * \naixí que l’invocava.\n\nM’envoltaven els llaços de la mort,    †\ntenia davant meu els seus paranys,   * \ni dintre meu l’angoixa i el neguit.\nVaig invocar el nom del Senyor:    * \n«Ah, Senyor, salveu-me la vida.»\n\nEl Senyor és just i benigne,    *\nel nostre Déu sap compadir. \nEl Senyor salvaguarda els senzills,   *\njo era feble i m’ha salvat.\n\nRecobra la serenor, ànima meva,   * \nmira el que t’ha fet el Senyor.\nHa alliberat de la mort la meva vida,    †\nels meus ulls, de negar-se en el plor,    * \nels meus peus, de donar un pas en fals.\n\nContinuaré caminant entre els qui viuen,    * \na la presència del Senyor.",
+          "segundo_salmo_cita": "Salm 120\nDéu guarda el seu poble",
+          "segundo_salmo_antifona": "L’ajuda em vindrà del Senyor, que ha fet el cel i la terra.",
+          "segundo_salmo_texto": "Alço els ulls a les muntanyes:    *\n¿d’on em vindrà l’ajuda? \nL’ajuda em vindrà del Senyor,    *\ndel Senyor que ha fet cel i terra.\n\nQue no deixi relliscar el teu peu,    *\nni s’adormi el qui et guarda. \nEl guardià d’Israel mai no s’adorm,    *\nsempre vigila.\n\nÉs el Senyor qui et guarda, el Senyor t’empara    *\nal teu costat mateix. \nDe dia el sol no et farà mal,    *\nni la lluna de nit.\n\nEl Senyor et guarda de tota desgràcia,    *\net guarda la vida. \nEl Senyor guarda tots els teus passos    *\nara i per tots els segles.",
+          "tercer_salmo_cita": "Càntic\nAp 15, 3-4\nHimne d’adoració",
+          "tercer_salmo_antifona": "Les vostres obres són grans i admirables, oh Rei de tots els pobles.",
+          "tercer_salmo_texto": "Senyor, Déu de l’univers,    *\nles vostres obres són grans i admirables! \nSenyor, rei de tots els pobles,    *\nles vostres decisions són justes, \nno van mai errades. \n\nQui no us respectarà!    *\nQui no glorificarà el vostre nom!\nPerquè vós sou l’únic Sant,     †\ni ara que heu revelat la vostra justícia,    * \ntotes les nacions vindran a adorar-vos.",
+          "lectura_biblica_cita": "1C 2, 7-10a",
+          "lectura_biblica": "Ensenyem la saviesa enclosa en el pla que Déu s’ha proposat, amagada fins ara, però que abans de tots els temps Déu ja tenia decidida, perquè sigui la nostra glòria. Cap dels dirigents del món present no l’havia coneguda, perquè, si l’haguessin coneguda, mai no haurien clavat a la creu el Senyor de la glòria. Però, tal com diu l’Escriptura: «Cap ull no ha vist mai, ni cap orella no ha sentit, ni el cor de l’home somniava això que Déu té preparat per als qui l’estimen»; però a nosaltres, Déu ens ho ha revelat per obra de l’Esperit.",
           "responsorios": [
-            "℣. El Senyor és el meu pastor,  * No em manca res. ",
-            "℟. El Senyor és el meu pastor,  No em manca res.",
-            "℣. Em fa descansar en prats deliciosos. ",
-            "℟. No em manca res. ",
+            "℣. Crist morí pels nostres pecats  * Per conduir-nos a Déu. ",
+            "℟. Crist morí pels nostres pecats  Per conduir-nos a Déu.",
+            "℣. El seu cos va ser mort, però per l’Esperit fou retornat a la vida. ",
+            "℟. Per conduir-nos a Déu. ",
             "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
-            "℟. El Senyor és el meu pastor,  No em manca res."
+            "℟. Crist morí pels nostres pecats  Per conduir-nos a Déu."
           ],
-          "cantico_evangelico_antifona": "El papa Gregori complia de fet el que ensenyava de paraula i era exemple eloqüent de doctrina espiritual.",
-          "preces_intro": "Aixequem agraïts el nostre cor al Senyor i Salvador nostre, que beneeix el seu poble amb tota mena de gràcies espirituals, i preguem-lo amb confiança:",
-          "preces_respuesta": "Senyor, beneïu el vostre poble.",
+          "cantico_evangelico_antifona": "Recordeu-vos, Senyor, del vostre amor, com ho havíeu promès als nostres pares.",
+          "preces_intro": "Beneïm Crist, el Senyor, compassiu i consolador dels qui ploren. Dirigim-li amb amor aquesta súplica:",
+          "preces_respuesta": "Apiadeu-vos, Senyor, del vostre poble.",
           "preces_contenido": [
-            "Déu misericordiós, conserveu per al bé de l’Església\nel nostre papa N. i el nostre bisbe N.",
-            "Per la vostra bondat, defenseu els nostres països,\ndeslliureu-los, Senyor, de qualsevol mal.",
-            "Crideu molts fills vostres a viure els consells evangèlics,\nperquè us segueixin més de prop a vós, pobre, cast i obedient.",
-            "Guardeu, Senyor, les vostres serventes que us han promès virginitat,\nperquè us acompanyin a vós, l’Anyell diví, arreu on aneu.",
-            "Que els difunts reposin en la vostra pau eterna,\ni que s’estrenyin els nostres llaços amb ells per la comunió dels sants."
+            "Crist, Senyor, que consoleu els humils,\nmireu els qui ploren, eixugueu-los les llàgrimes.",
+            "Escolteu, Senyor, el gemec dels moribunds:\n­\nque el vostre àngel els visiti i els conforti.",
+            "Que tots els desterrats sentin la vostra mà provident,\nque puguin retornar a la pàtria de la terra i després entrin a la del cel.",
+            "Ablaniu el cor dels pecadors, perquè es rendeixin al vostre amor\ni es reconciliïn amb vós i amb l’Església.",
+            "Per la vostra misericòrdia, salveu els nostres germans difunts,\nperquè obtinguin tots els fruits de la redempció."
           ],
-          "invitacion_padrenuestro": "Units com germans d’una sola família, invoquem el qui és Pare de tots: Pare nostre.",
-          "oracion_final": "Oh Déu, vós teniu cura de molts pobles i els conduïu amb amor; per la intercessió de sant Gregori, papa, concediu l’esperit de saviesa als qui heu confiat el guiatge de l’Església, perquè el progrés de les ovelles en la santedat sigui el goig etern dels pastors. Per nostre Senyor Jesucrist."
+          "invitacion_padrenuestro": "Acabem la nostra oració repetint la pregària del Senyor i demanant al Pare que ens deslliuri de tot mal: Pare nostre.",
+          "oracion_final": "Oh Déu, la vostra saviesa admirable es manifesta en l’escàndol de la creu; concediu-nos que contemplem de tal manera la glòria de la passió del vostre Fill, que mai no deixem de gloriar-nos amb confiança en la seva creu. Per nostre Senyor Jesucrist."
         }
       },
       "ferialFields": {
         "Laudes": [
+          "himno",
           "primer_salmo_cita",
           "primer_salmo_antifona",
           "primer_salmo_texto",
@@ -101,12 +102,15 @@
           "lectura_biblica_cita",
           "lectura_biblica",
           "responsorios",
+          "cantico_evangelico_antifona",
           "preces_intro",
           "preces_respuesta",
           "preces_contenido",
-          "invitacion_padrenuestro"
+          "invitacion_padrenuestro",
+          "oracion_final"
         ],
         "Vespers": [
+          "himno",
           "primer_salmo_cita",
           "primer_salmo_antifona",
           "primer_salmo_texto",
@@ -119,13 +123,15 @@
           "lectura_biblica_cita",
           "lectura_biblica",
           "responsorios",
+          "cantico_evangelico_antifona",
           "preces_intro",
           "preces_respuesta",
           "preces_contenido",
-          "invitacion_padrenuestro"
+          "invitacion_padrenuestro",
+          "oracion_final"
         ]
       },
-      "invitatory": "Entreu davant el Senyor amb crits d’alegria."
+      "invitatory": "Que n’és, de bo, el Senyor! Beneïu el seu nom."
     }
   }
 }

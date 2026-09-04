@@ -1,4 +1,4 @@
-<title>Revisió litúrgica 3 de setembre de 2026</title>
+<title>Revisió litúrgica 4 de setembre de 2026</title>
 <style>
 :root{
   --bg:#FCFCFB; --sf:#FFFFFF; --sf2:#F5F4F1;
@@ -137,60 +137,38 @@ a:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset
 
 <div class="w">
 
-<h1>Revisió litúrgica · 3 de setembre de 2026</h1>
-<p class="sub">51 camps comparats entre cpl-app i saints-app · <strong>0 divergeixen</strong> ·
+<h1>Revisió litúrgica · 4 de setembre de 2026</h1>
+<p class="sub">51 camps comparats entre cpl-app i saints-app · <strong>1 divergeixen</strong> ·
 48 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
 Diòcesi de Barcelona.</p>
 
-<article class="day" id="d2026-09-03">
+<article class="day" id="d2026-09-04">
     <header>
       <div class="dt">
-        <h3>3 de setembre · dijous</h3>
-        <p class="cel">Sant Gregori el Gran, papa i doctor de l’Església</p>
+        <h3>4 de setembre · divendres</h3>
+        <p class="cel">fèria</p>
       </div>
-      <div class="sts"><span class="st good">cap divergència</span><span class="st note-st">2 troballes</span></div>
+      <div class="sts"><span class="st bad">1 camps divergeixen</span><span class="st note-st">1 troballa</span></div>
     </header>
 
-    <div class="fs"><div class="finding v2" id="F11-2026-09-03">
-    <p class="fh"><a class="fid" href="#F11-2026-09-03">F11</a>
-      <span class="vp v2">saints-app / eprex</span>
-      
-      <strong>La Visitació resa les I Vespres de l’Ascensió, i per això reté el càntic del dijous</strong></p>
-    <p class="fd">Des del refactor de Primeres Vespres (PR #1694), que va treure el sufix <code>_1v</code> de l’identificador i les va passar a camps <code>*_PrimerasVisperas</code> dins de la celebració, això es llegeix directament: <strong>16 dels 20 camps de <code>visitation_of_mary__ANY</code> són, id per id, els <code>*_PrimerasVisperas</code> de <code>ascension_of_the_lord__ANY</code></strong>. Dels quatre que resten, el respons i els precs també són de l’Ascensió amb ids diferents; l’única peça pròpia de la festa és l’oració final. I la Visitació és una <em>festa</em>, que no en té, de I Vespres. Es veu el 3 de setembre perquè el càntic de l’Ascensió i el del dijous del saltiri comparteixen casella. Verificat contra <code>origin/dev</code>: l’entrada no ha canviat gens.</p>
-    <div class="tw"><table><thead><tr><th>camp</th><th>cpl-app (31 de maig)</th><th>saints-app</th></tr></thead>
-    <tbody><tr><td class="k">1r salm</td><td>Salm 121</td><td>Salmo 112 · salmos_citas/11031</td></tr><tr><td class="k">Ant. 1</td><td>«Maria entrà a casa de Zacaries i saludà Elisabet»</td><td>«Salí del Padre y he venido al mundo… » · salmos_antifonas/10271</td></tr><tr><td class="k">2n salm</td><td>Salm 126</td><td>Salmo 116 · salmos_citas/152</td></tr><tr><td class="k">Ant. 2</td><td>«…el nen ha saltat d’entusiasme dins les meves entranyes»</td><td>«El Señor Jesús… subió al cielo» · salmos_antifonas/10272</td></tr><tr><td class="k">Càntic</td><td>Ef 1, 3-10</td><td>Ap 11, 17-18; 12, 10b-12a · salmos_citas/11030</td></tr><tr><td class="k">Ant. 3</td><td>«Ets beneïda entre les dones…»</td><td>«Nadie ha subido al cielo…» · salmos_antifonas/10273</td></tr><tr><td class="k">Lectura breu</td><td>—</td><td>Ef 2, 4-6 · lectura_breve_citas/3695</td></tr><tr><td class="k">Ant. Magníficat</td><td>«Totes les generacions em diran benaurada…»</td><td>«Padre, he manifestado tu nombre… Aleluya» · 1443</td></tr><tr><td class="k">Himne</td><td>—</td><td>«¿Y dejas, Pastor santo…» · himnos/3835</td></tr></tbody></table></div>
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p>La casella <code>salmos_citas/11030</code> la comparteixen 235 dies: 229 hi volen el càntic d’Ap 11, 17-18 —el del dijous— i 6 hi volen Ef 1, 3-10. Els 6 són exactament els 31 de maig en què cpl-app celebra la Visitació. Mentre això no es reparteixi, les tres caselles del 3r càntic de les Vespres del 3 de setembre (<code>11030</code>, <code>9253</code>, <code>salmos_textos/11031</code>) queden retingudes per a sempre: cpl-app hi aporta dos textos i el join no pot triar.</p>
-        
-        <ul class="pl"><li><strong>Prova interna · la casella bona ja existeix</strong> — A <code>dev</code>, l’Assumpció, la Immaculada, la Nativitat de Maria i la Mare de Déu dels Dolors apunten <strong>totes quatre</strong> les Vespres a <code>salmos_citas/4577</code> (Salm 121), <code>3424</code> (Salm 126) i <code>11042</code> (Ef 1, 3-10) —el Comú de la Mare de Déu— amb antífones pròpies de cadascuna. La Visitació és l’única festa mariana que no hi apunta.</li><li><strong>Prova interna · de qui és la còpia</strong> — Ho diu l’entrada de l’Ascensió: <code>himno_PrimerasVisperas</code> 3835, <code>primer_salmo_cita_PrimerasVisperas</code> 11031, <code>segundo_salmo_cita_PrimerasVisperas</code> 152, <code>tercer_salmo_cita_PrimerasVisperas</code> 11030, <code>lectura_biblica_cita_PrimerasVisperas</code> 3695, <code>cantico_evangelico_antifona_PrimerasVisperas</code> 1443 — tots ells els camps homònims de la Visitació. I cap dels 8 anys del manifest no és una Ascensió: el 2018 va ser el 10 de maig, el 2019 el 30, el 2021 el 13.</li><li><strong>Prova interna · Al·leluia fora de lloc</strong> — Les tres antífones de saints-app acaben en «Aleluya». El 31 de maig de 2024 ja era temps ordinari (Pentecosta, el 19 de maig), i el 31 de maig de 2022 i de 2021 també.</li><li><strong>Prova interna · les antífones bones són òrfenes</strong> — <code>salmos_antifonas/11021</code> «María entró en casa de Zacarías y saludó a Isabel» i <code>/840</code> «Bendita tú entre las mujeres, y bendito el fruto de tu vientre» existeixen a <code>commons/es</code> i <strong>no les referencia cap celebració</strong> dels deu <code>all_*.json</code>. Són, literalment, les antífones 1a i 3a que cpl-app resa el 31 de maig. La mateixa signatura que <a href="migration-to-saints/eprex-bugs/EPREX-001.md">EPREX-001</a>.</li><li><strong>cpl-app, els 6 anys</strong> — Salm 121 · Salm 126 · Ef 1, 3-10, amb les antífones pròpies de la Visitació. No varia cap any.</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Repuntar les Vespres de la Visitació al Comú de la Mare de Déu, que ja existeix i que l’Assumpció i el Roser ja fan servir. Les antífones han de ser les pròpies de la Visitació, no les de cap altra festa mariana. <code>eprex · all_visperas.json, entrada visitation_of_mary__ANY</code></p>
-        
-        <div class="tw"><table><thead><tr><th>camp</th><th>ara (= I Vespres de l’Ascensió)</th><th>hauria de ser</th></tr></thead>
-    <tbody><tr><td class="k">primer_salmo_cita / _texto</td><td>11031 / 11032</td><td>4577 / 4578</td></tr><tr><td class="k">segundo_salmo_cita / _texto</td><td>152 / 153</td><td>3424 / 3425</td></tr><tr><td class="k">tercer_salmo_cita / _texto</td><td>11030 / 11031</td><td>11042 / 11043</td></tr><tr><td class="k">salmos_antifonas 1-3</td><td>10271-10273 (Ascensió)</td><td>11021 · ? · 840 — les 1a i 3a ja hi són, òrfenes; la 2a («…el nen ha saltat d’entusiasme…») no s’ha trobat</td></tr><tr><td class="k">cantico_evangelico_antifona</td><td>1443 (Ascensió)</td><td>pròpia de la Visitació</td></tr><tr><td class="k">lectura_biblica_cita</td><td>3695 (Ef 2, 4-6)</td><td>la del Comú de la Mare de Déu</td></tr><tr><td class="k">himno</td><td>3835 (Ascensió)</td><td>el de la Visitació o el del Comú</td></tr></tbody></table></div>
-        <p class="note">Només les Vespres. Laudes del 31 de maig és correcte i propi de la Visitació — himne «Y salta el pequeño Juan en el seno de Isabel», antífona «María se puso en camino», lectura Jl 2, 27-3, 1—, o sigui que el defecte és d’una sola entrada. Un cop repuntada, les tres caselles retingudes del 3 de setembre es resolen soles.</p>
-        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
-      </div>
-    </details>
-  </div><div class="finding v3 done" id="F12-2026-09-03">
-    <p class="fh"><a class="fid" href="#F12-2026-09-03">F12</a>
-      <span class="vp v3">les nostres eines</span>
+    <div class="fs"><div class="finding v4 done" id="F13-2026-09-04">
+    <p class="fh"><a class="fid" href="#F13-2026-09-04">F13</a>
+      <span class="vp v4">no és error</span>
       <span class="vp done">corregit</span>
-      <strong>A les memòries d’ofici propi, el text ferial de cpl-app s’arxiva a la casella del Comú</strong></p>
-    <p class="fd">La regla de <code>lib/memorial-ferial.js</code> —el text que cpl-app pren de la fèria va a la casella ferial, i el Comú a la del sant— està tancada darrere de <code>hasSwitch()</code>, que només reconeix els cicles <code>MEMORY_FERIAL1</code> i <code>MEMORY_FERIAL2</code>. Les 7 celebracions amb cicle <code>MEMORY_PROPER</code> no hi entren: com que allà saints-app no té pestanya ferial, <code>cellPair()</code> retorna <code>[own, null]</code> i el text ferial de cpl-app acaba a la casella del sant, on el Comú ja hi és. És exactament el que la capçalera del fitxer avisa que no s’ha de fer.</p>
-    <div class="tw"><table><thead><tr><th>casella</th><th>què hi ha en castellà</th><th>què hi posa el 2 de gener</th><th>què hi posa el 3 de setembre</th></tr></thead>
-    <tbody><tr><td class="k">lectura_breve_citas/66 (Laudes)</td><td>Hb 13, 7-9a</td><td>Is 49, 8-9 — fèria de Nadal (9 dates)</td><td>He 13, 7-9a — Comú de pastors (158 dates)</td></tr><tr><td class="k">lectura_breve_citas/3355 (Vespres)</td><td>1 P 5, 1-4</td><td>Col 1, 13-15 — fèria de Nadal (8 dates)</td><td>1Pe 5, 1-4 — Comú de pastors (106 dates)</td></tr></tbody></table></div>
+      <strong>L’antífona catalana del càntic Ap 15 diu el vers 3a i les altres llengües el 3b — i la catalana és bona</strong></p>
+    <p class="fd">Divendres, Vespres, càntic <code>Ap 15, 3-4</code>. cpl-app hi posa d’antífona «Les vostres obres són grans i admirables, oh Rei de tots els pobles» — que és <strong>Ap 15, 3a</strong>, el primer hemistiqui del càntic mateix — i el castellà, l’anglès i l’italià hi porten tots tres el <strong>3b</strong>. Semblava un error de cpl-app. <strong>No ho és:</strong> el volum imprès del CPL diu exactament el que diu l’app.</p>
+    <div class="tw"><table><thead><tr><th>setmana del salteri</th><th>cpl-app i volum imprès (ant3)</th><th>castellà / anglès / italià</th></tr></thead>
+    <tbody><tr><td class="k">I i III</td><td>Tots els pobles, Senyor, vindran a fer-vos homenatge</td><td>«All nations will come and worship before you, O Lord» — coincideixen</td></tr><tr><td class="k">II i IV</td><td>Les vostres obres són grans i admirables, oh Rei de tots els pobles</td><td>«Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!» — &lt;strong&gt;difereixen&lt;/strong&gt;</td></tr></tbody></table></div>
     <details class="more">
       <summary>Per què, i com es va provar</summary>
       <div class="mb">
-        <p>El 2 de gener, sants Basili el Gran i Gregori Nazianzè, la fila de <code>santsMemories</code> du <code>Categoria = "0000"</code> i <code>citaLBLaudes = "-"</code>, igual que sant Gregori el Gran: cpl-app resa la lectura de la fèria de Nadal. Però el cicle és <code>MEMORY_PROPER</code>, no <code>MEMORY_FERIAL1</code>, i el join no redirigeix. Les dues memòries són del Comú de pastors —bisbes i papa comparteixen lectura breu a <code>OficisComuns</code>: Hb 13, 7-9a i 1Pe 5, 1-4 per a 06a, 06b, 06c i 06d— i per això saints-app les fa compartir casella, correctament. La col·lisió no és de l’índex: és nostra. Reté 4 de les 13 caselles del 3 de setembre.</p>
+        <p>Diferència d’edició, com la <strong>D-001</strong>. El català tria Ap 15, 3a on les altres trien el 3b; a les setmanes I i III totes les edicions coincideixen, i per això allà no es veu res.</p>
+        <p><strong>Conseqüència:</strong> Cap sobre les dades. Les 75 dates de <code>salmos_antifonas/9340</code> i <code>/9256</code> segueixen retingudes, però <strong>no per aquest text</strong>: el conflicte el causa <strong>F8</strong> —el 3 i el 4 de gener són salteri de la setmana I i cauen a la casella de les setmanes II/IV—, i es resolen soles quan es corregeixi.</p>
+        <ul class="pl"><li><strong>El volum imprès</strong> — Litúrgia de les Hores del CPL, <strong>volum III</strong>: Salteri, setmana II, divendres, Vespres — l’antífona 3 diu paraula per paraula la de l’app. La setmana IV (Salm 144 I i II) també. Comprovat per en Pau el 4-IX-2026</li><li><strong>Les altres llengües, per contrast</strong> — Castellà, data exacta del 4-IX-2026: «Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!» <a href="https://apps.idteologia.org/index.php?fecha=2026-09-04&amp;r=liturgiaDeLasHoras%2Fespanola&amp;rezo=visperas" target="_blank" rel="noopener">font ↗</a></li><li><strong>Anglès</strong> — Ant. 3 «King of all the ages, your ways are perfect and true» <a href="https://www.liturgies.net/Liturgies/Catholic/loh/week2fridayep.htm" target="_blank" rel="noopener">font ↗</a></li><li><strong>El text bo no és a la BD</strong> — Escombrada de totes les antífones que fan parella amb el càntic Ap 15 a tota la base: 15 textos, i només 2 són del salteri (les setmanes I/III i les II/IV). La BD guarda <strong>una sola antífona per fila</strong>, sense còpia redundant — o sigui que no hi havia manera de resoldre-ho sense el llibre</li></ul>
+        <p class="fixline"><span class="who">correcció aplicada</span> Cap canvi. Queda registrada perquè no es torni a obrir: vegeu <strong>D-003</strong> al registre de canvis. </p>
         
-        <ul class="pl"><li><strong>El cicle</strong> — <code>all_laudes.json</code>: 494 claus, 7 amb <code>MEMORY_PROPER</code> — Agnès, Basili i Gregori Nazianzè, Àngels Custodis, Martí de Tours, Mare de Déu dels Dolors, Mare de Déu del Roser, Martiri de sant Joan Baptista.</li><li><strong>Que no hi ha pestanya ferial</strong> — <code>LaudesPage.vue:576</code> — <code>if (dateStore.isTodayMemory && data.value.cycle !== "MEMORY_PROPER") value = data.value[`${field}_Ferial`]</code>. Amb <code>MEMORY_PROPER</code> no hi ha <code>_Ferial</code> on posar-ho.</li><li><strong>Que el Comú és el bo</strong> — <code>OficisComuns</code>, les 15 files 06* (prevere, bisbe, papa, diversos) porten totes <code>citaLBLaudes = "He 13, 7-9a"</code> i <code>citaLBVespres = "1Pe 5, 1-4"</code>. El castellà de <code>lectura_breve_citas/66</code> i <code>/3355</code> diu exactament això.</li><li><strong>La minoria, perseguida</strong> — Les 9 dates que discrepen a <code>/66</code> són tots 2 de gener (2017-2026, menys el 2022); les 8 de <code>/3355</code>, també.</li></ul>
-        <p class="fixline"><span class="who">correcció aplicada</span> Quan el dia no té pestanya ferial i el camp és <code>fromFerial</code>, <strong>descartar l’observació</strong> en comptes d’arxivar-la a la casella del sant, i deixar que el Comú ompli aquella casella com ja fa als dies <code>MEMORY_FERIAL*</code>. No n’hi ha prou d’eixamplar la regexp de <code>hasSwitch()</code>: allà no hi ha cap casella ferial on redirigir el text. <code>migration-to-saints/lib/memorial-ferial.js · lib/common-office.js · join-content.test.js</code></p>
         
-        
-        <p class="note"><strong>Ja fet</strong> (MIGRA-004, 3-09-2026): <code>isProperOnly()</code> a <code>lib/memorial-ferial.js</code> i <code>commonOverrides()</code> a <code>lib/common-office.js</code>, amb 6 tests nous a <code>common-office.test.js</code>. El Comú només es queda el camp si la cita castellana nomena la seva família, i llavors el text ferial de cpl-app no s’observa. Mesurat sobre l’índex de <code>dev</code> amb la sonda refeta: ids resolts 7.179 → 7.188, pendents 791 → 782 — els 9 són <code>preces_contenido</code> de sant Martí de Tours. El 2 de gener, que era l’exemple amb què es va trobar, ja no hi entra: eprex l’ha reclassificat a <code>MEMORY_FERIAL2</code>, o sigui que en queden 6 i no 7. Decisió: decisions/D-002-el-comu-als-oficis-propis.md.</p>
+        <p class="note">Lliçó per a la revisió: <strong>per a la redacció d’un text català, la concordança entre llengües no és prova de res</strong> — tres llengües coincidien i el català tenia raó. Només el volum imprès ho decideix. Els dos indicis que semblaven prova interna —que cpl-app encerta les setmanes I i III, i que l’antífona sembla un retall del cos del càntic de la mateixa fila— no ho eren.</p>
         
       </div>
     </details>
@@ -199,28 +177,34 @@ Diòcesi de Barcelona.</p>
     
 
     <div class="prog">
-      <div class="bar" role="img" aria-label="53 fetes, 3 retingudes, 0 per collir, 1 sense font, de 57">
-        <span class="sg have" style="width:92.98245614035088%"></span>
+      <div class="bar" role="img" aria-label="54 fetes, 3 retingudes, 0 per collir, 0 sense font, de 57">
+        <span class="sg have" style="width:94.73684210526316%"></span>
         <span class="sg blk" style="width:5.2631578947368425%"></span>
         <span class="sg hav" style="width:0%"></span>
       </div>
       <p class="lg">
-        <span class="k have"></span>53 fetes
+        <span class="k have"></span>54 fetes
         <span class="k blk"></span>3 retingudes
         
-        <span class="k out"></span>1 sense font
-        <span class="pc">95% de 56 assolibles</span>
+        
+        <span class="pc">95% de 57 assolibles</span>
       </p>
     </div>
 
     <details class="camps"><summary>Els 51 camps, un per un</summary><section class="hr">
       <h4>Laudes <span class="hc">25 camps, tots coincideixen</span></h4>
       
-      <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/66</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/65</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/67</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/67</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/66</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/68</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/68</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/67</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/69</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/128</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/129</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/2324</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/2325</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/2326</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/2327</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/2328</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/2329</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/251</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/63</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/63</span></span></li><li class="fr ok"><span>Precs — peticions (1/4) <span class="cell">preces_contenido/1601</span></span></li><li class="fr ok"><span>Precs — peticions (2/4) <span class="cell">preces_contenido/1602</span></span></li><li class="fr ok"><span>Precs — peticions (3/4) <span class="cell">preces_contenido/1603</span></span></li><li class="fr ok"><span>Precs — peticions (4/4) <span class="cell">preces_contenido/1604</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/312</span></span></li></ul></details>
+      <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/72</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/152</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/73</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/154</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/153</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/155</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/155</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/154</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/156</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/183</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/184</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/4340</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/4341</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/4342</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/4343</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/4344</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/4345</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/40</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/118</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/118</span></span></li><li class="fr ok"><span>Precs — peticions (1/4) <span class="cell">preces_contenido/3016</span></span></li><li class="fr ok"><span>Precs — peticions (2/4) <span class="cell">preces_contenido/3017</span></span></li><li class="fr ok"><span>Precs — peticions (3/4) <span class="cell">preces_contenido/3018</span></span></li><li class="fr ok"><span>Precs — peticions (4/4) <span class="cell">preces_contenido/3019</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/185</span></span></li></ul></details>
     </section><section class="hr">
-      <h4>Vespres <span class="hc">26 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>26 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/10774</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9251</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/10775</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/10775</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9252</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/10776</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11030</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/9253</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11031</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3437</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3438</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/17283</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/17284</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/17285</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/17286</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/17287</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/17288</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1347</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1179</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1179</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/7445</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/7446</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/7447</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/7448</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/7449</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/312</span></span></li></ul></details>
+      <h4>Vespres <span class="hc">1 de 26 divergeixen</span></h4>
+      <ul class="fl"><li class="fr no">
+    <span>3r salm — antífona <span class="cell">salmos_antifonas/9340</span> <a class="ref" href="#F13-2026-09-04">F13</a></span>
+    <div class="two">
+      <div><span class="who">cpl-app</span><p class="lit">Les vostres obres són grans i admirables, oh Rei de tots els pobles.</p></div>
+      <div><span class="who">saints-app</span><p class="lit">Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!</p></div>
+    </div>
+  </li></ul>
+      <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/11115</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9338</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/11116</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/4576</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9339</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/4577</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11036</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11037</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3472</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3473</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/18159</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/18160</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/18161</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/18162</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/18163</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/18164</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1136</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1214</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1100</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/8202</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/8203</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/8204</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/8205</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/8206</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/3839</span></span></li></ul></details>
     </section></details>
   </article>
 
@@ -228,66 +212,7 @@ Diòcesi de Barcelona.</p>
 <h2 id="prompts">Què fer ara</h2>
 <p class="sub">La revisió no toca res. Cada correcció va amb un prompt per enganxar en un fil
 nou, que ja porta les proves a dins perquè no s'hagi de tornar a investigar.</p>
-<div class="pr">
-  <h3><span class="vp v2">F11 · saints-app / eprex</span> La Visitació resa les I Vespres de l’Ascensió, i per això reté el càntic del dijous</h3>
-  <pre><code># F11 · La Visitació resa les I Vespres de l’Ascensió, i per això reté el càntic del dijous
 
-Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
-Veredicte de la revisió: **2 — saints-app / eprex**.
-Dies on es va veure: 2026-09-03.
-
-## Què passa
-Des del refactor de Primeres Vespres (PR #1694), que va treure el sufix _1v de l’identificador i les va passar a camps *_PrimerasVisperas dins de la celebració, això es llegeix directament: 16 dels 20 camps de visitation_of_mary__ANY són, id per id, els *_PrimerasVisperas de ascension_of_the_lord__ANY. Dels quatre que resten, el respons i els precs també són de l’Ascensió amb ids diferents; l’única peça pròpia de la festa és l’oració final. I la Visitació és una festa, que no en té, de I Vespres. Es veu el 3 de setembre perquè el càntic de l’Ascensió i el del dijous del saltiri comparteixen casella. Verificat contra origin/dev: l’entrada no ha canviat gens.
-
-La casella salmos_citas/11030 la comparteixen 235 dies: 229 hi volen el càntic d’Ap 11, 17-18 —el del dijous— i 6 hi volen Ef 1, 3-10. Els 6 són exactament els 31 de maig en què cpl-app celebra la Visitació. Mentre això no es reparteixi, les tres caselles del 3r càntic de les Vespres del 3 de setembre (11030, 9253, salmos_textos/11031) queden retingudes per a sempre: cpl-app hi aporta dos textos i el join no pot triar.
-
-| camp | cpl-app (31 de maig) | saints-app |
-|---|---|---|
-| 1r salm | Salm 121 | Salmo 112 · salmos_citas/11031 |
-| Ant. 1 | «Maria entrà a casa de Zacaries i saludà Elisabet» | «Salí del Padre y he venido al mundo… » · salmos_antifonas/10271 |
-| 2n salm | Salm 126 | Salmo 116 · salmos_citas/152 |
-| Ant. 2 | «…el nen ha saltat d’entusiasme dins les meves entranyes» | «El Señor Jesús… subió al cielo» · salmos_antifonas/10272 |
-| Càntic | Ef 1, 3-10 | Ap 11, 17-18; 12, 10b-12a · salmos_citas/11030 |
-| Ant. 3 | «Ets beneïda entre les dones…» | «Nadie ha subido al cielo…» · salmos_antifonas/10273 |
-| Lectura breu | — | Ef 2, 4-6 · lectura_breve_citas/3695 |
-| Ant. Magníficat | «Totes les generacions em diran benaurada…» | «Padre, he manifestado tu nombre… Aleluya» · 1443 |
-| Himne | — | «¿Y dejas, Pastor santo…» · himnos/3835 |
-
-## Com es va provar
-- **Prova interna · la casella bona ja existeix** — A dev, l’Assumpció, la Immaculada, la Nativitat de Maria i la Mare de Déu dels Dolors apunten totes quatre les Vespres a salmos_citas/4577 (Salm 121), 3424 (Salm 126) i 11042 (Ef 1, 3-10) —el Comú de la Mare de Déu— amb antífones pròpies de cadascuna. La Visitació és l’única festa mariana que no hi apunta.
-- **Prova interna · de qui és la còpia** — Ho diu l’entrada de l’Ascensió: himno_PrimerasVisperas 3835, primer_salmo_cita_PrimerasVisperas 11031, segundo_salmo_cita_PrimerasVisperas 152, tercer_salmo_cita_PrimerasVisperas 11030, lectura_biblica_cita_PrimerasVisperas 3695, cantico_evangelico_antifona_PrimerasVisperas 1443 — tots ells els camps homònims de la Visitació. I cap dels 8 anys del manifest no és una Ascensió: el 2018 va ser el 10 de maig, el 2019 el 30, el 2021 el 13.
-- **Prova interna · Al·leluia fora de lloc** — Les tres antífones de saints-app acaben en «Aleluya». El 31 de maig de 2024 ja era temps ordinari (Pentecosta, el 19 de maig), i el 31 de maig de 2022 i de 2021 també.
-- **Prova interna · les antífones bones són òrfenes** — salmos_antifonas/11021 «María entró en casa de Zacarías y saludó a Isabel» i /840 «Bendita tú entre las mujeres, y bendito el fruto de tu vientre» existeixen a commons/es i no les referencia cap celebració dels deu all_*.json. Són, literalment, les antífones 1a i 3a que cpl-app resa el 31 de maig. La mateixa signatura que EPREX-001.
-- **cpl-app, els 6 anys** — Salm 121 · Salm 126 · Ef 1, 3-10, amb les antífones pròpies de la Visitació. No varia cap any.
-
-## Què s’ha de canviar
-A: `eprex · all_visperas.json, entrada visitation_of_mary__ANY`
-
-Repuntar les Vespres de la Visitació al Comú de la Mare de Déu, que ja existeix i que l’Assumpció i el Roser ja fan servir. Les antífones han de ser les pròpies de la Visitació, no les de cap altra festa mariana.
-
-| camp | ara (= I Vespres de l’Ascensió) | hauria de ser |
-|---|---|---|
-| primer_salmo_cita / _texto | 11031 / 11032 | 4577 / 4578 |
-| segundo_salmo_cita / _texto | 152 / 153 | 3424 / 3425 |
-| tercer_salmo_cita / _texto | 11030 / 11031 | 11042 / 11043 |
-| salmos_antifonas 1-3 | 10271-10273 (Ascensió) | 11021 · ? · 840 — les 1a i 3a ja hi són, òrfenes; la 2a («…el nen ha saltat d’entusiasme…») no s’ha trobat |
-| cantico_evangelico_antifona | 1443 (Ascensió) | pròpia de la Visitació |
-| lectura_biblica_cita | 3695 (Ef 2, 4-6) | la del Comú de la Mare de Déu |
-| himno | 3835 (Ascensió) | el de la Visitació o el del Comú |
-
-&gt; Només les Vespres. Laudes del 31 de maig és correcte i propi de la Visitació — himne «Y salta el pequeño Juan en el seno de Isabel», antífona «María se puso en camino», lectura Jl 2, 27-3, 1—, o sigui que el defecte és d’una sola entrada. Un cop repuntada, les tres caselles retingudes del 3 de setembre es resolen soles.
-
-## Com tancar-ho
-- El contingut és d'eprex, **fora d'aquest repositori**. No hi facis canvis directament.
-- Deixa la proposta escrita a `migration-to-saints/cpl-bugs/` amb els ids concrets, perquè es pugui passar a qui manté saints-app.
-
-## Comprovació
-Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
-
-```sh
-make review DATES=2026-09-03
-```</code></pre>
-</div>
 
 <hr>
 <p class="note">cpl-app resolt amb els seus Serveis reals sobre <code>cpl-app.db</code>;

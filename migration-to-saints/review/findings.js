@@ -518,6 +518,56 @@ const FINDINGS = [
       promptable: false,
     },
   },
+  {
+    id: 'F13',
+    verdict: 4,
+    days: ['2026-09-04'],
+    hours: ['Vespers'],
+    headline:
+      'L’antífona catalana del càntic Ap 15 diu el vers 3a i les altres llengües el 3b — i la catalana és bona',
+    resolved: 'D-003, tancada el 4 de setembre de 2026 amb el volum imprès',
+    detail:
+      'Divendres, Vespres, càntic <code>Ap 15, 3-4</code>. cpl-app hi posa d’antífona ' +
+      '«Les vostres obres són grans i admirables, oh Rei de tots els pobles» — que és ' +
+      '<strong>Ap 15, 3a</strong>, el primer hemistiqui del càntic mateix — i el castellà, ' +
+      'l’anglès i l’italià hi porten tots tres el <strong>3b</strong>. Semblava un error de ' +
+      'cpl-app. <strong>No ho és:</strong> el volum imprès del CPL diu exactament el que diu l’app.',
+    table: {
+      head: ['setmana del salteri', 'cpl-app i volum imprès (ant3)', 'castellà / anglès / italià'],
+      rows: [
+        ['I i III', 'Tots els pobles, Senyor, vindran a fer-vos homenatge', '«All nations will come and worship before you, O Lord» — coincideixen'],
+        ['II i IV', 'Les vostres obres són grans i admirables, oh Rei de tots els pobles', '«Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!» — <strong>difereixen</strong>'],
+      ],
+    },
+    why:
+      'Diferència d’edició, com la <strong>D-001</strong>. El català tria Ap 15, 3a on les altres ' +
+      'trien el 3b; a les setmanes I i III totes les edicions coincideixen, i per això allà no ' +
+      'es veu res.',
+    impact:
+      'Cap sobre les dades. Les 75 dates de <code>salmos_antifonas/9340</code> i <code>/9256</code> ' +
+      'segueixen retingudes, però <strong>no per aquest text</strong>: el conflicte el causa ' +
+      '<strong>F8</strong> —el 3 i el 4 de gener són salteri de la setmana I i cauen a la casella ' +
+      'de les setmanes II/IV—, i es resolen soles quan es corregeixi.',
+    proof: [
+      ['El volum imprès', 'Litúrgia de les Hores del CPL, <strong>volum III</strong>: Salteri, setmana II, divendres, Vespres — l’antífona 3 diu paraula per paraula la de l’app. La setmana IV (Salm 144 I i II) també. Comprovat per en Pau el 4-IX-2026', null],
+      ['Les altres llengües, per contrast', 'Castellà, data exacta del 4-IX-2026: «Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!»', 'https://apps.idteologia.org/index.php?fecha=2026-09-04&r=liturgiaDeLasHoras%2Fespanola&rezo=visperas'],
+      ['Anglès', 'Ant. 3 «King of all the ages, your ways are perfect and true»', 'https://www.liturgies.net/Liturgies/Catholic/loh/week2fridayep.htm'],
+      ['El text bo no és a la BD', 'Escombrada de totes les antífones que fan parella amb el càntic Ap 15 a tota la base: 15 textos, i només 2 són del salteri (les setmanes I/III i les II/IV). La BD guarda <strong>una sola antífona per fila</strong>, sense còpia redundant — o sigui que no hi havia manera de resoldre-ho sense el llibre', null],
+    ],
+    fix: {
+      where: '—',
+      summary:
+        'Cap canvi. Queda registrada perquè no es torni a obrir: vegeu <strong>D-003</strong> al ' +
+        'registre de canvis.',
+      note:
+        'Lliçó per a la revisió: <strong>per a la redacció d’un text català, la concordança entre ' +
+        'llengües no és prova de res</strong> — tres llengües coincidien i el català tenia raó. ' +
+        'Només el volum imprès ho decideix. Els dos indicis que semblaven prova interna —que ' +
+        'cpl-app encerta les setmanes I i III, i que l’antífona sembla un retall del cos del càntic ' +
+        'de la mateixa fila— no ho eren.',
+      promptable: false,
+    },
+  },
 ];
 
 const VERDICTS = {
@@ -541,6 +591,9 @@ const CLAIMS = {
   F1: (date, row) => date === '2026-08-24' && row.hour === 'Vespers' && row.key !== 'oracion_final',
   F3: (date, row) => row.key === 'cantico_evangelico_antifona'
     && ['2457', '2458', '2459'].includes(String(row.id)),
+  // Nomes l'antifona: la resta de la salmodia d'aquestes Vespres quadra amb el castella.
+  F13: (date, row) => row.hour === 'Vespers' && row.key === 'tercer_salmo_antifona'
+    && ['9340', '9256'].includes(String(row.id)),
 };
 
 function claimFor(date, row) {

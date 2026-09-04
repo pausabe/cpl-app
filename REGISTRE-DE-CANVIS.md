@@ -41,8 +41,10 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
 | [SA-05](#sa-05) | 2026-09-03 | saints-app | contingut | Es regenera | — |
 | [SA-06](#sa-06) | 2026-09-03 | saints-app | merge | No — va al git | `1a35a54a6` |
+| [SA-07](#sa-07) | 2026-09-04 | saints-app | contingut | No — va al git | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
+| [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 
 **Errors de cpl-app trobats fins ara: 3.** Dos són de dades i un de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -424,6 +426,34 @@ casella es quedava buida en català.
 Va en la mateixa direcció que la [D-001](#d-001), però sense xarxa: allà la fèria era a un toc
 de distància, i aquí no hi és.
 
+
+<a id="d-003"></a>
+## D-003
+
+**L'antífona del càntic Ap 15 dels divendres: el català diu el vers 3a i les altres llengües el
+3b — i el català és correcte** · 4 de setembre de 2026
+
+Revisant el 4 de setembre (divendres, setmana II del salteri), l'antífona 3 de Vespres, davant
+del càntic `Ap 15, 3-4`, va semblar un error de cpl-app. Diu «Les vostres obres són grans i
+admirables, oh Rei de tots els pobles» — **Ap 15, 3a**, el primer hemistiqui del càntic mateix —
+i el castellà, l'anglès i l'italià hi porten tots tres el **3b**. **No és un error.**
+
+| | |
+|---|---|
+| Veredicte | **4 — no és error.** Cap canvi a cpl-app ni a la base de dades |
+| Prova | **El volum imprès.** En Pau ho ha comprovat al **volum III** de la Litúrgia de les Hores del CPL: Salteri, setmana II, divendres, Vespres, l'antífona 3 diu paraula per paraula el que diu l'app. I la setmana IV (Salm 144 I i II) també |
+| Per contrast | Castellà «Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!» · anglès «King of all the ages, your ways are perfect and true» · italià «Giuste e vere sono le tue vie, o Re delle genti». És una **diferència d'edició**, no un error de ningú — el mateix cas que [D-001](#d-001) |
+| Efecte a la migració | Cap. Les 75 dates de `salmos_antifonas/9340` i `/9256` es desbloquegen soles quan es corregeixi **F8** (vegeu [EPREX-002](#eprex-002)): el conflicte no el causa el text, sinó que el 3 i el 4 de gener —salteri de la **setmana I**— cauen a la casella de les setmanes II/IV |
+
+**El que va fallar en la investigació.** El llistó de la revisió és «fonts externes en 2-3
+idiomes», i aquí **tres llengües coincidien i el català continuava tenint raó**. Hi havia dos
+indicis que semblaven prova interna i no ho eren: que cpl-app encerta les setmanes I i III (que
+és cert, però només vol dir que allà les edicions coincideixen), i que l'antífona sembla un
+retall del cos del càntic de la mateixa fila (que és una coincidència de la traducció, no una
+petjada de transcripció). **Per a la redacció d'un text català, la concordança entre llengües no
+és prova de res**: només ho és el volum imprès. Apuntat al parany 7 de la skill `revisio-dia`.
+
+
 # Canvis a saints-app
 
 Repositori `Saints-App/saints-app`. Aquí no hi hem corregit cap error litúrgic: el que hi hem
@@ -483,6 +513,35 @@ ja **no és `MEMORY_PROPER`** sinó `MEMORY_FERIAL2` — eprex l'ha reclassifica
 doncs, ja té pestanya ferial. MIGRA-004 segueix fent falta (queden **6** celebracions
 `MEMORY_PROPER`, no 7), però l'exemple amb què es va trobar ja no val i els números s'han de
 refer.
+
+<a id="sa-07"></a>
+### SA-07 · La invitació al Parenostre, en català · 2026-09-04
+
+`commons/ca/invitacion_padrenuestro.json` passa de **26 entrades a 51**. Les 26 que hi havia
+cobrien les caselles de Laudes; faltaven totes les de Vespres. Amb les 25 noves, les **51
+caselles en ús** queden cobertes i els **6.324 oficis** del manifest tenen la invitació en
+català.
+
+| | |
+|---|---|
+| Fitxer | `src/store/db/day_specific_texts/commons/ca/invitacion_padrenuestro.json` (branca `catalan-language-support-dev`) |
+| Font | **Traducció del castellà**, com les 26 que ja hi havia. Reutilitza les fórmules ja fixades al fitxer: `ens atrevim a dir`, `ens va ensenyar el Senyor`, `acudim`, `amb confiança` |
+| Efecte mesurat | El 4-IX-2026 puja de **93% a 95%** i `missing` passa d'1 a 0. Les 3 caselles que hi queden són de [F8](#eprex-002), no d'aquí |
+| Es regenera? | **No.** Aquest fitxer es manté a mà: el join no observa mai aquesta taula |
+
+**Per què no surt de cpl-app**, que sí que té el text i complet. cpl-app duu la invitació al
+final del camp `pregaries` —811 files, totes a l'últim renglò, zero excepcions— però en té
+**234 de diferents**, i l'índex de saints-app només té **53 caselles**. Comprovat: 14 dies que
+comparteixen la casella `invitacion_padrenuestro/1098` porten **13 invitacions catalanes
+diferents** a cpl-app. No hi caben. Per això el join la deixa expressament de banda
+(`lib/cpl-day-resolver.js:91`, `lib/common-office.js:155`).
+
+**El peatge, acceptat conscientment.** L'edició castellana reaprofita ~53 invitacions per a tot
+l'any; la catalana en canvia gairebé cada dia. O sigui que a saints-app la invitació **no serà
+la que el volum català porta aquell dia**. És el mateix tipus de diferència que [D-001](#d-001)
+i [D-003](#d-003), però aquí escollida per nosaltres: és l'única cosa que cap a l'índex. Si
+algun dia es vol el text autèntic, cal que eprex admeti la invitació per dia — canvi de model,
+com la proposta de I Vespres de [F5](#eprex-002).
 
 <a id="sa-03"></a>
 ### SA-03 · Reexportació de Vespres després de MIGRA-001 · 2026-09-01
