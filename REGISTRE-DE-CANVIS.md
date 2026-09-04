@@ -377,23 +377,27 @@ Com a EPREX-001: si s'accepta, cal **tornar a passar la sonda** abans del join.
 <a id="eprex-003"></a>
 ## EPREX-003
 
-**Tres entrades de l'octava de Nadal porten la salmòdia de I Vespres** · 4 de setembre de 2026
+**Sants Innocents porta a Vespres la salmòdia de les I Vespres** · 4 de setembre de 2026
 
-A `all_visperas.json`, de les deu entrades de Vespres de l'octava de Nadal, **set** porten
-`primer_salmo_cita = 11025` (Salm 109) i `segundo_salmo_cita = 54` (Salm 129) —la salmòdia de
-l'octava— i **tres** porten `11031` (Salm 112) i `155` (Salm 147), que és la parella de **I
-Vespres**. Afecta **totes les llengües**.
+`holy_innocents_martyrs__ANY` duu `primer_salmo_cita = 11031` (Salm 112) i `segundo_salmo_cita =
+155` (Salm 147) — la parella de **I Vespres**. Les seves dues germanes de l'octava, sant Esteve i
+sant Joan, duen `11025` (Salm 109) i `54` (Salm 129). Afecta **totes les llengües**.
 
 | | |
 |---|---|
 | Estat | **Proposat, pendent d'enviar** |
-| Entrades | `holy_innocents_martyrs__ANY`, `christmas_octave_day_4__ANY`, `christmas_octave_day_7__ANY` |
-| Fix | Repunteig d'ids: `primer_salmo_cita` 11031 → **11025**, `segundo_salmo_cita` 155 → **54**. Cal revisar-hi també el tercer element, que a Sants Innocents és `11042` (Ef 1, 3-10, càntic de I Vespres) quan Nadal hi porta `11072` (Col 1, 12-20) |
-| Prova interna | Set germanes de la mateixa octava —Nadal, octava 2, 3, 5, 6, sant Esteve i sant Joan— coincideixen; les tres discrepants porten la parella reconeixible de I Vespres. cpl-app dona Salm 129 a les tres |
+| Entrada | `holy_innocents_martyrs__ANY` (i el seu bessó `christmas_octave_day_4__ANY`, que és el mateix dia i té el mateix contingut) |
+| Fix | `primer_salmo_cita`/`_texto` `11031`/`11032` → **`11025`/`11026`** · `segundo_salmo_cita`/`_texto` `155`/`156` → **`54`/`55`** · `tercer_salmo_cita`/`_texto` `11042`/`11043` → **`11072`/`11073`** |
+| Prova interna | Sant Esteve (26-XII) i sant Joan (27-XII), les dues festes germanes de la mateixa octava i del mateix rang, porten `11025`+`54`+`11072`. Sants Innocents és l'única de les tres que no |
+| Per què només es veu alguns anys | Quan el 29 de desembre és la Sagrada Família, la tarda del 28 **sí** que són I Vespres i la fitxa encerta —cpl-app hi dona Salm 112 · Salm 147 el 2024. Els anys en què el 29 és fèria de l'octava (2021, 2022, 2023, 2026) toquen les II Vespres de la festa i cpl-app dona Salm 109 · Salm 129 |
 | Efecte a la migració | És **l'únic** que reté ara `salmos_citas/155` i `salmos_textos/156`: 176 dies hi volen el Salm 147 i 7 el Salm 129. Desbloquejant-ho, el **4-IX-2026 arriba al 100%** |
 
-Mateixa forma que [EPREX-001](#eprex-001) i [EPREX-002](#eprex-002): una fitxa clonada d'un
-altre ofici. Com sempre, si s'accepta cal **tornar a passar la sonda** abans del join.
+**El 31 de desembre NO s'ha de tocar.** `christmas_octave_day_7__ANY` duu la mateixa parella
+`11031`+`155`, però allà és **correcta**: és la vigília de Santa Maria Mare de Déu i toquen I
+Vespres. cpl-app hi dona Salm 112 · Salm 147, igual que l'app, tots els anys del manifest.
+
+Mateixa forma que [EPREX-001](#eprex-001) i [EPREX-002](#eprex-002): una fitxa amb el contingut
+d'un altre ofici. Com sempre, si s'accepta cal **tornar a passar la sonda** abans del join.
 
 # Qüestions tancades sense canvi
 

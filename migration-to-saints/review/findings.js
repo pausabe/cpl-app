@@ -594,47 +594,50 @@ const FINDINGS = [
     verdict: 2,
     days: ['2026-09-04'],
     hours: ['Laudes'],
-    headline: 'Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres',
+    headline: 'Sants Innocents porta a Vespres la salmòdia de les I Vespres',
     detail:
       'La casella <code>salmos_citas/155</code> (Salm 147) la comparteixen els divendres ' +
-      'ordinaris a Laudes i tres entrades de l’octava de Nadal a Vespres, que hi volen el Salm ' +
-      '129. Com que una casella només pot dur un text, el join no hi escriu res — <strong>i és ' +
-      'l’únic que impedeix que el 4 de setembre arribi al 100%</strong>.',
+      'ordinaris a Laudes i <code>holy_innocents_martyrs__ANY</code> a Vespres, que els anys en ' +
+      'què el 29 de desembre no és la Sagrada Família hi vol el Salm 129. Una casella només pot ' +
+      'dur un text, o sigui que el join no hi escriu res — <strong>i és l’únic que impedeix que ' +
+      'el 4 de setembre arribi al 100%</strong>.',
     table: {
-      head: ['entrades de Vespres de l’octava', '1r salm', '2n salm', ''],
+      head: ['festa de l’octava', '1r salm', '2n salm', '3r', ''],
       rows: [
-        ['Nadal, octava 2·3·5·6, sant Esteve, sant Joan (7)', '11025 · Salm 109', '54 · Salm 129', '✅'],
-        ['Sants Innocents, octava 4, octava 7 (3)', '11031 · Salm 112', '155 · <strong>Salm 147</strong>', '❌ és la de I Vespres'],
+        ['sant Esteve (26-XII)', '11025 · Salm 109', '54 · Salm 129', '11072', '✅'],
+        ['sant Joan (27-XII)', '11025 · Salm 109', '54 · Salm 129', '11072', '✅'],
+        ['<strong>Sants Innocents (28-XII)</strong>', '11031 · Salm 112', '<strong>155 · Salm 147</strong>', '11042', '❌ és la de I Vespres'],
       ],
     },
     why:
-      'Set germanes de la mateixa octava coincideixen i tres no, i les tres porten la parella ' +
-      'reconeixible de I Vespres (Salm 112 · Salm 147). Mateixa forma que l’EPREX-001 i ' +
-      'l’EPREX-002: una fitxa clonada d’un altre ofici. Afecta <strong>totes les llengües</strong>.',
+      'Les tres festes de la mateixa octava tenen el mateix rang i dues porten ' +
+      '<code>11025</code>+<code>54</code>. Només es veu alguns anys: quan el 29 de desembre és la ' +
+      'Sagrada Família, la tarda del 28 <strong>sí</strong> que són I Vespres i la fitxa encerta ' +
+      '—cpl-app hi dona Salm 112 · Salm 147 el 2024. Els anys en què el 29 és fèria de l’octava ' +
+      '(2021, 2022, 2023, 2026) toquen les II Vespres i cpl-app dona Salm 109 · Salm 129. ' +
+      'La fitxa només té la primera versió.',
     impact:
-      '7 dies de <code>holy_innocents_martyrs</code> retenen <code>salmos_citas/155</code> i ' +
-      '<code>salmos_textos/156</code>, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa ' +
-      'de 96% a <strong>100%</strong>.',
+      '7 dies retenen <code>salmos_citas/155</code> i <code>salmos_textos/156</code>, que 176 ' +
+      'dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a <strong>100%</strong>.',
     proof: [
-      ['Prova interna', 'A <code>all_visperas.json</code>, 7 de les 10 entrades de l’octava porten <code>11025</code>+<code>54</code>; les 3 discrepants porten <code>11031</code>+<code>155</code>', null],
-      ['cpl-app', 'Dona el Salm 129 a les tres, els 7 anys del manifest', null],
-      ['No és el defecte de les I Vespres', 'Corregit el rang a <strong>SA-09</strong>, les 6 observacions de vigília van desaparèixer d’aquesta casella i van quedar només aquestes 7', null],
+      ['Prova interna', 'Sant Esteve i sant Joan, les germanes de la mateixa octava, porten <code>11025</code>+<code>54</code>+<code>11072</code>; Sants Innocents és l’única que no', null],
+      ['cpl-app, els dos casos', '2024-12-28 (el 29 és la Sagrada Família): Salm 112 · Salm 147, i l’app hi encerta. 2021, 2022, 2023 i 2026: Salm 109 · Salm 129, i l’app hi falla', null],
+      ['El 31 de desembre NO és el mateix cas', '<code>christmas_octave_day_7__ANY</code> duu la mateixa parella i allà és correcta: és la vigília de Santa Maria Mare de Déu. cpl-app hi dona Salm 112 · Salm 147 tots els anys', null],
     ],
     fix: {
       where: 'eprex · all_visperas.json',
       summary:
-        'Repuntar <code>holy_innocents_martyrs__ANY</code>, <code>christmas_octave_day_4__ANY</code> ' +
-        'i <code>christmas_octave_day_7__ANY</code>: <code>primer_salmo_cita</code> 11031 → ' +
-        '<strong>11025</strong>, <code>segundo_salmo_cita</code> 155 → <strong>54</strong>.',
+        'Repuntar <code>holy_innocents_martyrs__ANY</code> (i el seu bessó ' +
+        '<code>christmas_octave_day_4__ANY</code>) a la salmòdia de les II Vespres de l’octava.',
       table: {
         head: ['camp', 'ara', 'hauria de ser'],
         rows: [
-          ['primer_salmo_cita', '11031 (Salm 112)', '11025 (Salm 109)'],
-          ['segundo_salmo_cita', '155 (Salm 147)', '54 (Salm 129)'],
-          ['tercer_salmo_cita (Sants Innocents)', '11042 (Ef 1, 3-10)', 'a revisar — Nadal hi porta 11072 (Col 1, 12-20)'],
+          ['primer_salmo_cita / _texto', '11031 / 11032 (Salm 112)', '11025 / 11026 (Salm 109)'],
+          ['segundo_salmo_cita / _texto', '155 / 156 (Salm 147)', '54 / 55 (Salm 129)'],
+          ['tercer_salmo_cita / _texto', '11042 / 11043 (Ef 1, 3-10)', '11072 / 11073 (Col 1, 12-20)'],
         ],
       },
-      note: 'Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). Si s’accepta, cal tornar a passar la sonda abans del join.',
+      note: 'Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). El 31 de desembre no s’hi toca. Si s’accepta, cal tornar a passar la sonda abans del join.',
       promptable: true,
     },
   },

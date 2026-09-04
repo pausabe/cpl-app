@@ -197,21 +197,21 @@ Diòcesi de Barcelona.</p>
     <p class="fh"><a class="fid" href="#F14-2026-09-04">F14</a>
       <span class="vp v2">saints-app / eprex</span>
       
-      <strong>Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres</strong></p>
-    <p class="fd">La casella <code>salmos_citas/155</code> (Salm 147) la comparteixen els divendres ordinaris a Laudes i tres entrades de l’octava de Nadal a Vespres, que hi volen el Salm 129. Com que una casella només pot dur un text, el join no hi escriu res — <strong>i és l’únic que impedeix que el 4 de setembre arribi al 100%</strong>.</p>
-    <div class="tw"><table><thead><tr><th>entrades de Vespres de l’octava</th><th>1r salm</th><th>2n salm</th><th></th></tr></thead>
-    <tbody><tr><td class="k">Nadal, octava 2·3·5·6, sant Esteve, sant Joan (7)</td><td>11025 · Salm 109</td><td>54 · Salm 129</td><td>✅</td></tr><tr><td class="k">Sants Innocents, octava 4, octava 7 (3)</td><td>11031 · Salm 112</td><td>155 · &lt;strong&gt;Salm 147&lt;/strong&gt;</td><td>❌ és la de I Vespres</td></tr></tbody></table></div>
+      <strong>Sants Innocents porta a Vespres la salmòdia de les I Vespres</strong></p>
+    <p class="fd">La casella <code>salmos_citas/155</code> (Salm 147) la comparteixen els divendres ordinaris a Laudes i <code>holy_innocents_martyrs__ANY</code> a Vespres, que els anys en què el 29 de desembre no és la Sagrada Família hi vol el Salm 129. Una casella només pot dur un text, o sigui que el join no hi escriu res — <strong>i és l’únic que impedeix que el 4 de setembre arribi al 100%</strong>.</p>
+    <div class="tw"><table><thead><tr><th>festa de l’octava</th><th>1r salm</th><th>2n salm</th><th>3r</th><th></th></tr></thead>
+    <tbody><tr><td class="k">sant Esteve (26-XII)</td><td>11025 · Salm 109</td><td>54 · Salm 129</td><td>11072</td><td>✅</td></tr><tr><td class="k">sant Joan (27-XII)</td><td>11025 · Salm 109</td><td>54 · Salm 129</td><td>11072</td><td>✅</td></tr><tr><td class="k">&lt;strong&gt;Sants Innocents (28-XII)&lt;/strong&gt;</td><td>11031 · Salm 112</td><td>&lt;strong&gt;155 · Salm 147&lt;/strong&gt;</td><td>11042</td><td>❌ és la de I Vespres</td></tr></tbody></table></div>
     <details class="more">
       <summary>Per què, i com es va provar</summary>
       <div class="mb">
-        <p>Set germanes de la mateixa octava coincideixen i tres no, i les tres porten la parella reconeixible de I Vespres (Salm 112 · Salm 147). Mateixa forma que l’EPREX-001 i l’EPREX-002: una fitxa clonada d’un altre ofici. Afecta <strong>totes les llengües</strong>.</p>
-        <p><strong>Conseqüència:</strong> 7 dies de <code>holy_innocents_martyrs</code> retenen <code>salmos_citas/155</code> i <code>salmos_textos/156</code>, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a <strong>100%</strong>.</p>
-        <ul class="pl"><li><strong>Prova interna</strong> — A <code>all_visperas.json</code>, 7 de les 10 entrades de l’octava porten <code>11025</code>+<code>54</code>; les 3 discrepants porten <code>11031</code>+<code>155</code></li><li><strong>cpl-app</strong> — Dona el Salm 129 a les tres, els 7 anys del manifest</li><li><strong>No és el defecte de les I Vespres</strong> — Corregit el rang a <strong>SA-09</strong>, les 6 observacions de vigília van desaparèixer d’aquesta casella i van quedar només aquestes 7</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Repuntar <code>holy_innocents_martyrs__ANY</code>, <code>christmas_octave_day_4__ANY</code> i <code>christmas_octave_day_7__ANY</code>: <code>primer_salmo_cita</code> 11031 → <strong>11025</strong>, <code>segundo_salmo_cita</code> 155 → <strong>54</strong>. <code>eprex · all_visperas.json</code></p>
+        <p>Les tres festes de la mateixa octava tenen el mateix rang i dues porten <code>11025</code>+<code>54</code>. Només es veu alguns anys: quan el 29 de desembre és la Sagrada Família, la tarda del 28 <strong>sí</strong> que són I Vespres i la fitxa encerta —cpl-app hi dona Salm 112 · Salm 147 el 2024. Els anys en què el 29 és fèria de l’octava (2021, 2022, 2023, 2026) toquen les II Vespres i cpl-app dona Salm 109 · Salm 129. La fitxa només té la primera versió.</p>
+        <p><strong>Conseqüència:</strong> 7 dies retenen <code>salmos_citas/155</code> i <code>salmos_textos/156</code>, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a <strong>100%</strong>.</p>
+        <ul class="pl"><li><strong>Prova interna</strong> — Sant Esteve i sant Joan, les germanes de la mateixa octava, porten <code>11025</code>+<code>54</code>+<code>11072</code>; Sants Innocents és l’única que no</li><li><strong>cpl-app, els dos casos</strong> — 2024-12-28 (el 29 és la Sagrada Família): Salm 112 · Salm 147, i l’app hi encerta. 2021, 2022, 2023 i 2026: Salm 109 · Salm 129, i l’app hi falla</li><li><strong>El 31 de desembre NO és el mateix cas</strong> — <code>christmas_octave_day_7__ANY</code> duu la mateixa parella i allà és correcta: és la vigília de Santa Maria Mare de Déu. cpl-app hi dona Salm 112 · Salm 147 tots els anys</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> Repuntar <code>holy_innocents_martyrs__ANY</code> (i el seu bessó <code>christmas_octave_day_4__ANY</code>) a la salmòdia de les II Vespres de l’octava. <code>eprex · all_visperas.json</code></p>
         
         <div class="tw"><table><thead><tr><th>camp</th><th>ara</th><th>hauria de ser</th></tr></thead>
-    <tbody><tr><td class="k">primer_salmo_cita</td><td>11031 (Salm 112)</td><td>11025 (Salm 109)</td></tr><tr><td class="k">segundo_salmo_cita</td><td>155 (Salm 147)</td><td>54 (Salm 129)</td></tr><tr><td class="k">tercer_salmo_cita (Sants Innocents)</td><td>11042 (Ef 1, 3-10)</td><td>a revisar — Nadal hi porta 11072 (Col 1, 12-20)</td></tr></tbody></table></div>
-        <p class="note">Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). Si s’accepta, cal tornar a passar la sonda abans del join.</p>
+    <tbody><tr><td class="k">primer_salmo_cita / _texto</td><td>11031 / 11032 (Salm 112)</td><td>11025 / 11026 (Salm 109)</td></tr><tr><td class="k">segundo_salmo_cita / _texto</td><td>155 / 156 (Salm 147)</td><td>54 / 55 (Salm 129)</td></tr><tr><td class="k">tercer_salmo_cita / _texto</td><td>11042 / 11043 (Ef 1, 3-10)</td><td>11072 / 11073 (Col 1, 12-20)</td></tr></tbody></table></div>
+        <p class="note">Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). El 31 de desembre no s’hi toca. Si s’accepta, cal tornar a passar la sonda abans del join.</p>
         <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
       </div>
     </details>
@@ -256,42 +256,43 @@ Diòcesi de Barcelona.</p>
 <p class="sub">La revisió no toca res. Cada correcció va amb un prompt per enganxar en un fil
 nou, que ja porta les proves a dins perquè no s'hagi de tornar a investigar.</p>
 <div class="pr">
-  <h3><span class="vp v2">F14 · saints-app / eprex</span> Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres</h3>
-  <pre><code># F14 · Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres
+  <h3><span class="vp v2">F14 · saints-app / eprex</span> Sants Innocents porta a Vespres la salmòdia de les I Vespres</h3>
+  <pre><code># F14 · Sants Innocents porta a Vespres la salmòdia de les I Vespres
 
 Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
 Veredicte de la revisió: **2 — saints-app / eprex**.
 Dies on es va veure: 2026-09-04.
 
 ## Què passa
-La casella salmos_citas/155 (Salm 147) la comparteixen els divendres ordinaris a Laudes i tres entrades de l’octava de Nadal a Vespres, que hi volen el Salm 129. Com que una casella només pot dur un text, el join no hi escriu res — i és l’únic que impedeix que el 4 de setembre arribi al 100%.
+La casella salmos_citas/155 (Salm 147) la comparteixen els divendres ordinaris a Laudes i holy_innocents_martyrs__ANY a Vespres, que els anys en què el 29 de desembre no és la Sagrada Família hi vol el Salm 129. Una casella només pot dur un text, o sigui que el join no hi escriu res — i és l’únic que impedeix que el 4 de setembre arribi al 100%.
 
-Set germanes de la mateixa octava coincideixen i tres no, i les tres porten la parella reconeixible de I Vespres (Salm 112 · Salm 147). Mateixa forma que l’EPREX-001 i l’EPREX-002: una fitxa clonada d’un altre ofici. Afecta totes les llengües.
+Les tres festes de la mateixa octava tenen el mateix rang i dues porten 11025+54. Només es veu alguns anys: quan el 29 de desembre és la Sagrada Família, la tarda del 28 sí que són I Vespres i la fitxa encerta —cpl-app hi dona Salm 112 · Salm 147 el 2024. Els anys en què el 29 és fèria de l’octava (2021, 2022, 2023, 2026) toquen les II Vespres i cpl-app dona Salm 109 · Salm 129. La fitxa només té la primera versió.
 
-**Conseqüència:** 7 dies de holy_innocents_martyrs retenen salmos_citas/155 i salmos_textos/156, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a 100%.
+**Conseqüència:** 7 dies retenen salmos_citas/155 i salmos_textos/156, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a 100%.
 
-| entrades de Vespres de l’octava | 1r salm | 2n salm |  |
-|---|---|---|---|
-| Nadal, octava 2·3·5·6, sant Esteve, sant Joan (7) | 11025 · Salm 109 | 54 · Salm 129 | ✅ |
-| Sants Innocents, octava 4, octava 7 (3) | 11031 · Salm 112 | 155 · &lt;strong&gt;Salm 147&lt;/strong&gt; | ❌ és la de I Vespres |
+| festa de l’octava | 1r salm | 2n salm | 3r |  |
+|---|---|---|---|---|
+| sant Esteve (26-XII) | 11025 · Salm 109 | 54 · Salm 129 | 11072 | ✅ |
+| sant Joan (27-XII) | 11025 · Salm 109 | 54 · Salm 129 | 11072 | ✅ |
+| &lt;strong&gt;Sants Innocents (28-XII)&lt;/strong&gt; | 11031 · Salm 112 | &lt;strong&gt;155 · Salm 147&lt;/strong&gt; | 11042 | ❌ és la de I Vespres |
 
 ## Com es va provar
-- **Prova interna** — A all_visperas.json, 7 de les 10 entrades de l’octava porten 11025+54; les 3 discrepants porten 11031+155
-- **cpl-app** — Dona el Salm 129 a les tres, els 7 anys del manifest
-- **No és el defecte de les I Vespres** — Corregit el rang a SA-09, les 6 observacions de vigília van desaparèixer d’aquesta casella i van quedar només aquestes 7
+- **Prova interna** — Sant Esteve i sant Joan, les germanes de la mateixa octava, porten 11025+54+11072; Sants Innocents és l’única que no
+- **cpl-app, els dos casos** — 2024-12-28 (el 29 és la Sagrada Família): Salm 112 · Salm 147, i l’app hi encerta. 2021, 2022, 2023 i 2026: Salm 109 · Salm 129, i l’app hi falla
+- **El 31 de desembre NO és el mateix cas** — christmas_octave_day_7__ANY duu la mateixa parella i allà és correcta: és la vigília de Santa Maria Mare de Déu. cpl-app hi dona Salm 112 · Salm 147 tots els anys
 
 ## Què s’ha de canviar
 A: `eprex · all_visperas.json`
 
-Repuntar holy_innocents_martyrs__ANY, christmas_octave_day_4__ANY i christmas_octave_day_7__ANY: primer_salmo_cita 11031 → 11025, segundo_salmo_cita 155 → 54.
+Repuntar holy_innocents_martyrs__ANY (i el seu bessó christmas_octave_day_4__ANY) a la salmòdia de les II Vespres de l’octava.
 
 | camp | ara | hauria de ser |
 |---|---|---|
-| primer_salmo_cita | 11031 (Salm 112) | 11025 (Salm 109) |
-| segundo_salmo_cita | 155 (Salm 147) | 54 (Salm 129) |
-| tercer_salmo_cita (Sants Innocents) | 11042 (Ef 1, 3-10) | a revisar — Nadal hi porta 11072 (Col 1, 12-20) |
+| primer_salmo_cita / _texto | 11031 / 11032 (Salm 112) | 11025 / 11026 (Salm 109) |
+| segundo_salmo_cita / _texto | 155 / 156 (Salm 147) | 54 / 55 (Salm 129) |
+| tercer_salmo_cita / _texto | 11042 / 11043 (Ef 1, 3-10) | 11072 / 11073 (Col 1, 12-20) |
 
-&gt; Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). Si s’accepta, cal tornar a passar la sonda abans del join.
+&gt; Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). El 31 de desembre no s’hi toca. Si s’accepta, cal tornar a passar la sonda abans del join.
 
 ## Com tancar-ho
 - El contingut és d'eprex, **fora d'aquest repositori**. No hi facis canvis directament.
