@@ -285,38 +285,59 @@ const FINDINGS = [
   {
     id: 'F8',
     verdict: 2,
-    days: ['2026-09-17'],
-    headline: 'Del 2 al 5 de gener saints-app resa el salteri de la setmana IV; toca la I',
+    days: ['2026-09-17', '2026-09-04'],
+    headline: 'Del 2 al 5 de gener saints-app resa el salteri una setmana enrere',
+    resolved: 'SA-08, corregit el 4 de setembre de 2026 (saints-app dae46844b)',
     detail:
       'Els dies de Nadal anteriors a l’Epifania, saints-app substitueix els nou camps de salms ' +
-      'pels de <code>ordinary_time_{setmana}_{dia}</code>. La setmana que hi posa és la IV.',
+      'pels de <code>ordinary_time_{setmana}_{dia}</code>. La setmana que hi posa és sempre ' +
+      '<strong>la de romcal menys una</strong>.',
     table: {
-      head: ['data', 'cpl-app', 'saints-app llegeix'],
+      head: ['data', 'romcal i cpl-app', 'saints-app resa', ''],
       rows: [
-        ['2025-01-02 (dijous)', 'Salm 56 · Jr 31, 10-14 · Salm 47 — setmana I', 'caselles del dijous de la setmana IV'],
-        ['2019-01-03 (dijous)', 'Salm 56 · Jr 31, 10-14 · Salm 47 — setmana I', 'les mateixes que el 17-IX-2026'],
-        ['2024-01-04 (dijous)', 'setmana I', 'setmana IV'],
+        ['2026-01-05 (dilluns)', 'setmana II · Salm 41', 'setmana I · Salm 5 · <code>salmos_citas/156</code>', '✗'],
+        ['2025-01-02 (dijous)', 'setmana I · Salm 56', 'setmana IV · Salm 142 · <code>salmos_citas/43</code>', '✗'],
+        ['2018-01-02 (dimarts)', 'setmana I · Salm 23', 'setmana IV · Salm 100 · <code>salmos_citas/96</code>', '✗'],
+        ['2017-01-03 (dimarts)', 'setmana II · Salm 42', 'setmana I · Salm 23 · <code>salmos_citas/111</code>', '✗'],
       ],
     },
     why:
-      'Les set dates de 2-5 de gener del manifest que cauen en dijous (2017-01-05, 2018-01-04, ' +
-      '2019-01-03, 2020-01-02, 2023-01-05, 2024-01-04, 2025-01-02) llegeixen totes la mateixa ' +
-      'casella que <code>ordinary_time_24_thursday</code>, és a dir la setmana IV, set anys ' +
-      'diferents seguits. El salteri hi torna a la setmana I amb el diumenge de la Sagrada Família.',
+      'La causa és un pedaç per a un error de romcal que <strong>ja no existeix</strong>: ' +
+      '<code>weekNumber = weekNumber + 3</code> sota <code>seasons.includes("CHRISTMAS_TIME")</code>. ' +
+      'En mòdul 4, <code>+3</code> és <code>−1</code>: resta una setmana sencera. El comentari del ' +
+      'codi ho diu tot —«needed due to ROMCAL ERROR reading week numbers in Christmas»—, però ' +
+      'consultat litcal directament, <code>liturgy.psalterWeek</code> dona la setmana bona a les ' +
+      '<strong>40 dates</strong> de 2-5 de gener del manifest. El pedaç arregla un error inexistent ' +
+      'i en crea un.',
     impact:
-      '16 caselles d’aquest dia retingudes, de Laudes i de Vespres.',
+      '<strong>29 de les 40 dates</strong> de 2-5 de gener. Les 11 que se salven no és que ' +
+      'estiguin bé: són els 6 divendres (el Salm 50 és el mateix les quatre setmanes) i els 5 ' +
+      'diumenges. I no és només Laudes: el mateix <code>+3</code> és a <strong>sis stores</strong> ' +
+      '—Laudes, Vespres, Ofici de lectura, Tèrcia, Sexta i Nona—, o sigui totes les hores i ' +
+      '<strong>totes les llengües</strong>. De retruc, és qui reté les 3 caselles del 4-IX-2026: ' +
+      'el 3 i el 4 de gener cauen a la casella dels divendres de les setmanes II/IV quan són de ' +
+      'la setmana I.',
     proof: [
-      ['Castellà, data exacta', '<em>apps.idteologia.org</em> encapçala el 2 de gener del 2025 amb «2 de enero, jueves, <strong>1ª semana</strong>» i dona Salmo 56 · Jeremías 31, 10-14 · Salmo 47', 'https://apps.idteologia.org/index.php?fecha=2025-01-02&r=liturgiaDeLasHoras%2Fespanola&rezo=laudes'],
-      ['cpl-app coincideix', 'Resolt amb els seus Serveis, 2019-01-03 dona <code>week=1, weekCycle=1</code> i la mateixa salmòdia', null],
-      ['Sonda de l’app real', '<code>app-cell-map.json</code>, generat sondejant saints-app, no deduint-lo de l’índex', null],
+      ['Castellà, data exacta', 'El 5-I-2026, dilluns, Laudes obre amb el <strong>Salmo 41</strong> «Como busca la cierva corrientes de agua» — setmana II, que és el que diu cpl-app i no el que resa saints-app', 'https://apps.idteologia.org/index.php?fecha=2026-01-05&r=liturgiaDeLasHoras%2Fespanola&rezo=laudes'],
+      ['Castellà, l’altre grup', 'El 2-I-2025 s’encapçala «2 de enero, jueves, <strong>1ª semana</strong>» — i saints-app hi resa la IV', 'https://apps.idteologia.org/index.php?fecha=2025-01-02&r=liturgiaDeLasHoras%2Fespanola&rezo=laudes'],
+      ['romcal no s’equivoca', '<code>lit.resolveDay()</code> sobre <code>diocese-barcelona</code>: <code>liturgy.psalterWeek</code> coincideix amb la salmòdia de cpl-app a <strong>40 de 40</strong> dates. Zero discrepàncies', null],
+      ['El codi', '<code>laudesStore.ts:149</code>, <code>visperasStore.ts:149</code>, <code>officeStore.ts:276</code>, <code>terciaStore.ts:137</code>, <code>sextaStore.ts:137</code>, <code>nonaStore.ts:137</code>', null],
     ],
     fix: {
-      where: 'saints-app · laudesStore, llista specialDays',
+      where: 'saints-app · els sis stores de divineOffice',
       summary:
-        'La setmana del salteri dels dies 2-5 de gener s’ha de comptar des del diumenge de la ' +
-        'Sagrada Família (setmana I), no fixar-la a la IV.',
-      note: 'Repositori aliè: proposta escrita amb les dates concretes, sense tocar-hi.',
-      promptable: true,
+        'Treure el bloc <code>if (seasons.includes("CHRISTMAS_TIME")) weekNumber = weekNumber + 3</code> ' +
+        'i fer servir la setmana que dona romcal tal com ve. Cal un test de regressió sobre les 40 ' +
+        'dates de 2-5 de gener.',
+      note:
+        'Repositori aliè, i el canvi afecta <strong>totes les llengües</strong>, no només el català: ' +
+        'canvia què resen els usuaris castellans del 2 al 5 de gener a totes les hores. ' +
+        '<strong>Conseqüència per a nosaltres:</strong> si s’aplica, les caselles d’aquests dies ' +
+        'canvien, o sigui que cal <strong>tornar a passar la sonda i el join</strong> abans de ' +
+        'mesurar res.',
+      note2:
+        '<strong>Ja fet</strong> (SA-08, 4-09-2026): la lògica viu a <code>src/utils/psalterWeek.ts</code> i els sis stores hi criden <code>ordinaryTimeIdFor()</code>. Test detector a <code>tests/unit/utils/psalterWeek.spec.ts</code> — amb el <code>+3</code> tornat a posar, en fallen 6 de 9. <strong>Falta refer la sonda i el join</strong> perquè les caselles d’aquests dies canvien de lloc.',
+      promptable: false,
     },
   },
   {

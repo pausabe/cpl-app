@@ -148,10 +148,31 @@ Diòcesi de Barcelona.</p>
         <h3>4 de setembre · divendres</h3>
         <p class="cel">fèria</p>
       </div>
-      <div class="sts"><span class="st bad">1 camps divergeixen</span><span class="st note-st">1 troballa</span></div>
+      <div class="sts"><span class="st bad">1 camps divergeixen</span><span class="st note-st">2 troballes</span></div>
     </header>
 
-    <div class="fs"><div class="finding v4 done" id="F13-2026-09-04">
+    <div class="fs"><div class="finding v2 done" id="F8-2026-09-04">
+    <p class="fh"><a class="fid" href="#F8-2026-09-04">F8</a>
+      <span class="vp v2">saints-app / eprex</span>
+      <span class="vp done">corregit</span>
+      <strong>Del 2 al 5 de gener saints-app resa el salteri una setmana enrere</strong></p>
+    <p class="fd">Els dies de Nadal anteriors a l’Epifania, saints-app substitueix els nou camps de salms pels de <code>ordinary_time_{setmana}_{dia}</code>. La setmana que hi posa és sempre <strong>la de romcal menys una</strong>.</p>
+    <div class="tw"><table><thead><tr><th>data</th><th>romcal i cpl-app</th><th>saints-app resa</th><th></th></tr></thead>
+    <tbody><tr><td class="k">2026-01-05 (dilluns)</td><td>setmana II · Salm 41</td><td>setmana I · Salm 5 · &lt;code&gt;salmos_citas/156&lt;/code&gt;</td><td>✗</td></tr><tr><td class="k">2025-01-02 (dijous)</td><td>setmana I · Salm 56</td><td>setmana IV · Salm 142 · &lt;code&gt;salmos_citas/43&lt;/code&gt;</td><td>✗</td></tr><tr><td class="k">2018-01-02 (dimarts)</td><td>setmana I · Salm 23</td><td>setmana IV · Salm 100 · &lt;code&gt;salmos_citas/96&lt;/code&gt;</td><td>✗</td></tr><tr><td class="k">2017-01-03 (dimarts)</td><td>setmana II · Salm 42</td><td>setmana I · Salm 23 · &lt;code&gt;salmos_citas/111&lt;/code&gt;</td><td>✗</td></tr></tbody></table></div>
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>La causa és un pedaç per a un error de romcal que <strong>ja no existeix</strong>: <code>weekNumber = weekNumber + 3</code> sota <code>seasons.includes("CHRISTMAS_TIME")</code>. En mòdul 4, <code>+3</code> és <code>−1</code>: resta una setmana sencera. El comentari del codi ho diu tot —«needed due to ROMCAL ERROR reading week numbers in Christmas»—, però consultat litcal directament, <code>liturgy.psalterWeek</code> dona la setmana bona a les <strong>40 dates</strong> de 2-5 de gener del manifest. El pedaç arregla un error inexistent i en crea un.</p>
+        <p><strong>Conseqüència:</strong> <strong>29 de les 40 dates</strong> de 2-5 de gener. Les 11 que se salven no és que estiguin bé: són els 6 divendres (el Salm 50 és el mateix les quatre setmanes) i els 5 diumenges. I no és només Laudes: el mateix <code>+3</code> és a <strong>sis stores</strong> —Laudes, Vespres, Ofici de lectura, Tèrcia, Sexta i Nona—, o sigui totes les hores i <strong>totes les llengües</strong>. De retruc, és qui reté les 3 caselles del 4-IX-2026: el 3 i el 4 de gener cauen a la casella dels divendres de les setmanes II/IV quan són de la setmana I.</p>
+        <ul class="pl"><li><strong>Castellà, data exacta</strong> — El 5-I-2026, dilluns, Laudes obre amb el <strong>Salmo 41</strong> «Como busca la cierva corrientes de agua» — setmana II, que és el que diu cpl-app i no el que resa saints-app <a href="https://apps.idteologia.org/index.php?fecha=2026-01-05&amp;r=liturgiaDeLasHoras%2Fespanola&amp;rezo=laudes" target="_blank" rel="noopener">font ↗</a></li><li><strong>Castellà, l’altre grup</strong> — El 2-I-2025 s’encapçala «2 de enero, jueves, <strong>1ª semana</strong>» — i saints-app hi resa la IV <a href="https://apps.idteologia.org/index.php?fecha=2025-01-02&amp;r=liturgiaDeLasHoras%2Fespanola&amp;rezo=laudes" target="_blank" rel="noopener">font ↗</a></li><li><strong>romcal no s’equivoca</strong> — <code>lit.resolveDay()</code> sobre <code>diocese-barcelona</code>: <code>liturgy.psalterWeek</code> coincideix amb la salmòdia de cpl-app a <strong>40 de 40</strong> dates. Zero discrepàncies</li><li><strong>El codi</strong> — <code>laudesStore.ts:149</code>, <code>visperasStore.ts:149</code>, <code>officeStore.ts:276</code>, <code>terciaStore.ts:137</code>, <code>sextaStore.ts:137</code>, <code>nonaStore.ts:137</code></li></ul>
+        <p class="fixline"><span class="who">correcció aplicada</span> Treure el bloc <code>if (seasons.includes("CHRISTMAS_TIME")) weekNumber = weekNumber + 3</code> i fer servir la setmana que dona romcal tal com ve. Cal un test de regressió sobre les 40 dates de 2-5 de gener. <code>saints-app · els sis stores de divineOffice</code></p>
+        
+        
+        <p class="note">Repositori aliè, i el canvi afecta <strong>totes les llengües</strong>, no només el català: canvia què resen els usuaris castellans del 2 al 5 de gener a totes les hores. <strong>Conseqüència per a nosaltres:</strong> si s’aplica, les caselles d’aquests dies canvien, o sigui que cal <strong>tornar a passar la sonda i el join</strong> abans de mesurar res.</p>
+        
+      </div>
+    </details>
+  </div><div class="finding v4 done" id="F13-2026-09-04">
     <p class="fh"><a class="fid" href="#F13-2026-09-04">F13</a>
       <span class="vp v4">no és error</span>
       <span class="vp done">corregit</span>

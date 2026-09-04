@@ -42,6 +42,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [SA-05](#sa-05) | 2026-09-03 | saints-app | contingut | Es regenera | — |
 | [SA-06](#sa-06) | 2026-09-03 | saints-app | merge | No — va al git | `1a35a54a6` |
 | [SA-07](#sa-07) | 2026-09-04 | saints-app | contingut | No — va al git | — |
+| [SA-08](#sa-08) | 2026-09-04 | saints-app | **codi** | No — va al git | `dae46844b` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -513,6 +514,48 @@ ja **no és `MEMORY_PROPER`** sinó `MEMORY_FERIAL2` — eprex l'ha reclassifica
 doncs, ja té pestanya ferial. MIGRA-004 segueix fent falta (queden **6** celebracions
 `MEMORY_PROPER`, no 7), però l'exemple amb què es va trobar ja no val i els números s'han de
 refer.
+
+<a id="sa-08"></a>
+### SA-08 · Del 2 al 5 de gener el salteri anava una setmana enrere · 2026-09-04
+
+`dae46844b` — la troballa **F8** de la revisió, corregida. Advent (17-24 de desembre) i temps de
+Nadal (2-5 de gener) no tenen salmòdia pròpia: prenen la del dia corresponent del salteri, que
+l'índex desa sota ids `ordinary_time_{setmana}_{dia}`. En construir aquest id, els **sis stores**
+—Laudes, Vespres, Ofici de lectura, Tèrcia, Sexta i Nona— hi afegien 3 a la setmana dins del
+temps de Nadal:
+
+```js
+if (seasons.includes("CHRISTMAS_TIME")) weekNumber = weekNumber + 3
+```
+
+| | |
+|---|---|
+| Què era | Un pedaç per a un error de romcal que reportava la setmana una de menys |
+| Per què fallava | `+3` és `−1` en **mòdul 4**: restava una setmana sencera. I romcal ja no té aquell error, o sigui que el pedaç havia passat a ser el bug |
+| Abast | **29 de les 40 dates** de 2-5 de gener del manifest, a **totes les hores** i en **totes les llengües**. Les 11 restants no és que estiguessin bé: són els 6 divendres (el Salm 50 és igual les quatre setmanes) i els 5 diumenges |
+| Fix | La lògica, que era la mateixa copiada sis vegades —que és com el pedaç s'hi va propagar—, viu ara a `src/utils/psalterWeek.ts`. Els sis stores hi criden `ordinaryTimeIdFor()` |
+| Test | `tests/unit/utils/psalterWeek.spec.ts`, 9 tests. **És detector**: tornant a posar el `+3`, en fallen 6 |
+
+**Prova**, tres fonts independents:
+
+- **romcal no s'equivoca.** `lit.resolveDay()` sobre `diocese-barcelona`: `liturgy.psalterWeek`
+  coincideix amb la salmòdia de cpl-app a **40 de 40** dates. Zero discrepàncies.
+- **Castellà, data exacta.** El 5-I-2026, dilluns, Laudes obre amb el *Salmo 41* «Como busca la
+  cierva corrientes de agua» — setmana II. L'app hi resava el Salmo 5, de la setmana I.
+  <https://apps.idteologia.org/index.php?fecha=2026-01-05&r=liturgiaDeLasHoras%2Fespanola&rezo=laudes>
+- **L'altre grup d'anys.** El 2-I-2025 s'encapçala «2 de enero, jueves, **1ª semana**»; l'app hi
+  resava la IV.
+
+**Cura amb la regressió no evident.** En treure el bloc, `dayIndex` deixava d'existir a Laudes i
+Vespres, on el feia servir el bloc de les antífones pròpies del 17 al 23 de desembre, més avall
+dins del mateix `if`. Ho va agafar l'eslint; ara es declara al bloc que el necessita. Els 10
+tests que fallen a la suite de saints-app ja fallaven abans (`findOfficeDeceased`,
+`bible-parallels-integrity`, `calendarLanguageRestrictions`) i no toquen cap store.
+
+**Conseqüència per a la migració.** Les caselles que l'app llegeix del 2 al 5 de gener canvien de
+lloc. **Cal tornar a passar la sonda i el join** abans de tornar a mesurar res — i esborrant
+`output/app-cell-map.json`, que el mode `--range` reprèn i no refà. Fins que no es faci, les 3
+caselles retingudes del 4-IX-2026 i les del 17-IX-2026 seguiran comptant com a retingudes.
 
 <a id="sa-07"></a>
 ### SA-07 · La invitació al Parenostre, en català · 2026-09-04
