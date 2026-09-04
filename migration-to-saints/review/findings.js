@@ -613,9 +613,10 @@ const FINDINGS = [
       'Les tres festes de la mateixa octava tenen el mateix rang i dues porten ' +
       '<code>11025</code>+<code>54</code>. Només es veu alguns anys: quan el 29 de desembre és la ' +
       'Sagrada Família, la tarda del 28 <strong>sí</strong> que són I Vespres i la fitxa encerta ' +
-      '—cpl-app hi dona Salm 112 · Salm 147 el 2024. Els anys en què el 29 és fèria de l’octava ' +
-      '(2021, 2022, 2023, 2026) toquen les II Vespres i cpl-app dona Salm 109 · Salm 129. ' +
-      'La fitxa només té la primera versió.',
+      '—cpl-app hi dona Salm 112 · Salm 147 el 2024. Però això només passa <strong>2 anys de cada ' +
+      '10</strong>: falla el 2017, 2018, 2020, 2021, 2022, 2023 i 2026, on el 29 és fèria de ' +
+      'l’octava i toquen les II Vespres (Salm 109 · Salm 129). El 2025 no s’aplica, perquè el 28 ' +
+      'mateix és la Sagrada Família.',
     impact:
       '7 dies retenen <code>salmos_citas/155</code> i <code>salmos_textos/156</code>, que 176 ' +
       'dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a <strong>100%</strong>.',

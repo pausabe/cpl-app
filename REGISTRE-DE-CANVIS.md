@@ -390,7 +390,7 @@ sant Joan, duen `11025` (Salm 109) i `54` (Salm 129). Afecta **totes les llengü
 | Entrada | `holy_innocents_martyrs__ANY` (i el seu bessó `christmas_octave_day_4__ANY`, que és el mateix dia i té el mateix contingut) |
 | Fix | `primer_salmo_cita`/`_texto` `11031`/`11032` → **`11025`/`11026`** · `segundo_salmo_cita`/`_texto` `155`/`156` → **`54`/`55`** · `tercer_salmo_cita`/`_texto` `11042`/`11043` → **`11072`/`11073`** |
 | Prova interna | Sant Esteve (26-XII) i sant Joan (27-XII), les dues festes germanes de la mateixa octava i del mateix rang, porten `11025`+`54`+`11072`. Sants Innocents és l'única de les tres que no |
-| Per què només es veu alguns anys | Quan el 29 de desembre és la Sagrada Família, la tarda del 28 **sí** que són I Vespres i la fitxa encerta —cpl-app hi dona Salm 112 · Salm 147 el 2024. Els anys en què el 29 és fèria de l'octava (2021, 2022, 2023, 2026) toquen les II Vespres de la festa i cpl-app dona Salm 109 · Salm 129 |
+| Quins anys falla | **7 dels 10** del manifest: 2017, 2018, 2020, 2021, 2022, 2023 i 2026. Encerta el 2019 i el 2024, els dos anys en què el 29 és la Sagrada Família i sí que toquen I Vespres. El 2025 no s'aplica: el 28 mateix és la Sagrada Família |
 | Efecte a la migració | És **l'únic** que reté ara `salmos_citas/155` i `salmos_textos/156`: 176 dies hi volen el Salm 147 i 7 el Salm 129. Desbloquejant-ho, el **4-IX-2026 arriba al 100%** |
 
 **El 31 de desembre NO s'ha de tocar.** `christmas_octave_day_7__ANY` duu la mateixa parella

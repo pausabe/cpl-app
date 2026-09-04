@@ -29,10 +29,17 @@ calendari, necessita el mateix canvi.
 | sant Joan (27-XII) | `11025` | `54` | `11072` |
 | **Sants Innocents (28-XII)** | `11031` | `155` | `11042` |
 
-**Per què no salta tots els anys.** Quan el 29 de desembre és la Sagrada Família, la tarda del 28
-sí que són I Vespres i la fitxa encerta: el 2024 cpl-app hi dona Salm 112 · Salm 147, igual que
-l'app. Els anys en què el 29 és fèria de l'octava —2021, 2022, 2023 i 2026— toquen les II
-Vespres i cpl-app dona Salm 109 · Salm 129. L'entrada només contempla el primer cas.
+**Quins anys falla: 7 dels 10 del manifest.**
+
+| | anys |
+|---|---|
+| **Malament** — toca Salm 129 i la fitxa dona el 147 | 2017, 2018, 2020, 2021, 2022, 2023, 2026 |
+| **Bé** — el 29 és la Sagrada Família, o sigui que sí que són I Vespres | 2019, 2024 |
+| No s'aplica — el 28 mateix és la Sagrada Família | 2025 |
+
+L'entrada només contempla el cas de les I Vespres, que és el minoritari: acaba encertant 2 anys
+de cada 10. cpl-app dona Salm 112 · Salm 147 el 2024 i Salm 109 · Salm 129 als set anys de la
+primera fila.
 
 ## El 31 de desembre NO és el mateix cas
 
@@ -62,9 +69,9 @@ dels divendres ordinaris: 176 dies hi volen el Salm 147 i 7 el Salm 129. Desbloq
 > En ids, la entrada holy_innocents_martyrs__ANY: 11031 → 11025, 155 → 54 y 11042 → 11072, con
 > sus _texto. Son casillas que ya existen, no hace falta contenido nuevo.
 >
-> Dos avisos. Solo se nota los años en que el 29 no cae la Sagrada Familia. Y el 31 de diciembre
-> lleva esa misma pareja de salmos pero ahí sí está bien, porque es víspera de Santa María Madre
-> de Dios: ese no lo toquéis.
+> Dos avisos. Está mal 7 de los últimos 10 años: solo acierta cuando el 29 cae la Sagrada
+> Familia, que fue en 2019 y 2024. Y el 31 de diciembre lleva esa misma pareja de salmos pero
+> ahí sí está bien, porque es víspera de Santa María Madre de Dios: ese no lo toquéis.
 >
 > ¿Puedes mirarte ese día con cariño y me dices?
 >
