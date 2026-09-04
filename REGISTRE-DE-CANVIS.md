@@ -552,10 +552,19 @@ dins del mateix `if`. Ho va agafar l'eslint; ara es declara al bloc que el neces
 tests que fallen a la suite de saints-app ja fallaven abans (`findOfficeDeceased`,
 `bible-parallels-integrity`, `calendarLanguageRestrictions`) i no toquen cap store.
 
-**Conseqüència per a la migració.** Les caselles que l'app llegeix del 2 al 5 de gener canvien de
-lloc. **Cal tornar a passar la sonda i el join** abans de tornar a mesurar res — i esborrant
-`output/app-cell-map.json`, que el mode `--range` reprèn i no refà. Fins que no es faci, les 3
-caselles retingudes del 4-IX-2026 i les del 17-IX-2026 seguiran comptant com a retingudes.
+**Sonda i join, refets el mateix dia.** Les caselles que l'app llegeix del 2 al 5 de gener
+canvien de lloc, o sigui que calia tornar-hi. Com que el `+3` només s'aplicava dins de
+`CHRISTMAS_TIME`, els dies d'Advent (17-24 de desembre) no s'havien mogut i **només calia
+resondejar les 40 dates de 2-5 de gener**: tretes del mapa, el mode `--range` les torna a fer i
+deixa les altres 3.611 quietes. 40 dates, 0 errors, `commons/ca` restaurat.
+
+| | abans | després |
+|---|---|---|
+| 1r salm de Laudes, sonda contra cpl-app | 11 de 40 | **40 de 40** |
+| Caselles retingudes al join | 766 | **674** (−92, cap de nova) |
+| Exportació a `commons/ca` | — | +55 claus noves, 0 actualitzades (`salmos_antifonas` +19, `salmos_citas` +19, `salmos_textos` +17) |
+| 4-IX-2026 | 95% · 3 retingudes | **96% · 2** — la casella de Vespres `salmos_antifonas/9340` s'ha resolt |
+| 17-IX-2026 | — | **95% · 3** — les que queden són les de [EPREX-002](#eprex-002) i `preces_respuesta/77` |
 
 <a id="sa-07"></a>
 ### SA-07 · La invitació al Parenostre, en català · 2026-09-04

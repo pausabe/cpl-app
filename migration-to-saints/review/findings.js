@@ -336,7 +336,7 @@ const FINDINGS = [
         'canvien, o sigui que cal <strong>tornar a passar la sonda i el join</strong> abans de ' +
         'mesurar res.',
       note2:
-        '<strong>Ja fet</strong> (SA-08, 4-09-2026): la lògica viu a <code>src/utils/psalterWeek.ts</code> i els sis stores hi criden <code>ordinaryTimeIdFor()</code>. Test detector a <code>tests/unit/utils/psalterWeek.spec.ts</code> — amb el <code>+3</code> tornat a posar, en fallen 6 de 9. <strong>Falta refer la sonda i el join</strong> perquè les caselles d’aquests dies canvien de lloc.',
+        '<strong>Ja fet</strong> (SA-08, 4-09-2026): la lògica viu a <code>src/utils/psalterWeek.ts</code> i els sis stores hi criden <code>ordinaryTimeIdFor()</code>. Test detector a <code>tests/unit/utils/psalterWeek.spec.ts</code> — amb el <code>+3</code> tornat a posar, en fallen 6 de 9. Sonda i join <strong>ja refets</strong>: 40 dates resondejades, el 1r salm de Laudes passa de coincidir amb cpl-app en 11 de 40 a <strong>40 de 40</strong>, i les caselles retingudes del join baixen de 766 a <strong>674</strong> sense cap de nova.',
       promptable: false,
     },
   },

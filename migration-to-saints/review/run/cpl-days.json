@@ -132,6 +132,133 @@
         ]
       },
       "invitatory": "Que n’és, de bo, el Senyor! Beneïu el seu nom."
+    },
+    "2026-09-17": {
+      "date": "2026-09-17",
+      "diocese": "Barcelona",
+      "prayingPlace": "Diòcesi",
+      "celebration": {
+        "title": "Sant Robert Bel·larmino, bisbe i doctor de l’Església",
+        "celebrationType": "L",
+        "specificLiturgyTime": "O_ORDINAR",
+        "week": "24",
+        "weekCycle": "4",
+        "yearType": "A"
+      },
+      "hours": {
+        "Laudes": {
+          "himno": "Eixit ja l’astre de la llum,\nalcem a Déu el nostre prec:\nque en tots els actes d’aquest jorn,\nens tingui lliures de perill.\n\nA nostra llengua posi fre,\nque, lleig, no hi soni l’altercat;\nals ulls abric doni amorós,\nque no cobegin vans plaers.\n\nSigui ben pur l’íntim del cor,\nromangui lluny tot mal intent;\ndomti en la carn tot gust rebel\ndel beure i past la parquedat.\n\nQue quan el jorn arribi a fi\ni el temps la nit ens torni a dur,\nper la temprança netejats,\nla seva glòria cantem.\n\nLloança es doni al Pare etern,\ni a Jesucrist, el Fill de Déu,\namb l’Esperit Sant, defensor,\nara i per segles sense fi. \nAmén.",
+          "primer_salmo_cita": "Salm 142, 1-11 \nOració en temps d’angoixa",
+          "primer_salmo_antifona": "Que pugui escoltar, Senyor, el vostre amor a punta de dia.",
+          "primer_salmo_texto": "Senyor, escolteu la meva pregària,    †\nescolteu la meva súplica,    *\nresponeu-me, vós que sou bo i fidel. \nNo vulgueu judicar el vostre servent:    *\nno podríeu absoldre ningú dels qui han viscut.\n\nL’enemic que em perseguia per matar-me    *\nm’ha trepitjat per terra, \nm’ha confinat al país de les tenebres,    *\nigual que els morts de temps immemorial.\n\nEl meu esperit se sent rendit,    *\nestà consternat el meu cor. \nTot evocant el record dels temps antics,    †\nmeditant les vostres proeses,    *\nconsiderant les obres de les vostres mans, \nestenc a vós els braços i us miro,    *\nem sento tot jo com una terra esgotada. \n\nDe pressa, Senyor, responeu-me,    *\nque ja em falta l’alè; \nno m’amagueu la vostra mirada,    *\nque m’enfonsaria a la terra dels morts.\n\nQue pugui escoltar el vostre amor a punta de dia;    *\nconfio en vós. \nFeu-me conèixer el camí que he de seguir,    *\na vós elevo la meva ànima.\n\nAllibereu-me de l’enemic, Senyor,    *\nen vós trobo refugi. \nEnsenyeu-me a fer la vostra voluntat,    *\nvós sou el meu Déu. \nQue el vostre esperit em condueixi    *\nper terra plana.\n\nSenyor, pel vostre nom, guardeu-me la vida,    * \nvós que sou bo, traieu-me del perill.",
+          "segundo_salmo_cita": "Càntic\nIs  66, 10-14a\nConsolació i goig a la ciutat santa",
+          "segundo_salmo_antifona": "El Senyor decantarà cap a Jerusalem una riuada de benestar.",
+          "segundo_salmo_texto": "Alegreu-vos amb Jerusalem,    * \nfeu festa, tots els qui l’estimeu.\nEstigueu contents amb ella,    *\ntots els qui portàveu dol per ella; \nsereu alletats amb l’abundància del seu consol,    *\ni xuclareu les delícies de la seva llet.\n\nAixò diu el Senyor:    †\n«Jo decantaré cap a ella, com un riu,\nla pau i el benestar,    *\nla riquesa de les nacions,\ncom un torrent desbordant.\n\nEls teus nodrissons seran portats al braç,    *\ni amanyagats sobre els genolls. \nCom una mare consola el seu fill,    †\njo també us consolaré:    *\na Jerusalem sereu consolats.\n\nQuan ho veureu, el vostre cor bategarà de goig    * \ni reviuran com l’herba els vostres ossos.»",
+          "tercer_salmo_cita": "Salm 146 \nEl poder i la bondat de Déu",
+          "tercer_salmo_antifona": "És agradós de lloar el nostre Déu.",
+          "tercer_salmo_texto": "Lloeu el Senyor, dóna bo de cantar!    *\nLloeu el  nostre Déu, que és agradós de lloar-lo!\n\nEl Senyor reconstrueix Jerusalem    *\ni aplega els dispersats d’Israel; \nconforta els cors desfets   *\ni embena les ferides.\n\nTé comptat el nombre dels estels,    * \nels crida cadascun pel seu nom.\nÉs gran el Senyor, i és molt poderós,    *\nés infinita la seva saviesa. \nEl Senyor sosté els desvalguts    *\ni abat els injustos fins a terra.\n\nCanteu accions de gràcies al Senyor,    * \nacompanyeu amb les cítares els cants.\nEl nostre Déu cobreix el cel de nuvolades,    * \nassegura les pluges a la terra,\nfa néixer l’herba a les muntanyes,    * \nles plantes, al servei de l’home.\n\nEll dóna l’aliment al bestiar,    *\na les cries dels corbs que l’hi reclamen. \nNo és en la força dels cavalls\nque es complau el Senyor,    *\nni en els peus lleugers del guerrer. \nEl Senyor es complau en els qui creuen en ell,    *\nen els qui confien en el seu amor.",
+          "lectura_biblica_cita": "Rm 8, 18-21",
+          "lectura_biblica": "Els sofriments del món present no són res comparats amb la felicitat de la glòria que més tard s’ha de revelar en nosaltres. Perquè tot l’univers creat està atent, esperant que es reveli d’una vegada la glorificació dels fills de Déu. L’univers creat s’ha trobat sotmès a una situació absurda, no perquè ell ho hagi volgut, sinó que un altre l’hi ha sotmès, donant-li, però, l’esperança que un dia serà alliberat de l’esclavatge d’aquesta situació desgraciada, per obtenir la llibertat, que és la glorificació dels fills de Déu.",
+          "responsorios": [
+            "℣. Així que em llevo, Senyor, * Ja penso en vós. ",
+            "℟. Així que em llevo, Senyor, Ja penso en vós.",
+            "℣. Perquè vós m’heu ajudat. ",
+            "℟. Ja penso en vós. ",
+            "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+            "℟. Així que em llevo, Senyor, Ja penso en vós."
+          ],
+          "cantico_evangelico_antifona": "Feu saber, Senyor, al vostre poble que li ve la salvació, i perdoneu els nostres pecats.",
+          "preces_intro": "Celebrem Déu, de qui prové la salvació del seu poble, i repetim-li aquesta invocació:",
+          "preces_respuesta": "Vós sou, Senyor, la nostra vida.",
+          "preces_contenido": [
+            "Us beneïm, Pare de nostre Senyor Jesucrist, que, pel vostre gran amor, ens heu fet tornar a néixer\ni, per la resurrecció de Jesucrist d’entre els morts, ens heu infós una esperança viva.",
+            "Vós, que en Crist renovàreu l’home, creat a imatge vostra,\nconfigureu-nos a la imatge del vostre Fill.",
+            "Vesseu en els nostres cors, ferits per l’odi i per l’enveja,\nla caritat que ens heu donat per l’Esperit Sant.",
+            "Que no manqui avui feina als treballadors, aliment als famolencs, alegria als tristos;\ndoneu a tothom, Senyor, la gràcia i la salut."
+          ],
+          "invitacion_padrenuestro": "Demanem que la força de Crist ens fortifiqui i ens deslliuri de qualsevol mal: Pare nostre.",
+          "oracion_final": "Doneu-nos, Senyor, un coneixement confiat de la nostra salvació, perquè sense por, alliberats de les mans dels enemics, us donem culte amb santedat i justícia tots els dies de la nostra vida. Per nostre Senyor Jesucrist."
+        },
+        "Vespers": {
+          "himno": "Oh Déu, que amb bella claredat\nel dia féreu, oh Senyor,\nla vostra glòria invoquem\nmentre, inclinant-se, el jorn decau.\n\nEl sol, empès pel vespre ombriu,\nja s’encamina al seu ocàs,\ncloent el món en tenebror,\nel seu vell ordre tot seguint.\n\nPerò vós ara, excels Senyor,\nno deixeu d’ombres oprimir\nvostres servents, que us van pregant,\nlassos de l’obra diürnal.\n\nQue no es retiri el jorn del món\ndeixant els cors també enfosquits,\nans que, de gràcia coberts,\nuna llum pròspera albirem.\n\nDeu-nos-ho, Pare pietós,\ni vós, el Fill, al Pare igual\nque amb l’Esperit Sant, defensor,\nregneu per segles sense fi. \nAmén. ",
+          "primer_salmo_cita": "Salm 143 - I\nPregària d’un rei. Prosperitat del poble",
+          "primer_salmo_antifona": "Amor i muralla que em salva, el Senyor és l’escut que m’empara.",
+          "primer_salmo_texto": "Beneït sigui el Senyor, la meva roca,    †\nque m’ensinistra els braços a la lluita    *\ni les mans al combat; \nés l’amor i la muralla    *\nque em deslliura i em salva, \nés l’escut que m’empara.    *\nEll sotmet el poble al meu govern.\n\nSenyor, ¿què són els homes, per fixar-vos-hi?    * \n¿Què són els mortals, per ocupar-vos-en?\nL’home s’esvaeix com el fum,    *\nels seus dies es fonen com una ombra.\n\nSenyor, esberleu la volta del cel, i baixeu,    *\ntoqueu les muntanyes, i que treguin glops de fum;\ndesconcerteu-los fulminant els vostres llamps,    * \ndisperseu-los tirant les vostres fletxes.   \n\nAllargueu la mà des de dalt i salveu-me,    †\nallibereu-me de l’aiguat    *\ni de les mans dels estrangers, \nque parlen de divinitats que no existeixen    *\ni alcen la dreta jurant per déus falsos.",
+          "segundo_salmo_cita": "Salm 143 - II",
+          "segundo_salmo_antifona": "Feliç el poble que té el Senyor per Déu.",
+          "segundo_salmo_texto": "Déu meu, us dedicaré un càntic nou,    * \nacompanyaré amb les arpes el meu cant:\nvós doneu als reis la victòria,    * \ni salveu David, el vostre servent.\n\nSalveu-me de l’espasa maligna,    *\nallibereu-me de les mans dels estrangers,\nque parlen de divinitats que no existeixen    * \ni alcen la dreta jurant per déus falsos.\n\nFeu pujar els nostres fills    *\ncom plançons que es fan grans amb vigor jove; \nles nostres filles, com pilastres ben tallades,    *\ncom pilastres d’un palau. \n\nQue les nostres sitges siguin plenes    *\ni puguin proveir de tot; \nque es propaguin a milers les ramades    †\nals afores de les nostres viles,    *\ni els nostres bous arribin carregats.\n\nQue no ens rendim a l’enemic    †\nni vegem obertes les muralles,    * \nni sentim a les places el crit d’alarma.\n\nFeliç el poble que frueix de tot això.    * \nFeliç el poble que té el Senyor per Déu.",
+          "tercer_salmo_cita": "Càntic\nAp 11, 17-18; 12, 10b-12a\nEl judici de Déu",
+          "tercer_salmo_antifona": "Ara és l’hora de la victòria del nostre Déu, és l’hora del seu Regne.",
+          "tercer_salmo_texto": "Gràcies, Senyor, Déu de l’univers, \nque sou i éreu,    †\nperquè ja heu pres el vostre gran poder    * \ni heu instaurat el vostre regne.\n\nLes nacions estaven furioses,    †\nperò ara ha arribat el vostre dia,    * \nl’hora de judicar els morts:\nl’hora de recompensar els vostres servents\nels profetes,    †\nel poble sant\ni tots els qui han reverenciat el vostre nom, \ngrans o petits,    * \nl’hora de destruir els destructors de la terra.\n\nAra és l’hora de la victòria del nostre Déu,    †\nl’hora del seu poder i del seu regne,    *\ni el seu Messies ja governa, \nperquè l’acusador dels nostres germans,    †\nque els acusava nit i dia davant el nostre Déu,    *\nha estat expulsat.\n\nElls l’han vençut per la sang de l’Anyell    *\ni pel testimoniatge del seu martiri, \nja que no van estimar tant la vida \nque els fes por la mort.    *\nAlegreu-vos-en, cel i tots els qui hi habiteu.",
+          "lectura_biblica_cita": "Col 1, 23\n",
+          "lectura_biblica": "Manteniu-vos ferms en el fonament de la fe: que res no us aparti de l’esperança que us dóna la Bona Nova que heu sentit i que ara és anunciada per tot el món.",
+          "responsorios": [
+            "℣. El Senyor és el meu pastor,  * No em manca res.",
+            "℟. El Senyor és el meu pastor,  No em manca res.",
+            "℣. Em fa descansar en prats deliciosos. ",
+            "℟. No em manca res.",
+            "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+            "℟. El Senyor és el meu pastor,  No em manca res."
+          ],
+          "cantico_evangelico_antifona": "El Senyor sacia i omple de béns els qui tenen fam i set de ser justos.",
+          "preces_intro": "Preguem amb joia i amb devoció Crist, llum de les nacions i goig de tots els homes. Demanem-li:",
+          "preces_respuesta": "Doneu-nos, Senyor, la llum, la pau i la salvació.",
+          "preces_contenido": [
+            "Llum sense posta, Verb etern del Pare, que vinguéreu a salvar tots els homes,\nconduïu els catecúmens de l’Església, perquè en vós siguin il·luminats.",
+            "No us recordeu, Senyor, dels nostres pecats,\nja que és molt vostre perdonar.",
+            "Vós, que donàreu intel·ligència a l’home, perquè investigués els secrets de la naturalesa i dominés el món,\ndirigiu la tècnica i l’art dels homes a glòria vostra i bé de la humanitat.",
+            "Protegiu tots els qui es dediquen al servei dels germans,\nperquè puguin obrar amb llibertat i sense impediments.",
+            "Quan vós obriu, Senyor, ningú no pot tancar;\nintroduïu, doncs, al Regne de la vostra llum els qui moriren amb l’esperança de ressuscitar."
+          ],
+          "invitacion_padrenuestro": "Seguint el model d’oració que ens donà Crist en persona, diguem: Pare nostre.",
+          "oracion_final": "Escolteu, Senyor, la nostra pregària del capvespre i feu que, seguint les petjades del vostre Fill, donem amb perseverança el fruit de les bones obres. Per nostre Senyor Jesucrist."
+        }
+      },
+      "ferialFields": {
+        "Laudes": [
+          "himno",
+          "primer_salmo_cita",
+          "primer_salmo_antifona",
+          "primer_salmo_texto",
+          "segundo_salmo_cita",
+          "segundo_salmo_antifona",
+          "segundo_salmo_texto",
+          "tercer_salmo_cita",
+          "tercer_salmo_antifona",
+          "tercer_salmo_texto",
+          "lectura_biblica_cita",
+          "lectura_biblica",
+          "responsorios",
+          "cantico_evangelico_antifona",
+          "preces_intro",
+          "preces_respuesta",
+          "preces_contenido",
+          "invitacion_padrenuestro",
+          "oracion_final"
+        ],
+        "Vespers": [
+          "himno",
+          "primer_salmo_cita",
+          "primer_salmo_antifona",
+          "primer_salmo_texto",
+          "segundo_salmo_cita",
+          "segundo_salmo_antifona",
+          "segundo_salmo_texto",
+          "tercer_salmo_cita",
+          "tercer_salmo_antifona",
+          "tercer_salmo_texto",
+          "lectura_biblica_cita",
+          "lectura_biblica",
+          "responsorios",
+          "cantico_evangelico_antifona",
+          "preces_intro",
+          "preces_respuesta",
+          "preces_contenido",
+          "invitacion_padrenuestro",
+          "oracion_final"
+        ]
+      },
+      "invitatory": "Entreu davant el Senyor amb crits d’alegria."
     }
   }
 }

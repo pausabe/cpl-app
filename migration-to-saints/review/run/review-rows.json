@@ -1,6 +1,7 @@
 {
   "dates": [
-    "2026-09-04"
+    "2026-09-04",
+    "2026-09-17"
   ],
   "diocese": "Barcelona",
   "days": [
@@ -26,24 +27,24 @@
         "group": null
       },
       "coverage": {
-        "ok": 54,
+        "ok": 55,
         "notInAppYet": 0,
-        "conflict": 3,
+        "conflict": 2,
         "missing": 0,
-        "have": 54,
+        "have": 55,
         "reachable": 57,
         "unreachable": 0,
         "total": 57,
-        "percent": 95,
-        "percentOfReachable": 95
+        "percent": 96,
+        "percentOfReachable": 96
       },
       "migration": {
-        "ok": 54,
-        "conflict": 3,
+        "ok": 55,
+        "conflict": 2,
         "missing": 0,
         "notInAppYet": 0,
         "total": 57,
-        "percent": 95
+        "percent": 96
       },
       "tabsDiffer": false,
       "ferialFieldCount": {
@@ -51,23 +52,6 @@
         "Vespers": 19
       },
       "blameSummary": [
-        {
-          "title": "Santíssim Nom de Jesús",
-          "verdict": "not-applied",
-          "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-          "ranks": [
-            "Memòria lliure"
-          ],
-          "suggestedId": "santissim_nom_de_jesus",
-          "inLitcal": {
-            "calendar": "catalonia",
-            "id": "santissim_nom_de_jesus",
-            "rank": "OPTIONAL_MEMORIAL"
-          },
-          "sole": false,
-          "fields": 3,
-          "soleFields": 0
-        },
         {
           "title": "Sants Innocents, màrtirs",
           "verdict": "memorial",
@@ -94,6 +78,23 @@
           ],
           "suggestedId": "nadal",
           "inLitcal": null,
+          "sole": false,
+          "fields": 2,
+          "soleFields": 0
+        },
+        {
+          "title": "Santíssim Nom de Jesús",
+          "verdict": "not-applied",
+          "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
+          "ranks": [
+            "Memòria lliure"
+          ],
+          "suggestedId": "santissim_nom_de_jesus",
+          "inLitcal": {
+            "calendar": "catalonia",
+            "id": "santissim_nom_de_jesus",
+            "rank": "OPTIONAL_MEMORIAL"
+          },
           "sole": false,
           "fields": 2,
           "soleFields": 0
@@ -356,15 +357,15 @@
             "ca": null
           },
           "conflict": {
-            "cause": "Casella compartida per 64 celebracions",
-            "bundleId": "shared|advent_2_friday__ANY,advent_2_sunday__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,basil_the_great_and_gregory_nazianzen_bishops__MEMORY_FERIAL2,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,christmas_time_january_3__ANY,christmas_time_january_4__ANY,christmas_time_january_5__ANY,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,divine_mercy_sunday__ANY,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_4_friday__ANY,easter_time_6_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_innocents_martyrs__ANY,ignatius_of_antioch_bishop__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_2_friday__ANY,lent_3_sunday__ANY,lent_4_friday__ANY,lucy_of_syracuse_virgin__MEMORY_FERIAL2,nativity_of_the_lord__ANY,ordinary_time_10_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_6_friday__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
-            "variantCount": 6,
-            "affectedCount": 196,
+            "cause": "Casella compartida per 60 celebracions",
+            "bundleId": "shared|advent_2_friday__ANY,advent_2_sunday__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,divine_mercy_sunday__ANY,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_4_friday__ANY,easter_time_6_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_innocents_martyrs__ANY,ignatius_of_antioch_bishop__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_2_friday__ANY,lent_3_sunday__ANY,lent_4_friday__ANY,lucy_of_syracuse_virgin__MEMORY_FERIAL2,nativity_of_the_lord__ANY,ordinary_time_10_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_6_friday__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
+            "variantCount": 5,
+            "affectedCount": 190,
             "decision": "pending",
             "impact": {
-              "days": 196,
+              "days": 190,
               "agreeDays": 176,
-              "breakDays": 20,
+              "breakDays": 14,
               "dateNotObserved": false
             },
             "variants": [
@@ -377,11 +378,6 @@
                 "preview": "Salm 129",
                 "truncated": false,
                 "count": 8
-              },
-              {
-                "preview": "Salm 99\nInvitació a lloar Déu en el seu temple",
-                "truncated": false,
-                "count": 6
               },
               {
                 "preview": "Salm 113 B \nLloança al Déu veritable",
@@ -507,15 +503,15 @@
             "ca": null
           },
           "conflict": {
-            "cause": "Casella compartida per 64 celebracions",
-            "bundleId": "shared|advent_2_friday__ANY,advent_2_sunday__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,basil_the_great_and_gregory_nazianzen_bishops__MEMORY_FERIAL2,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,christmas_time_january_3__ANY,christmas_time_january_4__ANY,christmas_time_january_5__ANY,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,divine_mercy_sunday__ANY,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_4_friday__ANY,easter_time_6_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_innocents_martyrs__ANY,ignatius_of_antioch_bishop__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_2_friday__ANY,lent_3_sunday__ANY,lent_4_friday__ANY,lucy_of_syracuse_virgin__MEMORY_FERIAL2,nativity_of_the_lord__ANY,ordinary_time_10_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_6_friday__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
-            "variantCount": 6,
-            "affectedCount": 196,
+            "cause": "Casella compartida per 60 celebracions",
+            "bundleId": "shared|advent_2_friday__ANY,advent_2_sunday__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,divine_mercy_sunday__ANY,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_4_friday__ANY,easter_time_6_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_innocents_martyrs__ANY,ignatius_of_antioch_bishop__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_2_friday__ANY,lent_3_sunday__ANY,lent_4_friday__ANY,lucy_of_syracuse_virgin__MEMORY_FERIAL2,nativity_of_the_lord__ANY,ordinary_time_10_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_6_friday__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
+            "variantCount": 5,
+            "affectedCount": 190,
             "decision": "pending",
             "impact": {
-              "days": 196,
+              "days": 190,
               "agreeDays": 176,
-              "breakDays": 20,
+              "breakDays": 14,
               "dateNotObserved": false
             },
             "variants": [
@@ -528,11 +524,6 @@
                 "preview": "Des de l’abisme us crido, Senyor.    * \nEscolteu el meu clam.\nEstigueu atent, escolteu    * \naquest clam que us suplica.\n\nSi tinguéssiu en compte les culpes,    * \n¿qui es podria sostenir?\nPerò és molt vostre perdonar,    * \ni això ens infon respecte.\n\nConfio en la paraula del Senyor,    * \nla meva ",
                 "truncated": true,
                 "count": 8
-              },
-              {
-                "preview": "Aclameu el Senyor, arreu de la terra,    †\ndoneu culte al Senyor amb cants de festa,   * \nentreu davant d’ell amb crits d’alegria. \n\nReconeixeu que el Senyor és Déu,    †\nque és el nostre creador i que som seus,    * \nsom el seu poble i el ramat que ell pastura. \n\nEntreu als seus portals enaltint-lo",
-                "truncated": true,
-                "count": 6
               },
               {
                 "preview": "No ens doneu a nosaltres la glòria,    *\nno ens la doneu, Senyor; \ndoneu-la al vostre nom,    *\nperquè vós sou fidel en l’amor. \nQue no puguin dir els altres pobles:    *\n«¿On és el seu Déu?»\n\nEl nostre Déu és al cel,    *\ni fa tot el que ell es proposa. \nPerò els ídols d’ells són plata i or,   *\nob",
@@ -1317,66 +1308,26 @@
           "label": "3r salm — antífona",
           "table": "salmos_antifonas",
           "id": "9340",
-          "status": "conflict",
-          "verdictCa": "onlyCpl",
-          "channel": "C2",
-          "match": "prose",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
           "fromFerial": false,
           "altModeMatch": false,
           "noProperText": false,
           "cpl": "Les vostres obres són grans i admirables, oh Rei de tots els pobles.",
-          "ca": null,
+          "ca": "Les vostres obres són grans i admirables, oh Rei de tots els pobles.",
           "es": "_Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!_",
           "cplClean": "Les vostres obres són grans i admirables, oh Rei de tots els pobles.",
-          "caClean": null,
+          "caClean": "Les vostres obres són grans i admirables, oh Rei de tots els pobles.",
           "esClean": "Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!",
           "fp": {
             "cpl": null,
             "es": null,
             "ca": null
           },
-          "conflict": {
-            "cause": "Casella compartida per 31 celebracions",
-            "bundleId": "shared|advent_2_friday__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,anthony_of_padua_priest__MEMORY_FERIAL1,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,christmas_time_january_3__ANY,christmas_time_january_4__ANY,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,francis_of_assisi__MEMORY_FERIAL2,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,lent_2_friday__ANY,lent_4_friday__ANY,lucy_of_syracuse_virgin__MEMORY_FERIAL2,ordinary_time_12_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_6_friday__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,pius_x_pope__MEMORY_FERIAL1,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
-            "variantCount": 2,
-            "affectedCount": 76,
-            "decision": "pending",
-            "impact": {
-              "days": 76,
-              "agreeDays": 73,
-              "breakDays": 3,
-              "dateNotObserved": false
-            },
-            "variants": [
-              {
-                "preview": "Les vostres obres són grans i admirables, oh Rei de tots els pobles.",
-                "truncated": false,
-                "count": 73
-              },
-              {
-                "preview": "Tots els pobles, Senyor, vindran a fer-vos homenatge.",
-                "truncated": false,
-                "count": 3
-              }
-            ]
-          },
-          "blame": [
-            {
-              "title": "Santíssim Nom de Jesús",
-              "verdict": "not-applied",
-              "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-              "ranks": [
-                "Memòria lliure"
-              ],
-              "suggestedId": "santissim_nom_de_jesus",
-              "inLitcal": {
-                "calendar": "catalonia",
-                "id": "santissim_nom_de_jesus",
-                "rank": "OPTIONAL_MEMORIAL"
-              },
-              "sole": false
-            }
-          ]
+          "conflict": null,
+          "blame": null
         },
         {
           "hour": "Vespers",
@@ -1877,6 +1828,1784 @@
           "cplClean": "Oh Déu, la vostra saviesa admirable es manifesta en l’escàndol de la creu; concediu-nos que contemplem de tal manera la glòria de la passió del vostre Fill, que mai no deixem de gloriar-nos amb confiança en la seva creu. Per nostre Senyor Jesucrist.",
           "caClean": "Oh Déu, la vostra saviesa admirable es manifesta en l’escàndol de la creu; concediu-nos que contemplem de tal manera la glòria de la passió del vostre Fill, que mai no deixem de gloriar-nos amb confiança en la seva creu. Per nostre Senyor Jesucrist.",
           "esClean": "Dios nuestro que, de una manera admirable, has manifestado tu sabiduría escondida, con el escándalo de la cruz, concédenos contemplar con tal plenitud de fe la gloria de la pasión de tu Hijo que siempre nos gloriemos confiadamente en la cruz de Jesucristo. Por nuestro Señor Jesucristo, tu Hijo, que vive y reina contigo en la unidad del Espíritu Santo y es Dios por los siglos de los siglos.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        }
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "litcalId": "ordinary_time_24_thursday",
+      "allXKey": "ordinary_time_24_thursday__ANY",
+      "cplTitle": "Sant Robert Bel·larmino, bisbe i doctor de l’Església",
+      "cplType": "L",
+      "cplWeek": "24",
+      "cplWeekCycle": "4",
+      "cplSpecificTime": "O_ORDINAR",
+      "appName": null,
+      "appGloss": "Temps Ordinari · setmana 24 · dijous",
+      "celebration": {
+        "title": "Sant Robert Bel·larmino, bisbe i doctor de l’Església",
+        "type": "L",
+        "litcalId": "ordinary_time_24_thursday",
+        "litcalIsFerial": true,
+        "minorityCells": 0,
+        "verdict": "not-applied",
+        "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
+        "group": {
+          "key": "cel|Sant Robert Bel·larmino, bisbe i doctor de l’Església",
+          "title": "Sant Robert Bel·larmino, bisbe i doctor de l’Església",
+          "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
+          "ranks": [
+            "Memòria lliure"
+          ],
+          "suggestedId": "sant_robert_bellarmino_bisbe_i_doctor_de_l_esglesia",
+          "inLitcal": {
+            "calendar": "diocese-vic",
+            "id": "sant_robert_bellarmino_bisbe_i_doctor_de_l_esglesia",
+            "rank": "OPTIONAL_MEMORIAL"
+          },
+          "cellsBlamed": 1,
+          "cellsSole": 0,
+          "contestedDays": 1,
+          "dates": [
+            "2018-09-17"
+          ]
+        }
+      },
+      "coverage": {
+        "ok": 54,
+        "notInAppYet": 0,
+        "conflict": 3,
+        "missing": 0,
+        "have": 54,
+        "reachable": 57,
+        "unreachable": 0,
+        "total": 57,
+        "percent": 95,
+        "percentOfReachable": 95
+      },
+      "migration": {
+        "ok": 54,
+        "conflict": 3,
+        "missing": 0,
+        "notInAppYet": 0,
+        "total": 57,
+        "percent": 95
+      },
+      "tabsDiffer": false,
+      "ferialFieldCount": {
+        "Laudes": 19,
+        "Vespers": 19
+      },
+      "blameSummary": [
+        {
+          "title": "Visitació de la Benaurada Verge Maria",
+          "verdict": "memorial",
+          "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+          "ranks": [
+            "Festivitat"
+          ],
+          "suggestedId": "visitacio_de_la_benaurada_verge_maria",
+          "inLitcal": {
+            "calendar": "catalonia",
+            "id": "visitacio_de_la_benaurada_verge_maria_0531",
+            "rank": "FEAST"
+          },
+          "sole": true,
+          "fields": 2,
+          "soleFields": 2
+        },
+        {
+          "title": "Mare de Déu del Pilar",
+          "verdict": "memorial",
+          "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+          "ranks": [
+            "Festivitat"
+          ],
+          "suggestedId": "mare_de_deu_del_pilar",
+          "inLitcal": null,
+          "sole": false,
+          "fields": 1,
+          "soleFields": 0
+        },
+        {
+          "title": "Sant Isidre llaurador",
+          "verdict": "memorial",
+          "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+          "ranks": [
+            "Memòria obligatòria"
+          ],
+          "suggestedId": "sant_isidre_llaurador",
+          "inLitcal": null,
+          "sole": false,
+          "fields": 1,
+          "soleFields": 0
+        }
+      ],
+      "rows": [
+        {
+          "hour": "Laudes",
+          "key": "primer_salmo_cita",
+          "label": "1r salm — cita",
+          "table": "salmos_citas",
+          "id": "43",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Salm 142, 1-11 \nOració en temps d’angoixa",
+          "ca": "Salm 142, 1-11 \nOració en temps d’angoixa",
+          "es": "Salmo 142, 1-11: Lamentación y súplica ante la angustia",
+          "cplClean": "Salm 142, 1-11 Oració en temps d’angoixa",
+          "caClean": "Salm 142, 1-11 Oració en temps d’angoixa",
+          "esClean": "Salmo 142, 1-11: Lamentación y súplica ante la angustia",
+          "fp": {
+            "cpl": {
+              "ref": "Salm 142, 1-11",
+              "key": "PS",
+              "chapter": "142",
+              "verses": "1-11",
+              "token": "PS|142",
+              "tokenFull": "PS|142|1-11"
+            },
+            "es": {
+              "ref": "Salmo 142, 1-11",
+              "key": "PS",
+              "chapter": "142",
+              "verses": "1-11",
+              "token": "PS|142",
+              "tokenFull": "PS|142|1-11"
+            },
+            "ca": {
+              "ref": "Salm 142, 1-11",
+              "key": "PS",
+              "chapter": "142",
+              "verses": "1-11",
+              "token": "PS|142",
+              "tokenFull": "PS|142|1-11"
+            }
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "primer_salmo_antifona",
+          "label": "1r salm — antífona",
+          "table": "salmos_antifonas",
+          "id": "293",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Que pugui escoltar, Senyor, el vostre amor a punta de dia.",
+          "ca": "Que pugui escoltar, Senyor, el vostre amor a punta de dia.",
+          "es": "_En la mañana, Señor, hazme escuchar tu gracia._",
+          "cplClean": "Que pugui escoltar, Senyor, el vostre amor a punta de dia.",
+          "caClean": "Que pugui escoltar, Senyor, el vostre amor a punta de dia.",
+          "esClean": "En la mañana, Señor, hazme escuchar tu gracia.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "primer_salmo_texto",
+          "label": "1r salm — text",
+          "table": "salmos_textos",
+          "id": "44",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Senyor, escolteu la meva pregària,    †\nescolteu la meva súplica,    *\nresponeu-me, vós que sou bo i fidel. \nNo vulgueu judicar el vostre servent:    *\nno podríeu absoldre ningú dels qui han viscut.\n\nL’enemic que em perseguia per matar-me    *\nm’ha trepitjat per terra, \nm’ha confinat al país de les tenebres,    *\nigual que els morts de temps immemorial.\n\nEl meu esperit se sent rendit,    *\nestà consternat el meu cor. \nTot evocant el record dels temps antics,    †\nmeditant les vostres proeses,    *\nconsiderant les obres de les vostres mans, \nestenc a vós els braços i us miro,    *\nem sento tot jo com una terra esgotada. \n\nDe pressa, Senyor, responeu-me,    *\nque ja em falta l’alè; \nno m’amagueu la vostra mirada,    *\nque m’enfonsaria a la terra dels morts.\n\nQue pugui escoltar el vostre amor a punta de dia;    *\nconfio en vós. \nFeu-me conèixer el camí que he de seguir,    *\na vós elevo la meva ànima.\n\nAllibereu-me de l’enemic, Senyor,    *\nen vós trobo refugi. \nEnsenyeu-me a fer la vostra voluntat,    *\nvós sou el meu Déu. \nQue el vostre esperit em condueixi    *\nper terra plana.\n\nSenyor, pel vostre nom, guardeu-me la vida,    * \nvós que sou bo, traieu-me del perill.",
+          "ca": "Senyor, escolteu la meva pregària,    †\nescolteu la meva súplica,    *\nresponeu-me, vós que sou bo i fidel. \nNo vulgueu judicar el vostre servent:    *\nno podríeu absoldre ningú dels qui han viscut.\n\nL’enemic que em perseguia per matar-me    *\nm’ha trepitjat per terra, \nm’ha confinat al país de les tenebres,    *\nigual que els morts de temps immemorial.\n\nEl meu esperit se sent rendit,    *\nestà consternat el meu cor. \nTot evocant el record dels temps antics,    †\nmeditant les vostres proeses,    *\nconsiderant les obres de les vostres mans, \nestenc a vós els braços i us miro,    *\nem sento tot jo com una terra esgotada. \n\nDe pressa, Senyor, responeu-me,    *\nque ja em falta l’alè; \nno m’amagueu la vostra mirada,    *\nque m’enfonsaria a la terra dels morts.\n\nQue pugui escoltar el vostre amor a punta de dia;    *\nconfio en vós. \nFeu-me conèixer el camí que he de seguir,    *\na vós elevo la meva ànima.\n\nAllibereu-me de l’enemic, Senyor,    *\nen vós trobo refugi. \nEnsenyeu-me a fer la vostra voluntat,    *\nvós sou el meu Déu. \nQue el vostre esperit em condueixi    *\nper terra plana.\n\nSenyor, pel vostre nom, guardeu-me la vida,    * \nvós que sou bo, traieu-me del perill.",
+          "es": "Señor, escucha mi oración;\ntú, que eres fiel, atiende a mi súplica;\ntú, que eres justo, escúchame.\nNo llames a juicio a tu siervo,\npues ningún hombre vivo es inocente frente a ti.\n\nEl enemigo me persigue a muerte,\nempuja mi vida al sepulcro,\nme confina a las tinieblas\ncomo a los muertos ya olvidados.\nMi aliento desfallece,\nmi corazón dentro de mí está yerto.\n\nRecuerdo los tiempos antiguos,\nmedito todas tus acciones,\nconsidero las obras de tus manos\ny extiendo mis brazos hacia ti:\ntengo sed de ti como tierra reseca.\n\nEscúchame enseguida, Señor,\nque me falta el aliento.\nNo me escondas tu rostro,\nigual que a los que bajan a la fosa.\n\nEn la mañana hazme escuchar tu gracia,\nya que confío en ti.\nIndícame el camino que he de seguir,\npues levanto mi alma a ti.\n\nLíbrame del enemigo, Señor,\nque me refugio en ti.\nEnséñame a cumplir tu voluntad,\nya que tú eres mi Dios.\nTu espíritu, que es bueno,\nme guíe por tierra llana.\n\nPor tu nombre, Señor, consérvame vivo;\npor tu clemencia, sácame de la angustia.\n\nGloria al Padre, y al Hijo, y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos. Amén.",
+          "cplClean": "Senyor, escolteu la meva pregària, † escolteu la meva súplica, * responeu-me, vós que sou bo i fidel. No vulgueu judicar el vostre servent: * no podríeu absoldre ningú dels qui han viscut. L’enemic que em perseguia per matar-me * m’ha trepitjat per terra, m’ha confinat al país de les tenebres, * igual que els morts de temps immemorial. El meu esperit se sent rendit, * està consternat el meu cor. Tot evocant el record dels temps antics, † meditant les vostres proeses, * considerant les obres de les vostres mans, estenc a vós els braços i us miro, * em sento tot jo com una terra esgotada. De pressa, Senyor, responeu-me, * que ja em falta l’alè; no m’amagueu la vostra mirada, * que m’enfonsaria a la terra dels morts. Que pugui escoltar el vostre amor a punta de dia; * confio en vós. Feu-me conèixer el camí que he de seguir, * a vós elevo la meva ànima. Allibereu-me de l’enemic, Senyor, * en vós trobo refugi. Ensenyeu-me a fer la vostra voluntat, * vós sou el meu Déu. Que el vostre esperit em condueixi * per terra plana. Senyor, pel vostre nom, guardeu-me la vida, * vós que sou bo, traieu-me del perill.",
+          "caClean": "Senyor, escolteu la meva pregària, † escolteu la meva súplica, * responeu-me, vós que sou bo i fidel. No vulgueu judicar el vostre servent: * no podríeu absoldre ningú dels qui han viscut. L’enemic que em perseguia per matar-me * m’ha trepitjat per terra, m’ha confinat al país de les tenebres, * igual que els morts de temps immemorial. El meu esperit se sent rendit, * està consternat el meu cor. Tot evocant el record dels temps antics, † meditant les vostres proeses, * considerant les obres de les vostres mans, estenc a vós els braços i us miro, * em sento tot jo com una terra esgotada. De pressa, Senyor, responeu-me, * que ja em falta l’alè; no m’amagueu la vostra mirada, * que m’enfonsaria a la terra dels morts. Que pugui escoltar el vostre amor a punta de dia; * confio en vós. Feu-me conèixer el camí que he de seguir, * a vós elevo la meva ànima. Allibereu-me de l’enemic, Senyor, * en vós trobo refugi. Ensenyeu-me a fer la vostra voluntat, * vós sou el meu Déu. Que el vostre esperit em condueixi * per terra plana. Senyor, pel vostre nom, guardeu-me la vida, * vós que sou bo, traieu-me del perill.",
+          "esClean": "Señor, escucha mi oración; tú, que eres fiel, atiende a mi súplica; tú, que eres justo, escúchame. No llames a juicio a tu siervo, pues ningún hombre vivo es inocente frente a ti. El enemigo me persigue a muerte, empuja mi vida al sepulcro, me confina a las tinieblas como a los muertos ya olvidados. Mi aliento desfallece, mi corazón dentro de mí está yerto. Recuerdo los tiempos antiguos, medito todas tus acciones, considero las obras de tus manos y extiendo mis brazos hacia ti: tengo sed de ti como tierra reseca. Escúchame enseguida, Señor, que me falta el aliento. No me escondas tu rostro, igual que a los que bajan a la fosa. En la mañana hazme escuchar tu gracia, ya que confío en ti. Indícame el camino que he de seguir, pues levanto mi alma a ti. Líbrame del enemigo, Señor, que me refugio en ti. Enséñame a cumplir tu voluntad, ya que tú eres mi Dios. Tu espíritu, que es bueno, me guíe por tierra llana. Por tu nombre, Señor, consérvame vivo; por tu clemencia, sácame de la angustia. Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "segundo_salmo_cita",
+          "label": "2n salm — cita",
+          "table": "salmos_citas",
+          "id": "295",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Càntic\nIs  66, 10-14a\nConsolació i goig a la ciutat santa",
+          "ca": "Càntic\nIs  66, 10-14a\nConsolació i goig a la ciutat santa",
+          "es": "Isaías 66, 10-14a: Consuelo y gozo para la ciudad santa",
+          "cplClean": "Càntic Is 66, 10-14a Consolació i goig a la ciutat santa",
+          "caClean": "Càntic Is 66, 10-14a Consolació i goig a la ciutat santa",
+          "esClean": "Isaías 66, 10-14a: Consuelo y gozo para la ciudad santa",
+          "fp": {
+            "cpl": {
+              "ref": "Càntic Is 66, 10-14a",
+              "key": "IS",
+              "chapter": "66",
+              "verses": "10-14a",
+              "token": "IS|66",
+              "tokenFull": "IS|66|10-14a"
+            },
+            "es": {
+              "ref": "Isaías 66, 10-14a",
+              "key": "IS",
+              "chapter": "66",
+              "verses": "10-14a",
+              "token": "IS|66",
+              "tokenFull": "IS|66|10-14a"
+            },
+            "ca": {
+              "ref": "Càntic Is 66, 10-14a",
+              "key": "IS",
+              "chapter": "66",
+              "verses": "10-14a",
+              "token": "IS|66",
+              "tokenFull": "IS|66|10-14a"
+            }
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "segundo_salmo_antifona",
+          "label": "2n salm — antífona",
+          "table": "salmos_antifonas",
+          "id": "294",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "El Senyor decantarà cap a Jerusalem una riuada de benestar.",
+          "ca": "El Senyor decantarà cap a Jerusalem una riuada de benestar.",
+          "es": "_El Señor hará derivar hacia Jerusalén como un río la paz._",
+          "cplClean": "El Senyor decantarà cap a Jerusalem una riuada de benestar.",
+          "caClean": "El Senyor decantarà cap a Jerusalem una riuada de benestar.",
+          "esClean": "El Señor hará derivar hacia Jerusalén como un río la paz.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "segundo_salmo_texto",
+          "label": "2n salm — text",
+          "table": "salmos_textos",
+          "id": "296",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Alegreu-vos amb Jerusalem,    * \nfeu festa, tots els qui l’estimeu.\nEstigueu contents amb ella,    *\ntots els qui portàveu dol per ella; \nsereu alletats amb l’abundància del seu consol,    *\ni xuclareu les delícies de la seva llet.\n\nAixò diu el Senyor:    †\n«Jo decantaré cap a ella, com un riu,\nla pau i el benestar,    *\nla riquesa de les nacions,\ncom un torrent desbordant.\n\nEls teus nodrissons seran portats al braç,    *\ni amanyagats sobre els genolls. \nCom una mare consola el seu fill,    †\njo també us consolaré:    *\na Jerusalem sereu consolats.\n\nQuan ho veureu, el vostre cor bategarà de goig    * \ni reviuran com l’herba els vostres ossos.»",
+          "ca": "Alegreu-vos amb Jerusalem,    * \nfeu festa, tots els qui l’estimeu.\nEstigueu contents amb ella,    *\ntots els qui portàveu dol per ella; \nsereu alletats amb l’abundància del seu consol,    *\ni xuclareu les delícies de la seva llet.\n\nAixò diu el Senyor:    †\n«Jo decantaré cap a ella, com un riu,\nla pau i el benestar,    *\nla riquesa de les nacions,\ncom un torrent desbordant.\n\nEls teus nodrissons seran portats al braç,    *\ni amanyagats sobre els genolls. \nCom una mare consola el seu fill,    †\njo també us consolaré:    *\na Jerusalem sereu consolats.\n\nQuan ho veureu, el vostre cor bategarà de goig    * \ni reviuran com l’herba els vostres ossos.»",
+          "es": "Festejad a Jerusalén, gozad con ella,\ntodos los que la amáis,\nalegraos de su alegría,\nlos que por ella llevasteis luto;\nmamaréis a sus pechos\ny os saciaréis de sus consuelos,\ny apuraréis las delicias \nde sus ubres abundantes.\n\nPorque así dice el Señor:\n\"Yo haré derivar hacia ella,\ncomo un río, la paz,\ncomo un torrente en crecida,\nlas riquezas de las naciones.\n\nLlevarán en brazos a sus criaturas\ny sobre las rodillas las acariciarán;\ncomo a un niño a quien su madre consuela,\nasí os consolaré yo,\ny en Jerusalén seréis consolados.\n\nAl verlo, se alegrará vuestro corazón,\ny vuestros huesos florecerán como un prado.\"\n\nGloria al Padre, y al Hijo, y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos. Amén.",
+          "cplClean": "Alegreu-vos amb Jerusalem, * feu festa, tots els qui l’estimeu. Estigueu contents amb ella, * tots els qui portàveu dol per ella; sereu alletats amb l’abundància del seu consol, * i xuclareu les delícies de la seva llet. Això diu el Senyor: † «Jo decantaré cap a ella, com un riu, la pau i el benestar, * la riquesa de les nacions, com un torrent desbordant. Els teus nodrissons seran portats al braç, * i amanyagats sobre els genolls. Com una mare consola el seu fill, † jo també us consolaré: * a Jerusalem sereu consolats. Quan ho veureu, el vostre cor bategarà de goig * i reviuran com l’herba els vostres ossos.»",
+          "caClean": "Alegreu-vos amb Jerusalem, * feu festa, tots els qui l’estimeu. Estigueu contents amb ella, * tots els qui portàveu dol per ella; sereu alletats amb l’abundància del seu consol, * i xuclareu les delícies de la seva llet. Això diu el Senyor: † «Jo decantaré cap a ella, com un riu, la pau i el benestar, * la riquesa de les nacions, com un torrent desbordant. Els teus nodrissons seran portats al braç, * i amanyagats sobre els genolls. Com una mare consola el seu fill, † jo també us consolaré: * a Jerusalem sereu consolats. Quan ho veureu, el vostre cor bategarà de goig * i reviuran com l’herba els vostres ossos.»",
+          "esClean": "Festejad a Jerusalén, gozad con ella, todos los que la amáis, alegraos de su alegría, los que por ella llevasteis luto; mamaréis a sus pechos y os saciaréis de sus consuelos, y apuraréis las delicias de sus ubres abundantes. Porque así dice el Señor: \"Yo haré derivar hacia ella, como un río, la paz, como un torrente en crecida, las riquezas de las naciones. Llevarán en brazos a sus criaturas y sobre las rodillas las acariciarán; como a un niño a quien su madre consuela, así os consolaré yo, y en Jerusalén seréis consolados. Al verlo, se alegrará vuestro corazón, y vuestros huesos florecerán como un prado.\" Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "tercer_salmo_cita",
+          "label": "3r salm — cita",
+          "table": "salmos_citas",
+          "id": "296",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Salm 146 \nEl poder i la bondat de Déu",
+          "ca": "Salm 146 \nEl poder i la bondat de Déu",
+          "es": "Salmo 146: Poder y bondad de Dios",
+          "cplClean": "Salm 146 El poder i la bondat de Déu",
+          "caClean": "Salm 146 El poder i la bondat de Déu",
+          "esClean": "Salmo 146: Poder y bondad de Dios",
+          "fp": {
+            "cpl": {
+              "ref": "Salm 146",
+              "key": "PS",
+              "chapter": "146",
+              "verses": "",
+              "token": "PS|146",
+              "tokenFull": "PS|146|"
+            },
+            "es": {
+              "ref": "Salmo 146",
+              "key": "PS",
+              "chapter": "146",
+              "verses": "",
+              "token": "PS|146",
+              "tokenFull": "PS|146|"
+            },
+            "ca": {
+              "ref": "Salm 146",
+              "key": "PS",
+              "chapter": "146",
+              "verses": "",
+              "token": "PS|146",
+              "tokenFull": "PS|146|"
+            }
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "tercer_salmo_antifona",
+          "label": "3r salm — antífona",
+          "table": "salmos_antifonas",
+          "id": "295",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "És agradós de lloar el nostre Déu.",
+          "ca": "És agradós de lloar el nostre Déu.",
+          "es": "_Nuestro Dios merece una alabanza armoniosa._",
+          "cplClean": "És agradós de lloar el nostre Déu.",
+          "caClean": "És agradós de lloar el nostre Déu.",
+          "esClean": "Nuestro Dios merece una alabanza armoniosa.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "tercer_salmo_texto",
+          "label": "3r salm — text",
+          "table": "salmos_textos",
+          "id": "297",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Lloeu el Senyor, dóna bo de cantar!    *\nLloeu el  nostre Déu, que és agradós de lloar-lo!\n\nEl Senyor reconstrueix Jerusalem    *\ni aplega els dispersats d’Israel; \nconforta els cors desfets   *\ni embena les ferides.\n\nTé comptat el nombre dels estels,    * \nels crida cadascun pel seu nom.\nÉs gran el Senyor, i és molt poderós,    *\nés infinita la seva saviesa. \nEl Senyor sosté els desvalguts    *\ni abat els injustos fins a terra.\n\nCanteu accions de gràcies al Senyor,    * \nacompanyeu amb les cítares els cants.\nEl nostre Déu cobreix el cel de nuvolades,    * \nassegura les pluges a la terra,\nfa néixer l’herba a les muntanyes,    * \nles plantes, al servei de l’home.\n\nEll dóna l’aliment al bestiar,    *\na les cries dels corbs que l’hi reclamen. \nNo és en la força dels cavalls\nque es complau el Senyor,    *\nni en els peus lleugers del guerrer. \nEl Senyor es complau en els qui creuen en ell,    *\nen els qui confien en el seu amor.",
+          "ca": "Lloeu el Senyor, dóna bo de cantar!    *\nLloeu el  nostre Déu, que és agradós de lloar-lo!\n\nEl Senyor reconstrueix Jerusalem    *\ni aplega els dispersats d’Israel; \nconforta els cors desfets   *\ni embena les ferides.\n\nTé comptat el nombre dels estels,    * \nels crida cadascun pel seu nom.\nÉs gran el Senyor, i és molt poderós,    *\nés infinita la seva saviesa. \nEl Senyor sosté els desvalguts    *\ni abat els injustos fins a terra.\n\nCanteu accions de gràcies al Senyor,    * \nacompanyeu amb les cítares els cants.\nEl nostre Déu cobreix el cel de nuvolades,    * \nassegura les pluges a la terra,\nfa néixer l’herba a les muntanyes,    * \nles plantes, al servei de l’home.\n\nEll dóna l’aliment al bestiar,    *\na les cries dels corbs que l’hi reclamen. \nNo és en la força dels cavalls\nque es complau el Senyor,    *\nni en els peus lleugers del guerrer. \nEl Senyor es complau en els qui creuen en ell,    *\nen els qui confien en el seu amor.",
+          "es": "Alabad al Señor, que la música es buena;\nnuestro Dios merece una alabanza armoniosa.\n\nEl Señor reconstruye Jerusalén,\nreúne a los deportados de Israel;\nél sana los corazones destrozados,\nvenda sus heridas.\n\nCuenta el número de las estrellas,\na cada una la llama por su nombre.\nNuestro Señor es grande y poderoso,\nsu sabiduría no tiene medida.\nEl Señor sostiene a los humildes,\nhumilla hasta el polvo a los malvados.\n\nEntonad la acción de gracias al Señor,\ntocad la cítara para nuestro Dios,\nque cubre el cielo de nubes,\npreparando la lluvia para la tierra;\n\nque hace brotar hierba en los montes,\npara los que sirven al hombre;\nque da su alimento al ganado\ny a las crías de cuervo que graznan.\n\nNo aprecia el vigor de los caballos,\nno estima los jarretes del hombre:\nel Señor aprecia a sus fieles,\nque confían en su misericordia.\n\nGloria al Padre, y al Hijo, y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos. Amén.",
+          "cplClean": "Lloeu el Senyor, dóna bo de cantar! * Lloeu el nostre Déu, que és agradós de lloar-lo! El Senyor reconstrueix Jerusalem * i aplega els dispersats d’Israel; conforta els cors desfets * i embena les ferides. Té comptat el nombre dels estels, * els crida cadascun pel seu nom. És gran el Senyor, i és molt poderós, * és infinita la seva saviesa. El Senyor sosté els desvalguts * i abat els injustos fins a terra. Canteu accions de gràcies al Senyor, * acompanyeu amb les cítares els cants. El nostre Déu cobreix el cel de nuvolades, * assegura les pluges a la terra, fa néixer l’herba a les muntanyes, * les plantes, al servei de l’home. Ell dóna l’aliment al bestiar, * a les cries dels corbs que l’hi reclamen. No és en la força dels cavalls que es complau el Senyor, * ni en els peus lleugers del guerrer. El Senyor es complau en els qui creuen en ell, * en els qui confien en el seu amor.",
+          "caClean": "Lloeu el Senyor, dóna bo de cantar! * Lloeu el nostre Déu, que és agradós de lloar-lo! El Senyor reconstrueix Jerusalem * i aplega els dispersats d’Israel; conforta els cors desfets * i embena les ferides. Té comptat el nombre dels estels, * els crida cadascun pel seu nom. És gran el Senyor, i és molt poderós, * és infinita la seva saviesa. El Senyor sosté els desvalguts * i abat els injustos fins a terra. Canteu accions de gràcies al Senyor, * acompanyeu amb les cítares els cants. El nostre Déu cobreix el cel de nuvolades, * assegura les pluges a la terra, fa néixer l’herba a les muntanyes, * les plantes, al servei de l’home. Ell dóna l’aliment al bestiar, * a les cries dels corbs que l’hi reclamen. No és en la força dels cavalls que es complau el Senyor, * ni en els peus lleugers del guerrer. El Senyor es complau en els qui creuen en ell, * en els qui confien en el seu amor.",
+          "esClean": "Alabad al Señor, que la música es buena; nuestro Dios merece una alabanza armoniosa. El Señor reconstruye Jerusalén, reúne a los deportados de Israel; él sana los corazones destrozados, venda sus heridas. Cuenta el número de las estrellas, a cada una la llama por su nombre. Nuestro Señor es grande y poderoso, su sabiduría no tiene medida. El Señor sostiene a los humildes, humilla hasta el polvo a los malvados. Entonad la acción de gracias al Señor, tocad la cítara para nuestro Dios, que cubre el cielo de nubes, preparando la lluvia para la tierra; que hace brotar hierba en los montes, para los que sirven al hombre; que da su alimento al ganado y a las crías de cuervo que graznan. No aprecia el vigor de los caballos, no estima los jarretes del hombre: el Señor aprecia a sus fieles, que confían en su misericordia. Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "lectura_biblica_cita",
+          "label": "Lectura breu — cita",
+          "table": "lectura_breve_citas",
+          "id": "142",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Rm 8, 18-21",
+          "ca": "Rm 8, 18-21",
+          "es": "Rm 8, 18-21",
+          "cplClean": "Rm 8, 18-21",
+          "caClean": "Rm 8, 18-21",
+          "esClean": "Rm 8, 18-21",
+          "fp": {
+            "cpl": {
+              "ref": "Rm 8, 18-21",
+              "key": "ROM",
+              "chapter": "8",
+              "verses": "18-21",
+              "token": "ROM|8",
+              "tokenFull": "ROM|8|18-21"
+            },
+            "es": {
+              "ref": "Rm 8, 18-21",
+              "key": "ROM",
+              "chapter": "8",
+              "verses": "18-21",
+              "token": "ROM|8",
+              "tokenFull": "ROM|8|18-21"
+            },
+            "ca": {
+              "ref": "Rm 8, 18-21",
+              "key": "ROM",
+              "chapter": "8",
+              "verses": "18-21",
+              "token": "ROM|8",
+              "tokenFull": "ROM|8|18-21"
+            }
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "lectura_biblica",
+          "label": "Lectura breu — text",
+          "table": "lectura_breve_textos",
+          "id": "143",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Els sofriments del món present no són res comparats amb la felicitat de la glòria que més tard s’ha de revelar en nosaltres. Perquè tot l’univers creat està atent, esperant que es reveli d’una vegada la glorificació dels fills de Déu. L’univers creat s’ha trobat sotmès a una situació absurda, no perquè ell ho hagi volgut, sinó que un altre l’hi ha sotmès, donant-li, però, l’esperança que un dia serà alliberat de l’esclavatge d’aquesta situació desgraciada, per obtenir la llibertat, que és la glorificació dels fills de Déu.",
+          "ca": "Els sofriments del món present no són res comparats amb la felicitat de la glòria que més tard s’ha de revelar en nosaltres. Perquè tot l’univers creat està atent, esperant que es reveli d’una vegada la glorificació dels fills de Déu. L’univers creat s’ha trobat sotmès a una situació absurda, no perquè ell ho hagi volgut, sinó que un altre l’hi ha sotmès, donant-li, però, l’esperança que un dia serà alliberat de l’esclavatge d’aquesta situació desgraciada, per obtenir la llibertat, que és la glorificació dels fills de Déu.",
+          "es": "Los sufrimientos de ahora no pesan lo que la gloria que un día se nos descubrirá. Porque la creación, expectante, está aguardando la plena manifestación de los hijos de Dios; ella fue sometida a la frustración, no por su voluntad, sino por uno que la sometió; pero fue con la esperanza de que la creación misma se vería liberada de la esclavitud de la corrupción, para entrar en la libertad gloriosa de los hijos de Dios.",
+          "cplClean": "Els sofriments del món present no són res comparats amb la felicitat de la glòria que més tard s’ha de revelar en nosaltres. Perquè tot l’univers creat està atent, esperant que es reveli d’una vegada la glorificació dels fills de Déu. L’univers creat s’ha trobat sotmès a una situació absurda, no perquè ell ho hagi volgut, sinó que un altre l’hi ha sotmès, donant-li, però, l’esperança que un dia serà alliberat de l’esclavatge d’aquesta situació desgraciada, per obtenir la llibertat, que és la glorificació dels fills de Déu.",
+          "caClean": "Els sofriments del món present no són res comparats amb la felicitat de la glòria que més tard s’ha de revelar en nosaltres. Perquè tot l’univers creat està atent, esperant que es reveli d’una vegada la glorificació dels fills de Déu. L’univers creat s’ha trobat sotmès a una situació absurda, no perquè ell ho hagi volgut, sinó que un altre l’hi ha sotmès, donant-li, però, l’esperança que un dia serà alliberat de l’esclavatge d’aquesta situació desgraciada, per obtenir la llibertat, que és la glorificació dels fills de Déu.",
+          "esClean": "Los sufrimientos de ahora no pesan lo que la gloria que un día se nos descubrirá. Porque la creación, expectante, está aguardando la plena manifestación de los hijos de Dios; ella fue sometida a la frustración, no por su voluntad, sino por uno que la sometió; pero fue con la esperanza de que la creación misma se vería liberada de la esclavitud de la corrupción, para entrar en la libertad gloriosa de los hijos de Dios.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "responsorios",
+          "label": "Responsori breu (1/6)",
+          "table": "responsorios",
+          "id": "822",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℣. Així que em llevo, Senyor, * Ja penso en vós. ",
+          "ca": "℣. Així que em llevo, Senyor, * Ja penso en vós. ",
+          "es": "$℣. $Velando * medito en ti, Señor.",
+          "cplClean": "℣. Així que em llevo, Senyor, * Ja penso en vós.",
+          "caClean": "℣. Així que em llevo, Senyor, * Ja penso en vós.",
+          "esClean": "℣. Velando * medito en ti, Señor.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "responsorios",
+          "label": "Responsori breu (2/6)",
+          "table": "responsorios",
+          "id": "823",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "ca": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "es": "$℟. $Velando medito en ti, Señor.",
+          "cplClean": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "caClean": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "esClean": "℟. Velando medito en ti, Señor.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "responsorios",
+          "label": "Responsori breu (3/6)",
+          "table": "responsorios",
+          "id": "824",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℣. Perquè vós m’heu ajudat. ",
+          "ca": "℣. Perquè vós m’heu ajudat. ",
+          "es": "$℣. $Porque fuiste mi auxilio.",
+          "cplClean": "℣. Perquè vós m’heu ajudat.",
+          "caClean": "℣. Perquè vós m’heu ajudat.",
+          "esClean": "℣. Porque fuiste mi auxilio.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "responsorios",
+          "label": "Responsori breu (4/6)",
+          "table": "responsorios",
+          "id": "825",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℟. Ja penso en vós. ",
+          "ca": "℟. Ja penso en vós. ",
+          "es": "$℟. $Medito en ti, Señor.",
+          "cplClean": "℟. Ja penso en vós.",
+          "caClean": "℟. Ja penso en vós.",
+          "esClean": "℟. Medito en ti, Señor.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "responsorios",
+          "label": "Responsori breu (5/6)",
+          "table": "responsorios",
+          "id": "826",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "ca": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "es": "$℣. $Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+          "cplClean": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "caClean": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "esClean": "℣. Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "responsorios",
+          "label": "Responsori breu (6/6)",
+          "table": "responsorios",
+          "id": "827",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "ca": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "es": "$℟. $Velando medito en ti, Señor.",
+          "cplClean": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "caClean": "℟. Així que em llevo, Senyor, Ja penso en vós.",
+          "esClean": "℟. Velando medito en ti, Señor.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "cantico_evangelico_antifona",
+          "label": "Càntic evangèlic — antífona",
+          "table": "cantico_evangelico_antifonas",
+          "id": "69",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Feu saber, Senyor, al vostre poble que li ve la salvació, i perdoneu els nostres pecats.",
+          "ca": "Feu saber, Senyor, al vostre poble que li ve la salvació, i perdoneu els nostres pecats.",
+          "es": "_Anuncia a tu pueblo, Señor, la salvación, y perdónanos nuestros pecados._",
+          "cplClean": "Feu saber, Senyor, al vostre poble que li ve la salvació, i perdoneu els nostres pecats.",
+          "caClean": "Feu saber, Senyor, al vostre poble que li ve la salvació, i perdoneu els nostres pecats.",
+          "esClean": "Anuncia a tu pueblo, Señor, la salvación, y perdónanos nuestros pecados.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "preces_intro",
+          "label": "Precs — introducció",
+          "table": "preces_intro",
+          "id": "77",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Celebrem Déu, de qui prové la salvació del seu poble, i repetim-li aquesta invocació:",
+          "ca": "Celebrem Déu, de qui prové la salvació del seu poble, i repetim-li aquesta invocació:",
+          "es": "Invoquemos a Dios, de quien viene la salvación para su pueblo, diciendo:",
+          "cplClean": "Celebrem Déu, de qui prové la salvació del seu poble, i repetim-li aquesta invocació:",
+          "caClean": "Celebrem Déu, de qui prové la salvació del seu poble, i repetim-li aquesta invocació:",
+          "esClean": "Invoquemos a Dios, de quien viene la salvación para su pueblo, diciendo:",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "preces_respuesta",
+          "label": "Precs — resposta",
+          "table": "preces_respuesta",
+          "id": "77",
+          "status": "conflict",
+          "verdictCa": "onlyCpl",
+          "channel": "C2",
+          "match": "prose",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Vós sou, Senyor, la nostra vida.",
+          "ca": null,
+          "es": "_Escúchanos, Señor._",
+          "cplClean": "Vós sou, Senyor, la nostra vida.",
+          "caClean": null,
+          "esClean": "Escúchanos, Señor.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": {
+            "cause": "Casella compartida per 19 celebracions",
+            "bundleId": "shared|agatha_of_sicily_virgin__MEMORY_FERIAL2,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,ignatius_of_antioch_bishop__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,leo_i_the_great_pope__MEMORY_FERIAL2,ordinary_time_12_thursday__ANY,ordinary_time_16_thursday__ANY,ordinary_time_20_thursday__ANY,ordinary_time_24_thursday__ANY,ordinary_time_28_thursday__ANY,ordinary_time_32_thursday__ANY,ordinary_time_4_thursday__ANY,our_lady_of_the_pillar__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,pius_x_pope__MEMORY_FERIAL1",
+            "variantCount": 2,
+            "affectedCount": 51,
+            "decision": "pending",
+            "impact": {
+              "days": 51,
+              "agreeDays": 41,
+              "breakDays": 10,
+              "dateNotObserved": false
+            },
+            "variants": [
+              {
+                "preview": "Vós sou, Senyor, la nostra vida.",
+                "truncated": false,
+                "count": 41
+              },
+              {
+                "preview": "Escolteu-nos, Senyor.",
+                "truncated": false,
+                "count": 10
+              }
+            ]
+          },
+          "blame": [
+            {
+              "title": "Mare de Déu del Pilar",
+              "verdict": "memorial",
+              "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+              "ranks": [
+                "Festivitat"
+              ],
+              "suggestedId": "mare_de_deu_del_pilar",
+              "inLitcal": null,
+              "sole": false
+            },
+            {
+              "title": "Sant Isidre llaurador",
+              "verdict": "memorial",
+              "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+              "ranks": [
+                "Memòria obligatòria"
+              ],
+              "suggestedId": "sant_isidre_llaurador",
+              "inLitcal": null,
+              "sole": false
+            }
+          ]
+        },
+        {
+          "hour": "Laudes",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (1/4)",
+          "table": "preces_contenido",
+          "id": "560",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Us beneïm, Pare de nostre Senyor Jesucrist, que, pel vostre gran amor, ens heu fet tornar a néixer\ni, per la resurrecció de Jesucrist d’entre els morts, ens heu infós una esperança viva.",
+          "ca": "Us beneïm, Pare de nostre Senyor Jesucrist, que, pel vostre gran amor, ens heu fet tornar a néixer\ni, per la resurrecció de Jesucrist d’entre els morts, ens heu infós una esperança viva.",
+          "es": "- Bendito seas, Dios, Padre de nuestro Señor Jesucristo, que, en tu gran misericordia, nos has hecho nacer de nuevo para una esperanza viva,\n_por la resurrección de Jesucristo de entre los muertos._",
+          "cplClean": "Us beneïm, Pare de nostre Senyor Jesucrist, que, pel vostre gran amor, ens heu fet tornar a néixer i, per la resurrecció de Jesucrist d’entre els morts, ens heu infós una esperança viva.",
+          "caClean": "Us beneïm, Pare de nostre Senyor Jesucrist, que, pel vostre gran amor, ens heu fet tornar a néixer i, per la resurrecció de Jesucrist d’entre els morts, ens heu infós una esperança viva.",
+          "esClean": "- Bendito seas, Dios, Padre de nuestro Señor Jesucristo, que, en tu gran misericordia, nos has hecho nacer de nuevo para una esperanza viva, por la resurrección de Jesucristo de entre los muertos.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (2/4)",
+          "table": "preces_contenido",
+          "id": "561",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Vós, que en Crist renovàreu l’home, creat a imatge vostra,\nconfigureu-nos a la imatge del vostre Fill.",
+          "ca": "Vós, que en Crist renovàreu l’home, creat a imatge vostra,\nconfigureu-nos a la imatge del vostre Fill.",
+          "es": "- Tú que en Cristo renovaste al hombre, creado a imagen tuya,\n_haz que seamos imagen de tu Hijo._",
+          "cplClean": "Vós, que en Crist renovàreu l’home, creat a imatge vostra, configureu-nos a la imatge del vostre Fill.",
+          "caClean": "Vós, que en Crist renovàreu l’home, creat a imatge vostra, configureu-nos a la imatge del vostre Fill.",
+          "esClean": "- Tú que en Cristo renovaste al hombre, creado a imagen tuya, haz que seamos imagen de tu Hijo.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (3/4)",
+          "table": "preces_contenido",
+          "id": "562",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Vesseu en els nostres cors, ferits per l’odi i per l’enveja,\nla caritat que ens heu donat per l’Esperit Sant.",
+          "ca": "Vesseu en els nostres cors, ferits per l’odi i per l’enveja,\nla caritat que ens heu donat per l’Esperit Sant.",
+          "es": "- Derrama en nuestros corazones, lastimados por el odio y la envidia,\n_tu Espíritu de amor._",
+          "cplClean": "Vesseu en els nostres cors, ferits per l’odi i per l’enveja, la caritat que ens heu donat per l’Esperit Sant.",
+          "caClean": "Vesseu en els nostres cors, ferits per l’odi i per l’enveja, la caritat que ens heu donat per l’Esperit Sant.",
+          "esClean": "- Derrama en nuestros corazones, lastimados por el odio y la envidia, tu Espíritu de amor.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (4/4)",
+          "table": "preces_contenido",
+          "id": "563",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Que no manqui avui feina als treballadors, aliment als famolencs, alegria als tristos;\ndoneu a tothom, Senyor, la gràcia i la salut.",
+          "ca": "Que no manqui avui feina als treballadors, aliment als famolencs, alegria als tristos;\ndoneu a tothom, Senyor, la gràcia i la salut.",
+          "es": "- Concede hoy trabajo a quienes lo buscan, pan a los hambrientos, alegría a los tristes,\n_a todos la gracia y la salvación._",
+          "cplClean": "Que no manqui avui feina als treballadors, aliment als famolencs, alegria als tristos; doneu a tothom, Senyor, la gràcia i la salut.",
+          "caClean": "Que no manqui avui feina als treballadors, aliment als famolencs, alegria als tristos; doneu a tothom, Senyor, la gràcia i la salut.",
+          "esClean": "- Concede hoy trabajo a quienes lo buscan, pan a los hambrientos, alegría a los tristes, a todos la gracia y la salvación.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Laudes",
+          "key": "oracion_final",
+          "label": "Oració final",
+          "table": "oraciones_finales",
+          "id": "144",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Doneu-nos, Senyor, un coneixement confiat de la nostra salvació, perquè sense por, alliberats de les mans dels enemics, us donem culte amb santedat i justícia tots els dies de la nostra vida. Per nostre Senyor Jesucrist.",
+          "ca": "Doneu-nos, Senyor, un coneixement confiat de la nostra salvació, perquè sense por, alliberats de les mans dels enemics, us donem culte amb santedat i justícia tots els dies de la nostra vida. Per nostre Senyor Jesucrist.",
+          "es": "Concédenos, Señor, que nos sea siempre anunciada la salvación, para que, libres de temor, arrancados de la mano de los enemigos te sirvamos fielmente con santidad y justicia todos nuestros días. Por nuestro Señor Jesucristo, tu Hijo, que vive y reina contigo en la unidad del Espíritu Santo y es Dios por los siglos de los siglos.",
+          "cplClean": "Doneu-nos, Senyor, un coneixement confiat de la nostra salvació, perquè sense por, alliberats de les mans dels enemics, us donem culte amb santedat i justícia tots els dies de la nostra vida. Per nostre Senyor Jesucrist.",
+          "caClean": "Doneu-nos, Senyor, un coneixement confiat de la nostra salvació, perquè sense por, alliberats de les mans dels enemics, us donem culte amb santedat i justícia tots els dies de la nostra vida. Per nostre Senyor Jesucrist.",
+          "esClean": "Concédenos, Señor, que nos sea siempre anunciada la salvación, para que, libres de temor, arrancados de la mano de los enemigos te sirvamos fielmente con santidad y justicia todos nuestros días. Por nuestro Señor Jesucristo, tu Hijo, que vive y reina contigo en la unidad del Espíritu Santo y es Dios por los siglos de los siglos.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "primer_salmo_cita",
+          "label": "1r salm — cita",
+          "table": "salmos_citas",
+          "id": "11256",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Salm 143 - I\nPregària d’un rei. Prosperitat del poble",
+          "ca": "Salm 143 - I\nPregària d’un rei. Prosperitat del poble",
+          "es": "Salmo 143, 1-10 (I): Oración por la victoria y la paz",
+          "cplClean": "Salm 143 - I Pregària d’un rei. Prosperitat del poble",
+          "caClean": "Salm 143 - I Pregària d’un rei. Prosperitat del poble",
+          "esClean": "Salmo 143, 1-10 (I): Oración por la victoria y la paz",
+          "fp": {
+            "cpl": {
+              "ref": "Salm 143 - I",
+              "key": "PS",
+              "chapter": "143",
+              "verses": "-I",
+              "token": "PS|143",
+              "tokenFull": "PS|143|-I"
+            },
+            "es": {
+              "ref": "Salmo 143, 1-10 (I)",
+              "key": "PS",
+              "chapter": "143",
+              "verses": "1-10 (I)",
+              "token": "PS|143",
+              "tokenFull": "PS|143|1-10 (I)"
+            },
+            "ca": {
+              "ref": "Salm 143 - I",
+              "key": "PS",
+              "chapter": "143",
+              "verses": "-I",
+              "token": "PS|143",
+              "tokenFull": "PS|143|-I"
+            }
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "primer_salmo_antifona",
+          "label": "1r salm — antífona",
+          "table": "salmos_antifonas",
+          "id": "9479",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Amor i muralla que em salva, el Senyor és l’escut que m’empara.",
+          "ca": "Amor i muralla que em salva, el Senyor és l’escut que m’empara.",
+          "es": "_Tú eres, Señor, mi bienhechor, mi refugio donde me pongo a salvo._",
+          "cplClean": "Amor i muralla que em salva, el Senyor és l’escut que m’empara.",
+          "caClean": "Amor i muralla que em salva, el Senyor és l’escut que m’empara.",
+          "esClean": "Tú eres, Señor, mi bienhechor, mi refugio donde me pongo a salvo.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "primer_salmo_texto",
+          "label": "1r salm — text",
+          "table": "salmos_textos",
+          "id": "11257",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Beneït sigui el Senyor, la meva roca,    †\nque m’ensinistra els braços a la lluita    *\ni les mans al combat; \nés l’amor i la muralla    *\nque em deslliura i em salva, \nés l’escut que m’empara.    *\nEll sotmet el poble al meu govern.\n\nSenyor, ¿què són els homes, per fixar-vos-hi?    * \n¿Què són els mortals, per ocupar-vos-en?\nL’home s’esvaeix com el fum,    *\nels seus dies es fonen com una ombra.\n\nSenyor, esberleu la volta del cel, i baixeu,    *\ntoqueu les muntanyes, i que treguin glops de fum;\ndesconcerteu-los fulminant els vostres llamps,    * \ndisperseu-los tirant les vostres fletxes.   \n\nAllargueu la mà des de dalt i salveu-me,    †\nallibereu-me de l’aiguat    *\ni de les mans dels estrangers, \nque parlen de divinitats que no existeixen    *\ni alcen la dreta jurant per déus falsos.",
+          "ca": "Beneït sigui el Senyor, la meva roca,    †\nque m’ensinistra els braços a la lluita    *\ni les mans al combat; \nés l’amor i la muralla    *\nque em deslliura i em salva, \nés l’escut que m’empara.    *\nEll sotmet el poble al meu govern.\n\nSenyor, ¿què són els homes, per fixar-vos-hi?    * \n¿Què són els mortals, per ocupar-vos-en?\nL’home s’esvaeix com el fum,    *\nels seus dies es fonen com una ombra.\n\nSenyor, esberleu la volta del cel, i baixeu,    *\ntoqueu les muntanyes, i que treguin glops de fum;\ndesconcerteu-los fulminant els vostres llamps,    * \ndisperseu-los tirant les vostres fletxes.   \n\nAllargueu la mà des de dalt i salveu-me,    †\nallibereu-me de l’aiguat    *\ni de les mans dels estrangers, \nque parlen de divinitats que no existeixen    *\ni alcen la dreta jurant per déus falsos.",
+          "es": "Bendito el Señor, mi Roca,\nque adiestra mis manos para el combate,\nmis dedos para la pelea;\n\nmi bienhechor, mi alcázar,\nbaluarte donde me pongo a salvo,\nmi escudo y mi refugio,\nque me somete los pueblos.\n\nSeñor, ¿qué es el hombre para que te fijes en él?;\n¿qué los hijos de Adán para que pienses en ellos?\nEl hombre es igual que un soplo;\nsus días, una sombra que pasa.\n\nSeñor, inclina tu cielo y desciende;\ntoca los montes, y echarán humo;\nfulmina el rayo y dispérsalos;\ndispara tus saetas y desbarátalos.\n\nExtiende la mano desde arriba:\ndefiéndeme, líbrame de las aguas caudalosas,\nde la mano de los extranjeros,\ncuya boca dice falsedades,\ncuya diestra jura en falso.\n\nGloria al Padre, y al Hijo, y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos. Amén.",
+          "cplClean": "Beneït sigui el Senyor, la meva roca, † que m’ensinistra els braços a la lluita * i les mans al combat; és l’amor i la muralla * que em deslliura i em salva, és l’escut que m’empara. * Ell sotmet el poble al meu govern. Senyor, ¿què són els homes, per fixar-vos-hi? * ¿Què són els mortals, per ocupar-vos-en? L’home s’esvaeix com el fum, * els seus dies es fonen com una ombra. Senyor, esberleu la volta del cel, i baixeu, * toqueu les muntanyes, i que treguin glops de fum; desconcerteu-los fulminant els vostres llamps, * disperseu-los tirant les vostres fletxes. Allargueu la mà des de dalt i salveu-me, † allibereu-me de l’aiguat * i de les mans dels estrangers, que parlen de divinitats que no existeixen * i alcen la dreta jurant per déus falsos.",
+          "caClean": "Beneït sigui el Senyor, la meva roca, † que m’ensinistra els braços a la lluita * i les mans al combat; és l’amor i la muralla * que em deslliura i em salva, és l’escut que m’empara. * Ell sotmet el poble al meu govern. Senyor, ¿què són els homes, per fixar-vos-hi? * ¿Què són els mortals, per ocupar-vos-en? L’home s’esvaeix com el fum, * els seus dies es fonen com una ombra. Senyor, esberleu la volta del cel, i baixeu, * toqueu les muntanyes, i que treguin glops de fum; desconcerteu-los fulminant els vostres llamps, * disperseu-los tirant les vostres fletxes. Allargueu la mà des de dalt i salveu-me, † allibereu-me de l’aiguat * i de les mans dels estrangers, que parlen de divinitats que no existeixen * i alcen la dreta jurant per déus falsos.",
+          "esClean": "Bendito el Señor, mi Roca, que adiestra mis manos para el combate, mis dedos para la pelea; mi bienhechor, mi alcázar, baluarte donde me pongo a salvo, mi escudo y mi refugio, que me somete los pueblos. Señor, ¿qué es el hombre para que te fijes en él?; ¿qué los hijos de Adán para que pienses en ellos? El hombre es igual que un soplo; sus días, una sombra que pasa. Señor, inclina tu cielo y desciende; toca los montes, y echarán humo; fulmina el rayo y dispérsalos; dispara tus saetas y desbarátalos. Extiende la mano desde arriba: defiéndeme, líbrame de las aguas caudalosas, de la mano de los extranjeros, cuya boca dice falsedades, cuya diestra jura en falso. Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "segundo_salmo_cita",
+          "label": "2n salm — cita",
+          "table": "salmos_citas",
+          "id": "11257",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Salm 143 - II",
+          "ca": "Salm 143 - II",
+          "es": "Salmo 143, 11-15 (II): Oración del Rey",
+          "cplClean": "Salm 143 - II",
+          "caClean": "Salm 143 - II",
+          "esClean": "Salmo 143, 11-15 (II): Oración del Rey",
+          "fp": {
+            "cpl": {
+              "ref": "Salm 143 - II",
+              "key": "PS",
+              "chapter": "143",
+              "verses": "-II",
+              "token": "PS|143",
+              "tokenFull": "PS|143|-II"
+            },
+            "es": {
+              "ref": "Salmo 143, 11-15 (II)",
+              "key": "PS",
+              "chapter": "143",
+              "verses": "11-15 (II)",
+              "token": "PS|143",
+              "tokenFull": "PS|143|11-15 (II)"
+            },
+            "ca": {
+              "ref": "Salm 143 - II",
+              "key": "PS",
+              "chapter": "143",
+              "verses": "-II",
+              "token": "PS|143",
+              "tokenFull": "PS|143|-II"
+            }
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "segundo_salmo_antifona",
+          "label": "2n salm — antífona",
+          "table": "salmos_antifonas",
+          "id": "9480",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Feliç el poble que té el Senyor per Déu.",
+          "ca": "Feliç el poble que té el Senyor per Déu.",
+          "es": "_Dichoso el pueblo cuyo Dios es el Señor._",
+          "cplClean": "Feliç el poble que té el Senyor per Déu.",
+          "caClean": "Feliç el poble que té el Senyor per Déu.",
+          "esClean": "Dichoso el pueblo cuyo Dios es el Señor.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "segundo_salmo_texto",
+          "label": "2n salm — text",
+          "table": "salmos_textos",
+          "id": "11258",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Déu meu, us dedicaré un càntic nou,    * \nacompanyaré amb les arpes el meu cant:\nvós doneu als reis la victòria,    * \ni salveu David, el vostre servent.\n\nSalveu-me de l’espasa maligna,    *\nallibereu-me de les mans dels estrangers,\nque parlen de divinitats que no existeixen    * \ni alcen la dreta jurant per déus falsos.\n\nFeu pujar els nostres fills    *\ncom plançons que es fan grans amb vigor jove; \nles nostres filles, com pilastres ben tallades,    *\ncom pilastres d’un palau. \n\nQue les nostres sitges siguin plenes    *\ni puguin proveir de tot; \nque es propaguin a milers les ramades    †\nals afores de les nostres viles,    *\ni els nostres bous arribin carregats.\n\nQue no ens rendim a l’enemic    †\nni vegem obertes les muralles,    * \nni sentim a les places el crit d’alarma.\n\nFeliç el poble que frueix de tot això.    * \nFeliç el poble que té el Senyor per Déu.",
+          "ca": "Déu meu, us dedicaré un càntic nou,    * \nacompanyaré amb les arpes el meu cant:\nvós doneu als reis la victòria,    * \ni salveu David, el vostre servent.\n\nSalveu-me de l’espasa maligna,    *\nallibereu-me de les mans dels estrangers,\nque parlen de divinitats que no existeixen    * \ni alcen la dreta jurant per déus falsos.\n\nFeu pujar els nostres fills    *\ncom plançons que es fan grans amb vigor jove; \nles nostres filles, com pilastres ben tallades,    *\ncom pilastres d’un palau. \n\nQue les nostres sitges siguin plenes    *\ni puguin proveir de tot; \nque es propaguin a milers les ramades    †\nals afores de les nostres viles,    *\ni els nostres bous arribin carregats.\n\nQue no ens rendim a l’enemic    †\nni vegem obertes les muralles,    * \nni sentim a les places el crit d’alarma.\n\nFeliç el poble que frueix de tot això.    * \nFeliç el poble que té el Senyor per Déu.",
+          "es": "Dios mío, te cantaré un cántico nuevo,\ntocaré para ti el arpa de diez cuerdas:\npara ti que das la victoria a los reyes,\ny salvas a David, tu siervo.\n\nDefiéndeme de la espada cruel,\nsálvame de las manos de extranjeros,\ncuya boca dice falsedades, \ncuya diestra jura en falso.\n\nSean nuestros hijos un plantío,\ncrecidos desde su adolescencia; \nnuestras hijas sean columnas talladas,\nestructura de un templo.\n\nQue nuestros silos estén repletos \nde frutos de toda especie;\nque nuestros rebaños a millares\nse multipliquen en las praderas,\ny nuestros bueyes vengan cargados;\nque no haya brechas ni aberturas, \nni alarma en nuestras plazas.\n\nDichoso el pueblo que esto tiene, \ndichoso el pueblo cuyo Dios es el Señor.\n\nGloria al Padre, y al Hijo, y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos. Amén.",
+          "cplClean": "Déu meu, us dedicaré un càntic nou, * acompanyaré amb les arpes el meu cant: vós doneu als reis la victòria, * i salveu David, el vostre servent. Salveu-me de l’espasa maligna, * allibereu-me de les mans dels estrangers, que parlen de divinitats que no existeixen * i alcen la dreta jurant per déus falsos. Feu pujar els nostres fills * com plançons que es fan grans amb vigor jove; les nostres filles, com pilastres ben tallades, * com pilastres d’un palau. Que les nostres sitges siguin plenes * i puguin proveir de tot; que es propaguin a milers les ramades † als afores de les nostres viles, * i els nostres bous arribin carregats. Que no ens rendim a l’enemic † ni vegem obertes les muralles, * ni sentim a les places el crit d’alarma. Feliç el poble que frueix de tot això. * Feliç el poble que té el Senyor per Déu.",
+          "caClean": "Déu meu, us dedicaré un càntic nou, * acompanyaré amb les arpes el meu cant: vós doneu als reis la victòria, * i salveu David, el vostre servent. Salveu-me de l’espasa maligna, * allibereu-me de les mans dels estrangers, que parlen de divinitats que no existeixen * i alcen la dreta jurant per déus falsos. Feu pujar els nostres fills * com plançons que es fan grans amb vigor jove; les nostres filles, com pilastres ben tallades, * com pilastres d’un palau. Que les nostres sitges siguin plenes * i puguin proveir de tot; que es propaguin a milers les ramades † als afores de les nostres viles, * i els nostres bous arribin carregats. Que no ens rendim a l’enemic † ni vegem obertes les muralles, * ni sentim a les places el crit d’alarma. Feliç el poble que frueix de tot això. * Feliç el poble que té el Senyor per Déu.",
+          "esClean": "Dios mío, te cantaré un cántico nuevo, tocaré para ti el arpa de diez cuerdas: para ti que das la victoria a los reyes, y salvas a David, tu siervo. Defiéndeme de la espada cruel, sálvame de las manos de extranjeros, cuya boca dice falsedades, cuya diestra jura en falso. Sean nuestros hijos un plantío, crecidos desde su adolescencia; nuestras hijas sean columnas talladas, estructura de un templo. Que nuestros silos estén repletos de frutos de toda especie; que nuestros rebaños a millares se multipliquen en las praderas, y nuestros bueyes vengan cargados; que no haya brechas ni aberturas, ni alarma en nuestras plazas. Dichoso el pueblo que esto tiene, dichoso el pueblo cuyo Dios es el Señor. Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "tercer_salmo_cita",
+          "label": "3r salm — cita",
+          "table": "salmos_citas",
+          "id": "11030",
+          "status": "conflict",
+          "verdictCa": "onlyCpl",
+          "channel": "C2",
+          "match": "sameRef",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Càntic\nAp 11, 17-18; 12, 10b-12a\nEl judici de Déu",
+          "ca": null,
+          "es": "Apocalipsis 11, 17-18; 12, 10b-12a: El juicio de Dios",
+          "cplClean": "Càntic Ap 11, 17-18; 12, 10b-12a El judici de Déu",
+          "caClean": null,
+          "esClean": "Apocalipsis 11, 17-18; 12, 10b-12a: El juicio de Dios",
+          "fp": {
+            "cpl": {
+              "ref": "Càntic Ap 11, 17-18; 12, 10b-12a",
+              "key": "REV",
+              "chapter": "11",
+              "verses": "17-18; 12, 10b-12a",
+              "token": "REV|11",
+              "tokenFull": "REV|11|17-18; 12, 10b-12a"
+            },
+            "es": {
+              "ref": "Apocalipsis 11, 17-18; 12, 10b-12a",
+              "key": "REV",
+              "chapter": "11",
+              "verses": "17-18; 12, 10b-12a",
+              "token": "REV|11",
+              "tokenFull": "REV|11|17-18; 12, 10b-12a"
+            },
+            "ca": null
+          },
+          "conflict": {
+            "cause": "Casella compartida per 87 celebracions",
+            "bundleId": "shared|advent_1_thursday__ANY,advent_2_thursday__ANY,advent_december_17__ANY,advent_december_18__ANY,advent_december_19__ANY,advent_december_20__ANY,advent_december_21__ANY,advent_december_22__ANY,advent_december_23__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,alphonsus_mary_liguori_bishop__MEMORY_FERIAL1,anthony_of_egypt_abbot__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,ascension_of_the_lord__ANY,augustine_of_hippo_bishop__MEMORY_FERIAL2,basil_the_great_and_gregory_nazianzen_bishops__MEMORY_FERIAL2,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,bonaventure_of_bagnoregio_bishop__MEMORY_FERIAL1,charles_borromeo_bishop__MEMORY_FERIAL1,charles_lwanga_and_companions_martyrs__MEMORY_FERIAL1,christmas_time_january_3__ANY,christmas_time_january_4__ANY,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,easter_time_2_thursday__ANY,easter_time_3_thursday__ANY,easter_time_4_thursday__ANY,easter_time_5_thursday__ANY,easter_time_6_thursday__ANY,francis_of_assisi__MEMORY_FERIAL2,francis_xavier_priest__MEMORY_FERIAL1,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_guardian_angels__MEMORY_PROPER,ignatius_of_loyola_priest__MEMORY_FERIAL2,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,john_bosco_priest__MEMORY_FERIAL1,john_mary_vianney_priest__MEMORY_FERIAL1,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,lent_1_thursday__ANY,lent_2_thursday__ANY,lent_3_thursday__ANY,lent_4_thursday__ANY,lent_5_thursday__ANY,leo_i_the_great_pope__MEMORY_FERIAL2,lucy_of_syracuse_virgin__MEMORY_FERIAL2,martha_of_bethany_mary_of_bethany_and_lazarus_of_bethany__MEMORY_FERIAL1,monica_of_hippo__MEMORY_FERIAL2,ordinary_time_11_thursday__ANY,ordinary_time_13_thursday__ANY,ordinary_time_14_thursday__ANY,ordinary_time_15_thursday__ANY,ordinary_time_17_thursday__ANY,ordinary_time_19_thursday__ANY,ordinary_time_1_thursday__ANY,ordinary_time_21_thursday__ANY,ordinary_time_22_thursday__ANY,ordinary_time_23_thursday__ANY,ordinary_time_24_thursday__ANY,ordinary_time_27_thursday__ANY,ordinary_time_28_thursday__ANY,ordinary_time_29_thursday__ANY,ordinary_time_30_thursday__ANY,ordinary_time_32_thursday__ANY,ordinary_time_33_thursday__ANY,ordinary_time_34_thursday__ANY,ordinary_time_3_thursday__ANY,ordinary_time_4_thursday__ANY,ordinary_time_5_thursday__ANY,ordinary_time_6_thursday__ANY,ordinary_time_7_thursday__ANY,our_lady_of_mount_carmel__MEMORY_FERIAL2,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,pius_x_pope__MEMORY_FERIAL1,presentation_of_the_blessed_virgin_mary__MEMORY_FERIAL2,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,scholastica_of_nursia_virgin__MEMORY_FERIAL2,stanislaus_of_szczepanow_bishop__MEMORY_FERIAL1,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,thomas_aquinas_priest__MEMORY_FERIAL2,thursday_after_ash_wednesday__ANY,thursday_after_epiphany__ANY,timothy_of_ephesus_and_titus_of_crete_bishops__MEMORY_FERIAL2,vincent_de_paul_priest__MEMORY_FERIAL2,visitation_of_mary__ANY",
+            "variantCount": 2,
+            "affectedCount": 226,
+            "decision": "pending",
+            "impact": {
+              "days": 226,
+              "agreeDays": 220,
+              "breakDays": 6,
+              "dateNotObserved": false
+            },
+            "variants": [
+              {
+                "preview": "Càntic\nAp 11, 17-18; 12, 10b-12a\nEl judici de Déu",
+                "truncated": false,
+                "count": 220
+              },
+              {
+                "preview": "Càntic\nEf 1, 3-10",
+                "truncated": false,
+                "count": 6
+              }
+            ]
+          },
+          "blame": [
+            {
+              "title": "Visitació de la Benaurada Verge Maria",
+              "verdict": "memorial",
+              "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+              "ranks": [
+                "Festivitat"
+              ],
+              "suggestedId": "visitacio_de_la_benaurada_verge_maria",
+              "inLitcal": {
+                "calendar": "catalonia",
+                "id": "visitacio_de_la_benaurada_verge_maria_0531",
+                "rank": "FEAST"
+              },
+              "sole": true
+            }
+          ]
+        },
+        {
+          "hour": "Vespers",
+          "key": "tercer_salmo_antifona",
+          "label": "3r salm — antífona",
+          "table": "salmos_antifonas",
+          "id": "9253",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Ara és l’hora de la victòria del nostre Déu, és l’hora del seu Regne.",
+          "ca": "Ara és l’hora de la victòria del nostre Déu, és l’hora del seu Regne.",
+          "es": "_Ahora se estableció la salud y el reinado de nuestro Dios._",
+          "cplClean": "Ara és l’hora de la victòria del nostre Déu, és l’hora del seu Regne.",
+          "caClean": "Ara és l’hora de la victòria del nostre Déu, és l’hora del seu Regne.",
+          "esClean": "Ahora se estableció la salud y el reinado de nuestro Dios.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "tercer_salmo_texto",
+          "label": "3r salm — text",
+          "table": "salmos_textos",
+          "id": "11031",
+          "status": "conflict",
+          "verdictCa": "onlyCpl",
+          "channel": "C2",
+          "match": "prose",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Gràcies, Senyor, Déu de l’univers, \nque sou i éreu,    †\nperquè ja heu pres el vostre gran poder    * \ni heu instaurat el vostre regne.\n\nLes nacions estaven furioses,    †\nperò ara ha arribat el vostre dia,    * \nl’hora de judicar els morts:\nl’hora de recompensar els vostres servents\nels profetes,    †\nel poble sant\ni tots els qui han reverenciat el vostre nom, \ngrans o petits,    * \nl’hora de destruir els destructors de la terra.\n\nAra és l’hora de la victòria del nostre Déu,    †\nl’hora del seu poder i del seu regne,    *\ni el seu Messies ja governa, \nperquè l’acusador dels nostres germans,    †\nque els acusava nit i dia davant el nostre Déu,    *\nha estat expulsat.\n\nElls l’han vençut per la sang de l’Anyell    *\ni pel testimoniatge del seu martiri, \nja que no van estimar tant la vida \nque els fes por la mort.    *\nAlegreu-vos-en, cel i tots els qui hi habiteu.",
+          "ca": null,
+          "es": "Gracias te damos, Señor Dios omnipotente,\nel que eres y el que eras,\nporque has asumido el gran poder\ny comenzaste a reinar.\n\nSe encolerizaron las gentes,\nllegó tu cólera,\ny el tiempo de que sean juzgados los muertos,\ny de dar el galardón a tus siervos, los profetas,\ny a los santos y a los que temen tu nombre,\ny a los pequeños y a los grandes,\ny de arruinar a los que arruinaron la tierra.\n\nAhora se estableció la salud y el poderío,\ny el reinado de nuestro Dios,\ny la potestad de su Cristo;\nporque fue precipitado\nel acusador de nuestros hermanos,\nel que los acusaba ante nuestro Dios día y noche.\n\nEllos le vencieron en virtud de la sangre del Cordero\ny por la palabra del testimonio que dieron,\ny no amaron tanto su vida que temieran la muerte.\nPor esto, estad alegres, cielos,\ny los que moráis en sus tiendas.\n\nGloria al Padre, y al Hijo, y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos. Amén.",
+          "cplClean": "Gràcies, Senyor, Déu de l’univers, que sou i éreu, † perquè ja heu pres el vostre gran poder * i heu instaurat el vostre regne. Les nacions estaven furioses, † però ara ha arribat el vostre dia, * l’hora de judicar els morts: l’hora de recompensar els vostres servents els profetes, † el poble sant i tots els qui han reverenciat el vostre nom, grans o petits, * l’hora de destruir els destructors de la terra. Ara és l’hora de la victòria del nostre Déu, † l’hora del seu poder i del seu regne, * i el seu Messies ja governa, perquè l’acusador dels nostres germans, † que els acusava nit i dia davant el nostre Déu, * ha estat expulsat. Ells l’han vençut per la sang de l’Anyell * i pel testimoniatge del seu martiri, ja que no van estimar tant la vida que els fes por la mort. * Alegreu-vos-en, cel i tots els qui hi habiteu.",
+          "caClean": null,
+          "esClean": "Gracias te damos, Señor Dios omnipotente, el que eres y el que eras, porque has asumido el gran poder y comenzaste a reinar. Se encolerizaron las gentes, llegó tu cólera, y el tiempo de que sean juzgados los muertos, y de dar el galardón a tus siervos, los profetas, y a los santos y a los que temen tu nombre, y a los pequeños y a los grandes, y de arruinar a los que arruinaron la tierra. Ahora se estableció la salud y el poderío, y el reinado de nuestro Dios, y la potestad de su Cristo; porque fue precipitado el acusador de nuestros hermanos, el que los acusaba ante nuestro Dios día y noche. Ellos le vencieron en virtud de la sangre del Cordero y por la palabra del testimonio que dieron, y no amaron tanto su vida que temieran la muerte. Por esto, estad alegres, cielos, y los que moráis en sus tiendas. Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": {
+            "cause": "Casella compartida per 87 celebracions",
+            "bundleId": "shared|advent_1_thursday__ANY,advent_2_thursday__ANY,advent_december_17__ANY,advent_december_18__ANY,advent_december_19__ANY,advent_december_20__ANY,advent_december_21__ANY,advent_december_22__ANY,advent_december_23__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,alphonsus_mary_liguori_bishop__MEMORY_FERIAL1,anthony_of_egypt_abbot__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,ascension_of_the_lord__ANY,augustine_of_hippo_bishop__MEMORY_FERIAL2,basil_the_great_and_gregory_nazianzen_bishops__MEMORY_FERIAL2,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,bonaventure_of_bagnoregio_bishop__MEMORY_FERIAL1,charles_borromeo_bishop__MEMORY_FERIAL1,charles_lwanga_and_companions_martyrs__MEMORY_FERIAL1,christmas_time_january_3__ANY,christmas_time_january_4__ANY,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,easter_time_2_thursday__ANY,easter_time_3_thursday__ANY,easter_time_4_thursday__ANY,easter_time_5_thursday__ANY,easter_time_6_thursday__ANY,francis_of_assisi__MEMORY_FERIAL2,francis_xavier_priest__MEMORY_FERIAL1,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_guardian_angels__MEMORY_PROPER,ignatius_of_loyola_priest__MEMORY_FERIAL2,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,john_bosco_priest__MEMORY_FERIAL1,john_mary_vianney_priest__MEMORY_FERIAL1,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,lent_1_thursday__ANY,lent_2_thursday__ANY,lent_3_thursday__ANY,lent_4_thursday__ANY,lent_5_thursday__ANY,leo_i_the_great_pope__MEMORY_FERIAL2,lucy_of_syracuse_virgin__MEMORY_FERIAL2,martha_of_bethany_mary_of_bethany_and_lazarus_of_bethany__MEMORY_FERIAL1,monica_of_hippo__MEMORY_FERIAL2,ordinary_time_11_thursday__ANY,ordinary_time_13_thursday__ANY,ordinary_time_14_thursday__ANY,ordinary_time_15_thursday__ANY,ordinary_time_17_thursday__ANY,ordinary_time_19_thursday__ANY,ordinary_time_1_thursday__ANY,ordinary_time_21_thursday__ANY,ordinary_time_22_thursday__ANY,ordinary_time_23_thursday__ANY,ordinary_time_24_thursday__ANY,ordinary_time_27_thursday__ANY,ordinary_time_28_thursday__ANY,ordinary_time_29_thursday__ANY,ordinary_time_30_thursday__ANY,ordinary_time_32_thursday__ANY,ordinary_time_33_thursday__ANY,ordinary_time_34_thursday__ANY,ordinary_time_3_thursday__ANY,ordinary_time_4_thursday__ANY,ordinary_time_5_thursday__ANY,ordinary_time_6_thursday__ANY,ordinary_time_7_thursday__ANY,our_lady_of_mount_carmel__MEMORY_FERIAL2,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,pius_x_pope__MEMORY_FERIAL1,presentation_of_the_blessed_virgin_mary__MEMORY_FERIAL2,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,scholastica_of_nursia_virgin__MEMORY_FERIAL2,stanislaus_of_szczepanow_bishop__MEMORY_FERIAL1,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,thomas_aquinas_priest__MEMORY_FERIAL2,thursday_after_ash_wednesday__ANY,thursday_after_epiphany__ANY,timothy_of_ephesus_and_titus_of_crete_bishops__MEMORY_FERIAL2,vincent_de_paul_priest__MEMORY_FERIAL2,visitation_of_mary__ANY",
+            "variantCount": 2,
+            "affectedCount": 226,
+            "decision": "pending",
+            "impact": {
+              "days": 226,
+              "agreeDays": 220,
+              "breakDays": 6,
+              "dateNotObserved": false
+            },
+            "variants": [
+              {
+                "preview": "Gràcies, Senyor, Déu de l’univers, \nque sou i éreu,    †\nperquè ja heu pres el vostre gran poder    * \ni heu instaurat el vostre regne.\n\nLes nacions estaven furioses,    †\nperò ara ha arribat el vostre dia,    * \nl’hora de judicar els morts:\nl’hora de recompensar els vostres servents\nels profetes,  ",
+                "truncated": true,
+                "count": 220
+              },
+              {
+                "preview": "Beneït sigui el Déu i Pare\nde nostre Senyor Jesucrist,    †\nque ens ha beneït en Crist    * \namb tota mena de benediccions espirituals\ndalt del cel.\n\nEns elegí en ell abans de crear el món,    *\nperquè fóssim sants, irreprensibles als seus ulls.\n\nPer amor ens destinà a ser fills seus per Jesucrist, ",
+                "truncated": true,
+                "count": 6
+              }
+            ]
+          },
+          "blame": [
+            {
+              "title": "Visitació de la Benaurada Verge Maria",
+              "verdict": "memorial",
+              "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+              "ranks": [
+                "Festivitat"
+              ],
+              "suggestedId": "visitacio_de_la_benaurada_verge_maria",
+              "inLitcal": {
+                "calendar": "catalonia",
+                "id": "visitacio_de_la_benaurada_verge_maria_0531",
+                "rank": "FEAST"
+              },
+              "sole": true
+            }
+          ]
+        },
+        {
+          "hour": "Vespers",
+          "key": "lectura_biblica_cita",
+          "label": "Lectura breu — cita",
+          "table": "lectura_breve_citas",
+          "id": "3431",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Col 1, 23\n",
+          "ca": "Col 1, 23\n",
+          "es": "Col 1, 23 (Cfr.)",
+          "cplClean": "Col 1, 23",
+          "caClean": "Col 1, 23",
+          "esClean": "Col 1, 23 (Cfr.)",
+          "fp": {
+            "cpl": {
+              "ref": "Col 1, 23",
+              "key": "COL",
+              "chapter": "1",
+              "verses": "23",
+              "token": "COL|1",
+              "tokenFull": "COL|1|23"
+            },
+            "es": {
+              "ref": "Col 1, 23 (Cfr.)",
+              "key": "COL",
+              "chapter": "1",
+              "verses": "23 (Cfr.)",
+              "token": "COL|1",
+              "tokenFull": "COL|1|23 (Cfr.)"
+            },
+            "ca": {
+              "ref": "Col 1, 23",
+              "key": "COL",
+              "chapter": "1",
+              "verses": "23",
+              "token": "COL|1",
+              "tokenFull": "COL|1|23"
+            }
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "lectura_biblica",
+          "label": "Lectura breu — text",
+          "table": "lectura_breve_textos",
+          "id": "3432",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Manteniu-vos ferms en el fonament de la fe: que res no us aparti de l’esperança que us dóna la Bona Nova que heu sentit i que ara és anunciada per tot el món.",
+          "ca": "Manteniu-vos ferms en el fonament de la fe: que res no us aparti de l’esperança que us dóna la Bona Nova que heu sentit i que ara és anunciada per tot el món.",
+          "es": "Permaneced cimentados y estables en la fe, e inamovibles en la esperanza del Evangelio que escuchasteis. Es el mismo que se proclama en la creación entera bajo el cielo.",
+          "cplClean": "Manteniu-vos ferms en el fonament de la fe: que res no us aparti de l’esperança que us dóna la Bona Nova que heu sentit i que ara és anunciada per tot el món.",
+          "caClean": "Manteniu-vos ferms en el fonament de la fe: que res no us aparti de l’esperança que us dóna la Bona Nova que heu sentit i que ara és anunciada per tot el món.",
+          "esClean": "Permaneced cimentados y estables en la fe, e inamovibles en la esperanza del Evangelio que escuchasteis. Es el mismo que se proclama en la creación entera bajo el cielo.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "responsorios",
+          "label": "Responsori breu (1/6)",
+          "table": "responsorios",
+          "id": "14612",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℣. El Senyor és el meu pastor,  * No em manca res.",
+          "ca": "℣. El Senyor és el meu pastor,  * No em manca res.",
+          "es": "$℣. $El Señor es mi pastor, * nada me falta.",
+          "cplClean": "℣. El Senyor és el meu pastor, * No em manca res.",
+          "caClean": "℣. El Senyor és el meu pastor, * No em manca res.",
+          "esClean": "℣. El Señor es mi pastor, * nada me falta.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "responsorios",
+          "label": "Responsori breu (2/6)",
+          "table": "responsorios",
+          "id": "14613",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℟. El Senyor és el meu pastor,  No em manca res.",
+          "ca": "℟. El Senyor és el meu pastor,  No em manca res.",
+          "es": "$℟. $El Señor es mi pastor, nada me falta.",
+          "cplClean": "℟. El Senyor és el meu pastor, No em manca res.",
+          "caClean": "℟. El Senyor és el meu pastor, No em manca res.",
+          "esClean": "℟. El Señor es mi pastor, nada me falta.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "responsorios",
+          "label": "Responsori breu (3/6)",
+          "table": "responsorios",
+          "id": "14614",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℣. Em fa descansar en prats deliciosos. ",
+          "ca": "℣. Em fa descansar en prats deliciosos. ",
+          "es": "$℣. $En verdes praderas me hace recostar.",
+          "cplClean": "℣. Em fa descansar en prats deliciosos.",
+          "caClean": "℣. Em fa descansar en prats deliciosos.",
+          "esClean": "℣. En verdes praderas me hace recostar.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "responsorios",
+          "label": "Responsori breu (4/6)",
+          "table": "responsorios",
+          "id": "14615",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℟. No em manca res.",
+          "ca": "℟. No em manca res.",
+          "es": "$℟. $Nada me falta.",
+          "cplClean": "℟. No em manca res.",
+          "caClean": "℟. No em manca res.",
+          "esClean": "℟. Nada me falta.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "responsorios",
+          "label": "Responsori breu (5/6)",
+          "table": "responsorios",
+          "id": "14616",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "ca": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "es": "$℣. $Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+          "cplClean": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "caClean": "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+          "esClean": "℣. Gloria al Padre, y al Hijo, y al Espíritu Santo.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "responsorios",
+          "label": "Responsori breu (6/6)",
+          "table": "responsorios",
+          "id": "14617",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "℟. El Senyor és el meu pastor,  No em manca res.",
+          "ca": "℟. El Senyor és el meu pastor,  No em manca res.",
+          "es": "$℟. $El Señor es mi pastor, nada me falta.",
+          "cplClean": "℟. El Senyor és el meu pastor, No em manca res.",
+          "caClean": "℟. El Senyor és el meu pastor, No em manca res.",
+          "esClean": "℟. El Señor es mi pastor, nada me falta.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "cantico_evangelico_antifona",
+          "label": "Càntic evangèlic — antífona",
+          "table": "cantico_evangelico_antifonas",
+          "id": "1179",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "El Senyor sacia i omple de béns els qui tenen fam i set de ser justos.",
+          "ca": "El Senyor sacia i omple de béns els qui tenen fam i set de ser justos.",
+          "es": "_A los hambrientos de justicia, el Señor los sacia y colma de bienes._",
+          "cplClean": "El Senyor sacia i omple de béns els qui tenen fam i set de ser justos.",
+          "caClean": "El Senyor sacia i omple de béns els qui tenen fam i set de ser justos.",
+          "esClean": "A los hambrientos de justicia, el Señor los sacia y colma de bienes.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "preces_intro",
+          "label": "Precs — introducció",
+          "table": "preces_intro",
+          "id": "1173",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Preguem amb joia i amb devoció Crist, llum de les nacions i goig de tots els homes. Demanem-li:",
+          "ca": "Preguem amb joia i amb devoció Crist, llum de les nacions i goig de tots els homes. Demanem-li:",
+          "es": "Invoquemos a Cristo, luz del mundo y alegría de todo ser viviente, y digámosle confiados:",
+          "cplClean": "Preguem amb joia i amb devoció Crist, llum de les nacions i goig de tots els homes. Demanem-li:",
+          "caClean": "Preguem amb joia i amb devoció Crist, llum de les nacions i goig de tots els homes. Demanem-li:",
+          "esClean": "Invoquemos a Cristo, luz del mundo y alegría de todo ser viviente, y digámosle confiados:",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "preces_respuesta",
+          "label": "Precs — resposta",
+          "table": "preces_respuesta",
+          "id": "1173",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Doneu-nos, Senyor, la llum, la pau i la salvació.",
+          "ca": "Doneu-nos, Senyor, la llum, la pau i la salvació.",
+          "es": "_Concédenos, Señor, la salud y la paz._",
+          "cplClean": "Doneu-nos, Senyor, la llum, la pau i la salvació.",
+          "caClean": "Doneu-nos, Senyor, la llum, la pau i la salvació.",
+          "esClean": "Concédenos, Señor, la salud y la paz.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (1/5)",
+          "table": "preces_contenido",
+          "id": "5158",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Llum sense posta, Verb etern del Pare, que vinguéreu a salvar tots els homes,\nconduïu els catecúmens de l’Església, perquè en vós siguin il·luminats.",
+          "ca": "Llum sense posta, Verb etern del Pare, que vinguéreu a salvar tots els homes,\nconduïu els catecúmens de l’Església, perquè en vós siguin il·luminats.",
+          "es": "- Luz indeficiente y Palabra eterna del Padre, que has venido a salvar a todos los hombres,\n_ilumina a los catecúmenos de la Iglesia con la luz de tu verdad._",
+          "cplClean": "Llum sense posta, Verb etern del Pare, que vinguéreu a salvar tots els homes, conduïu els catecúmens de l’Església, perquè en vós siguin il·luminats.",
+          "caClean": "Llum sense posta, Verb etern del Pare, que vinguéreu a salvar tots els homes, conduïu els catecúmens de l’Església, perquè en vós siguin il·luminats.",
+          "esClean": "- Luz indeficiente y Palabra eterna del Padre, que has venido a salvar a todos los hombres, ilumina a los catecúmenos de la Iglesia con la luz de tu verdad.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (2/5)",
+          "table": "preces_contenido",
+          "id": "5159",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "No us recordeu, Senyor, dels nostres pecats,\nja que és molt vostre perdonar.",
+          "ca": "No us recordeu, Senyor, dels nostres pecats,\nja que és molt vostre perdonar.",
+          "es": "- No lleves cuenta de nuestros delitos, Señor,\n_pues de ti procede el perdón._",
+          "cplClean": "No us recordeu, Senyor, dels nostres pecats, ja que és molt vostre perdonar.",
+          "caClean": "No us recordeu, Senyor, dels nostres pecats, ja que és molt vostre perdonar.",
+          "esClean": "- No lleves cuenta de nuestros delitos, Señor, pues de ti procede el perdón.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (3/5)",
+          "table": "preces_contenido",
+          "id": "5160",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Vós, que donàreu intel·ligència a l’home, perquè investigués els secrets de la naturalesa i dominés el món,\ndirigiu la tècnica i l’art dels homes a glòria vostra i bé de la humanitat.",
+          "ca": "Vós, que donàreu intel·ligència a l’home, perquè investigués els secrets de la naturalesa i dominés el món,\ndirigiu la tècnica i l’art dels homes a glòria vostra i bé de la humanitat.",
+          "es": "- Señor, que has querido que la inteligencia del hombre investigara los secretos de la naturaleza,\n_haz que la ciencia y las artes contribuyan a tu gloria y al bienestar de todos los hombres._",
+          "cplClean": "Vós, que donàreu intel·ligència a l’home, perquè investigués els secrets de la naturalesa i dominés el món, dirigiu la tècnica i l’art dels homes a glòria vostra i bé de la humanitat.",
+          "caClean": "Vós, que donàreu intel·ligència a l’home, perquè investigués els secrets de la naturalesa i dominés el món, dirigiu la tècnica i l’art dels homes a glòria vostra i bé de la humanitat.",
+          "esClean": "- Señor, que has querido que la inteligencia del hombre investigara los secretos de la naturaleza, haz que la ciencia y las artes contribuyan a tu gloria y al bienestar de todos los hombres.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (4/5)",
+          "table": "preces_contenido",
+          "id": "5161",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Protegiu tots els qui es dediquen al servei dels germans,\nperquè puguin obrar amb llibertat i sense impediments.",
+          "ca": "Protegiu tots els qui es dediquen al servei dels germans,\nperquè puguin obrar amb llibertat i sense impediments.",
+          "es": "- Protege, Señor, a los que se han consagrado en el mundo al servicio de sus hermanos;\n_que, con libertad de espíritu y sin desánimos, puedan realizar su ideal._",
+          "cplClean": "Protegiu tots els qui es dediquen al servei dels germans, perquè puguin obrar amb llibertat i sense impediments.",
+          "caClean": "Protegiu tots els qui es dediquen al servei dels germans, perquè puguin obrar amb llibertat i sense impediments.",
+          "esClean": "- Protege, Señor, a los que se han consagrado en el mundo al servicio de sus hermanos; que, con libertad de espíritu y sin desánimos, puedan realizar su ideal.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "preces_contenido",
+          "label": "Precs — peticions (5/5)",
+          "table": "preces_contenido",
+          "id": "5162",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Quan vós obriu, Senyor, ningú no pot tancar;\nintroduïu, doncs, al Regne de la vostra llum els qui moriren amb l’esperança de ressuscitar.",
+          "ca": "Quan vós obriu, Senyor, ningú no pot tancar;\nintroduïu, doncs, al Regne de la vostra llum els qui moriren amb l’esperança de ressuscitar.",
+          "es": "- Señor, que abres y nadie cierra,\n_lleva a tu luz a los que han muerto con la esperanza de la resurrección._",
+          "cplClean": "Quan vós obriu, Senyor, ningú no pot tancar; introduïu, doncs, al Regne de la vostra llum els qui moriren amb l’esperança de ressuscitar.",
+          "caClean": "Quan vós obriu, Senyor, ningú no pot tancar; introduïu, doncs, al Regne de la vostra llum els qui moriren amb l’esperança de ressuscitar.",
+          "esClean": "- Señor, que abres y nadie cierra, lleva a tu luz a los que han muerto con la esperanza de la resurrección.",
+          "fp": {
+            "cpl": null,
+            "es": null,
+            "ca": null
+          },
+          "conflict": null,
+          "blame": null
+        },
+        {
+          "hour": "Vespers",
+          "key": "oracion_final",
+          "label": "Oració final",
+          "table": "oraciones_finales",
+          "id": "3798",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
+          "fromFerial": false,
+          "altModeMatch": false,
+          "noProperText": false,
+          "cpl": "Escolteu, Senyor, la nostra pregària del capvespre i feu que, seguint les petjades del vostre Fill, donem amb perseverança el fruit de les bones obres. Per nostre Senyor Jesucrist.",
+          "ca": "Escolteu, Senyor, la nostra pregària del capvespre i feu que, seguint les petjades del vostre Fill, donem amb perseverança el fruit de les bones obres. Per nostre Senyor Jesucrist.",
+          "es": "Acoge benigno, Señor, nuestra súplica vespertina y haz que, siguiendo las huellas de tu Hijo, fructifiquemos con perseverancia en buenas obras. Por nuestro Señor Jesucristo, tu Hijo, que vive y reina contigo en la unidad del Espíritu Santo y es Dios por los siglos de los siglos.",
+          "cplClean": "Escolteu, Senyor, la nostra pregària del capvespre i feu que, seguint les petjades del vostre Fill, donem amb perseverança el fruit de les bones obres. Per nostre Senyor Jesucrist.",
+          "caClean": "Escolteu, Senyor, la nostra pregària del capvespre i feu que, seguint les petjades del vostre Fill, donem amb perseverança el fruit de les bones obres. Per nostre Senyor Jesucrist.",
+          "esClean": "Acoge benigno, Señor, nuestra súplica vespertina y haz que, siguiendo las huellas de tu Hijo, fructifiquemos con perseverancia en buenas obras. Por nuestro Señor Jesucristo, tu Hijo, que vive y reina contigo en la unidad del Espíritu Santo y es Dios por los siglos de los siglos.",
           "fp": {
             "cpl": null,
             "es": null,
