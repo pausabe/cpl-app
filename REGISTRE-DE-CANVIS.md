@@ -385,7 +385,8 @@ sant Joan, duen `11025` (Salm 109) i `54` (Salm 129). Afecta **totes les llengü
 
 | | |
 |---|---|
-| Estat | **Proposat, pendent d'enviar** |
+| Dossier | [migration-to-saints/eprex-bugs/EPREX-003.md](migration-to-saints/eprex-bugs/EPREX-003.md) |
+| Estat | **Proposat, pendent d'enviar.** El missatge per a en Fernando és al final del dossier, en castellà i en text pla per a Telegram |
 | Entrada | `holy_innocents_martyrs__ANY` (i el seu bessó `christmas_octave_day_4__ANY`, que és el mateix dia i té el mateix contingut) |
 | Fix | `primer_salmo_cita`/`_texto` `11031`/`11032` → **`11025`/`11026`** · `segundo_salmo_cita`/`_texto` `155`/`156` → **`54`/`55`** · `tercer_salmo_cita`/`_texto` `11042`/`11043` → **`11072`/`11073`** |
 | Prova interna | Sant Esteve (26-XII) i sant Joan (27-XII), les dues festes germanes de la mateixa octava i del mateix rang, porten `11025`+`54`+`11072`. Sants Innocents és l'única de les tres que no |
