@@ -589,6 +589,55 @@ const FINDINGS = [
       promptable: false,
     },
   },
+  {
+    id: 'F14',
+    verdict: 2,
+    days: ['2026-09-04'],
+    hours: ['Laudes'],
+    headline: 'Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres',
+    detail:
+      'La casella <code>salmos_citas/155</code> (Salm 147) la comparteixen els divendres ' +
+      'ordinaris a Laudes i tres entrades de l’octava de Nadal a Vespres, que hi volen el Salm ' +
+      '129. Com que una casella només pot dur un text, el join no hi escriu res — <strong>i és ' +
+      'l’únic que impedeix que el 4 de setembre arribi al 100%</strong>.',
+    table: {
+      head: ['entrades de Vespres de l’octava', '1r salm', '2n salm', ''],
+      rows: [
+        ['Nadal, octava 2·3·5·6, sant Esteve, sant Joan (7)', '11025 · Salm 109', '54 · Salm 129', '✅'],
+        ['Sants Innocents, octava 4, octava 7 (3)', '11031 · Salm 112', '155 · <strong>Salm 147</strong>', '❌ és la de I Vespres'],
+      ],
+    },
+    why:
+      'Set germanes de la mateixa octava coincideixen i tres no, i les tres porten la parella ' +
+      'reconeixible de I Vespres (Salm 112 · Salm 147). Mateixa forma que l’EPREX-001 i ' +
+      'l’EPREX-002: una fitxa clonada d’un altre ofici. Afecta <strong>totes les llengües</strong>.',
+    impact:
+      '7 dies de <code>holy_innocents_martyrs</code> retenen <code>salmos_citas/155</code> i ' +
+      '<code>salmos_textos/156</code>, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa ' +
+      'de 96% a <strong>100%</strong>.',
+    proof: [
+      ['Prova interna', 'A <code>all_visperas.json</code>, 7 de les 10 entrades de l’octava porten <code>11025</code>+<code>54</code>; les 3 discrepants porten <code>11031</code>+<code>155</code>', null],
+      ['cpl-app', 'Dona el Salm 129 a les tres, els 7 anys del manifest', null],
+      ['No és el defecte de les I Vespres', 'Corregit el rang a <strong>SA-09</strong>, les 6 observacions de vigília van desaparèixer d’aquesta casella i van quedar només aquestes 7', null],
+    ],
+    fix: {
+      where: 'eprex · all_visperas.json',
+      summary:
+        'Repuntar <code>holy_innocents_martyrs__ANY</code>, <code>christmas_octave_day_4__ANY</code> ' +
+        'i <code>christmas_octave_day_7__ANY</code>: <code>primer_salmo_cita</code> 11031 → ' +
+        '<strong>11025</strong>, <code>segundo_salmo_cita</code> 155 → <strong>54</strong>.',
+      table: {
+        head: ['camp', 'ara', 'hauria de ser'],
+        rows: [
+          ['primer_salmo_cita', '11031 (Salm 112)', '11025 (Salm 109)'],
+          ['segundo_salmo_cita', '155 (Salm 147)', '54 (Salm 129)'],
+          ['tercer_salmo_cita (Sants Innocents)', '11042 (Ef 1, 3-10)', 'a revisar — Nadal hi porta 11072 (Col 1, 12-20)'],
+        ],
+      },
+      note: 'Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). Si s’accepta, cal tornar a passar la sonda abans del join.',
+      promptable: true,
+    },
+  },
 ];
 
 const VERDICTS = {

@@ -38,11 +38,13 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [LC-01…05](#litcal) | 2026-07-23 → 08-11 | litcal | codi | No | 5 commits |
 | [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **proposat** | — pendent de resposta | — |
 | [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **proposat** | — pendent d'enviar | — |
+| [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **proposat** | — pendent d'enviar | — |
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
 | [SA-05](#sa-05) | 2026-09-03 | saints-app | contingut | Es regenera | — |
 | [SA-06](#sa-06) | 2026-09-03 | saints-app | merge | No — va al git | `1a35a54a6` |
 | [SA-07](#sa-07) | 2026-09-04 | saints-app | contingut | No — va al git | — |
 | [SA-08](#sa-08) | 2026-09-04 | saints-app | **codi** | No — va al git | `dae46844b` |
+| [SA-09](#sa-09) | 2026-09-04 | saints-app | **codi** | No — va al git | `8a80e393c` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -372,6 +374,27 @@ mateix dia és correcte: el defecte és d'una sola entrada.
 
 Com a EPREX-001: si s'accepta, cal **tornar a passar la sonda** abans del join.
 
+<a id="eprex-003"></a>
+## EPREX-003
+
+**Tres entrades de l'octava de Nadal porten la salmòdia de I Vespres** · 4 de setembre de 2026
+
+A `all_visperas.json`, de les deu entrades de Vespres de l'octava de Nadal, **set** porten
+`primer_salmo_cita = 11025` (Salm 109) i `segundo_salmo_cita = 54` (Salm 129) —la salmòdia de
+l'octava— i **tres** porten `11031` (Salm 112) i `155` (Salm 147), que és la parella de **I
+Vespres**. Afecta **totes les llengües**.
+
+| | |
+|---|---|
+| Estat | **Proposat, pendent d'enviar** |
+| Entrades | `holy_innocents_martyrs__ANY`, `christmas_octave_day_4__ANY`, `christmas_octave_day_7__ANY` |
+| Fix | Repunteig d'ids: `primer_salmo_cita` 11031 → **11025**, `segundo_salmo_cita` 155 → **54**. Cal revisar-hi també el tercer element, que a Sants Innocents és `11042` (Ef 1, 3-10, càntic de I Vespres) quan Nadal hi porta `11072` (Col 1, 12-20) |
+| Prova interna | Set germanes de la mateixa octava —Nadal, octava 2, 3, 5, 6, sant Esteve i sant Joan— coincideixen; les tres discrepants porten la parella reconeixible de I Vespres. cpl-app dona Salm 129 a les tres |
+| Efecte a la migració | És **l'únic** que reté ara `salmos_citas/155` i `salmos_textos/156`: 176 dies hi volen el Salm 147 i 7 el Salm 129. Desbloquejant-ho, el **4-IX-2026 arriba al 100%** |
+
+Mateixa forma que [EPREX-001](#eprex-001) i [EPREX-002](#eprex-002): una fitxa clonada d'un
+altre ofici. Com sempre, si s'accepta cal **tornar a passar la sonda** abans del join.
+
 # Qüestions tancades sense canvi
 
 Preguntes que semblaven un error i, investigades a fons, **no ho eren**. Hi són perquè el cost
@@ -514,6 +537,49 @@ ja **no és `MEMORY_PROPER`** sinó `MEMORY_FERIAL2` — eprex l'ha reclassifica
 doncs, ja té pestanya ferial. MIGRA-004 segueix fent falta (queden **6** celebracions
 `MEMORY_PROPER`, no 7), però l'exemple amb què es va trobar ja no val i els números s'han de
 refer.
+
+<a id="sa-09"></a>
+### SA-09 · Les I Vespres desplaçaven dies que les superen · 2026-09-04
+
+`8a80e393c` — `visperasStore` passava a I Vespres **sempre que l'endemà era solemnitat**, sense
+mirar el rang del dia d'avui:
+
+```js
+changeTo1v.value = liturgicalDayTomorrow?.rank === "SOLEMNITY" || …
+```
+
+L'OGLH 61: quan coincideixen les II Vespres del dia i les I Vespres de l'endemà, es resen les
+del dia de **rang més alt**. Els diumenges d'Advent, Quaresma i Pasqua (`PRIVILEGED_SUNDAY_2`)
+van per davant de les solemnitats generals (`GENERAL_SOLEMNITY_3`).
+
+| | |
+|---|---|
+| Fix | `src/utils/firstVespers.ts` compara la precedència amb `PRECEDENCE_ORDER` de litcal en comptes del rang a pèl. Els tres casos especials que hi havia a mà (Sagrada Família, IV d'Advent, II després de Nadal) es mantenen com a dies que **tenen** I Vespres; el que s'hi afegeix és que l'endemà superi avui de debò |
+| Test | `tests/unit/utils/firstVespers.spec.ts`, 7 tests. **És detector**: treient la comparació de precedència, en fallen 2 |
+| Abast | **94 dates** del manifest |
+
+**Prova externa**, dues dates del cas que es va veure primer:
+
+- **7-XII-2025**, diumenge II d'Advent, vigília de la Immaculada → *Salmo 109 · Salmo 113 ·
+  Ap 19, 1-7*, les II Vespres del diumenge. L'app hi resava *Salmo 112 · Salmo 147*, les I
+  Vespres de la solemnitat.
+  <https://apps.idteologia.org/index.php?fecha=2025-12-07&r=liturgiaDeLasHoras%2Fespanola&rezo=visperas>
+- **24-III-2019**, diumenge III de Quaresma, vigília de l'Anunciació → *Salmo 109 · Salmo 110 ·
+  1 Pe 2, 21b-24*.
+  <https://apps.idteologia.org/index.php?fecha=2019-03-24&r=liturgiaDeLasHoras%2Fespanola&rezo=visperas>
+
+**Cura: el canvi és més ample del que semblava.** Les dues dates externes només cobreixen 9 de
+les 94. Les altres 85 són l'octava de Pasqua (50), solemnitat contra solemnitat com Tots Sants i
+els Fidels Difunts (11), el Tridu (20) i l'Epifania contra el Baptisme (2) — casos on els dos
+dies **empaten** en precedència i, per tant, es resen les II Vespres del dia. Verificat amb la
+prova interna forta: resondejades les 94 dates i contrastats els salms 1 i 2 de Vespres contra
+cpl-app, **de 160/188 coincidències es passa a 188/188, zero divergències**.
+
+| | abans | després |
+|---|---|---|
+| Vespres de les 94 dates, contra cpl-app | 160 de 188 | **188 de 188** |
+| Caselles retingudes al join | 674 | **600** (−74, cap de nova) |
+| Exportació | — | +58 claus, 0 actualitzades |
 
 <a id="sa-08"></a>
 ### SA-08 · Del 2 al 5 de gener el salteri anava una setmana enrere · 2026-09-04

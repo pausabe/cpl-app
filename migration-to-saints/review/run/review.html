@@ -1,4 +1,4 @@
-<title>Revisió litúrgica 4–17 de setembre de 2026</title>
+<title>Revisió litúrgica 4 de setembre de 2026</title>
 <style>
 :root{
   --bg:#FCFCFB; --sf:#FFFFFF; --sf2:#F5F4F1;
@@ -137,9 +137,9 @@ a:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset
 
 <div class="w">
 
-<h1>Revisió litúrgica · 4–17 de setembre de 2026</h1>
-<p class="sub">102 camps comparats entre cpl-app i saints-app · <strong>1 divergeixen</strong> ·
-97 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
+<h1>Revisió litúrgica · 4 de setembre de 2026</h1>
+<p class="sub">51 camps comparats entre cpl-app i saints-app · <strong>1 divergeixen</strong> ·
+49 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
 Diòcesi de Barcelona.</p>
 
 <article class="day" id="d2026-09-04">
@@ -148,7 +148,7 @@ Diòcesi de Barcelona.</p>
         <h3>4 de setembre · divendres</h3>
         <p class="cel">fèria</p>
       </div>
-      <div class="sts"><span class="st bad">1 camps divergeixen</span><span class="st note-st">2 troballes</span></div>
+      <div class="sts"><span class="st bad">1 camps divergeixen</span><span class="st note-st">3 troballes</span></div>
     </header>
 
     <div class="fs"><div class="finding v2 done" id="F8-2026-09-04">
@@ -193,6 +193,28 @@ Diòcesi de Barcelona.</p>
         
       </div>
     </details>
+  </div><div class="finding v2" id="F14-2026-09-04">
+    <p class="fh"><a class="fid" href="#F14-2026-09-04">F14</a>
+      <span class="vp v2">saints-app / eprex</span>
+      
+      <strong>Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres</strong></p>
+    <p class="fd">La casella <code>salmos_citas/155</code> (Salm 147) la comparteixen els divendres ordinaris a Laudes i tres entrades de l’octava de Nadal a Vespres, que hi volen el Salm 129. Com que una casella només pot dur un text, el join no hi escriu res — <strong>i és l’únic que impedeix que el 4 de setembre arribi al 100%</strong>.</p>
+    <div class="tw"><table><thead><tr><th>entrades de Vespres de l’octava</th><th>1r salm</th><th>2n salm</th><th></th></tr></thead>
+    <tbody><tr><td class="k">Nadal, octava 2·3·5·6, sant Esteve, sant Joan (7)</td><td>11025 · Salm 109</td><td>54 · Salm 129</td><td>✅</td></tr><tr><td class="k">Sants Innocents, octava 4, octava 7 (3)</td><td>11031 · Salm 112</td><td>155 · &lt;strong&gt;Salm 147&lt;/strong&gt;</td><td>❌ és la de I Vespres</td></tr></tbody></table></div>
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>Set germanes de la mateixa octava coincideixen i tres no, i les tres porten la parella reconeixible de I Vespres (Salm 112 · Salm 147). Mateixa forma que l’EPREX-001 i l’EPREX-002: una fitxa clonada d’un altre ofici. Afecta <strong>totes les llengües</strong>.</p>
+        <p><strong>Conseqüència:</strong> 7 dies de <code>holy_innocents_martyrs</code> retenen <code>salmos_citas/155</code> i <code>salmos_textos/156</code>, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a <strong>100%</strong>.</p>
+        <ul class="pl"><li><strong>Prova interna</strong> — A <code>all_visperas.json</code>, 7 de les 10 entrades de l’octava porten <code>11025</code>+<code>54</code>; les 3 discrepants porten <code>11031</code>+<code>155</code></li><li><strong>cpl-app</strong> — Dona el Salm 129 a les tres, els 7 anys del manifest</li><li><strong>No és el defecte de les I Vespres</strong> — Corregit el rang a <strong>SA-09</strong>, les 6 observacions de vigília van desaparèixer d’aquesta casella i van quedar només aquestes 7</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> Repuntar <code>holy_innocents_martyrs__ANY</code>, <code>christmas_octave_day_4__ANY</code> i <code>christmas_octave_day_7__ANY</code>: <code>primer_salmo_cita</code> 11031 → <strong>11025</strong>, <code>segundo_salmo_cita</code> 155 → <strong>54</strong>. <code>eprex · all_visperas.json</code></p>
+        
+        <div class="tw"><table><thead><tr><th>camp</th><th>ara</th><th>hauria de ser</th></tr></thead>
+    <tbody><tr><td class="k">primer_salmo_cita</td><td>11031 (Salm 112)</td><td>11025 (Salm 109)</td></tr><tr><td class="k">segundo_salmo_cita</td><td>155 (Salm 147)</td><td>54 (Salm 129)</td></tr><tr><td class="k">tercer_salmo_cita (Sants Innocents)</td><td>11042 (Ef 1, 3-10)</td><td>a revisar — Nadal hi porta 11072 (Col 1, 12-20)</td></tr></tbody></table></div>
+        <p class="note">Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). Si s’accepta, cal tornar a passar la sonda abans del join.</p>
+        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
+      </div>
+    </details>
   </div></div>
 
     
@@ -227,192 +249,6 @@ Diòcesi de Barcelona.</p>
   </li></ul>
       <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/11115</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9338</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/11116</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/4576</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9339</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/4577</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11036</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11037</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3472</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3473</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/18159</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/18160</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/18161</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/18162</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/18163</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/18164</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1136</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1214</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1100</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/8202</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/8203</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/8204</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/8205</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/8206</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/3839</span></span></li></ul></details>
     </section></details>
-  </article><article class="day" id="d2026-09-17">
-    <header>
-      <div class="dt">
-        <h3>17 de setembre · dijous</h3>
-        <p class="cel">Sant Robert Bel·larmino, bisbe i doctor de l’Església</p>
-      </div>
-      <div class="sts"><span class="st good">cap divergència</span><span class="st note-st">7 troballes</span></div>
-    </header>
-
-    <div class="fs"><div class="finding v3" id="F2-2026-09-17">
-    <p class="fh"><a class="fid" href="#F2-2026-09-17">F2</a>
-      <span class="vp v3">les nostres eines</span>
-      
-      <strong>El control «Vespres sense celebració» és l’objecte de les Vespres renderitzades</strong></p>
-    <p class="fd">Per saber quins camps vénen de la fèria, les eines resolen el dia un segon cop sense la celebració. A Vespres aquest control és el <em>mateix objecte</em> que l’ofici renderitzat, o sigui que la comparació és contra si mateixa i tots els camps surten ferials.</p>
-    
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p><code>MergeVespersWithCelebration()</code> comença amb <code>let vespers = withoutCelebrationVespers</code> — sense còpia — i hi escriu la celebració a dins. Comprovat: <code>hoursLiturgy.Vespers === VespersOptions.VespersWithoutCelebration</code> retorna <code>true</code> a la memòria, a la festa i al diumenge. Per a l’app és inofensiu; per a la migració no.</p>
-        <p><strong>Conseqüència:</strong> El join arxiva l’oració final i l’antífona del Magníficat de cada memòria a la casella de la fèria: 9 col·lectes de sant dins <code>oraciones_finales/3798</code> i 9 antífones dins <code>cantico_evangelico_antifonas/1179</code>.</p>
-        <ul class="pl"><li><strong>Senyal degenerat</strong> — <code>ferialFields.Vespers</code> val 19/19 als cinc dies, sigui quin sigui. A Laudes varia: 16 / 18 / 12 / 19 / 3</li><li><strong>Fix validat</strong> — Amb un <code>ObtainVespers()</code> fresc: 19→16 (Bernat), 19→18 (Pius X), 19→19 (diumenge), 19→4 (festa)</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Prendre el control amb una crida fresca, com ja es fa a Laudes. <code>migration-to-saints/lib/cpl-day-resolver.js · join-content.test.js</code></p>
-        <pre><code>const ferial = {
-    Laudes: LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings),
--   Vespers: hoursLiturgy.VespersOptions.VespersWithoutCelebration,
-+   Vespers: VespersService.ObtainVespers(todayMasters, ldi.Today, settings),
-};</code></pre>
-        
-        <p class="note">Cal tornar a córrer el join després.</p>
-        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
-      </div>
-    </details>
-  </div><div class="finding v2" id="F5-2026-09-17">
-    <p class="fh"><a class="fid" href="#F5-2026-09-17">F5</a>
-      <span class="vp v2">saints-app / eprex</span>
-      
-      <strong>saints-app no té I Vespres: la vigília de cada solemnitat resa l’ofici de la fèria</strong></p>
-    <p class="fd">La tarda anterior a una solemnitat, cpl-app resa les I Vespres de la solemnitat — com mana l’OGLH 61. saints-app resa les Vespres del dia que acaba. No és que triï malament: <strong>no té cap casella on posar-les</strong>.</p>
-    <div class="tw"><table><thead><tr><th>vigília</th><th>cpl-app resa</th><th>saints-app llegeix</th></tr></thead>
-    <tbody><tr><td class="k">28-VI-2018 (st. Pere i st. Pau)</td><td>Salm 116 · Salm 147 · Rm 1, 1-2.7</td><td>Salm 143-I · salmos_citas/152</td></tr><tr><td class="k">24-XII (10 anys seguits)</td><td>I Vespres de Nadal</td><td>Vespres de fèria d’Advent · ant. 1</td></tr><tr><td class="k">25-XII (per comparar)</td><td>—</td><td>salmos_citas/11025 · ant. 1129</td></tr></tbody></table></div>
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p>L’índex de saints-app té una sola entrada per celebració (<code>peter_and_paul_apostles__ANY</code>, <code>nativity_of_the_lord__ANY</code>): els 494 sufixos són <code>ANY</code>, <code>MEMORY_*</code> i <code>SPECIAL</code>, i cap no distingeix I de II Vespres. Sondejada l’app real amb <code>app-id-probe.js</code>, els deu 24 de desembre del manifest apunten a la salmòdia ferial del dia de la setmana que toqui (<code>11040</code>, <code>11058</code>, <code>11256</code>, <code>11026</code>, <code>11052</code>, <code>11208</code>…) i cap no apunta mai a les caselles de Nadal. Els deu 28 de juny donen sempre <code>salmos_citas/152</code>.</p>
-        <p><strong>Conseqüència:</strong> Cada vigília de solemnitat de l’any. I, de retruc, és l’origen de <strong>F6</strong>, que reté les 25 caselles de Vespres d’aquest dia.</p>
-        <ul class="pl"><li><strong>Antífona decisiva</strong> — El 28-VI-2018 cpl-app dona al Magníficat «Els gloriosos Apòstols de Crist, que tant s’estimaven durant la vida, no es van separar tampoc en la mort» — <em>Gloriosi principes terrae</em>, I Vespres de sant Pere i sant Pau. No hi ha lectura alternativa.</li><li><strong>Salmòdia</strong> — Salm 116 (117) · Salm 147 · càntic = I Vespres del Comú d’apòstols. La lectura breu Rm 1, 1-2.7 hi va lligada.</li><li><strong>Prova interna</strong> — A <code>app-cell-map.json</code>, 24-XII i 25-XII no comparteixen cap casella de Vespres cap any: la vigília sempre cau al costat ferial.</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Cal una ranura de I Vespres per a les solemnitats i festes que en tenen (un sufix nou, tipus <code>__VESPERS1</code>, o una entrada pròpia de vigília) i que el resolutor la triï la tarda anterior. <code>eprex · índex de day_specific_texts</code></p>
-        
-        
-        <p class="note">És un canvi de model, no de dades: fins que no hi sigui, el join no pot col·locar les I Vespres enlloc — vegeu F6 per al pedaç del nostre costat.</p>
-        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
-      </div>
-    </details>
-  </div><div class="finding v3" id="F6-2026-09-17">
-    <p class="fh"><a class="fid" href="#F6-2026-09-17">F6</a>
-      <span class="vp v3">les nostres eines</span>
-      
-      <strong>El join arxiva les I Vespres de l’endemà a la casella ferial del dia que acaba</strong></p>
-    <p class="fd">Com que saints-app no té on posar-les (F5), el join arxiva les I Vespres que cpl-app resa la vigília sota la clau del <em>dia que acaba</em>. La casella ferial es queda amb dos textos incompatibles i es reté — per a tots els altres dies que la comparteixen legítimament.</p>
-    <div class="tw"><table><thead><tr><th>casella</th><th>majoria</th><th>minoria arxivada</th><th>ve de</th></tr></thead>
-    <tbody><tr><td class="k">salmos_citas/11256</td><td>Salm 143-I (60 dies)</td><td>Salm 116</td><td>2018-06-28</td></tr><tr><td class="k">lectura_breve_citas/3431</td><td>Col 1, 23 (43 dies)</td><td>Rm 1, 1-2.7</td><td>2018-06-28</td></tr><tr><td class="k">salmos_citas/11257</td><td>Salm 143-II (69 dies)</td><td>Salm 147</td><td>2018-06-28 · 2020-12-24 · 2026-12-24</td></tr></tbody></table></div>
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p>El join sap que resoldre el dia D arriba fins a D+1 (<code>join-content.test.js:403</code>: «D’s first Vespers needs D+1»), però etiqueta el resultat amb la clau de D igualment. Cap fitxer del pipeline conté cap noció de <em>primeres vespres</em>.</p>
-        <p><strong>Conseqüència:</strong> Les <strong>25 caselles de Vespres</strong> d’aquest dia — l’hora sencera — estan retingudes per una sola data, el 28-VI-2018. Sis més ho estan pel 24 de desembre. La casella <code>salmos_citas/11256</code> la comparteixen 60 dates: una vigília mal arxivada les bloqueja totes.</p>
-        <ul class="pl"><li><strong>Comptat</strong> — De les 51 caselles en conflicte del dia, 25 tenen el 28-VI-2018 com a única minoria i 6 el 24-XII.</li><li><strong>cpl-app hi encerta</strong> — A 2018-06-28 cpl-app dona Laudes de sant Ireneu (ant. «Ireneu, que vol dir home de pau…») i Vespres de sant Pere i sant Pau. Les dues coses són correctes.</li><li><strong>Culpa mal atribuïda</strong> — L’eina imputa aquestes caselles a «Sant Ireneu — cpl-app només resa la fèria». Ni és Ireneu ni és la fèria: són les I Vespres de l’endemà.</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Detectar que el dia D+1 té I Vespres (solemnitat, festa del Senyor o diumenge) i, en aquest cas, no arxivar les Vespres de D a la casella de D. <code>migration-to-saints/join-content.test.js</code></p>
-        
-        
-        <p class="note">Mentre eprex no tingui ranura (F5), n’hi ha prou de deixar-les fora del recompte de variants: el que desbloqueja les altres dates no és desar-les, és no embrutar la casella. Cal tornar a córrer el join i comparar els pendents abans/després.</p>
-        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
-      </div>
-    </details>
-  </div><div class="finding v2" id="F7-2026-09-17">
-    <p class="fh"><a class="fid" href="#F7-2026-09-17">F7</a>
-      <span class="vp v2">saints-app / eprex</span>
-      
-      <strong>El Naixement de sant Joan Baptista desapareix del calendari els anys 2017 i 2022</strong></p>
-    <p class="fd">Al manifest 2017-2026 resolt contra <code>diocese-barcelona</code>, la solemnitat del Naixement de sant Joan Baptista surt vuit anys i en falta dos. No es trasllada: s’esvaeix.</p>
-    <div class="tw"><table><thead><tr><th>any</th><th>litcal hi diu</th><th>hauria de ser</th></tr></thead>
-    <tbody><tr><td class="k">2017-06-24</td><td>immaculate_heart_of_mary (memòria obligatòria)</td><td>Naixement de sant Joan Baptista (solemnitat)</td></tr><tr><td class="k">2022-06-24</td><td>most_sacred_heart_of_jesus ✔</td><td>correcte — el Sagrat Cor té preferència</td></tr><tr><td class="k">2022-06-23</td><td>ordinary_time_12_thursday (fèria)</td><td>Naixement de sant Joan Baptista, traslladat</td></tr></tbody></table></div>
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p>El 2017 una <em>memòria obligatòria</em> desplaça una <em>solemnitat</em>, cosa que la taula de dies litúrgics no permet en cap cas. El 2022 el Sagrat Cor sí que guanya el 24 de juny (solemnitat del Senyor), però una solemnitat impedida es <strong>trasllada</strong>, no s’omet: cpl-app la posa al dijous 23, i litcal no la posa enlloc.</p>
-        <p><strong>Conseqüència:</strong> 24 de les 51 caselles d’aquest dia — pràcticament totes les de Laudes — estan retingudes perquè el join arxiva el Laudes del 23-VI-2022 (Ml 3, 23-24; ant. «Zacaries digué aquestes paraules profètiques…») a la casella ferial del dijous de la setmana IV.</p>
-        <ul class="pl"><li><strong>Castellà, data exacta</strong> — <em>aciprensa.com</em> dona 24-VI-2017 = «Natividad de San Juan Bautista (Solemnidad)», i 23-VI-2022 igual <a href="https://www.aciprensa.com/calendario/calendario.php?dia=24&amp;mes=6&amp;ano=2017" target="_blank" rel="noopener">font ↗</a></li><li><strong>Anglès, data exacta</strong> — <em>catholicculture.org</em> dona 24-VI-2017 = «Solemnity of the Birth of St. John the Baptist»; el 23-VI-2022, «Solemnity of the Nativity of St. John the Baptist» <a href="https://www.catholicculture.org/culture/liturgicalyear/calendar/day.cfm?date=2017-06-24" target="_blank" rel="noopener">font ↗</a></li><li><strong>Italià</strong> — Diòcesis italianes (Pàdua, Lodi) van publicar <em>disposizioni</em> per a la coincidència del 2022: la solemnitat es mou, no es suprimeix <a href="https://www.diocesi.lodi.it/disposizioni-data-la-coincidenza-della-solennita-della-nativita-di-san-giovanni-battista-con-quella-del-sacro-cuore-di-gesu/" target="_blank" rel="noopener">font ↗</a></li><li><strong>Prova interna</strong> — litcal la col·loca bé els altres vuit anys (2018-2021, 2023-2026): la regla hi és, falla només quan el 24 de juny està ocupat</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Una solemnitat impedida s’ha de traslladar al dia lliure més proper, i cap memòria no pot desplaçar-la. Cal revisar els dos casos: memòria contra solemnitat (2017) i trasllat per solemnitat del Senyor (2022 → 23 de juny, com fa cpl-app i com dona el calendari castellà). <code>litcal · resolutor de precedència</code></p>
-        
-        
-        <p class="note">Repositori aliè: deixar la proposta escrita amb les dates i els ids concrets, no tocar-hi.</p>
-        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
-      </div>
-    </details>
-  </div><div class="finding v2 done" id="F8-2026-09-17">
-    <p class="fh"><a class="fid" href="#F8-2026-09-17">F8</a>
-      <span class="vp v2">saints-app / eprex</span>
-      <span class="vp done">corregit</span>
-      <strong>Del 2 al 5 de gener saints-app resa el salteri una setmana enrere</strong></p>
-    <p class="fd">Els dies de Nadal anteriors a l’Epifania, saints-app substitueix els nou camps de salms pels de <code>ordinary_time_{setmana}_{dia}</code>. La setmana que hi posa és sempre <strong>la de romcal menys una</strong>.</p>
-    <div class="tw"><table><thead><tr><th>data</th><th>romcal i cpl-app</th><th>saints-app resa</th><th></th></tr></thead>
-    <tbody><tr><td class="k">2026-01-05 (dilluns)</td><td>setmana II · Salm 41</td><td>setmana I · Salm 5 · &lt;code&gt;salmos_citas/156&lt;/code&gt;</td><td>✗</td></tr><tr><td class="k">2025-01-02 (dijous)</td><td>setmana I · Salm 56</td><td>setmana IV · Salm 142 · &lt;code&gt;salmos_citas/43&lt;/code&gt;</td><td>✗</td></tr><tr><td class="k">2018-01-02 (dimarts)</td><td>setmana I · Salm 23</td><td>setmana IV · Salm 100 · &lt;code&gt;salmos_citas/96&lt;/code&gt;</td><td>✗</td></tr><tr><td class="k">2017-01-03 (dimarts)</td><td>setmana II · Salm 42</td><td>setmana I · Salm 23 · &lt;code&gt;salmos_citas/111&lt;/code&gt;</td><td>✗</td></tr></tbody></table></div>
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p>La causa és un pedaç per a un error de romcal que <strong>ja no existeix</strong>: <code>weekNumber = weekNumber + 3</code> sota <code>seasons.includes("CHRISTMAS_TIME")</code>. En mòdul 4, <code>+3</code> és <code>−1</code>: resta una setmana sencera. El comentari del codi ho diu tot —«needed due to ROMCAL ERROR reading week numbers in Christmas»—, però consultat litcal directament, <code>liturgy.psalterWeek</code> dona la setmana bona a les <strong>40 dates</strong> de 2-5 de gener del manifest. El pedaç arregla un error inexistent i en crea un.</p>
-        <p><strong>Conseqüència:</strong> <strong>29 de les 40 dates</strong> de 2-5 de gener. Les 11 que se salven no és que estiguin bé: són els 6 divendres (el Salm 50 és el mateix les quatre setmanes) i els 5 diumenges. I no és només Laudes: el mateix <code>+3</code> és a <strong>sis stores</strong> —Laudes, Vespres, Ofici de lectura, Tèrcia, Sexta i Nona—, o sigui totes les hores i <strong>totes les llengües</strong>. De retruc, és qui reté les 3 caselles del 4-IX-2026: el 3 i el 4 de gener cauen a la casella dels divendres de les setmanes II/IV quan són de la setmana I.</p>
-        <ul class="pl"><li><strong>Castellà, data exacta</strong> — El 5-I-2026, dilluns, Laudes obre amb el <strong>Salmo 41</strong> «Como busca la cierva corrientes de agua» — setmana II, que és el que diu cpl-app i no el que resa saints-app <a href="https://apps.idteologia.org/index.php?fecha=2026-01-05&amp;r=liturgiaDeLasHoras%2Fespanola&amp;rezo=laudes" target="_blank" rel="noopener">font ↗</a></li><li><strong>Castellà, l’altre grup</strong> — El 2-I-2025 s’encapçala «2 de enero, jueves, <strong>1ª semana</strong>» — i saints-app hi resa la IV <a href="https://apps.idteologia.org/index.php?fecha=2025-01-02&amp;r=liturgiaDeLasHoras%2Fespanola&amp;rezo=laudes" target="_blank" rel="noopener">font ↗</a></li><li><strong>romcal no s’equivoca</strong> — <code>lit.resolveDay()</code> sobre <code>diocese-barcelona</code>: <code>liturgy.psalterWeek</code> coincideix amb la salmòdia de cpl-app a <strong>40 de 40</strong> dates. Zero discrepàncies</li><li><strong>El codi</strong> — <code>laudesStore.ts:149</code>, <code>visperasStore.ts:149</code>, <code>officeStore.ts:276</code>, <code>terciaStore.ts:137</code>, <code>sextaStore.ts:137</code>, <code>nonaStore.ts:137</code></li></ul>
-        <p class="fixline"><span class="who">correcció aplicada</span> Treure el bloc <code>if (seasons.includes("CHRISTMAS_TIME")) weekNumber = weekNumber + 3</code> i fer servir la setmana que dona romcal tal com ve. Cal un test de regressió sobre les 40 dates de 2-5 de gener. <code>saints-app · els sis stores de divineOffice</code></p>
-        
-        
-        <p class="note">Repositori aliè, i el canvi afecta <strong>totes les llengües</strong>, no només el català: canvia què resen els usuaris castellans del 2 al 5 de gener a totes les hores. <strong>Conseqüència per a nosaltres:</strong> si s’aplica, les caselles d’aquests dies canvien, o sigui que cal <strong>tornar a passar la sonda i el join</strong> abans de mesurar res.</p>
-        
-      </div>
-    </details>
-  </div><div class="finding v3" id="F9-2026-09-17">
-    <p class="fh"><a class="fid" href="#F9-2026-09-17">F9</a>
-      <span class="vp v3">les nostres eines</span>
-      
-      <strong>L’eina diu «litcal no l’aplica» d’una memòria lliure que litcal sí que té</strong></p>
-    <p class="fd">D’aquest dia l’informe diu: «cpl-app hi celebra sant Robert Bel·larmino — litcal hi diu fèria simple — la celebració ja és al calendari, però litcal no l’aplica en aquestes dates». Llegit així sembla un defecte, i no ho és: és <strong>exactament</strong> el que ha de passar amb una memòria lliure.</p>
-    
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p>L’eina ja té l’etiqueta bona — «saints-app ofereix memòria i fèria» — però només la fa servir quan el rang és <code>MEMORIAL</code>. Amb <code>OPTIONAL_MEMORIAL</code> cau al calaix <code>not-applied</code>. A sobre, diu que Bel·larmino és a <code>diocese-vic</code>, quan és a <code>catalonia.json</code> el 17 de setembre (el 18 és el de Vic, desplaçat per la Dedicació de la Catedral): reporta el primer calendari que troba, no el que aplica.</p>
-        <p><strong>Conseqüència:</strong> Cap sobre les dades. Costa temps: obliga a anar a obrir els calendaris per descartar un error que no existeix, a cada memòria lliure de l’any.</p>
-        <ul class="pl"><li><strong>El calendari el té</strong> — <code>catalonia.json</code> · 9/17 · <code>sant_robert_bellarmino_bisbe_i_doctor_de_l_esglesia</code> · OPTIONAL_MEMORIAL, i també santa Hildegarda de Bingen</li><li><strong>I el trasllat de Vic és correcte</strong> — A <code>santsMemories</code>, dioc <code>ViD</code> mou Bel·larmino i Hildegarda al 18 perquè el 17 hi ha la Dedicació de la Catedral de Vic. cpl-app hi encerta.</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Tractar <code>OPTIONAL_MEMORIAL</code> com el cas «memòria i fèria», i buscar la celebració al calendari que s’ha aplicat al dia, no al primer que la conté. <code>migration-to-saints/day-check.js · lib/memorial-ferial.js</code></p>
-        
-        
-        
-        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
-      </div>
-    </details>
-  </div><div class="finding v3" id="F10-2026-09-17">
-    <p class="fh"><a class="fid" href="#F10-2026-09-17">F10</a>
-      <span class="vp v3">les nostres eines</span>
-      
-      <strong>19 celebracions dels calendaris catalans surten amb rang i precedència contradictoris</strong></p>
-    <p class="fd">El generador escriu <code>rank</code> i <code>precedence</code> per separat i en 19 casos no diuen el mateix: memòries obligatòries emeses amb <code>rank: "SOLEMNITY"</code>.</p>
-    <div class="tw"><table><thead><tr><th>calendari</th><th>celebració</th><th>rank</th><th>precedence</th></tr></thead>
-    <tbody><tr><td class="k">catalonia</td><td>sant_justi_martir (1-VI)</td><td>SOLEMNITY</td><td>GENERAL_MEMORIAL_10</td></tr><tr><td class="k">catalonia</td><td>sant_ciril_d_alexandria… (27-VI)</td><td>SOLEMNITY</td><td>GENERAL_MEMORIAL_10</td></tr><tr><td class="k">catalonia</td><td>sants_joan_fisher…_tomas_more… (22-VI)</td><td>SOLEMNITY</td><td>GENERAL_MEMORIAL_10</td></tr><tr><td class="k">catalonia</td><td>dedicacio_de_les_basiliques… (18-XI)</td><td>FEAST</td><td>GENERAL_MEMORIAL_10</td></tr><tr><td class="k">diocese-tortosa</td><td>naixement_de_la_benaurada_verge_maria</td><td>SOLEMNITY</td><td>GENERAL_FEAST_7</td></tr></tbody></table></div>
-    <details class="more">
-      <summary>Per què, i com es va provar</summary>
-      <div class="mb">
-        <p>Auditats els 20 calendaris: 15 desajustos a <code>catalonia.json</code> i un a Lleida, Tarragona, Tortosa i Vic. cpl-app les té totes com a memòries. Els dies que en resulten surten al manifest amb <code>allXKey: null</code> — 2022-06-22, 2022-06-27, 2026-09-19 — és a dir, dies que saints-app no sap què resar.</p>
-        <p><strong>Conseqüència:</strong> En aquest dia només es veu de reüll (sant Justí surt al blame d’una casella), però són dies sencers sense text repartits per l’any.</p>
-        <ul class="pl"><li><strong>Auditoria completa</strong> — <code>rank</code> contra família de <code>precedence</code> sobre els 20 calendaris de <code>litcal/src/data/calendars</code>: 19 desajustos</li><li><strong>Símptoma visible</strong> — 2026-09-19 → <code>sant_gener_bisbe_i_martir</code> amb <code>allXKey: null</code>, quan a Barcelona el 19 és santa Maria de Cervelló i sant Gener és el 18</li></ul>
-        <p class="fixline"><span class="who">correcció proposada</span> Derivar <code>rank</code> i <code>precedence</code> d’una sola decisió, i afegir una asserció que falli si les dues no són de la mateixa família. <code>migration-to-saints/generate-catalan-calendars.js</code></p>
-        
-        
-        <p class="note">Cal regenerar els calendaris i tornar a córrer el manifest després.</p>
-        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
-      </div>
-    </details>
-  </div></div>
-
-    
-
-    <div class="prog">
-      <div class="bar" role="img" aria-label="54 fetes, 3 retingudes, 0 per collir, 0 sense font, de 57">
-        <span class="sg have" style="width:94.73684210526316%"></span>
-        <span class="sg blk" style="width:5.2631578947368425%"></span>
-        <span class="sg hav" style="width:0%"></span>
-      </div>
-      <p class="lg">
-        <span class="k have"></span>54 fetes
-        <span class="k blk"></span>3 retingudes
-        
-        
-        <span class="pc">95% de 57 assolibles</span>
-      </p>
-    </div>
-
-    <details class="camps"><summary>Els 51 camps, un per un</summary><section class="hr">
-      <h4>Laudes <span class="hc">25 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/43</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/293</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/44</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/295</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/294</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/296</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/296</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/295</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/297</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/142</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/143</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/822</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/823</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/824</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/825</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/826</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/827</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/69</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/77</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/77</span></span></li><li class="fr ok"><span>Precs — peticions (1/4) <span class="cell">preces_contenido/560</span></span></li><li class="fr ok"><span>Precs — peticions (2/4) <span class="cell">preces_contenido/561</span></span></li><li class="fr ok"><span>Precs — peticions (3/4) <span class="cell">preces_contenido/562</span></span></li><li class="fr ok"><span>Precs — peticions (4/4) <span class="cell">preces_contenido/563</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/144</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Vespres <span class="hc">26 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>26 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/11256</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9479</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/11257</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/11257</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9480</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/11258</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11030</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/9253</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11031</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3431</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3432</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/14612</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/14613</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/14614</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/14615</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/14616</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/14617</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1179</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1173</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1173</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/5158</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/5159</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/5160</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/5161</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/5162</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/3798</span></span></li></ul></details>
-    </section></details>
   </article>
 
 <hr>
@@ -420,81 +256,42 @@ Diòcesi de Barcelona.</p>
 <p class="sub">La revisió no toca res. Cada correcció va amb un prompt per enganxar en un fil
 nou, que ja porta les proves a dins perquè no s'hagi de tornar a investigar.</p>
 <div class="pr">
-  <h3><span class="vp v3">F2 · les nostres eines</span> El control «Vespres sense celebració» és l’objecte de les Vespres renderitzades</h3>
-  <pre><code># F2 · El control «Vespres sense celebració» és l’objecte de les Vespres renderitzades
-
-Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
-Veredicte de la revisió: **3 — les nostres eines**.
-Dies on es va veure: 2026-08-20, 2026-08-21, 2026-08-22, 2026-09-17.
-
-## Què passa
-Per saber quins camps vénen de la fèria, les eines resolen el dia un segon cop sense la celebració. A Vespres aquest control és el mateix objecte que l’ofici renderitzat, o sigui que la comparació és contra si mateixa i tots els camps surten ferials.
-
-MergeVespersWithCelebration() comença amb let vespers = withoutCelebrationVespers — sense còpia — i hi escriu la celebració a dins. Comprovat: hoursLiturgy.Vespers === VespersOptions.VespersWithoutCelebration retorna true a la memòria, a la festa i al diumenge. Per a l’app és inofensiu; per a la migració no.
-
-**Conseqüència:** El join arxiva l’oració final i l’antífona del Magníficat de cada memòria a la casella de la fèria: 9 col·lectes de sant dins oraciones_finales/3798 i 9 antífones dins cantico_evangelico_antifonas/1179.
-
-## Com es va provar
-- **Senyal degenerat** — ferialFields.Vespers val 19/19 als cinc dies, sigui quin sigui. A Laudes varia: 16 / 18 / 12 / 19 / 3
-- **Fix validat** — Amb un ObtainVespers() fresc: 19→16 (Bernat), 19→18 (Pius X), 19→19 (diumenge), 19→4 (festa)
-
-## Què s’ha de canviar
-A: `migration-to-saints/lib/cpl-day-resolver.js · join-content.test.js`
-
-Prendre el control amb una crida fresca, com ja es fa a Laudes.
-
-```diff
-const ferial = {
-    Laudes: LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings),
--   Vespers: hoursLiturgy.VespersOptions.VespersWithoutCelebration,
-+   Vespers: VespersService.ObtainVespers(todayMasters, ldi.Today, settings),
-};
-```
-
-&gt; Cal tornar a córrer el join després.
-
-## Com tancar-ho
-- És codi nostre: aplica el canvi, afegeix el test que detecti la regressió, i commiteja.
-- Si el canvi afecta el join, **torna'l a córrer** i apunta com queden els pendents abans i després.
-
-## Comprovació
-Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
-
-```sh
-make review DATES=2026-08-20,2026-08-21,2026-08-22,2026-09-17
-```</code></pre>
-</div><div class="pr">
-  <h3><span class="vp v2">F5 · saints-app / eprex</span> saints-app no té I Vespres: la vigília de cada solemnitat resa l’ofici de la fèria</h3>
-  <pre><code># F5 · saints-app no té I Vespres: la vigília de cada solemnitat resa l’ofici de la fèria
+  <h3><span class="vp v2">F14 · saints-app / eprex</span> Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres</h3>
+  <pre><code># F14 · Tres entrades de l’octava de Nadal porten la salmòdia de I Vespres
 
 Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
 Veredicte de la revisió: **2 — saints-app / eprex**.
-Dies on es va veure: 2026-09-17.
+Dies on es va veure: 2026-09-04.
 
 ## Què passa
-La tarda anterior a una solemnitat, cpl-app resa les I Vespres de la solemnitat — com mana l’OGLH 61. saints-app resa les Vespres del dia que acaba. No és que triï malament: no té cap casella on posar-les.
+La casella salmos_citas/155 (Salm 147) la comparteixen els divendres ordinaris a Laudes i tres entrades de l’octava de Nadal a Vespres, que hi volen el Salm 129. Com que una casella només pot dur un text, el join no hi escriu res — i és l’únic que impedeix que el 4 de setembre arribi al 100%.
 
-L’índex de saints-app té una sola entrada per celebració (peter_and_paul_apostles__ANY, nativity_of_the_lord__ANY): els 494 sufixos són ANY, MEMORY_* i SPECIAL, i cap no distingeix I de II Vespres. Sondejada l’app real amb app-id-probe.js, els deu 24 de desembre del manifest apunten a la salmòdia ferial del dia de la setmana que toqui (11040, 11058, 11256, 11026, 11052, 11208…) i cap no apunta mai a les caselles de Nadal. Els deu 28 de juny donen sempre salmos_citas/152.
+Set germanes de la mateixa octava coincideixen i tres no, i les tres porten la parella reconeixible de I Vespres (Salm 112 · Salm 147). Mateixa forma que l’EPREX-001 i l’EPREX-002: una fitxa clonada d’un altre ofici. Afecta totes les llengües.
 
-**Conseqüència:** Cada vigília de solemnitat de l’any. I, de retruc, és l’origen de F6, que reté les 25 caselles de Vespres d’aquest dia.
+**Conseqüència:** 7 dies de holy_innocents_martyrs retenen salmos_citas/155 i salmos_textos/156, que 176 dies volen. Desbloquejant-ho, el 4-IX-2026 passa de 96% a 100%.
 
-| vigília | cpl-app resa | saints-app llegeix |
-|---|---|---|
-| 28-VI-2018 (st. Pere i st. Pau) | Salm 116 · Salm 147 · Rm 1, 1-2.7 | Salm 143-I · salmos_citas/152 |
-| 24-XII (10 anys seguits) | I Vespres de Nadal | Vespres de fèria d’Advent · ant. 1 |
-| 25-XII (per comparar) | — | salmos_citas/11025 · ant. 1129 |
+| entrades de Vespres de l’octava | 1r salm | 2n salm |  |
+|---|---|---|---|
+| Nadal, octava 2·3·5·6, sant Esteve, sant Joan (7) | 11025 · Salm 109 | 54 · Salm 129 | ✅ |
+| Sants Innocents, octava 4, octava 7 (3) | 11031 · Salm 112 | 155 · &lt;strong&gt;Salm 147&lt;/strong&gt; | ❌ és la de I Vespres |
 
 ## Com es va provar
-- **Antífona decisiva** — El 28-VI-2018 cpl-app dona al Magníficat «Els gloriosos Apòstols de Crist, que tant s’estimaven durant la vida, no es van separar tampoc en la mort» — Gloriosi principes terrae, I Vespres de sant Pere i sant Pau. No hi ha lectura alternativa.
-- **Salmòdia** — Salm 116 (117) · Salm 147 · càntic = I Vespres del Comú d’apòstols. La lectura breu Rm 1, 1-2.7 hi va lligada.
-- **Prova interna** — A app-cell-map.json, 24-XII i 25-XII no comparteixen cap casella de Vespres cap any: la vigília sempre cau al costat ferial.
+- **Prova interna** — A all_visperas.json, 7 de les 10 entrades de l’octava porten 11025+54; les 3 discrepants porten 11031+155
+- **cpl-app** — Dona el Salm 129 a les tres, els 7 anys del manifest
+- **No és el defecte de les I Vespres** — Corregit el rang a SA-09, les 6 observacions de vigília van desaparèixer d’aquesta casella i van quedar només aquestes 7
 
 ## Què s’ha de canviar
-A: `eprex · índex de day_specific_texts`
+A: `eprex · all_visperas.json`
 
-Cal una ranura de I Vespres per a les solemnitats i festes que en tenen (un sufix nou, tipus __VESPERS1, o una entrada pròpia de vigília) i que el resolutor la triï la tarda anterior.
+Repuntar holy_innocents_martyrs__ANY, christmas_octave_day_4__ANY i christmas_octave_day_7__ANY: primer_salmo_cita 11031 → 11025, segundo_salmo_cita 155 → 54.
 
-&gt; És un canvi de model, no de dades: fins que no hi sigui, el join no pot col·locar les I Vespres enlloc — vegeu F6 per al pedaç del nostre costat.
+| camp | ara | hauria de ser |
+|---|---|---|
+| primer_salmo_cita | 11031 (Salm 112) | 11025 (Salm 109) |
+| segundo_salmo_cita | 155 (Salm 147) | 54 (Salm 129) |
+| tercer_salmo_cita (Sants Innocents) | 11042 (Ef 1, 3-10) | a revisar — Nadal hi porta 11072 (Col 1, 12-20) |
+
+&gt; Repositori aliè: proposta escrita amb els ids concrets (EPREX-003). Si s’accepta, cal tornar a passar la sonda abans del join.
 
 ## Com tancar-ho
 - El contingut és d'eprex, **fora d'aquest repositori**. No hi facis canvis directament.
@@ -504,172 +301,7 @@ Cal una ranura de I Vespres per a les solemnitats i festes que en tenen (un sufi
 Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
 
 ```sh
-make review DATES=2026-09-17
-```</code></pre>
-</div><div class="pr">
-  <h3><span class="vp v3">F6 · les nostres eines</span> El join arxiva les I Vespres de l’endemà a la casella ferial del dia que acaba</h3>
-  <pre><code># F6 · El join arxiva les I Vespres de l’endemà a la casella ferial del dia que acaba
-
-Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
-Veredicte de la revisió: **3 — les nostres eines**.
-Dies on es va veure: 2026-09-17.
-
-## Què passa
-Com que saints-app no té on posar-les (F5), el join arxiva les I Vespres que cpl-app resa la vigília sota la clau del dia que acaba. La casella ferial es queda amb dos textos incompatibles i es reté — per a tots els altres dies que la comparteixen legítimament.
-
-El join sap que resoldre el dia D arriba fins a D+1 (join-content.test.js:403: «D’s first Vespers needs D+1»), però etiqueta el resultat amb la clau de D igualment. Cap fitxer del pipeline conté cap noció de primeres vespres.
-
-**Conseqüència:** Les 25 caselles de Vespres d’aquest dia — l’hora sencera — estan retingudes per una sola data, el 28-VI-2018. Sis més ho estan pel 24 de desembre. La casella salmos_citas/11256 la comparteixen 60 dates: una vigília mal arxivada les bloqueja totes.
-
-| casella | majoria | minoria arxivada | ve de |
-|---|---|---|---|
-| salmos_citas/11256 | Salm 143-I (60 dies) | Salm 116 | 2018-06-28 |
-| lectura_breve_citas/3431 | Col 1, 23 (43 dies) | Rm 1, 1-2.7 | 2018-06-28 |
-| salmos_citas/11257 | Salm 143-II (69 dies) | Salm 147 | 2018-06-28 · 2020-12-24 · 2026-12-24 |
-
-## Com es va provar
-- **Comptat** — De les 51 caselles en conflicte del dia, 25 tenen el 28-VI-2018 com a única minoria i 6 el 24-XII.
-- **cpl-app hi encerta** — A 2018-06-28 cpl-app dona Laudes de sant Ireneu (ant. «Ireneu, que vol dir home de pau…») i Vespres de sant Pere i sant Pau. Les dues coses són correctes.
-- **Culpa mal atribuïda** — L’eina imputa aquestes caselles a «Sant Ireneu — cpl-app només resa la fèria». Ni és Ireneu ni és la fèria: són les I Vespres de l’endemà.
-
-## Què s’ha de canviar
-A: `migration-to-saints/join-content.test.js`
-
-Detectar que el dia D+1 té I Vespres (solemnitat, festa del Senyor o diumenge) i, en aquest cas, no arxivar les Vespres de D a la casella de D.
-
-&gt; Mentre eprex no tingui ranura (F5), n’hi ha prou de deixar-les fora del recompte de variants: el que desbloqueja les altres dates no és desar-les, és no embrutar la casella. Cal tornar a córrer el join i comparar els pendents abans/després.
-
-## Com tancar-ho
-- És codi nostre: aplica el canvi, afegeix el test que detecti la regressió, i commiteja.
-- Si el canvi afecta el join, **torna'l a córrer** i apunta com queden els pendents abans i després.
-
-## Comprovació
-Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
-
-```sh
-make review DATES=2026-09-17
-```</code></pre>
-</div><div class="pr">
-  <h3><span class="vp v2">F7 · saints-app / eprex</span> El Naixement de sant Joan Baptista desapareix del calendari els anys 2017 i 2022</h3>
-  <pre><code># F7 · El Naixement de sant Joan Baptista desapareix del calendari els anys 2017 i 2022
-
-Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
-Veredicte de la revisió: **2 — saints-app / eprex**.
-Dies on es va veure: 2026-09-17.
-
-## Què passa
-Al manifest 2017-2026 resolt contra diocese-barcelona, la solemnitat del Naixement de sant Joan Baptista surt vuit anys i en falta dos. No es trasllada: s’esvaeix.
-
-El 2017 una memòria obligatòria desplaça una solemnitat, cosa que la taula de dies litúrgics no permet en cap cas. El 2022 el Sagrat Cor sí que guanya el 24 de juny (solemnitat del Senyor), però una solemnitat impedida es trasllada, no s’omet: cpl-app la posa al dijous 23, i litcal no la posa enlloc.
-
-**Conseqüència:** 24 de les 51 caselles d’aquest dia — pràcticament totes les de Laudes — estan retingudes perquè el join arxiva el Laudes del 23-VI-2022 (Ml 3, 23-24; ant. «Zacaries digué aquestes paraules profètiques…») a la casella ferial del dijous de la setmana IV.
-
-| any | litcal hi diu | hauria de ser |
-|---|---|---|
-| 2017-06-24 | immaculate_heart_of_mary (memòria obligatòria) | Naixement de sant Joan Baptista (solemnitat) |
-| 2022-06-24 | most_sacred_heart_of_jesus ✔ | correcte — el Sagrat Cor té preferència |
-| 2022-06-23 | ordinary_time_12_thursday (fèria) | Naixement de sant Joan Baptista, traslladat |
-
-## Com es va provar
-- **Castellà, data exacta** — aciprensa.com dona 24-VI-2017 = «Natividad de San Juan Bautista (Solemnidad)», i 23-VI-2022 igual &lt;https://www.aciprensa.com/calendario/calendario.php?dia=24&amp;mes=6&amp;ano=2017&gt;
-- **Anglès, data exacta** — catholicculture.org dona 24-VI-2017 = «Solemnity of the Birth of St. John the Baptist»; el 23-VI-2022, «Solemnity of the Nativity of St. John the Baptist» &lt;https://www.catholicculture.org/culture/liturgicalyear/calendar/day.cfm?date=2017-06-24&gt;
-- **Italià** — Diòcesis italianes (Pàdua, Lodi) van publicar disposizioni per a la coincidència del 2022: la solemnitat es mou, no es suprimeix &lt;https://www.diocesi.lodi.it/disposizioni-data-la-coincidenza-della-solennita-della-nativita-di-san-giovanni-battista-con-quella-del-sacro-cuore-di-gesu/&gt;
-- **Prova interna** — litcal la col·loca bé els altres vuit anys (2018-2021, 2023-2026): la regla hi és, falla només quan el 24 de juny està ocupat
-
-## Què s’ha de canviar
-A: `litcal · resolutor de precedència`
-
-Una solemnitat impedida s’ha de traslladar al dia lliure més proper, i cap memòria no pot desplaçar-la. Cal revisar els dos casos: memòria contra solemnitat (2017) i trasllat per solemnitat del Senyor (2022 → 23 de juny, com fa cpl-app i com dona el calendari castellà).
-
-&gt; Repositori aliè: deixar la proposta escrita amb les dates i els ids concrets, no tocar-hi.
-
-## Com tancar-ho
-- El contingut és d'eprex, **fora d'aquest repositori**. No hi facis canvis directament.
-- Deixa la proposta escrita a `migration-to-saints/cpl-bugs/` amb els ids concrets, perquè es pugui passar a qui manté saints-app.
-
-## Comprovació
-Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
-
-```sh
-make review DATES=2026-09-17
-```</code></pre>
-</div><div class="pr">
-  <h3><span class="vp v3">F9 · les nostres eines</span> L’eina diu «litcal no l’aplica» d’una memòria lliure que litcal sí que té</h3>
-  <pre><code># F9 · L’eina diu «litcal no l’aplica» d’una memòria lliure que litcal sí que té
-
-Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
-Veredicte de la revisió: **3 — les nostres eines**.
-Dies on es va veure: 2026-09-17.
-
-## Què passa
-D’aquest dia l’informe diu: «cpl-app hi celebra sant Robert Bel·larmino — litcal hi diu fèria simple — la celebració ja és al calendari, però litcal no l’aplica en aquestes dates». Llegit així sembla un defecte, i no ho és: és exactament el que ha de passar amb una memòria lliure.
-
-L’eina ja té l’etiqueta bona — «saints-app ofereix memòria i fèria» — però només la fa servir quan el rang és MEMORIAL. Amb OPTIONAL_MEMORIAL cau al calaix not-applied. A sobre, diu que Bel·larmino és a diocese-vic, quan és a catalonia.json el 17 de setembre (el 18 és el de Vic, desplaçat per la Dedicació de la Catedral): reporta el primer calendari que troba, no el que aplica.
-
-**Conseqüència:** Cap sobre les dades. Costa temps: obliga a anar a obrir els calendaris per descartar un error que no existeix, a cada memòria lliure de l’any.
-
-## Com es va provar
-- **El calendari el té** — catalonia.json · 9/17 · sant_robert_bellarmino_bisbe_i_doctor_de_l_esglesia · OPTIONAL_MEMORIAL, i també santa Hildegarda de Bingen
-- **I el trasllat de Vic és correcte** — A santsMemories, dioc ViD mou Bel·larmino i Hildegarda al 18 perquè el 17 hi ha la Dedicació de la Catedral de Vic. cpl-app hi encerta.
-
-## Què s’ha de canviar
-A: `migration-to-saints/day-check.js · lib/memorial-ferial.js`
-
-Tractar OPTIONAL_MEMORIAL com el cas «memòria i fèria», i buscar la celebració al calendari que s’ha aplicat al dia, no al primer que la conté.
-
-## Com tancar-ho
-- És codi nostre: aplica el canvi, afegeix el test que detecti la regressió, i commiteja.
-- Si el canvi afecta el join, **torna'l a córrer** i apunta com queden els pendents abans i després.
-
-## Comprovació
-Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
-
-```sh
-make review DATES=2026-09-17
-```</code></pre>
-</div><div class="pr">
-  <h3><span class="vp v3">F10 · les nostres eines</span> 19 celebracions dels calendaris catalans surten amb rang i precedència contradictoris</h3>
-  <pre><code># F10 · 19 celebracions dels calendaris catalans surten amb rang i precedència contradictoris
-
-Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
-Veredicte de la revisió: **3 — les nostres eines**.
-Dies on es va veure: 2026-09-17.
-
-## Què passa
-El generador escriu rank i precedence per separat i en 19 casos no diuen el mateix: memòries obligatòries emeses amb rank: &quot;SOLEMNITY&quot;.
-
-Auditats els 20 calendaris: 15 desajustos a catalonia.json i un a Lleida, Tarragona, Tortosa i Vic. cpl-app les té totes com a memòries. Els dies que en resulten surten al manifest amb allXKey: null — 2022-06-22, 2022-06-27, 2026-09-19 — és a dir, dies que saints-app no sap què resar.
-
-**Conseqüència:** En aquest dia només es veu de reüll (sant Justí surt al blame d’una casella), però són dies sencers sense text repartits per l’any.
-
-| calendari | celebració | rank | precedence |
-|---|---|---|---|
-| catalonia | sant_justi_martir (1-VI) | SOLEMNITY | GENERAL_MEMORIAL_10 |
-| catalonia | sant_ciril_d_alexandria… (27-VI) | SOLEMNITY | GENERAL_MEMORIAL_10 |
-| catalonia | sants_joan_fisher…_tomas_more… (22-VI) | SOLEMNITY | GENERAL_MEMORIAL_10 |
-| catalonia | dedicacio_de_les_basiliques… (18-XI) | FEAST | GENERAL_MEMORIAL_10 |
-| diocese-tortosa | naixement_de_la_benaurada_verge_maria | SOLEMNITY | GENERAL_FEAST_7 |
-
-## Com es va provar
-- **Auditoria completa** — rank contra família de precedence sobre els 20 calendaris de litcal/src/data/calendars: 19 desajustos
-- **Símptoma visible** — 2026-09-19 → sant_gener_bisbe_i_martir amb allXKey: null, quan a Barcelona el 19 és santa Maria de Cervelló i sant Gener és el 18
-
-## Què s’ha de canviar
-A: `migration-to-saints/generate-catalan-calendars.js`
-
-Derivar rank i precedence d’una sola decisió, i afegir una asserció que falli si les dues no són de la mateixa família.
-
-&gt; Cal regenerar els calendaris i tornar a córrer el manifest després.
-
-## Com tancar-ho
-- És codi nostre: aplica el canvi, afegeix el test que detecti la regressió, i commiteja.
-- Si el canvi afecta el join, **torna'l a córrer** i apunta com queden els pendents abans i després.
-
-## Comprovació
-Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
-
-```sh
-make review DATES=2026-09-17
+make review DATES=2026-09-04
 ```</code></pre>
 </div>
 
