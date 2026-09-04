@@ -443,7 +443,7 @@ i el castellà, l'anglès i l'italià hi porten tots tres el **3b**. **No és un
 | Veredicte | **4 — no és error.** Cap canvi a cpl-app ni a la base de dades |
 | Prova | **El volum imprès.** En Pau ho ha comprovat al **volum III** de la Litúrgia de les Hores del CPL: Salteri, setmana II, divendres, Vespres, l'antífona 3 diu paraula per paraula el que diu l'app. I la setmana IV (Salm 144 I i II) també |
 | Per contrast | Castellà «Justos y verdaderos son tus caminos, ¡oh Rey de los siglos!» · anglès «King of all the ages, your ways are perfect and true» · italià «Giuste e vere sono le tue vie, o Re delle genti». És una **diferència d'edició**, no un error de ningú — el mateix cas que [D-001](#d-001) |
-| Efecte a la migració | Cap. Les 75 dates de `salmos_antifonas/9340` i `/9256` es desbloquegen soles quan es corregeixi **F8** (vegeu [EPREX-002](#eprex-002)): el conflicte no el causa el text, sinó que el 3 i el 4 de gener —salteri de la **setmana I**— cauen a la casella de les setmanes II/IV |
+| Efecte a la migració | Cap. Les 75 dates de `salmos_antifonas/9340` i `/9256` es desbloquegen soles quan es corregeixi la **F8** (`migration-to-saints/review/findings.js`; encara sense fitxa aquí): el conflicte no el causa el text, sinó que el 3 i el 4 de gener —salteri de la **setmana I**— cauen a la casella de les setmanes II/IV |
 
 **El que va fallar en la investigació.** El llistó de la revisió és «fonts externes en 2-3
 idiomes», i aquí **tres llengües coincidien i el català continuava tenint raó**. Hi havia dos
@@ -526,7 +526,7 @@ català.
 |---|---|
 | Fitxer | `src/store/db/day_specific_texts/commons/ca/invitacion_padrenuestro.json` (branca `catalan-language-support-dev`) |
 | Font | **Traducció del castellà**, com les 26 que ja hi havia. Reutilitza les fórmules ja fixades al fitxer: `ens atrevim a dir`, `ens va ensenyar el Senyor`, `acudim`, `amb confiança` |
-| Efecte mesurat | El 4-IX-2026 puja de **93% a 95%** i `missing` passa d'1 a 0. Les 3 caselles que hi queden són de [F8](#eprex-002), no d'aquí |
+| Efecte mesurat | El 4-IX-2026 puja de **93% a 95%** i `missing` passa d'1 a 0. Les 3 caselles que hi queden són de la **F8** (`review/findings.js`), no d'aquí |
 | Es regenera? | **No.** Aquest fitxer es manté a mà: el join no observa mai aquesta taula |
 
 **Per què no surt de cpl-app**, que sí que té el text i complet. cpl-app duu la invitació al
