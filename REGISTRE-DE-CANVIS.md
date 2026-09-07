@@ -41,6 +41,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **proposat** | — pendent d'enviar | — |
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
 | [MIGRA-005](#migra-005) | 2026-09-04 | eines | codi | No — va al git | — |
+| [MIGRA-006](#migra-006) | 2026-09-07 | eines | **obert** | — bloqueja l'exportació | — |
 | [SA-05](#sa-05) | 2026-09-03 | saints-app | contingut | Es regenera | — |
 | [SA-06](#sa-06) | 2026-09-03 | saints-app | merge | No — va al git | `1a35a54a6` |
 | [SA-07](#sa-07) | 2026-09-04 | saints-app | contingut | No — va al git | — |
@@ -180,6 +181,60 @@ Ambròs.
 això la skill `revisio-dia` fa servir `review/resolve-cpl-days.test.js` i no aquell.
 
 <a id="eina-comu"></a>
+<a id="migra-006"></a>
+## MIGRA-006 — **OBERT**
+
+**El join escriu una observació minoritària en comptes de retenir la casella** · 7 de setembre de 2026
+
+La regla que fa segur tot el join —«un id només s'escriu si **totes** les observacions
+coincideixen»— no s'aplica en algun camí. **Mentre això no estigui resolt, no es pot exportar.**
+
+### Com reproduir-ho en dos minuts
+
+```sh
+HOURS=Laudes,Vespers npx jest migration-to-saints/join-content.test.js --silent
+node -e "console.log(require('./migration-to-saints/output/commons-ca/salmos_antifonas.json')['9998'])"
+```
+
+Dona **«Déu envià un home, que es deia Joan»** — sant Joan Baptista. La casella castellana
+`salmos_antifonas/9998` diu «Con amor eterno nos ha amado Dios»: és del **Sagrat Cor**.
+
+Les 10 dates que llegeixen aquesta casella són totes **dijous al vespre, vigília del Sagrat Cor**
+(que sempre cau en divendres). Resoltes amb `resolve-cpl-days`:
+
+| què hi dona cpl-app | dates |
+|---|---|
+| «Oh amor etern de Déu!» — Sagrat Cor | 2017-06-22, 2018-06-07, 2019-06-27, 2020-06-18, 2021-06-10, 2023-06-15, 2024-06-06, 2025-06-26, 2026-06-11 (**9**) |
+| «Déu envià un home, que es deia Joan» — Baptista | 2022-06-23 (**1**) |
+
+El 2022 el 24 de juny era alhora el Sagrat Cor i la Nativitat del Baptista, i cpl-app hi resa les
+I Vespres del Baptista — defensable. El que no ho és: que d'una discrepància de 9 contra 1 en
+surti una **escriptura** i no una retenció. La casella **no apareix ni a
+`join-pending-review.json`**.
+
+### Abast
+
+**22 caselles actualitzades a l'exportació, i 15 són regressions**, verificades una per una
+contra el castellà: `lectura_breve_citas/3604`, `lectura_breve_textos/3605`,
+`preces_contenido/6455-6459`, `responsorios/16131-16136` i `salmos_antifonas/9998-10000` — totes
+del Sagrat Cor, totes rebent text del Baptista. Les altres **7 sí que milloren**, o sigui que
+l'exportació no es descarta sencera: s'ha de refer quan això estigui arreglat.
+
+### Per on començar
+
+`migration-to-saints/join-content.test.js`, línia 605 i següents. La sospita és el camí de
+`fromFerial` / `entryFromCells`: si a les 9 dates el camp es classifica com a ferial i es
+redirigeix a la casella 1, només queda l'observació del 2022 i «totes coincideixen» és cert **per
+vacuïtat**. No verificat — és una hipòtesi, no el diagnòstic.
+
+La troballa és la **F16** a `migration-to-saints/review/findings.js`, i la revisió en genera el
+prompt: `node migration-to-saints/review/fix-prompts.js`.
+
+### Què NO és
+
+No és la F15 (els duplicats del generador): surt igual amb els calendaris regenerats i amb els
+del git. I no és l'EPREX-003, que en Fernando ja ha corregit.
+
 <a id="migra-005"></a>
 ## MIGRA-005
 
