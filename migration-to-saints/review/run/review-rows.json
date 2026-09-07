@@ -27,21 +27,21 @@
       },
       "coverage": {
         "ok": 55,
-        "notInAppYet": 0,
-        "conflict": 2,
+        "notInAppYet": 2,
+        "conflict": 0,
         "missing": 0,
-        "have": 55,
+        "have": 57,
         "reachable": 57,
         "unreachable": 0,
         "total": 57,
         "percent": 96,
-        "percentOfReachable": 96
+        "percentOfReachable": 100
       },
       "migration": {
         "ok": 55,
-        "conflict": 2,
+        "conflict": 0,
         "missing": 0,
-        "notInAppYet": 0,
+        "notInAppYet": 2,
         "total": 57,
         "percent": 96
       },
@@ -50,25 +50,7 @@
         "Laudes": 19,
         "Vespers": 19
       },
-      "blameSummary": [
-        {
-          "title": "Sants Innocents, màrtirs",
-          "verdict": "mismatch",
-          "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
-          "ranks": [
-            "Festivitat"
-          ],
-          "suggestedId": "sants_innocents_martirs",
-          "inLitcal": {
-            "calendar": "catalonia",
-            "id": "sants_innocents_martirs",
-            "rank": "FEAST"
-          },
-          "sole": true,
-          "fields": 2,
-          "soleFields": 2
-        }
-      ],
+      "blameSummary": [],
       "rows": [
         {
           "hour": "Laudes",
@@ -115,31 +97,7 @@
               "tokenFull": "PS|50|"
             }
           },
-          "conflict": {
-            "cause": "Casella compartida per 119 celebracions",
-            "bundleId": "shared|advent_1_friday__ANY,advent_2_friday__ANY,advent_december_17__ANY,advent_december_18__ANY,advent_december_19__ANY,advent_december_20__ANY,advent_december_21__ANY,advent_december_22__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,aloysius_gonzaga_religious__MEMORY_FERIAL1,alphonsus_mary_liguori_bishop__MEMORY_FERIAL1,ambrose_of_milan_bishop__MEMORY_FERIAL1,andrew_dung_lac_priest_and_companions_martyrs__MEMORY_FERIAL1,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_egypt_abbot__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,ash_wednesday__ANY,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,augustine_of_hippo_bishop__MEMORY_FERIAL2,basil_the_great_and_gregory_nazianzen_bishops__MEMORY_PROPER,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,bonaventure_of_bagnoregio_bishop__MEMORY_FERIAL1,boniface_of_mainz_bishop__MEMORY_FERIAL1,cecilia_of_rome_virgin__MEMORY_FERIAL2,charles_borromeo_bishop__MEMORY_FERIAL1,charles_lwanga_and_companions_martyrs__MEMORY_FERIAL1,christmas_time_january_3__ANY,christmas_time_january_4__ANY,christmas_time_january_5__ANY,clare_of_assisi_virgin__MEMORY_FERIAL1,commemoration_of_all_the_faithful_departed__ANY,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_3_friday__ANY,easter_time_4_friday__ANY,easter_time_5_friday__ANY,easter_time_6_friday__ANY,easter_time_7_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,francis_xavier_priest__MEMORY_FERIAL1,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,ignatius_of_antioch_bishop__MEMORY_FERIAL2,ignatius_of_loyola_priest__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_bosco_priest__MEMORY_FERIAL1,john_chrysostom_bishop__MEMORY_FERIAL1,john_mary_vianney_priest__MEMORY_FERIAL1,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_1_friday__ANY,lent_2_friday__ANY,lent_3_friday__ANY,lent_4_friday__ANY,lent_5_friday__ANY,leo_i_the_great_pope__MEMORY_FERIAL2,lucy_of_syracuse_virgin__MEMORY_FERIAL2,martha_of_bethany_mary_of_bethany_and_lazarus_of_bethany__MEMORY_FERIAL1,maximilian_mary_raymund_kolbe_priest__MEMORY_FERIAL1,monica_of_hippo__MEMORY_FERIAL2,ordinary_time_10_friday__ANY,ordinary_time_11_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_13_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_15_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_17_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_19_friday__ANY,ordinary_time_1_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_21_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_23_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_25_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_27_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_29_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_31_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_33_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_3_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_5_friday__ANY,ordinary_time_6_friday__ANY,ordinary_time_7_friday__ANY,ordinary_time_9_friday__ANY,our_lady_of_mount_carmel__MEMORY_FERIAL2,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_francesco_forgione_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,presentation_of_the_blessed_virgin_mary__MEMORY_FERIAL2,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,scholastica_of_nursia_virgin__MEMORY_FERIAL2,teresa_of_jesus_jornet_ibars_virgin__MEMORY_FERIAL1,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,thomas_aquinas_priest__MEMORY_FERIAL2,timothy_of_ephesus_and_titus_of_crete_bishops__MEMORY_FERIAL2,vincent_de_paul_priest__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
-            "variantCount": 2,
-            "affectedCount": 390,
-            "decision": "pending",
-            "impact": {
-              "days": 390,
-              "agreeDays": 389,
-              "breakDays": 1,
-              "dateNotObserved": false
-            },
-            "variants": [
-              {
-                "preview": "Salm 50 \nOració de penediment",
-                "truncated": false,
-                "count": 389
-              },
-              {
-                "preview": "Salm 100 \nComportament d’un monarca honrat",
-                "truncated": false,
-                "count": 1
-              }
-            ]
-          },
+          "conflict": null,
           "blame": null
         },
         {
@@ -193,31 +151,7 @@
             "es": null,
             "ca": null
           },
-          "conflict": {
-            "cause": "Casella compartida per 119 celebracions",
-            "bundleId": "shared|advent_1_friday__ANY,advent_2_friday__ANY,advent_december_17__ANY,advent_december_18__ANY,advent_december_19__ANY,advent_december_20__ANY,advent_december_21__ANY,advent_december_22__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,aloysius_gonzaga_religious__MEMORY_FERIAL1,alphonsus_mary_liguori_bishop__MEMORY_FERIAL1,ambrose_of_milan_bishop__MEMORY_FERIAL1,andrew_dung_lac_priest_and_companions_martyrs__MEMORY_FERIAL1,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_egypt_abbot__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,ash_wednesday__ANY,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,augustine_of_hippo_bishop__MEMORY_FERIAL2,basil_the_great_and_gregory_nazianzen_bishops__MEMORY_PROPER,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,bonaventure_of_bagnoregio_bishop__MEMORY_FERIAL1,boniface_of_mainz_bishop__MEMORY_FERIAL1,cecilia_of_rome_virgin__MEMORY_FERIAL2,charles_borromeo_bishop__MEMORY_FERIAL1,charles_lwanga_and_companions_martyrs__MEMORY_FERIAL1,christmas_time_january_3__ANY,christmas_time_january_4__ANY,christmas_time_january_5__ANY,clare_of_assisi_virgin__MEMORY_FERIAL1,commemoration_of_all_the_faithful_departed__ANY,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_3_friday__ANY,easter_time_4_friday__ANY,easter_time_5_friday__ANY,easter_time_6_friday__ANY,easter_time_7_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,francis_xavier_priest__MEMORY_FERIAL1,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,ignatius_of_antioch_bishop__MEMORY_FERIAL2,ignatius_of_loyola_priest__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_bosco_priest__MEMORY_FERIAL1,john_chrysostom_bishop__MEMORY_FERIAL1,john_mary_vianney_priest__MEMORY_FERIAL1,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_1_friday__ANY,lent_2_friday__ANY,lent_3_friday__ANY,lent_4_friday__ANY,lent_5_friday__ANY,leo_i_the_great_pope__MEMORY_FERIAL2,lucy_of_syracuse_virgin__MEMORY_FERIAL2,martha_of_bethany_mary_of_bethany_and_lazarus_of_bethany__MEMORY_FERIAL1,maximilian_mary_raymund_kolbe_priest__MEMORY_FERIAL1,monica_of_hippo__MEMORY_FERIAL2,ordinary_time_10_friday__ANY,ordinary_time_11_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_13_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_15_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_17_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_19_friday__ANY,ordinary_time_1_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_21_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_23_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_25_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_27_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_29_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_31_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_33_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_3_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_5_friday__ANY,ordinary_time_6_friday__ANY,ordinary_time_7_friday__ANY,ordinary_time_9_friday__ANY,our_lady_of_mount_carmel__MEMORY_FERIAL2,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_francesco_forgione_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,presentation_of_the_blessed_virgin_mary__MEMORY_FERIAL2,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,scholastica_of_nursia_virgin__MEMORY_FERIAL2,teresa_of_jesus_jornet_ibars_virgin__MEMORY_FERIAL1,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,thomas_aquinas_priest__MEMORY_FERIAL2,timothy_of_ephesus_and_titus_of_crete_bishops__MEMORY_FERIAL2,vincent_de_paul_priest__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
-            "variantCount": 2,
-            "affectedCount": 390,
-            "decision": "pending",
-            "impact": {
-              "days": 390,
-              "agreeDays": 389,
-              "breakDays": 1,
-              "dateNotObserved": false
-            },
-            "variants": [
-              {
-                "preview": "Compadiu-vos de mi, Déu meu, \nvós que estimeu tant;    *\nper la vostra gran misericòrdia, \nesborreu les meves faltes; \nrenteu-me ben bé de les culpes,    *\npurifiqueu-me dels pecats.\n\nAra reconec les meves faltes,    *\ntinc sempre present el meu pecat. \nContra vós, contra vós sol he pecat,   *\ni he ",
-                "truncated": true,
-                "count": 389
-              },
-              {
-                "preview": "Vull celebrar la fidelitat i la justícia.    *\nA vós, Senyor, dedico el meu cant. \nEstudiaré la causa de la gent honrada,    *\nsempre que recorrin a mi.\n\nPortaré les coses de palau \namb honradesa de cor;    *\nno em proposaré d’aconseguir \ncap objectiu innoble.\n\nNo sóc amic dels qui obren contra llei",
-                "truncated": true,
-                "count": 1
-              }
-            ]
-          },
+          "conflict": null,
           "blame": null
         },
         {
@@ -328,18 +262,18 @@
           "label": "3r salm — cita",
           "table": "salmos_citas",
           "id": "155",
-          "status": "conflict",
-          "verdictCa": "onlyCpl",
-          "channel": "C2",
-          "match": "sameRef",
+          "status": "notInAppYet",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
           "fromFerial": false,
           "altModeMatch": false,
           "noProperText": false,
           "cpl": "Salm 147\nHimne a Déu, restaurador de la ciutat santa",
-          "ca": null,
+          "ca": "Salm 147\nHimne a Déu, restaurador de la ciutat santa",
           "es": "Salmo 147: Acción de gracias por la restauración de Jerusalén",
           "cplClean": "Salm 147 Himne a Déu, restaurador de la ciutat santa",
-          "caClean": null,
+          "caClean": "Salm 147 Himne a Déu, restaurador de la ciutat santa",
           "esClean": "Salmo 147: Acción de gracias por la restauración de Jerusalén",
           "fp": {
             "cpl": {
@@ -358,50 +292,17 @@
               "token": "PS|147",
               "tokenFull": "PS|147|"
             },
-            "ca": null
-          },
-          "conflict": {
-            "cause": "Casella compartida per 56 celebracions",
-            "bundleId": "shared|advent_2_friday__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_4_friday__ANY,easter_time_6_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_innocents_martyrs__ANY,ignatius_of_antioch_bishop__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_2_friday__ANY,lent_4_friday__ANY,lucy_of_syracuse_virgin__MEMORY_FERIAL2,ordinary_time_10_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_6_friday__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
-            "variantCount": 2,
-            "affectedCount": 183,
-            "decision": "pending",
-            "impact": {
-              "days": 183,
-              "agreeDays": 176,
-              "breakDays": 7,
-              "dateNotObserved": false
-            },
-            "variants": [
-              {
-                "preview": "Salm 147\nHimne a Déu, restaurador de la ciutat santa",
-                "truncated": false,
-                "count": 176
-              },
-              {
-                "preview": "Salm 129",
-                "truncated": false,
-                "count": 7
-              }
-            ]
-          },
-          "blame": [
-            {
-              "title": "Sants Innocents, màrtirs",
-              "verdict": "mismatch",
-              "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
-              "ranks": [
-                "Festivitat"
-              ],
-              "suggestedId": "sants_innocents_martirs",
-              "inLitcal": {
-                "calendar": "catalonia",
-                "id": "sants_innocents_martirs",
-                "rank": "FEAST"
-              },
-              "sole": true
+            "ca": {
+              "ref": "Salm 147",
+              "key": "PS",
+              "chapter": "147",
+              "verses": "",
+              "token": "PS|147",
+              "tokenFull": "PS|147|"
             }
-          ]
+          },
+          "conflict": null,
+          "blame": null
         },
         {
           "hour": "Laudes",
@@ -436,66 +337,26 @@
           "label": "3r salm — text",
           "table": "salmos_textos",
           "id": "156",
-          "status": "conflict",
-          "verdictCa": "onlyCpl",
-          "channel": "C2",
-          "match": "prose",
+          "status": "notInAppYet",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "same",
           "fromFerial": false,
           "altModeMatch": false,
           "noProperText": false,
           "cpl": "Glorifica el Senyor, Jerusalem,    *\nSió, canta lloances al teu Déu, \nque assegura les teves portes    *\ni beneeix dintre teu els teus fills, \nmanté la pau al teu territori    *\ni et sacia amb la flor del blat.\n\nEnvia ordres a la terra,    *\ni la seva paraula corre de pressa, no es detura. \nTira neu com flocs de llana,    *\nescampa com cendra la gebrada;\n\nllança el seu glaç com molles de pa,    * \nsi les aigües es gelen de tanta fredor,\ndóna una ordre, i les fon tot seguit,    *\nfa bufar els seus vents, i l’aigua s’escola.\n\nAnuncia les seves paraules als fills de Jacob,    * \nals fills d’Israel, els seus decrets i decisions.\nNo ha obrat així amb cap altre poble,    * \nno els ha fet conèixer les seves decisions.",
-          "ca": null,
+          "ca": "Glorifica el Senyor, Jerusalem,    *\nSió, canta lloances al teu Déu, \nque assegura les teves portes    *\ni beneeix dintre teu els teus fills, \nmanté la pau al teu territori    *\ni et sacia amb la flor del blat.\n\nEnvia ordres a la terra,    *\ni la seva paraula corre de pressa, no es detura. \nTira neu com flocs de llana,    *\nescampa com cendra la gebrada;\n\nllança el seu glaç com molles de pa,    * \nsi les aigües es gelen de tanta fredor,\ndóna una ordre, i les fon tot seguit,    *\nfa bufar els seus vents, i l’aigua s’escola.\n\nAnuncia les seves paraules als fills de Jacob,    * \nals fills d’Israel, els seus decrets i decisions.\nNo ha obrat així amb cap altre poble,    * \nno els ha fet conèixer les seves decisions.",
           "es": "Glorifica al Señor, Jerusalén:\nalaba a tu Dios, Sion:\nque ha reforzado los cerrojos de tus puertas\ny ha bendecido a tus hijos dentro de ti;\nha puesto paz en tus fronteras,\nte sacia con flor de harina.\n\nÉl envía su mensaje a la tierra,\ny su palabra corre veloz;\nmanda la nieve como lana,\nesparce la escarcha como ceniza;\n\nhace caer el hielo como migajas\ny con el frío congela las aguas;\nenvía una orden, y se derriten;\nsopla su aliento, y corren.\n\nAnuncia su palabra a Jacob,\nsus decretos y mandatos a Israel;\ncon ninguna nación obró así,\nni les dio a conocer sus mandatos.\n\nGloria al Padre, y al Hijo, y al Espíritu Santo.\nComo era en el principio, ahora y siempre,\npor los siglos de los siglos. Amén.",
           "cplClean": "Glorifica el Senyor, Jerusalem, * Sió, canta lloances al teu Déu, que assegura les teves portes * i beneeix dintre teu els teus fills, manté la pau al teu territori * i et sacia amb la flor del blat. Envia ordres a la terra, * i la seva paraula corre de pressa, no es detura. Tira neu com flocs de llana, * escampa com cendra la gebrada; llança el seu glaç com molles de pa, * si les aigües es gelen de tanta fredor, dóna una ordre, i les fon tot seguit, * fa bufar els seus vents, i l’aigua s’escola. Anuncia les seves paraules als fills de Jacob, * als fills d’Israel, els seus decrets i decisions. No ha obrat així amb cap altre poble, * no els ha fet conèixer les seves decisions.",
-          "caClean": null,
+          "caClean": "Glorifica el Senyor, Jerusalem, * Sió, canta lloances al teu Déu, que assegura les teves portes * i beneeix dintre teu els teus fills, manté la pau al teu territori * i et sacia amb la flor del blat. Envia ordres a la terra, * i la seva paraula corre de pressa, no es detura. Tira neu com flocs de llana, * escampa com cendra la gebrada; llança el seu glaç com molles de pa, * si les aigües es gelen de tanta fredor, dóna una ordre, i les fon tot seguit, * fa bufar els seus vents, i l’aigua s’escola. Anuncia les seves paraules als fills de Jacob, * als fills d’Israel, els seus decrets i decisions. No ha obrat així amb cap altre poble, * no els ha fet conèixer les seves decisions.",
           "esClean": "Glorifica al Señor, Jerusalén: alaba a tu Dios, Sion: que ha reforzado los cerrojos de tus puertas y ha bendecido a tus hijos dentro de ti; ha puesto paz en tus fronteras, te sacia con flor de harina. Él envía su mensaje a la tierra, y su palabra corre veloz; manda la nieve como lana, esparce la escarcha como ceniza; hace caer el hielo como migajas y con el frío congela las aguas; envía una orden, y se derriten; sopla su aliento, y corren. Anuncia su palabra a Jacob, sus decretos y mandatos a Israel; con ninguna nación obró así, ni les dio a conocer sus mandatos. Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.",
           "fp": {
             "cpl": null,
             "es": null,
             "ca": null
           },
-          "conflict": {
-            "cause": "Casella compartida per 56 celebracions",
-            "bundleId": "shared|advent_2_friday__ANY,advent_december_23__ANY,advent_december_24__ANY,agatha_of_sicily_virgin__MEMORY_FERIAL2,andrew_kim_tae_gon_priest_paul_chong_ha_sang_and_companions_martyrs__MEMORY_FERIAL1,anthony_of_padua_priest__MEMORY_FERIAL1,athanasius_of_alexandria_bishop__MEMORY_FERIAL1,bernard_of_clairvaux_abbot__MEMORY_FERIAL2,clare_of_assisi_virgin__MEMORY_FERIAL1,cornelius_i_pope_and_cyprian_of_carthage_bishop_martyrs__MEMORY_FERIAL2,dominic_de_guzman_priest__MEMORY_FERIAL1,easter_time_2_friday__ANY,easter_time_4_friday__ANY,easter_time_6_friday__ANY,elizabeth_of_hungary_religious__MEMORY_FERIAL1,francis_de_sales_bishop__MEMORY_FERIAL1,francis_of_assisi__MEMORY_FERIAL2,friday_after_ash_wednesday__ANY,friday_after_epiphany__ANY,friday_of_the_passion_of_the_lord__ANY,gregory_i_the_great_pope__MEMORY_FERIAL1,holy_innocents_martyrs__ANY,ignatius_of_antioch_bishop__MEMORY_FERIAL2,irenaeus_of_lyon_bishop__MEMORY_FERIAL1,isidore_the_farmer__MEMORY_FERIAL1,jerome_of_stridon_priest__MEMORY_FERIAL1,joachim_and_anne_parents_of_mary__MEMORY_FERIAL2,john_of_avila_priest__MEMORY_FERIAL1,john_of_the_cross_priest__MEMORY_FERIAL1,josaphat_kuntsevych_bishop__MEMORY_FERIAL1,justin_martyr__MEMORY_FERIAL2,lent_2_friday__ANY,lent_4_friday__ANY,lucy_of_syracuse_virgin__MEMORY_FERIAL2,ordinary_time_10_friday__ANY,ordinary_time_12_friday__ANY,ordinary_time_14_friday__ANY,ordinary_time_16_friday__ANY,ordinary_time_18_friday__ANY,ordinary_time_20_friday__ANY,ordinary_time_22_friday__ANY,ordinary_time_24_friday__ANY,ordinary_time_26_friday__ANY,ordinary_time_28_friday__ANY,ordinary_time_2_friday__ANY,ordinary_time_30_friday__ANY,ordinary_time_32_friday__ANY,ordinary_time_34_friday__ANY,ordinary_time_4_friday__ANY,ordinary_time_6_friday__ANY,paul_miki_and_companions_martyrs__MEMORY_FERIAL2,philip_neri_priest__MEMORY_FERIAL1,pius_x_pope__MEMORY_FERIAL1,queenship_of_the_blessed_virgin_mary__MEMORY_FERIAL2,therese_of_the_child_jesus_and_the_holy_face_of_lisieux_virgin__MEMORY_FERIAL2,vincent_of_saragossa_deacon__MEMORY_FERIAL1",
-            "variantCount": 2,
-            "affectedCount": 183,
-            "decision": "pending",
-            "impact": {
-              "days": 183,
-              "agreeDays": 176,
-              "breakDays": 7,
-              "dateNotObserved": false
-            },
-            "variants": [
-              {
-                "preview": "Glorifica el Senyor, Jerusalem,    *\nSió, canta lloances al teu Déu, \nque assegura les teves portes    *\ni beneeix dintre teu els teus fills, \nmanté la pau al teu territori    *\ni et sacia amb la flor del blat.\n\nEnvia ordres a la terra,    *\ni la seva paraula corre de pressa, no es detura. \nTira neu",
-                "truncated": true,
-                "count": 176
-              },
-              {
-                "preview": "Des de l’abisme us crido, Senyor.    * \nEscolteu el meu clam.\nEstigueu atent, escolteu    * \naquest clam que us suplica.\n\nSi tinguéssiu en compte les culpes,    * \n¿qui es podria sostenir?\nPerò és molt vostre perdonar,    * \ni això ens infon respecte.\n\nConfio en la paraula del Senyor,    * \nla meva ",
-                "truncated": true,
-                "count": 7
-              }
-            ]
-          },
-          "blame": [
-            {
-              "title": "Sants Innocents, màrtirs",
-              "verdict": "mismatch",
-              "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
-              "ranks": [
-                "Festivitat"
-              ],
-              "suggestedId": "sants_innocents_martirs",
-              "inLitcal": {
-                "calendar": "catalonia",
-                "id": "sants_innocents_martirs",
-                "rank": "FEAST"
-              },
-              "sole": true
-            }
-          ]
+          "conflict": null,
+          "blame": null
         },
         {
           "hour": "Laudes",

@@ -139,7 +139,7 @@ a:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset
 
 <h1>Revisió litúrgica · 4 de setembre de 2026</h1>
 <p class="sub">51 camps comparats entre cpl-app i saints-app · <strong>1 divergeixen</strong> ·
-49 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
+51 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
 Diòcesi de Barcelona.</p>
 
 <article class="day" id="d2026-09-04">
@@ -148,7 +148,7 @@ Diòcesi de Barcelona.</p>
         <h3>4 de setembre · divendres</h3>
         <p class="cel">fèria</p>
       </div>
-      <div class="sts"><span class="st bad">1 camps divergeixen</span><span class="st note-st">3 troballes</span></div>
+      <div class="sts"><span class="st bad">1 camps divergeixen</span><span class="st note-st">5 troballes</span></div>
     </header>
 
     <div class="fs"><div class="finding v2 done" id="F8-2026-09-04">
@@ -215,22 +215,64 @@ Diòcesi de Barcelona.</p>
         <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
       </div>
     </details>
+  </div><div class="finding v3" id="F15-2026-09-04">
+    <p class="fh"><a class="fid" href="#F15-2026-09-04">F15</a>
+      <span class="vp v3">les nostres eines</span>
+      
+      <strong>El generador emet duplicats catalans de celebracions que romcal ja té</strong></p>
+    <p class="fd">De <code>santsMemories</code> i <code>santsSolemnitats</code>, el generador crea un id a partir del nom català —<code>santa_caterina_de_siena_verge_i_doctora_de_l_esglesia_patrona_d_europa</code>— quan romcal ja porta aquella mateixa celebració amb el seu id (<code>catherine_of_siena_virgin</code>). Quan el duplicat guanya el dia, l’índex de saints-app no hi té entrada, el dia perd la clau i <strong>el join aparella el text de cpl-app amb la casella d’una altra celebració</strong>.</p>
+    <div class="tw"><table><thead><tr><th>data</th><th>romcal hi té</th><th>el nostre calendari hi posa</th></tr></thead>
+    <tbody><tr><td class="k">29-IV</td><td>&lt;code&gt;catherine_of_siena_virgin&lt;/code&gt;</td><td>&lt;code&gt;santa_caterina_de_siena_verge_i_doctora…&lt;/code&gt;</td></tr><tr><td class="k">25-VII</td><td>&lt;code&gt;james_apostle&lt;/code&gt;</td><td>&lt;code&gt;sant_jaume_apostol_patro_d_espanya&lt;/code&gt;</td></tr><tr><td class="k">15-V</td><td>&lt;code&gt;isidore_the_farmer&lt;/code&gt;</td><td>&lt;code&gt;sant_isidre_llaurador&lt;/code&gt;</td></tr><tr><td class="k">11-VII</td><td>&lt;code&gt;benedict_of_nursia_abbot&lt;/code&gt;</td><td>&lt;code&gt;sant_benet_abat_patro_d_europa&lt;/code&gt;</td></tr></tbody></table></div>
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>El generador sempre els ha emès; el que els va fer visibles és la <strong>MIGRA-005</strong>. Abans sortien amb rang i precedència contradictoris i litcal no els sabia col·locar, o sigui que no guanyaven cap dia. En donar-los un rang coherent, <strong>117 dates</strong> passen a resoldre-s’hi. La F10 estava tapant això.</p>
+        <p><strong>Conseqüència:</strong> Mesurat amb l’índex de <code>dev</code> ja fusionat: les dates del manifest sense <code>allXKey</code> passen de <strong>239</strong> (calendaris del git) a <strong>347</strong> (regenerats). Els calendaris regenerats es van revertir per això (litcal <code>91f2e17</code>). <strong>Correcció:</strong> les 15 caselles sobreescrites que es van veure primer aquí <strong>no són d’aquesta troballa</strong> — surten igual amb els calendaris del git. Són la <strong>F16</strong>.</p>
+        <ul class="pl"><li><strong>Les 117, comptades</strong> — Comparant el manifest d’abans amb el de després: 320 dates canvien de <code>litcalId</code> i 117 passen a un slug català nostre</li><li><strong>Les 15 regressions</strong> — A totes, el valor <em>anterior</em> coincideix amb la casella castellana i el nou no. Exemple: <code>salmos_antifonas/9998</code>, es «Con amor eterno nos ha amado Dios», abans «Oh amor etern de Déu!», ara «Déu envià un home, que es deia Joan»</li><li><strong>No és la MIGRA-005</strong> — El fix del rang és correcte i es queda; el que fa és destapar aquests duplicats. Amb els calendaris del git, el manifest té 239 dates sense clau, el millor dels tres estats mesurats</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> Que el generador no emeti una celebració quan romcal ja en té una d’equivalent per a aquella data i calendari — o que hi emeti l’id de romcal en comptes del seu propi slug, perquè les rectificacions catalanes s’hi apliquin a sobre en comptes de duplicar-la. <code>migration-to-saints/generate-catalan-calendars.js</code></p>
+        
+        
+        <p class="note">Fins que no es faci, <strong>no regeneris els calendaris</strong>: els del git són millors que els que en surten. Vegeu l’avís a MIGRA-005.</p>
+        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
+      </div>
+    </details>
+  </div><div class="finding v3" id="F16-2026-09-04">
+    <p class="fh"><a class="fid" href="#F16-2026-09-04">F16</a>
+      <span class="vp v3">les nostres eines</span>
+      
+      <strong>El join escriu una observació minoritària en comptes de retenir la casella</strong></p>
+    <p class="fd">La regla que fa segur tot el join —«un id només s’escriu si <strong>totes</strong> les observacions coincideixen»— no s’aplica en algun camí. A <code>salmos_antifonas/9998</code>, 9 dates donen el text del Sagrat Cor i 1 el de sant Joan Baptista, i el join hi escriu <strong>la d’1</strong>. La casella no surt ni tan sols a <code>join-pending-review.json</code>.</p>
+    <div class="tw"><table><thead><tr><th>data</th><th>què hi dona cpl-app a Vespres</th><th></th></tr></thead>
+    <tbody><tr><td class="k">2017-06-22, 2018-06-07, 2019-06-27, 2020-06-18, 2021-06-10, 2023-06-15, 2024-06-06, 2025-06-26, 2026-06-11</td><td>«Oh amor etern de Déu! Crist, enlairat de la terra…» — Sagrat Cor</td><td>9 ✅</td></tr><tr><td class="k">2022-06-23</td><td>«Déu envià un home, que es deia Joan» — Baptista</td><td>1 ❌ i és la que s’escriu</td></tr></tbody></table></div>
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>Les 10 són <strong>dijous al vespre, vigília del Sagrat Cor</strong>, que sempre cau en divendres; l’app hi llegeix les I Vespres del Sagrat Cor, i això és correcte. El 2022 el 24 de juny era alhora el Sagrat Cor i la Nativitat del Baptista, i cpl-app hi resa les I Vespres del Baptista — també defensable. El que no ho és: que d’aquesta discrepància en surti una escriptura i no una retenció.</p>
+        <p><strong>Conseqüència:</strong> <strong>15 caselles sobreescrites, totes 15 regressions</strong>, verificades una per una contra el castellà: <code>lectura_breve_citas/3604</code>, <code>lectura_breve_textos/3605</code>, <code>preces_contenido/6455-6459</code>, <code>responsorios/16131-16136</code> i <code>salmos_antifonas/9998-10000</code> — totes del Sagrat Cor, totes rebent text del Baptista. A la mateixa exportació n’hi ha 7 de bones, o sigui que no es pot descartar l’exportació sencera: cal arreglar això i tornar-la a fer.</p>
+        <ul class="pl"><li><strong>Les 10 observacions, comptades</strong> — Resoltes les 10 dates amb <code>resolve-cpl-days</code>: 9 donen el text del Sagrat Cor i 1 el del Baptista</li><li><strong>El join no la reté</strong> — <code>salmos_antifonas/9998</code> no és a <code>join-pending-review.json</code> i sí a <code>output/commons-ca</code>, amb el text de la minoria</li><li><strong>No és dels calendaris</strong> — Surt igual amb els calendaris regenerats i amb els del git, o sigui que no és la F15</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> Trobar per què aquestes observacions no arriben a la comprovació d’acord. La sospita és el camí de <code>fromFerial</code> / <code>entryFromCells</code> de la línia 605 i següents: si a les 9 dates el camp es classifica com a ferial i es redirigeix a la casella 1, només queda l’observació del 2022 i llavors «totes coincideixen» és cert per vacuïtat. <code>migration-to-saints/join-content.test.js</code></p>
+        
+        
+        <p class="note"><strong>Fins que no estigui, no exportis.</strong> L’exportació d’aquesta sessió es va revertir dues vegades per això.</p>
+        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
+      </div>
+    </details>
   </div></div>
 
     
 
     <div class="prog">
-      <div class="bar" role="img" aria-label="55 fetes, 2 retingudes, 0 per collir, 0 sense font, de 57">
-        <span class="sg have" style="width:96.49122807017544%"></span>
-        <span class="sg blk" style="width:3.508771929824561%"></span>
+      <div class="bar" role="img" aria-label="57 fetes, 0 retingudes, 0 per collir, 0 sense font, de 57">
+        <span class="sg have" style="width:100%"></span>
+        <span class="sg blk" style="width:0%"></span>
         <span class="sg hav" style="width:0%"></span>
       </div>
       <p class="lg">
-        <span class="k have"></span>55 fetes
-        <span class="k blk"></span>2 retingudes
+        <span class="k have"></span>57 fetes
+        <span class="k blk"></span>0 retingudes
         
         
-        <span class="pc">96% de 57 assolibles</span>
+        <span class="pc">100% de 57 assolibles</span>
       </p>
     </div>
 
@@ -297,6 +339,92 @@ Repuntar holy_innocents_martyrs__ANY (i el seu bessó christmas_octave_day_4__AN
 ## Com tancar-ho
 - El contingut és d'eprex, **fora d'aquest repositori**. No hi facis canvis directament.
 - Deixa la proposta escrita a `migration-to-saints/cpl-bugs/` amb els ids concrets, perquè es pugui passar a qui manté saints-app.
+
+## Comprovació
+Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
+
+```sh
+make review DATES=2026-09-04
+```</code></pre>
+</div><div class="pr">
+  <h3><span class="vp v3">F15 · les nostres eines</span> El generador emet duplicats catalans de celebracions que romcal ja té</h3>
+  <pre><code># F15 · El generador emet duplicats catalans de celebracions que romcal ja té
+
+Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
+Veredicte de la revisió: **3 — les nostres eines**.
+Dies on es va veure: 2026-09-04.
+
+## Què passa
+De santsMemories i santsSolemnitats, el generador crea un id a partir del nom català —santa_caterina_de_siena_verge_i_doctora_de_l_esglesia_patrona_d_europa— quan romcal ja porta aquella mateixa celebració amb el seu id (catherine_of_siena_virgin). Quan el duplicat guanya el dia, l’índex de saints-app no hi té entrada, el dia perd la clau i el join aparella el text de cpl-app amb la casella d’una altra celebració.
+
+El generador sempre els ha emès; el que els va fer visibles és la MIGRA-005. Abans sortien amb rang i precedència contradictoris i litcal no els sabia col·locar, o sigui que no guanyaven cap dia. En donar-los un rang coherent, 117 dates passen a resoldre-s’hi. La F10 estava tapant això.
+
+**Conseqüència:** Mesurat amb l’índex de dev ja fusionat: les dates del manifest sense allXKey passen de 239 (calendaris del git) a 347 (regenerats). Els calendaris regenerats es van revertir per això (litcal 91f2e17). Correcció: les 15 caselles sobreescrites que es van veure primer aquí no són d’aquesta troballa — surten igual amb els calendaris del git. Són la F16.
+
+| data | romcal hi té | el nostre calendari hi posa |
+|---|---|---|
+| 29-IV | &lt;code&gt;catherine_of_siena_virgin&lt;/code&gt; | &lt;code&gt;santa_caterina_de_siena_verge_i_doctora…&lt;/code&gt; |
+| 25-VII | &lt;code&gt;james_apostle&lt;/code&gt; | &lt;code&gt;sant_jaume_apostol_patro_d_espanya&lt;/code&gt; |
+| 15-V | &lt;code&gt;isidore_the_farmer&lt;/code&gt; | &lt;code&gt;sant_isidre_llaurador&lt;/code&gt; |
+| 11-VII | &lt;code&gt;benedict_of_nursia_abbot&lt;/code&gt; | &lt;code&gt;sant_benet_abat_patro_d_europa&lt;/code&gt; |
+
+## Com es va provar
+- **Les 117, comptades** — Comparant el manifest d’abans amb el de després: 320 dates canvien de litcalId i 117 passen a un slug català nostre
+- **Les 15 regressions** — A totes, el valor anterior coincideix amb la casella castellana i el nou no. Exemple: salmos_antifonas/9998, es «Con amor eterno nos ha amado Dios», abans «Oh amor etern de Déu!», ara «Déu envià un home, que es deia Joan»
+- **No és la MIGRA-005** — El fix del rang és correcte i es queda; el que fa és destapar aquests duplicats. Amb els calendaris del git, el manifest té 239 dates sense clau, el millor dels tres estats mesurats
+
+## Què s’ha de canviar
+A: `migration-to-saints/generate-catalan-calendars.js`
+
+Que el generador no emeti una celebració quan romcal ja en té una d’equivalent per a aquella data i calendari — o que hi emeti l’id de romcal en comptes del seu propi slug, perquè les rectificacions catalanes s’hi apliquin a sobre en comptes de duplicar-la.
+
+&gt; Fins que no es faci, no regeneris els calendaris: els del git són millors que els que en surten. Vegeu l’avís a MIGRA-005.
+
+## Com tancar-ho
+- És codi nostre: aplica el canvi, afegeix el test que detecti la regressió, i commiteja.
+- Si el canvi afecta el join, **torna'l a córrer** i apunta com queden els pendents abans i després.
+
+## Comprovació
+Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
+
+```sh
+make review DATES=2026-09-04
+```</code></pre>
+</div><div class="pr">
+  <h3><span class="vp v3">F16 · les nostres eines</span> El join escriu una observació minoritària en comptes de retenir la casella</h3>
+  <pre><code># F16 · El join escriu una observació minoritària en comptes de retenir la casella
+
+Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
+Veredicte de la revisió: **3 — les nostres eines**.
+Dies on es va veure: 2026-09-04.
+
+## Què passa
+La regla que fa segur tot el join —«un id només s’escriu si totes les observacions coincideixen»— no s’aplica en algun camí. A salmos_antifonas/9998, 9 dates donen el text del Sagrat Cor i 1 el de sant Joan Baptista, i el join hi escriu la d’1. La casella no surt ni tan sols a join-pending-review.json.
+
+Les 10 són dijous al vespre, vigília del Sagrat Cor, que sempre cau en divendres; l’app hi llegeix les I Vespres del Sagrat Cor, i això és correcte. El 2022 el 24 de juny era alhora el Sagrat Cor i la Nativitat del Baptista, i cpl-app hi resa les I Vespres del Baptista — també defensable. El que no ho és: que d’aquesta discrepància en surti una escriptura i no una retenció.
+
+**Conseqüència:** 15 caselles sobreescrites, totes 15 regressions, verificades una per una contra el castellà: lectura_breve_citas/3604, lectura_breve_textos/3605, preces_contenido/6455-6459, responsorios/16131-16136 i salmos_antifonas/9998-10000 — totes del Sagrat Cor, totes rebent text del Baptista. A la mateixa exportació n’hi ha 7 de bones, o sigui que no es pot descartar l’exportació sencera: cal arreglar això i tornar-la a fer.
+
+| data | què hi dona cpl-app a Vespres |  |
+|---|---|---|
+| 2017-06-22, 2018-06-07, 2019-06-27, 2020-06-18, 2021-06-10, 2023-06-15, 2024-06-06, 2025-06-26, 2026-06-11 | «Oh amor etern de Déu! Crist, enlairat de la terra…» — Sagrat Cor | 9 ✅ |
+| 2022-06-23 | «Déu envià un home, que es deia Joan» — Baptista | 1 ❌ i és la que s’escriu |
+
+## Com es va provar
+- **Les 10 observacions, comptades** — Resoltes les 10 dates amb resolve-cpl-days: 9 donen el text del Sagrat Cor i 1 el del Baptista
+- **El join no la reté** — salmos_antifonas/9998 no és a join-pending-review.json i sí a output/commons-ca, amb el text de la minoria
+- **No és dels calendaris** — Surt igual amb els calendaris regenerats i amb els del git, o sigui que no és la F15
+
+## Què s’ha de canviar
+A: `migration-to-saints/join-content.test.js`
+
+Trobar per què aquestes observacions no arriben a la comprovació d’acord. La sospita és el camí de fromFerial / entryFromCells de la línia 605 i següents: si a les 9 dates el camp es classifica com a ferial i es redirigeix a la casella 1, només queda l’observació del 2022 i llavors «totes coincideixen» és cert per vacuïtat.
+
+&gt; Fins que no estigui, no exportis. L’exportació d’aquesta sessió es va revertir dues vegades per això.
+
+## Com tancar-ho
+- És codi nostre: aplica el canvi, afegeix el test que detecti la regressió, i commiteja.
+- Si el canvi afecta el join, **torna'l a córrer** i apunta com queden els pendents abans i després.
 
 ## Comprovació
 Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
