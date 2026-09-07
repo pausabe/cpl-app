@@ -33,7 +33,7 @@ const commonOffice = require('./lib/common-office');
 const { fingerprint } = require('./lib/citation-key');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
-const { extractHourFields } = require('./lib/cpl-day-resolver');
+const { extractHourFields, hourDataOf, psalmAntiphons, responsoryParts } = require('./lib/cpl-day-resolver');
 
 // Tables whose values are psalm/canticle headings ("Salm 50\nOració de penediment"), the
 // only ones where the proper/psalter spelling split applies. The biblical citations of
@@ -43,8 +43,13 @@ const CITATION_TABLES = new Set(['salmos_citas']);
 const MANIFEST_PATH = path.resolve(__dirname, 'webui/run/date-to-key-manifest.json');
 const CELL_MAP_PATH = path.resolve(__dirname, 'output/app-cell-map.json');
 const DAY_TEXTS_DIR = '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts';
-const OUTPUT_DIR = path.resolve(__dirname, 'output/commons-ca');
-const PENDING_PATH = path.resolve(__dirname, 'output/join-pending-review.json');
+// Overridable so a targeted run (a handful of dates, for a regression test) can write
+// somewhere else instead of overwriting the real 10-year output with a partial one.
+const OUTPUT_ROOT = process.env.OUT_DIR
+  ? path.resolve(process.env.OUT_DIR)
+  : path.resolve(__dirname, 'output');
+const OUTPUT_DIR = path.join(OUTPUT_ROOT, 'commons-ca');
+const PENDING_PATH = path.join(OUTPUT_ROOT, 'join-pending-review.json');
 
 const DIOCESE_NAME = process.env.DIOCESE || 'Barcelona';
 const PRAYING_PLACE = 'Diòcesi';
@@ -58,6 +63,21 @@ const PRAYING_PLACE = 'Diòcesi';
 const HOURS_CONFIG = {
   Laudes: { allXFile: 'all_laudes.json' },
   Vespers: { allXFile: 'all_visperas.json' },
+  // Terce, Sext and None. Same field vocabulary as Laudes (15 of its 20 fields) and the
+  // SAME commons tables — they add no table of their own — so nothing here needs a special
+  // observer. Where they differ is in cpl-app's model, and that is handled once in
+  // lib/cpl-day-resolver.js: they hang off `hoursLiturgy.Hours`, their responsory is a
+  // versicle/response pair rather than six lines, and a celebration says ONE antiphon over
+  // all three psalms instead of one each.
+  // `dualOffice: false` because these three have no memorial/weekday selector: on a
+  // `MEMORY_FERIAL` day the store REPLACES the whole record with the weekday's
+  // (`terciaStore.ts`, "Override with ferial if MEMORY_FERIAL") instead of carrying both
+  // behind a switch, and it writes no `<field>_Ferial` twin. So the measured cell is
+  // already the right one and must not be redirected — nor is there a second tab for the
+  // Common of the Saints to fill (lib/common-office.js only models Laudes and Vespers).
+  Tercia: { allXFile: 'all_tercia.json', dualOffice: false },
+  Sexta: { allXFile: 'all_sexta.json', dualOffice: false },
+  Nona: { allXFile: 'all_nona.json', dualOffice: false },
   Invitation: {
     allXFile: 'all_invitatorios.json',
     observe: (entry, hourData, tag, observe) =>
@@ -91,7 +111,7 @@ const HOURS_CONFIG = {
 // 10-year window. Empty means every date in the manifest, which is the real run.
 const ONLY_DATES = (process.env.DATES || '').split(',').map((d) => d.trim()).filter(Boolean);
 
-const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Invitation,Celebration')
+const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Tercia,Sexta,Nona,Invitation,Celebration')
   .split(',')
   .map((h) => h.trim())
   .filter((h) => HOURS_CONFIG[h]);
@@ -134,6 +154,8 @@ const CelebrationIdentifierService = require('../src/Services/CelebrationIdentif
 const { ObtainLiturgyMasters } = require('../src/Services/Liturgy/LiturgyMastersService');
 const { ObtainHoursLiturgy } = require('../src/Services/Liturgy/HoursLiturgyService');
 const LaudesService = require('../src/Services/Liturgy/LaudesService');
+const { ObtainHours } = require('../src/Services/Liturgy/HoursService');
+const Hours = require('../src/Models/HoursLiturgy/Hours').default;
 const VespersService = require('../src/Services/Liturgy/VespersService');
 const Laudes = require('../src/Models/HoursLiturgy/Laudes').default;
 const { Settings } = require('../src/Models/Settings');
@@ -195,9 +217,15 @@ async function resolveHoursLiturgy(date, settings) {
   // withoutCelebrationVespers`), so by the time it's read here it IS the rendered Vespers
   // and ferialFields marks every field ferial — every switch-day's real content then gets
   // filed under the "_Ferial" measured cell instead of its own (see PLAN, review paranys).
+  // Terce/Sext/None arrive as one object; asking for it with an empty celebration is the
+  // same call the app makes, so seasons and psalter weeks behave exactly as on screen.
+  const ferialHours = ObtainHours(todayMasters, ldi.Today, new Hours(), settings);
   const ferial = {
     Laudes: LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings),
     Vespers: VespersService.ObtainVespers(todayMasters, ldi.Today, settings),
+    Tercia: ferialHours.ThirdHour,
+    Sexta: ferialHours.SixthHour,
+    Nona: ferialHours.NinthHour,
   };
   const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
   return { hoursLiturgy, ferial, ldi };
@@ -490,28 +518,30 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
 
     function observeHour(entry, hourData, tag) {
       observe('himnos', entry.himno, hourData.Anthem, tag);
-      if (hourData.FirstPsalm) {
-        observe('salmos_citas', entry.primer_salmo_cita, hourData.FirstPsalm.Title, tag);
-        observe('salmos_antifonas', entry.primer_salmo_antifona, hourData.FirstPsalm.Antiphon, tag);
-        observe('salmos_textos', entry.primer_salmo_texto, hourData.FirstPsalm.Psalm, tag);
-      }
-      if (hourData.SecondPsalm) {
-        observe('salmos_citas', entry.segundo_salmo_cita, hourData.SecondPsalm.Title, tag);
-        observe('salmos_antifonas', entry.segundo_salmo_antifona, hourData.SecondPsalm.Antiphon, tag);
-        observe('salmos_textos', entry.segundo_salmo_texto, hourData.SecondPsalm.Psalm, tag);
-      }
-      if (hourData.ThirdPsalm) {
-        observe('salmos_citas', entry.tercer_salmo_cita, hourData.ThirdPsalm.Title, tag);
-        observe('salmos_antifonas', entry.tercer_salmo_antifona, hourData.ThirdPsalm.Antiphon, tag);
-        observe('salmos_textos', entry.tercer_salmo_texto, hourData.ThirdPsalm.Psalm, tag);
-      }
+      // The antiphons come from lib/cpl-day-resolver, not from the psalms directly: on an
+      // intermediate Hour of a celebration ONE antiphon covers all three, and the per-psalm
+      // ones the model still carries are not what the screen shows.
+      const antiphons = psalmAntiphons(hourData);
+      const psalms = [
+        ['primer', hourData.FirstPsalm],
+        ['segundo', hourData.SecondPsalm],
+        ['tercer', hourData.ThirdPsalm],
+      ];
+      psalms.forEach(([prefix, psalm], i) => {
+        if (!psalm) return;
+        observe('salmos_citas', entry[`${prefix}_salmo_cita`], psalm.Title, tag);
+        observe('salmos_antifonas', entry[`${prefix}_salmo_antifona`], antiphons[i], tag);
+        observe('salmos_textos', entry[`${prefix}_salmo_texto`], psalm.Psalm, tag);
+      });
       if (hourData.ShortReading) {
         observe('lectura_breve_citas', entry.lectura_biblica_cita, hourData.ShortReading.Quote, tag);
         observe('lectura_breve_textos', entry.lectura_biblica, hourData.ShortReading.ShortReading, tag);
       }
-      const resp = expandResponsory(hourData.ShortResponsory);
-      if (resp && resp.parts && Array.isArray(entry.responsorios)) {
-        entry.responsorios.forEach((id, i) => observe('responsorios', id, resp.parts[i], tag));
+      // Six lines for Laudes and Vespers, a versicle/response pair for the intermediate
+      // Hours — same helper, so the two shapes can't be paired up wrongly here.
+      const respParts = responsoryParts(hourData);
+      if (respParts && Array.isArray(entry.responsorios)) {
+        entry.responsorios.forEach((id, i) => observe('responsorios', id, respParts[i], tag));
       }
       observe('cantico_evangelico_antifonas', entry.cantico_evangelico_antifona, hourData.EvangelicalAntiphon, tag);
       const prayers = parsePrayers(hourData.Prayers);
@@ -544,6 +574,50 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     const skippedOutOfRange = [];
     const failedDates = [];
     let skippedVespersFromTomorrow = 0;
+    let observedFirstVespers = 0;
+
+    // On the eve of a solemnity — and every Saturday evening — cpl-app prays the following
+    // day's First Vespers. Whether saints-app does too is not a matter of opinion: since
+    // PR #1694 the index says so itself, in `<field>_PrimerasVisperas` fields carried by
+    // the celebration's own entry (74 of them: every Sunday plus the major solemnities).
+    // The probe then measures which cells the app really reads that evening, and the two
+    // agree exactly, so the test is an identity rather than a guess:
+    //
+    //     measured hymn === tomorrow's `himno_PrimerasVisperas`  ->  the app is showing
+    //     tomorrow's First Vespers, and cpl-app's text belongs in those cells.
+    //
+    // F5 read the index BEFORE that refactor and concluded saints-app has no First Vespers
+    // slot at all; the join skipped every such evening on that basis. It has one now, and
+    // skipping is what caused MIGRA-006: it threw away nine of the ten observations of
+    // `salmos_antifonas/9998` (= the Sacred Heart's `primer_salmo_antifona_PrimerasVisperas`)
+    // and left the tenth alone in the cell — the 2022 eve, where cpl-app prays the Nativity
+    // of the Baptist, transferred off the Sacred Heart's day. With one observation "every
+    // observation agrees" was true by vacuum, and the join wrote the Baptist's antiphon
+    // into the Sacred Heart's cell.
+    //
+    // The skip still stands wherever the identity fails: there the app shows its own
+    // evening office, the only cell available is today's, and filing tomorrow's text there
+    // is F6. Unproven means skip, which is the direction that cannot corrupt a shared cell.
+    const tomorrowKeyCache = new Map();
+    function appShowsTomorrowsVespers(dateStr, probed) {
+      if (!probed || probed.__noEntry) return false;
+      const measured = probed.himno;
+      if (typeof measured !== 'string' || !measured.includes('/')) return false;
+      if (!tomorrowKeyCache.has(dateStr)) {
+        const d = new Date(`${dateStr}T12:00:00`);
+        d.setDate(d.getDate() + 1);
+        tomorrowKeyCache.set(dateStr, manifest[d.toISOString().slice(0, 10)]);
+      }
+      const tomorrow = tomorrowKeyCache.get(dateStr);
+      if (!tomorrow || !tomorrow.litcalId) return false;
+      const entry = allXByHour.Vespers[keysByPrefixByHour.Vespers.get(tomorrow.litcalId)];
+      const firstVespersHymn = entry && entry.himno_PrimerasVisperas;
+      if (firstVespersHymn === undefined || firstVespersHymn === null || firstVespersHymn === -1) {
+        return false;
+      }
+      return String(firstVespersHymn) === measured.split('/')[1];
+    }
+
     for (const dateStr of dates) {
       const { litcalId } = manifest[dateStr];
       if (!litcalId) continue;
@@ -560,9 +634,22 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         continue;
       }
 
-      // Does at least one configured hour have a matching entry for this litcalId?
-      // If none do, skip resolving cpl-app for this date entirely (saves time).
-      const applicableHours = HOURS_TO_RUN.filter((h) => keysByPrefixByHour[h].get(litcalId));
+      // Does at least one configured hour have somewhere to file this date? If none do,
+      // skip resolving cpl-app for it entirely (saves time).
+      //
+      // The index is not the only answer: a date whose litcalId has no entry there can
+      // still have a MEASURED cell, and then the app is reading something and the index is
+      // simply not what it reads. Gating on the index alone dropped those dates silently —
+      // 20 in the ten-year window, 10 of them Holy Thursday (§8d: the manifest resolves
+      // `thursday_of_the_lords_supper`, the app `holy_thursday`), plus the eves of the
+      // Sacred Heart that fall on a Catalan celebration the index does not carry. Same
+      // principle as §8d: ask the app, do not deduce from the index.
+      const measuredHours = (cellMap[dateStr] && cellMap[dateStr].hours) || {};
+      const applicableHours = HOURS_TO_RUN.filter(
+        (h) =>
+          keysByPrefixByHour[h].get(litcalId) ||
+          (!HOURS_CONFIG[h].observe && measuredHours[h] && !measuredHours[h].__noEntry),
+      );
       if (!applicableHours.length) continue;
 
       const [y, m, d] = dateStr.split('-').map(Number);
@@ -582,18 +669,10 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       const vespersFromTomorrow = vespersComeFromTomorrow(hoursLiturgy);
 
       for (const hour of applicableHours) {
-        if (hour === 'Vespers' && vespersFromTomorrow) {
-          // These are D+1's First Vespers (OGLH 61 pre-empts D's own/ferial office), not
-          // D's — filing them under D's litcalId is exactly F6: it hands D's shared cell a
-          // text from an unrelated celebration, which then reads as a "conflict" against
-          // every other date that legitimately shares it. saints-app has no First Vespers
-          // slot to file them under instead (F5), so for now they're left unobserved
-          // rather than attributed to the wrong id.
-          skippedVespersFromTomorrow++;
-          continue;
-        }
         const key = keysByPrefixByHour[hour].get(litcalId);
-        const hourData = hoursLiturgy[HOURS_CONFIG[hour].dataKey || hour];
+        const hourData = HOURS_CONFIG[hour].dataKey
+          ? hoursLiturgy[HOURS_CONFIG[hour].dataKey]
+          : hourDataOf(hoursLiturgy, hour);
         const observeFn = HOURS_CONFIG[hour].observe;
 
         // Measured cells win over the index whenever the probe covered this day/hour.
@@ -605,18 +684,34 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         const probed = !HOURS_CONFIG[hour].observe && cellMap[dateStr] && cellMap[dateStr].hours
           ? cellMap[dateStr].hours[hour]
           : null;
+        if (hour === 'Vespers' && vespersFromTomorrow) {
+          if (!appShowsTomorrowsVespers(dateStr, probed)) {
+            // These are D+1's First Vespers (OGLH 61 pre-empts D's own/ferial office), not
+            // D's, and the app is NOT showing them: it shows D's own evening office. The
+            // only cell available is therefore D's, and filing tomorrow's text there is
+            // exactly F6 — it hands D's shared cell a text from an unrelated celebration,
+            // which then reads as a "conflict" against every other date that legitimately
+            // shares it. Left unobserved rather than attributed to the wrong id.
+            skippedVespersFromTomorrow++;
+            continue;
+          }
+          observedFirstVespers++;
+        }
         if (probed && probed.__noEntry) {
           // The app shows nothing here (no entry in the shared index): observing anything
           // would attribute cpl-app's text to a cell nobody reads.
           cellMapUse.noEntry++;
           continue;
         } else if (probed) {
-          fromFerial = memorialFerial.ferialFields(extractHourFields(hourData), extractHourFields(ferialHours[hour]));
-          const options = { allXKey: key, fromFerial };
+          const dualOffice = HOURS_CONFIG[hour].dualOffice !== false;
+          if (dualOffice) {
+            fromFerial = memorialFerial.ferialFields(extractHourFields(hourData), extractHourFields(ferialHours[hour]));
+          }
+          const options = dualOffice ? { allXKey: key, fromFerial } : {};
           entry = entryFromCells(probed, options);
           // Only where the app really shows the two tabs: elsewhere index 1 is the cell of
           // the weekday this day displaced, which is not this day's content at all.
-          if (memorialFerial.hasSwitch(key)) memorialEntry = entryFromCells(probed, options, 1);
+          if (dualOffice && memorialFerial.hasSwitch(key)) memorialEntry = entryFromCells(probed, options, 1);
           cellMapUse.fromMap++;
         } else {
           entry = allXByHour[hour][key];
@@ -630,7 +725,11 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
             title: hoursLiturgy.TodayCelebrationInformation && hoursLiturgy.TodayCelebrationInformation.Title,
             suffix: commonOffice.seasonSuffix(dayInfo && dayInfo.Today && dayInfo.Today.SpecificLiturgyTime),
           };
-          if (memorialFerial.isProperOnly(key)) {
+          if (HOURS_CONFIG[hour].dualOffice === false) {
+            // No second office and no Common to weigh against it: what cpl-app renders is
+            // what the app's single record shows, cell for cell.
+            observeHour(entry, hourData, `${dateStr} (${hour})`);
+          } else if (memorialFerial.isProperOnly(key)) {
             // No second tab: the memorial's cell IS the only cell, so cpl-app's weekday text
             // and the Common are two answers for one slot rather than one each. The Common
             // goes first because what it takes decides what cpl-app must not fill — leaving
@@ -702,9 +801,11 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       `Caselles: ${cellMapUse.fromMap} hores des del mapa mesurat, ${cellMapUse.fromIndex} des de l'índex, ` +
         `${cellMapUse.noEntry} saltades (l'app no hi mostra res).`
     );
-    if (skippedVespersFromTomorrow) {
+    if (skippedVespersFromTomorrow || observedFirstVespers) {
       console.log(
-        `Vespres no observades per ser Primeres Vespres de l'endemà (F5/F6): ${skippedVespersFromTomorrow}.`
+        `I Vespres de l'endemà: ${observedFirstVespers} observades a la casella que l'app hi ` +
+          `llegeix de veritat, ${skippedVespersFromTomorrow} no observades perquè l'app hi ` +
+          `mostra el seu propi ofici (F5/F6).`
       );
     }
     if (tableMismatch.size) {
@@ -717,7 +818,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       );
     }
     fs.writeFileSync(
-      path.resolve(__dirname, 'output/join-skipped-dates.json'),
+      path.join(OUTPUT_ROOT, 'join-skipped-dates.json'),
       JSON.stringify({ skippedOutOfRange, failedDates }, null, 2),
       'utf8'
     );
@@ -736,7 +837,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         `(la pestanya del sant, que cpl-app no omple mai).`
     );
     fs.writeFileSync(
-      path.resolve(__dirname, 'output/join-common-sourced.json'),
+      path.join(OUTPUT_ROOT, 'join-common-sourced.json'),
       JSON.stringify(Object.fromEntries(Object.entries(commonSourced).map(([t, ids]) => [t, [...ids].sort()])), null, 2),
       'utf8'
     );
