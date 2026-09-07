@@ -18,7 +18,7 @@ de sota i el [CLAUDE.md](../CLAUDE.md) de l'arrel.
 | **0** | Tancar MIGRA-006 abans d'obrir res més | ✅ **feta** (7-IX-2026) — l'exportació ja no està bloquejada |
 | **1** | Tèrcia, Sexta i Nona | ✅ **feta** (7-IX-2026) — 5 de les 7 hores migrades |
 | **2** | Completes | ✅ **feta** (7-IX-2026) — 6 de les 7 hores; queda [D-004](decisions/D-004-l-himne-de-completes.md) |
-| **3** | Ofici de lectura | ⬜ no començada |
+| **3** | Ofici de lectura | 🔄 **descoberta feta** — l'abast baixa de 14.534 a 6.843 ids |
 | **4** | Missa (lectures) | ⬜ no començada |
 | **—** | Comentaris de la missa | ⛔ **fora d'abast** (decisió, veure sota) |
 
@@ -235,21 +235,51 @@ La font a cpl-app hi és sencera: `tempsOrdinariOfici` (238 files: `referencia1/
 lectura1` bíblica + `referencia2/cita2/titol2/lectura2` patrística, cada una amb el seu
 responsori de tres parts), i les columnes `*Ofici` de `santsMemories` i `santsSolemnitats`.
 
-### El pas de descoberta va primer
+### El pas de descoberta — **fet**, i canvia l'abast a la meitat
 
-- [ ] **Què és el sufix `_a` / `_i` / `_p`.** Els camps de `all_oficio.json` van amb aquests
-      tres sufixos i **255 de 495 claus tenen els tres valors diferents** — o sigui que no és
-      «un és el genèric i els altres dos la variant». cpl-app té `paroimpar` I/II (dos anys),
-      no tres. **Fins que això no se sàpiga, no es pot mapar res.** Provable comparant, per a
-      una clau concreta, què dona `commons/es` a cadascun dels tres contra el que cpl-app dona
-      els anys parells i senars.
-- [ ] **El quart salm.** `Office` de cpl-app té `FirstPsalm`…`FourthPsalm`; l'índex només en
-      té tres. Decidir què se'n fa i deixar-ho escrit.
-- [ ] **Els responsoris.** `ReadingOfTheOffice` porta el seu propi `ShortResponsory` per
-      lectura; l'índex té `responsorio1` i `responsorio2_{a,i,p}` / `responsorio3_{a,i,p}`.
-      Confirmar l'aparellament abans d'escriure.
-- [ ] **El Te Deum** (`TeDeumInformation`) — mirar si l'índex el contempla o si viu als
-      `generic_texts`.
+- [x] **Què és el sufix `_a` / `_i` / `_p`.** `_a` és el **cicle anual** de lectures i
+      `_i`/`_p` el **bienal opcional** (any senar / any parell). Provat, no deduït:
+      `useOfficeFirstLecture.ts` tria `_a` per a `READING_ORDINARY` i `_i`/`_p` segons
+      `dateStore.isEvenYear`; i cpl-app dona **la mateixa lectura** a les cinc ocurrències
+      d'`ordinary_time_19_wednesday` de la finestra (2017, 2020, 2023, 2025, 2026), anys
+      parells i senars barrejats — «4, 1-7», que és exactament el que diu `_a`
+      («Miq 4, 1-7»), mentre que `_i` diu «2 Re 6, 24-25.32-» i `_p` «Za 10, 3-11, 3».
+      cpl-app té **un sol cicle**, l'anual.
+- [x] **I el bienal no fa falta.** `LanguageFeatures.ts` té
+      `biennialReadings: ["es", "it"]`: el català **no hi és**, o sigui que el selector no
+      apareix mai i l'app sempre llegeix `_a`. Els 7.691 ids que només viuen a `_i`/`_p` no
+      els llegeix ningú en català.
+
+      **L'abast de la fase passa de 14.534 a 6.843 ids** — l'ordre de magnitud de Laudes+Vespres
+      (8.925), no el doble. **Dependència a recordar**: si algun dia s'afegeix `ca` a
+      `biennialReadings`, aquestes caselles sortiran buides.
+- [x] **El quart salm no és un problema.** `Office.FourthPsalm` surt **buit** en dies normals
+      (és per a dies especials); els tres pericopis de l'índex encaixen amb els tres de cpl.
+- [x] **Els responsoris.** Tres formes, dues ja resoltes:
+      - `responsorio1` = **2 ids**, `℣. {Versicle}` / `℟. {Response}` — el mateix parell de les
+        hores intermèdies, o sigui que `responsoryParts()` ja el fa;
+      - `responsorio2_a` i `responsorio3_a` = **3 ids**, patró nou confirmat contra cpl-app:
+        `[0]` en blanc, `[1]` = `℟. {FirstPart} * {SecondPart}`, `[2]` = `℣. {ThirdPart} * {SecondPart}`.
+        Els parts surten de `FirstReading.Responsory` i `SecondReading.Responsory`.
+- [x] **El Te Deum** no és un camp per dia d'`all_oficio`: viu fora, no s'ha de mapar.
+
+### El mapatge que en surt
+
+| camp de l'índex | cpl-app |
+|---|---|
+| `himno` | `Office.Anthem` |
+| `primer/segundo/tercer_salmo_{cita,antifona,texto}` | `Office.{First,Second,Third}Psalm.{Title,Antiphon,Psalm}` |
+| `responsorio1` | `Office.Responsory` (versicle/resposta) |
+| `lectura_biblica_{cita,titulo,texto}_a` | `FirstReading.{Reference+Quote, Title, Reading}` |
+| `responsorio2_a` | `FirstReading.Responsory` |
+| `lectura_patristica_{cita,titulo,texto}_a` | `SecondReading.{Reference+Quote, Title, Reading}` |
+| `responsorio3_a` | `SecondReading.Responsory` |
+| `oracion_final` | `Office.FinalPrayer` |
+| `*_i` / `*_p` | **cap** — i no fa falta (veure sobre) |
+
+Queda per fixar en implementar-ho: la composició exacta de `*_cita_a`. `es` hi posa
+`autor $obra $` («Del libro del profeta Miqueas $Miq 4, 1-7 $»), i cpl-app parteix la mateixa
+informació entre `Reference` i `Quote` amb un tall diferent.
 
 ### Després
 
@@ -327,6 +357,7 @@ quedar l'anterior sense haver de llegir el git.
 
 | Data | Qui | Què s'ha fet |
 |---|---|---|
+| 2026-09-07 | Claude | **Fase 3: descoberta feta.** `_a` és el cicle anual i `_i`/`_p` el bienal, que el català no té activat — l'abast baixa de 14.534 a 6.843 ids. Mapatge complet escrit. Falta implementar |
 | 2026-09-07 | Claude | **Fase 2 feta.** Completes en català (7 fitxers), verificada a l'app real. Oberta la D-004: cpl-app té 2 himnes de Completes i saints-app en vol 7 |
 | 2026-09-07 | Claude | **Fase 1 feta.** Tèrcia, Sexta i Nona migrades: del 2,1% al 81,9% dels seus ids. 0 canvis al text ja publicat. Sonda i join re-correguts sobre els 10 anys, exportat |
 | 2026-09-07 | Claude | **Fase 0 feta.** MIGRA-006 diagnosticat (no era la hipòtesi de la fitxa), corregit, amb detector. Join i exportació refets: 52 caselles de I Vespres corregides a saints-app. Obert: reescriure la F5 |
