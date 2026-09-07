@@ -110,8 +110,11 @@ function dayBlock(day) {
   let divergent = 0, unexplained = 0;
   for (const r of day.rows) if (isDivergent(day, r)) { divergent++; if (!findingOf(day, r)) unexplained++; }
 
-  const HOUR_LABELS = { Laudes: 'Laudes', Tercia: 'Tèrcia', Sexta: 'Sexta', Nona: 'Nona', Vespers: 'Vespres' };
-  const hours = ['Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'].map((h) => {
+  const HOUR_LABELS = {
+    Office: 'Ofici de lectura', Laudes: 'Laudes', Tercia: 'Tèrcia', Sexta: 'Sexta',
+    Nona: 'Nona', Vespers: 'Vespres',
+  };
+  const hours = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'].map((h) => {
     const rows = day.rows.filter((r) => r.hour === h);
     if (!rows.length) return '';
     const bad = rows.filter((r) => isDivergent(day, r));

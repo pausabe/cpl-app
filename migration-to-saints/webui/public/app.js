@@ -165,10 +165,14 @@ function renderMigrator(data) {
 
 // --- Refresh (local litcal link + chained pipelines) ---
 
+// Which Hours the pipeline runs over. One checkbox per Hour that has an entry in the shared
+// index, read by value so adding an Hour is a line of HTML and nothing else.
+function checkedHours() {
+  return [...document.querySelectorAll('.mig-hour:checked')].map((el) => el.value);
+}
+
 function migratorOptions() {
-  const hours = [];
-  if (document.getElementById('mig-hour-laudes').checked) hours.push('Laudes');
-  if (document.getElementById('mig-hour-vespers').checked) hours.push('Vespers');
+  const hours = checkedHours();
   return {
     start: document.getElementById('mig-start').value,
     end: document.getElementById('mig-end').value,
@@ -1586,9 +1590,7 @@ document.addEventListener('click', async (e) => {
   else if (action === 'mig-calculate' || action === 'mig-export') {
     const start = document.getElementById('mig-start').value;
     const end = document.getElementById('mig-end').value;
-    const hours = [];
-    if (document.getElementById('mig-hour-laudes').checked) hours.push('Laudes');
-    if (document.getElementById('mig-hour-vespers').checked) hours.push('Vespers');
+    const hours = checkedHours();
     const diocese = document.getElementById('mig-diocese').value;
     if (action === 'mig-export' && !confirm('Això escriurà de veritat a saints-app/.../commons/ca/. Continuar?')) return;
     const endpoint = action === 'mig-export' ? 'migrator/export' : 'migrator/calculate';

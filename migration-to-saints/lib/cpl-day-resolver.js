@@ -71,8 +71,8 @@ async function obtainLiturgyDayInformation(date, settings) {
   return ldi;
 }
 
-// Where one Hour's data lives on the resolved day. Laudes and Vespers sit at the root;
-// Terce, Sext and None hang off `Hours`.
+// Where one Hour's data lives on the resolved day. Laudes, Vespers and the Office of
+// Readings sit at the root; Terce, Sext and None hang off `Hours`.
 function hourDataOf(hoursLiturgy, hour) {
   const nested = INTERMEDIATE_HOURS[hour];
   if (nested) return hoursLiturgy.Hours ? hoursLiturgy.Hours[nested] : null;
@@ -172,6 +172,92 @@ function responsoryParts(hourData) {
   return null;
 }
 
+// --- The Office of Readings ------------------------------------------------------------
+//
+// A different shape from every other Hour, so it gets its own three helpers rather than
+// bending `extractHourFields` around it. What each one has to produce is not a matter of
+// taste: `OfficeFirstLecture.vue` and `OfficeSecondLecture.vue` take the fields apart
+// themselves, and the Catalan has to come apart the same way or the page loses a line.
+
+// `lectura_*_cita_a` is TWO lines in one cell, separated by a literal `$`: the components
+// render `split("$")[0]` as its own paragraph (the book, or the author and work) and
+// `split("$")[1]` in the `reference-bible` style next to the title (the chapter and verses,
+// or the critical edition). Writing the citation as one plain string would leave that second
+// slot empty on every day of the year.
+//
+// cpl-app already holds the two halves apart — `Reference` and `Quote` — so the separator is
+// inserted between them, spaced exactly as `es` spaces it ("Del libro del profeta Miqueas
+// $Miq 4, 1-7 $"). Where cpl-app cuts is not where `es` cuts: for the patristic reading `es`
+// puts the author alone before the `$` and the work after it, while cpl-app puts "Dels
+// comentaris de sant Agustí, bisbe, als Salms" before and the locus "(Salm 47, 7: CCL 38,
+// 543-545...)" after. Both render coherently; cpl-app's is the cut the Catalan volumes print.
+function officeCitation(reading) {
+  if (!reading) return null;
+  const ref = (reading.Reference || '').trim();
+  const quote = (reading.Quote || '').trim();
+  if (ref && quote) return `${ref} $${quote} $`;
+  return ref || quote || null;
+}
+
+// The responsory that follows each of the two readings. `es` stores it as THREE ids:
+//
+//   [0]  a blank (" " in 912 of the 920 entries; nothing renders it)
+//   [1]  ℟. FirstPart * SecondPart
+//   [2]  ℣. ThirdPart * SecondPart
+//
+// — confirmed field by field against 2026-08-12, where cpl-app's `FirstReading.Responsory`
+// carries exactly those three parts and `es/responsorios` 12507-12509 hold exactly that
+// composition. The sigils are the ones the components force anyway (`OfficeFirstLecture.vue`
+// rewrites [1]'s to ℟ and [2]'s to ℣), so they are written the way they will be shown.
+//
+// Not the same shape as `responsoryParts` above: that one is the short responsory of Laudes,
+// Vespers and the little Hours. This one belongs to a reading, and the Office has two.
+function readingResponsoryParts(reading) {
+  const r = reading && reading.Responsory;
+  if (!r) return null;
+  if (r.HasSpecialAntiphon) return r.SpecialAntiphon ? [' ', r.SpecialAntiphon] : null;
+  const first = (r.FirstPart || '').trim();
+  const second = (r.SecondPart || '').trim();
+  const third = (r.ThirdPart || '').trim();
+  if (!first && !second && !third) return null;
+  return [' ', `℟. ${first} * ${second}`, `℣. ${third} * ${second}`];
+}
+
+// The Office of Readings flattened into the index's field names. Only the `_a` (annual)
+// cycle is produced: cpl-app has a single cycle of readings, and Catalan is not in
+// `LanguageFeatures.biennialReadings`, so the app never asks for `_i`/`_p`. If `ca` is ever
+// added there, those cells will render empty — see FASES.md, fase 3.
+function extractOfficeFields(office) {
+  if (!office) return null;
+  const out = {};
+  const set = (key, value) => {
+    if (value !== undefined && value !== null && value !== '') out[key] = value;
+  };
+
+  set('himno', office.Anthem);
+  [['primer', office.FirstPsalm], ['segundo', office.SecondPsalm], ['tercer', office.ThirdPsalm]]
+    .forEach(([prefix, psalm]) => {
+      if (!psalm) return;
+      set(`${prefix}_salmo_cita`, psalm.Title);
+      set(`${prefix}_salmo_antifona`, psalm.Antiphon);
+      set(`${prefix}_salmo_texto`, psalm.Psalm);
+    });
+  // The Office's own responsory is a plain versicle/response pair, like an intermediate
+  // Hour's, so the shared helper reads it — `Office` has no `ShortResponsory` field and
+  // falls through to `Responsory` on its own.
+  set('responsorio1', responsoryParts(office));
+  [['biblica', office.FirstReading], ['patristica', office.SecondReading]].forEach(([kind, reading]) => {
+    if (!reading) return;
+    set(`lectura_${kind}_cita_a`, officeCitation(reading));
+    set(`lectura_${kind}_titulo_a`, reading.Title);
+    set(`lectura_${kind}_texto_a`, reading.Reading);
+  });
+  set('responsorio2_a', readingResponsoryParts(office.FirstReading));
+  set('responsorio3_a', readingResponsoryParts(office.SecondReading));
+  set('oracion_final', office.FinalPrayer);
+  return out;
+}
+
 // Terce, Sext and None live under `hoursLiturgy.Hours`, not at the root, and their model
 // (`Models/HoursLiturgy/Hours.tsx`, class SpecificHour) is a smaller Laudes: no evangelical
 // antiphon, no intercessions, and two fields shaped differently. `extractHourFields` reads
@@ -250,6 +336,14 @@ async function resolveDayForComparison(dateStr, { diocese = 'Barcelona', praying
     ferialFields: {},
   };
   for (const hour of hours) {
+    // The Office of Readings has its own field vocabulary (two long readings, three
+    // responsories) and no ferial twin to compare against: saints-app shows one office
+    // there, whatever the day.
+    if (hour === 'Office') {
+      out.hours[hour] = extractOfficeFields(hoursLiturgy.Office);
+      out.ferialFields[hour] = [];
+      continue;
+    }
     out.hours[hour] = extractHourFields(hourDataOf(hoursLiturgy, hour));
     out.ferialFields[hour] = [...ferialFields(out.hours[hour], extractHourFields(ferial[hour]))];
   }
@@ -263,6 +357,9 @@ module.exports = {
   INTERMEDIATE_HOURS,
   psalmAntiphons,
   responsoryParts,
+  readingResponsoryParts,
+  officeCitation,
+  extractOfficeFields,
   hourDataOf,
   buildSettings,
   resolveDay,

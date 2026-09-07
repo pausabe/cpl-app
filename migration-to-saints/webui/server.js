@@ -262,7 +262,7 @@ function exportResolvedContentToSaintsApp() {
 async function handleMigratorRun(req, res, body, { exportToSaintsApp }) {
   const start = (body && body.start) || '2017-01-01';
   const end = (body && body.end) || '2026-12-30';
-  const hours = (body && body.hours && body.hours.length) ? body.hours : ['Laudes', 'Vespers'];
+  const hours = (body && body.hours && body.hours.length) ? body.hours : dayCheck.ALL_HOURS;
   const diocese = (body && body.diocese) || 'Barcelona';
 
   const result = await runContentJoinPipeline({ start, end, hours, diocese });
@@ -319,7 +319,7 @@ function handleDayCheck(req, res, url) {
     return sendJson(res, 400, { ok: false, error: 'Cal una data en format YYYY-MM-DD' });
   }
   const hoursParam = url.searchParams.get('hours');
-  const hours = hoursParam ? hoursParam.split(',').filter(Boolean) : ['Laudes', 'Vespers'];
+  const hours = hoursParam ? hoursParam.split(',').filter(Boolean) : dayCheck.ALL_HOURS;
   try {
     sendJson(res, 200, dayCheck.checkDay(date, { hours, impact: true }));
   } catch (e) {
@@ -757,7 +757,7 @@ async function handleRefresh(req, res, url) {
     start: q.get('start') || '2017-01-01',
     end: q.get('end') || '2026-12-30',
     diocese: q.get('diocese') || 'Barcelona',
-    hours: (q.get('hours') || 'Laudes,Vespers').split(',').filter(Boolean),
+    hours: (q.get('hours') || dayCheck.ALL_HOURS.join(',')).split(',').filter(Boolean),
   };
   const steps = refreshPlan(what, opts);
 

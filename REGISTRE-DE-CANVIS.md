@@ -53,6 +53,9 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EINA-completes](#eina-completes) | 2026-09-07 | eines | codi | No — va al git | `0c31f83` |
 | [SA-12](#sa-12) | 2026-09-07 | saints-app | contingut | Es regenera | — |
 | [D-004](#d-004) | 2026-09-07 | — | **decisió oberta** | — decideix en Pau | — |
+| [EINA-ofici](#eina-ofici) | 2026-09-07 | eines | codi | No — va al git | — |
+| [SA-13](#sa-13) | 2026-09-07 | saints-app | contingut | Es regenera | — |
+| [D-005](#d-005) | 2026-09-07 | — | **decisió oberta** | — decideix en Pau | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -691,6 +694,122 @@ mateix himne cada nit.
 La sortida recomanada és transcriure els set himnes del volum imprès a
 `static-translations/compline_himno.ca.json`. Dossier:
 [decisions/D-004](migration-to-saints/decisions/D-004-l-himne-de-completes.md).
+
+<a id="eina-ofici"></a>
+## EINA-ofici
+
+**El pipeline aprèn l'Ofici de lectura** · 7 de setembre de 2026
+
+Fase 3 de [FASES.md](migration-to-saints/FASES.md). L'hora més gran de totes —sola demanava
+**14.534** ids contra els 8.925 de Laudes+Vespres— i la primera conclusió va ser que **la
+meitat no s'ha de tocar**.
+
+**`_a` és el cicle anual de lectures i `_i`/`_p` el bienal opcional.** Provat per dues bandes:
+`useOfficeFirstLecture.ts` tria `_a` per al valor per defecte del selector i `_i`/`_p` segons
+`dateStore.isEvenYear`; i cpl-app dona **la mateixa lectura** a les cinc ocurrències
+d'`ordinary_time_19_wednesday` de la finestra, anys parells i senars barrejats. I el bienal
+**no fa falta**: `LanguageFeatures.biennialReadings` és `["es", "it"]`, el català no hi és, el
+selector no apareix i l'app llegeix sempre `_a`. **L'abast baixa de 14.534 a 6.843 ids.**
+
+Tres taules noves (`oficio_citas`, `oficio_titulos`, `oficio_textos`) i dues formes que **no es
+podien simplificar**, totes dues amb detector propi a `office-fields.test.js` perquè totes dues
+fallarien **en silenci** —la pàgina segueix pintant, amb una línia menys:
+
+| | |
+|---|---|
+| La cita | Du **dues línies dins d'una casella**, separades per un `$` literal: els components pinten `split("$")[0]` com a paràgraf i `split("$")[1]` en estil `reference-bible`. cpl-app ja té les dues meitats (`Reference`, `Quote`); **on talla no és on talla `es`**, i és igual de coherent |
+| El responsori de cada lectura | **Tres** ids, no dos ni sis: un blanc, `℟. {First} * {Second}`, `℣. {Third} * {Second}`. Helper propi (`readingResponsoryParts`), perquè el de Laudes en fa sis i el de les hores intermèdies dos |
+
+I una trampa que no era al pla: **l'himne canviava segons l'hora del rellotge**.
+`OfficeService.IsDarkAnthem()` fa `new Date().getHours() < 6` —l'únic `new Date()` de tot
+`src/Services`— i les 28 files de `salteriComuOfici` tenen l'himne de dia i el de nit
+**diferents**. Un join llançat de matinada hauria migrat catorze himnes nocturns sense que res
+ho digués. Ara el join **fixa el rellotge a migdia** abans de resoldre cap data. Decisió oberta:
+[D-005](#d-005).
+
+Al `HOURS_CONFIG`, `dualOffice: false`: `officeStore` **reescriu** el registre a les memòries
+(`cycle === "MEMORY"` substitueix salmòdia, lectura bíblica i responsoris 1 i 2 pels de la
+fèria) en lloc d'oferir dues pestanyes — com `terciaStore` i **no** com `laudesStore`. Llegit
+del `store`, i després mesurat per la sonda. Detall a
+[PLAN §17](migration-to-saints/PLAN.md).
+
+**Control**: re-córrer les 5 hores d'abans amb el mapa nou de 6 hores dona **9.756 caselles
+idèntiques byte a byte** — 0 afegides, 0 perdudes, 0 amb text canviat.
+
+| | abans | després |
+|---|---|---|
+| Ofici de lectura, dels 6.843 ids del cicle anual | 304 (4,4%) | **6.432 (94,0%)** |
+| caselles escrites pel join | 9.756 | **15.857** |
+| caselles en conflicte | 1.313 | **1.614** |
+
+Es regenera amb `node migration-to-saints/app-id-probe.js --range 2017-01-01..2026-12-30
+--fresh` + `npx jest migration-to-saints/join-content.test.js`.
+
+> **Nota d'operació.** Fent aquesta fase es va trobar **una sonda penjada des del 4 de
+> setembre** (tres dies) amb el seu Chrome encara ocupant el port 9444: la sonda nova estava
+> conduint aquell navegador en lloc del seu, perquè comparteixen port i `--user-data-dir`.
+> Mort el procés vell i el Chrome orfe, i rearrencada neta amb `commons/ca` verificat intacte.
+> Si una sonda no acaba, **comprova que no en queda cap de viva** abans de tornar-la a llançar.
+
+<a id="sa-13"></a>
+## SA-13
+
+**6.128 caselles noves a `commons/ca`: l'Ofici de lectura** · 7 de setembre de 2026
+
+Exportació de la fase 3. **6.128 claus noves i 5 actualitzades**, i les 5 **només d'espais**
+(amb més observacions, `representative()` tria una altra grafia igual de vàlida) — verificades
+una per una: **cap canvi semàntic al text ja publicat**.
+
+Tres fitxers nous: `oficio_citas.json` (871), `oficio_titulos.json` (869), `oficio_textos.json`
+(865).
+
+| | abans | després |
+|---|---|---|
+| Ofici de lectura | 304/6.843 (4,4%) | **6.432/6.843 (94,0%)** |
+| Les 6 hores de l'índex, juntes | 10.000/17.746 (56,4%) | **16.128/17.746 (90,9%)** |
+| Univers sencer de `commons/es` | 10.490/58.537 (17,9%) | **16.618/58.537 (28,4%)** |
+
+Amb això són **les 7 hores** en català. L'inspector de dia compta ara **127 camps per dia** en
+lloc de 102.
+
+Verificat a l'app real (Chrome headless, `selectedLanguage=ca`): el 12 d'agost de 2026 l'Ofici
+surt sencer en català, i el 16 de setembre —memòria dels sants Corneli i Cebrià— surt amb la
+**salmòdia i la lectura bíblica de la fèria** i la **lectura patrística i l'oració pròpies del
+sant**, que és exactament el que fa la reescriptura `MEMORY` d'`officeStore`.
+
+**Cua**: **27 caselles** compartides entre hores han passat a conflicte i el join ja no les
+escriu, però l'exportació **fusiona i no esborra**, o sigui que a `saints-app` hi queda el text
+que hi tenien. Sumades a les 33 de la fase 1 són **60** que el pipeline actual ja no justifica.
+Cal decidir si es treuen (P-8 de FASES.md).
+
+Dos casos que val la pena conèixer, tots dos conflictes ben fundats i correctament retinguts:
+
+- **`himnos/425`** el comparteixen les **Vespres del Martiri de sant Joan Baptista (29-VIII)** i
+  l'**Ofici de la Nativitat del mateix sant (24-VI)**. En castellà una sola peça serveix per als
+  dos; en català cpl-app en té una de pròpia per a cada un.
+- **`oficio_citas/598`**: `second_sunday_after_christmas__ANY` **reutilitza a posta** la lectura
+  del 4 de gener, caigui el diumenge on caigui, mentre cpl-app dona la lectura contínua del dia
+  real. Diferència real entre les dues apps, un diumenge l'any (P-10).
+
+<a id="d-005"></a>
+## D-005 — **OBERTA**
+
+**L'himne de l'Ofici de lectura: cpl-app en té dos, saints-app un de sol** · 7 de setembre de 2026
+
+Germana de la [D-004](#d-004), amb la mateixa forma i un altre eix. L'Ofici es pot resar a
+qualsevol hora i l'edició catalana en dona **dos himnes**: abans de les sis del matí el nocturn,
+a partir de les sis el diürn (`OfficeService.IsDarkAnthem()`). Les **28 files** de
+`salteriComuOfici` tenen els dos diferents. `all_oficio.json` té **un sol camp `himno`**.
+
+Fora del Temps Ordinari la qüestió no es planteja: el `switch` de `GetAnthem` substitueix tots
+dos per l'himne de la temporada, i en una celebració pròpia mana el de la celebració.
+
+**No és cap bug de cpl-app** —ho mana l'OGLH 57 i el volum imprès du els dos— i no s'obre cap
+`CPL-LIT`. Mentrestant s'escriu **l'himne de dia**, que és el que l'app mostra divuit hores de
+cada vint-i-quatre, i el join **fixa el rellotge a migdia** perquè la tria no depengui de quan
+es corre. **Conseqüència visible**: qui resi l'Ofici de matinada veurà a eprex l'himne de dia.
+
+Dossier: [decisions/D-005](migration-to-saints/decisions/D-005-l-himne-nocturn-de-l-ofici.md).
 
 <a id="d-001"></a>
 ## D-001

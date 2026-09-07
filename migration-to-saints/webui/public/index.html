@@ -165,9 +165,14 @@
         cada any cau en un cicle diferent i no es pot saber si el text varia pel cicle o per una altra cosa.</span>
     </div>
     <div class="date-range">
-      <label><input type="checkbox" id="mig-hour-laudes" checked /> Laudes</label>
-      <label><input type="checkbox" id="mig-hour-vespers" checked /> Vespres</label>
-      <span class="hint">(Ofici, Hora intermèdia, Invitatori i Completes: pendents d'afegir)</span>
+      <label><input type="checkbox" class="mig-hour" value="Office" checked /> Ofici de lectura</label>
+      <label><input type="checkbox" class="mig-hour" value="Laudes" checked /> Laudes</label>
+      <label><input type="checkbox" class="mig-hour" value="Tercia" checked /> Tèrcia</label>
+      <label><input type="checkbox" class="mig-hour" value="Sexta" checked /> Sexta</label>
+      <label><input type="checkbox" class="mig-hour" value="Nona" checked /> Nona</label>
+      <label><input type="checkbox" class="mig-hour" value="Vespers" checked /> Vespres</label>
+      <span class="hint">L'Invitatori i el nom de la celebració hi van sempre. Completes no passa
+        per l'índex compartit i es migra a part (PLAN §16).</span>
     </div>
     <div class="date-range">
       <label>Diòcesi (litcal i cpl es resolen amb aquesta, per no confondre els dies propis amb els genèrics)

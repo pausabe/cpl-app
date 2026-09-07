@@ -33,7 +33,9 @@ const commonOffice = require('./lib/common-office');
 const { fingerprint } = require('./lib/citation-key');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
-const { extractHourFields, hourDataOf, psalmAntiphons, responsoryParts } = require('./lib/cpl-day-resolver');
+const {
+  extractHourFields, hourDataOf, psalmAntiphons, responsoryParts, extractOfficeFields,
+} = require('./lib/cpl-day-resolver');
 
 // Tables whose values are psalm/canticle headings ("Salm 50\nOració de penediment"), the
 // only ones where the proper/psalter spelling split applies. The biblical citations of
@@ -78,6 +80,22 @@ const HOURS_CONFIG = {
   Tercia: { allXFile: 'all_tercia.json', dualOffice: false },
   Sexta: { allXFile: 'all_sexta.json', dualOffice: false },
   Nona: { allXFile: 'all_nona.json', dualOffice: false },
+  // The Office of Readings. Its own three tables (`oficio_citas`, `oficio_titulos`,
+  // `oficio_textos`) on top of the shared ones, and a field vocabulary nothing else uses:
+  // two long readings, each with a three-part responsory, plus the Office's own
+  // versicle/response. That vocabulary lives in `lib/cpl-day-resolver.js`
+  // (`extractOfficeFields`) so the join, the inspector and the comparator read it the same
+  // way; `observeOffice` below is just the loop that files it.
+  //
+  // `dualOffice: false` for the same reason as the little Hours: on a memorial `officeStore`
+  // REPLACES the psalmody, the biblical reading and their responsories with the weekday's
+  // (the `cycle === "MEMORY"` block) instead of carrying two offices behind a switch, and it
+  // writes no `<field>_Ferial` twin. The measured cell is already the right one.
+  //
+  // Only the `_a` (annual) cycle is written. `_i`/`_p` are the optional biennial cycle, which
+  // Catalan does not have — `LanguageFeatures.biennialReadings` is `["es", "it"]`, so the
+  // selector never appears and the app always reads `_a`. See FASES.md, fase 3.
+  Office: { allXFile: 'all_oficio.json', dualOffice: false },
   Invitation: {
     allXFile: 'all_invitatorios.json',
     observe: (entry, hourData, tag, observe) =>
@@ -111,7 +129,7 @@ const HOURS_CONFIG = {
 // 10-year window. Empty means every date in the manifest, which is the real run.
 const ONLY_DATES = (process.env.DATES || '').split(',').map((d) => d.trim()).filter(Boolean);
 
-const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Tercia,Sexta,Nona,Invitation,Celebration')
+const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Tercia,Sexta,Nona,Office,Invitation,Celebration')
   .split(',')
   .map((h) => h.trim())
   .filter((h) => HOURS_CONFIG[h]);
@@ -279,6 +297,8 @@ const TABLES = [
   'lectura_breve_citas', 'lectura_breve_textos', 'responsorios',
   'cantico_evangelico_antifonas', 'preces_intro', 'preces_respuesta',
   'preces_contenido', 'oraciones_finales', 'invitatorios', 'celebration_names',
+  // The Office of Readings' own three, which no other Hour touches.
+  'oficio_citas', 'oficio_titulos', 'oficio_textos',
 ];
 
 // Which commons table each index field points at — used only to check that the cell map
@@ -292,9 +312,38 @@ const FIELD_TABLE = {
   responsorios: 'responsorios', cantico_evangelico_antifona: 'cantico_evangelico_antifonas',
   preces_intro: 'preces_intro', preces_respuesta: 'preces_respuesta', preces_contenido: 'preces_contenido',
   oracion_final: 'oraciones_finales',
+  // Office of Readings. The psalm and hymn fields above are shared with it verbatim; these
+  // are the ones only it has. The `_i`/`_p` twins are deliberately absent: they are the
+  // biennial cycle, which Catalan never reads, so nothing must be filed under them.
+  responsorio1: 'responsorios', responsorio2_a: 'responsorios', responsorio3_a: 'responsorios',
+  lectura_biblica_cita_a: 'oficio_citas', lectura_biblica_titulo_a: 'oficio_titulos',
+  lectura_biblica_texto_a: 'oficio_textos',
+  lectura_patristica_cita_a: 'oficio_citas', lectura_patristica_titulo_a: 'oficio_titulos',
+  lectura_patristica_texto_a: 'oficio_textos',
 };
 
 describe('Content join: cpl-app -> saints-app commons/ca', () => {
+  // cpl-app picks a DIFFERENT hymn for the Office of Readings when it is prayed before six
+  // in the morning (`OfficeService.IsDarkAnthem` — the only `new Date()` in the whole of
+  // `src/Services`). The shared index has ONE cell for the hymn, so which of the two gets
+  // migrated must not depend on what time of day the join happens to be run at. Pinned to
+  // midday: that is what the app shows for eighteen hours out of twenty-four. The nocturnal
+  // hymn has no cell to go in — decisions/D-005-l-himne-nocturn-de-l-ofici.md.
+  //
+  // Only `Date` is faked. Faking the timers too would hang the run: every date resolves
+  // through promises the DB seam settles on real callbacks.
+  beforeAll(() => {
+    jest.useFakeTimers({
+      doNotFake: [
+        'hrtime', 'nextTick', 'performance', 'queueMicrotask', 'requestAnimationFrame',
+        'cancelAnimationFrame', 'requestIdleCallback', 'cancelIdleCallback', 'setImmediate',
+        'clearImmediate', 'setInterval', 'clearInterval', 'setTimeout', 'clearTimeout',
+      ],
+      now: new Date(2026, 0, 1, 12, 0, 0),
+    });
+  });
+  afterAll(() => jest.useRealTimers());
+
   test('extracts Catalan text for every mapped numeric id, across all configured Hours', async () => {
     const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
     const settings = buildSettings({ dioceseName: DIOCESE_NAME, prayingPlace: PRAYING_PLACE });
@@ -558,6 +607,27 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       observe('oraciones_finales', entry.oracion_final, hourData.FinalPrayer, tag);
     }
 
+    // The Office of Readings, filed straight from the flattener. Every other Hour needs
+    // `observeHour`'s hand-written pairing because its fields come off three different
+    // shapes of cpl-app model; the Office's come off one, and its index entry uses the very
+    // same names, so the loop is the mapping. Fields the flattener doesn't produce (the
+    // `_i`/`_p` biennial twins, `himno_latino`) are simply never reached.
+    function observeOffice(entry, office, tag) {
+      const fields = extractOfficeFields(office);
+      if (!fields) return;
+      for (const [field, value] of Object.entries(fields)) {
+        const table = FIELD_TABLE[field];
+        const id = entry[field];
+        if (!table || id === undefined || id === null) continue;
+        if (Array.isArray(value)) {
+          if (!Array.isArray(id)) continue;
+          value.forEach((v, i) => observe(table, id[i], v, tag));
+        } else {
+          observe(table, id, value, tag);
+        }
+      }
+    }
+
     // cpl-app.db only holds a fixed span of liturgical years. A manifest date outside it
     // makes cpl-app's own services throw on an empty row (e.g. ObtainPentecostDay reading
     // result[0].mes of nothing), which used to kill the whole run over a single edge day.
@@ -728,7 +798,8 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           if (HOURS_CONFIG[hour].dualOffice === false) {
             // No second office and no Common to weigh against it: what cpl-app renders is
             // what the app's single record shows, cell for cell.
-            observeHour(entry, hourData, `${dateStr} (${hour})`);
+            if (hour === 'Office') observeOffice(entry, hourData, `${dateStr} (${hour})`);
+            else observeHour(entry, hourData, `${dateStr} (${hour})`);
           } else if (memorialFerial.isProperOnly(key)) {
             // No second tab: the memorial's cell IS the only cell, so cpl-app's weekday text
             // and the Common are two answers for one slot rather than one each. The Common

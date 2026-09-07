@@ -1507,3 +1507,136 @@ node migration-to-saints/export-to-saints-app.js          # ...i les copia a sai
 `export-to-saints-app.js` les copia **senceres** en lloc de fusionar-les, com fa amb
 `commons/ca`: aquí no hi ha espai d'ids compartits i per tant no hi ha res al destí que pugui
 ser feina d'algú altre.
+
+---
+
+## 17. L'Ofici de lectura: la meitat de l'hora no s'ha de migrar
+
+Fase 3 de [FASES.md](FASES.md). És l'hora més gran de totes —sola, demana **14.534** ids
+contra els 8.925 de Laudes+Vespres— i la primera conclusió de la fase va ser que **la meitat
+no s'ha de tocar**.
+
+### 17.1 `_a`, `_i`, `_p`: el cicle bienal que el català no té
+
+Cada camp de lectura d'`all_oficio.json` hi és tres vegades: `lectura_biblica_texto_a`,
+`…_i`, `…_p`. Què són no es podia deduir del nom, i importava molt, perquè són 7.691 dels
+14.534 ids. Comprovat per dues bandes, no suposat:
+
+- **Pel codi.** `useOfficeFirstLecture.ts` tria `_a` quan el selector val `READING_ORDINARY`
+  (que és el valor per defecte) i `_i` o `_p` segons `dateStore.isEvenYear`. O sigui: `_a` és
+  el **cicle anual** i `_i`/`_p` el **bienal opcional**, any senar i any parell.
+- **Per les dades.** cpl-app dona **la mateixa lectura** a les cinc ocurrències
+  d'`ordinary_time_19_wednesday` de la finestra (2017, 2020, 2023, 2025, 2026 — anys parells i
+  senars barrejats): «4, 1-7», que és exactament el que diu `_a` («Miq 4, 1-7»), mentre que
+  `_i` diu «2 Re 6, 24-25.32-» i `_p` «Za 10, 3-11, 3». cpl-app té **un sol cicle**.
+
+I el bienal **no fa cap falta**: `src/services/LanguageFeatures.ts` diu
+`biennialReadings: ["es", "it"]`. El català no hi és, el selector no apareix mai, i l'app
+llegeix sempre `_a`. Els 7.691 ids de `_i`/`_p` no els obre ningú.
+
+**L'abast baixa de 14.534 a 6.843 ids** — l'ordre de magnitud de Laudes+Vespres, no el doble.
+
+> **Dependència a recordar.** Si algun dia s'afegeix `ca` a `biennialReadings`, aquelles
+> caselles sortiran **buides**. La condició està escrita a `OFFICE_FIELDS` de `day-check.js` i
+> a `FIELD_TABLE` del join: cap dels dos coneix els sufixos `_i`/`_p`, i no és per descuit.
+
+### 17.2 El mapatge
+
+Tres taules que no fa servir cap altra hora —`oficio_citas`, `oficio_titulos`,
+`oficio_textos`— i, per la resta, les mateixes de sempre.
+
+| camp de l'índex | cpl-app |
+|---|---|
+| `himno` | `Office.Anthem` (però veure 17.4) |
+| `primer/segundo/tercer_salmo_{cita,antifona,texto}` | `Office.{First,Second,Third}Psalm.{Title,Antiphon,Psalm}` |
+| `responsorio1` | `Office.Responsory` — parella versicle/resposta |
+| `lectura_biblica_{cita,titulo,texto}_a` | `Office.FirstReading.{Reference+Quote, Title, Reading}` |
+| `responsorio2_a` | `Office.FirstReading.Responsory` |
+| `lectura_patristica_{cita,titulo,texto}_a` | `Office.SecondReading.{Reference+Quote, Title, Reading}` |
+| `responsorio3_a` | `Office.SecondReading.Responsory` |
+| `oracion_final` | `Office.FinalPrayer` |
+| `himno_latino`, `*_i`, `*_p` | **cap** |
+
+`Office.FourthPsalm` surt buit els dies normals i els tres pericopis de l'índex encaixen amb
+els tres de cpl-app. El Te Deum (`TeDeumInformation.Anthem`) **no és un camp per dia**: viu
+fora d'`all_oficio.json`, i `officeStore` només n'exposa el booleà `showTeDeum`.
+
+### 17.3 Les dues formes que no es podien simplificar
+
+Totes dues tenen detector propi a `office-fields.test.js`, perquè totes dues fallen **en
+silenci**: la pàgina segueix pintant, només que amb una línia menys.
+
+**La cita du dues línies dins d'una casella, separades per un `$` literal.**
+`OfficeFirstLecture.vue` i `OfficeSecondLecture.vue` pinten `split("$")[0]` com a paràgraf
+propi i `split("$")[1]` en estil `reference-bible` al costat del títol. `es` hi posa «Del libro
+del profeta Miqueas `$`Miq 4, 1-7 `$`». cpl-app ja té les dues meitats separades —`Reference` i
+`Quote`— o sigui que el separador s'hi insereix al mig i prou.
+
+**On talla cpl-app no és on talla `es`**, i és igual de coherent: per a la lectura patrística
+`es` posa l'autor sol abans del `$` i l'obra després («San Agustín de Hipona `$`De los
+comentarios sobre los salmos (Salmo 47, 7: CCL 38, 543-545) `$`»), mentre que cpl-app posa
+«Dels comentaris de sant Agustí, bisbe, als Salms» abans i el locus «(Salm 47, 7: CCL 38,
+543-545…)» després. El tall de cpl-app és el que imprimeixen els volums catalans, i és el que
+es migra.
+
+**El responsori de cada lectura són TRES ids**, no dos ni sis:
+
+```
+[0]  " "                                  ← un blanc; 912 de les 920 entrades d'es el tenen,
+                                            i cap component no el pinta
+[1]  ℟. {FirstPart} * {SecondPart}
+[2]  ℣. {ThirdPart} * {SecondPart}
+```
+
+Comprovat camp per camp contra el 12 d'agost de 2026, on `es/responsorios` 12507-12509 diuen
+exactament això. Els signes són els que els components imposen de totes maneres
+(`OfficeFirstLecture.vue` reescriu el d'`[1]` a ℟ i el d'`[2]` a ℣), o sigui que s'escriuen ja
+com es veuran. **No és la mateixa forma** que el responsori breu de Laudes i Vespres (sis
+línies) ni que el de les hores intermèdies (dues): té helper propi,
+`readingResponsoryParts()`, al costat de `responsoryParts()` i amb un comentari que diu per què
+són dos.
+
+### 17.4 L'himne canvia segons l'hora del rellotge
+
+`OfficeService.IsDarkAnthem()` fa `new Date().getHours() < 6` —**l'únic `new Date()` de tot
+`src/Services`**— i abans de les sis del matí dona un himne diferent. La taula
+`salteriComuOfici` té 28 files i **les 28 tenen els dos himnes diferents**.
+
+L'índex compartit té **un sol camp `himno`**. Perquè quin dels dos es migra no depengui de
+l'hora en què algú corri el join, el join **fixa el rellotge a les dotze del migdia** abans de
+resoldre cap data (`beforeAll` de `join-content.test.js`, amb `doNotFake` a tots els temporitzadors:
+falsejar-los penjaria la corrimenta). Sense això, un join llançat de matinada hauria migrat
+catorze himnes nocturns sense que res ho digués.
+
+Decisió oberta: [decisions/D-005](decisions/D-005-l-himne-nocturn-de-l-ofici.md).
+
+### 17.5 El dia de memòria: `officeStore` no té dues pestanyes, en té una de reescrita
+
+A `all_oficio.json` una entrada `__MEMORY` porta `-1` a la salmòdia, a la lectura bíblica i als
+responsoris 1 i 2, i només du de propi l'himne, la lectura patrística, el responsori 3 i
+l'oració final. Qui omple els `-1` és el mateix `officeStore`: quan `cycle === "MEMORY"`
+(el sufix de la clau, que `findInStructureById` enganxa al registre) **substitueix** aquells
+camps pels de l'entrada del dia de la setmana.
+
+És el mateix patró de `terciaStore` i no el de `laudesStore`: no hi ha bessons `<camp>_Ferial`
+ni cap selector a la pantalla. Per això l'Ofici va amb **`dualOffice: false`** al `HOURS_CONFIG`
+del join — la casella mesurada ja és la bona i no s'ha de redirigir enlloc, i tampoc no hi ha
+segona pestanya per al Comú dels sants.
+
+Res d'això es dedueix: la sonda ho mesura. El 13 de juny de 2026 (memòria de la Mare de Déu
+dissabtina) l'índex diu `-1` a onze camps i la sonda troba que l'app hi llegeix
+`salmos_citas/10`, `oficio_citas/100`… — les caselles de la fèria, tal com el `store` les ha
+reescrites. És exactament el cas pel qual existeix la sonda (§8d).
+
+### 17.6 Com es re-corre
+
+```bash
+cd /Users/pau/projects/saints/saints-app && npm run serve          # cal per a la sonda
+node migration-to-saints/app-id-probe.js --range 2017-01-01..2026-12-30 --fresh
+npx jest migration-to-saints/join-content.test.js --silent          # Office hi va per defecte
+node migration-to-saints/export-to-saints-app.js
+```
+
+L'exportació no necessita res de nou: `export-to-saints-app.js` copia **tots** els fitxers
+d'`output/commons-ca`, o sigui que `oficio_citas.json`, `oficio_titulos.json` i
+`oficio_textos.json` hi entren sols.

@@ -31,8 +31,10 @@ jest.mock('/Users/pau/projects/personal/cpl-app/src/Services/DatabaseManagerServ
 
 const fs = require('fs');
 const REPO = '/Users/pau/projects/personal/cpl-app';
-const { buildSettings, extractHourFields, hourDataOf } = require(REPO + '/migration-to-saints/lib/cpl-day-resolver');
-const HOURS = ['Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
+const {
+  buildSettings, extractHourFields, hourDataOf, extractOfficeFields,
+} = require(REPO + '/migration-to-saints/lib/cpl-day-resolver');
+const HOURS = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
 const { ferialFields } = require(REPO + '/migration-to-saints/lib/memorial-ferial');
 const VespersService = require(REPO + '/src/Services/Liturgy/VespersService');
 const LaudesService = require(REPO + '/src/Services/Liturgy/LaudesService');
@@ -77,7 +79,13 @@ test('resolves the dates with a correct Vespers ferial control', async () => {
     const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
 
     const hours = {};
-    for (const h of HOURS) hours[h] = extractHourFields(hourDataOf(hoursLiturgy, h));
+    // The Office of Readings has its own field vocabulary — two long readings with a
+    // responsory each — so it has its own flattener; every other Hour shares one.
+    for (const h of HOURS) {
+      hours[h] = h === 'Office'
+        ? extractOfficeFields(hoursLiturgy.Office)
+        : extractHourFields(hourDataOf(hoursLiturgy, h));
+    }
     days[dateStr] = {
       date: dateStr,
       diocese: DIOCESE,
@@ -94,9 +102,10 @@ test('resolves the dates with a correct Vespers ferial control', async () => {
       ferialFields: {
         Laudes: [...ferialFields(hours.Laudes, extractHourFields(ferialLaudes))],
         Vespers: [...ferialFields(hours.Vespers, extractHourFields(ferialVespers))],
-        // The intermediate Hours have no memorial/weekday switch (see HOURS_CONFIG in
-        // join-content.test.js), so there is nothing to mark ferial here.
-        Tercia: [], Sexta: [], Nona: [],
+        // Neither the intermediate Hours nor the Office of Readings have a memorial/weekday
+        // switch (see HOURS_CONFIG in join-content.test.js): on a memorial their stores
+        // replace the record outright instead of offering two. Nothing to mark ferial here.
+        Tercia: [], Sexta: [], Nona: [], Office: [],
       },
       invitatory: hoursLiturgy.Invitation ? hoursLiturgy.Invitation.InvitationAntiphon || null : null,
     };

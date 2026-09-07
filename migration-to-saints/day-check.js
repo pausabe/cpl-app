@@ -38,9 +38,11 @@ const HOUR_FILES = {
   Tercia: 'all_tercia.json',
   Sexta: 'all_sexta.json',
   Nona: 'all_nona.json',
+  Office: 'all_oficio.json',
 };
-// The order they are prayed in, which is the order the report reads best in.
-const ALL_HOURS = ['Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
+// The order they are prayed in, which is the order the report reads best in. The Office of
+// Readings goes first: it may be said at any hour, but the volumes print it at the head.
+const ALL_HOURS = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
 
 // Every field of an index entry, in reading order, with the commons table it points at.
 // `list: true` means the field holds an array of ids (one per responsory part /
@@ -67,6 +69,40 @@ const FIELDS = [
   { key: 'invitacion_padrenuestro', table: 'invitacion_padrenuestro', label: 'Invitació al Parenostre', source: 'traduït a mà' },
   { key: 'oracion_final', table: 'oraciones_finales', label: 'Oració final' },
 ];
+
+// The Office of Readings has a different entry: no short reading, no evangelical antiphon,
+// no intercessions, and instead two long readings each followed by its own responsory, in
+// three tables nothing else uses.
+//
+// The `_i`/`_p` twins of every reading field are deliberately absent. They are the optional
+// biennial cycle, and `LanguageFeatures.biennialReadings` is `["es", "it"]`: in Catalan the
+// selector never appears and the app always reads `_a`. Listing them here would report
+// 7.691 cells as "missing" that nobody will ever open — see FASES.md, fase 3.
+const OFFICE_FIELDS = [
+  { key: 'himno', table: 'himnos', label: 'Himne' },
+  { key: 'himno_latino', table: 'himnos_latinos', label: 'Himne llatí', source: 'copiat d’es' },
+  { key: 'primer_salmo_cita', table: 'salmos_citas', label: '1r salm — cita' },
+  { key: 'primer_salmo_antifona', table: 'salmos_antifonas', label: '1r salm — antífona' },
+  { key: 'primer_salmo_texto', table: 'salmos_textos', label: '1r salm — text' },
+  { key: 'segundo_salmo_cita', table: 'salmos_citas', label: '2n salm — cita' },
+  { key: 'segundo_salmo_antifona', table: 'salmos_antifonas', label: '2n salm — antífona' },
+  { key: 'segundo_salmo_texto', table: 'salmos_textos', label: '2n salm — text' },
+  { key: 'tercer_salmo_cita', table: 'salmos_citas', label: '3r salm — cita' },
+  { key: 'tercer_salmo_antifona', table: 'salmos_antifonas', label: '3r salm — antífona' },
+  { key: 'tercer_salmo_texto', table: 'salmos_textos', label: '3r salm — text' },
+  { key: 'responsorio1', table: 'responsorios', label: 'Responsori de la salmòdia', list: true },
+  { key: 'lectura_biblica_cita_a', table: 'oficio_citas', label: 'Lectura bíblica — cita' },
+  { key: 'lectura_biblica_titulo_a', table: 'oficio_titulos', label: 'Lectura bíblica — títol' },
+  { key: 'lectura_biblica_texto_a', table: 'oficio_textos', label: 'Lectura bíblica — text' },
+  { key: 'responsorio2_a', table: 'responsorios', label: 'Responsori de la lectura bíblica', list: true },
+  { key: 'lectura_patristica_cita_a', table: 'oficio_citas', label: 'Lectura patrística — cita' },
+  { key: 'lectura_patristica_titulo_a', table: 'oficio_titulos', label: 'Lectura patrística — títol' },
+  { key: 'lectura_patristica_texto_a', table: 'oficio_textos', label: 'Lectura patrística — text' },
+  { key: 'responsorio3_a', table: 'responsorios', label: 'Responsori de la lectura patrística', list: true },
+  { key: 'oracion_final', table: 'oraciones_finales', label: 'Oració final' },
+];
+
+const FIELDS_BY_HOUR = { Office: OFFICE_FIELDS };
 
 // A probe cell is "table/id", or a list of them for list fields; the index gives the ids
 // alone. Both end up as {table, id} pairs here.
@@ -328,7 +364,7 @@ function checkDay(dateStr, options = {}) {
     // Fields whose cell is `-1` and that have no ferial cell either: nothing is shown and
     // nothing is missing. Kept apart so the comparator doesn't paint them as a hole.
     const noProperText = [];
-    for (const def of FIELDS) {
+    for (const def of (FIELDS_BY_HOUR[hour] || FIELDS)) {
       // From the probe: "table/id" (or a list of them). From the index: a bare id, with
       // the table fixed by the field.
       let cells;
@@ -661,7 +697,10 @@ module.exports = {
   buildContext,
   conflictDetail,
   celebrationSummary,
+  ALL_HOURS,
   FIELDS,
+  OFFICE_FIELDS,
+  FIELDS_BY_HOUR,
   celebrationNames,
   glossLitcalId,
   readJsonSafe,

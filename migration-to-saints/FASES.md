@@ -18,21 +18,28 @@ de sota i el [CLAUDE.md](../CLAUDE.md) de l'arrel.
 | **0** | Tancar MIGRA-006 abans d'obrir res més | ✅ **feta** (7-IX-2026) — l'exportació ja no està bloquejada |
 | **1** | Tèrcia, Sexta i Nona | ✅ **feta** (7-IX-2026) — 5 de les 7 hores migrades |
 | **2** | Completes | ✅ **feta** (7-IX-2026) — 6 de les 7 hores; queda [D-004](decisions/D-004-l-himne-de-completes.md) |
-| **3** | Ofici de lectura | 🔄 **descoberta feta** — l'abast baixa de 14.534 a 6.843 ids |
+| **3** | Ofici de lectura | ✅ **feta** (7-IX-2026) — **les 7 hores** migrades; queda [D-005](decisions/D-005-l-himne-nocturn-de-l-ofici.md) |
 | **4** | Missa (lectures) | ⬜ no començada |
 | **—** | Comentaris de la missa | ⛔ **fora d'abast** (decisió, veure sota) |
 
 Cobertura mesurada el **7 de setembre de 2026** (finestra 2017-2026, Barcelona), **després de
-la fase 1**, per a comparar-hi les represes futures:
+la fase 3**, a `saints-app` — o sigui el que veu l'usuari, no el que calcula el join:
 
-| | |
-|---|---|
-| Les **5 hores** (Laudes, Tèrcia, Sexta, Nona, Vespres) — ids que l'índex demana | 11.483 |
-| ...escrits a `commons/ca` | **10.228 (89,1%)** |
-| ...caselles en conflicte al join | **1.313** |
-| Univers sencer de `commons/es` | 58.537 ids · català al **17,9%** |
-| Completes | **7/7 fitxers**, 114 camps (fora del recompte d'ids: no passa per `day_specific_texts`) |
-| Dies de mostra (102 camps, 5 hores) | 12-08 **96%** · 14-08 **86%** · 30-11 **69%** |
+| | abans de la fase 3 | després |
+|---|---|---|
+| **Ofici de lectura** — ids del cicle anual que l'índex demana | 304 / 6.843 (4,4%) | **6.432 / 6.843 (94,0%)** |
+| **Les 5 hores d'abans** (Laudes, Tèrcia, Sexta, Nona, Vespres) | 10.000 / 11.255 (88,8%) | 10.000 / 11.255 (88,8%) |
+| **Les 6 hores de l'índex, juntes** | 10.000 / 17.746 (56,4%) | **16.128 / 17.746 (90,9%)** |
+| Univers sencer de `commons/es` | 10.490 / 58.537 (17,9%) | **16.618 / 58.537 (28,4%)** |
+| Caselles en conflicte al join | 1.313 | **1.614** |
+| Completes | 7/7 fitxers, 114 camps — fora del recompte d'ids: no passa per `day_specific_texts` | igual |
+| Dies de mostra (127 camps per dia, 6 hores) | | 12-08 **93%** · 04-03 **94%** · 16-09 **89%** · 13-06 **34%** |
+
+> El denominador d'aquesta taula **exclou els dos camps que no surten mai de cpl-app**
+> (`himno_latino`, còpia d'`es`; `invitacion_padrenuestro`, traduït a mà). Per això les 5 hores
+> hi surten com a 10.000/11.255 i no com als 10.228/11.483 que deia la taula de la fase 1, que
+> els comptava: **és la mateixa cobertura mesurada d'una altra manera**, no una regressió. A
+> partir d'ara, aquesta.
 
 Reproduir-ho:
 
@@ -225,7 +232,7 @@ del volum imprès; és decisió d'en Pau.
 
 ---
 
-## Fase 3 — Ofici de lectura · ⬜
+## Fase 3 — Ofici de lectura · ✅
 
 **Fase pròpia, sense encavalcar-la amb res.** Ella sola és **1,6× tot el pilot**: 14.534 ids
 demanats contra els 8.925 de Laudes+Vespres, dominats per `responsorios` (6.988) i les tres
@@ -281,13 +288,46 @@ Queda per fixar en implementar-ho: la composició exacta de `*_cita_a`. `es` hi 
 `autor $obra $` («Del libro del profeta Miqueas $Miq 4, 1-7 $»), i cpl-app parteix la mateixa
 informació entre `Reference` i `Quote` amb un tall diferent.
 
-### Després
+### La implementació — **feta**
 
-- [ ] Mapatge de camps documentat al PLAN, com el §5 de Laudes
-- [ ] `HOURS_CONFIG` + sonda (`defineStore("Office")`, `contentByDay`) + inspector + comparador
-- [ ] Join, classificació dels conflictes nous, i números a la taula d'estat
+- [x] **Mapatge documentat** a [PLAN §17](PLAN.md), amb les dues formes que no es podien
+      simplificar i per què
+- [x] **`extractOfficeFields`, `officeCitation` i `readingResponsoryParts`** a
+      `lib/cpl-day-resolver.js`, cridats **pel join i pel comparador tots dos**, com les de la
+      fase 1, perquè no puguin divergir
+- [x] **`HOURS_CONFIG.Office`** al join, amb `dualOffice: false` — `officeStore` reescriu el
+      registre a les memòries (`cycle === "MEMORY"`) en lloc d'oferir dues pestanyes, com
+      `terciaStore` i **no** com `laudesStore`. Llegit del `store`, no suposat
+- [x] **Sonda** (`defineStore("Office")` → `contentByDay`), **inspector** (`OFFICE_FIELDS`,
+      que són 21 camps i no els 20 de Laudes), **comparador** i **panell**: el panell ara duu
+      una casella per hora en lloc de les dues del pilot
+- [x] **Detector**: `office-fields.test.js`. Comprovat que **falla** si algú treu el `$` de la
+      cita — que és la manera com aquesta fase es trencaria en silenci
+- [x] **Control abans del join de veritat**: re-córrer les 5 hores d'abans amb el mapa nou de
+      6 hores dona **9.756 caselles idèntiques byte a byte, 0 afegides, 0 perdudes, 0 amb text
+      canviat**
+- [x] **Join, exportació i verificació a l'app real** — vegeu els números de dalt
 
-**Fet quan:** l'Ofici té % a l'inspector i els seus conflictes són a la cua de revisió.
+### El que ha costat
+
+- **27 caselles** que abans s'escrivien han passat a conflicte: l'Ofici hi diu una cosa i una
+  altra hora una altra. **Totes 27 registrades a la cua** (0 desaparegudes en silenci). Com a
+  la fase 1, **l'exportació fusiona i no esborra**, o sigui que a `saints-app` hi queda el text
+  que hi tenien i el % de les 5 hores no es mou. Segueix pendent decidir si es treu.
+- **5 caselles** amb el text canviat, **totes cinc només d'espais**: amb més observacions,
+  `representative()` tria una altra grafia igual de vàlida. Verificat una per una.
+
+### Casos reals que val la pena conèixer
+
+- **`himnos/425`**: l'índex compartit hi posa **les Vespres del Martiri de sant Joan Baptista
+  (29-VIII)** i **l'Ofici de la Nativitat del mateix sant (24-VI)**. En castellà una sola
+  peça serveix per als dos; en català cpl-app en té una de pròpia per a cada un. Conflicte
+  ben fundat, retingut.
+- **`oficio_citas/598`**: `second_sunday_after_christmas__ANY` **reutilitza a posta** la
+  lectura del 4 de gener, caigui el diumenge on caigui. cpl-app dona la lectura contínua del
+  dia real (2, 3, 4 o 5 de gener). Diferència real entre les dues apps, un diumenge l'any.
+
+**Fet.** Les 7 hores són en català.
 
 ---
 
@@ -341,7 +381,9 @@ català d'origen — però això no ho decidim nosaltres.
 | # | Pregunta | Per a qui | Bloqueja |
 |---|---|---|---|
 | ~~P-1~~ | ~~Drets del leccionari català~~ — **resolta el 7-IX-2026**: l'editorial CPL en té els drets i és qui proporciona tot el contingut a `cpl-app.db`. No bloqueja la fase 4 | — | — |
-| P-2 | Què és el sufix `_a`/`_i`/`_p` de `all_oficio.json` | descoberta tècnica | Fase 3 |
+| P-8 | Les **27 + 33 caselles** que el join ja no escriu però que segueixen publicades a `saints-app` (l'exportació fusiona i no esborra). Cal decidir si es treuen | decisió | — |
+| P-9 | **D-005**: l'himne nocturn de l'Ofici no té casella. Comunicar-ho al CPL o demanar un camp a eprex | decisió | — |
+| P-10 | `second_sunday_after_christmas` reutilitza la lectura del 4 de gener a `all_oficio.json`; cpl-app dona la del dia real. Val la pena dir-ho a en Fernando? | saints-app | — |
 | P-7 | La **F5** (`review/findings.js`) diu que saints-app no té I Vespres. Va deixar de ser cert amb el PR #1694 (camps `*_PrimerasVisperas`). Reescriure-la o retirar-la abans d'enviar-la | nostre | enviar la F5 |
 | P-3 | Els noms dels dies ferials segueixen sortint en anglès (PLAN §10.2): d'on es generen | decisió | — |
 | P-4 | `dailySaints/ca/` no existeix → la targeta «Sant del dia» peta | decisió d'abast | — |
@@ -357,6 +399,7 @@ quedar l'anterior sense haver de llegir el git.
 
 | Data | Qui | Què s'ha fet |
 |---|---|---|
+| 2026-09-07 | Claude | **Fase 3 feta.** Ofici de lectura migrat: del 4,4% al **94,0%** dels seus ids. Les 7 hores en català; l'índex compartit al 90,9%. 0 canvis semàntics al text ja publicat. Obertes la D-005 i les P-8/P-9/P-10 |
 | 2026-09-07 | Claude | **Fase 3: descoberta feta.** `_a` és el cicle anual i `_i`/`_p` el bienal, que el català no té activat — l'abast baixa de 14.534 a 6.843 ids. Mapatge complet escrit. Falta implementar |
 | 2026-09-07 | Claude | **Fase 2 feta.** Completes en català (7 fitxers), verificada a l'app real. Oberta la D-004: cpl-app té 2 himnes de Completes i saints-app en vol 7 |
 | 2026-09-07 | Claude | **Fase 1 feta.** Tèrcia, Sexta i Nona migrades: del 2,1% al 81,9% dels seus ids. 0 canvis al text ja publicat. Sonda i join re-correguts sobre els 10 anys, exportat |

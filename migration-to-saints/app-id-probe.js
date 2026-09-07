@@ -165,8 +165,16 @@ async function connect() {
 // The Hours the probe drives. Terce, Sext and None are three separate Pinia stores with
 // the same shape as Laudes (`contentByDay`, `loadingState`, `errorCode`), each reading its
 // own `all_{tercia,sexta,nona}.json`; the id under `defineStore` is the name used here.
-const PROBED_HOURS = ['Laudes', 'Vespers', 'Tercia', 'Sexta', 'Nona'];
-const STORE_IDS = { Laudes: 'Laudes', Vespers: 'Visperas', Tercia: 'Tercia', Sexta: 'Sexta', Nona: 'Nona' };
+// The Office of Readings joins them: same contract (`contentByDay`, `loadingState`,
+// `errorCode`), a much wider record — and the one Hour whose store rewrites the entry
+// before rendering it (`officeStore`'s `cycle === "MEMORY"` block swaps the psalmody, the
+// biblical reading and their responsories for the weekday's). That rewrite is exactly what
+// the probe exists to catch: nothing here models it, it is simply measured.
+const PROBED_HOURS = ['Laudes', 'Vespers', 'Tercia', 'Sexta', 'Nona', 'Office'];
+const STORE_IDS = {
+  Laudes: 'Laudes', Vespers: 'Visperas', Tercia: 'Tercia', Sexta: 'Sexta', Nona: 'Nona',
+  Office: 'Office',
+};
 
 // Reaches the app's own Pinia instance and drives it exactly like the UI would: set the
 // date, then read back what the Hour stores ended up holding.
@@ -205,7 +213,7 @@ function parseCell(value) {
 // actually used — which is the line you can check against eprex on screen without trusting
 // any of this code.
 function compare(results) {
-  const { FIELDS } = require('./day-check');
+  const { FIELDS, FIELDS_BY_HOUR } = require('./day-check');
   const DAY_TEXTS = path.join(SAINTS_APP, 'src/store/db/day_specific_texts');
   const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
   const manifest = readJson(path.join(__dirname, 'webui/run/date-to-key-manifest.json'));
@@ -215,6 +223,7 @@ function compare(results) {
     Tercia: readJson(path.join(DAY_TEXTS, 'all_tercia.json')),
     Sexta: readJson(path.join(DAY_TEXTS, 'all_sexta.json')),
     Nona: readJson(path.join(DAY_TEXTS, 'all_nona.json')),
+    Office: readJson(path.join(DAY_TEXTS, 'all_oficio.json')),
   };
   const esCache = {};
   const esText = (table, id) => {
@@ -243,7 +252,7 @@ function compare(results) {
       }
       const key = entryForDate ? Object.keys(allX[hour]).find((k) => k.startsWith(`${entryForDate.litcalId}__`)) : null;
       const entry = key ? allX[hour][key] : null;
-      for (const f of FIELDS) {
+      for (const f of (FIELDS_BY_HOUR[hour] || FIELDS)) {
         const appCell = cell(app[f.key]);
         const raw = entry ? entry[f.key] : undefined;
         const migCell =
