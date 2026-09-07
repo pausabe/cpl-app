@@ -1,35 +1,5 @@
 [
   {
-    "table": "cantico_evangelico_antifonas",
-    "id": "1447",
-    "kept": "Que n’és, de dolç, Senyor, el vostre esperit! N’heu donat prova als vostres fills, regalant-los amb el pa deliciós del cel; ompliu de béns els pobres afamats, i els rics satisfets se’n tornen sense res.",
-    "common": "Vosaltres, que ho heu deixat tot i heu vingut amb mi, rebreu cent vegades més i posseireu la vida eterna."
-  },
-  {
-    "table": "lectura_breve_citas",
-    "id": "3614",
-    "kept": "Ef 1, 20-23",
-    "common": "1Pe 4, 13-14"
-  },
-  {
-    "table": "lectura_breve_citas",
-    "id": "3699",
-    "kept": "1C 10, 16-17",
-    "common": "Rm 8, 28-30"
-  },
-  {
-    "table": "lectura_breve_textos",
-    "id": "3615",
-    "kept": "Déu ressuscità el Crist d’entre els morts, i el féu seure a la seva dreta dalt el cel, per damunt de tots els governants i dels qui tenen autoritat, poder o senyoria, per damunt de tots els títols que es poden donar en el nostre món i en l’altre. Tot ho ha posat sota els seus peus, i a ell l’ha fet cap de tot i l’ha donat a l’Església, que és el seu cos i el seu complement, ell que té en totes les coses la seva plenitud.",
-    "common": "Estimats, alegreu-vos de poder compartir els sofriments del Crist: també el dia que es revelarà la seva glòria desbordareu d’alegria. Feliços vosaltres si algú us retreu el nom de cristians: vol dir que l’Esperit de la glòria, que és l’Esperit de Déu, reposa sobre vosaltres."
-  },
-  {
-    "table": "lectura_breve_textos",
-    "id": "3700",
-    "kept": "El calze de la benedicció que nosaltres beneïm, ¿no és, potser, comunió amb la sang de Crist? El pa que nosaltres partim, ¿no és, potser, comunió amb el cos de Crist? El pa és un de sol. Per això tots nosaltres, ni que siguem molts, formem un sol cos, ja que tots participem del mateix pa.",
-    "common": "Sabem que Déu ho disposa tot en bé dels qui l’estimen, dels qui ell ha cridat per decisió seva; perquè ell, que els coneixia d’abans que existissin, els destinà a ser imatges vives del seu Fill, que ha estat així el primer d’una multitud de germans. Ell, que els havia destinat, els crida, els fa justos i els glorifica."
-  },
-  {
     "table": "preces_contenido",
     "id": "1968",
     "kept": "Oh Crist, l’únic sant, que ens revelàreu la vostra glòria assumint la nostra naturalesa i duguéreu a compliment l’Aliança antiga,\nus demanem que feu arribar fins a nosaltres la vostra llum.",

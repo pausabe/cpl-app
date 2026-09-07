@@ -339,6 +339,10 @@ el panell ja hi ve per defecte.
 
 ## 7. Pendent (per ordre recomanat)
 
+> **El full de ruta viu és [FASES.md](FASES.md)**, amb caselles per marcar, l'estat de cada
+> fase i la bitàcola de qui hi ha treballat. Aquesta secció és la llista original del pilot;
+> per a saber què toca ara, mira FASES.
+
 1. **Córrer el migrador amb la finestra completa 2017-2026** i tornar a classificar el
    grup A de la secció 6c. Fins que això no estigui fet, qualsevol decisió sobre aquests
    1.814 pendents es pren a cegues.
@@ -1358,3 +1362,148 @@ queda un desacord de veritat, i ara amb un sol nom al davant, **sant Bernabé ap
 juny), el cas memòria-contra-fèria ja conegut. El guany no és de cobertura sinó de senyal: la
 línia de culpa del 2n salm de Vespres del 2026-09-02 passa d'una llista de 18 celebracions a
 una de sola.
+
+## 15. Tèrcia, Sexta i Nona: la mateixa hora tres vegades, amb tres trampes
+
+Primera ampliació més enllà del pilot (fase 1 de [FASES.md](FASES.md)). `all_tercia.json`,
+`all_sexta.json` i `all_nona.json` tenen **15 camps, tots subconjunt dels 20 de Laudes**, i
+**no estrenen cap taula**: van a `himnos`, `salmos_*`, `lectura_breve_*`, `responsorios` i
+`oraciones_finales`, les mateixes que ja gestionàvem. Per això el join, la sonda, l'inspector
+i el comparador s'han pogut estendre sense inventar-hi res.
+
+Resultat: dels **2.622 ids** que demanen, el català passa del **2,1% al 81,9%**. Cap text ja
+publicat no canvia; l'exportació és purament additiva (2.150 claus noves, 0 actualitzades).
+
+### 15.1 Les tres diferències del model de cpl-app
+
+Viuen totes a `lib/cpl-day-resolver.js` i el join les crida des d'allà, **no en té còpia**:
+el flattener del comparador i `observeHour` han de respondre igual o tornem al problema del
+§14 amb una altra cara.
+
+1. **On són.** `SpecificHour` penja de `hoursLiturgy.Hours.{ThirdHour,SixthHour,NinthHour}`,
+   no de l'arrel → `hourDataOf()`.
+2. **El responsori és un parell**, no sis línies: `CommonParts.Responsory` té `Versicle` i
+   `Response`, i l'índex hi guarda exactament **2 ids** (`℣.` i `℟.`) — verificat contra
+   `es/responsorios` 10415/10416 d'`advent_1_friday__ANY`. → `responsoryParts()`.
+3. **Una sola antífona per a tota l'hora.** En una celebració, cpl-app posa
+   `HasMultipleAntiphons: false` i omple `UniqueAntiphon`, **i deixa les antífones per salm
+   plenes a sota** amb les del saltiri. Aquelles no es veuen a la pantalla. L'índex ho modela
+   igual: 173 de les 495 entrades d'`all_tercia.json` duen `primer_salmo_antifona` i **-1** a
+   les altres dues. Llegir `FirstPsalm.Antiphon` sense mirar la bandera hauria escrit a
+   `commons/ca` text que l'app no mostra mai. → `psalmAntiphons()`.
+
+El control ferial és `ObtainHours(masters, dia, new Hours(), settings)` — el mateix camí que
+ja s'usa per a Laudes, o sigui que estacions i setmanes del saltiri es comporten com a la
+pantalla.
+
+### 15.2 Aquí NO hi ha pestanya de memòria/fèria
+
+La trampa que hauria fet més mal si s'hagués copiat de Laudes. `terciaStore.ts` (i els seus
+dos bessons) **substitueix el registre sencer** per la fèria quan el cicle és `MEMORY_FERIAL`
+—«Override with ferial if MEMORY_FERIAL»— en lloc de dur dos oficis darrere d'un selector, i
+**no escriu cap camp `<camp>_Ferial`**. O sigui:
+
+- la casella mesurada ja és la bona i **no s'ha de redirigir** (`memorial-ferial.js` fora);
+- no hi ha segona pestanya per a omplir amb el Comú (`lib/common-office.js` només modela
+  Laudes i Vespres, i cridar-lo aquí hauria estat un error silenciós).
+
+Al `HOURS_CONFIG` això és `dualOffice: false`. També hi ha una diferència pròpia a l'store:
+per a `FEAST`/`SPECIAL` pren els salms **i les antífones** de la fèria, i es queda la lectura
+breu i l'oració del propi. La sonda ho recull sense que calgui escriure-ho enlloc.
+
+### 15.3 Control abans de tocar res
+
+Re-córrer **només Laudes+Vespres** amb el mapa nou de cinc hores: **0 textos canviats, 0
+caselles perdudes**. Sense això no es pot saber si el que puja a la cobertura ve de les hores
+noves o d'haver mogut alguna cosa que ja anava bé.
+
+Les **33** caselles que deixen d'escriure's passen totes a conflicte registrat: són caselles
+que les cinc hores **comparteixen** i sobre les quals discrepen (p.ex.
+`lectura_breve_textos/79`, 83 dies, la minoria d'un sol dia de Tèrcia). Desacords de veritat.
+
+### 15.4 El que la sonda ha destapat de passada
+
+El patró del §8c —l'app no llegeix sempre la casella que diu l'índex— **també hi és a les
+hores intermèdies**. El 18 de desembre, `all_tercia.json` dona `-1` als tres salms i l'app
+llegeix `salmos_citas/3381-3383` (Salm 21 en tres parts). Un migrador que hagués confiat en
+l'índex hauria arxivat el text del 18-XII sota una casella buida, tres vegades per dia.
+
+## 16. Completes: l'hora que no passa per l'índex
+
+Fase 2 de [FASES.md](FASES.md). Les Completes **no viuen a `day_specific_texts`**:
+`complineStore.ts` fa `import('@/store/db/compline/{idioma}/{dia}.json')` — **set fitxers per
+idioma**, un per dia de la setmana (diumenge = 1 … dissabte = 7). No hi ha espai d'ids
+compartits, i per tant **no hi ha caselles disputades, ni cua de revisió, ni sonda**: és
+l'única hora que es resol amb una extracció directa i una còpia de fitxers.
+
+Per això no entra al recompte de cobertura del panell, que va per ids de `day_specific_texts`.
+
+### 16.1 Els dos models coincideixen, saltiri inclòs
+
+Verificat amb els *Services* reals sobre una setmana ordinària sense cap solemnitat
+(2026-09-06..12), que és la condició per a veure el saltiri propi de cada dia:
+
+| fitxer | dia | saltiri (cpl-app) | `es` |
+|---|---|---|---|
+| 1 | dg (després de les II Vespres) | Sl 90 | Sl 90 ✓ |
+| 2 | dl | Sl 85 | Sl 85 ✓ |
+| 3 | dt | Sl 142, 1-11 | Sl 142, 1-11 ✓ |
+| 4 | dc | Sl 30, 2-6 **+ Sl 129** | dos salms ✓ |
+| 5 | dj | Sl 15 | Sl 15 ✓ |
+| 6 | dv | Sl 87 | Sl 87 ✓ |
+| 7 | ds (= dg després de les I Vespres) | Sl 4 **+ Sl 133** | dos salms ✓ |
+
+I coincideixen **també en la regla de la vigília**: el divendres 14 d'agost de 2026 cpl-app ja
+dona el saltiri de diumenge-I-Vespres perquè l'endemà és l'Assumpció; saints-app fa el mateix a
+`dayWhenSpecialDays`. Cap dels dos ho ha d'aprendre de l'altre.
+
+El responsori segueix **el mateix patró de sis línies** que Laudes i Vespres, o sigui que
+`responsoryParts()` de `lib/cpl-day-resolver.js` el produeix sense tocar-hi res. Comprovat
+contra `es`: `℣. {First} * {Second}` / `℟. {First} {Second}` / `℣. {Third}` / `℟. {Second}` /
+`℣. Glòria al Pare…` / `℟. {First} {Second}`.
+
+### 16.2 D'on surt cada camp
+
+| camp | font |
+|---|---|
+| `himno` | cpl-app — **però veure 16.3** |
+| `primer/segundo_salmo_{cita,antifona,texto}` | `NightPrayer.{First,Second}Psalm`. El segon només si `HasMultiplePsalms`; si `UseOnlyFirstPsalmAntiphon`, la segona antífona va buida, com a la pantalla |
+| `lectura_biblica_cita` / `lectura_biblica` | `ShortReading` |
+| `responsorio` | `responsoryParts(NightPrayer)` en temps ordinari |
+| `responsorio_pascua` | el mateix, resolt en una fèria de Pasqua (2026-04-20) |
+| `antifona_inalbis` | `ShortResponsory.SpecialAntiphon` de l'octava de Pasqua (2026-04-08) |
+| `antifona_triduo` | `ShortResponsory.SpecialAntiphon` del Dissabte Sant (2026-04-04), que és la forma llarga, com a `es` |
+| `cantico_evangelico_antifona` | `EvangelicalAntiphon` |
+| `final` | `"Preguem:\n"` + `FinalPrayer` (a `es`, «Oremos:» és la primera línia del mateix camp, no un camp propi) |
+| `himno_latino`, `idd`, `slug` | **còpia d'`es`** — el llatí no depèn de l'idioma de l'app |
+| `oracion` (la capçalera del fitxer) | traduït a mà: `static-translations/compline_oracion.ca.json` |
+
+Els tres camps de temporada són **iguals als set fitxers** (comprovat: a `es` tenen un sol
+valor distint cadascun), així que una data representativa per a cada un és suficient.
+
+### 16.3 L'única discrepància, i és de model: l'himne
+
+cpl-app té **dos** himnes de Completes —`Various.NightPrayerCatalan{First,Second}OptionAnthem`,
+triats per **temporada** a `NightPrayerService.GetAnthem()`— i saints-app en vol **set**, un per
+**dia de la setmana**. `salteriComuCompletes` no té cap columna d'himne: els set dies comparteixen
+el de la temporada. Verificat resolent la setmana sencera: els set dies donen «Oh Crist, el dia i
+l'esplendor», mentre que `es` en té set de diferents.
+
+No és un bug de cpl-app —és la tria editorial de l'edició catalana— i no s'obre cap `CPL-LIT`.
+De moment s'escriu l'himne del Temps Ordinari als set fitxers, perquè és el que cpl-app resa i
+perquè deixar el camp buit era pitjor (la lliçó del §10). La conseqüència visible és que en
+català es veurà el mateix himne cada nit. Decisió oberta a
+[decisions/D-004](decisions/D-004-l-himne-de-completes.md); la sortida recomanada és transcriure
+els set himnes del volum imprès a `static-translations/compline_himno.ca.json`, que
+`compline.extract.test.js` ja llegiria amb el mateix patró que fa servir per a `oracion`.
+
+### 16.4 Com es re-corre
+
+```bash
+npx jest migration-to-saints/compline.extract.test.js     # escriu output/compline-ca/{1..7}.json
+node migration-to-saints/export-to-saints-app.js          # ...i les copia a saints-app
+```
+
+`export-to-saints-app.js` les copia **senceres** en lloc de fusionar-les, com fa amb
+`commons/ca`: aquí no hi ha espai d'ids compartits i per tant no hi ha res al destí que pugui
+ser feina d'algú altre.

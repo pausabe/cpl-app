@@ -41,12 +41,18 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **proposat** | — pendent d'enviar | — |
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
 | [MIGRA-005](#migra-005) | 2026-09-04 | eines | codi | No — va al git | — |
-| [MIGRA-006](#migra-006) | 2026-09-07 | eines | **obert** | — bloqueja l'exportació | — |
+| [MIGRA-006](#migra-006) | 2026-09-07 | eines | codi | No — va al git | `5ab407c` |
 | [SA-05](#sa-05) | 2026-09-03 | saints-app | contingut | Es regenera | — |
 | [SA-06](#sa-06) | 2026-09-03 | saints-app | merge | No — va al git | `1a35a54a6` |
 | [SA-07](#sa-07) | 2026-09-04 | saints-app | contingut | No — va al git | — |
 | [SA-08](#sa-08) | 2026-09-04 | saints-app | **codi** | No — va al git | `dae46844b` |
 | [SA-09](#sa-09) | 2026-09-04 | saints-app | **codi** | No — va al git | `8a80e393c` |
+| [SA-10](#sa-10) | 2026-09-07 | saints-app | contingut | Es regenera | — |
+| [EINA-hores](#eina-hores) | 2026-09-07 | eines | codi | No — va al git | `273a947` |
+| [SA-11](#sa-11) | 2026-09-07 | saints-app | contingut | Es regenera | — |
+| [EINA-completes](#eina-completes) | 2026-09-07 | eines | codi | No — va al git | `0c31f83` |
+| [SA-12](#sa-12) | 2026-09-07 | saints-app | contingut | Es regenera | — |
+| [D-004](#d-004) | 2026-09-07 | — | **decisió oberta** | — decideix en Pau | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -182,58 +188,94 @@ això la skill `revisio-dia` fa servir `review/resolve-cpl-days.test.js` i no aq
 
 <a id="eina-comu"></a>
 <a id="migra-006"></a>
-## MIGRA-006 — **OBERT**
+## MIGRA-006 — **TANCAT**
 
-**El join escriu una observació minoritària en comptes de retenir la casella** · 7 de setembre de 2026
+**El join saltava les I Vespres i escrivia una observació solitària** · 7 de setembre de 2026
 
-La regla que fa segur tot el join —«un id només s'escriu si **totes** les observacions
-coincideixen»— no s'aplica en algun camí. **Mentre això no estigui resolt, no es pot exportar.**
+La fitxa oberta deia que la regla «un id només s'escriu si **totes** les observacions
+coincideixen» no s'aplicava en algun camí. S'aplicava sempre: el que fallava és que a la
+casella hi arribava **una sola observació**, i «totes coincideixen» és cert per vacuïtat.
 
-### Com reproduir-ho en dos minuts
+### La causa (no és la que sospitàvem)
 
-```sh
-HOURS=Laudes,Vespers npx jest migration-to-saints/join-content.test.js --silent
-node -e "console.log(require('./migration-to-saints/output/commons-ca/salmos_antifonas.json')['9998'])"
+La hipòtesi de la fitxa apuntava a `fromFerial`/`entryFromCells`. No hi era. La causa és el
+salt de Vespres de `join-content.test.js`:
+
+```js
+if (hour === 'Vespers' && vespersFromTomorrow) { continue; }   // abans
 ```
 
-Dona **«Déu envià un home, que es deia Joan»** — sant Joan Baptista. La casella castellana
-`salmos_antifonas/9998` diu «Con amor eterno nos ha amado Dios»: és del **Sagrat Cor**.
+Escrit sobre la **F5**, que llegint l'índex va concloure que saints-app no té cap casella per
+a les I Vespres. **Ja en té**: des del PR #1694 l'índex duu camps `<camp>_PrimerasVisperas`
+dins de l'entrada de la pròpia celebració — 74 entrades, tots els diumenges i les solemnitats
+grans. `salmos_antifonas/9998` **és** el `primer_salmo_antifona_PrimerasVisperas` del Sagrat Cor.
 
-Les 10 dates que llegeixen aquesta casella són totes **dijous al vespre, vigília del Sagrat Cor**
-(que sempre cau en divendres). Resoltes amb `resolve-cpl-days`:
+Resolent les 10 vigílies amb els *Services* reals (`Barcelona`, `Diòcesi`):
 
-| què hi dona cpl-app | dates |
+| | precedència d'avui | de demà | `vespersComeFromTomorrow` |
+|---|---|---|---|
+| 9 vigílies (2017, 2018, 2019, 2020, 2021, 2023, 2024, 2025, 2026) | 10-13 | 3 | **cert** → saltades |
+| 2022-06-23 | **3** (Naixement del Baptista, traslladat) | 3 | **fals** → observada |
+
+El 2022 el Baptista i el Sagrat Cor cauen el mateix 24 de juny; cpl-app trasllada el Baptista
+al 23 i li resa les II Vespres. Amb precedències iguals la funció cau a la branca del desempat
+i retorna fals. Nou observacions descartades, una de sola supervivent, i el join l'escriu.
+
+### El fix
+
+Preguntar-ho a l'app en lloc de deduir-ho (el mateix principi de PLAN §8d). L'identitat és
+exacta, no heurística:
+
+> l'himne mesurat per la sonda == `himno_PrimerasVisperas` de l'endemà
+> → l'app hi mostra les I Vespres de demà, i el text de cpl-app hi va.
+
+**428 vespres** de la finestra compleixen la identitat i ara s'observen; **837** no, i el salt
+s'hi manté (allà l'app resa el seu propi ofici i escriure-hi seria la F6). De passada,
+`applicableHours` gatejava per l'índex encara havent-hi casella mesurada: 20 dates de la
+finestra hi queien, 10 d'elles Dijous Sant.
+
+### Efecte mesurat (finestra 2017-2026, Laudes+Vespres, mateixa configuració a banda i banda)
+
+| | abans | després |
+|---|---|---|
+| caselles escrites | 7.211 | **7.456** (+245) |
+| caselles en conflicte | 602 | **909** (+307) |
+| text semàntic canviat | — | **0** (4 canvis només d'espais + 1 títol de salm més complet) |
+| de les 15 regressions de la fitxa | escrites | **15 retingudes** |
+
+Les 228 caselles que deixen d'escriure's **passen totes a conflicte registrat**; cap no
+desapareix en silenci.
+
+### El que ha destapat: 52 caselles de I Vespres publicades amb el text d'un altre dia
+
+L'exportació no era només «refer-la». Com que aquestes caselles no s'observaven mai, s'havien
+omplert amb el text de qualsevol altra data que hi arribés. Verificat contra el castellà, una
+per una:
+
+| casella | el castellà hi diu | el català hi tenia | ara |
+|---|---|---|---|
+| `salmos_antifonas/10397` (I V. del Baptisme) | «Juan bautizaba en el desierto» | «El Rei de la pau ha estat glorificat» | «Joan en el desert predicava un baptisme de conversió» |
+| `responsorios/15511` (I V. del Baptista) | «Preparad el camino del Señor» | «Els va donar el pa del cel, Al·leluia» | «Obriu una ruta al Senyor» |
+| `preces_contenido/5932-5936` (I V. del Baptista) | precs del Baptista | precs de l'eucaristia | precs del Baptista |
+| `salmos_antifonas/10118-10120` (I V. del Baptista) | Elisabet, Zacaries, Joan | Melquisedec, el calze, el camí | Elisabet, Zacaries, Joan |
+
+Totes 52 són camps `*_PrimerasVisperas` (o la seva bessona `_1v`): Baptisme del Senyor,
+Naixement de sant Joan Baptista, Immaculada, santa Caterina de Siena. **Exportades.**
+
+### Peces
+
+| | |
 |---|---|
-| «Oh amor etern de Déu!» — Sagrat Cor | 2017-06-22, 2018-06-07, 2019-06-27, 2020-06-18, 2021-06-10, 2023-06-15, 2024-06-06, 2025-06-26, 2026-06-11 (**9**) |
-| «Déu envià un home, que es deia Joan» — Baptista | 2022-06-23 (**1**) |
+| Fix | `migration-to-saints/join-content.test.js` — `appShowsTomorrowsVespers()` + el gat de `applicableHours` |
+| Detector | `migration-to-saints/first-vespers.test.js` — corre el join real sobre les 10 vigílies i exigeix que la casella quedi **retinguda** amb les 10 observacions. Comprovat que **falla sense el pedaç** |
+| Extra | El join accepta `OUT_DIR`, perquè una passada parcial no trepitgi la sortida bona dels 10 anys |
+| Exportació | Refeta: 98 claus noves, 56 actualitzades (52 correccions de I Vespres + 4 d'espais) |
 
-El 2022 el 24 de juny era alhora el Sagrat Cor i la Nativitat del Baptista, i cpl-app hi resa les
-I Vespres del Baptista — defensable. El que no ho és: que d'una discrepància de 9 contra 1 en
-surti una **escriptura** i no una retenció. La casella **no apareix ni a
-`join-pending-review.json`**.
+### Conseqüència per a la F5
 
-### Abast
-
-**22 caselles actualitzades a l'exportació, i 15 són regressions**, verificades una per una
-contra el castellà: `lectura_breve_citas/3604`, `lectura_breve_textos/3605`,
-`preces_contenido/6455-6459`, `responsorios/16131-16136` i `salmos_antifonas/9998-10000` — totes
-del Sagrat Cor, totes rebent text del Baptista. Les altres **7 sí que milloren**, o sigui que
-l'exportació no es descarta sencera: s'ha de refer quan això estigui arreglat.
-
-### Per on començar
-
-`migration-to-saints/join-content.test.js`, línia 605 i següents. La sospita és el camí de
-`fromFerial` / `entryFromCells`: si a les 9 dates el camp es classifica com a ferial i es
-redirigeix a la casella 1, només queda l'observació del 2022 i «totes coincideixen» és cert **per
-vacuïtat**. No verificat — és una hipòtesi, no el diagnòstic.
-
-La troballa és la **F16** a `migration-to-saints/review/findings.js`, i la revisió en genera el
-prompt: `node migration-to-saints/review/fix-prompts.js`.
-
-### Què NO és
-
-No és la F15 (els duplicats del generador): surt igual amb els calendaris regenerats i amb els
-del git. I no és l'EPREX-003, que en Fernando ja ha corregit.
+**La F5 ja no és certa tal com està escrita** («saints-app no té I Vespres»). Ho era abans del
+PR #1694. No s'ha enviat mai a en Fernando i **no s'ha d'enviar**: cal reescriure-la o
+retirar-la abans, o li proposaríem una cosa que ja té feta.
 
 <a id="migra-005"></a>
 ## MIGRA-005
@@ -525,6 +567,130 @@ d'un altre ofici. Com sempre, si s'accepta cal **tornar a passar la sonda** aban
 Preguntes que semblaven un error i, investigades a fons, **no ho eren**. Hi són perquè el cost
 de tornar-les a obrir d'aquí a tres mesos és més alt que el d'aquestes deu línies. Van a
 `migration-to-saints/decisions/`.
+
+<a id="sa-10"></a>
+## SA-10
+
+**52 caselles de I Vespres corregides a `commons/ca`** · 7 de setembre de 2026
+
+Exportació refeta després de [MIGRA-006](#migra-006): **98 claus noves i 56 actualitzades**. De
+les 56, quatre són només espais i una és un títol de salm més complet (`salmos_citas/4577`,
+«Salm 121» → «Salm 121\nPelegrinatge a la ciutat santa»); **les altres 52 duien el text d'un
+altre dia**.
+
+Són totes camps `*_PrimerasVisperas` — Baptisme del Senyor, Naixement de sant Joan Baptista,
+Immaculada, santa Caterina de Siena. Com que el join no observava mai aquestes caselles, s'hi
+havia quedat el text de qualsevol altra data que hi arribés. Verificades una per una contra el
+castellà del mateix id abans d'escriure-les.
+
+Es regenera amb `npx jest migration-to-saints/join-content.test.js` +
+`node migration-to-saints/export-to-saints-app.js`.
+
+<a id="eina-hores"></a>
+## EINA-hores
+
+**El pipeline aprèn Tèrcia, Sexta i Nona** · 7 de setembre de 2026
+
+Fase 1 de [FASES.md](migration-to-saints/FASES.md). Les tres hores intermèdies **no estrenen
+cap taula** de `commons/ca` — van a les mateixes que Laudes i Vespres — i els seus 15 camps
+són subconjunt dels 20 de Laudes, així que el join, la sonda (`app-id-probe.js`),
+l'inspector (`day-check.js`) i el comparador s'han estès sense inventar-hi res.
+
+Les tres diferències del model de cpl-app viuen a `lib/cpl-day-resolver.js`, en dues funcions
+que **el join també crida** perquè no puguin divergir (`psalmAntiphons`, `responsoryParts`):
+
+| | |
+|---|---|
+| On són | `SpecificHour` penja de `hoursLiturgy.Hours`, no de l'arrel |
+| Responsori | Parell versicle/resposta = **2 ids** a l'índex, no sis línies |
+| Antífona | En una celebració, **una de sola** per a tota l'hora (`HasMultipleAntiphons: false`), i les per-salm que el model encara duu **no es veuen a la pantalla** |
+
+I una trampa que hauria fet mal si s'hagués copiat de Laudes: **aquí no hi ha pestanya
+memòria/fèria**. `terciaStore.ts` substitueix el registre sencer per la fèria en un
+`MEMORY_FERIAL` i no escriu cap camp `_Ferial`, o sigui que la casella mesurada ja és la bona
+i no s'ha de redirigir — ni hi ha segona pestanya per al Comú. Al `HOURS_CONFIG`,
+`dualOffice: false`. Detall complet a [PLAN §15](migration-to-saints/PLAN.md).
+
+**Control**: re-córrer només Laudes+Vespres amb el mapa nou de 5 hores dona **0 textos
+canviats i 0 caselles perdudes**.
+
+| | abans | després |
+|---|---|---|
+| Tèrcia+Sexta+Nona, dels 2.622 ids que demanen | 56 (2,1%) | **2.147 (81,9%)** |
+| caselles escrites pel join | 7.639 | **9.756** |
+| caselles en conflicte | 932 | **1.313** |
+
+Es regenera amb `node migration-to-saints/app-id-probe.js --range 2017-01-01..2026-12-30
+--fresh` + `npx jest migration-to-saints/join-content.test.js`.
+
+<a id="sa-11"></a>
+## SA-11
+
+**2.150 caselles noves a `commons/ca`: Tèrcia, Sexta i Nona** · 7 de setembre de 2026
+
+Exportació de la fase 1. **2.150 claus noves i 0 actualitzades** — purament additiva: cap
+text ja publicat no canvia. Les 5 hores passen a **89,1%** dels ids que l'índex els demana, i
+el català al **17,9%** de l'univers sencer de `commons/es`.
+
+L'inspector de dia ara compta **102 camps per dia** en lloc de 57.
+
+**Cua**: 33 caselles compartides entre hores han passat a conflicte i el join ja no les
+escriu, però l'exportació **fusiona i no esborra**, o sigui que a `saints-app` hi queda el
+text que hi tenien. És text que el pipeline actual ja no justifica — cal decidir si es treu.
+
+<a id="eina-completes"></a>
+## EINA-completes
+
+**Extractor de Completes** · 7 de setembre de 2026
+
+Fase 2 de [FASES.md](migration-to-saints/FASES.md). Les Completes **no passen per
+`day_specific_texts`**: saints-app les té com a **set fitxers per idioma**, un per dia de la
+setmana. Sense espai d'ids compartits no hi ha caselles disputades, ni cua de revisió, ni
+sonda — per això és l'única hora amb extractor propi
+(`migration-to-saints/compline.extract.test.js`) i còpia directa de fitxers.
+
+Els dos models **coincideixen 1:1** als set fitxers, saltiri inclòs (Sl 90 / 85 / 142,1-11 /
+30,2-6 + 129 / 15 / 87 / 4 + 133) **i en la regla de la vigília de solemnitat** — cpl-app la
+resol sol i saints-app a `dayWhenSpecialDays`. El responsori segueix el mateix patró de sis
+línies que Laudes, o sigui que `responsoryParts()` ja el produeix. Detall a
+[PLAN §16](migration-to-saints/PLAN.md).
+
+També s'ha estès `export-to-saints-app.js`, que ara copia `output/compline-ca/` a
+`saints-app/src/store/db/compline/ca/`. Còpia, no fusió: aquí no hi ha res al destí que pugui
+ser feina d'algú altre.
+
+<a id="sa-12"></a>
+## SA-12
+
+**Completes en català: 7 fitxers, 114 camps** · 7 de setembre de 2026
+
+`compline/ca/{1..7}.json`, amb la **mateixa forma exacta** que el castellà (16/15/15/18/16/15/19
+camps). Verificat contra l'app real (Chrome headless, `selectedLanguage=ca`): capçalera, himne,
+salm, antífona, lectura breu, responsori i oració final surten tots en català.
+
+Amb això són **6 de les 7 hores** en català. Falta l'Ofici de lectura (fase 3).
+
+Es regenera amb `npx jest migration-to-saints/compline.extract.test.js` +
+`node migration-to-saints/export-to-saints-app.js`.
+
+<a id="d-004"></a>
+## D-004 — **OBERTA**
+
+**L'himne de Completes: cpl-app en té dos, saints-app en vol set** · 7 de setembre de 2026
+
+cpl-app tria l'himne de Completes per **temporada** (`NightPrayerCatalan{First,Second}Option
+Anthem`, a `NightPrayerService.GetAnthem()`); saints-app en té un per **dia de la setmana**.
+`salteriComuCompletes` no té cap columna d'himne. Resolent una setmana sencera, els set dies
+donen el mateix himne; el castellà en té set de diferents.
+
+**No és un bug de cpl-app** —és la tria editorial de l'edició catalana— i no s'obre cap
+`CPL-LIT`. Mentrestant s'escriu l'himne del Temps Ordinari als set fitxers: és el que cpl-app
+resa i deixar la casella buida era pitjor. **Conseqüència visible**: en català es veurà el
+mateix himne cada nit.
+
+La sortida recomanada és transcriure els set himnes del volum imprès a
+`static-translations/compline_himno.ca.json`. Dossier:
+[decisions/D-004](migration-to-saints/decisions/D-004-l-himne-de-completes.md).
 
 <a id="d-001"></a>
 ## D-001
