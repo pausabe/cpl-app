@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| **Estat** | **Proposat** — enviat a en Fernando el 3 de setembre de 2026, pendent de resposta |
+| **Estat** | **Salmòdia APLICADA per eprex** el 5-09-2026. Himne, lectura breu i oració final **encara pendents** (2a ronda, sota) |
 | **Component** | saints-app · `day_specific_texts/all_visperas.json` i `all_laudes.json` |
 | **Gravetat** | Alta — un dia gran, i afecta **totes** les llengües de l'app, castellà inclòs |
 | **Trobat** | 2-3 de setembre de 2026, investigant per què `salmos_citas/11025` quedava retinguda al join |
 | **De qui és** | **d'eprex**, no de cpl-app ni de les nostres eines (veredicte 2) |
-| **Correcció** | Cap encara. És repunteig d'ids: no cal contingut nou |
+| **Correcció** | `43a319267` (`chore(texts): update 20260905-160710`), entrat per la PR #1726 de staging-texts, mergejada per en Fernando a `39410aa43`. Arribat a la nostra branca amb `cf9cab58a` |
 
 ## Símptoma
 
@@ -78,26 +78,66 @@ No cal crear contingut: tots els ids existeixen ja.
 **No verificat**: l'himne, la lectura breu i l'oració final també vénen del diumenge. No s'ha
 mirat si existeixen ids propis. Va inclòs al missatge com a pregunta oberta.
 
-## Dos serrells que són NOSTRES, no d'eprex
+## Resultat: verificat el 7 de setembre de 2026
 
-Deliberadament fora del missatge a en Fernando: són conseqüències per a la migració catalana.
+En Fernando ens va donar la raó i el canvi és a `all_visperas.json` i `all_laudes.json`. He
+comprovat els 18 ids un per un: **són exactament els proposats**, els nou de cada hora.
 
-1. **La tercera antífona de Laudes no diu el mateix a les dues edicions.** El castellà porta
-   «Alabaré al Señor mientras viva» (Sl 145, 2a) i el català «Beneiré el vostre nom per
-   sempre». No és cap error: cada edició va triar-ne una. Però vol dir que la casella `247` no
-   quadrarà pel canal C2.
-2. **`salmos_antifonas/906` ja té text català i no és el del 2 de novembre.** Ara diu «Senyor,
-   deslliureu-me de la terra dels morts», heretat del dissabte d'Advent i del Dissabte Sant,
-   que la comparteixen; el 2 de novembre cpl-app diu «Guardeu-me, Senyor, del poder de la
-   mort». Si eprex hi reapunta els Difunts, **el join veurà dos textos i retindrà la casella**.
-   Arreglar-ho per al castellà ens obrirà un conflicte nou al català. No és motiu per no
-   fer-ho, però cal saber-ho.
+La sonda es va tornar a passar (07-09 a les 08:35) **després** del merge (08:28) i el join a
+continuació (08:36), o sigui que el pipeline ja treballa sobre el cablejat bo. Comprovat que la
+sonda mesura `salmos_citas/4576, /54, /11033` a Vespres i `/72, /85, /248` a Laudes.
 
-## Què cal fer quan en Fernando respongui
+### Què ha entrat sol al català
 
-- **Si diu que sí**: preparar el canvi als dos `all_*.json`, i **tornar a passar la sonda**
-  (`app-id-probe.js` / `celebration-probe.test.js`) abans del join — el join escriu on la sonda
-  diu que l'app llegeix, no on ho diu l'índex. Després, re-córrer el join.
-- **Si diu que hi ha un criteri** que ho justifica: tancar aquest dossier com a **veredicte 4**
-  (no és error) i deixar-hi escrit quin és el criteri, que serà útil per a la resta de
-  celebracions que prenen ofici propi.
+Les **tres antífones òrfenes de Vespres** —`10964`, `10965`, `10966`— ja tenen text català: en
+el moment que una celebració hi ha apuntat, el join les ha observades i omplert. Igual el primer
+salm de Vespres sencer (`4576`/`4577`), el primer de Laudes (`72`/`1778`/`73`) i la cita i el
+text del càntic d'Isaïes (`85`/`86`).
+
+### Els dos conflictes que havíem previst: tots dos confirmats
+
+| casella | | |
+|---|---|---|
+| `salmos_antifonas/906` | Dissabte Sant (10 dies) diu *«Senyor, deslliureu-me de la terra dels morts»* | Difunts (10 dies) diu *«Guardeu-me, Senyor, del poder de la mort»* |
+| `salmos_antifonas/247` | 20 celebracions (60 dies) diuen *«Lloaré el meu Déu tota la vida»* | Difunts (10 dies) diu *«Beneiré el vostre nom per sempre»* |
+
+La `906` és un **empat exacte, 10 contra 10**. Cap de les dues no és «la minoria».
+
+**No decidim quina redacció és la bona**: això només ho diu el volum imprès (vegeu la memòria
+`liturgia-hores-volums-font-del-text-catala`). El que sí que se sap és que **una casella no pot
+servir les dues**, o sigui que això és una petició nova a eprex d'un id propi, del mateix tipus
+que aquesta.
+
+### Sis caselles més retingudes que NO són culpa d'aquest canvi
+
+`salmos_citas/54`+`/textos/55`, `/citas/11033`+`/textos/11034`, `/citas/248`+`/textos/249`.
+A totes sis el 2 de novembre cau **dins la variant majoritària**; qui discrepa és la Mare de Déu
+del Pilar, la Conversió de sant Pau, santa Joaquima i Anna i el dijous de la setmana 12. Treure
+el 2 de novembre no en resoldria cap: són conflictes independents i anteriors.
+
+## 2a ronda: el que encara ve del diumenge
+
+La pregunta 3 del missatge —himne, lectura breu i oració final— **no s'ha tocat**. Les fitxes
+de Laudes i Vespres continuen compartint **7 camps** amb el Diumenge XXXI: `himno`,
+`lectura_biblica_cita`, `lectura_biblica`, `preces_intro`, `preces_respuesta`,
+`invitacion_padrenuestro` i `oracion_final`.
+
+| camp | eprex mostra el 2-XI | cpl-app i el botó d'Ofici de Difunts | id que ja existeix |
+|---|---|---|---|
+| lectura breu | `3496` = 1 P 1, 3-5 (del diumenge) | **1 Co 15, 55-57** *«¿Dónde está, muerte, tu victoria?»* | `lectura_breve_citas/3601` + `textos/3602` — **òrfenes** |
+| oració final | `209` = *«Señor de poder y de misericordia…»* (del diumenge) | **«Escucha, Señor, nuestras súplicas, para que, al confesar la resurrección…»** | `oraciones_finales/1761` |
+| himne | `3865` = *«¿Qué ves en la noche…»* (compartit amb 8 diumenges) | *«Tú, Señor, que asumiste la existencia…»* | `himnos/3970` |
+
+**L'argument més fort per a la 2a ronda**: `oraciones_finales/1761` **ja la fa servir la fitxa
+dels Difunts a Sexta i a Nona**. O sigui que l'app ja sap quina és l'oració d'aquell dia a les
+hores menors, i a Laudes i Vespres continua posant-hi la del diumenge. No cal discutir de
+litúrgia: n'hi ha prou amb ensenyar-los la seva pròpia incoherència.
+
+## Precedent que deixa aquest cas
+
+1. **El patró de la fitxa clonada.** Val la pena buscar-ne més: comparar cada fitxa amb la del
+   diumenge veí i mirar quantes en són quasi idèntiques.
+2. **Els ids orfes són el rastre.** Quan un text hi és i no l'apunta ningú, algú es va deixar
+   el cablejat. Ha passat dues vegades al mateix dia (les antífones, i ara la lectura).
+3. **Arreglar el castellà obre conflictes al català.** Les caselles `906` i `247` no existien
+   com a problema fins que la fitxa va apuntar bé. És el preu correcte, però cal comptar-lo.

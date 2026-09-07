@@ -36,7 +36,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [SA-02](#sa-02) | 2026-08-11 | saints-app | contingut | Es regenera | `abc5c1caf` |
 | [SA-03](#sa-03) | 2026-09-01 | saints-app | contingut | Es regenera | `f28389733` |
 | [LC-01…05](#litcal) | 2026-07-23 → 08-11 | litcal | codi | No | 5 commits |
-| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **proposat** | — pendent de resposta | — |
+| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** | Salmòdia feta; 2a ronda pendent | `43a319267` |
 | [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **proposat** | — pendent d'enviar | — |
 | [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **proposat** | — pendent d'enviar | — |
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
@@ -458,25 +458,22 @@ qui decideix és eprex. Van a `migration-to-saints/eprex-bugs/`.
 <a id="eprex-001"></a>
 ## EPREX-001
 
-**El 2 de novembre, saints-app resa el diumenge en comptes de l'Ofici de Difunts** · 3 de setembre de 2026
+**El 2 de novembre, saints-app resava el diumenge en comptes de l'Ofici de Difunts** · proposat el 3-09-2026, **aplicat per eprex el 5-09-2026**
 
-A la Commemoració de tots els fidels difunts, la fitxa de saints-app dona la salmòdia del
-Diumenge XXXI del temps ordinari, amb antífones acabades en «Aleluya» — a Laudes i a Vespres.
-La fitxa és idèntica a la del diumenge en 16 dels 20 camps: es va clonar d'allà. Afecta
-**totes les llengües**, castellà inclòs.
+A la Commemoració de tots els fidels difunts, la fitxa de saints-app donava la salmòdia del
+Diumenge XXXI del temps ordinari, amb antífones acabades en «Aleluya», a Laudes i a Vespres.
+Era una còpia de la fitxa del diumenge. Afectava **totes les llengües**, castellà inclòs.
 
 | | |
 |---|---|
 | Dossier | [migration-to-saints/eprex-bugs/EPREX-001.md](migration-to-saints/eprex-bugs/EPREX-001.md) |
-| Estat | **Enviat a en Fernando el 3-09-2026, pendent de resposta** |
-| Fix | Cap encara. És repunteig d'ids a `all_visperas.json` i `all_laudes.json`; no cal contingut nou |
-| Prova | La fitxa és una còpia del diumenge · el 2026-11-02 és dilluns i tampoc és la fèria · el botó d'Ofici de Difunts de la mateixa app ja porta el text bo · les antífones `10964`/`10965`/`10966` són òrfenes |
-| Efecte a la migració | Desbloquejaria `salmos_citas/11025` i companyia. Però ens obrirà un conflicte nou a `salmos_antifonas/906` — vegeu el dossier |
+| Estat | **Salmòdia aplicada.** En Fernando ens va donar la raó; entrat per la PR #1726 de staging-texts |
+| Commits | saints-app `43a319267` (textos) → `39410aa43` (merge d'en Fernando) → `cf9cab58a` (a la nostra branca) |
+| Verificat | 7-09-2026: els **18 ids** són exactament els proposats. Sonda repassada a les 08:35 i join a les 08:36, tots dos **després** del merge de les 08:28 |
+| Efecte al català | Les tres antífones òrfenes de Vespres (`10964`/`10965`/`10966`) ja tenen text, i també el 1r salm de Vespres, el 1r de Laudes i el càntic d'Isaïes |
+| Preu | **Dos conflictes nous**, tots dos previstos: `salmos_antifonas/906` (empat 10-10 amb el Dissabte Sant) i `/247` (60 contra 10). Volen id propi; quina redacció catalana és la bona només ho diu el volum imprès |
+| **Pendent** | **2a ronda**: himne, lectura breu i oració final encara vénen del diumenge. Els ids ja existeixen (`3601`/`3602`, `1761`, `3970`) i `1761` **ja la fa servir la mateixa fitxa a Sexta i Nona** |
 
-Quan respongui: si diu que sí, cal **tornar a passar la sonda** abans del join, perquè el join
-escriu on la sonda mesura, no on ho diu l'índex.
-
-<a id="eprex-002"></a>
 ## EPREX-002
 
 **El 31 de maig, saints-app resa a Vespres l'ofici de l'Ascensió en comptes del de la Visitació** · 3 de setembre de 2026
