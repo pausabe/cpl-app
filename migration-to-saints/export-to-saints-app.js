@@ -25,6 +25,11 @@ const SAINTS_APP_COMMONS_ES = path.join(DAY_TEXTS_DIR, 'commons/es');
 const STATIC_TRANSLATIONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/static-translations');
 const COMMONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
 const COMMON_SOURCED = path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-common-sourced.json');
+// Compline does not live in day_specific_texts: seven files per language, one per weekday.
+// No shared id space, so it is a plain file copy rather than a merge — there is nothing in
+// the destination that could be someone else's work (see FASES.md, fase 2).
+const COMPLINE_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/output/compline-ca');
+const SAINTS_APP_COMPLINE_CA = path.join(SAINTS_APP_ROOT, 'src/store/db/compline/ca');
 
 function readJsonSafe(p) {
   try {
@@ -94,6 +99,19 @@ function exportResolvedContentToSaintsApp({ dryRun = false } = {}) {
         dest[k] = v;
       }
       write(destPath, dest, targetName);
+    }
+  }
+
+  if (fs.existsSync(COMPLINE_DIR)) {
+    if (!dryRun) fs.mkdirSync(SAINTS_APP_COMPLINE_CA, { recursive: true });
+    for (const f of fs.readdirSync(COMPLINE_DIR).sort()) {
+      const src = readJsonSafe(path.join(COMPLINE_DIR, f));
+      if (!src) continue;
+      if (!dryRun) {
+        fs.writeFileSync(path.join(SAINTS_APP_COMPLINE_CA, f), JSON.stringify(src, null, 2), 'utf8');
+      }
+      report.filesWritten.push(`compline/${f}`);
+      report.perFile[`compline/${f}`] = { added: Object.keys(src).length, changed: 0, held: 0, total: 0, after: Object.keys(src).length };
     }
   }
 

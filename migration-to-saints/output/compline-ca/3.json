@@ -1,0 +1,31 @@
+{
+  "idd": 3,
+  "slug": "/index.php?idu=lt_6&hora=6&idd=3",
+  "oracion": "Completes: dimarts",
+  "himno": "Oh Crist, el dia i l’esplendor,\nque desfeu l’ombra de la nit\ni Llum de Llum sou proclamat,\nLlum que es palesa als benaurats.\n\nUs demanem, oh sant Senyor,\nque ens guardeu bé en aquesta nit;\nen vós tinguem un bon descans,\nd’hores tranquil·les feu-nos do.\n\nQue si a dormir es posen els ulls,\nel cor tothora vetlli amb vós;\ni amb vostra dreta protegiu\nels fidels vostres amadors.\n\nDefensor nostre, vigileu:\nels adversaris reprimiu,\ni conduïu vostres servents\nque amb vostra sang haveu comprat.\n\nDonem al Crist, rei piadós,\ni al Pare, glòria i honor\namb l’Esperit Sant, defensor,\nara i per segles sense fi. \nAmén.",
+  "himno_latino": "Te lucis ante términum,\nrerum creátor, póscimus,\nut sólita cleméntia\nsis præsul ad custódiam.\n\nTe corda nostra sómnient,\nte per sopórem séntiant,\ntuámque semper glóriam\nvicína luce cóncinant.\n\nVitam salúbrem tríbue,\nnostrum calórem réfice,\ntætram noctis calíginem\ntua collústret cláritas.\n\nPræsta, Pater omnípotens,\nper Iesum Christum Dóminum,\nqui tecum in perpétuum\nregnat cum Sancto Spíritu. Amen.",
+  "primer_salmo_cita": "Salm 142, 1-11 \nOració en temps d’angoixa",
+  "primer_salmo_antifona": "No m’amagueu la vostra mirada, perquè jo confio en vós.",
+  "primer_salmo_texto": "Senyor, escolteu la meva pregària,    †\nescolteu la meva súplica,    *\nresponeu-me, vós que sou bo i fidel. \nNo vulgueu judicar el vostre servent:    *\nno podríeu absoldre ningú dels qui han viscut.\n\nL’enemic que em perseguia per matar-me    *\nm’ha trepitjat per terra, \nm’ha confinat al país de les tenebres,    *\nigual que els morts de temps immemorial.\n\nEl meu esperit se sent rendit,    *\nestà consternat el meu cor. \nTot evocant el record dels temps antics,    †\nmeditant les vostres proeses,    *\nconsiderant les obres de les vostres mans, \nestenc a vós els braços i us miro,    *\nem sento tot jo com una terra esgotada.\n\nDe pressa, Senyor, responeu-me,    *\nque ja em falta l’alè; \nno m’amagueu la vostra mirada,    *\nque m’enfonsaria a la terra dels morts.\n\nQue pugui escoltar el vostre amor a punta de dia;    *\nconfio en vós. \nFeu-me  conèixer el  camí que  he  de  seguir,    *\na vós elevo la meva ànima.\n\nAllibereu-me de l’enemic, Senyor,    *\nen vós trobo refugi. \nEnsenyeu-me a fer la vostra voluntat,    *\nvós sou el meu Déu. \nQue el vostre esperit em condueixi    *\nper terra plana.\n\nSenyor, pel vostre nom, guardeu-me la vida,    * \nvós que sou bo, traieu-me del perill.",
+  "lectura_biblica_cita": "1Pe 5, 8-9",
+  "lectura_biblica": "Estigueu atents, vetlleu! El vostre acusador, el diable, ronda rugint com un lleó, buscant si pot engolir algun de vosaltres.  Resistiu-li ferms en la fe.",
+  "responsorio": [
+    "℣. A les vostres mans, Senyor, * Encomano el meu esperit.",
+    "℟. A les vostres mans, Senyor, Encomano el meu esperit.",
+    "℣. Vós, Déu fidel, ens heu redimit.",
+    "℟. Encomano el meu esperit.",
+    "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+    "℟. A les vostres mans, Senyor, Encomano el meu esperit."
+  ],
+  "responsorio_pascua": [
+    "℣. A les vostres mans, Senyor, encomano el meu esperit, * Al·leluia, al·leluia.",
+    "℟. A les vostres mans, Senyor, encomano el meu esperit, Al·leluia, al·leluia.",
+    "℣. Vós, Déu fidel, ens heu redimit.",
+    "℟. Al·leluia, al·leluia.",
+    "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+    "℟. A les vostres mans, Senyor, encomano el meu esperit, Al·leluia, al·leluia."
+  ],
+  "antifona_inalbis": "Avui és el dia en què ha obrat el Senyor: alegrem-nos i celebrem-lo, al·leluia.",
+  "cantico_evangelico_antifona": "Salveu-nos, Senyor, durant el dia, guardeu-nos durant la nit, perquè sigui amb Crist la nostra vetlla i amb Crist el nostre descans.",
+  "final": "Preguem:\nIl·lumineu, Senyor, la foscor d’aquesta nit; feu que descansem en la vostra pau, perquè demà, quan claregi el nou dia, ens llevem disposats a servir-vos amb goig. Per Crist Senyor nostre."
+}

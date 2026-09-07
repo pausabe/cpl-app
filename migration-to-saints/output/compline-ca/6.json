@@ -1,0 +1,31 @@
+{
+  "idd": 6,
+  "slug": "/index.php?idu=lt_6&hora=6&idd=6",
+  "oracion": "Completes: divendres",
+  "himno": "Oh Crist, el dia i l’esplendor,\nque desfeu l’ombra de la nit\ni Llum de Llum sou proclamat,\nLlum que es palesa als benaurats.\n\nUs demanem, oh sant Senyor,\nque ens guardeu bé en aquesta nit;\nen vós tinguem un bon descans,\nd’hores tranquil·les feu-nos do.\n\nQue si a dormir es posen els ulls,\nel cor tothora vetlli amb vós;\ni amb vostra dreta protegiu\nels fidels vostres amadors.\n\nDefensor nostre, vigileu:\nels adversaris reprimiu,\ni conduïu vostres servents\nque amb vostra sang haveu comprat.\n\nDonem al Crist, rei piadós,\ni al Pare, glòria i honor\namb l’Esperit Sant, defensor,\nara i per segles sense fi. \nAmén.",
+  "himno_latino": "Christe, qui, splendor et dies,\nnoctis tenébras détegis,\nlucísque lumen créderis,\nlumen beátis praédicans,\n\nPrecámur, sancte Dómine,\nhac nocte nos custódias;\nsit nobis in te réquies,\nquiétas horas tríbue.\n\nSomno si dantur óculi,\ncor semper ad te vígilet;\ntuáque dextra prótegas\nfidéles, qui te díligunt.\n\nDefénsor noster, áspice,\ninsidiántes réprime,\ngubérna tuos fámulos,\nquos sánguine mercátus es.\n\nSit, Christe, rex piíssime,\ntibi Patríque glória\ncum Spíritu Paráclito,\nin sempitérna saécula. Amen.",
+  "primer_salmo_cita": "Salm 87 \nClam davant l’amenaça de la mort i enmig de l’abandó",
+  "primer_salmo_antifona": "Clamo de dia i de nit davant vostre, Senyor.",
+  "primer_salmo_texto": "Senyor, Déu meu, clamo de dia    *\ni crido auxili de nit davant vostre. \nQue arribi fins a vós la meva súplica,    *\nescolteu atentament el meu plany. \n\nSón massa els mals que m’afeixuguen,    *\nja em sento a les portes de la mort; \ntothom em veu amb el peu a la fossa,    *\ncom un home que ha perdut les forces; \nm’amortallen amb llençols del meu llit,    †\nm’ajeuen a la tomba, com els morts de guerra    *\nque vós no recordeu ni protegiu.\n\nM’heu deixat al fons del país dels morts,    *\na la foscor dels abismes; \nel vostre rigor pesa damunt meu,    *\nem cobreixen les vostres onades.\n\nHeu allunyat de mi els meus coneguts,    *\nm’heu fet repugnant per a tothom; \nestic reclòs, no puc sortir,    *\nels meus ulls s’esllangueixen de pena.\n\nSenyor, jo us invoco cada dia,    *\ni alço les mans a vós. \n¿És per als morts que fareu prodigis?    *\n¿S’aixecaran les ombres a lloar-vos?\n\nAls sepulcres, ¿qui parla del vostre amor?    *\n¿Qui us tindrà per lleial al país de la mort?\n¿Coneix algú els vostres prodigis\nal lloc de les tenebres,    *\nla vostra clemència al país de l’oblit?\n\nJo us crido auxili, Senyor,    *\ncada matí us arriba la meva súplica.\nSenyor, ¿per què m’abandoneu    *\ni m’amagueu la vostra mirada?\n\nDes d’infant que sóc feble i dissortat,    †\nel pes que suporto m’aclapara,    *\nel vostre rigor em passa pel damunt; \n\nl’esglai em deixa anorreat,    †\ntot el dia m’envolta com aigua,    *\nem cobreix pertot arreu.  \n\nHeu allunyat de mi veïns i amics,    *\ni la foscor em fa companyia.",
+  "lectura_biblica_cita": "Jr 14, 9",
+  "lectura_biblica": "Vós sou entre nosaltres, Senyor, i nosaltres portem el vostre nom: no ens desempareu, Senyor Déu nostre.",
+  "responsorio": [
+    "℣. A les vostres mans, Senyor, * Encomano el meu esperit.",
+    "℟. A les vostres mans, Senyor, Encomano el meu esperit.",
+    "℣. Vós, Déu fidel, ens heu redimit.",
+    "℟. Encomano el meu esperit.",
+    "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+    "℟. A les vostres mans, Senyor, Encomano el meu esperit."
+  ],
+  "responsorio_pascua": [
+    "℣. A les vostres mans, Senyor, encomano el meu esperit, * Al·leluia, al·leluia.",
+    "℟. A les vostres mans, Senyor, encomano el meu esperit, Al·leluia, al·leluia.",
+    "℣. Vós, Déu fidel, ens heu redimit.",
+    "℟. Al·leluia, al·leluia.",
+    "℣. Glòria al Pare, i al Fill, i a l’Esperit Sant.",
+    "℟. A les vostres mans, Senyor, encomano el meu esperit, Al·leluia, al·leluia."
+  ],
+  "antifona_inalbis": "Avui és el dia en què ha obrat el Senyor: alegrem-nos i celebrem-lo, al·leluia.",
+  "cantico_evangelico_antifona": "Salveu-nos, Senyor, durant el dia, guardeu-nos durant la nit, perquè sigui amb Crist la nostra vetlla i amb Crist el nostre descans.",
+  "final": "Preguem:\nConcediu-nos, Déu omnipotent, que de tal manera ens unim al vostre Fill mort i sepultat, que puguem ressuscitar a una nova vida amb ell. Que viu i regna pels segles dels segles."
+}
