@@ -1,92 +1,56 @@
 [
   {
-    "table": "responsorios",
-    "id": "2602",
-    "kept": "℣. Sobre teu, Jerusalem, * He apostat sentinelles.",
-    "common": "℣. L’Església proclama * La saviesa dels sants."
+    "table": "cantico_evangelico_antifonas",
+    "id": "1447",
+    "kept": "Que n’és, de dolç, Senyor, el vostre esperit! N’heu donat prova als vostres fills, regalant-los amb el pa deliciós del cel; ompliu de béns els pobres afamats, i els rics satisfets se’n tornen sense res.",
+    "common": "Vosaltres, que ho heu deixat tot i heu vingut amb mi, rebreu cent vegades més i posseireu la vida eterna."
   },
   {
-    "table": "responsorios",
-    "id": "2603",
-    "kept": "℟. Sobre teu, Jerusalem, He apostat sentinelles.",
-    "common": "℟. L’Església proclama La saviesa dels sants."
+    "table": "lectura_breve_citas",
+    "id": "3614",
+    "kept": "Ef 1, 20-23",
+    "common": "1Pe 4, 13-14"
   },
   {
-    "table": "responsorios",
-    "id": "2604",
-    "kept": "℣. Ni de dia ni de nit no pararan de predicar el nom del Senyor.",
-    "common": "℣. I en fa l’elogi."
+    "table": "lectura_breve_citas",
+    "id": "3699",
+    "kept": "1C 10, 16-17",
+    "common": "Rm 8, 28-30"
   },
   {
-    "table": "responsorios",
-    "id": "2605",
-    "kept": "℟. He apostat sentinelles.",
-    "common": "℟. La saviesa dels sants."
+    "table": "lectura_breve_textos",
+    "id": "3615",
+    "kept": "Déu ressuscità el Crist d’entre els morts, i el féu seure a la seva dreta dalt el cel, per damunt de tots els governants i dels qui tenen autoritat, poder o senyoria, per damunt de tots els títols que es poden donar en el nostre món i en l’altre. Tot ho ha posat sota els seus peus, i a ell l’ha fet cap de tot i l’ha donat a l’Església, que és el seu cos i el seu complement, ell que té en totes les coses la seva plenitud.",
+    "common": "Estimats, alegreu-vos de poder compartir els sofriments del Crist: també el dia que es revelarà la seva glòria desbordareu d’alegria. Feliços vosaltres si algú us retreu el nom de cristians: vol dir que l’Esperit de la glòria, que és l’Esperit de Déu, reposa sobre vosaltres."
   },
   {
-    "table": "responsorios",
-    "id": "2607",
-    "kept": "℟. Sobre teu, Jerusalem, He apostat sentinelles.",
-    "common": "℟. L’Església proclama La saviesa dels sants."
+    "table": "lectura_breve_textos",
+    "id": "3700",
+    "kept": "El calze de la benedicció que nosaltres beneïm, ¿no és, potser, comunió amb la sang de Crist? El pa que nosaltres partim, ¿no és, potser, comunió amb el cos de Crist? El pa és un de sol. Per això tots nosaltres, ni que siguem molts, formem un sol cos, ja que tots participem del mateix pa.",
+    "common": "Sabem que Déu ho disposa tot en bé dels qui l’estimen, dels qui ell ha cridat per decisió seva; perquè ell, que els coneixia d’abans que existissin, els destinà a ser imatges vives del seu Fill, que ha estat així el primer d’una multitud de germans. Ell, que els havia destinat, els crida, els fa justos i els glorifica."
   },
   {
-    "table": "responsorios",
-    "id": "2717",
-    "kept": "℣. Sobre teu, Jerusalem, * He apostat sentinelles.",
-    "common": "℣. L’Església proclama * La saviesa dels sants."
+    "table": "preces_contenido",
+    "id": "1968",
+    "kept": "Oh Crist, l’únic sant, que ens revelàreu la vostra glòria assumint la nostra naturalesa i duguéreu a compliment l’Aliança antiga,\nus demanem que feu arribar fins a nosaltres la vostra llum.",
+    "common": "Oh Crist, que heu volgut manifestar-nos en els sants pastors l’amor i la misericòrdia,\nsigueu sempre per mitjà d’ells compassiu amb nosaltres."
   },
   {
-    "table": "responsorios",
-    "id": "2718",
-    "kept": "℟. Sobre teu, Jerusalem, He apostat sentinelles.",
-    "common": "℟. L’Església proclama La saviesa dels sants."
+    "table": "preces_contenido",
+    "id": "1969",
+    "kept": "Oh Crist, glorificat pels àngels i anunciat pels pastors, reconegut i assenyalat per Simeó i Anna,\nus demanem que el poble que rebé les antigues promeses accepti el vostre Evangeli.",
+    "common": "Crist, que per ells, vicaris vostres, continueu essent el pastor de les nostres ànimes,\nconduïu-nos de la mà dels nostres pastors."
   },
   {
-    "table": "responsorios",
-    "id": "2719",
-    "kept": "℣. Ni de dia ni de nit no pararan de predicar el nom del Senyor.",
-    "common": "℣. I en fa l’elogi."
+    "table": "preces_contenido",
+    "id": "1970",
+    "kept": "Oh Crist, sobre la cova on nasquéreu, els àngels cantaven: Glòria dalt el cel, pau a la terra:\nus demanem que inundi el món la vostra pau.",
+    "common": "Crist, present, com a metge del cos i de l’ànima, en els vostres sants, guies dels pobles,\nno estronqueu aquest ministeri de vida i de santedat a favor nostre."
   },
   {
-    "table": "responsorios",
-    "id": "2720",
-    "kept": "℟. He apostat sentinelles.",
-    "common": "℟. La saviesa dels sants."
-  },
-  {
-    "table": "responsorios",
-    "id": "2722",
-    "kept": "℟. Sobre teu, Jerusalem, He apostat sentinelles.",
-    "common": "℟. L’Església proclama La saviesa dels sants."
-  },
-  {
-    "table": "responsorios",
-    "id": "16409",
-    "kept": "℣. Ha estimat els germans * I prega molt pel poble.",
-    "common": "℣. El Senyor l’ha fet parlar * Enmig del poble."
-  },
-  {
-    "table": "responsorios",
-    "id": "16410",
-    "kept": "℟. Ha estimat els germans I prega molt pel poble.",
-    "common": "℟. El Senyor l’ha fet parlar Enmig del poble."
-  },
-  {
-    "table": "responsorios",
-    "id": "16411",
-    "kept": "℣. Ha donat la vida pels seus germans.",
-    "common": "℣. L’ha omplert de saviesa i d’intel·ligència."
-  },
-  {
-    "table": "responsorios",
-    "id": "16412",
-    "kept": "℟. I prega molt pel poble.",
-    "common": "℟. Enmig del poble."
-  },
-  {
-    "table": "responsorios",
-    "id": "16414",
-    "kept": "℟. Ha estimat els germans I prega molt pel poble.",
-    "common": "℟. El Senyor l’ha fet parlar Enmig del poble."
+    "table": "preces_contenido",
+    "id": "1971",
+    "kept": "Oh Crist, nou Adam, renovador de la nostra decrepitud, que ens heu preparat un lloc al vostre Regne,\nus demanem que els oprimits pel mal es redrecin i esperin en vós.",
+    "common": "Crist, educador del vostre ramat per la prudència i la caritat dels sants,\nserviu-vos constantment dels vostres pastors per edificar-nos en la santedat."
   }
 ]

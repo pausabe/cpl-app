@@ -219,9 +219,33 @@ catalans de celebracions que litcal ja té** amb el seu id de romcal —
 `santa_caterina_de_siena_verge_i_doctora_de_l_esglesia_patrona_d_europa` contra
 `catherine_of_siena_virgin`. O sigui que saltar-les, com feia el codi original, és el correcte.
 
-**Efecte al manifest**, regenerat amb els calendaris nous: les dates **sense `allXKey`** passen de
-**431 a 347**. En queden 347 —Dijous Sant, la Mare de Déu de la Mercè, sant Jaume i companyia—
-que són celebracions que l'índex de saints-app no té; és un forat anterior, no d'aquest canvi.
+> ### ⚠️ El fix és bo, però **NO regeneris els calendaris amb ell** fins que no es resolgui això
+>
+> Regenerats i mesurats, **117 dates passen a resoldre's a un id català nostre** que duplica una
+> celebració que romcal ja té: `santa_caterina_de_siena_verge_i_doctora_de_l_esglesia_patrona_d_europa`
+> contra `catherine_of_siena_virgin`, `sant_jaume_apostol_patro_d_espanya` contra `james_apostle`,
+> i així 117. L'índex de saints-app no té entrada per a aquests ids, o sigui que el dia **perd la
+> clau** i el join aparella el text de cpl-app amb la casella d'una altra celebració.
+>
+> **El generador sempre els ha emès.** El que fa aquest fix és donar-los un rang coherent i, per
+> tant, **fer-los guanyar dies que abans no podien guanyar** — abans sortien amb rang i precedència
+> contradictoris i litcal no els sabia col·locar. O sigui que la F10 estava tapant això.
+>
+> Mesurat sobre les dates sense `allXKey` al manifest, amb l'índex de `dev` ja fusionat:
+>
+> | calendaris | dates sense clau |
+> |---|---|
+> | Els del git (sense regenerar) | **239** |
+> | Regenerats amb el fix | 347 |
+>
+> I l'exportació que en va sortir tenia **15 caselles sobreescrites i les 15 eren regressions**,
+> totes verificades contra el castellà: textos de sant Joan Baptista entrant a caselles del Sagrat
+> Cor. Per això els calendaris regenerats es van revertir (litcal `91f2e17`).
+>
+> **El que falta abans de poder-los regenerar:** que el generador no emeti una celebració catalana
+> quan romcal ja en té una d'equivalent, o que emeti l'id de romcal en comptes del seu propi slug.
+> És una troballa nova, no la F10.
+
 
 ## EINA-comu
 
