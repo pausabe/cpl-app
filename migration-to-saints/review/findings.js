@@ -374,6 +374,7 @@ const FINDINGS = [
   {
     id: 'F10',
     verdict: 3,
+    resolved: 'MIGRA-005, corregit el 4 de setembre de 2026',
     days: ['2026-09-17'],
     headline: '19 celebracions dels calendaris catalans surten amb rang i precedència contradictoris',
     detail:
@@ -406,8 +407,13 @@ const FINDINGS = [
       summary:
         'Derivar <code>rank</code> i <code>precedence</code> d’una sola decisió, i afegir una ' +
         'asserció que falli si les dues no són de la mateixa família.',
-      note: 'Cal regenerar els calendaris i tornar a córrer el manifest després.',
-      promptable: true,
+      note:
+        '<strong>Ja fet</strong> (MIGRA-005, 4-09-2026): <code>classifySolemnitat()</code> i ' +
+        '<code>classifyMemory()</code> retornen rank i precedence junts, el lookup de memòries ' +
+        'només llegeix V/L/M, i la validació avorta si les dues famílies no coincideixen. ' +
+        'Contradiccions <strong>19 → 0</strong> sobre 622 celebracions, i les dates del manifest sense ' +
+        '<code>allXKey</code> passen de <strong>431 a 347</strong>.',
+      promptable: false,
     },
   },
   {

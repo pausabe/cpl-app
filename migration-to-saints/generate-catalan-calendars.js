@@ -90,25 +90,41 @@ const SOLEMNITAT_PRECEDENCE_MAP = {
   '8e': 'PROPER_FEAST__TO_AN_INDIVIDUAL_CHURCH_8E',
   '8f': 'PROPER_FEAST_8F',
 };
-function rankForCat(cat) {
-  // 'S' Solemnity / 'F' Festivity -> litcal FEAST unless precedence table says SOLEMNITY
-  if (cat === 'S') return 'SOLEMNITY';
-  if (cat === 'F') return 'FEAST';
-  if (cat === 'M') return 'MEMORIAL';
-  if (cat === 'L' || cat === 'V') return 'OPTIONAL_MEMORIAL';
+// Which family a litcal precedence belongs to. `rank` and `precedence` are two views of
+// the same decision and must never disagree — a memory emitted with rank SOLEMNITY is a
+// day litcal cannot place, and the manifest writes it out with `allXKey: null`. The
+// assertion below fails the build if they ever drift again.
+const PRECEDENCE_FAMILY = (p) => {
+  if (/SOLEMNITY|TRIDUUM|PRIVILEGED_SUNDAY|EASTER_OCTAVE/.test(p)) return 'SOLEMNITY';
+  if (/FEAST|UNPRIVILEGED_SUNDAY/.test(p)) return 'FEAST';
+  if (/OPTIONAL_MEMORIAL/.test(p)) return 'OPTIONAL_MEMORIAL';
+  if (/MEMORIAL/.test(p)) return 'MEMORIAL';
+  if (/WEEKDAY/.test(p)) return 'WEEKDAY';
+  return null;
+};
+const RANK_FAMILY = { SOLEMNITY: 'SOLEMNITY', FEAST: 'FEAST', MEMORIAL: 'MEMORIAL', OPTIONAL_MEMORIAL: 'OPTIONAL_MEMORIAL' };
+
+// rank and precedence, decided together and returned together, so a caller cannot take one
+// from one classification and the other from another. That is what MIGRA-005 was.
+function classifySolemnitat(cat, precedencia, isSharedCatalonia) {
+  if (cat === 'S') {
+    const mapped = SOLEMNITAT_PRECEDENCE_MAP[String(precedencia || '').trim()];
+    // A row marked 'S' whose Precedencia tier is a FEAST tier is a feast, not a solemnity:
+    // the tier is the finer statement and the one litcal orders by.
+    if (mapped && PRECEDENCE_FAMILY(mapped) === 'FEAST') return { rank: 'FEAST', precedence: mapped };
+    return { rank: 'SOLEMNITY', precedence: mapped || 'GENERAL_SOLEMNITY_3' };
+  }
+  if (cat === 'F') {
+    const mapped = SOLEMNITAT_PRECEDENCE_MAP[String(precedencia || '').trim()];
+    if (mapped && PRECEDENCE_FAMILY(mapped) === 'SOLEMNITY') return { rank: 'SOLEMNITY', precedence: mapped };
+    return { rank: 'FEAST', precedence: mapped || (isSharedCatalonia ? 'GENERAL_FEAST_7' : 'PROPER_FEAST_8F') };
+  }
   return null;
 }
-function precedenceForSolemnitat(cat, precedencia, isSharedCatalonia) {
-  const mapped = SOLEMNITAT_PRECEDENCE_MAP[String(precedencia || '').trim()];
-  if (mapped) return mapped;
-  // '-' or unrecognized precedencia: fall back on the coarse S/F rank.
-  if (cat === 'S') return 'GENERAL_SOLEMNITY_3';
-  return isSharedCatalonia ? 'GENERAL_FEAST_7' : 'PROPER_FEAST_8F';
-}
-function precedenceForMemory(cat, isSharedCatalonia) {
-  if (cat === 'L' || cat === 'V') return 'OPTIONAL_MEMORIAL_12';
-  // 'M'
-  return isSharedCatalonia ? 'GENERAL_MEMORIAL_10' : 'PROPER_MEMORIAL_11B';
+function classifyMemory(cat, isSharedCatalonia) {
+  if (cat === 'L' || cat === 'V') return { rank: 'OPTIONAL_MEMORIAL', precedence: 'OPTIONAL_MEMORIAL_12' };
+  if (cat === 'M') return { rank: 'MEMORIAL', precedence: isSharedCatalonia ? 'GENERAL_MEMORIAL_10' : 'PROPER_MEMORIAL_11B' };
+  return null;
 }
 
 // ---------------------------------------------------------------------------
@@ -192,7 +208,13 @@ function main() {
   const yearsSeen = [...new Set(yearRows.map((r) => r.any))].sort();
   // Higher wins: a date reported as both 'L' and 'M' across years is a real memory that
   // some year downgraded, not an optional one that some year promoted.
-  const RANK_ORDER = { V: 1, L: 2, M: 3, F: 4, S: 5 };
+  //
+  // Only V/L/M are read. An 'F' or 'S' on that date belongs to whatever OUTRANKED the
+  // memory that year — the paragraph above says exactly that — so taking it would emit a
+  // santsMemories row as a solemnity. That is what produced 94 celebrations whose rank and
+  // precedence came from different families (MIGRA-005). A memory suppressed in every year
+  // of the window yields null and is skipped with a warning, as before.
+  const RANK_ORDER = { V: 1, L: 2, M: 3 };
   const rankLookup = {}; // rankLookup[code]["m-d"] = 'S'|'F'|'M'|'L'|'V'
   for (const code of diocesePlaceCodes) rankLookup[code] = {};
   for (const row of yearRows) {
@@ -244,10 +266,10 @@ function main() {
     if (!target) { skipped++; continue; }
     const parsed = parseDia(row.dia);
     if (!parsed) { skipped++; continue; }
-    const rank = rankForCat(row.Cat);
-    if (!rank) { skipped++; continue; }
     const isShared = row.Diocesis === '-';
-    const precedence = precedenceForSolemnitat(row.Cat, row.Precedencia, isShared);
+    const classified = classifySolemnitat(row.Cat, row.Precedencia, isShared);
+    if (!classified) { skipped++; continue; }
+    const { rank, precedence } = classified;
     const cal = ensureCalendar(target.id, target.parent);
     let id = slugify(row.nomMemoria);
     if (cal.seenIds.has(id)) id = `${id}_${String(parsed.month).padStart(2, '0')}${String(parsed.day).padStart(2, '0')}`;
@@ -278,14 +300,19 @@ function main() {
     const dioceseDCodeForLookup = isShared ? 'BaD' : row.Diocesis;
     const cat = memoryRank(dioceseDCodeForLookup, parsed.month, parsed.day);
     const cal = ensureCalendar(target.id, target.parent);
-    if (!cat) {
-      cal.warnings.push(`No anyliturgic rank found for ${row.nomMemoria} (${row.dia}, ${row.Diocesis}) — skipped`);
+    // A santsMemories row IS a memory — that is what the table means. When the almanac
+    // never shows V/L/M on that date across the whole window (a Lenten date, or one
+    // permanently outranked), we still keep the celebration and put it on the lowest step
+    // rather than drop it: an optional memorial displaces nothing, so guessing wrong is
+    // cheap, while dropping it takes the celebration out of litcal entirely — which the
+    // note above records as ~8% of the join's cell conflicts.
+    const classified = classifyMemory(cat, isShared);
+    if (!classified) {
+      cal.warnings.push(`No anyliturgic V/L/M rank for ${row.nomMemoria} (${row.dia}, ${row.Diocesis}) — skipped`);
       skipped++;
       continue;
     }
-    const rank = rankForCat(cat);
-    if (!rank) { skipped++; continue; }
-    const precedence = precedenceForMemory(cat, isShared);
+    const { rank, precedence } = classified;
     let id = slugify(row.nomMemoria);
     if (cal.seenIds.has(id)) id = `${id}_${String(parsed.month).padStart(2, '0')}${String(parsed.day).padStart(2, '0')}`;
     cal.seenIds.add(id);
@@ -309,6 +336,13 @@ function main() {
     for (const rule of cal.rules) {
       if (!RANKS.has(rule.celebration.rank)) errors.push(`${calId}: invalid rank ${rule.celebration.rank} on ${rule.celebration.id}`);
       if (!PRECEDENCES.has(rule.celebration.precedence)) errors.push(`${calId}: invalid precedence ${rule.celebration.precedence} on ${rule.celebration.id}`);
+      // rank and precedence are two views of one decision; if they ever disagree the day
+      // is unplaceable and the manifest emits allXKey: null. Fail the build, don't ship it.
+      const rf = RANK_FAMILY[rule.celebration.rank];
+      const pf = PRECEDENCE_FAMILY(rule.celebration.precedence);
+      if (rf && pf && rf !== pf) {
+        errors.push(`${calId}: rank ${rule.celebration.rank} but precedence ${rule.celebration.precedence} (${pf}) on ${rule.celebration.id}`);
+      }
       const { month, day } = rule.dateRule;
       if (month < 1 || month > 12 || day < 1 || day > 31) errors.push(`${calId}: invalid date ${month}/${day} on ${rule.celebration.id}`);
     }

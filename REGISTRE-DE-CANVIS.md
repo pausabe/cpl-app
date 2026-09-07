@@ -40,6 +40,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **proposat** | — pendent d'enviar | — |
 | [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **proposat** | — pendent d'enviar | — |
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
+| [MIGRA-005](#migra-005) | 2026-09-04 | eines | codi | No — va al git | — |
 | [SA-05](#sa-05) | 2026-09-03 | saints-app | contingut | Es regenera | — |
 | [SA-06](#sa-06) | 2026-09-03 | saints-app | merge | No — va al git | `1a35a54a6` |
 | [SA-07](#sa-07) | 2026-09-04 | saints-app | contingut | No — va al git | — |
@@ -179,6 +180,49 @@ Ambròs.
 això la skill `revisio-dia` fa servir `review/resolve-cpl-days.test.js` i no aquell.
 
 <a id="eina-comu"></a>
+<a id="migra-005"></a>
+## MIGRA-005
+
+**El generador de calendaris emetia memòries com a solemnitats** · 4 de setembre de 2026
+
+És la **F10**, i la causa era més fina del que deia la fitxa. `generate-catalan-calendars.js`
+treia el `rank` i la `precedence` de dues decisions separades:
+
+- `memoryRank()` retorna **el rang més alt observat** a `anyliturgic` per a aquella data, i
+  aquell rang pot ser `'S'` o `'F'` — que és el de la celebració que **va suprimir** la memòria
+  aquell any, no el de la memòria. El comentari del fitxer ja ho diu: «a suppressed year says
+  nothing about the celebration's own rank — only about what outranked it that year».
+- `precedenceForMemory()` només contemplava `M`, `L` i `V`. Amb `'S'` queia al calaix de les
+  memòries i retornava `PROPER_MEMORIAL_11B`.
+
+Resultat: `rank: "SOLEMNITY"` amb `precedence: "PROPER_MEMORIAL_11B"`. Dies que litcal no sap
+col·locar i que el manifest escriu amb `allXKey: null`.
+
+| | |
+|---|---|
+| Fix | `classifySolemnitat()` i `classifyMemory()` retornen **rank i precedence junts**, o sigui que un cridador no en pot agafar un de cada banda. El lookup de memòries només llegeix `V`/`L`/`M` |
+| Asserció | La validació prèvia a escriure ara **avorta** si el `rank` i la `precedence` d'una celebració són de famílies diferents. És el detector: sense el fix, no escriuria res |
+| Cura | Restringir el lookup deixava caure 13 celebracions (dates de Quaresma, sempre suprimides). Una fila de `santsMemories` **és** una memòria: si l'almanac no ho diu, es queda com a `OPTIONAL_MEMORIAL` amb avís, que no desplaça res. Perdre-les era el mal que la capçalera del fitxer ja avisa —va costar el 8% dels conflictes del join |
+
+| | contradiccions | regles | saltades |
+|---|---|---|---|
+| Al git, abans | 19 de 340 | 596 | 41 |
+| Regenerat sense el fix (4-IX, matí) | **94** | — | — |
+| **Amb el fix** | **0 de 622** | 583 | 54 |
+
+**Un camí que es va provar i es va desfer.** Restringir el lookup a `V`/`L`/`M` deixa fora 13
+files més, i la primera reacció va ser mantenir-les com a `OPTIONAL_MEMORIAL` en comptes de
+perdre-les —la capçalera del fitxer avisa que deixar-ne caure va costar el 8% dels conflictes del
+join. Mesurat, **el manifest surt idèntic amb i sense**: 0 dates amb un `litcalId` diferent, 0
+amb clau diferent. Aquelles celebracions no guanyen mai cap dia, i unes quantes són **duplicats
+catalans de celebracions que litcal ja té** amb el seu id de romcal —
+`santa_caterina_de_siena_verge_i_doctora_de_l_esglesia_patrona_d_europa` contra
+`catherine_of_siena_virgin`. O sigui que saltar-les, com feia el codi original, és el correcte.
+
+**Efecte al manifest**, regenerat amb els calendaris nous: les dates **sense `allXKey`** passen de
+**431 a 347**. En queden 347 —Dijous Sant, la Mare de Déu de la Mercè, sant Jaume i companyia—
+que són celebracions que l'índex de saints-app no té; és un forat anterior, no d'aquest canvi.
+
 ## EINA-comu
 
 **El join agafa el Comú dels sants per a la pestanya del sant** · 3 de setembre de 2026
