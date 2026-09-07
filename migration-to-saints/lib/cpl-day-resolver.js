@@ -15,7 +15,9 @@ const SpecialCelebrationService = require('../../src/Services/SpecialCelebration
 const { ObtainLiturgyMasters } = require('../../src/Services/Liturgy/LiturgyMastersService');
 const { ObtainHoursLiturgy } = require('../../src/Services/Liturgy/HoursLiturgyService');
 const LaudesService = require('../../src/Services/Liturgy/LaudesService');
+const { ObtainHours } = require('../../src/Services/Liturgy/HoursService');
 const Laudes = require('../../src/Models/HoursLiturgy/Laudes').default;
+const Hours = require('../../src/Models/HoursLiturgy/Hours').default;
 const { ferialFields } = require('./memorial-ferial');
 const { Settings } = require('../../src/Models/Settings');
 const LiturgyDayInformation = require('../../src/Models/LiturgyDayInformation').default;
@@ -69,6 +71,14 @@ async function obtainLiturgyDayInformation(date, settings) {
   return ldi;
 }
 
+// Where one Hour's data lives on the resolved day. Laudes and Vespers sit at the root;
+// Terce, Sext and None hang off `Hours`.
+function hourDataOf(hoursLiturgy, hour) {
+  const nested = INTERMEDIATE_HOURS[hour];
+  if (nested) return hoursLiturgy.Hours ? hoursLiturgy.Hours[nested] : null;
+  return hoursLiturgy[hour];
+}
+
 // Mirrors DataService.ReloadAllData (Mass liturgy omitted: the Hours are what migrates).
 async function resolveDay(date, settings) {
   const ldi = await obtainLiturgyDayInformation(date, settings);
@@ -80,9 +90,15 @@ async function resolveDay(date, settings) {
   // The same day with the celebration taken out, so a caller can tell a proper text from a
   // weekday one field by field (lib/memorial-ferial.js). Laudes has to be asked for;
   // Vespers without the celebration is already one of the options just computed.
+  // Terce/Sext/None come as one object; asked for with an empty celebration it is the same
+  // call the app makes, so seasons and psalter weeks behave exactly as on screen.
+  const ferialHours = ObtainHours(todayMasters, ldi.Today, new Hours(), settings);
   const ferial = {
     Laudes: LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings),
     Vespers: hoursLiturgy.VespersOptions.VespersWithoutCelebration,
+    Tercia: ferialHours.ThirdHour,
+    Sexta: ferialHours.SixthHour,
+    Nona: ferialHours.NinthHour,
   };
   return { liturgyDayInformation: ldi, hoursLiturgy, ferial };
 }
@@ -125,6 +141,43 @@ function expandResponsory(r) {
   };
 }
 
+
+// The two places an intermediate Hour differs from Laudes in cpl-app's model. They live
+// here, and both the comparator's flattener below and the join's `observeHour` call them,
+// so the two can't drift — which is the mistake this file's header exists to prevent.
+
+// A celebration says ONE antiphon over all three psalms (`HasMultipleAntiphons: false`),
+// and the psalms keep carrying the psalter's own antiphons underneath — cpl-app does not
+// show those. The index has the same shape: 173 of the 495 entries of `all_tercia.json`
+// carry `primer_salmo_antifona` and -1 in the other two. Returns one entry per psalm.
+function psalmAntiphons(hourData) {
+  if (hourData.HasMultipleAntiphons === false && hourData.UniqueAntiphon) {
+    return [hourData.UniqueAntiphon, null, null];
+  }
+  return [hourData.FirstPsalm, hourData.SecondPsalm, hourData.ThirdPsalm].map((p) => (p ? p.Antiphon : null));
+}
+
+// The responsory in the shape the index stores it. Laudes and Vespers expand to six lines;
+// an intermediate Hour's is a plain versicle/response pair (`CommonParts.Responsory`) and
+// the index holds exactly two ids for it — `℣.` then `℟.`, verified against es/responsorios
+// 10415/10416 of `advent_1_friday__ANY`.
+function responsoryParts(hourData) {
+  if (hourData.ShortResponsory) {
+    const r = expandResponsory(hourData.ShortResponsory);
+    if (!r) return null;
+    return r.parts || (r.special ? [r.special] : null);
+  }
+  const r = hourData.Responsory;
+  if (r && (r.Versicle || r.Response)) return [`℣. ${r.Versicle || ''}`, `℟. ${r.Response || ''}`];
+  return null;
+}
+
+// Terce, Sext and None live under `hoursLiturgy.Hours`, not at the root, and their model
+// (`Models/HoursLiturgy/Hours.tsx`, class SpecificHour) is a smaller Laudes: no evangelical
+// antiphon, no intercessions, and two fields shaped differently. `extractHourFields` reads
+// both shapes, so the comparator, the inspector and the join keep speaking one vocabulary.
+const INTERMEDIATE_HOURS = { Tercia: 'ThirdHour', Sexta: 'SixthHour', Nona: 'NinthHour' };
+
 // One Hour of cpl-app, keyed by the saints-app index's field names. List fields hold an
 // array (one entry per responsory part / intercession), matching how the index stores
 // them. A field cpl-app has nothing for is simply absent.
@@ -141,19 +194,18 @@ function extractHourFields(hourData) {
     ['segundo', hourData.SecondPsalm],
     ['tercer', hourData.ThirdPsalm],
   ];
-  for (const [prefix, psalm] of psalms) {
-    if (!psalm) continue;
+  const antiphons = psalmAntiphons(hourData);
+  psalms.forEach(([prefix, psalm], i) => {
+    if (!psalm) return;
     set(`${prefix}_salmo_cita`, psalm.Title);
-    set(`${prefix}_salmo_antifona`, psalm.Antiphon);
+    set(`${prefix}_salmo_antifona`, antiphons[i]);
     set(`${prefix}_salmo_texto`, psalm.Psalm);
-  }
+  });
   if (hourData.ShortReading) {
     set('lectura_biblica_cita', hourData.ShortReading.Quote);
     set('lectura_biblica', hourData.ShortReading.ShortReading);
   }
-  const resp = expandResponsory(hourData.ShortResponsory);
-  if (resp && resp.parts) set('responsorios', resp.parts);
-  else if (resp && resp.special) set('responsorios', [resp.special]);
+  set('responsorios', responsoryParts(hourData));
   set('cantico_evangelico_antifona', hourData.EvangelicalAntiphon);
 
   const prayers = parsePrayers(hourData.Prayers);
@@ -198,7 +250,7 @@ async function resolveDayForComparison(dateStr, { diocese = 'Barcelona', praying
     ferialFields: {},
   };
   for (const hour of hours) {
-    out.hours[hour] = extractHourFields(hoursLiturgy[hour]);
+    out.hours[hour] = extractHourFields(hourDataOf(hoursLiturgy, hour));
     out.ferialFields[hour] = [...ferialFields(out.hours[hour], extractHourFields(ferial[hour]))];
   }
   // Not one of the Hours the inspector walks field by field, but it is the first thing the
@@ -208,6 +260,10 @@ async function resolveDayForComparison(dateStr, { diocese = 'Barcelona', praying
 }
 
 module.exports = {
+  INTERMEDIATE_HOURS,
+  psalmAntiphons,
+  responsoryParts,
+  hourDataOf,
   buildSettings,
   resolveDay,
   resolveDayForComparison,

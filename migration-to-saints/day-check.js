@@ -32,7 +32,15 @@ const LAST_RUN_PATH = path.join(MIGRATION_DIR, 'webui/run/last-run.json');
 const DAY_TEXTS_DIR = '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts';
 const APP_COMMONS_DIR = path.join(DAY_TEXTS_DIR, 'commons/ca');
 
-const HOUR_FILES = { Laudes: 'all_laudes.json', Vespers: 'all_visperas.json' };
+const HOUR_FILES = {
+  Laudes: 'all_laudes.json',
+  Vespers: 'all_visperas.json',
+  Tercia: 'all_tercia.json',
+  Sexta: 'all_sexta.json',
+  Nona: 'all_nona.json',
+};
+// The order they are prayed in, which is the order the report reads best in.
+const ALL_HOURS = ['Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
 
 // Every field of an index entry, in reading order, with the commons table it points at.
 // `list: true` means the field holds an array of ids (one per responsory part /
@@ -151,7 +159,7 @@ function buildConflictIndex(manifest) {
 // is a migration target: for es/it the tables are already complete, so there is no local
 // output to consult and no conflict to explain — the question there is just "what does the
 // app print", which is what the comparator uses it for.
-function buildContext({ hours = ['Laudes', 'Vespers'], language = 'ca' } = {}) {
+function buildContext({ hours = ALL_HOURS, language = 'ca' } = {}) {
   const manifest = readJsonSafe(MANIFEST_PATH, {});
   const isTargetLanguage = language === 'ca';
   const allXByHour = {};

@@ -110,13 +110,14 @@ function dayBlock(day) {
   let divergent = 0, unexplained = 0;
   for (const r of day.rows) if (isDivergent(day, r)) { divergent++; if (!findingOf(day, r)) unexplained++; }
 
-  const hours = ['Laudes', 'Vespers'].map((h) => {
+  const HOUR_LABELS = { Laudes: 'Laudes', Tercia: 'Tèrcia', Sexta: 'Sexta', Nona: 'Nona', Vespers: 'Vespres' };
+  const hours = ['Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'].map((h) => {
     const rows = day.rows.filter((r) => r.hour === h);
     if (!rows.length) return '';
     const bad = rows.filter((r) => isDivergent(day, r));
     const good = rows.filter((r) => !isDivergent(day, r));
     return `<section class="hr">
-      <h4>${h === 'Laudes' ? 'Laudes' : 'Vespres'} <span class="hc">${bad.length ? `${bad.length} de ${rows.length} divergeixen` : `${rows.length} camps, tots coincideixen`}</span></h4>
+      <h4>${HOUR_LABELS[h] || h} <span class="hc">${bad.length ? `${bad.length} de ${rows.length} divergeixen` : `${rows.length} camps, tots coincideixen`}</span></h4>
       ${bad.length ? `<ul class="fl">${bad.map((r) => fieldRow({ ...r, date: day.date }, findingOf(day, r), true)).join('')}</ul>` : ''}
       ${good.length ? `<details class="fold"><summary>${good.length} camps que coincideixen</summary><ul class="fl">${good.map((r) => fieldRow({ ...r, date: day.date }, null, false)).join('')}</ul></details>` : ''}
     </section>`;

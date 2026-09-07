@@ -31,7 +31,8 @@ jest.mock('/Users/pau/projects/personal/cpl-app/src/Services/DatabaseManagerServ
 
 const fs = require('fs');
 const REPO = '/Users/pau/projects/personal/cpl-app';
-const { buildSettings, extractHourFields } = require(REPO + '/migration-to-saints/lib/cpl-day-resolver');
+const { buildSettings, extractHourFields, hourDataOf } = require(REPO + '/migration-to-saints/lib/cpl-day-resolver');
+const HOURS = ['Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
 const { ferialFields } = require(REPO + '/migration-to-saints/lib/memorial-ferial');
 const VespersService = require(REPO + '/src/Services/Liturgy/VespersService');
 const LaudesService = require(REPO + '/src/Services/Liturgy/LaudesService');
@@ -75,10 +76,8 @@ test('resolves the dates with a correct Vespers ferial control', async () => {
     const ferialLaudes = LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings);
     const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
 
-    const hours = {
-      Laudes: extractHourFields(hoursLiturgy.Laudes),
-      Vespers: extractHourFields(hoursLiturgy.Vespers),
-    };
+    const hours = {};
+    for (const h of HOURS) hours[h] = extractHourFields(hourDataOf(hoursLiturgy, h));
     days[dateStr] = {
       date: dateStr,
       diocese: DIOCESE,
@@ -95,11 +94,14 @@ test('resolves the dates with a correct Vespers ferial control', async () => {
       ferialFields: {
         Laudes: [...ferialFields(hours.Laudes, extractHourFields(ferialLaudes))],
         Vespers: [...ferialFields(hours.Vespers, extractHourFields(ferialVespers))],
+        // The intermediate Hours have no memorial/weekday switch (see HOURS_CONFIG in
+        // join-content.test.js), so there is nothing to mark ferial here.
+        Tercia: [], Sexta: [], Nona: [],
       },
       invitatory: hoursLiturgy.Invitation ? hoursLiturgy.Invitation.InvitationAntiphon || null : null,
     };
     console.log(`${dateStr}  L=${days[dateStr].ferialFields.Laudes.length}  V=${days[dateStr].ferialFields.Vespers.length}`);
   }
-  fs.writeFileSync(OUT, JSON.stringify({ diocese: DIOCESE, prayingPlace: PRAYING_PLACE, hours: ['Laudes', 'Vespers'], days }, null, 2), 'utf8');
+  fs.writeFileSync(OUT, JSON.stringify({ diocese: DIOCESE, prayingPlace: PRAYING_PLACE, hours: HOURS, days }, null, 2), 'utf8');
   expect(Object.keys(days).length).toBe(DATES.length);
 }, 300000);

@@ -162,6 +162,12 @@ async function connect() {
   return { send, evalJs, close: () => { ws.close(); chrome.kill(); } };
 }
 
+// The Hours the probe drives. Terce, Sext and None are three separate Pinia stores with
+// the same shape as Laudes (`contentByDay`, `loadingState`, `errorCode`), each reading its
+// own `all_{tercia,sexta,nona}.json`; the id under `defineStore` is the name used here.
+const PROBED_HOURS = ['Laudes', 'Vespers', 'Tercia', 'Sexta', 'Nona'];
+const STORE_IDS = { Laudes: 'Laudes', Vespers: 'Visperas', Tercia: 'Tercia', Sexta: 'Sexta', Nona: 'Nona' };
+
 // Reaches the app's own Pinia instance and drives it exactly like the UI would: set the
 // date, then read back what the Hour stores ended up holding.
 const PROBE = (date) => `(async () => {
@@ -170,7 +176,7 @@ const PROBE = (date) => `(async () => {
   const dateStore = pinia._s.get('dateStore');
   await dateStore.setDate(new Date('${date}T12:00:00'));
   const out = { date: '${date}', hours: {}, state: {} };
-  for (const [hour, storeId] of [['Laudes','Laudes'], ['Vespers','Visperas']]) {
+  for (const [hour, storeId] of ${JSON.stringify(Object.entries(STORE_IDS))}) {
     const s = pinia._s.get(storeId);
     if (!s) { out.hours[hour] = null; continue; }
     // The store returns early on ERR-004 (no entry for this day) WITHOUT clearing
@@ -206,6 +212,9 @@ function compare(results) {
   const allX = {
     Laudes: readJson(path.join(DAY_TEXTS, 'all_laudes.json')),
     Vespers: readJson(path.join(DAY_TEXTS, 'all_visperas.json')),
+    Tercia: readJson(path.join(DAY_TEXTS, 'all_tercia.json')),
+    Sexta: readJson(path.join(DAY_TEXTS, 'all_sexta.json')),
+    Nona: readJson(path.join(DAY_TEXTS, 'all_nona.json')),
   };
   const esCache = {};
   const esText = (table, id) => {
@@ -225,7 +234,7 @@ function compare(results) {
   const diffs = [];
   for (const day of results) {
     const entryForDate = manifest[day.date];
-    for (const hour of ['Laudes', 'Vespers']) {
+    for (const hour of PROBED_HOURS) {
       const app = day.hours[hour];
       if (!app) continue;
       if (app.__noEntry) {
