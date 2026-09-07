@@ -472,7 +472,7 @@ Era una còpia de la fitxa del diumenge. Afectava **totes les llengües**, caste
 | Verificat | 7-09-2026: els **18 ids** són exactament els proposats. Sonda repassada a les 08:35 i join a les 08:36, tots dos **després** del merge de les 08:28 |
 | Efecte al català | Les tres antífones òrfenes de Vespres (`10964`/`10965`/`10966`) ja tenen text, i també el 1r salm de Vespres, el 1r de Laudes i el càntic d'Isaïes |
 | Preu | **Dos conflictes nous**, tots dos previstos: `salmos_antifonas/906` (empat 10-10 amb el Dissabte Sant) i `/247` (60 contra 10). Volen id propi; quina redacció catalana és la bona només ho diu el volum imprès |
-| **Pendent** | **2a ronda**: himne, lectura breu i oració final encara vénen del diumenge. Els ids ja existeixen (`3601`/`3602`, `1761`, `3970`) i `1761` **ja la fa servir la mateixa fitxa a Sexta i Nona** |
+| **Pendent** | **2a ronda enviada el 7-09-2026, pendent de resposta**: himne, lectura breu i oració final encara vénen del diumenge. Els ids ja existeixen (`3601`/`3602`, `1761`, `3970`) i `1761` **ja la fa servir la mateixa fitxa a Sexta i Nona** |
 
 ## EPREX-002
 

@@ -117,6 +117,8 @@ el 2 de novembre no en resoldria cap: són conflictes independents i anteriors.
 
 ## 2a ronda: el que encara ve del diumenge
 
+**Enviada a en Fernando el 7 de setembre de 2026. Pendent de resposta.**
+
 La pregunta 3 del missatge —himne, lectura breu i oració final— **no s'ha tocat**. Les fitxes
 de Laudes i Vespres continuen compartint **7 camps** amb el Diumenge XXXI: `himno`,
 `lectura_biblica_cita`, `lectura_biblica`, `preces_intro`, `preces_respuesta`,
