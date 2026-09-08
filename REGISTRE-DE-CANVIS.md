@@ -63,6 +63,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [MIGRA-007](#migra-007) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-008](#migra-008) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-009](#migra-009) | 2026-09-08 | eines | codi | No — va al git | — |
+| [MIGRA-010](#migra-010) | 2026-09-08 | eines | codi | No — va al git | — |
 | [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **proposat** | — pendent d'enviar | — |
 | [SA-15](#sa-15) | 2026-09-08 | saints-app | contingut | Es regenera | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -762,6 +763,47 @@ Si les dues es compleixen, l'antífona és pròpia i la casella és d'un altre d
 | `salmos_antifonas` resoltes | 1.067 | **1.083** |
 | caselles en conflicte (totes les taules) | 1.998 | **1.976** |
 | caselles que deixen de mostrar `[ERR-001]` | — | **6.297, en 1.954 dies** |
+
+<a id="migra-010"></a>
+## MIGRA-010
+
+**El comparador del panell no sabia què és l'Ofici ni la missa** · 8 de setembre de 2026
+
+Trobat perquè en Pau va dir: «he clicat a llegir el dia i em surt tot això de només a
+saints-app, és normal?». **No ho era.**
+
+El panell resolia la banda de cpl-app amb **`cpl-day.test.js`** —el fitxer que el
+[CLAUDE.md](CLAUDE.md) diu explícitament de no fer servir, pel control ferial de Vespres
+trencat (MIGRA-001)— i aquell fitxer **no va aprendre mai** ni l'Ofici de lectura ni la missa:
+la seva llista d'hores és `'Laudes,Vespers'`. Amb la banda de cpl-app buida, el comparador
+etiquetava **els 33 camps** de l'Ofici i de la missa com a «només a saints-app», que és
+precisament el contrari del que passa: cpl-app hi té l'ofici sencer.
+
+Tres coses:
+
+- El panell crida ara **`review/resolve-cpl-days.test.js`**, que és el que mana el CLAUDE.md i
+  el que ja sap les set hores i la missa. Mateix contracte d'entorn (`DATES`, `OUT`, `DIOCESE`,
+  `PRAYING_PLACE`), o sigui que és un canvi d'una línia.
+- **La cau es va quedar amb dies resolts per l'antic.** La prova d'obsolescència era «és més
+  nova la `cpl-app.db`?», que cap canvi de codi no fa saltar; ara també exigeix que el dia
+  desat porti `hours.Office` i `hours.Mass`, igual que ja exigia `ferialFields`. Els 19 dies
+  en cau s'han esborrat.
+- I una tercera, del mateix fil: **el comparador triava malament la columna de la missa.**
+  Deduïa «si cpl-app resa alguna cosa pròpia, va a `CELEBRATION_*`», i això posava la missa
+  ferial al costat de les lectures pròpies del Naixement de la Mare de Déu i reportava els set
+  camps com a divergents. Qui ho decideix és **l'índex**: una entrada amb rols `CELEBRATION_*`
+  du dues misses, una sense en du una de sola. El join no ho endevinava —hi va per la cita
+  (PLAN §18.7)— i ara el comparador tampoc.
+
+El 8-IX-2026, abans i després:
+
+| hora | abans | després |
+|---|---|---|
+| Ofici de lectura | 0 coincideixen · **25 «només a saints-app»** | **20 coincideixen** · 5 difereixen · 0 |
+| Missa | 0 coincideixen · 7 difereixen | **5 coincideixen** · 2 difereixen |
+
+Les 2 que queden a la missa són una divergència de debò: cpl-app dona **Rm 8,28-30** de primera
+lectura i eprex **Mi 5,1-4a**. El Missal ofereix les dues per a aquell dia.
 
 <a id="eprex-005"></a>
 ## EPREX-005

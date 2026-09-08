@@ -450,6 +450,7 @@ català d'origen — però això no ho decidim nosaltres.
 | # | Pregunta | Per a qui | Bloqueja |
 |---|---|---|---|
 | ~~P-1~~ | ~~Drets del leccionari català~~ — **resolta el 7-IX-2026**: l'editorial CPL en té els drets i és qui proporciona tot el contingut a `cpl-app.db`. No bloqueja la fase 4 | — | — |
+| P-14 | El comparador marca «difereixen» les cites de salm que només es diferencien pel títol descriptiu («Salm 23» vs «Salm 23 · Entrada del Senyor al santuari»). El join ja les agrupa amb `lib/citation-headings.js`; el comparador encara no | soroll | — |
 | P-13 | **Una casella retinguda no surt en blanc a l'app: surt com `[ERR-001] Element no trobat. Informeu-ne aquí`.** Això canvia la urgència de la cua: cada conflicte que un dia llegeix de veritat és un error vermell a la pantalla, no un buit | prioritat | — |
 | P-11 | **`isPsalm()`** (`formatTextLecture.ts`) no coneix `"Sl"`: en català el salm de la missa perd la línia `℟.`. Una línia a eprex, i les dades ja hi són | saints-app | — |
 | P-12 | La cua de la missa: **384 conflictes** nous, molts per duplicats de cpl-app amb diferències petites de cita o de redacció. Alguns són errors de dades de cpl-app (`Sl 18 … R.: Jo 6,64c` vs `6,63c`) | editorial / cpl-app | — |
@@ -471,6 +472,7 @@ quedar l'anterior sense haver de llegir el git.
 
 | Data | Qui | Què s'ha fet |
 |---|---|---|
+| 2026-09-08 | Claude | **El comparador del panell no sabia què és l'Ofici ni la missa** (MIGRA-010): resolia cpl-app amb el `cpl-day.test.js` prohibit, que només sap Laudes i Vespres, i etiquetava els 33 camps de les dues com a «només a saints-app» |
 | 2026-09-08 | Claude | **Revisió i panell posats al dia** (MIGRA-007), i dos bugs que en van sortir: el panell exportava per una còpia vella que trepitjava text publicat (MIGRA-008) i el join posava l'antífona de les festes a la casella de la fèria (MIGRA-009 / EPREX-005). **6.297 caselles de 1.954 dies deixen de mostrar `[ERR-001]` a la pantalla** |
 | 2026-09-08 | Claude | **Fase 4 feta.** Missa migrada: del 0% al **79,4%**. L'índex compartit sencer al 88,6%. 0 canvis al text ja publicat (la missa no comparteix cap taula amb les hores). Trobat i verificat l'**EPREX-004**: el diumenge de Pasqua no mostra cap lectura, en cap idioma. Oberta la D-006 |
 | 2026-09-08 | Claude | **Fase 4: descoberta feta.** La missa són 4.502 ids (els comentaris, 1.082, queden fora). 3 coses per decidir: `isPsalm()` no sap català, la tornada de l'aclamació no és dada de cpl-app, i on va la resposta del salm. La Vigília Pasqual demana resoldre dos dies |

@@ -319,18 +319,29 @@ async function resolveCplDay(date, diocese, prayingPlace, { fresh = false } = {}
     try {
       if (fs.statSync(cachePath).mtimeMs >= fs.statSync(CPL_DB_PATH).mtimeMs) {
         const cached = readJsonSafe(cachePath);
-        // A day cached before `ferialFields` existed would silently compare against the
-        // wrong tab on memorials, so it is re-resolved rather than trusted. The staleness
-        // test is otherwise "is cpl-app.db newer", which no code change can trip.
+        // The staleness test is "is cpl-app.db newer", which no code change can trip — so
+        // every time the resolver learns a new Hour, the shape it produces has to be checked
+        // here too, or the panel keeps serving days resolved by the old one. A day cached
+        // before `ferialFields` existed compared against the wrong tab on memorials; a day
+        // cached before the Office and the Mass existed came back with NO cpl-app side for
+        // them at all, and the comparator dutifully labelled all 33 of their fields "només a
+        // saints-app". Both are re-resolved rather than trusted.
         const day = cached && cached.days[date];
-        if (day && day.ferialFields) return { day, cached: true, log: '' };
+        if (day && day.ferialFields && day.hours && day.hours.Office && day.hours.Mass) {
+          return { day, cached: true, log: '' };
+        }
       }
     } catch {}
   }
   fs.mkdirSync(path.dirname(cachePath), { recursive: true });
+  // `review/resolve-cpl-days.test.js`, NOT `cpl-day.test.js`: the second one's ferial control
+  // for Vespers is the rendered Vespers object itself (MIGRA-001), so it invents divergences
+  // on every memorial, and the CLAUDE.md of the repo says not to use it. It also never learned
+  // the Office of Readings or the Mass — which is how the panel came to show a complete
+  // Catalan Office as if cpl-app had nothing there.
   const result = await runCommand(
     'npx',
-    ['jest', 'migration-to-saints/cpl-day.test.js', '--silent'],
+    ['jest', 'migration-to-saints/review/resolve-cpl-days.test.js', '--silent'],
     CPL_APP_ROOT,
     { DATES: date, DIOCESE: diocese, PRAYING_PLACE: prayingPlace, OUT: cachePath }
   );

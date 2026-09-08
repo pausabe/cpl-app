@@ -46,6 +46,33 @@ const { ObtainHoursLiturgy } = require(REPO + '/src/Services/Liturgy/HoursLiturg
 const LiturgyDayInformation = require(REPO + '/src/Models/LiturgyDayInformation').default;
 
 const DATES = (process.env.DATES || '').split(',').map((s) => s.trim()).filter(Boolean);
+
+// Which shape `all_lectures.json` gives this day: one Mass in the plain roles, or two with the
+// celebration's in `CELEBRATION_*`. Read straight from the index, because that is what decides
+// it — see the Mass branch below.
+const DAY_TEXTS_DIR = '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts';
+let allLectures = null;
+let manifest = null;
+// date -> litcal id, the same manifest the join walks.
+function litcalIdFor(dateStr) {
+  if (!manifest) {
+    try {
+      manifest = JSON.parse(fs.readFileSync(REPO + '/migration-to-saints/webui/run/date-to-key-manifest.json', 'utf8'));
+    } catch { manifest = {}; }
+  }
+  return (manifest[dateStr] || {}).litcalId || null;
+}
+function massIndexEntry(litcalId) {
+  if (!litcalId) return null;
+  if (!allLectures) {
+    try {
+      allLectures = JSON.parse(fs.readFileSync(`${DAY_TEXTS_DIR}/all_lectures.json`, 'utf8'));
+    } catch { allLectures = {}; }
+  }
+  const key = Object.keys(allLectures).find((k) => k.startsWith(`${litcalId}__`) && allLectures[k].lecturas
+    && Object.keys(allLectures[k].lecturas).length);
+  return key ? allLectures[key].lecturas : null;
+}
 const OUT = process.env.OUT;
 const DIOCESE = process.env.DIOCESE || 'Barcelona';
 const PRAYING_PLACE = process.env.PRAYING_PLACE || 'Diòcesi';
@@ -84,15 +111,24 @@ test('resolves the dates with a correct Vespers ferial control', async () => {
     const mass = await resolveMass(ldi, hoursLiturgy, settings);
     for (const h of HOURS) {
       if (h === 'Office') { hours[h] = extractOfficeFields(hoursLiturgy.Office); continue; }
-      // The Mass fills BOTH of saints-app's columns. What cpl-app prays goes in the plain
-      // roles when it is the weekday's Mass, and in `CELEBRATION_*` when it is the
-      // celebration's — with the weekday's, asked for separately, taking the plain roles
-      // instead. Same division the join makes, so the comparator lines up with it.
+      // The Mass fills BOTH of saints-app's columns, and which of cpl-app's two Masses goes
+      // in which is decided by the INDEX, not by whether the day is proper:
+      //
+      //   - an entry with `CELEBRATION_*` roles carries two Masses — the weekday's in the
+      //     plain roles and the celebration's in the `CELEBRATION_` ones (every `__MEMORY`,
+      //     and the feast of Peter and Paul, whose plain roles hold the vigil Mass);
+      //   - an entry without them carries ONE, in the plain roles, and on a feast or a
+      //     solemnity that one is the celebration's own.
+      //
+      // Guessing from "does cpl-app pray something proper today" instead put the weekday's
+      // Mass beside the Nativity of the BVM's own readings and reported all seven fields as
+      // divergent. The join does not guess either — it matches on the citation (PLAN §18.7).
       if (h === 'Mass') {
         const rendered = extractMassFields(mass && mass.rendered) || {};
         const ferialMass = extractMassFields(mass && mass.ferial) || {};
-        const differs = Object.keys(rendered).some((k) => rendered[k] !== ferialMass[k]);
-        hours[h] = differs && Object.keys(ferialMass).length
+        const entry = massIndexEntry(litcalIdFor(dateStr));
+        const twoColumns = entry && Object.keys(entry).some((k) => k.startsWith('CELEBRATION_'));
+        hours[h] = twoColumns && Object.keys(ferialMass).length
           ? { ...ferialMass, ...Object.fromEntries(Object.entries(rendered).map(([k, v]) => [`CELEBRATION_${k}`, v])) }
           : rendered;
         continue;
