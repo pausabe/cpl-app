@@ -112,9 +112,9 @@ function dayBlock(day) {
 
   const HOUR_LABELS = {
     Office: 'Ofici de lectura', Laudes: 'Laudes', Tercia: 'Tèrcia', Sexta: 'Sexta',
-    Nona: 'Nona', Vespers: 'Vespres',
+    Nona: 'Nona', Vespers: 'Vespres', Mass: 'Missa',
   };
-  const hours = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'].map((h) => {
+  const hours = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers', 'Mass'].map((h) => {
     const rows = day.rows.filter((r) => r.hour === h);
     if (!rows.length) return '';
     const bad = rows.filter((r) => isDivergent(day, r));

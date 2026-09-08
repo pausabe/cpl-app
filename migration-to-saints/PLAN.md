@@ -1756,3 +1756,57 @@ es migra: filar-hi el text de l'endemà seria repetir la F6.
 (`YEAR_A`/`B`/`C`, `ODD`/`EVEN`), i `lecturesStore` els tria amb `findInStructure(id,
 ["ANY", "MEMORY", parell ? "EVEN" : "ODD", cicle dominical])`. El problema del grup A del
 §6c —no saber si un text varia pel cicle o per una altra cosa— **aquí no existeix**.
+
+### 18.7 La implementació: qui decideix on va cada lectura és la cita
+
+El problema real de la missa no és la forma dels camps: és que **cpl-app ofereix fins a tres
+misses per a una data i saints-app hi té fins a dues columnes**, i cap dels dos índexs diu
+quina va on.
+
+Les tres candidates que el join té a mà per a cada dia:
+
+| | què és |
+|---|---|
+| `rendered` | el que cpl-app resa aquell dia: la missa de la celebració si n'hi ha, la ferial si no |
+| `ferial` | la del dia de la setmana, demanada a part (`GetNormalDaysMassLiturgy`, per temps, dia, setmana i cicle) |
+| `eve` | la que cpl-app va resoldre **ahir**. Només encaixa el diumenge de Pasqua, que du la Vigília als rols plans (18.4) |
+
+I les dues columnes: els rols plans i els `CELEBRATION_*`.
+
+**La regla és llegir-ho de la cita que ja hi ha a la casella.** Una lectura de la missa sempre
+en du una, `es` ja la té escrita, i `fingerprint()` (lib/citation-key.js) compara com
+l'escriuen les dues llengües. Per a cada casella, doncs: agafa la cita castellana, compara-la
+amb la de les tres candidates i escriu la que coincideix. **Si no en coincideix cap, no
+s'escriu res.**
+
+Per què no una regla del tipus «el que és propi va a `CELEBRATION_*`»: **els sants Pere i Pau**.
+La seva entrada du la **missa de la vigília** als rols plans (Fets 3) i la **del dia** als
+`CELEBRATION_*` (Fets 12). Una regla basada en «propi o ferial» hauria posat la missa del dia
+a les caselles de la vigília **cada any**, i el control d'unanimitat no ho hauria vist mai,
+perquè hauria estat malament de manera consistent. La cita ho resol sol: `ACTS|12 ≠ ACTS|3`.
+
+Dues coses van caldre a `lib/citation-key.js` perquè això funcionés, totes dues amb prova al
+detector: `Sl` i `Sal` a la llista d'àlies dels salms, i treure l'etiqueta «Lectura Sálmica»
+—que va en una línia pròpia sobre la cita— abans de mirar res, perquè si no `splitHeading` la
+pren per la referència i torna una cita sense llibre ni capítol.
+
+### 18.8 Els tres forats que queden, i per què
+
+| | cobertura | per què |
+|---|---|---|
+| Nucli (1a, salm, 2a, evangeli) | **74-92%** | la resta són conflictes registrats: cpl-app té la mateixa lectura escrita dues vegades amb diferències petites («Mc 1,21b-28» / «Mc 1,21-28», «t'hauràs guanyat el germà» / «el teu germà») |
+| Tornada de l'aclamació | **0%** | no és cap dada de cpl-app. 14 ids per a tot l'any, [D-006](decisions/D-006-la-tornada-de-l-aclamacio.md) |
+| `CELEBRATION_*` | **22-40%** | els dies de memòria cpl-app resa la missa **ferial**, com mana el Missal, i no té res per a la columna del sant. És la [D-001](decisions/D-001-el-comu-a-les-memories.md) altre cop, ara a la missa |
+| Vigília Pasqual | **~0%** | **[EPREX-004](eprex-bugs/EPREX-004.md)**: l'app no llegeix cap casella el diumenge de Pasqua, o sigui que no n'hi ha cap on escriure. Es desbloqueja sol quan es corregeixi |
+
+Els números, mesurats a `saints-app` el 8 de setembre de 2026:
+
+| | abans | després |
+|---|---|---|
+| Missa | 0 / 4.386 | **3.483 / 4.386 (79,4%)** |
+| L'índex compartit sencer | 16.128 / 22.132 (72,9%) | **19.611 / 22.132 (88,6%)** |
+| Univers de `commons/es` | 28,4% | **34,3%** |
+
+La missa **no comparteix cap taula amb les hores** (`lecturas_referencia` i `lecturas_texto`
+són seves i de ningú més), o sigui que l'exportació va ser **purament additiva**: 3.483
+caselles noves, 0 perdudes, 0 amb el text canviat.

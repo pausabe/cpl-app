@@ -19,27 +19,27 @@ de sota i el [CLAUDE.md](../CLAUDE.md) de l'arrel.
 | **1** | Tèrcia, Sexta i Nona | ✅ **feta** (7-IX-2026) — 5 de les 7 hores migrades |
 | **2** | Completes | ✅ **feta** (7-IX-2026) — 6 de les 7 hores; queda [D-004](decisions/D-004-l-himne-de-completes.md) |
 | **3** | Ofici de lectura | ✅ **feta** (7-IX-2026) — **les 7 hores** migrades; queda [D-005](decisions/D-005-l-himne-nocturn-de-l-ofici.md) |
-| **4** | Missa (lectures) | 🔄 **descoberta feta** — 4.502 ids; 3 coses per decidir abans d'implementar |
+| **4** | Missa (lectures) | ✅ **feta** (8-IX-2026) — 79,4% dels seus ids; queden [D-006](decisions/D-006-la-tornada-de-l-aclamacio.md) i [EPREX-004](eprex-bugs/EPREX-004.md) |
 | **—** | Comentaris de la missa | ⛔ **fora d'abast** (decisió, veure sota) |
 
-Cobertura mesurada el **7 de setembre de 2026** (finestra 2017-2026, Barcelona), **després de
-la fase 3**, a `saints-app` — o sigui el que veu l'usuari, no el que calcula el join:
+Cobertura mesurada el **8 de setembre de 2026** (finestra 2017-2026, Barcelona), **després de
+la fase 4**, a `saints-app` — o sigui el que veu l'usuari, no el que calcula el join:
 
-| | abans de la fase 3 | després |
+| | abans de la fase 4 | després |
 |---|---|---|
-| **Ofici de lectura** — ids del cicle anual que l'índex demana | 304 / 6.843 (4,4%) | **6.432 / 6.843 (94,0%)** |
-| **Les 5 hores d'abans** (Laudes, Tèrcia, Sexta, Nona, Vespres) | 10.000 / 11.255 (88,8%) | 10.000 / 11.255 (88,8%) |
-| **Les 6 hores de l'índex, juntes** | 10.000 / 17.746 (56,4%) | **16.128 / 17.746 (90,9%)** |
-| Univers sencer de `commons/es` | 10.490 / 58.537 (17,9%) | **16.618 / 58.537 (28,4%)** |
-| Caselles en conflicte al join | 1.313 | **1.614** |
+| **Missa** — ids que l'índex demana (sense els comentaris) | 0 / 4.386 (0%) | **3.483 / 4.386 (79,4%)** |
+| **Les 7 hores** | 16.128 / 17.746 (90,9%) | 16.128 / 17.746 (90,9%) |
+| **L'índex compartit sencer** | 16.128 / 22.132 (72,9%) | **19.611 / 22.132 (88,6%)** |
+| Univers sencer de `commons/es` | 16.618 / 58.537 (28,4%) | **20.101 / 58.537 (34,3%)** |
+| Caselles en conflicte al join | 1.614 | **1.998** |
 | Completes | 7/7 fitxers, 114 camps — fora del recompte d'ids: no passa per `day_specific_texts` | igual |
-| Dies de mostra (127 camps per dia, 6 hores) | | 12-08 **93%** · 04-03 **94%** · 16-09 **89%** · 13-06 **34%** |
+| Dies de mostra (135-141 camps per dia) | | 12-08 **90%** · 16-09 **87%** · 15-08 **82%** |
 
-> El denominador d'aquesta taula **exclou els dos camps que no surten mai de cpl-app**
-> (`himno_latino`, còpia d'`es`; `invitacion_padrenuestro`, traduït a mà). Per això les 5 hores
-> hi surten com a 10.000/11.255 i no com als 10.228/11.483 que deia la taula de la fase 1, que
-> els comptava: **és la mateixa cobertura mesurada d'una altra manera**, no una regressió. A
-> partir d'ara, aquesta.
+> El denominador **exclou els camps que no surten mai de cpl-app** (`himno_latino`, còpia d'`es`;
+> `invitacion_padrenuestro`, traduït a mà) i, a la missa, els **1.082 ids dels comentaris**, que
+> queden fora d'abast en català per decisió. També n'exclou els `ALTERNATIVE_*` i `SHORT_*` de la
+> missa: cpl-app no modela cap forma alternativa ni breu, o sigui que comptar-los seria reportar
+> com a «falta» caselles que res no pot omplir mai.
 
 Reproduir-ho:
 
@@ -331,7 +331,7 @@ informació entre `Reference` i `Quote` amb un tall diferent.
 
 ---
 
-## Fase 4 — Missa: les lectures · 🔄
+## Fase 4 — Missa: les lectures · ✅
 
 **Última, i com a decisió separada.** Tècnicament és fer-ho; el que la frena no és el codi.
 
@@ -386,13 +386,44 @@ que queden fora d'abast en català.
    imprimeix el volum. Recomanació: **copiar el cos tal com és** —`formatTextLecture()` ja
    converteix `R.` en `℟`— i deixar la referència en `Sl {Quote}`. Zero cirurgia sobre el text.
 
-### Després
+### La implementació — **feta**
 
-- [ ] Sonda (`defineStore("Lectures")`, amb l'adaptador d'array a mapa de camps)
-- [ ] Extractor + join + cobertura
-- [ ] Vigília Pasqual: el join de dos dies
+- [x] **Sonda** (`defineStore("Lectures")`) amb l'adaptador que converteix l'array de `Lecture`
+      a `{ROL}_ref` / `{ROL}_texto` dins de la pàgina, abans que res ho llegeixi
+- [x] **`extractMassFields` / `massCitation` / `resolveMass`** a `lib/cpl-day-resolver.js`,
+      cridats pel join **i** pel comparador
+- [x] **`observeMass`**: qui decideix on va cada lectura **és la cita**, no cap regla. Detall a
+      [PLAN §18.7](PLAN.md) i el perquè als sants Pere i Pau
+- [x] **Inspector, comparador, informe de revisió i panell** amb la missa
+- [x] **Detector**: `mass-fields.test.js`, 7 proves. Comprovat que falla si es toca la regla del salm
+- [x] **Control**: re-córrer les 6 hores d'abans amb el mapa nou de 7 dona **15.857 caselles
+      idèntiques byte a byte** — 0 afegides, 0 perdudes, 0 amb text canviat
+- [x] **Join, exportació i verificació a l'app real.** La missa **no comparteix cap taula amb
+      les hores**, o sigui que l'exportació va ser **purament additiva**: 3.483 caselles noves,
+      0 perdudes, 0 amb el text canviat
+
+### De les tres coses per decidir
+
+1. **`isPsalm()` no sap català** → es migra igualment, amb la referència en la forma que l'índex
+   vol (`Sl {cita}`). Ara pinta `cita • ` en lloc de `℟.`; el dia que eprex hi afegeixi `"Sl"`,
+   **les mateixes dades es pinten bé soles**. Va a la llista de propostes.
+2. **La tornada de l'aclamació** → **[D-006](decisions/D-006-la-tornada-de-l-aclamacio.md)**, amb
+   una taula de 14 línies perquè en Pau les ompli amb el Missal. No me les invento.
+3. **On va la resposta del salm** → decidit: **el cos de cpl-app tal com és**, que ja du la
+   resposta on la imprimeix el volum, i la referència només amb la cita. Zero cirurgia.
+
+### Els forats que queden, i per què
+
+| | cobertura | per què |
+|---|---|---|
+| Nucli (1a, salm, 2a, evangeli) | 74-92% | conflictes registrats: cpl-app té la mateixa lectura escrita dues vegades amb diferències petites |
+| Tornada de l'aclamació | 0% | [D-006](decisions/D-006-la-tornada-de-l-aclamacio.md) |
+| `CELEBRATION_*` | 22-40% | els dies de memòria cpl-app resa la missa **ferial**, com mana el Missal, i no té res per a la columna del sant. És la [D-001](decisions/D-001-el-comu-a-les-memories.md) a la missa |
+| Vigília Pasqual | ~0% | **[EPREX-004](eprex-bugs/EPREX-004.md)**: l'app no llegeix cap casella el diumenge de Pasqua. Es desbloqueja sol quan es corregeixi |
 
 **Fet quan:** les lectures de la missa es llegeixen en català i el client ha dit que sí.
+**Es llegeixen** —verificat a l'app real el 12-VIII, el 16-IX i el 15-VIII de 2026— i falta que
+el client ho validi.
 
 ---
 
@@ -419,6 +450,8 @@ català d'origen — però això no ho decidim nosaltres.
 | # | Pregunta | Per a qui | Bloqueja |
 |---|---|---|---|
 | ~~P-1~~ | ~~Drets del leccionari català~~ — **resolta el 7-IX-2026**: l'editorial CPL en té els drets i és qui proporciona tot el contingut a `cpl-app.db`. No bloqueja la fase 4 | — | — |
+| P-11 | **`isPsalm()`** (`formatTextLecture.ts`) no coneix `"Sl"`: en català el salm de la missa perd la línia `℟.`. Una línia a eprex, i les dades ja hi són | saints-app | — |
+| P-12 | La cua de la missa: **384 conflictes** nous, molts per duplicats de cpl-app amb diferències petites de cita o de redacció. Alguns són errors de dades de cpl-app (`Sl 18 … R.: Jo 6,64c` vs `6,63c`) | editorial / cpl-app | — |
 | P-8 | Les **27 + 33 caselles** que el join ja no escriu però que segueixen publicades a `saints-app` (l'exportació fusiona i no esborra). Cal decidir si es treuen | decisió | — |
 | P-9 | **D-005**: l'himne nocturn de l'Ofici no té casella. Comunicar-ho al CPL o demanar un camp a eprex | decisió | — |
 | P-10 | `second_sunday_after_christmas` reutilitza la lectura del 4 de gener a `all_oficio.json`; cpl-app dona la del dia real. Val la pena dir-ho a en Fernando? | saints-app | — |
@@ -437,6 +470,7 @@ quedar l'anterior sense haver de llegir el git.
 
 | Data | Qui | Què s'ha fet |
 |---|---|---|
+| 2026-09-08 | Claude | **Fase 4 feta.** Missa migrada: del 0% al **79,4%**. L'índex compartit sencer al 88,6%. 0 canvis al text ja publicat (la missa no comparteix cap taula amb les hores). Trobat i verificat l'**EPREX-004**: el diumenge de Pasqua no mostra cap lectura, en cap idioma. Oberta la D-006 |
 | 2026-09-08 | Claude | **Fase 4: descoberta feta.** La missa són 4.502 ids (els comentaris, 1.082, queden fora). 3 coses per decidir: `isPsalm()` no sap català, la tornada de l'aclamació no és dada de cpl-app, i on va la resposta del salm. La Vigília Pasqual demana resoldre dos dies |
 | 2026-09-07 | Claude | **Fase 3 feta.** Ofici de lectura migrat: del 4,4% al **94,0%** dels seus ids. Les 7 hores en català; l'índex compartit al 90,9%. 0 canvis semàntics al text ja publicat. Obertes la D-005 i les P-8/P-9/P-10 |
 | 2026-09-07 | Claude | **Fase 3: descoberta feta.** `_a` és el cicle anual i `_i`/`_p` el bienal, que el català no té activat — l'abast baixa de 14.534 a 6.843 ids. Mapatge complet escrit. Falta implementar |

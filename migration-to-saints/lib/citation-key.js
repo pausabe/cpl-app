@@ -25,8 +25,16 @@ function stripMarkup(s) {
 // The two sides spell one reference differently — "Salm 50\nOració de penediment" (Catalan,
 // description on its own line) vs "Salmo 50: Misericordia, Dios mío" (Spanish, description
 // after a colon). Both reduce to the bare reference.
+// "Lectura Sálmica" / "Lettura Salmica" is how the Mass index labels a canticle standing in
+// for the responsorial psalm, and it sits on its own line above the citation. It has to come
+// off before anything else looks at the value: `splitHeading` would otherwise take that line
+// for the reference and hand back a citation with no book and no chapter.
+const stripPsalmicLabel = (s) =>
+  String(s).replace(/^\s*lectura\s+s[àáa]lmica\s*/i, '').replace(/^\s*lettura\s+salmica\s*/i, '');
+
 function bareReference(value) {
   if (value == null) return null;
+  value = stripPsalmicLabel(value);
   const cleaned = stripMarkup(String(value).replace(/\r\n?/g, '\n'));
   // Catalan multi-line form first: splitHeading knows "Càntic" spans two lines.
   const viaHeading = splitHeading(String(value).replace(/\r\n?/g, '\n'));
@@ -45,7 +53,7 @@ function bareReference(value) {
 // Spanish writes "2 Tm 2, 10-12a" and "1 Jn 2, 3-6". Left space-sensitive, those read as
 // different books and the row is reported as a divergence that isn't one.
 const BOOK_ALIASES = {
-  PS: ['salm', 'salmo', 'psalm', 'salms', 'salmos'],
+  PS: ['salm', 'salmo', 'psalm', 'salms', 'salmos', 'sl', 'sal'],
   CANT: ['càntic', 'cantic', 'cántico', 'cantico'],
   GEN: ['gn', 'gènesi', 'genesis'], EXOD: ['ex', 'èxode', 'éxodo'],
   LEV: ['lv', 'levític', 'levítico'], NUM: ['nm', 'nombres', 'números'],

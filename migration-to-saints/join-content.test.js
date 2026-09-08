@@ -35,6 +35,7 @@ const { fingerprint } = require('./lib/citation-key');
 // is answered in the same vocabulary the join observes in — and can't drift from it.
 const {
   extractHourFields, hourDataOf, psalmAntiphons, responsoryParts, extractOfficeFields,
+  extractMassFields, MASS_ROLES,
 } = require('./lib/cpl-day-resolver');
 
 // Tables whose values are psalm/canticle headings ("Salm 50\nOració de penediment"), the
@@ -96,6 +97,36 @@ const HOURS_CONFIG = {
   // Catalan does not have — `LanguageFeatures.biennialReadings` is `["es", "it"]`, so the
   // selector never appears and the app always reads `_a`. See FASES.md, fase 3.
   Office: { allXFile: 'all_oficio.json', dualOffice: false },
+  // The Mass. Not an Hour, and the one part of the day where cpl-app can fill BOTH of
+  // saints-app's two columns by itself: `CELEBRATION_*` (the celebration's own Mass) and the
+  // plain roles (the weekday's), because `GetNormalDaysMassLiturgy` gives the second on
+  // demand. In the Hours that second half had to be inferred from the Common (D-001).
+  //
+  // Which of the two goes in which cell is not decided by a rule here — it is READ OFF the
+  // Spanish citation already in the cell (`observeMass`). Mass readings always carry one, and
+  // it is the same currency in both languages, so the question "is this the cell for Acts 12
+  // or for Acts 3?" has an answer instead of a heuristic. On the feast of Peter and Paul the
+  // plain roles hold the VIGIL Mass and `CELEBRATION_*` the day Mass; a rule keyed on
+  // "proper or ferial" would have filed the day Mass into the vigil's cells every year and
+  // the agreement check could not have caught it, because it would be consistently wrong.
+  //
+  // Its index entry is shaped differently from every other one — `{ lecturas: { ROLE: { ref,
+  // texto } } }` rather than one key per field — and so is what the store hands back (an
+  // ARRAY of `Lecture`, flattened by the probe). `fromIndex` brings the index side into the
+  // same `{ROLE}_ref` / `{ROLE}_texto` vocabulary the probe reports, so the two are
+  // interchangeable here exactly as they are for every other Hour.
+  Mass: {
+    allXFile: 'all_lectures.json',
+    dualOffice: false,
+    fromIndex: (entry) => {
+      const out = {};
+      for (const [role, cell] of Object.entries((entry && entry.lecturas) || {})) {
+        if (cell.ref !== undefined && cell.ref !== null) out[`${role}_ref`] = cell.ref;
+        if (cell.texto !== undefined && cell.texto !== null) out[`${role}_texto`] = cell.texto;
+      }
+      return out;
+    },
+  },
   Invitation: {
     allXFile: 'all_invitatorios.json',
     observe: (entry, hourData, tag, observe) =>
@@ -129,7 +160,7 @@ const HOURS_CONFIG = {
 // 10-year window. Empty means every date in the manifest, which is the real run.
 const ONLY_DATES = (process.env.DATES || '').split(',').map((d) => d.trim()).filter(Boolean);
 
-const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Tercia,Sexta,Nona,Office,Invitation,Celebration')
+const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Tercia,Sexta,Nona,Office,Mass,Invitation,Celebration')
   .split(',')
   .map((h) => h.trim())
   .filter((h) => HOURS_CONFIG[h]);
@@ -173,6 +204,7 @@ const { ObtainLiturgyMasters } = require('../src/Services/Liturgy/LiturgyMasters
 const { ObtainHoursLiturgy } = require('../src/Services/Liturgy/HoursLiturgyService');
 const LaudesService = require('../src/Services/Liturgy/LaudesService');
 const { ObtainHours } = require('../src/Services/Liturgy/HoursService');
+const { ObtainMassLiturgy } = require('../src/Services/Liturgy/MassLiturgyService');
 const Hours = require('../src/Models/HoursLiturgy/Hours').default;
 const VespersService = require('../src/Services/Liturgy/VespersService');
 const Laudes = require('../src/Models/HoursLiturgy/Laudes').default;
@@ -246,7 +278,26 @@ async function resolveHoursLiturgy(date, settings) {
     Nona: ferialHours.NinthHour,
   };
   const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
-  return { hoursLiturgy, ferial, ldi };
+
+  // The Mass, in the two halves saints-app keeps apart: what cpl-app renders, and the
+  // weekday's asked for separately. On a memorial the first is the celebration's Mass and the
+  // second the one the plain roles of the index hold. See HOURS_CONFIG.Mass and PLAN §18.
+  let mass = null;
+  try {
+    const massLiturgy = await ObtainMassLiturgy(
+      ldi, hoursLiturgy.TodayCelebrationInformation, hoursLiturgy.TomorrowCelebrationInformation, settings,
+    );
+    let massFerial = null;
+    try {
+      massFerial = await DatabaseDataService.GetNormalDaysMassLiturgy(ldi.Today);
+    } catch { massFerial = null; }
+    // `massLiturgy.Vespers` is the anticipated evening Mass of the following day. The index
+    // has one entry per day and no cell for it, so it is not carried (PLAN §18.5).
+    mass = { rendered: massLiturgy.Today, ferial: massFerial };
+  } catch {
+    mass = null;
+  }
+  return { hoursLiturgy, ferial, ldi, mass };
 }
 
 // Mirrors HoursLiturgyService.tsx's private TomorrowIsMoreImportant/HasLiturgyContent: the
@@ -299,6 +350,8 @@ const TABLES = [
   'preces_contenido', 'oraciones_finales', 'invitatorios', 'celebration_names',
   // The Office of Readings' own three, which no other Hour touches.
   'oficio_citas', 'oficio_titulos', 'oficio_textos',
+  // The Mass's own two.
+  'lecturas_referencia', 'lecturas_texto',
 ];
 
 // Which commons table each index field points at — used only to check that the cell map
@@ -321,6 +374,16 @@ const FIELD_TABLE = {
   lectura_patristica_cita_a: 'oficio_citas', lectura_patristica_titulo_a: 'oficio_titulos',
   lectura_patristica_texto_a: 'oficio_textos',
 };
+
+// The Mass adds two cells per role, and there are 34 roles once `CELEBRATION_` and the
+// Easter Vigil's numbered readings are counted. Generated from the same `MASS_ROLES` table the
+// flattener reads, so a role can never exist on one side and not the other.
+for (const role of Object.keys(MASS_ROLES)) {
+  for (const prefix of ['', 'CELEBRATION_']) {
+    FIELD_TABLE[`${prefix}${role}_ref`] = 'lecturas_referencia';
+    FIELD_TABLE[`${prefix}${role}_texto`] = 'lecturas_texto';
+  }
+}
 
 describe('Content join: cpl-app -> saints-app commons/ca', () => {
   // cpl-app picks a DIFFERENT hymn for the Office of Readings when it is prayed before six
@@ -607,6 +670,76 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       observe('oraciones_finales', entry.oracion_final, hourData.FinalPrayer, tag);
     }
 
+    // --- The Mass -------------------------------------------------------------------------
+    //
+    // cpl-app offers up to three Masses for one date and saints-app up to two columns, and
+    // nothing in either index says which goes where. What does say it is the citation: a Mass
+    // reading always carries one, `es` already has it in the cell, and `fingerprint()` compares
+    // the two languages' spellings of it (lib/citation-key.js). So every cell is filled by
+    // asking "which of cpl-app's readings is the one this cell is already about?", and a cell
+    // whose citation matches none of them is left alone.
+    //
+    // The three candidates:
+    //   rendered   what cpl-app prays that day — the celebration's Mass on a solemnity, the
+    //              weekday's otherwise
+    //   ferial     the weekday's, asked for separately (`GetNormalDaysMassLiturgy`), which is
+    //              what fills the plain roles of a memorial while `rendered` fills CELEBRATION_
+    //   eve        yesterday's rendered Mass. Only ever matches on Easter Sunday, whose entry
+    //              carries the VIGIL in its plain roles — cpl-app resolves that vigil on Holy
+    //              Saturday (PLAN §18.4). Costs nothing: the citation gate keeps it from
+    //              reaching any other day.
+    const massStats = { cells: 0, byCandidate: { rendered: 0, ferial: 0, eve: 0 }, unmatched: 0 };
+    function observeMass(entry, candidates, tag) {
+      const flat = {
+        rendered: extractMassFields(candidates.rendered),
+        ferial: extractMassFields(candidates.ferial),
+        eve: extractMassFields(candidates.eve),
+      };
+      for (const [field, id] of Object.entries(entry)) {
+        const m = /^(CELEBRATION_)?([A-Z]+)_ref$/.exec(field);
+        if (!m) continue;                       // `_texto` is filled by whoever wins the `_ref`
+        const role = m[2];
+        if (!MASS_ROLES[role]) continue;        // ALTERNATIVE_/SHORT_/COMMENT: cpl-app has none
+        const want = citeKey(esTable('lecturas_referencia')[String(id)]);
+        if (!want) continue;                    // no citation in the cell: nothing to match on
+        let picked = null;
+        for (const source of ['rendered', 'ferial', 'eve']) {
+          const fields = flat[source];
+          if (!fields || !fields[`${role}_ref`]) continue;
+          if (citeKey(fields[`${role}_ref`]) !== want) continue;
+          picked = { source, fields };
+          break;
+        }
+        if (!picked) { massStats.unmatched++; continue; }
+        observe('lecturas_referencia', id, picked.fields[`${role}_ref`], tag);
+        const textId = entry[`${m[1] || ''}${role}_texto`];
+        const body = picked.fields[`${role}_texto`];
+        if (textId !== undefined && body) observe('lecturas_texto', textId, body, tag);
+        massStats.cells++;
+        massStats.byCandidate[picked.source]++;
+      }
+      // The verse before the Gospel is the one role with no citation of its own in the cell
+      // (`es` keeps the REFRAIN there — "Aleluya, aleluya, aleluya" — which is not data in
+      // cpl-app at all, see PLAN §18.3), so it can't be matched and is filed from whichever
+      // Mass supplied the Gospel of the same column.
+      for (const prefix of ['', 'CELEBRATION_']) {
+        const textId = entry[`${prefix}ACCLAMATION_texto`];
+        if (textId === undefined) continue;
+        const gospelRef = entry[`${prefix}GOSPEL_ref`];
+        const want = citeKey(esTable('lecturas_referencia')[String(gospelRef)]);
+        if (!want) continue;
+        for (const source of ['rendered', 'ferial', 'eve']) {
+          const fields = flat[source];
+          if (!fields || !fields.GOSPEL_ref || citeKey(fields.GOSPEL_ref) !== want) continue;
+          if (fields.ACCLAMATION_texto) {
+            observe('lecturas_texto', textId, fields.ACCLAMATION_texto, tag);
+            massStats.cells++;
+          }
+          break;
+        }
+      }
+    }
+
     // The Office of Readings, filed straight from the flattener. Every other Hour needs
     // `observeHour`'s hand-written pairing because its fields come off three different
     // shapes of cpl-app model; the Office's come off one, and its index entry uses the very
@@ -645,6 +778,13 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     const failedDates = [];
     let skippedVespersFromTomorrow = 0;
     let observedFirstVespers = 0;
+    // Yesterday's rendered Mass, kept across the loop so `observeMass` can offer it as a
+    // candidate. `dates` is sorted, and it is only ever accepted when its citation matches the
+    // cell — which in practice happens on Easter Sunday alone, whose plain roles hold the
+    // Vigil that cpl-app resolves on Holy Saturday. `eveDate` guards against the previous
+    // ITERATION being some other day, which it is whenever a date was skipped.
+    let eveMassHeld = null;
+    let eveDate = null;
 
     // On the eve of a solemnity — and every Saturday evening — cpl-app prays the following
     // day's First Vespers. Whether saints-app does too is not a matter of opinion: since
@@ -727,8 +867,9 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       let hoursLiturgy;
       let ferialHours;
       let dayInfo;
+      let dayMass;
       try {
-        ({ hoursLiturgy, ferial: ferialHours, ldi: dayInfo } = await resolveHoursLiturgy(date, settings));
+        ({ hoursLiturgy, ferial: ferialHours, ldi: dayInfo, mass: dayMass } = await resolveHoursLiturgy(date, settings));
       } catch (e) {
         // A single day cpl-app can't resolve must not throw away a 10-year run: record
         // it and carry on, so the failures are visible as data instead of a stack trace.
@@ -736,13 +877,22 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         continue;
       }
       processed++;
+      // Built at midday so the UTC conversion can't slide the date back an hour and name the
+      // wrong day, which is what a bare `new Date(dateStr)` does west of Greenwich.
+      const yesterday = new Date(`${dateStr}T12:00:00`);
+      yesterday.setDate(yesterday.getDate() - 1);
+      const eveMass = eveDate === yesterday.toISOString().slice(0, 10) ? eveMassHeld : null;
+      eveMassHeld = dayMass && dayMass.rendered;
+      eveDate = dateStr;
       const vespersFromTomorrow = vespersComeFromTomorrow(hoursLiturgy);
 
       for (const hour of applicableHours) {
         const key = keysByPrefixByHour[hour].get(litcalId);
-        const hourData = HOURS_CONFIG[hour].dataKey
-          ? hoursLiturgy[HOURS_CONFIG[hour].dataKey]
-          : hourDataOf(hoursLiturgy, hour);
+        const hourData = hour === 'Mass'
+          ? dayMass
+          : HOURS_CONFIG[hour].dataKey
+            ? hoursLiturgy[HOURS_CONFIG[hour].dataKey]
+            : hourDataOf(hoursLiturgy, hour);
         const observeFn = HOURS_CONFIG[hour].observe;
 
         // Measured cells win over the index whenever the probe covered this day/hour.
@@ -784,7 +934,8 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           if (dualOffice && memorialFerial.hasSwitch(key)) memorialEntry = entryFromCells(probed, options, 1);
           cellMapUse.fromMap++;
         } else {
-          entry = allXByHour[hour][key];
+          const raw = allXByHour[hour][key];
+          entry = HOURS_CONFIG[hour].fromIndex ? HOURS_CONFIG[hour].fromIndex(raw) : raw;
           cellMapUse.fromIndex++;
         }
 
@@ -799,7 +950,9 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
             // No second office and no Common to weigh against it: what cpl-app renders is
             // what the app's single record shows, cell for cell.
             if (hour === 'Office') observeOffice(entry, hourData, `${dateStr} (${hour})`);
-            else observeHour(entry, hourData, `${dateStr} (${hour})`);
+            else if (hour === 'Mass') {
+              observeMass(entry, { ...hourData, eve: eveMass }, `${dateStr} (${hour})`);
+            } else observeHour(entry, hourData, `${dateStr} (${hour})`);
           } else if (memorialFerial.isProperOnly(key)) {
             // No second tab: the memorial's cell IS the only cell, so cpl-app's weekday text
             // and the Common are two answers for one slot rather than one each. The Common
@@ -872,6 +1025,14 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       `Caselles: ${cellMapUse.fromMap} hores des del mapa mesurat, ${cellMapUse.fromIndex} des de l'índex, ` +
         `${cellMapUse.noEntry} saltades (l'app no hi mostra res).`
     );
+    if (massStats.cells || massStats.unmatched) {
+      console.log(
+        `Missa: ${massStats.cells} caselles observades ` +
+          `(${massStats.byCandidate.rendered} de la missa del dia, ${massStats.byCandidate.ferial} de la ` +
+          `ferial, ${massStats.byCandidate.eve} de la Vigília Pasqual) · ${massStats.unmatched} caselles ` +
+          `sense cap lectura de cpl-app amb la mateixa cita.`
+      );
+    }
     if (skippedVespersFromTomorrow || observedFirstVespers) {
       console.log(
         `I Vespres de l'endemà: ${observedFirstVespers} observades a la casella que l'app hi ` +

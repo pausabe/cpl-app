@@ -32,9 +32,9 @@ jest.mock('/Users/pau/projects/personal/cpl-app/src/Services/DatabaseManagerServ
 const fs = require('fs');
 const REPO = '/Users/pau/projects/personal/cpl-app';
 const {
-  buildSettings, extractHourFields, hourDataOf, extractOfficeFields,
+  buildSettings, extractHourFields, hourDataOf, extractOfficeFields, extractMassFields, resolveMass,
 } = require(REPO + '/migration-to-saints/lib/cpl-day-resolver');
-const HOURS = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
+const HOURS = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers', 'Mass'];
 const { ferialFields } = require(REPO + '/migration-to-saints/lib/memorial-ferial');
 const VespersService = require(REPO + '/src/Services/Liturgy/VespersService');
 const LaudesService = require(REPO + '/src/Services/Liturgy/LaudesService');
@@ -79,12 +79,25 @@ test('resolves the dates with a correct Vespers ferial control', async () => {
     const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
 
     const hours = {};
-    // The Office of Readings has its own field vocabulary — two long readings with a
-    // responsory each — so it has its own flattener; every other Hour shares one.
+    // Three field vocabularies, not one: the Hours share `extractHourFields`, the Office of
+    // Readings has two long readings with a responsory each, and the Mass has none of either.
+    const mass = await resolveMass(ldi, hoursLiturgy, settings);
     for (const h of HOURS) {
-      hours[h] = h === 'Office'
-        ? extractOfficeFields(hoursLiturgy.Office)
-        : extractHourFields(hourDataOf(hoursLiturgy, h));
+      if (h === 'Office') { hours[h] = extractOfficeFields(hoursLiturgy.Office); continue; }
+      // The Mass fills BOTH of saints-app's columns. What cpl-app prays goes in the plain
+      // roles when it is the weekday's Mass, and in `CELEBRATION_*` when it is the
+      // celebration's — with the weekday's, asked for separately, taking the plain roles
+      // instead. Same division the join makes, so the comparator lines up with it.
+      if (h === 'Mass') {
+        const rendered = extractMassFields(mass && mass.rendered) || {};
+        const ferialMass = extractMassFields(mass && mass.ferial) || {};
+        const differs = Object.keys(rendered).some((k) => rendered[k] !== ferialMass[k]);
+        hours[h] = differs && Object.keys(ferialMass).length
+          ? { ...ferialMass, ...Object.fromEntries(Object.entries(rendered).map(([k, v]) => [`CELEBRATION_${k}`, v])) }
+          : rendered;
+        continue;
+      }
+      hours[h] = extractHourFields(hourDataOf(hoursLiturgy, h));
     }
     days[dateStr] = {
       date: dateStr,
@@ -105,7 +118,7 @@ test('resolves the dates with a correct Vespers ferial control', async () => {
         // Neither the intermediate Hours nor the Office of Readings have a memorial/weekday
         // switch (see HOURS_CONFIG in join-content.test.js): on a memorial their stores
         // replace the record outright instead of offering two. Nothing to mark ferial here.
-        Tercia: [], Sexta: [], Nona: [], Office: [],
+        Tercia: [], Sexta: [], Nona: [], Office: [], Mass: [],
       },
       invitatory: hoursLiturgy.Invitation ? hoursLiturgy.Invitation.InvitationAntiphon || null : null,
     };

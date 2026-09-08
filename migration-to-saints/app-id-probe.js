@@ -170,10 +170,30 @@ async function connect() {
 // before rendering it (`officeStore`'s `cycle === "MEMORY"` block swaps the psalmody, the
 // biblical reading and their responsories for the weekday's). That rewrite is exactly what
 // the probe exists to catch: nothing here models it, it is simply measured.
-const PROBED_HOURS = ['Laudes', 'Vespers', 'Tercia', 'Sexta', 'Nona', 'Office'];
+//
+// The Mass is the one that does not fit the contract: `lecturesStore.contentByDay` is an
+// ARRAY of `Lecture` objects (`type`, `title`, `body`) rather than an object with one key per
+// field. `SHAPE_ADAPTERS` below flattens it to `{ROLE}_ref` / `{ROLE}_texto` inside the page,
+// so everything downstream — parseCell, the map, the join — keeps speaking one vocabulary.
+const PROBED_HOURS = ['Laudes', 'Vespers', 'Tercia', 'Sexta', 'Nona', 'Office', 'Mass'];
 const STORE_IDS = {
   Laudes: 'Laudes', Vespers: 'Visperas', Tercia: 'Tercia', Sexta: 'Sexta', Nona: 'Nona',
-  Office: 'Office',
+  Office: 'Office', Mass: 'Lectures',
+};
+
+// Run inside the page, on whatever `contentByDay` holds, before anything is read out of it.
+// Keyed by Hour; an Hour without an entry here is passed through unchanged.
+const SHAPE_ADAPTERS = {
+  Mass: `(c) => {
+    if (!Array.isArray(c)) return c;
+    const out = {};
+    for (const l of c) {
+      if (!l || !l.type) continue;
+      out[l.type + '_ref'] = l.title;
+      out[l.type + '_texto'] = l.body;
+    }
+    return out;
+  }`,
 };
 
 // Reaches the app's own Pinia instance and drives it exactly like the UI would: set the
@@ -191,7 +211,9 @@ const PROBE = (date) => `(async () => {
     // contentByDay, so what it holds is then the previously loaded day. Carrying the
     // state out is the only way to tell a real answer from a leftover one.
     out.state[hour] = { loadingState: s.loadingState, errorCode: s.errorCode };
-    out.hours[hour] = JSON.parse(JSON.stringify(s.contentByDay));
+    const adapt = (${JSON.stringify(SHAPE_ADAPTERS)})[hour];
+    const raw = JSON.parse(JSON.stringify(s.contentByDay ?? null));
+    out.hours[hour] = adapt ? (0, eval)('(' + adapt + ')')(raw) : raw;
   }
   const day = pinia._s.get('dateStore');
   out.litcalId = day.romcalId;
@@ -213,7 +235,7 @@ function parseCell(value) {
 // actually used — which is the line you can check against eprex on screen without trusting
 // any of this code.
 function compare(results) {
-  const { FIELDS, FIELDS_BY_HOUR } = require('./day-check');
+  const { FIELDS, FIELDS_BY_HOUR, ENTRY_NORMALISERS } = require('./day-check');
   const DAY_TEXTS = path.join(SAINTS_APP, 'src/store/db/day_specific_texts');
   const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
   const manifest = readJson(path.join(__dirname, 'webui/run/date-to-key-manifest.json'));
@@ -224,6 +246,7 @@ function compare(results) {
     Sexta: readJson(path.join(DAY_TEXTS, 'all_sexta.json')),
     Nona: readJson(path.join(DAY_TEXTS, 'all_nona.json')),
     Office: readJson(path.join(DAY_TEXTS, 'all_oficio.json')),
+    Mass: readJson(path.join(DAY_TEXTS, 'all_lectures.json')),
   };
   const esCache = {};
   const esText = (table, id) => {
@@ -251,7 +274,9 @@ function compare(results) {
         continue;
       }
       const key = entryForDate ? Object.keys(allX[hour]).find((k) => k.startsWith(`${entryForDate.litcalId}__`)) : null;
-      const entry = key ? allX[hour][key] : null;
+      const rawEntry = key ? allX[hour][key] : null;
+      // `all_lectures.json` nests its cells under `lecturas`; everything else is flat.
+      const entry = rawEntry && ENTRY_NORMALISERS[hour] ? ENTRY_NORMALISERS[hour](rawEntry) : rawEntry;
       for (const f of (FIELDS_BY_HOUR[hour] || FIELDS)) {
         const appCell = cell(app[f.key]);
         const raw = entry ? entry[f.key] : undefined;

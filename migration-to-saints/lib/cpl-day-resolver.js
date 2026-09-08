@@ -16,6 +16,7 @@ const { ObtainLiturgyMasters } = require('../../src/Services/Liturgy/LiturgyMast
 const { ObtainHoursLiturgy } = require('../../src/Services/Liturgy/HoursLiturgyService');
 const LaudesService = require('../../src/Services/Liturgy/LaudesService');
 const { ObtainHours } = require('../../src/Services/Liturgy/HoursService');
+const { ObtainMassLiturgy } = require('../../src/Services/Liturgy/MassLiturgyService');
 const Laudes = require('../../src/Models/HoursLiturgy/Laudes').default;
 const Hours = require('../../src/Models/HoursLiturgy/Hours').default;
 const { ferialFields } = require('./memorial-ferial');
@@ -79,7 +80,40 @@ function hourDataOf(hoursLiturgy, hour) {
   return hoursLiturgy[hour];
 }
 
-// Mirrors DataService.ReloadAllData (Mass liturgy omitted: the Hours are what migrates).
+// The Mass, in the two halves saints-app keeps apart.
+//
+// `all_lectures.json` carries a memorial's own readings under `CELEBRATION_*` and the
+// weekday's under the plain roles, and `lecturesStore` merges the two so the page shows both.
+// cpl-app shows ONE Mass: `GetMassLiturgy` returns the celebration's on a memorial, feast or
+// solemnity and the weekday's otherwise. So which of the two cells cpl-app's text belongs in
+// depends on what it decided to render — and the way to know is the same trick the Hours use
+// (lib/memorial-ferial.js): ask for the weekday's Mass a second time, from the real code path
+// (`GetNormalDaysMassLiturgy`, keyed on season, weekday, week and year cycle), and see whether
+// what it rendered is that or something else.
+//
+// Both halves are returned. A day where they are equal simply has nothing proper.
+async function resolveMass(ldi, hoursLiturgy, settings) {
+  let rendered = null;
+  try {
+    const massLiturgy = await ObtainMassLiturgy(
+      ldi, hoursLiturgy.TodayCelebrationInformation, hoursLiturgy.TomorrowCelebrationInformation, settings,
+    );
+    // `MassLiturgy.Vespers` is the anticipated evening Mass of the following day. The index
+    // has one entry per day and no cell for it, so it is not carried: see PLAN §18.5.
+    rendered = massLiturgy.Today;
+  } catch {
+    return null;
+  }
+  let ferial = null;
+  try {
+    ferial = await DatabaseDataService.GetNormalDaysMassLiturgy(ldi.Today);
+  } catch {
+    ferial = null;
+  }
+  return { rendered, ferial };
+}
+
+// Mirrors DataService.ReloadAllData.
 async function resolveDay(date, settings) {
   const ldi = await obtainLiturgyDayInformation(date, settings);
   const tomorrowLdi = await obtainLiturgyDayInformation(ldi.Tomorrow.Date, settings);
@@ -100,7 +134,8 @@ async function resolveDay(date, settings) {
     Sexta: ferialHours.SixthHour,
     Nona: ferialHours.NinthHour,
   };
-  return { liturgyDayInformation: ldi, hoursLiturgy, ferial };
+  const mass = await resolveMass(ldi, hoursLiturgy, settings);
+  return { liturgyDayInformation: ldi, hoursLiturgy, ferial, mass };
 }
 
 // --- Prayers blob -> its parts (same parse as the join; see join-content.test.js) --------
@@ -258,6 +293,93 @@ function extractOfficeFields(office) {
   return out;
 }
 
+// --- The Mass ---------------------------------------------------------------------------
+//
+// A vocabulary of its own again, and for once it is saints-app's that is the odd one:
+// `lecturesStore.contentByDay` is an ARRAY of `Lecture` objects (`title`, `body`, `type`)
+// rather than an object with one key per field. The type IS the role, so flattening it to
+// `{ROLE}_ref` / `{ROLE}_texto` gives the join and the probe one vocabulary again — see
+// PLAN §18.
+
+// Which of cpl-app's fields each role of the index is made of. `part` is where the role lives
+// on `DayMassLiturgy`; `body` is the field holding the reading itself, which is named
+// differently for a reading, a psalm and the Gospel.
+const MASS_ROLES = {
+  FIRSTLECTURE: { part: 'FirstReading', body: 'Reading' },
+  SECONDLECTURE: { part: 'SecondReading', body: 'Reading' },
+  THIRDLECTURE: { part: 'ThirdReading', body: 'Reading' },
+  FOURTHLECTURE: { part: 'FourthReading', body: 'Reading' },
+  FIFTHLECTURE: { part: 'FifthReading', body: 'Reading' },
+  SIXTHLECTURE: { part: 'SixthReading', body: 'Reading' },
+  SEVENTHLECTURE: { part: 'SeventhReading', body: 'Reading' },
+  // The epistle of the Easter Vigil (Rm 6), which the index numbers as the eighth reading.
+  EIGHTHLECTURE: { part: 'ApostleReading', body: 'Reading' },
+  GOSPEL: { part: 'Gospel', body: 'Gospel' },
+  PSALM: { part: 'Psalm', body: 'Psalm', psalm: true },
+  SECONDPSALM: { part: 'SecondPsalm', body: 'Psalm', psalm: true },
+  THIRDPSALM: { part: 'ThirdPsalm', body: 'Psalm', psalm: true },
+  FOURTHPSALM: { part: 'FourthPsalm', body: 'Psalm', psalm: true },
+  FIFTHPSALM: { part: 'FifthPsalm', body: 'Psalm', psalm: true },
+  SIXTHPSALM: { part: 'SixthPsalm', body: 'Psalm', psalm: true },
+  SEVENTHPSALM: { part: 'SeventhPsalm', body: 'Psalm', psalm: true },
+  // The verse before the Gospel. Only the verse: the refrain that the index keeps in the
+  // reference cell ("Al·leluia, al·leluia, al·leluia") is not data in cpl-app at all — it is
+  // a constant inside its own screen — so nothing here can supply it. See PLAN §18.3.
+  ACCLAMATION: { part: 'Hallelujah', body: 'Hallelujah', noRef: true },
+};
+
+// cpl-app writes "-" where a slot is empty, and its own `StringManagement.HasLiturgyContent`
+// treats that exactly like an empty string. Observing it would file a hyphen as if it were a
+// reading.
+const massContent = (v) => {
+  if (v === undefined || v === null) return null;
+  const t = String(v).trim();
+  return t === '' || t === '-' ? null : t;
+};
+
+// The reference cell, which carries TWO things separated by a literal `_`:
+// `formatTitleLectures()` renders `split("_")[0]` as the citation and `[1]` as the subtitle.
+// cpl-app already holds the two apart — `Quote` and `Comment` — so the separator goes between
+// them, spelled the way `es` spells it ("Ez 9, 17; 10, 18-22: _La marca en la frente…_").
+//
+// The psalm is the exception, and deliberately. In `es` the subtitle of a psalm is its
+// RESPONSE and the body carries none (917 of 918 psalms have no `R.` line); cpl-app does the
+// opposite — the response is inside the body, repeated after each stanza, which is how the
+// Catalan volume prints it and how cpl-app's own screen shows it. `formatTextLecture()` turns
+// those `R.` into `℟` on its own, so copying the body as it is renders correctly and no
+// surgery on a liturgical text is needed. The reference is then just the citation.
+//
+// cpl-app leaves the book name off a psalm ("112,1-2.3-4.5-6 (R.: 4b)") because its screen
+// prints "Salm responsorial" before it, so `Sl ` is prefixed here — but only to a citation
+// that really starts with a psalm number, never to a canticle ("Ex 15, 1-2…") standing in for
+// one, which the Easter Vigil uses twice.
+function massCitation(part, isPsalm) {
+  const quote = massContent(part && part.Quote);
+  if (isPsalm) return quote && /^\d/.test(quote) ? `Sl ${quote}` : quote;
+  const comment = massContent(part && part.Comment);
+  if (quote && comment) return `${quote}: _${comment}_`;
+  return quote || comment || null;
+}
+
+// One Mass of cpl-app, keyed by the index's role names. `Title` ("Lectura de la profecia
+// d'Ezequiel") is deliberately absent: the index has no cell for it and saints-app builds it
+// itself from the role's own literal.
+function extractMassFields(dayMass) {
+  if (!dayMass) return null;
+  const out = {};
+  for (const [role, spec] of Object.entries(MASS_ROLES)) {
+    const part = dayMass[spec.part];
+    if (!part) continue;
+    if (!spec.noRef) {
+      const ref = massCitation(part, spec.psalm);
+      if (ref) out[`${role}_ref`] = ref;
+    }
+    const body = massContent(part[spec.body]);
+    if (body) out[`${role}_texto`] = body;
+  }
+  return out;
+}
+
 // Terce, Sext and None live under `hoursLiturgy.Hours`, not at the root, and their model
 // (`Models/HoursLiturgy/Hours.tsx`, class SpecificHour) is a smaller Laudes: no evangelical
 // antiphon, no intercessions, and two fields shaped differently. `extractHourFields` reads
@@ -357,6 +479,10 @@ module.exports = {
   INTERMEDIATE_HOURS,
   psalmAntiphons,
   responsoryParts,
+  MASS_ROLES,
+  massCitation,
+  extractMassFields,
+  resolveMass,
   readingResponsoryParts,
   officeCitation,
   extractOfficeFields,

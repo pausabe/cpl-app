@@ -39,10 +39,11 @@ const HOUR_FILES = {
   Sexta: 'all_sexta.json',
   Nona: 'all_nona.json',
   Office: 'all_oficio.json',
+  Mass: 'all_lectures.json',
 };
 // The order they are prayed in, which is the order the report reads best in. The Office of
 // Readings goes first: it may be said at any hour, but the volumes print it at the head.
-const ALL_HOURS = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers'];
+const ALL_HOURS = ['Office', 'Laudes', 'Tercia', 'Sexta', 'Nona', 'Vespers', 'Mass'];
 
 // Every field of an index entry, in reading order, with the commons table it points at.
 // `list: true` means the field holds an array of ids (one per responsory part /
@@ -102,7 +103,50 @@ const OFFICE_FIELDS = [
   { key: 'oracion_final', table: 'oraciones_finales', label: 'Oració final' },
 ];
 
-const FIELDS_BY_HOUR = { Office: OFFICE_FIELDS };
+// The Mass. Two cells per role — the reference (which carries the citation and, after the
+// `_`, the subtitle) and the text — and a `CELEBRATION_` twin of each for the days where
+// saints-app shows the celebration's Mass beside the weekday's.
+//
+// `COMMENT`, `ALTERNATIVE_*` and `SHORT_*` are deliberately absent. The commentaries are out
+// of scope in Catalan by decision, and cpl-app has no alternative or short forms at all:
+// counting them would report as "missing" cells that nothing can ever fill.
+const MASS_ROLE_LABELS = {
+  FIRSTLECTURE: '1a lectura', PSALM: 'Salm responsorial', SECONDLECTURE: '2a lectura',
+  SECONDPSALM: '2n salm', THIRDLECTURE: '3a lectura', THIRDPSALM: '3r salm',
+  FOURTHLECTURE: '4a lectura', FOURTHPSALM: '4t salm', FIFTHLECTURE: '5a lectura',
+  FIFTHPSALM: '5è salm', SIXTHLECTURE: '6a lectura', SIXTHPSALM: '6è salm',
+  SEVENTHLECTURE: '7a lectura', SEVENTHPSALM: '7è salm', EIGHTHLECTURE: 'Epístola',
+  ACCLAMATION: 'Al·leluia', GOSPEL: 'Evangeli',
+};
+const MASS_ROLE_ORDER = [
+  'FIRSTLECTURE', 'PSALM', 'SECONDLECTURE', 'SECONDPSALM', 'THIRDLECTURE', 'THIRDPSALM',
+  'FOURTHLECTURE', 'FOURTHPSALM', 'FIFTHLECTURE', 'FIFTHPSALM', 'SIXTHLECTURE', 'SIXTHPSALM',
+  'SEVENTHLECTURE', 'SEVENTHPSALM', 'EIGHTHLECTURE', 'ACCLAMATION', 'GOSPEL',
+];
+const MASS_FIELDS = [];
+for (const prefix of ['', 'CELEBRATION_']) {
+  for (const role of MASS_ROLE_ORDER) {
+    const label = `${prefix ? 'Celebració · ' : ''}${MASS_ROLE_LABELS[role]}`;
+    MASS_FIELDS.push({ key: `${prefix}${role}_ref`, table: 'lecturas_referencia', label: `${label} — cita` });
+    MASS_FIELDS.push({ key: `${prefix}${role}_texto`, table: 'lecturas_texto', label: `${label} — text` });
+  }
+}
+
+// `all_lectures.json` nests its cells under `lecturas` instead of putting one key per field,
+// so it is brought into the same vocabulary the probe reports before anything reads it. Same
+// flattening as `HOURS_CONFIG.Mass.fromIndex` in join-content.test.js.
+const ENTRY_NORMALISERS = {
+  Mass: (entry) => {
+    const out = {};
+    for (const [role, cell] of Object.entries((entry && entry.lecturas) || {})) {
+      if (cell.ref !== undefined && cell.ref !== null) out[`${role}_ref`] = cell.ref;
+      if (cell.texto !== undefined && cell.texto !== null) out[`${role}_texto`] = cell.texto;
+    }
+    return out;
+  },
+};
+
+const FIELDS_BY_HOUR = { Office: OFFICE_FIELDS, Mass: MASS_FIELDS };
 
 // A probe cell is "table/id", or a list of them for list fields; the index gives the ids
 // alone. Both end up as {table, id} pairs here.
@@ -358,7 +402,7 @@ function checkDay(dateStr, options = {}) {
       continue;
     }
 
-    const entry = allX[key];
+    const entry = ENTRY_NORMALISERS[hour] ? ENTRY_NORMALISERS[hour](allX[key]) : allX[key];
     const fields = [];
     const hourTotals = { ok: 0, conflict: 0, missing: 0, notInAppYet: 0 };
     // Fields whose cell is `-1` and that have no ferial cell either: nothing is shown and
@@ -700,6 +744,8 @@ module.exports = {
   ALL_HOURS,
   FIELDS,
   OFFICE_FIELDS,
+  MASS_FIELDS,
+  ENTRY_NORMALISERS,
   FIELDS_BY_HOUR,
   celebrationNames,
   glossLitcalId,

@@ -39,6 +39,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** | Salmòdia feta; 2a ronda pendent | `43a319267` |
 | [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **proposat** | — pendent d'enviar | — |
 | [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **proposat** | — pendent d'enviar | — |
+| [EPREX-004](#eprex-004) | 2026-09-08 | saints-app | **proposat** | — pendent d'enviar | — |
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
 | [MIGRA-005](#migra-005) | 2026-09-04 | eines | codi | No — va al git | — |
 | [MIGRA-006](#migra-006) | 2026-09-07 | eines | codi | No — va al git | `5ab407c` |
@@ -56,6 +57,9 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EINA-ofici](#eina-ofici) | 2026-09-07 | eines | codi | No — va al git | — |
 | [SA-13](#sa-13) | 2026-09-07 | saints-app | contingut | Es regenera | — |
 | [D-005](#d-005) | 2026-09-07 | — | **decisió oberta** | — decideix en Pau | — |
+| [EINA-missa](#eina-missa) | 2026-09-08 | eines | codi | No — va al git | — |
+| [SA-14](#sa-14) | 2026-09-08 | saints-app | contingut | Es regenera | — |
+| [D-006](#d-006) | 2026-09-08 | — | **decisió oberta** | — decideix en Pau | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -694,6 +698,122 @@ mateix himne cada nit.
 La sortida recomanada és transcriure els set himnes del volum imprès a
 `static-translations/compline_himno.ca.json`. Dossier:
 [decisions/D-004](migration-to-saints/decisions/D-004-l-himne-de-completes.md).
+
+<a id="eina-missa"></a>
+## EINA-missa
+
+**El pipeline aprèn la missa** · 8 de setembre de 2026
+
+Fase 4 de [FASES.md](migration-to-saints/FASES.md). 4.386 ids un cop trets els **1.082 dels
+comentaris**, que queden fora d'abast en català per decisió d'en Pau, i els `ALTERNATIVE_*` i
+`SHORT_*`, que cpl-app no modela.
+
+**El problema no era la forma dels camps: era que cpl-app ofereix fins a tres misses per a una
+data i saints-app hi té dues columnes**, i cap dels dos índexs diu quina va on.
+
+| candidata | què és |
+|---|---|
+| `rendered` | el que cpl-app resa: la missa de la celebració si n'hi ha, la ferial si no |
+| `ferial` | la del dia de la setmana, demanada a part (`GetNormalDaysMassLiturgy`) |
+| `eve` | la que cpl-app va resoldre **ahir**. Només encaixa el diumenge de Pasqua, que du la **Vigília** als rols plans mentre cpl-app la resol al Dissabte Sant |
+
+**La regla és llegir-ho de la cita que ja hi ha a la casella.** Una lectura de la missa sempre
+en du una, `es` ja la té escrita i `fingerprint()` compara com l'escriuen les dues llengües. Si
+no coincideix cap candidata, no s'escriu res.
+
+Per què no una regla del tipus «el que és propi va a `CELEBRATION_*`»: **els sants Pere i Pau**
+duen la missa de la **vigília** als rols plans (Fets 3) i la **del dia** als `CELEBRATION_*`
+(Fets 12). Aquella regla hauria posat la missa del dia a les caselles de la vigília **cada any**,
+i el control d'unanimitat no ho hauria vist mai, perquè hauria estat malament de manera
+consistent.
+
+Altres decisions de mapatge, totes amb prova a `mass-fields.test.js`:
+
+- La **referència** du dues coses dins d'una casella, separades per un `_` que el component
+  parteix: `{Quote}: _{Comment}_`, la mateixa partició que cpl-app ja té. El `Title` no hi va —
+  l'índex no li té casella.
+- El **salm** no en du, de subtítol: a `es` la resposta és el subtítol i el cos no la duu (917 de
+  918), i a cpl-app va **dins** del cos, repetida després de cada estrofa, que és com ho imprimeix
+  el volum. `formatTextLecture()` ja converteix `R.` en `℟`, o sigui que copiar el cos tal com és
+  es pinta bé. **Zero cirurgia sobre el text litúrgic.**
+- cpl-app deixa el nom del llibre fora del salm («112,1-2…») perquè la seva pantalla escriu «Salm
+  responsorial» abans: se li prefixa `Sl `, però **només si la cita comença amb número**, mai a un
+  càntic que fa de salm, cosa que la Vigília Pasqual fa dues vegades.
+
+**Control**: re-córrer les 6 hores d'abans amb el mapa nou de 7 dona **15.857 caselles idèntiques
+byte a byte**. I com que la missa **no comparteix cap taula amb les hores**, el join va sortir
+purament additiu.
+
+| | abans | després |
+|---|---|---|
+| Missa, dels 4.386 ids | 0 (0%) | **3.483 (79,4%)** |
+| L'índex compartit sencer | 16.128/22.132 (72,9%) | **19.611/22.132 (88,6%)** |
+| Caselles en conflicte | 1.614 | **1.998** |
+
+Detall a [PLAN §18](migration-to-saints/PLAN.md).
+
+<a id="sa-14"></a>
+## SA-14
+
+**3.483 caselles noves a `commons/ca`: les lectures de la missa** · 8 de setembre de 2026
+
+Exportació de la fase 4. **3.483 claus noves i 0 actualitzades** — la missa té les seves dues
+taules (`lecturas_referencia`, `lecturas_texto`) i no comparteix cap id amb les hores, o sigui
+que **res del que ja hi havia publicat no es toca**.
+
+Verificat a l'app real en català: el 12-VIII, el 16-IX i el 15-VIII de 2026 surten la primera
+lectura, el salm, la segona i l'evangeli.
+
+Tres forats coneguts, tots amb causa:
+
+| | cobertura | per què |
+|---|---|---|
+| Nucli (1a, salm, 2a, evangeli) | 74-92% | conflictes registrats: cpl-app té la mateixa lectura escrita dues vegades amb diferències petites (`Mc 1,21b-28` / `Mc 1,21-28`) |
+| Tornada de l'aclamació | 0% | no és cap dada de cpl-app — [D-006](#d-006) |
+| `CELEBRATION_*` | 22-40% | els dies de memòria cpl-app resa la missa **ferial**, com mana el Missal. És la [D-001](#d-001) a la missa |
+| Vigília Pasqual | ~0% | [EPREX-004](#eprex-004): l'app no llegeix cap casella el diumenge de Pasqua |
+
+<a id="d-006"></a>
+## D-006 — **OBERTA**
+
+**La tornada de l'aclamació: 14 línies que cpl-app no té** · 8 de setembre de 2026
+
+La casella `lecturas_referencia` del rol `ACCLAMATION` no du la cita bíblica: du la **tornada**
+(«Al·leluia, al·leluia, al·leluia» i les fórmules que la substitueixen en Quaresma). cpl-app no
+en té cap dada — és una constant dins de la seva pantalla— i el que sí que té, `Hallelujah.Quote`,
+és la cita del verset, que és una altra cosa.
+
+El verset (`ACCLAMATION_texto`) **sí que es migra**. El que falta són **14 ids** per a tot l'any,
+i **no els escric jo**: la regla d'aquest projecte és que només el volum imprès decideix la
+redacció catalana, i ja va costar un `CPL-LIT` retirat. Hi ha una taula per omplir al dossier;
+un cop plena va a `static-translations/lecturas_referencia.ca.json` i l'exportació la recull sola.
+
+Dossier: [decisions/D-006](migration-to-saints/decisions/D-006-la-tornada-de-l-aclamacio.md).
+
+<a id="eprex-004"></a>
+## EPREX-004
+
+**El diumenge de Pasqua no mostra cap lectura de la missa** · 8 de setembre de 2026
+
+Trobat fent la descoberta de la fase 4, abans d'escriure cap casella catalana. **No és un bug
+del català**: passa igual en castellà, que és l'idioma publicat.
+
+`all_lectures.json` té quatre entrades per al diumenge de Pasqua — `__ANY` amb **0** lectures i
+`__YEAR_A/B/C` amb 22-24 cadascuna— i `lecturesStore` demana els cicles en l'ordre
+`["ANY", "MEMORY", parell ? "EVEN" : "ODD", cicle]`. `findInStructure()` torna la primera clau
+que **existeix**, i un objecte buit és cert, o sigui que `easter_sunday__ANY` guanya sempre i
+les lectures dels tres cicles no s'arriben a llegir mai.
+
+Comprovat a l'app real en castellà: el 5-IV-2026 `contentByDay` és un **array buit**, amb
+`loadingState: "loaded"` i `errorCode: null` — la pàgina es pinta sense res i sense dir per què.
+
+De les set entrades sense lectures que hi ha a l'índex, **només aquesta en tapa una altra**;
+les tres `__EVEN` buides queden darrere del seu germà `__ANY` i són dades mortes.
+
+Dossier: [eprex-bugs/EPREX-004](migration-to-saints/eprex-bugs/EPREX-004.md). La sortida
+recomanada és que `findInStructure` no accepti una entrada sense contingut —tres línies a
+`structureHelpers.ts`, que tanca la classe de bug sencera— i de passada netejar les entrades
+buides.
 
 <a id="eina-ofici"></a>
 ## EINA-ofici
