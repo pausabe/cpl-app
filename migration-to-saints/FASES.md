@@ -19,7 +19,7 @@ de sota i el [CLAUDE.md](../CLAUDE.md) de l'arrel.
 | **1** | Tèrcia, Sexta i Nona | ✅ **feta** (7-IX-2026) — 5 de les 7 hores migrades |
 | **2** | Completes | ✅ **feta** (7-IX-2026) — 6 de les 7 hores; queda [D-004](decisions/D-004-l-himne-de-completes.md) |
 | **3** | Ofici de lectura | ✅ **feta** (7-IX-2026) — **les 7 hores** migrades; queda [D-005](decisions/D-005-l-himne-nocturn-de-l-ofici.md) |
-| **4** | Missa (lectures) | ⬜ no començada |
+| **4** | Missa (lectures) | 🔄 **descoberta feta** — 4.502 ids; 3 coses per decidir abans d'implementar |
 | **—** | Comentaris de la missa | ⛔ **fora d'abast** (decisió, veure sota) |
 
 Cobertura mesurada el **7 de setembre de 2026** (finestra 2017-2026, Barcelona), **després de
@@ -331,7 +331,7 @@ informació entre `Reference` i `Quote` amb un tall diferent.
 
 ---
 
-## Fase 4 — Missa: les lectures · ⬜
+## Fase 4 — Missa: les lectures · 🔄
 
 **Última, i com a decisió separada.** Tècnicament és fer-ho; el que la frena no és el codi.
 
@@ -348,11 +348,49 @@ PLAN §6c no existeix: el cicle és explícit. Rols: `FIRSTLECTURE`, `PSALM`, `S
 
 - [x] ~~Preguntar al client pels drets del leccionari~~ — **resolt**: l'editorial CPL en té els
       drets i proporciona el contingut a la BD. La fase no està bloquejada per aquí.
-- [ ] Mapatge de rols (`FIRSTLECTURE`/`PSALM`/… ↔ `Lectura1`/`Salm`/`Evangeli`…) i de cicles
-      (`Cicle` A/B/C ↔ `YEAR_*`, `paroimpar` I/II ↔ `ODD`/`EVEN`)
-- [ ] Decidir què es fa amb la Vetlla Pasqual (cpl-app hi té set lectures i set salms
-      hardcodejats a `MassLiturgyService.tsx`, i l'índex té `THIRDLECTURE`…`EIGHTHLECTURE`)
-- [ ] Sonda, join, cobertura
+### El pas de descoberta — **fet**
+
+Detall sencer a [PLAN §18](PLAN.md). L'abast comptat és de **4.502 ids** (2.383 de
+`lecturas_referencia` i 2.233 de `lecturas_texto`), un cop trets els **1.082 dels comentaris**,
+que queden fora d'abast en català.
+
+- [x] **Mapatge de rols i de cicles.** Els cicles no són cap problema: `all_lectures.json` és
+      **l'únic índex de saints-app que ja en fa servir de debò** (`YEAR_A/B/C`, `ODD`/`EVEN`) i
+      `lecturesStore` els tria amb `findInStructure`. El problema del grup A del §6c aquí no hi és.
+- [x] **La forma de la casella.** `lecturesStore.contentByDay` és un **array de `Lecture`**, no
+      un objecte per camp: la sonda l'haurà de convertir a `{ROL}_ref` / `{ROL}_texto`. I la
+      referència du **dues coses**: `{cita}: _{subtítol}_`, que és exactament la partició que
+      cpl-app ja té a `MassReading.Quote` i `.Comment`. El `Title` de cpl-app no hi va — l'índex
+      no li té casella.
+- [x] **La Vigília Pasqual.** cpl-app la resol **al Dissabte Sant** (`GetEasterEve`, amb les set
+      lectures escrites dins del codi en català); saints-app la penja de **`easter_sunday__YEAR_x`**,
+      i la mateixa entrada du **les dues misses**: la Vigília als rols plans i la missa del dia
+      als `CELEBRATION_*`. El join haurà de resoldre **dos dies** per a omplir Pasqua.
+- [x] **`CELEBRATION_*`** vol dir «la missa pròpia de la celebració», al costat de la ferial;
+      `lecturesStore` les fusiona i la pàgina ensenya les dues.
+- [x] **La missa vespertina anticipada de cpl-app no té casella** a l'índex (una entrada per
+      dia, cap camp anàleg als `*_PrimerasVisperas`). No es migra: filar-hi el text de l'endemà
+      seria repetir la F6.
+
+### Les tres coses per decidir abans d'implementar
+
+1. **`isPsalm()` no sap català** (`formatTextLecture.ts`): la llista és `["Sal", "Lectura
+   Sálmica", "Lettura Salmica"]`. Amb «Sl 112,…» el salm cau per la branca que no és la seva i
+   perd la línia `℟.`. **Forat de llengua idèntic al `biennialReadings` de la fase 3, i es tanca
+   amb una línia.** → proposta a eprex.
+2. **La tornada de l'aclamació no és cap dada de cpl-app**: l'«Al·leluia. » és una constant de
+   la seva pantalla. Són **9 valors distints** en tot l'any i s'han de **traduir a mà** contra el
+   Missal, com l'`oracion` de Completes.
+3. **On va la resposta del salm.** A `es` és el subtítol de la referència i el cos no la duu
+   (917 de 918); a cpl-app va **dins** del cos, repetida després de cada estrofa, que és com ho
+   imprimeix el volum. Recomanació: **copiar el cos tal com és** —`formatTextLecture()` ja
+   converteix `R.` en `℟`— i deixar la referència en `Sl {Quote}`. Zero cirurgia sobre el text.
+
+### Després
+
+- [ ] Sonda (`defineStore("Lectures")`, amb l'adaptador d'array a mapa de camps)
+- [ ] Extractor + join + cobertura
+- [ ] Vigília Pasqual: el join de dos dies
 
 **Fet quan:** les lectures de la missa es llegeixen en català i el client ha dit que sí.
 
@@ -399,6 +437,7 @@ quedar l'anterior sense haver de llegir el git.
 
 | Data | Qui | Què s'ha fet |
 |---|---|---|
+| 2026-09-08 | Claude | **Fase 4: descoberta feta.** La missa són 4.502 ids (els comentaris, 1.082, queden fora). 3 coses per decidir: `isPsalm()` no sap català, la tornada de l'aclamació no és dada de cpl-app, i on va la resposta del salm. La Vigília Pasqual demana resoldre dos dies |
 | 2026-09-07 | Claude | **Fase 3 feta.** Ofici de lectura migrat: del 4,4% al **94,0%** dels seus ids. Les 7 hores en català; l'índex compartit al 90,9%. 0 canvis semàntics al text ja publicat. Obertes la D-005 i les P-8/P-9/P-10 |
 | 2026-09-07 | Claude | **Fase 3: descoberta feta.** `_a` és el cicle anual i `_i`/`_p` el bienal, que el català no té activat — l'abast baixa de 14.534 a 6.843 ids. Mapatge complet escrit. Falta implementar |
 | 2026-09-07 | Claude | **Fase 2 feta.** Completes en català (7 fitxers), verificada a l'app real. Oberta la D-004: cpl-app té 2 himnes de Completes i saints-app en vol 7 |

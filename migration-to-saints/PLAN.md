@@ -1640,3 +1640,119 @@ node migration-to-saints/export-to-saints-app.js
 L'exportació no necessita res de nou: `export-to-saints-app.js` copia **tots** els fitxers
 d'`output/commons-ca`, o sigui que `oficio_citas.json`, `oficio_titulos.json` i
 `oficio_textos.json` hi entren sols.
+
+---
+
+## 18. La missa: la descoberta
+
+Fase 4 de [FASES.md](FASES.md). Aquesta secció és **només la descoberta**: què hi ha a cada
+banda, com encaixen i les tres coses que no encaixen. La implementació encara no s'ha fet.
+
+L'abast, comptat: **4.502 ids** — 2.383 de `lecturas_referencia` i 2.233 de `lecturas_texto`,
+menys els 1.082 dels comentaris, que **queden fora d'abast en català** per decisió d'en Pau.
+
+| grup de rols | ids |
+|---|---|
+| Nucli (`FIRSTLECTURE`, `PSALM`, `SECONDLECTURE`, `ACCLAMATION`, `GOSPEL`) | 4.097 |
+| `CELEBRATION_*` — la missa pròpia de la celebració | 369 |
+| Vigília Pasqual (`SECOND…SEVENTHPSALM`, `THIRD…EIGHTHLECTURE`) | 36 |
+| `ALTERNATIVE_*` i `SHORT_*` — cpl-app no els modela | 114 (probablement no migrables) |
+| `COMMENT` / `comentarios` | 1.082 — **fora d'abast** |
+
+### 18.1 Dues caselles per lectura, i totes dues duen més d'una cosa
+
+`lecturesStore` no torna un objecte per camp com les altres hores: torna un **array de
+`Lecture`**, un per rol, amb `title` (= `lecturas_referencia`) i `body` (= `lecturas_texto`).
+La sonda haurà de convertir-lo a un mapa `{ROL}_ref` / `{ROL}_texto` abans de res.
+
+I la casella de referència **no és només la cita**. `formatTitleLectures()` la parteix pel `_`
+(o, si no n'hi ha, pels `:`) i pinta `[0]` com a cita i `[1]` com a subtítol:
+
+```
+"Ez 9, 17; 10, 18-22: _La marca en la frente de los que se lamentan…_"
+ └─ cita ──────────────┘ └─ subtítol, entre guions baixos ──────────┘
+```
+
+cpl-app ja té les dues meitats separades: `MassReading.Quote` i `MassReading.Comment`. O sigui
+que **la referència es compon igual que la cita de l'Ofici** (§17.3): `{Quote}: _{Comment}_`.
+El `Title` de cpl-app («Lectura de la profecia d'Ezequiel») **no hi va**: l'índex no li té
+casella, i saints-app el genera ell mateix del literal del rol.
+
+### 18.2 El salm: tres desajustos petits d'un sol camp
+
+**(a) `isPsalm()` no sap català.** `src/utils/formatters/formatTextLecture.ts`:
+
+```ts
+export const isPsalm = (title: string): boolean =>
+  ["Sal", "Lectura Sálmica", "Lettura Salmica"].some((k) => title.startsWith(k))
+```
+
+Castellà i italià, i prou. Amb una referència catalana («Sl 112,…») el salm cau per la branca
+que **no** és la seva: en lloc de pintar la cita i, sota, `℟. {resposta}`, pinta
+`cita • subtítol`. És un forat de llengua exactament de la mateixa forma que el
+`biennialReadings` de la fase 3, i **es tanca amb una línia**: afegir `"Sl"` a la llista. Va
+com a proposta a eprex.
+
+**(b) cpl-app no posa el nom del llibre.** `MassPsalm.Quote` és «112,1-2.3-4.5-6 (R.: 4b)»,
+sense cap «Sl» al davant — perquè la pantalla de cpl-app ja escriu «Salm responsorial» abans
+(`MassLiturgyPrayerScreen.js:120`). Cal prefixar-hi `Sl ` en migrar.
+
+**(c) La resposta viu en llocs diferents.** A `es`, la resposta del salm és el subtítol de la
+referència i **el cos del salm no la duu**: de 918 salms, **un de sol** té línies `R.`. A
+cpl-app és al revés — la resposta va **dins** del cos, repetida després de cada estrofa, que
+és com la imprimeix el volum català i com la pinta cpl-app.
+
+`formatTextLecture()` ja converteix `R.` en `℟` al cos, o sigui que **copiar el cos de cpl-app
+tal com és, es pinta bé**. La decisió recomanada és aquesta: referència = `Sl {Quote}` i prou,
+cos sencer de cpl-app. **Zero cirurgia sobre el text litúrgic**; l'única diferència amb `es`
+és que la resposta no surt també a la capçalera, perquè ja surt on toca.
+
+### 18.3 L'aclamació: la tornada no és cap dada de cpl-app
+
+`ACCLAMATION.ref` **no és la cita bíblica**: és la tornada. Dels 747 dies, 685 diuen
+«_Aleluya, aleluya, aleluya._», i la resta són les vuit variants de temporada («Gloria y
+alabanza a ti, Cristo», «Alabanza y honor a ti, Señor Jesús»…). Només **9 valors distints**.
+
+cpl-app no en té cap dada: l'«Al·leluia. » és una constant dins de la seva pantalla
+(`MassLiturgyPrayerScreen.js:232`), i el que té a `Hallelujah.Quote` és la cita bíblica
+(«2C 5,19»), que és una altra cosa.
+
+O sigui que `ACCLAMATION.texto` surt de `Hallelujah.Hallelujah` sense problema, però la
+tornada s'ha de **traduir a mà** contra el Missal — nou línies, la mateixa forma que
+`static-translations/compline_oracion.ca.json` de la fase 2.
+
+### 18.4 La Vigília Pasqual: cada app la penja d'un dia diferent
+
+cpl-app la resol **al Dissabte Sant** —`ObtainMassLiturgy` desvia a `GetEasterEve()` quan
+l'endemà és Pasqua— i les set lectures, els set salms i l'epístola hi són **escrites a dins
+del codi**, en català, a `MassLiturgyService.tsx:128` i següents.
+
+saints-app la penja de **`easter_sunday__YEAR_x`**, no de `holy_saturday__ANY` (que només duu
+`GOSPEL`). I la mateixa entrada duu **les dues misses alhora**:
+
+| | rols | contingut |
+|---|---|---|
+| Vigília | `FIRSTLECTURE`…`EIGHTHLECTURE`, `PSALM`…`SEVENTHPSALM`, `GOSPEL` | Gn 1, Gn 22, Ex 14, Is 54, Is 55, Ba 3, Ez 36, Rm 6 |
+| Missa del dia | `CELEBRATION_*` | Fets 10, Sl 117, Col 3, Jo 20 |
+
+O sigui que el join, per a omplir les caselles de Pasqua, ha de resoldre **dos dies**: el
+dissabte per als rols plans i el diumenge per als `CELEBRATION_*`. És el simètric de les
+I Vespres (§0/MIGRA-006), i com allà, el que no es pot deduir de l'índex ho dirà la sonda.
+
+`CELEBRATION_*` vol dir el mateix a tot arreu: **la missa pròpia de la celebració**, al costat
+de la ferial. `lecturesStore` les fusiona (`mergeMemoryAndFerialLectures`) i la pàgina ensenya
+les dues.
+
+### 18.5 La missa vespertina anticipada no té casella
+
+cpl-app calcula una segona missa per als dissabtes i les vigílies de festa
+(`MassLiturgy.Vespers`, decidida a `DecideIfHasVespers()`). `all_lectures.json` **té una sola
+entrada per dia** i cap camp anàleg als `*_PrimerasVisperas` de les Vespres. Sense casella, no
+es migra: filar-hi el text de l'endemà seria repetir la F6.
+
+### 18.6 El que no cal tocar
+
+`all_lectures.json` és **l'únic índex de saints-app que ja fa servir cicles de debò**
+(`YEAR_A`/`B`/`C`, `ODD`/`EVEN`), i `lecturesStore` els tria amb `findInStructure(id,
+["ANY", "MEMORY", parell ? "EVEN" : "ODD", cicle dominical])`. El problema del grup A del
+§6c —no saber si un text varia pel cicle o per una altra cosa— **aquí no existeix**.
