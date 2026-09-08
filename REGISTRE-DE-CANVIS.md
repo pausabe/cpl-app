@@ -61,6 +61,10 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [SA-14](#sa-14) | 2026-09-08 | saints-app | contingut | Es regenera | — |
 | [D-006](#d-006) | 2026-09-08 | — | **decisió oberta** | — decideix en Pau | — |
 | [MIGRA-007](#migra-007) | 2026-09-08 | eines | codi | No — va al git | — |
+| [MIGRA-008](#migra-008) | 2026-09-08 | eines | codi | No — va al git | — |
+| [MIGRA-009](#migra-009) | 2026-09-08 | eines | codi | No — va al git | — |
+| [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **proposat** | — pendent d'enviar | — |
+| [SA-15](#sa-15) | 2026-09-08 | saints-app | contingut | Es regenera | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -699,6 +703,97 @@ mateix himne cada nit.
 La sortida recomanada és transcriure els set himnes del volum imprès a
 `static-translations/compline_himno.ca.json`. Dossier:
 [decisions/D-004](migration-to-saints/decisions/D-004-l-himne-de-completes.md).
+
+<a id="migra-008"></a>
+## MIGRA-008
+
+**El panell exportava per una còpia vella que trepitjava text publicat** · 8 de setembre de 2026
+
+`export-to-saints-app.js` es va extreure de `webui/server.js` al setembre precisament perquè
+es pogués publicar sense fer refer tot el pipeline al panell. La seva pròpia capçalera diu
+«ara el panell requereix això». **No ho feia**: `server.js` es va quedar amb la còpia antiga a
+dins i era aquella la que corria quan algú premia «calcular i exportar».
+
+I la còpia havia divergit. Li faltaven dues coses:
+
+- **La protecció de les caselles del Comú.** L'exportació bona no toca una casella que ja té
+  text quan qui la vol omplir és el Comú dels sants, i ho reporta a `export-common-held.json`.
+  La còpia del panell feia `dest[k] = v` a seques.
+- **Les Completes**, que la còpia no copiava.
+
+Es va veure perquè el 8 de setembre a les 08:38 una exportació feta des del panell va canviar
+**quatre precs ja publicats** (`preces_contenido` 1968-1971) del Nadal al Comú de Pastors, i va
+deixar `celebration_names.json` i `invitatorios.json` buits a `output/` — perquè el panell no
+els posa mai a la llista d'hores. Restaurat i re-exportat per la via bona, que les reté.
+
+Dos canvis: `server.js` ara **requereix** l'exportació de debò i s'ha esborrat la còpia; i la
+llista d'hores del panell hi afegeix sempre l'Invitatori i el nom de la celebració, que no
+tenen casella a la interfície i no són hores que ningú vulgui saltar-se.
+
+<a id="migra-009"></a>
+## MIGRA-009
+
+**El join posava l'antífona d'una festa a la casella d'un dia ferial** · 8 de setembre de 2026
+
+Conseqüència de l'[EPREX-005](#eprex-005). A les hores intermèdies, en una festa,
+`terciaStore` substitueix la salmòdia sencera per la de la fèria — **antífones incloses**— i
+llença l'antífona pròpia que l'índex duu per a aquell dia. La sonda ho mesura correctament: la
+casella que l'app llegeix és la de la fèria. I el join, fent el que li toca, hi escrivia el que
+resa cpl-app aquell dia, que és l'antífona **de la festa**.
+
+Resultat: 26 caselles compartides per desenes de dies ordinaris rebien text de celebració, no
+es posaven d'acord mai i quedaven retingudes. `salmos_antifonas/3412`: 11 variants, «2 de 174
+dies bé». I una casella retinguda **no surt en blanc a l'app**, surt com
+`[ERR-001] Element no trobat. Informeu-ne aquí`.
+
+El fix segueix la regla de sempre (F6, MIGRA-006): **si el text no té casella pròpia, no
+s'observa**. El join ara, per a Tèrcia, Sexta i Nona, comprova dues coses abans d'escriure una
+antífona:
+
+1. que la casella mesurada sigui **la que diu l'índex** — si no, el `store` l'ha redirigida;
+2. i, si ho ha fet, que l'antífona que dona cpl-app **no sigui la de la fèria** — preguntat com
+   sempre, resolent el dia sense celebració i comparant.
+
+Si les dues es compleixen, l'antífona és pròpia i la casella és d'un altre dia: no s'escriu.
+**491 antífones** deixen d'observar-se en tota la finestra.
+
+| | abans | després |
+|---|---|---|
+| `salmos_antifonas` resoltes | 1.067 | **1.083** |
+| caselles en conflicte (totes les taules) | 1.998 | **1.976** |
+| caselles que deixen de mostrar `[ERR-001]` | — | **6.297, en 1.954 dies** |
+
+<a id="eprex-005"></a>
+## EPREX-005
+
+**A les hores intermèdies, una festa perd la seva antífona pròpia** · 8 de setembre de 2026
+
+`terciaStore.ts` i els seus bessons substitueixen, en una festa, els nou camps de la salmòdia
+pels de la fèria. Els salms, bé —cpl-app fa igual—; les **antífones**, no: s'endú també
+l'antífona pròpia que l'índex duu per a aquell dia.
+
+El 8-IX-2026 (Naixement de la Mare de Déu) `all_tercia.json` diu
+`primer_salmo_antifona: 4811` i `-1` a les altres dues —una sola antífona, com mana l'OGLH i
+com resa cpl-app— i l'app llegeix les tres de la fèria. La 4811 no l'obre ningú. **513 dies**
+de la finestra fan això.
+
+Es tanca traient tres línies de l'override. Dossier:
+[eprex-bugs/EPREX-005](migration-to-saints/eprex-bugs/EPREX-005.md).
+
+<a id="sa-15"></a>
+## SA-15
+
+**83 antífones noves i 6.297 errors visibles menys** · 8 de setembre de 2026
+
+Re-exportació després de MIGRA-009. **83 caselles d'antífona** que estaven retingudes per culpa
+del text de festa passen a tenir el text ferial que els pertoca, i amb elles **6.297 caselles de
+1.954 dies** deixen de mostrar `[ERR-001] Element no trobat` a la pantalla.
+
+Verificat a l'app real: el 8-IX-2026 la Tèrcia passa de
+`Ant. 1. [ERR-001] Element no trobat` a `Ant. 1. Qui estima ha complert tota la Llei.`
+
+També s'hi han restaurat els quatre precs que l'exportació del panell havia trepitjat
+([MIGRA-008](#migra-008)).
 
 <a id="migra-007"></a>
 ## MIGRA-007

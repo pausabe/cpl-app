@@ -105,16 +105,32 @@ function main() {
         const fpEs = isCitation ? fingerprint(esText) : null;
         const fpCa = isCitation ? fingerprint(ca) : null;
 
+        // The app shows Catalan text here and cpl-app prays NOTHING here. That is not a text
+        // disagreement — there is no cpl-app text to disagree with — but it is not "they
+        // match" either: the reader of eprex sees a line cpl-app does not have. It gets its
+        // own verdict so the report can never fold it into "everything coincides".
+        //
+        // Two shapes of it are structural and expected, and only those are excused:
+        //
+        // One shape of it is structural and expected: the `CELEBRATION_*` column on a day
+        // cpl-app prays the FERIAL Mass, as the Missal says it should. cpl-app has nothing for
+        // the saint's column by design (D-001), and `resolve-cpl-days` emits no `CELEBRATION_`
+        // key at all on those days.
+        //
+        // Everything else counts, and it is where the real findings are: on a feast cpl-app
+        // says ONE antiphon over the three psalms of an intermediate Hour, so antiphons 2 and
+        // 3 come back empty — while eprex prints two antiphons nobody prays that day.
+        const cplEmpty = cpl == null || String(cpl).trim() === '';
+        const expectedNoSource = cplEmpty && r.key.startsWith('CELEBRATION_')
+          && !Object.keys((cplDay.hours && cplDay.hours[h.hour]) || {}).some((k) => k.startsWith('CELEBRATION_'));
+
         let match = null;
         if (channel === 'C1') {
-          // A cell the app fills and cpl-app has nothing for is not a divergence: there is
-          // nothing to compare it against. `verdictCa` already calls it `onlyApp`, and saying
-          // "diff" here would report the whole `CELEBRATION_*` column of every memorial as
-          // broken — cpl-app prays the ferial Mass those days, exactly as the Missal says, so
-          // it has nothing for the saint's column by design (see D-001).
-          match = cpl == null || String(cpl).trim() === ''
-            ? 'onlyApp'
-            : textKey(String(cpl)) === textKey(String(ca ?? '')) ? 'same' : 'diff';
+          // Equality first, and only then emptiness. The other way round, the deliberate blank
+          // that `es` keeps in slot 0 of a reading responsory — which cpl-app matches exactly,
+          // both a single space — was reported as "the app shows what cpl-app does not".
+          const equal = textKey(String(cpl ?? '')) === textKey(String(ca ?? ''));
+          match = equal ? 'same' : cplEmpty ? 'onlyApp' : 'diff';
         } else if (channel === 'C2' && isCitation) {
           match = !fpCpl || !fpEs
             ? 'unparsed'
@@ -137,6 +153,9 @@ function main() {
           verdictCa: r.verdict,      // same | diff | onlyCpl | onlyApp | ferial | none
           channel,
           match,
+          // Set only on the two structural shapes above: cpl-app was never going to have a
+          // value here. Anything else marked `onlyApp` is a real difference to look at.
+          expectedNoSource,
           fromFerial: r.fromFerial,
           altModeMatch: r.altModeMatch,
           noProperText: r.noProperText,

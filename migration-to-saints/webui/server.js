@@ -213,56 +213,26 @@ async function runContentJoinPipeline({ start, end, hours, diocese }) {
 // overwriting the whole file, so re-running after a manual fix in saints-app doesn't
 // clobber it (our own keys always win, since they're the ones that passed the
 // agree-across-every-date check).
-function exportResolvedContentToSaintsApp() {
-  fs.mkdirSync(SAINTS_APP_COMMONS_CA, { recursive: true });
-  const report = { filesWritten: [], keysAdded: 0, keysChanged: 0 };
+// The export lives in `export-to-saints-app.js`, and this file only calls it. It used to
+// carry its own copy — extracted in September 2026 so a person could publish without making
+// the panel redo the whole pipeline — but the copy was left behind here and kept being the
+// one the panel ran. It had drifted: no protection for the cells the Common supplied (the CLI
+// one holds them and reports them in `export-common-held.json`) and no Compline. See
+// MIGRA-008: it silently overwrote four published petitions.
+const { exportResolvedContentToSaintsApp } = require('../export-to-saints-app');
 
-  const commonsDir = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
-  if (fs.existsSync(commonsDir)) {
-    for (const f of fs.readdirSync(commonsDir)) {
-      const src = readJsonSafe(path.join(commonsDir, f)) || {};
-      if (Object.keys(src).length === 0) continue;
-      const destPath = path.join(SAINTS_APP_COMMONS_CA, f);
-      const dest = readJsonSafe(destPath) || {};
-      for (const [k, v] of Object.entries(src)) {
-        if (!(k in dest)) report.keysAdded++;
-        else if (dest[k] !== v) report.keysChanged++;
-        dest[k] = v;
-      }
-      fs.writeFileSync(destPath, JSON.stringify(dest, null, 2), 'utf8');
-      report.filesWritten.push(f);
-    }
-  }
-
-  if (fs.existsSync(STATIC_TRANSLATIONS_DIR)) {
-    for (const f of fs.readdirSync(STATIC_TRANSLATIONS_DIR)) {
-      const targetName = f.replace('.ca.json', '.json');
-      const src = readJsonSafe(path.join(STATIC_TRANSLATIONS_DIR, f)) || {};
-      const destPath = path.join(SAINTS_APP_COMMONS_CA, targetName);
-      const dest = readJsonSafe(destPath) || {};
-      for (const [k, v] of Object.entries(src)) {
-        if (!(k in dest)) report.keysAdded++;
-        dest[k] = v;
-      }
-      fs.writeFileSync(destPath, JSON.stringify(dest, null, 2), 'utf8');
-      report.filesWritten.push(targetName);
-    }
-  }
-
-  const latinSrc = path.join(SAINTS_APP_COMMONS_ES, 'himnos_latinos.json');
-  const latinDest = path.join(SAINTS_APP_COMMONS_CA, 'himnos_latinos.json');
-  if (fs.existsSync(latinSrc) && !fs.existsSync(latinDest)) {
-    fs.copyFileSync(latinSrc, latinDest);
-    report.filesWritten.push('himnos_latinos.json (còpia d’es, invariant)');
-  }
-
-  return report;
-}
 
 async function handleMigratorRun(req, res, body, { exportToSaintsApp }) {
   const start = (body && body.start) || '2017-01-01';
   const end = (body && body.end) || '2026-12-30';
-  const hours = (body && body.hours && body.hours.length) ? body.hours : dayCheck.ALL_HOURS;
+  // The Invitatory and the celebration's name have no checkbox in the panel — they are not
+  // Hours you would choose to skip — so they are added to whatever was ticked. Left out, the
+  // join writes `invitatorios.json` and `celebration_names.json` EMPTY, and a run from the
+  // panel then looks like it lost 188 cells. (It does not: the export never blanks a
+  // destination from an empty file. But the output on disk is wrong and the next person to
+  // read it is misled.)
+  const asked = (body && body.hours && body.hours.length) ? body.hours : dayCheck.ALL_HOURS;
+  const hours = [...new Set([...asked, 'Invitation', 'Celebration'])];
   const diocese = (body && body.diocese) || 'Barcelona';
 
   const result = await runContentJoinPipeline({ start, end, hours, diocese });

@@ -785,6 +785,9 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // ITERATION being some other day, which it is whenever a date was skipped.
     let eveMassHeld = null;
     let eveDate = null;
+    // Days where an intermediate Hour's antiphon was left unobserved because the celebration
+    // has one and the app reads the weekday's three (see below).
+    let antiphonWithheld = 0;
 
     // On the eve of a solemnity — and every Saturday evening — cpl-app prays the following
     // day's First Vespers. Whether saints-app does too is not a matter of opinion: since
@@ -939,6 +942,49 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           cellMapUse.fromIndex++;
         }
 
+        // On a feast or a special day, `terciaStore` (and its Sext/None twins) REPLACE the
+        // whole psalmody with the current weekday's — "Partial override for FEAST or SPECIAL:
+        // psalms but not short reading nor final prayer" — and in doing so they throw away the
+        // celebration's own antiphon, which the index carries for exactly this day
+        // (`primer_salmo_antifona: 4811` on the Nativity of the BVM, with `-1` in the other
+        // two: ONE antiphon over the three psalms, which is what cpl-app prays too).
+        //
+        // The psalms themselves agree, so they are observed as always. The antiphon does not:
+        // cpl-app has one and the app reads the weekday's three, so cpl-app's has NO CELL OF
+        // ITS OWN and filing it under the weekday's is exactly F6 — a celebration's text in a
+        // cell 174 ordinary days share, which then conflicts forever and renders as
+        // "[ERR-001] Element no trobat" on every one of them. 513 days of the window do this.
+        //
+        // Unproven means skip, which is the direction that cannot corrupt a shared cell.
+        if (entry && ['Tercia', 'Sexta', 'Nona'].includes(hour)) {
+          const indexEntry = allXByHour[hour][key];
+          // Did the store redirect the psalmody? The index says one cell, the app read
+          // another: that is the FEAST/SPECIAL override putting the weekday's psalmody on
+          // screen in place of the celebration's.
+          const redirected = indexEntry && entry.primer_salmo_antifona !== undefined
+            && String(indexEntry.primer_salmo_antifona) !== String(entry.primer_salmo_antifona);
+          // And is what cpl-app says there the CELEBRATION's antiphon rather than the
+          // weekday's? Asked the way the Hours always ask it: resolve the same day with no
+          // celebration and compare (lib/memorial-ferial.js). If they differ, cpl-app's
+          // antiphon is proper to the feast, and the cell the app is reading belongs to the
+          // weekday — so there is nowhere to put it.
+          if (redirected) {
+            const renderedFields = extractHourFields(hourData) || {};
+            const ferialFieldsHour = extractHourFields(ferialHours[hour]) || {};
+            const proper = ['primer', 'segundo', 'tercer'].some((prefix) => {
+              const k = `${prefix}_salmo_antifona`;
+              return renderedFields[k] && renderedFields[k] !== ferialFieldsHour[k];
+            });
+            if (proper) {
+              entry = { ...entry };
+              delete entry.primer_salmo_antifona;
+              delete entry.segundo_salmo_antifona;
+              delete entry.tercer_salmo_antifona;
+              antiphonWithheld++;
+            }
+          }
+        }
+
         if (!entry || !hourData) continue;
         if (observeFn) observeFn(entry, hourData, `${dateStr} (${hour})`, observe, key);
         else {
@@ -1025,6 +1071,12 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       `Caselles: ${cellMapUse.fromMap} hores des del mapa mesurat, ${cellMapUse.fromIndex} des de l'índex, ` +
         `${cellMapUse.noEntry} saltades (l'app no hi mostra res).`
     );
+    if (antiphonWithheld) {
+      console.log(
+        `Hores intermèdies: ${antiphonWithheld} antífones no observades perquè la celebració en ` +
+          `té una de sola i l'app llegeix les tres de la fèria (no hi ha casella on posar-la).`
+      );
+    }
     if (massStats.cells || massStats.unmatched) {
       console.log(
         `Missa: ${massStats.cells} caselles observades ` +

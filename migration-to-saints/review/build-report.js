@@ -40,8 +40,17 @@ function humanDate(d) {
 // session's to-do list, and must never be silently dropped.
 function isDivergent(day, row) {
   if (row.match === 'diff' || row.match === 'diffRef') return true;
+  // The app shows a line cpl-app does not pray that day. Not a text disagreement — there is
+  // no cpl-app text to compare — but a difference the reader sees, so it counts. Excused only
+  // where cpl-app was structurally never going to have a value (see build-rows.js).
+  if (row.match === 'onlyApp' && !row.expectedNoSource) return true;
   return claimFor(day.date, row) !== null;
 }
+
+// Which of the two it is, for the report's own wording: an `onlyApp` row has no cpl-app text
+// to put beside the Catalan one, so calling it "divergeix" without saying why reads as a
+// mistake in the data rather than as what it is.
+const isOnlyApp = (row) => row.match === 'onlyApp' && !row.expectedNoSource;
 function findingOf(day, row) {
   return claimFor(day.date, row);
 }
@@ -119,8 +128,13 @@ function dayBlock(day) {
     if (!rows.length) return '';
     const bad = rows.filter((r) => isDivergent(day, r));
     const good = rows.filter((r) => !isDivergent(day, r));
+    const onlyApp = bad.filter(isOnlyApp).length;
+    const summary = bad.length
+      ? `${bad.length} de ${rows.length} divergeixen` +
+        (onlyApp ? ` · ${onlyApp} que l’app mostra i cpl-app no resa` : '')
+      : `${rows.length} camps, tots coincideixen`;
     return `<section class="hr">
-      <h4>${HOUR_LABELS[h] || h} <span class="hc">${bad.length ? `${bad.length} de ${rows.length} divergeixen` : `${rows.length} camps, tots coincideixen`}</span></h4>
+      <h4>${HOUR_LABELS[h] || h} <span class="hc">${summary}</span></h4>
       ${bad.length ? `<ul class="fl">${bad.map((r) => fieldRow({ ...r, date: day.date }, findingOf(day, r), true)).join('')}</ul>` : ''}
       ${good.length ? `<details class="fold"><summary>${good.length} camps que coincideixen</summary><ul class="fl">${good.map((r) => fieldRow({ ...r, date: day.date }, null, false)).join('')}</ul></details>` : ''}
     </section>`;

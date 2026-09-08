@@ -31,9 +31,9 @@ la fase 4**, a `saints-app` — o sigui el que veu l'usuari, no el que calcula e
 | **Les 7 hores** | 16.128 / 17.746 (90,9%) | 16.128 / 17.746 (90,9%) |
 | **L'índex compartit sencer** | 16.128 / 22.132 (72,9%) | **19.611 / 22.132 (88,6%)** |
 | Univers sencer de `commons/es` | 16.618 / 58.537 (28,4%) | **20.101 / 58.537 (34,3%)** |
-| Caselles en conflicte al join | 1.614 | **1.998** |
+| Caselles en conflicte al join | 1.614 | **1.976** |
 | Completes | 7/7 fitxers, 114 camps — fora del recompte d'ids: no passa per `day_specific_texts` | igual |
-| Dies de mostra (135-141 camps per dia) | | 12-08 **90%** · 16-09 **87%** · 15-08 **82%** |
+| Dies de mostra (135-141 camps per dia) | | 12-08 **90%** · 16-09 **87%** · 15-08 **82%** · 08-09 **84%** |
 
 > El denominador **exclou els camps que no surten mai de cpl-app** (`himno_latino`, còpia d'`es`;
 > `invitacion_padrenuestro`, traduït a mà) i, a la missa, els **1.082 ids dels comentaris**, que
@@ -450,6 +450,7 @@ català d'origen — però això no ho decidim nosaltres.
 | # | Pregunta | Per a qui | Bloqueja |
 |---|---|---|---|
 | ~~P-1~~ | ~~Drets del leccionari català~~ — **resolta el 7-IX-2026**: l'editorial CPL en té els drets i és qui proporciona tot el contingut a `cpl-app.db`. No bloqueja la fase 4 | — | — |
+| P-13 | **Una casella retinguda no surt en blanc a l'app: surt com `[ERR-001] Element no trobat. Informeu-ne aquí`.** Això canvia la urgència de la cua: cada conflicte que un dia llegeix de veritat és un error vermell a la pantalla, no un buit | prioritat | — |
 | P-11 | **`isPsalm()`** (`formatTextLecture.ts`) no coneix `"Sl"`: en català el salm de la missa perd la línia `℟.`. Una línia a eprex, i les dades ja hi són | saints-app | — |
 | P-12 | La cua de la missa: **384 conflictes** nous, molts per duplicats de cpl-app amb diferències petites de cita o de redacció. Alguns són errors de dades de cpl-app (`Sl 18 … R.: Jo 6,64c` vs `6,63c`) | editorial / cpl-app | — |
 | P-8 | Les **27 + 33 caselles** que el join ja no escriu però que segueixen publicades a `saints-app` (l'exportació fusiona i no esborra). Cal decidir si es treuen | decisió | — |
@@ -470,6 +471,7 @@ quedar l'anterior sense haver de llegir el git.
 
 | Data | Qui | Què s'ha fet |
 |---|---|---|
+| 2026-09-08 | Claude | **Revisió i panell posats al dia** (MIGRA-007), i dos bugs que en van sortir: el panell exportava per una còpia vella que trepitjava text publicat (MIGRA-008) i el join posava l'antífona de les festes a la casella de la fèria (MIGRA-009 / EPREX-005). **6.297 caselles de 1.954 dies deixen de mostrar `[ERR-001]` a la pantalla** |
 | 2026-09-08 | Claude | **Fase 4 feta.** Missa migrada: del 0% al **79,4%**. L'índex compartit sencer al 88,6%. 0 canvis al text ja publicat (la missa no comparteix cap taula amb les hores). Trobat i verificat l'**EPREX-004**: el diumenge de Pasqua no mostra cap lectura, en cap idioma. Oberta la D-006 |
 | 2026-09-08 | Claude | **Fase 4: descoberta feta.** La missa són 4.502 ids (els comentaris, 1.082, queden fora). 3 coses per decidir: `isPsalm()` no sap català, la tornada de l'aclamació no és dada de cpl-app, i on va la resposta del salm. La Vigília Pasqual demana resoldre dos dies |
 | 2026-09-07 | Claude | **Fase 3 feta.** Ofici de lectura migrat: del 4,4% al **94,0%** dels seus ids. Les 7 hores en català; l'índex compartit al 90,9%. 0 canvis semàntics al text ja publicat. Obertes la D-005 i les P-8/P-9/P-10 |
