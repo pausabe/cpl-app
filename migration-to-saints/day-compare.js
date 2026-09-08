@@ -29,8 +29,11 @@ const readJsonSafe = dayCheck.readJsonSafe;
 
 // Order and labels come from the inspector's own field list, so both tools describe the
 // day with the same vocabulary and in the same reading order.
-const FIELD_ORDER = dayCheck.FIELDS.map((f) => f.key);
-const FIELD_DEF = new Map(dayCheck.FIELDS.map((f) => [f.key, f]));
+// Per Hour, because they no longer share one vocabulary: the Office of Readings has two long
+// readings and three responsories of its own, and the Mass has neither psalms nor
+// intercessions but seventeen roles in two columns. Reading every Hour through Laudes' field
+// list, as this did, silently dropped 14 of the Office's 25 cells and ALL of the Mass's.
+const fieldsFor = (hour) => dayCheck.FIELDS_BY_HOUR[hour] || dayCheck.FIELDS;
 
 // What TextService prints when an id isn't in the loaded table (src/services/TextService.ts).
 function notFoundRender(table, id) {
@@ -107,8 +110,8 @@ function compareHour(hour, appHour, cplFields) {
 
   const ferial = new Set((appHour && appHour.noProperText) || []);
   const rows = [];
-  for (const key of FIELD_ORDER) {
-    const def = FIELD_DEF.get(key);
+  for (const def of fieldsFor(hour)) {
+    const key = def.key;
     const appCells = appByKey.get(key) || [];
     const rawCpl = cplFields ? cplFields[key] : undefined;
     const cplValues = rawCpl === undefined || rawCpl === null ? [] : Array.isArray(rawCpl) ? rawCpl : [rawCpl];

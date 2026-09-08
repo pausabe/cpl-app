@@ -1,6 +1,6 @@
 ---
 name: revisio-dia
-description: Revisa dia a dia i camp a camp la Litúrgia de les Hores de cpl-app contra saints-app (eprex), diu de qui és la culpa de cada divergència amb proves, i deixa un prompt llest per aplicar cada correcció. Fes-la servir quan es demani revisar dies, comparar les dues apps, investigar per què un dia no surt bé, o buscar bugs litúrgics. Exemples "revisa del 20 al 24 d'agost", "què passa el 2026-08-24", "compara les dues apps aquesta setmana".
+description: Revisa dia a dia i camp a camp tot el que resa cpl-app —les set hores de l'ofici i les lectures de la missa— contra saints-app (eprex), diu de qui és la culpa de cada divergència amb proves, i deixa un prompt llest per aplicar cada correcció. Fes-la servir quan es demani revisar dies, comparar les dues apps, investigar per què un dia no surt bé, o buscar bugs litúrgics. Exemples "revisa del 20 al 24 d'agost", "què passa el 2026-08-24", "compara les dues apps aquesta setmana".
 ---
 
 # Revisió dia a dia: cpl-app ↔ saints-app
@@ -8,6 +8,16 @@ description: Revisa dia a dia i camp a camp la Litúrgia de les Hores de cpl-app
 Compara, per a cada dia i cada camp, què resa cpl-app i què resarà saints-app; classifica
 cada diferència en un dels cinc veredictes; i deixa la feina preparada perquè algú altre
 l'apliqui.
+
+**Què cobreix**: l'Ofici de lectura, Laudes, Tèrcia, Sexta, Nona, Vespres, l'Invitatori i les
+lectures de la missa — entre 130 i 145 camps per dia. Les Completes no hi entren: no passen per
+l'índex compartit d'ids i es migren a part (PLAN §16). Els comentaris de la missa tampoc: queden
+fora d'abast en català per decisió.
+
+Les llistes de camps surten de `day-check.js` (`FIELDS`, `OFFICE_FIELDS`, `MASS_FIELDS`) i les
+llegeixen tant el comparador com `build-rows.js`, **derivades, no copiades**: una hora nova hi
+entra sola. Ho van ser fins al 8 de setembre de 2026, i mentrestant l'Ofici es revisava amb el
+vocabulari de Laudes —11 dels seus 25 camps— i la missa no es revisava gens.
 
 **Aquesta skill no escriu res fora del seu `run/`.** No toca `cpl-app.db`, no fa commits, no
 aplica correccions. El que produeix és un informe i, per a cada correcció, un prompt per

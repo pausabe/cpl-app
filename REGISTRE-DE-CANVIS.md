@@ -60,6 +60,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EINA-missa](#eina-missa) | 2026-09-08 | eines | codi | No — va al git | — |
 | [SA-14](#sa-14) | 2026-09-08 | saints-app | contingut | Es regenera | — |
 | [D-006](#d-006) | 2026-09-08 | — | **decisió oberta** | — decideix en Pau | — |
+| [MIGRA-007](#migra-007) | 2026-09-08 | eines | codi | No — va al git | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -698,6 +699,47 @@ mateix himne cada nit.
 La sortida recomanada és transcriure els set himnes del volum imprès a
 `static-translations/compline_himno.ca.json`. Dossier:
 [decisions/D-004](migration-to-saints/decisions/D-004-l-himne-de-completes.md).
+
+<a id="migra-007"></a>
+## MIGRA-007
+
+**La revisió llegia totes les hores amb el vocabulari de Laudes** · 8 de setembre de 2026
+
+Trobat perquè en Pau va preguntar si el panell i la skill contemplaven ja totes les oracions.
+**No**: el pipeline de revisió va quedar enrere a les fases 3 i 4 i ningú no ho havia comprovat.
+
+`day-compare.js` recorria **`dayCheck.FIELDS`** —la llista de Laudes— per a **cada** hora:
+
+```js
+const FIELD_ORDER = dayCheck.FIELDS.map((f) => f.key);   // sempre la de Laudes
+for (const key of FIELD_ORDER) { … }
+```
+
+De manera que de l'**Ofici de lectura** només se'n revisaven **11 dels 25 camps** (els salms i
+l'oració final, que comparteixen nom amb Laudes) i **de la missa, cap**: els seus rols no
+comparteixen cap nom de camp amb ningú. I `review/build-rows.js` hi tenia a sobre un
+`IN_SCOPE` escrit a mà amb els 17 camps de Laudes i Vespres.
+
+Totes dues llistes són ara **derivades** de `FIELDS` + `OFFICE_FIELDS` + `MASS_FIELDS`, o sigui
+que una hora nova hi entra sola. Els números d'una revisió de dos dies:
+
+| | abans | després |
+|---|---|---|
+| camps revisats | 206 | **256** |
+| hores a l'informe | 6 | **7 + Invitatori** |
+
+I un efecte de segon ordre que calia arreglar alhora: amb la missa dins, cada memòria reportava
+3-5 **divergències falses**. `match` comparava el text català contra un `cpl` **buit** i en deia
+`diff`, quan el que passa és que els dies de memòria cpl-app resa la missa ferial —com mana el
+Missal— i no té res per a la columna del sant. Ara aquest cas és `onlyApp` i no compta com a
+divergència. Del 16 de setembre de 2026: 3 divergències → **cap**.
+
+De passada, `build-rows.js` tenia **quatre bytes NUL en cru** com a separadors de clau, cosa que
+el feia invisible al `grep` i el marcava com a binari. Substituïts per l'escapada `\u0000`:
+mateix valor en execució, fitxer llegible per les eines.
+
+També s'ha actualitzat `.claude/skills/revisio-dia/SKILL.md`, que deia que revisava «la Litúrgia
+de les Hores» i ara diu què cobreix de debò i d'on surten les llistes de camps.
 
 <a id="eina-missa"></a>
 ## EINA-missa
