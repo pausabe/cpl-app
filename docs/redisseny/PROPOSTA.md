@@ -24,6 +24,9 @@ fàcil d'entendre al primer cop d'ull.
   que a la 8. Els canals ja separen les dues versions, però amb el mateix `runtimeVersion` n'hi hauria prou amb
   publicar per error al canal de la 8 (`production_89`) perquè els mòbils de la 8 rebessin codi de l'Expo 57 i
   petessin. Amb un `runtimeVersion` diferent, això no pot passar.
+  Ha de ser un valor fix, no la política `appVersion`. Les OTA pugen la versió (9.0.1, 9.0.2…), i amb `appVersion`
+  cada OTA tindria un runtime nou que no coincidiria amb el de cap mòbil. Només es torna a canviar quan una build
+  de botiga porti canvis natius, i llavors pren el número d'aquella versió (per exemple, `"9.1.0"`).
 - Les correccions per a qui es quedi a la 8 es publiquen per OTA al canal `production_89`. S'han de fer des del
   codi de la 8.0.4, és a dir, des d'una branca que surti de `9911954`, el darrer commit abans de l'Expo 52
   (`2e78fbf`).

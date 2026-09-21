@@ -79,7 +79,8 @@ Lletra: la del sistema per a tot, i Literata (600) per a la data i el títol del
 2. Desa les captures de referència de l'abans: `make ui-tests-android` (i `make ui-tests-ios` si hi ha simulador).
 3. `npx expo install react-native-svg expo-keep-awake`. Afegeix Literata (fitxers `.ttf` de Google Fonts, llicència
    OFL) a `src/Assets/fonts/` i carrega-la amb `expo-font` abans d'amagar la pantalla de càrrega.
-4. `app.json`: `runtimeVersion` a `"9.0.0"`.
+4. `app.json`: `runtimeVersion` a `"9.0.0"`, si encara no hi és. Un valor fix, no una política (vegeu PROPOSTA.md,
+   «Llançament»).
 5. Recompila l'app de desenvolupament (`make run-android`), perquè hi ha mòduls natius nous.
 6. `make tests` verd, i l'app s'obre com abans.
 
