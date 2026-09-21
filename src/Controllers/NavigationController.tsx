@@ -145,7 +145,7 @@ function LDStackScreen() {
 function Tabs() {
     return (
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Home-Tab"
             backBehavior="none"
             screenOptions={{
                 tabBarStyle: { backgroundColor: GLOBAL.barColor },
@@ -232,11 +232,11 @@ function NavigationContainerView(){
                         component={SettingsScreen}
                         options={() => ({
                             title: "Configuració",
-                            animationEnabled: Platform.OS === "ios",
+                            animation: Platform.OS === "ios" ? "default" : "none",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
                             headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackTitleVisible: false,
+                            headerBackButtonDisplayMode: "minimal",
                             headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
@@ -247,9 +247,9 @@ function NavigationContainerView(){
                             title: "Donatiu lliure",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
-                            animationEnabled: Platform.OS === "ios",
+                            animation: Platform.OS === "ios" ? "default" : "none",
                             headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackTitleVisible: false,
+                            headerBackButtonDisplayMode: "minimal",
                             headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
@@ -258,11 +258,11 @@ function NavigationContainerView(){
                         component={CommentScreen}
                         options={() => ({
                             title: "Missatge",
-                            animationEnabled: Platform.OS === "ios",
+                            animation: Platform.OS === "ios" ? "default" : "none",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
                             headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackTitleVisible: false,
+                            headerBackButtonDisplayMode: "minimal",
                             headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
@@ -274,11 +274,11 @@ function NavigationContainerView(){
                             const title = route.params?.props.type;
                             return ({
                                 title: title,
-                                animationEnabled: Platform.OS === "ios",
+                                animation: Platform.OS === "ios" ? "default" : "none",
                                 headerStyle: {backgroundColor: GLOBAL.barColor},
                                 headerTintColor: GLOBAL.itemsBarColor,
                                 headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                                headerBackTitleVisible: false,
+                                headerBackButtonDisplayMode: "minimal",
                                 headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                             });
                         }}
@@ -288,11 +288,11 @@ function NavigationContainerView(){
                         component={MassLiturgyPrayerScreen}
                         options={() => ({
                             title: "Missa",
-                            animationEnabled: Platform.OS === "ios",
+                            animation: Platform.OS === "ios" ? "default" : "none",
                             headerStyle: { backgroundColor: GLOBAL.barColor },
                             headerTintColor: GLOBAL.itemsBarColor,
                             headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackTitleVisible: false,
+                            headerBackButtonDisplayMode: "minimal",
                             headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
                         })}
                     />
