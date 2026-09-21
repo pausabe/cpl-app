@@ -17,8 +17,8 @@ import CommentScreen from '../Views/CommentScreen';
 import HoursLiturgyPrayerMainScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerMainScreen';
 import HoursLiturgyPrayerScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerScreen';
 import MassLiturgyMainScreen from '../Views/MassLiturgy/MassLiturgyMainScreen';
-import Icon from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from '@expo/vector-icons/Ionicons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'

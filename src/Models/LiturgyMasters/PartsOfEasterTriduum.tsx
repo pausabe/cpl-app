@@ -1,5 +1,4 @@
 import {HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, ShortResponsory} from "./CommonParts";
-import {shadow} from "react-native-paper";
 
 export default class PartsOfEasterTriduum {
     static MasterName: string = "tempsQuaresmaTridu";
