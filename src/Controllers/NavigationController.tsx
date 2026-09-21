@@ -3,11 +3,7 @@ import {
     TouchableOpacity,
     View,
     Platform,
-    Modal,
-    Text,
-    Appearance,
-    StyleSheet,
-    ActivityIndicator
+    Appearance
 } from 'react-native';
 import GLOBAL from "../Utils/GlobalKeys";
 import HomeScreen from '../Controllers/HomeScreenController';
@@ -23,7 +19,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
-import * as Logger from "../Utils/Logger";
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -302,40 +297,3 @@ function NavigationContainerView(){
     );
 }
 
-const styles = StyleSheet.create({
-    UpdateModalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingTop: 10,
-        backgroundColor: 'rgba(0,0,0,0.5)'
-    },
-    UpdateModalVisiblePartContainer:{
-        marginVertical: 10,
-        marginHorizontal: 25,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 10,
-        paddingBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: {width: 0,height: 2,}
-    },
-    UpdateModalTitleContainer:{
-        marginHorizontal: 15,
-        marginTop: 15,
-        marginBottom: 15
-    },
-    UpdateModalTitle:{
-        fontSize: 17,
-        fontWeight: 'bold',
-        color: 'black',
-    },
-    UpdateModalTextContainer:{
-        marginHorizontal: 15,
-        marginBottom: 15
-    },
-    UpdateModalText:{
-        fontSize: 15,
-        fontWeight: 'normal',
-        color: 'black',
-    }
-});

@@ -5,6 +5,7 @@ import * as ExpoApplication from 'expo-application'
 import * as Updates from 'expo-updates';
 import * as Logger from '../../Utils/Logger';
 import HR from '../../Components/HRComponent';
+import UpdateStatus from '../../Components/UpdateStatusComponent';
 import SettingsComponentAdapter from "./SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
 import {SessionLogs} from "../../Utils/Logger";
@@ -83,6 +84,7 @@ export default class SettingsScreen extends Component {
                             color: 'grey',
                             fontSize: 11
                         }}>{"Versió de la base de dades: "}{CurrentDatabaseInformation.Version}</Text>
+                        <UpdateStatus/>
                         <Text style={{
                             textAlign: 'center',
                             color: 'grey',

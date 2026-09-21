@@ -14,6 +14,8 @@ jest.mock('expo-updates', () => ({
   checkForUpdateAsync: jest.fn(async () => ({ isAvailable: false })),
   fetchUpdateAsync: jest.fn(),
   reloadAsync: jest.fn(),
+  isEnabled: true,
+  useUpdates: () => ({ currentlyRunning: { isEmbeddedLaunch: true }, isChecking: false, isDownloading: false, isUpdatePending: false }),
   runtimeVersion: 'test', channel: 'test', updateId: 'test',
 }));
 jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}) }));
