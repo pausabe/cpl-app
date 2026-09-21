@@ -3,9 +3,10 @@ import {View, Text, Switch, StyleSheet, Platform} from 'react-native';
 import {Picker as SelectPicker} from '@react-native-picker/picker';
 import Slider from '@react-native-community/slider';
 import HR from './HRComponent';
-import GlobalKeys from "../Utils/GlobalKeys";
+import {ThemeContext, convertTextSize} from "../Theme";
 
 export default class SettingsComponent extends Component {
+    static contextType = ThemeContext;
 
     constructor(props) {
         super();
@@ -62,7 +63,7 @@ export default class SettingsComponent extends Component {
     _generateSwitch() {
         let selectorProps = this._mergeProps({
             value: this.state.value === 'true' || this.state.value === true,
-            trackColor: {true: GlobalKeys.switchColor},
+            trackColor: {true: this.context.colors.accentFill},
             onValueChange: this._updateSelectionStateCallback.bind(this),
         });
         return React.createElement(Switch, selectorProps);
@@ -71,7 +72,7 @@ export default class SettingsComponent extends Component {
     _generateSlider() {
         let selectorProps = this._mergeProps({
             value: this.state.value,
-            minimumTrackTintColor: GlobalKeys.switchColor,
+            minimumTrackTintColor: this.context.colors.accentFill,
             onSlidingComplete: this._selectionCallback.bind(this)
         });
         return (
@@ -140,28 +141,7 @@ export default class SettingsComponent extends Component {
     }
 
     convertTextSize(value) {
-        switch (value) {
-            case 1:
-                return GlobalKeys.size1;
-            case 2:
-                return GlobalKeys.size2;
-            case 3:
-                return GlobalKeys.size3;
-            case 4:
-                return GlobalKeys.size4;
-            case 5:
-                return GlobalKeys.size5;
-            case 6:
-                return GlobalKeys.size6;
-            case 7:
-                return GlobalKeys.size7;
-            case 8:
-                return GlobalKeys.size8;
-            case 9:
-                return GlobalKeys.size9;
-            case 10:
-                return GlobalKeys.size10;
-        }
+        return convertTextSize(value);
     }
 
     _mergeProps(properties) {

@@ -1,6 +1,7 @@
 import * as Logger from './Logger';
-
-//TODO: [UI Refactor]
+import {convertTextSize} from '../Theme/typography';
+import {createTheme} from '../Theme/Theme';
+import {prayerTextStyles} from '../Theme/prayerStyles';
 
 let GlobalViewFunctions = {
   canticSpace(titolCantic){
@@ -194,122 +195,30 @@ let GlobalViewFunctions = {
     }
   },
 
+  // The styles of the prayer texts, from the theme (src/Theme/prayerStyles.ts). Kept with its old
+  // codes for whatever still asks for them this way.
   getStyle(typeCode, platformOS, textSizeConfigured, darkModeEnabled){
     try {
-
-      var backgroundColor = 'white';
-      var genericColor = 'black';
-      var accentColor = 'red';
-      var otherColor = 'grey';
-      if(darkModeEnabled != undefined && darkModeEnabled == true){
-        backgroundColor = 'black';
-        genericColor = 'white';
-        accentColor = '#FA8072';
-        otherColor = '#bfbfbf';
-      }
+      const theme = createTheme({dark: darkModeEnabled === true, textSize: textSizeConfigured});
+      const styles = prayerTextStyles(theme);
+      const muted = {color: theme.colors.text3, fontSize: theme.prayer.fontSize - 3};
+      const tab = {color: theme.colors.text3, fontSize: theme.prayer.fontSize > 17 ? 17 : theme.prayer.fontSize - 3};
 
       switch (typeCode){
-
-          //CONTAINER
-        case 'CONTAINER':
-          return {
-            flex: 1,
-            backgroundColor: backgroundColor
-          };
-
-          //GENERIC
-        case 'GENERIC':
-          return {
-            color: genericColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-          };
-
-        case 'GENERIC_BOLD':
-          return {
-            color: genericColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-            fontWeight: 'bold',
-          };
-
-        case 'GENERIC_ITALIC':
-          return {
-            color: genericColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-            fontStyle: 'italic',
-          };
-
-        case 'GENERIC_SMALL_ITALIC_RIGHT':
-          return {
-            color: genericColor,
-            fontSize: this.convertTextSize(textSizeConfigured)-2,
-            fontStyle: 'italic',
-            textAlign: 'right'
-          };
-
-        case 'GENERIC_JUSTIFIED':
-          return {
-            color: genericColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-            textAlign: platformOS == 'ios'? 'justify' : 'auto',
-          };
-
-          //ACCENT
-        case 'ACCENT':
-          return {
-            color: accentColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-          };
-
-        case 'ACCENT_ITALIC':
-          return {
-            color: accentColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-            fontStyle: 'italic'
-          };
-
-        case 'ACCENT_CENTER':
-          return {
-            color: accentColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-            textAlign: 'center'
-          };
-
-        case 'ACCENT_CENTER_BOLD':
-          return {
-            color: accentColor,
-            fontSize: this.convertTextSize(textSizeConfigured),
-            textAlign: 'center',
-            fontWeight: 'bold',
-          };
-
-        case 'ACCENT_SMALL_ITALIC_RIGHT':
-          return {
-            color: accentColor,
-            fontSize: this.convertTextSize(textSizeConfigured)-2,
-            fontStyle: 'italic',
-            textAlign: 'right'
-          };
-
-          //OTHERS
-        case 'HIDDEN_PRAYER_BUTTON':
-          return {
-            color: otherColor,
-            fontSize: this.convertTextSize(textSizeConfigured)-3,
-          };
-
-        case 'PRAYER_TAB_BUTTON':
-          return {
-            color: otherColor,
-            fontSize: this.convertTextSize(textSizeConfigured) > 17? 17 : this.convertTextSize(textSizeConfigured)-3,
-          };
-
-        case 'PRAYER_TAB_BUTTON_BOLD':
-          return {
-            color: otherColor,
-            fontSize: this.convertTextSize(textSizeConfigured) > 17? 17 : this.convertTextSize(textSizeConfigured)-3,
-            fontWeight: 'bold',
-          };
-
+        case 'CONTAINER': return styles.container;
+        case 'GENERIC': return styles.black;
+        case 'GENERIC_BOLD': return styles.blackBold;
+        case 'GENERIC_ITALIC': return styles.blackItalic;
+        case 'GENERIC_SMALL_ITALIC_RIGHT': return styles.blackSmallItalicRight;
+        case 'GENERIC_JUSTIFIED': return styles.blackJustified;
+        case 'ACCENT': return styles.red;
+        case 'ACCENT_ITALIC': return styles.redItalic;
+        case 'ACCENT_CENTER': return styles.redCenter;
+        case 'ACCENT_CENTER_BOLD': return styles.redCenterBold;
+        case 'ACCENT_SMALL_ITALIC_RIGHT': return styles.redSmallItalicRight;
+        case 'HIDDEN_PRAYER_BUTTON': return muted;
+        case 'PRAYER_TAB_BUTTON': return tab;
+        case 'PRAYER_TAB_BUTTON_BOLD': return {...tab, fontWeight: 'bold'};
         default:
           Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", new Error("getTextStyle NOT FOUND!!!! -> " + typeCode));
           break;
@@ -319,29 +228,9 @@ let GlobalViewFunctions = {
     }
   },
 
+  // The size of the prayer text for the setting "1" to "10": now in src/Theme/typography.ts
   convertTextSize(value){
-    switch (value) {
-      case '1':
-        return 15;//GLOBALS.size1;
-      case '2':
-        return 18;//GLOBALS.size2;
-      case '3':
-        return 21;//GLOBALS.size3;
-      case '4':
-        return 24;//GLOBALS.size4;
-      case '5':
-        return 27;//GLOBALS.size5;
-      case '6':
-        return 30;//GLOBALS.size6;
-      case '7':
-        return 33;//GLOBALS.size7;
-      case '8':
-        return 36;//GLOBALS.size8;
-      case '9':
-        return 39;//GLOBALS.size9;
-      case '10':
-        return 42;//GLOBALS.size10;
-    }
+    return convertTextSize(value);
   },
 }
 

@@ -19,6 +19,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
+import {navigationTheme, ThemeProvider, useTheme} from '../Theme';
+import {useAppearance} from './LiturgyStore';
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -26,8 +28,14 @@ const LDStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+// The theme follows the settings of the loaded day: the dark mode and the text size.
 export default function NavigationController(props){
-    return NavigationContainerView();
+    const {dark, textSize} = useAppearance();
+    return (
+        <ThemeProvider dark={dark} textSize={textSize}>
+            <NavigationContainerView/>
+        </ThemeProvider>
+    );
 }
 
 function getHeaderTitle(route) {
@@ -205,8 +213,9 @@ function Tabs() {
 }
 
 function NavigationContainerView(){
+    const theme = useTheme();
     return (
-        <NavigationContainer >
+        <NavigationContainer theme={navigationTheme(theme)}>
             <View style={{flex: 1}}>
                 <Stack.Navigator screenOptions={{ headerBackAccessibilityLabel: "Enrere" }}>
                     <Stack.Screen

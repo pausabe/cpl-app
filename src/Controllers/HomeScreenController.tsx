@@ -19,7 +19,6 @@ import GlobalViewFunctions from '../Utils/GlobalViewFunctions';
 import * as Logger from '../Utils/Logger';
 import SettingsService from '../Services/SettingsService';
 import {
-  ReloadAllData,
   LastRefreshDate,
   CurrentLiturgyDayInformation,
   CurrentSettings,
@@ -31,6 +30,7 @@ import HomeScreenState from './HomeScreenState';
 import {StringManagement} from "../Utils/StringManagement";
 import {DateManagement} from "../Utils/DateManagement";
 import {useAssets} from "expo-asset";
+import * as LiturgyStore from "./LiturgyStore";
 
 let LastDatePickerIOSSelected;
 let CurrentState;
@@ -167,6 +167,7 @@ async function CheckSystemDarkMode(colorScheme) {
     await SettingsService.getSettingDarkMode((r) => {
       if (r === 'Automàtic') {
         CurrentSettings.DarkModeEnabled = colorScheme === 'dark';
+        LiturgyStore.publish();
       }
     });
   } catch (error) {
@@ -195,7 +196,7 @@ async function ChangeDate(date, setState) {
 
 async function ReloadAllDataAndRefreshView(date, setState, checkLatePopup = false, databaseAsset = undefined){
   try {
-    await ReloadAllData(date, databaseAsset);
+    await LiturgyStore.reload(date, databaseAsset);
     setState(GetInitialState(checkLatePopup));
   }
   catch(error){
