@@ -9,11 +9,6 @@
     "githubUrl": "https://github.com/pausabe/cpl-app",
     "primaryColor": "#ffffff",
     "backgroundColor": "#000000",
-    "splash": {
-      "image": "./src/Assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#006064"
-    },
     "updates": {
       "enabled": true,
       "checkAutomatically": "ON_ERROR_RECOVERY",
@@ -47,7 +42,16 @@
     "runtimeVersion": "1.0.0",
     "plugins": [
       "expo-asset",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/Assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#006064",
+          "imageWidth": 200
+        }
+      ]
     ]
   }
 }
