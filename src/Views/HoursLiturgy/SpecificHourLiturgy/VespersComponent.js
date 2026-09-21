@@ -1,38 +1,32 @@
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     Text,
     View,
-    Platform
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
-import GLOBAL from '../../../Utils/GlobalKeys';
-import GF from '../../../Utils/GlobalViewFunctions';
+import Gap from '../../../Components/Gap';
+import Rubric from '../../../Components/Rubric';
+import SectionTitle from '../../../Components/SectionTitle';
 import * as Logger from '../../../Utils/Logger';
 import GlobalViewFunctions from "../../../Utils/GlobalViewFunctions";
-import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
 import {SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
+import {ThemeContext, prayerTextStyles} from "../../../Theme";
 
+// Vespers. Gets the hours of the day (hours) and the day (today) through props.
 export default class VespersComponent extends Component {
-    constructor(props) {
-        super(props);
-    
-        this.styles = {
-            black: GlobalViewFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackBold: GlobalViewFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackItalic: GlobalViewFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackSmallItalicRight: GlobalViewFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackJustified: GlobalViewFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            red: GlobalViewFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redItalic: GlobalViewFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenter: GlobalViewFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenterBold: GlobalViewFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redSmallItalicRight: GlobalViewFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            hiddenPrayerButton: GlobalViewFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButton: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButtonBold: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-        };
+    static contextType = ThemeContext;
+
+    get styles() {
+        return prayerTextStyles(this.context);
+    }
+
+    get hours() {
+        return this.props.hours;
+    }
+
+    get today() {
+        return this.props.today;
     }
 
     render() {
@@ -41,85 +35,65 @@ export default class VespersComponent extends Component {
             const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
             const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
             // TODO: [UI Refactor] encapsulate
-            const aux_isAleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-                CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
+            const aux_isAleluia = this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+                this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+                this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+                this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+                this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
 
             return (
                 <View>
-                    <Text selectable={true} style={this.styles.red}>{'V. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_sigueu}</Text>
-                    </Text>
-                    <Text selectable={true} style={this.styles.red}>{'R. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_senyor_veniu}</Text>
-                    </Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Rubric label={'V. '}>{aux_sigueu}</Rubric>
+                    <Rubric label={'R. '}>{aux_senyor_veniu}</Rubric>
+                    <Gap/>
                     <Text selectable={true} style={this.styles.black}>{gloriaStringIntro}
                         {aux_isAleluia ?
                             <Text selectable={true} style={this.styles.black}>{' Al·leluia.'}</Text> : null
                         }
                     </Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'HIMNE'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'HIMNE'}</SectionTitle>
                     {this.himne()}
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'SALMÒDIA'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'SALMÒDIA'}</SectionTitle>
                     {this.salmodia()}
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'LECTURA BREU'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'LECTURA BREU'}</SectionTitle>
                     {this.lecturaBreu()}
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'RESPONSORI BREU'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'RESPONSORI BREU'}</SectionTitle>
                     {this.responsori()}
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'CÀNTIC DE MARIA'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'CÀNTIC DE MARIA'}</SectionTitle>
                     {this.chant()}
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'PREGÀRIES'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'PREGÀRIES'}</SectionTitle>
                     {this.prayers()}
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'ORACIÓ'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'ORACIÓ'}</SectionTitle>
                     {this.finalPrayer()}
-                    <Text selectable={true} style={this.styles.red}>{'R.'}
-                        <Text selectable={true} style={this.styles.black}>{' Amén.'}</Text>
-                    </Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                    <Rubric label={'R.'}>{' Amén.'}</Rubric>
+                    <Gap/>
                     <HR/>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'CONCLUSIÓ'}</Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'V.'}
-                        <Text selectable={true}
-                              style={this.styles.black}>{' Que el Senyor ens beneeixi i ens guardi de tot mal, i ens dugui a la vida eterna.'}</Text>
-                    </Text>
-                    <Text selectable={true} style={this.styles.red}>{'R.'}
-                        <Text selectable={true} style={this.styles.black}>{' Amén.'}</Text>
-                    </Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    {Platform.OS === 'android' ? null : <Text/>}
+                    <Gap/>
+                    <SectionTitle>{'CONCLUSIÓ'}</SectionTitle>
+                    <Rubric label={'V.'}>{' Que el Senyor ens beneeixi i ens guardi de tot mal, i ens dugui a la vida eterna.'}</Rubric>
+                    <Rubric label={'R.'}>{' Amén.'}</Rubric>
+                    <Gap/>
                 </View>
             );
         } catch (error) {
@@ -142,177 +116,147 @@ export default class VespersComponent extends Component {
     }
 
     himne() {
-        const aux_himne = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.Anthem);
+        const aux_himne = GlobalViewFunctions.rs(this.hours.Vespers.Anthem);
         return (<Text selectable={true} style={this.styles.black}>{aux_himne}</Text>);
     }
 
     salmodia() {
-        const aux_ant1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Antiphon);
-        const aux_titol1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Title);
+        const aux_ant1 = GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Antiphon);
+        const aux_titol1 = GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Title);
         let aux_com1 = "";
-        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment))
-            aux_com1 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment);
-        const aux_salm1 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FirstPsalm.Psalm));
-        const aux_ant2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Antiphon);
-        const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Title));
+        if (StringManagement.HasLiturgyContent(this.hours.Vespers.FirstPsalm.Comment))
+            aux_com1 = GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Comment);
+        const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Psalm));
+        const aux_ant2 = GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Antiphon);
+        const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Title));
         let aux_com2 = "";
-        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment))
-            aux_com2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment);
-        const aux_salm2 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.SecondPsalm.Psalm));
-        const aux_ant3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Antiphon);
-        const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Title));
+        if (StringManagement.HasLiturgyContent(this.hours.Vespers.SecondPsalm.Comment))
+            aux_com2 = GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Comment);
+        const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Psalm));
+        const aux_ant3 = GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Antiphon);
+        const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Title));
         let aux_com3 = "";
-        if (StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment))
-            aux_com3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment);
-        const aux_salm3 = this.salm(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ThirdPsalm.Psalm));
+        if (StringManagement.HasLiturgyContent(this.hours.Vespers.ThirdPsalm.Comment))
+            aux_com3 = GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Comment);
+        const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Psalm));
 
         return (
             <View>
-                <Text selectable={true} style={this.styles.red}>{'Ant. 1.'}
-                    <Text selectable={true} style={this.styles.black}> {aux_ant1}</Text>
-                </Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                <Rubric label={'Ant. 1.'}> {aux_ant1}</Rubric>
+                <Gap/>
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol1}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.FirstPsalm.Comment) ?
+                <Gap/>
+                {StringManagement.HasLiturgyContent(this.hours.Vespers.FirstPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com1}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
+                        <Gap/></View></View> : null}
                 <Text selectable={true} style={this.styles.black}>{aux_salm1}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Vespers.FirstPsalm.HasGloryPrayer ?
+                <Gap/>
+                {this.hours.Vespers.FirstPsalm.HasGloryPrayer ?
                     <Text selectable={true} style={this.styles.blackItalic}>{"Glòria."}</Text>
                     :
                     <Text selectable={true} style={this.styles.redItalic}>{"S'omet el Glòria."}</Text>}
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                <Text selectable={true} style={this.styles.red}>{'Ant. 1.'}
-                    <Text selectable={true} style={this.styles.black}> {aux_ant1}</Text>
-                </Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                <Text selectable={true} style={this.styles.red}>{'Ant. 2.'}
-                    <Text selectable={true} style={this.styles.black}> {aux_ant2}</Text>
-                </Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                <Gap/>
+                <Rubric label={'Ant. 1.'}> {aux_ant1}</Rubric>
+                <Gap/>
+                <Rubric label={'Ant. 2.'}> {aux_ant2}</Rubric>
+                <Gap/>
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol2}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.SecondPsalm.Comment) ?
+                <Gap/>
+                {StringManagement.HasLiturgyContent(this.hours.Vespers.SecondPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com2}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
+                        <Gap/></View></View> : null}
                 <Text selectable={true} style={this.styles.black}>{aux_salm2}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Vespers.SecondPsalm.HasGloryPrayer ?
+                <Gap/>
+                {this.hours.Vespers.SecondPsalm.HasGloryPrayer ?
                     <Text selectable={true} style={this.styles.blackItalic}>{"Glòria."}</Text>
                     :
                     <Text selectable={true} style={this.styles.redItalic}>{"S'omet el Glòria."}</Text>}
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                <Text selectable={true} style={this.styles.red}>{'Ant. 2.'}
-                    <Text selectable={true} style={this.styles.black}> {aux_ant2}</Text>
-                </Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                <Text selectable={true} style={this.styles.red}>{'Ant. 3.'}
-                    <Text selectable={true} style={this.styles.black}> {aux_ant3}</Text>
-                </Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                <Gap/>
+                <Rubric label={'Ant. 2.'}> {aux_ant2}</Rubric>
+                <Gap/>
+                <Rubric label={'Ant. 3.'}> {aux_ant3}</Rubric>
+                <Gap/>
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol3}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {StringManagement.HasLiturgyContent(CurrentHoursLiturgy.Vespers.ThirdPsalm.Comment) ?
+                <Gap/>
+                {StringManagement.HasLiturgyContent(this.hours.Vespers.ThirdPsalm.Comment) ?
                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View style={{flex: 2}}>
                         <Text selectable={true} style={this.styles.blackSmallItalicRight}>{aux_com3}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}</View></View> : null}
+                        <Gap/></View></View> : null}
                 <Text selectable={true} style={this.styles.black}>{aux_salm3}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                {CurrentHoursLiturgy.Vespers.ThirdPsalm.HasGloryPrayer ?
+                <Gap/>
+                {this.hours.Vespers.ThirdPsalm.HasGloryPrayer ?
                     <Text selectable={true} style={this.styles.blackItalic}>{"Glòria."}</Text>
                     :
                     <Text selectable={true} style={this.styles.redItalic}>{"S'omet el Glòria."}</Text>}
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                <Text selectable={true} style={this.styles.red}>{'Ant. 3.'}
-                    <Text selectable={true} style={this.styles.black}> {aux_ant3}</Text>
-                </Text>
+                <Gap/>
+                <Rubric label={'Ant. 3.'}> {aux_ant3}</Rubric>
             </View>
         );
     }
 
     lecturaBreu() {
-        const aux_vers = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortReading.Quote);
-        const aux_lectura_breu = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortReading.ShortReading);
+        const aux_vers = GlobalViewFunctions.rs(this.hours.Vespers.ShortReading.Quote);
+        const aux_lectura_breu = GlobalViewFunctions.rs(this.hours.Vespers.ShortReading.ShortReading);
         return (
             <View>
                 <Text selectable={true} style={this.styles.red}>{aux_vers}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                <Gap/>
                 <Text selectable={true} style={this.styles.black}>{aux_lectura_breu}</Text>
             </View>
         )
     }
 
     responsori() {
-        if (CurrentHoursLiturgy.Vespers.ShortResponsory.HasSpecialAntiphon) {
-            const aux_ant = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SpecialAntiphon);
+        if (this.hours.Vespers.ShortResponsory.HasSpecialAntiphon) {
+            const aux_ant = GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.SpecialAntiphon);
             return (
                 <View>
-                    <Text selectable={true} style={this.styles.red}>{'Ant.'}
-                        <Text selectable={true} style={this.styles.black}> {aux_ant}</Text>
-                    </Text>
+                    <Rubric label={'Ant.'}> {aux_ant}</Rubric>
                 </View>
             )
         }
         else {
-            const aux_resp_1_2 = GlobalViewFunctions.respTogether(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.FirstPart), GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SecondPart));
-            const aux_resp_2 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.SecondPart);
-            const aux_resp_3 = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.ShortResponsory.ThirdPart);
+            const aux_resp_1_2 = GlobalViewFunctions.respTogether(GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.FirstPart), GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.SecondPart));
+            const aux_resp_2 = GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.SecondPart);
+            const aux_resp_3 = GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.ThirdPart);
             const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
             // TODO: [UI Refactor] duplicated code
             return (
                 <View>
-                    <Text selectable={true} style={this.styles.red}>{'V. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_resp_1_2}</Text>
-                    </Text>
-                    <Text selectable={true} style={this.styles.red}>{'R. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_resp_1_2}</Text>
-                    </Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'V. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_resp_3}</Text>
-                    </Text>
-                    <Text selectable={true} style={this.styles.red}>{'R. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_resp_2}</Text>
-                    </Text>
-                    {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                    <Text selectable={true} style={this.styles.red}>{'V. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_gloria_half}</Text>
-                    </Text>
-                    <Text selectable={true} style={this.styles.red}>{'R. '}
-                        <Text selectable={true} style={this.styles.black}>{aux_resp_1_2}</Text>
-                    </Text>
+                    <Rubric label={'V. '}>{aux_resp_1_2}</Rubric>
+                    <Rubric label={'R. '}>{aux_resp_1_2}</Rubric>
+                    <Gap/>
+                    <Rubric label={'V. '}>{aux_resp_3}</Rubric>
+                    <Rubric label={'R. '}>{aux_resp_2}</Rubric>
+                    <Gap/>
+                    <Rubric label={'V. '}>{aux_gloria_half}</Rubric>
+                    <Rubric label={'R. '}>{aux_resp_1_2}</Rubric>
                 </View>
             )
         }
     }
 
     chant() {
-        const aux_ant = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.EvangelicalAntiphon);
+        const aux_ant = GlobalViewFunctions.rs(this.hours.Vespers.EvangelicalAntiphon);
         const aux_titol = "Càntic\nLc 1, 46-55\nLa meva ànima magnifica el Senyor";
-        const aux_salm = this.salm(CurrentHoursLiturgy.Vespers.EvangelicalChant);
+        const aux_salm = this.salm(this.hours.Vespers.EvangelicalChant);
         const aux_gloria = "Glòria.";
 
         // TODO: [UI Refactor] duplicated code
         return (
             <View>
-                <Text selectable={true} style={this.styles.red}>{'Ant. '}
-                    <Text selectable={true} style={this.styles.black}>{aux_ant}</Text>
-                </Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                <Rubric label={'Ant. '}>{aux_ant}</Rubric>
+                <Gap/>
                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                <Gap/>
                 <Text selectable={true} style={this.styles.black}>{aux_salm}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                <Gap/>
                 <Text selectable={true} style={this.styles.blackItalic}>{aux_gloria}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                <Text selectable={true} style={this.styles.red}>{'Ant. '}
-                    <Text selectable={true} style={this.styles.black}>{aux_ant}</Text>
-                </Text>
+                <Gap/>
+                <Rubric label={'Ant. '}>{aux_ant}</Rubric>
             </View>
         );
     }
@@ -330,12 +274,12 @@ export default class VespersComponent extends Component {
     }
     
     prayers(){
-        let allPregs = GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.Prayers);
+        let allPregs = GlobalViewFunctions.rs(this.hours.Vespers.Prayers);
 
         if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
             return (<Text selectable={true} style={this.styles.black}>{"-"}</Text>);
 
-        allPregs = this.convertN(allPregs, CurrentHoursLiturgy.ConcreteNamesInPrayers.Pope, CurrentHoursLiturgy.ConcreteNamesInPrayers.Bishop);
+        allPregs = this.convertN(allPregs, this.hours.ConcreteNamesInPrayers.Pope, this.hours.ConcreteNamesInPrayers.Bishop);
 
         if(allPregs.match(/—/g, "")) var numGuio = allPregs.match(/—/g, "").length;
         else return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
@@ -397,24 +341,23 @@ export default class VespersComponent extends Component {
         return(
             <View>
                 <Text selectable={true} style={this.styles.black}>{introPregs}{':'}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
+                <Gap/>
                 <Text selectable={true} style={this.styles.blackItalic}>{respPregs}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
+                <Gap/>
                 <Text selectable={true} style={this.styles.black}>{pregaries}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
+                <Gap/>
                 <Text selectable={true} style={this.styles.redItalic}>{aux_intencions}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
+                <Gap/>
                 <Text selectable={true} style={this.styles.black}>{pregsFinalPart}</Text>
-                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text />}
+                <Gap/>
                 <Text selectable={true} style={this.styles.blackItalic}>{"Pare nostre."}</Text>
             </View>
         );
     }
 
     finalPrayer() {
-        const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(CurrentHoursLiturgy.Vespers.FinalPrayer), false);
+        const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.hours.Vespers.FinalPrayer), false);
         return (<Text selectable={true} style={this.styles.black}>{aux_oracio}</Text>);
     }
 }
 
-AppRegistry.registerComponent('VespersComponent', () => VespersComponent);
