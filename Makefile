@@ -11,11 +11,12 @@ IOS_APP := ios/build/Build/Products/Release-iphonesimulator/CPL.app
 ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
 IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
 
-.PHONY: help start run-android run-ios tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
+.PHONY: help start run-android run-ios run-web tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
 
 help:
 	@echo "make run-android       Obre l'app en mode desenvolupament a l'emulador o mòbil Android"
 	@echo "make run-ios           Obre l'app en mode desenvolupament al simulador d'iOS"
+	@echo "make run-web           Obre l'app en mode desenvolupament al navegador, sense emulador"
 	@echo "make start             Només el servidor de desenvolupament (Metro), si l'app ja hi és instal·lada"
 	@echo ""
 	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~1,5 min)"
@@ -41,6 +42,11 @@ run-android:
 
 run-ios:
 	npx expo run:ios
+
+# Al navegador la base de dades s'obre en memòria (DatabaseManagerService.web.tsx). No hi ha el
+# selector de data del calendari ni el vídeo de YouTube de la Missa.
+run-web:
+	npx expo start --web
 
 # --- Jest ------------------------------------------------------------------------------------
 
