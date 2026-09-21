@@ -11,9 +11,13 @@ IOS_APP := ios/build/Build/Products/Release-iphonesimulator/CPL.app
 ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
 IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
 
-.PHONY: help tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
+.PHONY: help start run-android run-ios tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
 
 help:
+	@echo "make run-android       Obre l'app en mode desenvolupament a l'emulador o mòbil Android"
+	@echo "make run-ios           Obre l'app en mode desenvolupament al simulador d'iOS"
+	@echo "make start             Només el servidor de desenvolupament (Metro), si l'app ja hi és instal·lada"
+	@echo ""
 	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~1,5 min)"
 	@echo "make tests-fast        Els mateixos sense els dos recorreguts llargs de la litúrgia"
 	@echo "make golden            Refà el golden de la litúrgia amb aquesta versió (només si l'has revisat)"
@@ -23,6 +27,20 @@ help:
 	@echo "make ui-tests          Fluxos de Maestro a Android i a iOS"
 	@echo "make ui-tests-android  Només Android"
 	@echo "make ui-tests-ios      Només iOS"
+
+# --- Desenvolupament -------------------------------------------------------------------------
+# El primer cop compilen i instal·len l'app de desenvolupament (expo-dev-client); després, els
+# canvis de JS es veuen a l'instant. Per a una release com la de les botigues, make android-app /
+# ios-app.
+
+start:
+	npx expo start
+
+run-android:
+	npx expo run:android
+
+run-ios:
+	npx expo run:ios
 
 # --- Jest ------------------------------------------------------------------------------------
 
