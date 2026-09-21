@@ -58,6 +58,8 @@ function getHeaderLeft(navigation, route){
             return (
                 <TouchableOpacity
                     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Calendari"
                     onPress={() => params?.calPres() }>
                     <View style={{ flex: 1, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
                         <Icon
@@ -85,6 +87,8 @@ function getHeaderRight(navigation, route){
             return (
                 <TouchableOpacity
                     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Configuració"
                     onPress={() => navigation.navigate('Settings', { Refresh_Date: params?.Refresh_Date })}>
                     <View style={{ flex: 1, paddingRight: 10, alignItems: 'center', justifyContent: 'center' }}>
                         <Icon
@@ -157,6 +161,7 @@ function Tabs() {
                 name="Home-Tab"
                 component={HomeStackScreen}
                 options={{
+                    tabBarAccessibilityLabel: "Inici",
                     lazy: true,
                     tabBarIcon: ({ focused, color }) => (
                         <View>
@@ -172,6 +177,7 @@ function Tabs() {
                 name="LH-Tab"
                 component={LHStackScreen}
                 options={{
+                    tabBarAccessibilityLabel: "Litúrgia de les hores",
                     lazy: true,
                     tabBarIcon: ({ focused, color }) => (
                         <View>
@@ -187,6 +193,7 @@ function Tabs() {
                 name="LD-Tab"
                 component={LDStackScreen}
                 options={{
+                    tabBarAccessibilityLabel: "Missa",
                     lazy: true,
                     tabBarIcon: ({ focused, color }) => (
                         <View>
