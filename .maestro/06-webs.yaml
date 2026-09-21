@@ -11,11 +11,24 @@ name: "S'obren les pàgines de contacte i de donatiu"
 - waitForAnimationToEnd:
     timeout: 10000
 - takeScreenshot: 06-missatge
-- back
+- runFlow: subflows/enrere.yaml
 - tapOn: "Donatiu lliure"
-- assertVisible: "Donatiu lliure"
-- waitForAnimationToEnd:
-    timeout: 10000
-- takeScreenshot: 06-donatiu
-- back
+# Android l'obre dins l'app; iOS surt cap a Stripe a Safari i cal tornar a l'app
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible: "Donatiu lliure"
+      - waitForAnimationToEnd:
+          timeout: 10000
+      - takeScreenshot: 06-donatiu
+      - runFlow: subflows/enrere.yaml
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 10000
+      - takeScreenshot: 06-donatiu-safari
+      - launchApp
 - assertVisible: "Missatge"

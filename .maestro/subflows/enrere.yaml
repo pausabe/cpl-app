@@ -1,0 +1,14 @@
+appId: cpl.cpl
+---
+# Android: el botó enrere del sistema. iOS no en té: la fletxa de la capçalera, que l'app
+# anomena «Enrere» per als lectors de pantalla.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn: "Enrere"
