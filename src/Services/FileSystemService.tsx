@@ -1,4 +1,4 @@
-import * as FileSystem from "expo-file-system";
+import * as FileSystem from "expo-file-system/legacy";
 import * as Logger from "../Utils/Logger";
 import {StringManagement} from "../Utils/StringManagement";
 

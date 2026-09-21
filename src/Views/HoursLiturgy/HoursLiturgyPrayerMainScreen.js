@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
   View,
-  SafeAreaView,
   StyleSheet,
   ImageBackground,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import HoursLiturgyButtonsComponent from './HoursLiturgyButtonsComponent';
 import GlobalKeys from '../../Utils/GlobalKeys';
 import {CurrentHoursLiturgy, CurrentSettings} from "../../Services/DataService";

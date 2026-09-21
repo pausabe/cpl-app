@@ -1,7 +1,7 @@
 // The database ships inside the app and is copied to the documents folder on first launch.
 // When a new build brings a new database (its asset has a new, hashed name), the old copy
 // must be replaced; otherwise the phone keeps praying with last year's data.
-jest.mock('expo-file-system', () => {
+jest.mock('expo-file-system/legacy', () => {
   const files = new Set();
   return {
     __files: files,
@@ -20,7 +20,7 @@ jest.mock('expo-sqlite', () => ({
   openDatabaseAsync: jest.fn(async (name) => ({ name, getAllAsync: jest.fn(async () => [{ ok: 1 }]) })),
 }));
 
-const FileSystem = require('expo-file-system');
+const FileSystem = require('expo-file-system/legacy');
 const SQLite = require('expo-sqlite');
 const DatabaseManagerService = require('../../src/Services/DatabaseManagerService');
 

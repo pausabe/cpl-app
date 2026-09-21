@@ -8,10 +8,10 @@ import {
   ScrollView,
   TouchableOpacity,
   Switch,
-  SafeAreaView,
   Linking,
   Platform
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons'; 
 import GLOBAL from "../Utils/GlobalKeys";

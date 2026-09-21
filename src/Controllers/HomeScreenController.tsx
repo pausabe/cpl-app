@@ -4,13 +4,13 @@ import {
   Text,
   TouchableOpacity,
   BackHandler,
-  SafeAreaView,
   AppState,
   Platform,
   Modal,
   StyleSheet,
   Appearance
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';

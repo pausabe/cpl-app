@@ -3,10 +3,10 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
     TouchableOpacity,
     ImageBackground,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
