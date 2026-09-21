@@ -5,6 +5,13 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 // The app's Logger prints every step to console.log; keep test output readable.
 jest.spyOn(console, 'log').mockImplementation(() => {});
 
-// Native modules the navigators need; both libraries ship their own Jest setup.
+// Native module the navigators need; the library ships its own Jest setup.
 require('react-native-gesture-handler/jestSetup');
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+
+// Icon fonts: jest-expo's native mock of the font loader doesn't return a list, and
+// @expo/vector-icons asks it whether its font is loaded. In a test it always is.
+jest.mock('expo-font', () => ({
+  ...jest.requireActual('expo-font'),
+  isLoaded: () => true,
+  loadAsync: async () => {},
+}));
