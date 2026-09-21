@@ -30,3 +30,6 @@ migration-to-saints/output/raw/litcal-days/
 # Còpia de les sortides commons-ca d'abans de regenerar-les: la fa el pipeline i
 # el git ja en guarda l'historial
 migration-to-saints/output/.ca-backup/
+
+# Golden de la litúrgia resolta: es fa a partir de cpl-app.db, que tampoc és al git
+__tests__/golden/
