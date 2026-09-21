@@ -7,7 +7,7 @@ PANEL := migration-to-saints/webui/server.js
 REVIEW := migration-to-saints/review
 REVIEW_RUN := $(REVIEW)/run
 
-.PHONY: run-panel stop-panel day-check review help
+.PHONY: run-panel stop-panel day-check review review-html help
 
 help:
 	@echo "make run-panel [PORT=4848]   Panell de migració (si el port és ocupat, en proposa un altre)"
@@ -28,6 +28,10 @@ review:
 		npx jest $(REVIEW)/resolve-cpl-days.test.js --silent
 	DATES=$(DATES) node $(REVIEW)/build-rows.js
 	node $(REVIEW)/commons-proposal.js
+	node $(REVIEW)/day-gap.js
+
+# The same run as a page, for scanning many days at once. `make review` no longer builds it.
+review-html:
 	node $(REVIEW)/build-report.js
 
 # If the port is taken, offer the next free one instead of deciding on your behalf: the

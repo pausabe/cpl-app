@@ -64,8 +64,11 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [MIGRA-008](#migra-008) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-009](#migra-009) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-010](#migra-010) | 2026-09-08 | eines | codi | No — va al git | — |
+| [MIGRA-011](#migra-011) | 2026-09-08 | eines | codi | No — va al git | — |
+| [D-007](#d-007) | 2026-09-08 | — | **decisió oberta** | — decideix en Pau | — |
 | [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **proposat** | — pendent d'enviar | — |
 | [SA-15](#sa-15) | 2026-09-08 | saints-app | contingut | Es regenera | — |
+| [EINA-revisio-dia](#eina-revisio-dia) | 2026-09-14 | eines | codi | No — va al git | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -805,6 +808,62 @@ El 8-IX-2026, abans i després:
 Les 2 que queden a la missa són una divergència de debò: cpl-app dona **Rm 8,28-30** de primera
 lectura i eprex **Mi 5,1-4a**. El Missal ofereix les dues per a aquell dia.
 
+<a id="migra-011"></a>
+## MIGRA-011
+
+**La revisió comparava les citacions de salm en cru** · 8 de setembre de 2026
+
+Trobat revisant el 8-IX-2026: **5 dels 18** camps que la revisió donava per divergents eren el
+mateix salm dit de dues maneres.
+
+cpl-app guarda la referència i la seva línia descriptiva en **dues columnes** —`titolSalm1Ofici`
+du «Salm 23» i prou— i les taules pròpies deixen la línia fora. saints-app té **una sola
+casella**, i el join hi escriu la grafia més completa: és la decisió del 14 d'agost de 2026,
+escrita a [`lib/citation-headings.js`](migration-to-saints/lib/citation-headings.js). Per tant,
+cada dia amb salmòdia pròpia l'app llegeix «Salm 23 / Entrada del Senyor al santuari» al costat
+del «Salm 23» pelat de cpl-app.
+
+El canal **C2** comparava les citacions per empremta —llibre i capítol, com mana el paranys 5 de
+la revisió— des del primer dia. El **C1**, que és el que s'aplica quan la casella catalana ja té
+text, les comparava byte a byte, tot i que ja calculava `fpCa` i ja importava `splitHeading`
+sense arribar a fer servir cap dels dos.
+
+Ara, al C1, una citació que difereix **només** en la línia descriptiva és `sameRefHeading` i no
+compta com a divergència. S'excusa únicament que la línia **falti** en un costat: dues
+descripcions diferents per a una mateixa referència segueixen sent visibles, perquè l'únic cas
+del corpus és una errata de la BD (`diesespecials` fila 27, «Que tol l'univers»).
+
+| dies mesurats | divergències abans | després |
+|---|---|---|
+| 8-IX-2026 | 18 | **13** |
+| 8 festes de 2026 | 122 | **79** |
+
+Les **43** caselles excusades en aquests vuit dies tenen totes la primera línia idèntica als dos
+costats; cap no ha calgut mirar-la a mà.
+
+<a id="eina-revisio-dia"></a>
+## EINA-revisio-dia
+
+**La revisió d'un dia respon al terminal, no amb una pàgina** · 14 de setembre de 2026
+
+La skill `revisio-dia` acabava publicant `run/review.html` com a artifact. Per a l'ús real
+—agafar **un dia** i treballar-lo fins al 100%— la pàgina no servia: el que cal és saber per què
+no hi és, de qui és la culpa, quines accions i quines decisions falten, i continuar en el mateix
+fil.
+
+- **Nou** [`review/day-gap.js`](migration-to-saints/review/day-gap.js): escriu en text pla tot
+  el que separa el dia del 100% —cada camp divergent amb la seva troballa o `SENSE INVESTIGAR`,
+  les retingudes agrupades pel conflicte que les reté i quants dies trencaria cada tria, les que
+  no tenen font, i les troballes del dia.
+- `isDivergent` i `isOnlyApp` passen de `build-report.js` a
+  [`review/findings.js`](migration-to-saints/review/findings.js), perquè la pàgina i el text
+  comptin el mateix. Comprovat: `review.html` surt **idèntic byte a byte** abans i després.
+- `make review` acaba amb `day-gap.js`; la pàgina queda a `make review-html`.
+- [SKILL.md](.claude/skills/revisio-dia/SKILL.md): sense data revisa el dia d'avui, investiga
+  tot el que surti `SENSE INVESTIGAR` abans de respondre, i respon per causes (on som · per què
+  no és al 100% · accions ordenades per caselles alliberades · decisions · el sostre real · per
+  on començar). Cap artifact.
+
 <a id="eprex-005"></a>
 ## EPREX-005
 
@@ -1109,6 +1168,47 @@ cada vint-i-quatre, i el join **fixa el rellotge a migdia** perquè la tria no d
 es corre. **Conseqüència visible**: qui resi l'Ofici de matinada veurà a eprex l'himne de dia.
 
 Dossier: [decisions/D-005](migration-to-saints/decisions/D-005-l-himne-nocturn-de-l-ofici.md).
+
+<a id="d-007"></a>
+## D-007 — **OBERTA**
+
+**521 caselles publicades que el join d'avui ja no avala** · 8 de setembre de 2026
+
+[`export-to-saints-app.js`](migration-to-saints/export-to-saints-app.js) és additiu per disseny:
+omple una casella buida, actualitza una que ja té text, i **mai no n'esborra cap** («never used
+to blank the destination»). Serveix per a no perdre feina. Però quan el join **retira** una
+casella —perquè ha après que està en conflicte— la que s'hi va publicar en una passada anterior,
+i més descuidada, s'hi queda per sempre.
+
+Comparant `commons/ca` de saints-app amb l'exportació committejada d'avui:
+
+| | |
+|---|---|
+| caselles publicades que l'exportació d'avui ja no produeix | **521** |
+| …de les quals el join declara ara **en conflicte** | **349** |
+| …que duen la variant **majoritària** (l'atzar va sortir bé) | 265 |
+| …que duen una variant **minoritària** | **68** |
+| …que no coincideixen amb **cap** variant coneguda | **16** |
+
+Com es veu en un dia: el 8-IX l'Ofici de lectura resa el salm 23 i el 86 amb **un `*` de menys
+cadascun**. Les caselles `salmos_textos/112` i `/367` es van publicar en una passada antiga amb
+el text de la **Mare de Déu del Toro** (8 de maig, Menorca, `santsSolemnitats` fila 147),
+l'única de les 25 còpies d'aquell salm a la BD a què falten els asteriscs.
+
+Les **16** que no coincideixen amb cap variant coneguda són de la mateixa família que els quatre
+precs de [MIGRA-008](#migra-008), que van passar del Nadal al Comú de Pastors sense que ningú no
+ho veiés.
+
+**La decisió no és tècnica.** Esborrar-les vol dir que aquells dies passin a mostrar «[ERR-001]
+Element no trobat» —canviar text dolent per text absent—, i això ho ha de dir en Pau:
+
+1. **Deixar-les** i documentar-ho. Cost: text possiblement d'una altra celebració, i invisible.
+2. **Esborrar les 349 en conflicte.** Cost: `[ERR-001]` on ara hi ha text que sovint és bo.
+3. **Esborrar-ne 84** —les minoritàries i les desconegudes— i deixar les 265 majoritàries. Treu
+   el risc real i no toca cap casella on l'atzar va sortir bé.
+
+Sigui quina sigui la sortida, l'exportació hauria de **reportar** les òrfenes, com ja fa amb les
+del Comú a `export-common-held.json`: avui no se saben si no es comparen els dos arbres a mà.
 
 <a id="d-001"></a>
 ## D-001

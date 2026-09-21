@@ -8,7 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { forDay, forDates, claimFor, VERDICTS } = require('./findings');
+const { forDay, forDates, claimFor, VERDICTS, isDivergent: divergentOn, isOnlyApp } = require('./findings');
 const fixPrompts = require('./fix-prompts');
 
 const RUN = process.env.RUN_DIR || path.join(__dirname, 'run');
@@ -32,25 +32,7 @@ function humanDate(d) {
   return `${dt.getUTCDate()} ${de(MONTH[dt.getUTCMonth()])} · ${WEEKDAY[dt.getUTCDay()]}`;
 }
 
-// A row is divergent when the comparison says so — a Catalan cell that differs, or a
-// citation naming different scripture — or when an investigated finding claims it, which is
-// how the prose divergences (only visible to a reader) get counted.
-//
-// Divergence and explanation are separate on purpose: a divergent row with no finding is the
-// session's to-do list, and must never be silently dropped.
-function isDivergent(day, row) {
-  if (row.match === 'diff' || row.match === 'diffRef') return true;
-  // The app shows a line cpl-app does not pray that day. Not a text disagreement — there is
-  // no cpl-app text to compare — but a difference the reader sees, so it counts. Excused only
-  // where cpl-app was structurally never going to have a value (see build-rows.js).
-  if (row.match === 'onlyApp' && !row.expectedNoSource) return true;
-  return claimFor(day.date, row) !== null;
-}
-
-// Which of the two it is, for the report's own wording: an `onlyApp` row has no cpl-app text
-// to put beside the Catalan one, so calling it "divergeix" without saying why reads as a
-// mistake in the data rather than as what it is.
-const isOnlyApp = (row) => row.match === 'onlyApp' && !row.expectedNoSource;
+const isDivergent = (day, row) => divergentOn(day.date, row);
 function findingOf(day, row) {
   return claimFor(day.date, row);
 }

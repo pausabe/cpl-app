@@ -131,6 +131,31 @@ function main() {
           // both a single space — was reported as "the app shows what cpl-app does not".
           const equal = textKey(String(cpl ?? '')) === textKey(String(ca ?? ''));
           match = equal ? 'same' : cplEmpty ? 'onlyApp' : 'diff';
+
+          // A citation is not prose: what makes two of them the same is the scripture they
+          // name, not the bytes. cpl-app keeps the reference and its descriptive line in two
+          // columns and the proper tables leave the line out; saints-app has ONE cell, and the
+          // join fills it with the fullest spelling — the decision of 14 Aug 2026, written up
+          // in lib/citation-headings. So on every day with proper psalmody the app reads
+          // "Salm 23\nEntrada del Senyor al santuari" against cpl-app's bare "Salm 23" and
+          // this reported it as a divergence: the accepted cost of a decision, dressed up as a
+          // bug. C2 had compared citations by fingerprint since the start; C1 never did,
+          // although it was already computing `fpCa` and importing `splitHeading` to do it.
+          if (match === 'diff' && isCitation && fpCpl && fpCa) {
+            const headCpl = splitHeading(cpl).description;
+            const headCa = splitHeading(ca).description;
+            // Only a MISSING heading is excused. Two different descriptions for one reference
+            // are not a context difference — the single case in the corpus is a typo in
+            // cpl-app's data (citation-headings.js) — so those stay visible.
+            const headingOnly = !headCpl || !headCa || headCpl === headCa;
+            match = fpCpl.token !== fpCa.token
+              ? 'diffRef'                                    // different book or chapter
+              : !headingOnly
+                ? 'diff'                                     // same psalm, two descriptions
+                : fpCpl.tokenFull !== fpCa.tokenFull
+                  ? 'sameRefVerses'                          // same psalm, different precision
+                  : 'sameRefHeading';                        // same psalm, heading on one side
+          }
         } else if (channel === 'C2' && isCitation) {
           match = !fpCpl || !fpEs
             ? 'unparsed'

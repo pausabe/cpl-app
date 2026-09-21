@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-09-08T06:38:53.456Z",
+ "generatedAt": "2026-09-14T05:45:40.024Z",
  "diocese": "Barcelona",
- "probeGeneratedAt": "2026-09-08T06:38:53.206Z",
+ "probeGeneratedAt": "2026-09-14T05:45:39.816Z",
  "litcalCalendarsRead": true,
  "totals": {
-  "contestedCells": 1974,
+  "contestedCells": 1958,
   "missing": 1,
   "notApplied": 72,
   "mismatch": 26,
@@ -91,7 +91,7 @@
    ],
    "suggestedId": "naixement_de_sant_joan_baptista",
    "inLitcal": null,
-   "cellsBlamed": 117,
+   "cellsBlamed": 116,
    "cellsSole": 54,
    "contestedDays": 10,
    "totalDays": 10,
@@ -104,7 +104,7 @@
     {
      "date": "2017-06-24",
      "litcalId": "immaculate_heart_of_mary",
-     "minorityCells": 69
+     "minorityCells": 68
     },
     {
      "date": "2022-06-23",
@@ -201,7 +201,7 @@
    ],
    "suggestedId": "sants_pere_i_pau_apostols",
    "inLitcal": null,
-   "cellsBlamed": 103,
+   "cellsBlamed": 102,
    "cellsSole": 41,
    "contestedDays": 10,
    "totalDays": 10,
@@ -213,7 +213,7 @@
     {
      "date": "2019-06-29",
      "litcalId": "immaculate_heart_of_mary",
-     "minorityCells": 80
+     "minorityCells": 79
     },
     {
      "date": "2025-06-29",
@@ -350,8 +350,8 @@
     "id": "visitacio_de_la_benaurada_verge_maria_0531",
     "rank": "FEAST"
    },
-   "cellsBlamed": 54,
-   "cellsSole": 37,
+   "cellsBlamed": 51,
+   "cellsSole": 38,
    "contestedDays": 8,
    "totalDays": 8,
    "litcalIds": [
@@ -359,19 +359,19 @@
    ],
    "dates": [
     {
-     "date": "2018-05-31",
+     "date": "2024-05-31",
      "litcalId": "visitation_of_mary",
      "minorityCells": 42
+    },
+    {
+     "date": "2018-05-31",
+     "litcalId": "visitation_of_mary",
+     "minorityCells": 41
     },
     {
      "date": "2021-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 42
-    },
-    {
-     "date": "2024-05-31",
-     "litcalId": "visitation_of_mary",
-     "minorityCells": 42
+     "minorityCells": 41
     },
     {
      "date": "2023-05-31",
@@ -381,22 +381,22 @@
     {
      "date": "2017-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 23
+     "minorityCells": 22
     },
     {
      "date": "2019-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 23
+     "minorityCells": 22
     },
     {
      "date": "2022-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 23
+     "minorityCells": 22
     },
     {
      "date": "2025-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 15
+     "minorityCells": 14
     }
    ]
   },
@@ -604,7 +604,7 @@
    "suggestedId": "commemoracio_de_tots_els_fidels_difunts",
    "inLitcal": null,
    "cellsBlamed": 32,
-   "cellsSole": 26,
+   "cellsSole": 27,
    "contestedDays": 10,
    "totalDays": 10,
    "litcalIds": [
@@ -1174,7 +1174,7 @@
    ],
    "suggestedId": "mare_de_deu_del_pilar",
    "inLitcal": null,
-   "cellsBlamed": 34,
+   "cellsBlamed": 29,
    "cellsSole": 18,
    "contestedDays": 9,
    "totalDays": 9,
@@ -1185,37 +1185,37 @@
     {
      "date": "2017-10-12",
      "litcalId": "our_lady_of_the_pillar",
-     "minorityCells": 18
+     "minorityCells": 17
     },
     {
      "date": "2018-10-12",
      "litcalId": "our_lady_of_the_pillar",
-     "minorityCells": 18
+     "minorityCells": 17
     },
     {
      "date": "2020-10-12",
      "litcalId": "our_lady_of_the_pillar",
-     "minorityCells": 18
+     "minorityCells": 17
     },
     {
      "date": "2021-10-12",
      "litcalId": "our_lady_of_the_pillar",
-     "minorityCells": 18
+     "minorityCells": 17
     },
     {
      "date": "2022-10-12",
      "litcalId": "our_lady_of_the_pillar",
-     "minorityCells": 18
+     "minorityCells": 17
     },
     {
      "date": "2023-10-12",
      "litcalId": "our_lady_of_the_pillar",
-     "minorityCells": 18
+     "minorityCells": 17
     },
     {
      "date": "2026-10-12",
      "litcalId": "our_lady_of_the_pillar",
-     "minorityCells": 18
+     "minorityCells": 17
     },
     {
      "date": "2019-10-12",
@@ -1597,6 +1597,66 @@
    ]
   },
   {
+   "key": "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
+   "title": "Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "santa_teresa_beneta_de_la_creu_verge_i_martir_patrona_d_europa",
+   "inLitcal": null,
+   "cellsBlamed": 32,
+   "cellsSole": 17,
+   "contestedDays": 8,
+   "totalDays": 8,
+   "litcalIds": [
+    "teresa_benedicta_of_the_cross_stein_virgin"
+   ],
+   "dates": [
+    {
+     "date": "2017-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 19
+    },
+    {
+     "date": "2019-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 19
+    },
+    {
+     "date": "2023-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 19
+    },
+    {
+     "date": "2024-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 19
+    },
+    {
+     "date": "2018-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 18
+    },
+    {
+     "date": "2021-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 18
+    },
+    {
+     "date": "2022-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 18
+    },
+    {
+     "date": "2025-08-09",
+     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
+     "minorityCells": 18
+    }
+   ]
+  },
+  {
    "key": "cel|Sants Felip i Jaume, apòstols",
    "title": "Sants Felip i Jaume, apòstols",
    "verdict": "memorial",
@@ -1657,66 +1717,6 @@
      "date": "2024-05-03",
      "litcalId": "philip_and_james_apostles",
      "minorityCells": 21
-    }
-   ]
-  },
-  {
-   "key": "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "title": "Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "santa_teresa_beneta_de_la_creu_verge_i_martir_patrona_d_europa",
-   "inLitcal": null,
-   "cellsBlamed": 36,
-   "cellsSole": 15,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "teresa_benedicta_of_the_cross_stein_virgin"
-   ],
-   "dates": [
-    {
-     "date": "2017-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
-    },
-    {
-     "date": "2018-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
-    },
-    {
-     "date": "2019-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
-    },
-    {
-     "date": "2021-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
-    },
-    {
-     "date": "2022-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
-    },
-    {
-     "date": "2023-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
-    },
-    {
-     "date": "2024-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
-    },
-    {
-     "date": "2025-08-09",
-     "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
-     "minorityCells": 19
     }
    ]
   },
@@ -1914,6 +1914,75 @@
    ]
   },
   {
+   "key": "cel|Sant Mateu, apòstol i evangelista",
+   "title": "Sant Mateu, apòstol i evangelista",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sant_mateu_apostol_i_evangelista",
+   "inLitcal": {
+    "calendar": "diocese-girona",
+    "id": "sant_mateu_apostol_i_evangelista",
+    "rank": "FEAST"
+   },
+   "cellsBlamed": 31,
+   "cellsSole": 14,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "matthew_apostle"
+   ],
+   "dates": [
+    {
+     "date": "2019-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 30
+    },
+    {
+     "date": "2024-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 30
+    },
+    {
+     "date": "2017-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2018-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2020-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2021-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2022-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2023-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2026-09-21",
+     "litcalId": "matthew_apostle",
+     "minorityCells": 5
+    }
+   ]
+  },
+  {
    "key": "cel|Sant Justí, màrtir",
    "title": "Sant Justí, màrtir",
    "verdict": "memorial",
@@ -2037,75 +2106,6 @@
      "date": "2025-04-17",
      "litcalId": "thursday_of_the_lords_supper",
      "minorityCells": 7
-    }
-   ]
-  },
-  {
-   "key": "cel|Sant Mateu, apòstol i evangelista",
-   "title": "Sant Mateu, apòstol i evangelista",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sant_mateu_apostol_i_evangelista",
-   "inLitcal": {
-    "calendar": "diocese-girona",
-    "id": "sant_mateu_apostol_i_evangelista",
-    "rank": "FEAST"
-   },
-   "cellsBlamed": 36,
-   "cellsSole": 13,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "matthew_apostle"
-   ],
-   "dates": [
-    {
-     "date": "2019-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 30
-    },
-    {
-     "date": "2024-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 30
-    },
-    {
-     "date": "2017-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 6
-    },
-    {
-     "date": "2018-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 6
-    },
-    {
-     "date": "2020-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 6
-    },
-    {
-     "date": "2021-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 6
-    },
-    {
-     "date": "2022-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 6
-    },
-    {
-     "date": "2023-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 6
-    },
-    {
-     "date": "2026-09-21",
-     "litcalId": "matthew_apostle",
-     "minorityCells": 6
     }
    ]
   },
@@ -2263,7 +2263,7 @@
     "id": "sant_lluc_evangelista",
     "rank": "FEAST"
    },
-   "cellsBlamed": 36,
+   "cellsBlamed": 31,
    "cellsSole": 12,
    "contestedDays": 8,
    "totalDays": 8,
@@ -2274,17 +2274,7 @@
     {
      "date": "2025-10-18",
      "litcalId": "luke_evangelist",
-     "minorityCells": 30
-    },
-    {
-     "date": "2017-10-18",
-     "litcalId": "luke_evangelist",
-     "minorityCells": 12
-    },
-    {
-     "date": "2018-10-18",
-     "litcalId": "luke_evangelist",
-     "minorityCells": 12
+     "minorityCells": 29
     },
     {
      "date": "2019-10-18",
@@ -2292,24 +2282,34 @@
      "minorityCells": 12
     },
     {
-     "date": "2021-10-18",
+     "date": "2024-10-18",
      "litcalId": "luke_evangelist",
      "minorityCells": 12
+    },
+    {
+     "date": "2017-10-18",
+     "litcalId": "luke_evangelist",
+     "minorityCells": 11
+    },
+    {
+     "date": "2018-10-18",
+     "litcalId": "luke_evangelist",
+     "minorityCells": 11
+    },
+    {
+     "date": "2021-10-18",
+     "litcalId": "luke_evangelist",
+     "minorityCells": 11
     },
     {
      "date": "2022-10-18",
      "litcalId": "luke_evangelist",
-     "minorityCells": 12
+     "minorityCells": 11
     },
     {
      "date": "2023-10-18",
      "litcalId": "luke_evangelist",
-     "minorityCells": 12
-    },
-    {
-     "date": "2024-10-18",
-     "litcalId": "luke_evangelist",
-     "minorityCells": 12
+     "minorityCells": 11
     }
    ]
   },
@@ -2327,7 +2327,7 @@
     "id": "conversio_de_sant_pau_apostol",
     "rank": "FEAST"
    },
-   "cellsBlamed": 35,
+   "cellsBlamed": 28,
    "cellsSole": 12,
    "contestedDays": 9,
    "totalDays": 9,
@@ -2336,49 +2336,49 @@
    ],
    "dates": [
     {
-     "date": "2018-01-25",
-     "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 18
-    },
-    {
-     "date": "2024-01-25",
-     "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 18
-    },
-    {
      "date": "2017-01-25",
      "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 17
+     "minorityCells": 16
+    },
+    {
+     "date": "2018-01-25",
+     "litcalId": "conversion_of_saint_paul_the_apostle",
+     "minorityCells": 16
     },
     {
      "date": "2019-01-25",
      "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 17
+     "minorityCells": 16
     },
     {
      "date": "2021-01-25",
      "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 17
+     "minorityCells": 16
     },
     {
      "date": "2022-01-25",
      "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 17
+     "minorityCells": 16
     },
     {
      "date": "2023-01-25",
      "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 17
+     "minorityCells": 16
+    },
+    {
+     "date": "2024-01-25",
+     "litcalId": "conversion_of_saint_paul_the_apostle",
+     "minorityCells": 16
     },
     {
      "date": "2020-01-25",
      "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 15
+     "minorityCells": 14
     },
     {
      "date": "2025-01-25",
      "litcalId": "conversion_of_saint_paul_the_apostle",
-     "minorityCells": 15
+     "minorityCells": 14
     }
    ]
   },
@@ -2700,75 +2700,6 @@
    ]
   },
   {
-   "key": "cel|Sant Andreu, apòstol",
-   "title": "Sant Andreu, apòstol",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sant_andreu_apostol",
-   "inLitcal": {
-    "calendar": "catalonia",
-    "id": "sant_andreu_apostol_1130",
-    "rank": "FEAST"
-   },
-   "cellsBlamed": 22,
-   "cellsSole": 9,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "andrew_apostle"
-   ],
-   "dates": [
-    {
-     "date": "2020-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 19
-    },
-    {
-     "date": "2021-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 19
-    },
-    {
-     "date": "2022-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 19
-    },
-    {
-     "date": "2026-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 19
-    },
-    {
-     "date": "2017-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 17
-    },
-    {
-     "date": "2018-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 17
-    },
-    {
-     "date": "2023-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 17
-    },
-    {
-     "date": "2019-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 4
-    },
-    {
-     "date": "2024-11-30",
-     "litcalId": "andrew_apostle",
-     "minorityCells": 4
-    }
-   ]
-  },
-  {
    "key": "ferial|lent_3_monday",
    "title": null,
    "verdict": "ferial-drift",
@@ -3024,6 +2955,75 @@
      "date": "2026-02-08",
      "litcalId": "ordinary_time_5_sunday",
      "minorityCells": 2
+    }
+   ]
+  },
+  {
+   "key": "cel|Sant Andreu, apòstol",
+   "title": "Sant Andreu, apòstol",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sant_andreu_apostol",
+   "inLitcal": {
+    "calendar": "catalonia",
+    "id": "sant_andreu_apostol_1130",
+    "rank": "FEAST"
+   },
+   "cellsBlamed": 17,
+   "cellsSole": 7,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "andrew_apostle"
+   ],
+   "dates": [
+    {
+     "date": "2017-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 16
+    },
+    {
+     "date": "2018-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 16
+    },
+    {
+     "date": "2020-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 16
+    },
+    {
+     "date": "2021-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 16
+    },
+    {
+     "date": "2022-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 16
+    },
+    {
+     "date": "2023-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 16
+    },
+    {
+     "date": "2026-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 16
+    },
+    {
+     "date": "2019-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 4
+    },
+    {
+     "date": "2024-11-30",
+     "litcalId": "andrew_apostle",
+     "minorityCells": 4
     }
    ]
   },
@@ -3815,61 +3815,6 @@
    ]
   },
   {
-   "key": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
-   "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sants_ciril_monjo_i_metodi_bisbe_patrons_d_europa",
-   "inLitcal": null,
-   "cellsBlamed": 13,
-   "cellsSole": 5,
-   "contestedDays": 7,
-   "totalDays": 7,
-   "litcalIds": [
-    "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop"
-   ],
-   "dates": [
-    {
-     "date": "2017-02-14",
-     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
-     "minorityCells": 9
-    },
-    {
-     "date": "2019-02-14",
-     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
-     "minorityCells": 9
-    },
-    {
-     "date": "2020-02-14",
-     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
-     "minorityCells": 9
-    },
-    {
-     "date": "2022-02-14",
-     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
-     "minorityCells": 9
-    },
-    {
-     "date": "2023-02-14",
-     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
-     "minorityCells": 9
-    },
-    {
-     "date": "2025-02-14",
-     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
-     "minorityCells": 9
-    },
-    {
-     "date": "2026-02-14",
-     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
-     "minorityCells": 4
-    }
-   ]
-  },
-  {
    "key": "ferial|easter_time_5_sunday",
    "title": null,
    "verdict": "ferial-drift",
@@ -4317,6 +4262,61 @@
    ]
   },
   {
+   "key": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
+   "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sants_ciril_monjo_i_metodi_bisbe_patrons_d_europa",
+   "inLitcal": null,
+   "cellsBlamed": 8,
+   "cellsSole": 5,
+   "contestedDays": 7,
+   "totalDays": 7,
+   "litcalIds": [
+    "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop"
+   ],
+   "dates": [
+    {
+     "date": "2017-02-14",
+     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+     "minorityCells": 8
+    },
+    {
+     "date": "2019-02-14",
+     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+     "minorityCells": 8
+    },
+    {
+     "date": "2020-02-14",
+     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+     "minorityCells": 8
+    },
+    {
+     "date": "2022-02-14",
+     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+     "minorityCells": 8
+    },
+    {
+     "date": "2023-02-14",
+     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+     "minorityCells": 8
+    },
+    {
+     "date": "2025-02-14",
+     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+     "minorityCells": 8
+    },
+    {
+     "date": "2026-02-14",
+     "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
+     "minorityCells": 3
+    }
+   ]
+  },
+  {
    "key": "ferial|advent_2_sunday",
    "title": null,
    "verdict": "ferial-drift",
@@ -4724,66 +4724,6 @@
    ]
   },
   {
-   "key": "cel|Sants arcàngels Miquel, Gabriel i Rafael",
-   "title": "Sants arcàngels Miquel, Gabriel i Rafael",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sants_arcangels_miquel_gabriel_i_rafael",
-   "inLitcal": null,
-   "cellsBlamed": 11,
-   "cellsSole": 4,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "michael_gabriel_and_raphael_archangels"
-   ],
-   "dates": [
-    {
-     "date": "2017-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 6
-    },
-    {
-     "date": "2021-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 6
-    },
-    {
-     "date": "2023-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 6
-    },
-    {
-     "date": "2025-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 6
-    },
-    {
-     "date": "2020-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 5
-    },
-    {
-     "date": "2022-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 5
-    },
-    {
-     "date": "2026-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 5
-    },
-    {
-     "date": "2018-09-29",
-     "litcalId": "michael_gabriel_and_raphael_archangels",
-     "minorityCells": 4
-    }
-   ]
-  },
-  {
    "key": "ferial|sunday_of_the_word_of_god",
    "title": null,
    "verdict": "ferial-drift",
@@ -4848,6 +4788,76 @@
      "date": "2026-01-25",
      "litcalId": "sunday_of_the_word_of_god",
      "minorityCells": 2
+    }
+   ]
+  },
+  {
+   "key": "cel|Immaculada Concepció de la Benaurada Verge Maria",
+   "title": "Immaculada Concepció de la Benaurada Verge Maria",
+   "verdict": "mismatch",
+   "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
+   "ranks": [
+    "Solemnitat"
+   ],
+   "suggestedId": "immaculada_concepcio_de_la_benaurada_verge_maria",
+   "inLitcal": null,
+   "cellsBlamed": 10,
+   "cellsSole": 4,
+   "contestedDays": 10,
+   "totalDays": 10,
+   "litcalIds": [
+    "immaculate_conception_of_the_blessed_virgin_mary"
+   ],
+   "dates": [
+    {
+     "date": "2017-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2019-12-09",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2020-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2022-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2023-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2024-12-09",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2025-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2026-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 9
+    },
+    {
+     "date": "2021-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 8
+    },
+    {
+     "date": "2018-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 7
     }
    ]
   },
@@ -5336,6 +5346,66 @@
     {
      "date": "2026-03-29",
      "litcalId": "palm_sunday_of_the_passion_of_the_lord",
+     "minorityCells": 3
+    }
+   ]
+  },
+  {
+   "key": "cel|Sants arcàngels Miquel, Gabriel i Rafael",
+   "title": "Sants arcàngels Miquel, Gabriel i Rafael",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sants_arcangels_miquel_gabriel_i_rafael",
+   "inLitcal": null,
+   "cellsBlamed": 5,
+   "cellsSole": 4,
+   "contestedDays": 8,
+   "totalDays": 8,
+   "litcalIds": [
+    "michael_gabriel_and_raphael_archangels"
+   ],
+   "dates": [
+    {
+     "date": "2017-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
+     "minorityCells": 5
+    },
+    {
+     "date": "2021-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
+     "minorityCells": 5
+    },
+    {
+     "date": "2023-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
+     "minorityCells": 5
+    },
+    {
+     "date": "2025-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
+     "minorityCells": 5
+    },
+    {
+     "date": "2020-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
+     "minorityCells": 4
+    },
+    {
+     "date": "2022-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
+     "minorityCells": 4
+    },
+    {
+     "date": "2026-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
+     "minorityCells": 4
+    },
+    {
+     "date": "2018-09-29",
+     "litcalId": "michael_gabriel_and_raphael_archangels",
      "minorityCells": 3
     }
    ]
@@ -5932,76 +6002,6 @@
    ]
   },
   {
-   "key": "cel|Dedicació de la Basílica del Laterà",
-   "title": "Dedicació de la Basílica del Laterà",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "dedicacio_de_la_basilica_del_latera",
-   "inLitcal": null,
-   "cellsBlamed": 12,
-   "cellsSole": 3,
-   "contestedDays": 10,
-   "totalDays": 10,
-   "litcalIds": [
-    "dedication_of_the_lateran_basilica"
-   ],
-   "dates": [
-    {
-     "date": "2017-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2018-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2019-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2020-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2021-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2022-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2023-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2024-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2025-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    },
-    {
-     "date": "2026-11-09",
-     "litcalId": "dedication_of_the_lateran_basilica",
-     "minorityCells": 6
-    }
-   ]
-  },
-  {
    "key": "cel|Diumenge de Pasqua",
    "title": "Diumenge de Pasqua",
    "verdict": "mismatch",
@@ -6068,76 +6068,6 @@
      "date": "2026-04-05",
      "litcalId": "easter_sunday",
      "minorityCells": 10
-    }
-   ]
-  },
-  {
-   "key": "cel|Immaculada Concepció de la Benaurada Verge Maria",
-   "title": "Immaculada Concepció de la Benaurada Verge Maria",
-   "verdict": "mismatch",
-   "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
-   "ranks": [
-    "Solemnitat"
-   ],
-   "suggestedId": "immaculada_concepcio_de_la_benaurada_verge_maria",
-   "inLitcal": null,
-   "cellsBlamed": 10,
-   "cellsSole": 3,
-   "contestedDays": 10,
-   "totalDays": 10,
-   "litcalIds": [
-    "immaculate_conception_of_the_blessed_virgin_mary"
-   ],
-   "dates": [
-    {
-     "date": "2017-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2019-12-09",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2020-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2022-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2023-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2024-12-09",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2025-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2026-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 9
-    },
-    {
-     "date": "2021-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 8
-    },
-    {
-     "date": "2018-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 7
     }
    ]
   },
@@ -6973,6 +6903,76 @@
      "date": "2026-08-01",
      "litcalId": "alphonsus_mary_liguori_bishop",
      "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Dedicació de la Basílica del Laterà",
+   "title": "Dedicació de la Basílica del Laterà",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "dedicacio_de_la_basilica_del_latera",
+   "inLitcal": null,
+   "cellsBlamed": 6,
+   "cellsSole": 3,
+   "contestedDays": 10,
+   "totalDays": 10,
+   "litcalIds": [
+    "dedication_of_the_lateran_basilica"
+   ],
+   "dates": [
+    {
+     "date": "2019-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 6
+    },
+    {
+     "date": "2024-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 6
+    },
+    {
+     "date": "2017-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
+    },
+    {
+     "date": "2018-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
+    },
+    {
+     "date": "2020-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
+    },
+    {
+     "date": "2021-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
+    },
+    {
+     "date": "2022-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
+    },
+    {
+     "date": "2023-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
+    },
+    {
+     "date": "2025-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
+    },
+    {
+     "date": "2026-11-09",
+     "litcalId": "dedication_of_the_lateran_basilica",
+     "minorityCells": 5
     }
    ]
   },
@@ -7935,76 +7935,6 @@
    ]
   },
   {
-   "key": "cel|Transfiguració del Senyor",
-   "title": "Transfiguració del Senyor",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "transfiguracio_del_senyor",
-   "inLitcal": null,
-   "cellsBlamed": 12,
-   "cellsSole": 2,
-   "contestedDays": 10,
-   "totalDays": 10,
-   "litcalIds": [
-    "transfiguration_of_the_lord"
-   ],
-   "dates": [
-    {
-     "date": "2017-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 6
-    },
-    {
-     "date": "2023-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 6
-    },
-    {
-     "date": "2018-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    },
-    {
-     "date": "2019-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    },
-    {
-     "date": "2020-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    },
-    {
-     "date": "2021-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    },
-    {
-     "date": "2022-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    },
-    {
-     "date": "2024-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    },
-    {
-     "date": "2025-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    },
-    {
-     "date": "2026-08-06",
-     "litcalId": "transfiguration_of_the_lord",
-     "minorityCells": 4
-    }
-   ]
-  },
-  {
    "key": "cel|Martiri de sant Joan Baptista",
    "title": "Martiri de sant Joan Baptista",
    "verdict": "memorial",
@@ -8208,66 +8138,6 @@
      "date": "2023-07-24",
      "litcalId": "ordinary_time_16_monday",
      "minorityCells": 2
-    }
-   ]
-  },
-  {
-   "key": "cel|Santa Brígida, religiosa, patrona d’Europa",
-   "title": "Santa Brígida, religiosa, patrona d’Europa",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "santa_brigida_religiosa_patrona_d_europa",
-   "inLitcal": null,
-   "cellsBlamed": 10,
-   "cellsSole": 2,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "bridget_of_sweden_religious"
-   ],
-   "dates": [
-    {
-     "date": "2018-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
-    },
-    {
-     "date": "2019-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
-    },
-    {
-     "date": "2020-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
-    },
-    {
-     "date": "2021-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
-    },
-    {
-     "date": "2022-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
-    },
-    {
-     "date": "2024-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
-    },
-    {
-     "date": "2025-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
-    },
-    {
-     "date": "2026-07-23",
-     "litcalId": "bridget_of_sweden_religious",
-     "minorityCells": 5
     }
    ]
   },
@@ -8904,6 +8774,131 @@
      "date": "2024-07-28",
      "litcalId": "ordinary_time_17_sunday",
      "minorityCells": 2
+    }
+   ]
+  },
+  {
+   "key": "cel|Sants Simó i Judes, apòstols",
+   "title": "Sants Simó i Judes, apòstols",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sants_simo_i_judes_apostols",
+   "inLitcal": null,
+   "cellsBlamed": 5,
+   "cellsSole": 2,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "simon_and_jude_apostles"
+   ],
+   "dates": [
+    {
+     "date": "2019-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 4
+    },
+    {
+     "date": "2024-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 4
+    },
+    {
+     "date": "2017-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 3
+    },
+    {
+     "date": "2020-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 3
+    },
+    {
+     "date": "2021-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 3
+    },
+    {
+     "date": "2022-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 3
+    },
+    {
+     "date": "2023-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 3
+    },
+    {
+     "date": "2025-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 3
+    },
+    {
+     "date": "2026-10-28",
+     "litcalId": "simon_and_jude_apostles",
+     "minorityCells": 3
+    }
+   ]
+  },
+  {
+   "key": "cel|Santa Brígida, religiosa, patrona d’Europa",
+   "title": "Santa Brígida, religiosa, patrona d’Europa",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "santa_brigida_religiosa_patrona_d_europa",
+   "inLitcal": null,
+   "cellsBlamed": 5,
+   "cellsSole": 2,
+   "contestedDays": 8,
+   "totalDays": 8,
+   "litcalIds": [
+    "bridget_of_sweden_religious"
+   ],
+   "dates": [
+    {
+     "date": "2019-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 5
+    },
+    {
+     "date": "2024-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 5
+    },
+    {
+     "date": "2018-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 4
+    },
+    {
+     "date": "2020-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 4
+    },
+    {
+     "date": "2021-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 4
+    },
+    {
+     "date": "2022-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 4
+    },
+    {
+     "date": "2025-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 4
+    },
+    {
+     "date": "2026-07-23",
+     "litcalId": "bridget_of_sweden_religious",
+     "minorityCells": 4
     }
    ]
   },
@@ -9662,135 +9657,6 @@
      "date": "2026-08-07",
      "litcalId": "ordinary_time_18_friday",
      "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Naixement de la Benaurada Verge Maria",
-   "title": "Naixement de la Benaurada Verge Maria",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "naixement_de_la_benaurada_verge_maria",
-   "inLitcal": {
-    "calendar": "diocese-tarragona",
-    "id": "naixement_de_la_benaurada_verge_maria",
-    "rank": "SOLEMNITY"
-   },
-   "cellsBlamed": 11,
-   "cellsSole": 1,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "nativity_of_the_blessed_virgin_mary"
-   ],
-   "dates": [
-    {
-     "date": "2017-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2020-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2021-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2022-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2023-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2025-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2026-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2018-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 5
-    }
-   ]
-  },
-  {
-   "key": "cel|Sant Tomàs, apòstol",
-   "title": "Sant Tomàs, apòstol",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sant_tomas_apostol",
-   "inLitcal": null,
-   "cellsBlamed": 10,
-   "cellsSole": 1,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "thomas_apostle"
-   ],
-   "dates": [
-    {
-     "date": "2017-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2018-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2019-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2020-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2023-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2024-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2025-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2026-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 5
-    },
-    {
-     "date": "2021-07-03",
-     "litcalId": "thomas_apostle",
-     "minorityCells": 4
     }
    ]
   },
@@ -11009,6 +10875,141 @@
    ]
   },
   {
+   "key": "cel|Sant Tomàs, apòstol",
+   "title": "Sant Tomàs, apòstol",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sant_tomas_apostol",
+   "inLitcal": null,
+   "cellsBlamed": 5,
+   "cellsSole": 1,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "thomas_apostle"
+   ],
+   "dates": [
+    {
+     "date": "2017-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2023-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 5
+    },
+    {
+     "date": "2018-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 4
+    },
+    {
+     "date": "2019-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 4
+    },
+    {
+     "date": "2020-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 4
+    },
+    {
+     "date": "2024-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 4
+    },
+    {
+     "date": "2025-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 4
+    },
+    {
+     "date": "2026-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 4
+    },
+    {
+     "date": "2021-07-03",
+     "litcalId": "thomas_apostle",
+     "minorityCells": 3
+    }
+   ]
+  },
+  {
+   "key": "cel|Transfiguració del Senyor",
+   "title": "Transfiguració del Senyor",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "transfiguracio_del_senyor",
+   "inLitcal": null,
+   "cellsBlamed": 5,
+   "cellsSole": 1,
+   "contestedDays": 10,
+   "totalDays": 10,
+   "litcalIds": [
+    "transfiguration_of_the_lord"
+   ],
+   "dates": [
+    {
+     "date": "2017-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 5
+    },
+    {
+     "date": "2023-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 5
+    },
+    {
+     "date": "2018-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2019-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2020-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2021-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2022-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2024-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2025-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2026-08-06",
+     "litcalId": "transfiguration_of_the_lord",
+     "minorityCells": 3
+    }
+   ]
+  },
+  {
    "key": "cel|Santa Rosa de Lima, verge",
    "title": "Santa Rosa de Lima, verge",
    "verdict": "not-applied",
@@ -11059,6 +11060,70 @@
      "date": "2023-08-23",
      "litcalId": "ordinary_time_20_wednesday",
      "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Naixement de la Benaurada Verge Maria",
+   "title": "Naixement de la Benaurada Verge Maria",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "naixement_de_la_benaurada_verge_maria",
+   "inLitcal": {
+    "calendar": "diocese-tarragona",
+    "id": "naixement_de_la_benaurada_verge_maria",
+    "rank": "SOLEMNITY"
+   },
+   "cellsBlamed": 5,
+   "cellsSole": 1,
+   "contestedDays": 8,
+   "totalDays": 8,
+   "litcalIds": [
+    "nativity_of_the_blessed_virgin_mary"
+   ],
+   "dates": [
+    {
+     "date": "2017-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2020-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2021-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2022-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2023-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2025-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2026-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2018-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 4
     }
    ]
   },
@@ -11322,6 +11387,75 @@
      "date": "2026-03-03",
      "litcalId": "lent_2_tuesday",
      "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Sant Llorenç, diaca i màrtir",
+   "title": "Sant Llorenç, diaca i màrtir",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sant_llorenc_diaca_i_martir",
+   "inLitcal": {
+    "calendar": "catalonia",
+    "id": "sant_llorenc_diaca_i_martir",
+    "rank": "FEAST"
+   },
+   "cellsBlamed": 4,
+   "cellsSole": 1,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "lawrence_of_rome_deacon"
+   ],
+   "dates": [
+    {
+     "date": "2020-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 4
+    },
+    {
+     "date": "2026-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 4
+    },
+    {
+     "date": "2017-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 3
+    },
+    {
+     "date": "2018-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 3
+    },
+    {
+     "date": "2021-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 3
+    },
+    {
+     "date": "2022-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 3
+    },
+    {
+     "date": "2023-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 3
+    },
+    {
+     "date": "2019-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 2
+    },
+    {
+     "date": "2024-08-10",
+     "litcalId": "lawrence_of_rome_deacon",
+     "minorityCells": 2
     }
    ]
   },
@@ -12995,71 +13129,6 @@
    ]
   },
   {
-   "key": "cel|Santa Maria Magdalena",
-   "title": "Santa Maria Magdalena",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "santa_maria_magdalena",
-   "inLitcal": null,
-   "cellsBlamed": 11,
-   "cellsSole": 0,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "mary_magdalene"
-   ],
-   "dates": [
-    {
-     "date": "2019-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 6
-    },
-    {
-     "date": "2020-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 6
-    },
-    {
-     "date": "2021-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 6
-    },
-    {
-     "date": "2022-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 6
-    },
-    {
-     "date": "2024-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 6
-    },
-    {
-     "date": "2025-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 6
-    },
-    {
-     "date": "2026-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 6
-    },
-    {
-     "date": "2017-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 3
-    },
-    {
-     "date": "2023-07-22",
-     "litcalId": "mary_magdalene",
-     "minorityCells": 3
-    }
-   ]
-  },
-  {
    "key": "cel|Santíssim Nom de Maria",
    "title": "Santíssim Nom de Maria",
    "verdict": "not-applied",
@@ -13766,76 +13835,6 @@
    ]
   },
   {
-   "key": "cel|Jesucrist, gran sacerdot per sempre",
-   "title": "Jesucrist, gran sacerdot per sempre",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "jesucrist_gran_sacerdot_per_sempre",
-   "inLitcal": null,
-   "cellsBlamed": 9,
-   "cellsSole": 0,
-   "contestedDays": 10,
-   "totalDays": 10,
-   "litcalIds": [
-    "our_lord_jesus_christ_the_eternal_high_priest"
-   ],
-   "dates": [
-    {
-     "date": "2018-05-24",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 6
-    },
-    {
-     "date": "2024-05-23",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 6
-    },
-    {
-     "date": "2017-06-08",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    },
-    {
-     "date": "2019-06-13",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    },
-    {
-     "date": "2020-06-04",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    },
-    {
-     "date": "2021-05-27",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    },
-    {
-     "date": "2022-06-09",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    },
-    {
-     "date": "2023-06-01",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    },
-    {
-     "date": "2025-06-12",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    },
-    {
-     "date": "2026-05-28",
-     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
-     "minorityCells": 5
-    }
-   ]
-  },
-  {
    "key": "cel|Sant Enric",
    "title": "Sant Enric",
    "verdict": "not-applied",
@@ -13969,75 +13968,6 @@
    ]
   },
   {
-   "key": "cel|Sant Llorenç, diaca i màrtir",
-   "title": "Sant Llorenç, diaca i màrtir",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sant_llorenc_diaca_i_martir",
-   "inLitcal": {
-    "calendar": "catalonia",
-    "id": "sant_llorenc_diaca_i_martir",
-    "rank": "FEAST"
-   },
-   "cellsBlamed": 9,
-   "cellsSole": 0,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "lawrence_of_rome_deacon"
-   ],
-   "dates": [
-    {
-     "date": "2017-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 4
-    },
-    {
-     "date": "2018-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 4
-    },
-    {
-     "date": "2020-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 4
-    },
-    {
-     "date": "2021-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 4
-    },
-    {
-     "date": "2022-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 4
-    },
-    {
-     "date": "2023-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 4
-    },
-    {
-     "date": "2026-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 4
-    },
-    {
-     "date": "2019-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 3
-    },
-    {
-     "date": "2024-08-10",
-     "litcalId": "lawrence_of_rome_deacon",
-     "minorityCells": 3
-    }
-   ]
-  },
-  {
    "key": "cel|Beat Josep Samsó i Elias, prevere, màrtir",
    "title": "Beat Josep Samsó i Elias, prevere, màrtir",
    "verdict": "not-applied",
@@ -14157,71 +14087,6 @@
      "date": "2025-10-09",
      "litcalId": "ordinary_time_27_thursday",
      "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Sants Simó i Judes, apòstols",
-   "title": "Sants Simó i Judes, apòstols",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sants_simo_i_judes_apostols",
-   "inLitcal": null,
-   "cellsBlamed": 9,
-   "cellsSole": 0,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "simon_and_jude_apostles"
-   ],
-   "dates": [
-    {
-     "date": "2019-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 4
-    },
-    {
-     "date": "2020-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 4
-    },
-    {
-     "date": "2021-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 4
-    },
-    {
-     "date": "2022-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 4
-    },
-    {
-     "date": "2024-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 4
-    },
-    {
-     "date": "2025-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 4
-    },
-    {
-     "date": "2026-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 4
-    },
-    {
-     "date": "2017-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 3
-    },
-    {
-     "date": "2023-10-28",
-     "litcalId": "simon_and_jude_apostles",
-     "minorityCells": 3
     }
    ]
   },
@@ -14603,71 +14468,6 @@
    ]
   },
   {
-   "key": "cel|Sant Benet, abat, patró d’Europa",
-   "title": "Sant Benet, abat, patró d’Europa",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sant_benet_abat_patro_d_europa",
-   "inLitcal": null,
-   "cellsBlamed": 8,
-   "cellsSole": 0,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "benedict_of_nursia_abbot"
-   ],
-   "dates": [
-    {
-     "date": "2017-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2018-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2019-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2020-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2022-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2023-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2024-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2025-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    },
-    {
-     "date": "2026-07-11",
-     "litcalId": "benedict_of_nursia_abbot",
-     "minorityCells": 3
-    }
-   ]
-  },
-  {
    "key": "cel|Sant Esteve d’Hongria",
    "title": "Sant Esteve d’Hongria",
    "verdict": "not-applied",
@@ -15044,66 +14844,6 @@
    ]
   },
   {
-   "key": "cel|Santa Teresa de Jesús, verge i doctora de l’Església",
-   "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "santa_teresa_de_jesus_verge_i_doctora_de_l_esglesia",
-   "inLitcal": null,
-   "cellsBlamed": 8,
-   "cellsSole": 0,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "teresa_of_jesus_of_avila_virgin"
-   ],
-   "dates": [
-    {
-     "date": "2018-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 3
-    },
-    {
-     "date": "2019-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 3
-    },
-    {
-     "date": "2020-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 3
-    },
-    {
-     "date": "2021-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 3
-    },
-    {
-     "date": "2024-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 3
-    },
-    {
-     "date": "2025-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 3
-    },
-    {
-     "date": "2026-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 3
-    },
-    {
-     "date": "2022-10-15",
-     "litcalId": "teresa_of_jesus_of_avila_virgin",
-     "minorityCells": 2
-    }
-   ]
-  },
-  {
    "key": "ferial|easter_time_2_wednesday",
    "title": null,
    "verdict": "ferial-drift",
@@ -15368,75 +15108,6 @@
      "date": "2018-07-06",
      "litcalId": "ordinary_time_13_friday",
      "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Sant Bartomeu, apòstol",
-   "title": "Sant Bartomeu, apòstol",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "sant_bartomeu_apostol",
-   "inLitcal": {
-    "calendar": "catalonia",
-    "id": "sant_bartomeu_apostol",
-    "rank": "FEAST"
-   },
-   "cellsBlamed": 7,
-   "cellsSole": 0,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "bartholomew_apostle"
-   ],
-   "dates": [
-    {
-     "date": "2017-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2018-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2019-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2020-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2021-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2022-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2023-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2024-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
-    },
-    {
-     "date": "2026-08-24",
-     "litcalId": "bartholomew_apostle",
-     "minorityCells": 2
     }
    ]
   },
@@ -16865,76 +16536,6 @@
    ]
   },
   {
-   "key": "cel|Presentació del Senyor",
-   "title": "Presentació del Senyor",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "suggestedId": "presentacio_del_senyor",
-   "inLitcal": null,
-   "cellsBlamed": 5,
-   "cellsSole": 0,
-   "contestedDays": 10,
-   "totalDays": 10,
-   "litcalIds": [
-    "presentation_of_the_lord"
-   ],
-   "dates": [
-    {
-     "date": "2020-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 5
-    },
-    {
-     "date": "2025-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 5
-    },
-    {
-     "date": "2017-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    },
-    {
-     "date": "2018-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    },
-    {
-     "date": "2019-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    },
-    {
-     "date": "2021-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    },
-    {
-     "date": "2022-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    },
-    {
-     "date": "2023-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    },
-    {
-     "date": "2024-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    },
-    {
-     "date": "2026-02-02",
-     "litcalId": "presentation_of_the_lord",
-     "minorityCells": 3
-    }
-   ]
-  },
-  {
    "key": "cel|Els set sants fundadors de l’orde dels Servites",
    "title": "Els set sants fundadors de l’orde dels Servites",
    "verdict": "not-applied",
@@ -17090,6 +16691,71 @@
      "date": "2024-07-05",
      "litcalId": "ordinary_time_13_friday",
      "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Santa Maria Magdalena",
+   "title": "Santa Maria Magdalena",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "santa_maria_magdalena",
+   "inLitcal": null,
+   "cellsBlamed": 5,
+   "cellsSole": 0,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "mary_magdalene"
+   ],
+   "dates": [
+    {
+     "date": "2019-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 5
+    },
+    {
+     "date": "2020-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 5
+    },
+    {
+     "date": "2021-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 5
+    },
+    {
+     "date": "2022-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 5
+    },
+    {
+     "date": "2024-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 5
+    },
+    {
+     "date": "2025-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 5
+    },
+    {
+     "date": "2026-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 5
+    },
+    {
+     "date": "2017-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 2
+    },
+    {
+     "date": "2023-07-22",
+     "litcalId": "mary_magdalene",
+     "minorityCells": 2
     }
    ]
   },
@@ -18070,6 +17736,76 @@
    ]
   },
   {
+   "key": "cel|Presentació del Senyor",
+   "title": "Presentació del Senyor",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "presentacio_del_senyor",
+   "inLitcal": null,
+   "cellsBlamed": 4,
+   "cellsSole": 0,
+   "contestedDays": 10,
+   "totalDays": 10,
+   "litcalIds": [
+    "presentation_of_the_lord"
+   ],
+   "dates": [
+    {
+     "date": "2020-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 4
+    },
+    {
+     "date": "2025-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 4
+    },
+    {
+     "date": "2017-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2018-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2019-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2021-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2022-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2023-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2024-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    },
+    {
+     "date": "2026-02-02",
+     "litcalId": "presentation_of_the_lord",
+     "minorityCells": 3
+    }
+   ]
+  },
+  {
    "key": "cel|Mare de Déu de Lourdes",
    "title": "Mare de Déu de Lourdes",
    "verdict": "not-applied",
@@ -18498,6 +18234,76 @@
      "date": "2023-05-27",
      "litcalId": "easter_time_7_saturday",
      "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Jesucrist, gran sacerdot per sempre",
+   "title": "Jesucrist, gran sacerdot per sempre",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "jesucrist_gran_sacerdot_per_sempre",
+   "inLitcal": null,
+   "cellsBlamed": 4,
+   "cellsSole": 0,
+   "contestedDays": 10,
+   "totalDays": 10,
+   "litcalIds": [
+    "our_lord_jesus_christ_the_eternal_high_priest"
+   ],
+   "dates": [
+    {
+     "date": "2017-06-08",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2018-05-24",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2019-06-13",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2020-06-04",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2021-05-27",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2022-06-09",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2023-06-01",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2024-05-23",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2025-06-12",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
+    },
+    {
+     "date": "2026-05-28",
+     "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
+     "minorityCells": 4
     }
    ]
   },
@@ -19522,6 +19328,66 @@
    ]
   },
   {
+   "key": "cel|Santa Teresa de Jesús, verge i doctora de l’Església",
+   "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "santa_teresa_de_jesus_verge_i_doctora_de_l_esglesia",
+   "inLitcal": null,
+   "cellsBlamed": 3,
+   "cellsSole": 0,
+   "contestedDays": 8,
+   "totalDays": 8,
+   "litcalIds": [
+    "teresa_of_jesus_of_avila_virgin"
+   ],
+   "dates": [
+    {
+     "date": "2019-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 3
+    },
+    {
+     "date": "2024-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 3
+    },
+    {
+     "date": "2018-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 2
+    },
+    {
+     "date": "2020-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 2
+    },
+    {
+     "date": "2021-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 2
+    },
+    {
+     "date": "2025-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 2
+    },
+    {
+     "date": "2026-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 2
+    },
+    {
+     "date": "2022-10-15",
+     "litcalId": "teresa_of_jesus_of_avila_virgin",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
    "key": "ferial|easter_time_7_tuesday",
    "title": null,
    "verdict": "ferial-drift",
@@ -20072,6 +19938,71 @@
    ]
   },
   {
+   "key": "cel|Sant Benet, abat, patró d’Europa",
+   "title": "Sant Benet, abat, patró d’Europa",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sant_benet_abat_patro_d_europa",
+   "inLitcal": null,
+   "cellsBlamed": 2,
+   "cellsSole": 0,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "benedict_of_nursia_abbot"
+   ],
+   "dates": [
+    {
+     "date": "2017-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2018-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2019-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2020-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2022-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2023-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2024-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2025-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2026-07-11",
+     "litcalId": "benedict_of_nursia_abbot",
+     "minorityCells": 2
+    }
+   ]
+  },
+  {
    "key": "cel|Sant Camil de Lel·lis, prevere",
    "title": "Sant Camil de Lel·lis, prevere",
    "verdict": "not-applied",
@@ -20139,6 +20070,75 @@
     {
      "date": "2023-08-18",
      "litcalId": "ordinary_time_19_friday",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Sant Bartomeu, apòstol",
+   "title": "Sant Bartomeu, apòstol",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "suggestedId": "sant_bartomeu_apostol",
+   "inLitcal": {
+    "calendar": "catalonia",
+    "id": "sant_bartomeu_apostol",
+    "rank": "FEAST"
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 0,
+   "contestedDays": 9,
+   "totalDays": 9,
+   "litcalIds": [
+    "bartholomew_apostle"
+   ],
+   "dates": [
+    {
+     "date": "2020-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 2
+    },
+    {
+     "date": "2026-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 2
+    },
+    {
+     "date": "2017-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 1
+    },
+    {
+     "date": "2018-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 1
+    },
+    {
+     "date": "2019-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 1
+    },
+    {
+     "date": "2021-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 1
+    },
+    {
+     "date": "2022-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 1
+    },
+    {
+     "date": "2023-08-24",
+     "litcalId": "bartholomew_apostle",
+     "minorityCells": 1
+    },
+    {
+     "date": "2024-08-24",
+     "litcalId": "bartholomew_apostle",
      "minorityCells": 1
     }
    ]
@@ -23349,7 +23349,7 @@
    "date": "2017-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -23529,7 +23529,7 @@
    "date": "2017-02-14",
    "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
    "litcalIsFerial": false,
-   "minorityCells": 9,
+   "minorityCells": 8,
    "type": "F",
    "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
    "group": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
@@ -24483,7 +24483,7 @@
    "date": "2017-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 23,
+   "minorityCells": 22,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -24555,7 +24555,7 @@
    "date": "2017-06-08",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -24699,7 +24699,7 @@
    "date": "2017-06-24",
    "litcalId": "immaculate_heart_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 69,
+   "minorityCells": 68,
    "type": "S",
    "title": "Naixement de sant Joan Baptista",
    "group": "cel|Naixement de sant Joan Baptista"
@@ -24852,7 +24852,7 @@
    "date": "2017-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -24951,7 +24951,7 @@
    "date": "2017-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -25086,7 +25086,7 @@
    "date": "2017-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -25122,7 +25122,7 @@
    "date": "2017-08-10",
    "litcalId": "lawrence_of_rome_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sant Llorenç, diaca i màrtir",
    "group": "cel|Sant Llorenç, diaca i màrtir"
@@ -25248,7 +25248,7 @@
    "date": "2017-08-24",
    "litcalId": "bartholomew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Sant Bartomeu, apòstol",
    "group": "cel|Sant Bartomeu, apòstol"
@@ -25383,7 +25383,7 @@
    "date": "2017-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -25500,7 +25500,7 @@
    "date": "2017-09-21",
    "litcalId": "matthew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sant Mateu, apòstol i evangelista",
    "group": "cel|Sant Mateu, apòstol i evangelista"
@@ -25572,7 +25572,7 @@
    "date": "2017-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -25689,7 +25689,7 @@
    "date": "2017-10-12",
    "litcalId": "our_lady_of_the_pillar",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 17,
    "type": "F",
    "title": "Mare de Déu del Pilar",
    "group": "cel|Mare de Déu del Pilar"
@@ -25743,7 +25743,7 @@
    "date": "2017-10-18",
    "litcalId": "luke_evangelist",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Sant Lluc, evangelista",
    "group": "cel|Sant Lluc, evangelista"
@@ -25941,7 +25941,7 @@
    "date": "2017-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -26130,7 +26130,7 @@
    "date": "2017-11-30",
    "litcalId": "andrew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Sant Andreu, apòstol",
    "group": "cel|Sant Andreu, apòstol"
@@ -26634,7 +26634,7 @@
    "date": "2018-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 16,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -27705,7 +27705,7 @@
    "date": "2018-05-24",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -27768,7 +27768,7 @@
    "date": "2018-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 42,
+   "minorityCells": 41,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -28065,7 +28065,7 @@
    "date": "2018-07-03",
    "litcalId": "thomas_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sant Tomàs, apòstol",
    "group": "cel|Sant Tomàs, apòstol"
@@ -28137,7 +28137,7 @@
    "date": "2018-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -28245,7 +28245,7 @@
    "date": "2018-07-23",
    "litcalId": "bridget_of_sweden_religious",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Santa Brígida, religiosa, patrona d’Europa",
    "group": "cel|Santa Brígida, religiosa, patrona d’Europa"
@@ -28371,7 +28371,7 @@
    "date": "2018-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -28398,7 +28398,7 @@
    "date": "2018-08-09",
    "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 18,
    "type": "F",
    "title": "Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
    "group": "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa"
@@ -28407,7 +28407,7 @@
    "date": "2018-08-10",
    "litcalId": "lawrence_of_rome_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sant Llorenç, diaca i màrtir",
    "group": "cel|Sant Llorenç, diaca i màrtir"
@@ -28533,7 +28533,7 @@
    "date": "2018-08-24",
    "litcalId": "bartholomew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Sant Bartomeu, apòstol",
    "group": "cel|Sant Bartomeu, apòstol"
@@ -28668,7 +28668,7 @@
    "date": "2018-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -28785,7 +28785,7 @@
    "date": "2018-09-21",
    "litcalId": "matthew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sant Mateu, apòstol i evangelista",
    "group": "cel|Sant Mateu, apòstol i evangelista"
@@ -28857,7 +28857,7 @@
    "date": "2018-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -28974,7 +28974,7 @@
    "date": "2018-10-12",
    "litcalId": "our_lady_of_the_pillar",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 17,
    "type": "F",
    "title": "Mare de Déu del Pilar",
    "group": "cel|Mare de Déu del Pilar"
@@ -29001,7 +29001,7 @@
    "date": "2018-10-15",
    "litcalId": "teresa_of_jesus_of_avila_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
    "group": "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
@@ -29028,7 +29028,7 @@
    "date": "2018-10-18",
    "litcalId": "luke_evangelist",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Sant Lluc, evangelista",
    "group": "cel|Sant Lluc, evangelista"
@@ -29226,7 +29226,7 @@
    "date": "2018-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -29415,7 +29415,7 @@
    "date": "2018-11-30",
    "litcalId": "andrew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Sant Andreu, apòstol",
    "group": "cel|Sant Andreu, apòstol"
@@ -29919,7 +29919,7 @@
    "date": "2019-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -30099,7 +30099,7 @@
    "date": "2019-02-14",
    "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
    "litcalIsFerial": false,
-   "minorityCells": 9,
+   "minorityCells": 8,
    "type": "F",
    "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
    "group": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
@@ -31053,7 +31053,7 @@
    "date": "2019-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 23,
+   "minorityCells": 22,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -31170,7 +31170,7 @@
    "date": "2019-06-13",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -31314,7 +31314,7 @@
    "date": "2019-06-29",
    "litcalId": "immaculate_heart_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 80,
+   "minorityCells": 79,
    "type": "S",
    "title": "Sants Pere i Pau, apòstols",
    "group": "cel|Sants Pere i Pau, apòstols"
@@ -31350,7 +31350,7 @@
    "date": "2019-07-03",
    "litcalId": "thomas_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sant Tomàs, apòstol",
    "group": "cel|Sant Tomàs, apòstol"
@@ -31422,7 +31422,7 @@
    "date": "2019-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -31521,7 +31521,7 @@
    "date": "2019-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -31656,7 +31656,7 @@
    "date": "2019-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -31692,7 +31692,7 @@
    "date": "2019-08-10",
    "litcalId": "lawrence_of_rome_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Llorenç, diaca i màrtir",
    "group": "cel|Sant Llorenç, diaca i màrtir"
@@ -31818,7 +31818,7 @@
    "date": "2019-08-24",
    "litcalId": "bartholomew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Sant Bartomeu, apòstol",
    "group": "cel|Sant Bartomeu, apòstol"
@@ -33204,7 +33204,7 @@
    "date": "2020-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 15,
+   "minorityCells": 14,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -33276,7 +33276,7 @@
    "date": "2020-02-02",
    "litcalId": "presentation_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Presentació del Senyor",
    "group": "cel|Presentació del Senyor"
@@ -33384,7 +33384,7 @@
    "date": "2020-02-14",
    "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
    "litcalIsFerial": false,
-   "minorityCells": 9,
+   "minorityCells": 8,
    "type": "F",
    "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
    "group": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
@@ -34383,7 +34383,7 @@
    "date": "2020-06-04",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -34644,7 +34644,7 @@
    "date": "2020-07-03",
    "litcalId": "thomas_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sant Tomàs, apòstol",
    "group": "cel|Sant Tomàs, apòstol"
@@ -34716,7 +34716,7 @@
    "date": "2020-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -34815,7 +34815,7 @@
    "date": "2020-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -34824,7 +34824,7 @@
    "date": "2020-07-23",
    "litcalId": "bridget_of_sweden_religious",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Santa Brígida, religiosa, patrona d’Europa",
    "group": "cel|Santa Brígida, religiosa, patrona d’Europa"
@@ -34950,7 +34950,7 @@
    "date": "2020-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -35247,7 +35247,7 @@
    "date": "2020-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -35364,7 +35364,7 @@
    "date": "2020-09-21",
    "litcalId": "matthew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sant Mateu, apòstol i evangelista",
    "group": "cel|Sant Mateu, apòstol i evangelista"
@@ -35436,7 +35436,7 @@
    "date": "2020-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -35553,7 +35553,7 @@
    "date": "2020-10-12",
    "litcalId": "our_lady_of_the_pillar",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 17,
    "type": "F",
    "title": "Mare de Déu del Pilar",
    "group": "cel|Mare de Déu del Pilar"
@@ -35580,7 +35580,7 @@
    "date": "2020-10-15",
    "litcalId": "teresa_of_jesus_of_avila_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
    "group": "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
@@ -35697,7 +35697,7 @@
    "date": "2020-10-28",
    "litcalId": "simon_and_jude_apostles",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sants Simó i Judes, apòstols",
    "group": "cel|Sants Simó i Judes, apòstols"
@@ -35805,7 +35805,7 @@
    "date": "2020-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -35994,7 +35994,7 @@
    "date": "2020-11-30",
    "litcalId": "andrew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 16,
    "type": "F",
    "title": "Sant Andreu, apòstol",
    "group": "cel|Sant Andreu, apòstol"
@@ -36498,7 +36498,7 @@
    "date": "2021-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -37596,7 +37596,7 @@
    "date": "2021-05-27",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -37632,7 +37632,7 @@
    "date": "2021-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 42,
+   "minorityCells": 41,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -37929,7 +37929,7 @@
    "date": "2021-07-03",
    "litcalId": "thomas_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sant Tomàs, apòstol",
    "group": "cel|Sant Tomàs, apòstol"
@@ -38100,7 +38100,7 @@
    "date": "2021-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -38109,7 +38109,7 @@
    "date": "2021-07-23",
    "litcalId": "bridget_of_sweden_religious",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Santa Brígida, religiosa, patrona d’Europa",
    "group": "cel|Santa Brígida, religiosa, patrona d’Europa"
@@ -38235,7 +38235,7 @@
    "date": "2021-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -38262,7 +38262,7 @@
    "date": "2021-08-09",
    "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 18,
    "type": "F",
    "title": "Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
    "group": "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa"
@@ -38271,7 +38271,7 @@
    "date": "2021-08-10",
    "litcalId": "lawrence_of_rome_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sant Llorenç, diaca i màrtir",
    "group": "cel|Sant Llorenç, diaca i màrtir"
@@ -38397,7 +38397,7 @@
    "date": "2021-08-24",
    "litcalId": "bartholomew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Sant Bartomeu, apòstol",
    "group": "cel|Sant Bartomeu, apòstol"
@@ -38532,7 +38532,7 @@
    "date": "2021-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -38649,7 +38649,7 @@
    "date": "2021-09-21",
    "litcalId": "matthew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sant Mateu, apòstol i evangelista",
    "group": "cel|Sant Mateu, apòstol i evangelista"
@@ -38721,7 +38721,7 @@
    "date": "2021-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -38838,7 +38838,7 @@
    "date": "2021-10-12",
    "litcalId": "our_lady_of_the_pillar",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 17,
    "type": "F",
    "title": "Mare de Déu del Pilar",
    "group": "cel|Mare de Déu del Pilar"
@@ -38865,7 +38865,7 @@
    "date": "2021-10-15",
    "litcalId": "teresa_of_jesus_of_avila_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
    "group": "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
@@ -38892,7 +38892,7 @@
    "date": "2021-10-18",
    "litcalId": "luke_evangelist",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Sant Lluc, evangelista",
    "group": "cel|Sant Lluc, evangelista"
@@ -38982,7 +38982,7 @@
    "date": "2021-10-28",
    "litcalId": "simon_and_jude_apostles",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sants Simó i Judes, apòstols",
    "group": "cel|Sants Simó i Judes, apòstols"
@@ -39090,7 +39090,7 @@
    "date": "2021-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -39279,7 +39279,7 @@
    "date": "2021-11-30",
    "litcalId": "andrew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 16,
    "type": "F",
    "title": "Sant Andreu, apòstol",
    "group": "cel|Sant Andreu, apòstol"
@@ -39783,7 +39783,7 @@
    "date": "2022-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -39963,7 +39963,7 @@
    "date": "2022-02-14",
    "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
    "litcalIsFerial": false,
-   "minorityCells": 9,
+   "minorityCells": 8,
    "type": "F",
    "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
    "group": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
@@ -40917,7 +40917,7 @@
    "date": "2022-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 23,
+   "minorityCells": 22,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -40998,7 +40998,7 @@
    "date": "2022-06-09",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -41286,7 +41286,7 @@
    "date": "2022-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -41385,7 +41385,7 @@
    "date": "2022-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -41394,7 +41394,7 @@
    "date": "2022-07-23",
    "litcalId": "bridget_of_sweden_religious",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Santa Brígida, religiosa, patrona d’Europa",
    "group": "cel|Santa Brígida, religiosa, patrona d’Europa"
@@ -41520,7 +41520,7 @@
    "date": "2022-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -41547,7 +41547,7 @@
    "date": "2022-08-09",
    "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 18,
    "type": "F",
    "title": "Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
    "group": "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa"
@@ -41556,7 +41556,7 @@
    "date": "2022-08-10",
    "litcalId": "lawrence_of_rome_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sant Llorenç, diaca i màrtir",
    "group": "cel|Sant Llorenç, diaca i màrtir"
@@ -41682,7 +41682,7 @@
    "date": "2022-08-24",
    "litcalId": "bartholomew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Sant Bartomeu, apòstol",
    "group": "cel|Sant Bartomeu, apòstol"
@@ -41817,7 +41817,7 @@
    "date": "2022-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -41934,7 +41934,7 @@
    "date": "2022-09-21",
    "litcalId": "matthew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sant Mateu, apòstol i evangelista",
    "group": "cel|Sant Mateu, apòstol i evangelista"
@@ -42006,7 +42006,7 @@
    "date": "2022-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -42123,7 +42123,7 @@
    "date": "2022-10-12",
    "litcalId": "our_lady_of_the_pillar",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 17,
    "type": "F",
    "title": "Mare de Déu del Pilar",
    "group": "cel|Mare de Déu del Pilar"
@@ -42150,7 +42150,7 @@
    "date": "2022-10-15",
    "litcalId": "teresa_of_jesus_of_avila_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
    "group": "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
@@ -42177,7 +42177,7 @@
    "date": "2022-10-18",
    "litcalId": "luke_evangelist",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Sant Lluc, evangelista",
    "group": "cel|Sant Lluc, evangelista"
@@ -42267,7 +42267,7 @@
    "date": "2022-10-28",
    "litcalId": "simon_and_jude_apostles",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sants Simó i Judes, apòstols",
    "group": "cel|Sants Simó i Judes, apòstols"
@@ -42375,7 +42375,7 @@
    "date": "2022-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -42564,7 +42564,7 @@
    "date": "2022-11-30",
    "litcalId": "andrew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 16,
    "type": "F",
    "title": "Sant Andreu, apòstol",
    "group": "cel|Sant Andreu, apòstol"
@@ -43068,7 +43068,7 @@
    "date": "2023-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -43248,7 +43248,7 @@
    "date": "2023-02-14",
    "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
    "litcalIsFerial": false,
-   "minorityCells": 9,
+   "minorityCells": 8,
    "type": "F",
    "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
    "group": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
@@ -44211,7 +44211,7 @@
    "date": "2023-06-01",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -44571,7 +44571,7 @@
    "date": "2023-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -44670,7 +44670,7 @@
    "date": "2023-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -44805,7 +44805,7 @@
    "date": "2023-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -44841,7 +44841,7 @@
    "date": "2023-08-10",
    "litcalId": "lawrence_of_rome_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sant Llorenç, diaca i màrtir",
    "group": "cel|Sant Llorenç, diaca i màrtir"
@@ -44967,7 +44967,7 @@
    "date": "2023-08-24",
    "litcalId": "bartholomew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Sant Bartomeu, apòstol",
    "group": "cel|Sant Bartomeu, apòstol"
@@ -45102,7 +45102,7 @@
    "date": "2023-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -45219,7 +45219,7 @@
    "date": "2023-09-21",
    "litcalId": "matthew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sant Mateu, apòstol i evangelista",
    "group": "cel|Sant Mateu, apòstol i evangelista"
@@ -45291,7 +45291,7 @@
    "date": "2023-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -45408,7 +45408,7 @@
    "date": "2023-10-12",
    "litcalId": "our_lady_of_the_pillar",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 17,
    "type": "F",
    "title": "Mare de Déu del Pilar",
    "group": "cel|Mare de Déu del Pilar"
@@ -45462,7 +45462,7 @@
    "date": "2023-10-18",
    "litcalId": "luke_evangelist",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Sant Lluc, evangelista",
    "group": "cel|Sant Lluc, evangelista"
@@ -45660,7 +45660,7 @@
    "date": "2023-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -45849,7 +45849,7 @@
    "date": "2023-11-30",
    "litcalId": "andrew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 16,
    "type": "F",
    "title": "Sant Andreu, apòstol",
    "group": "cel|Sant Andreu, apòstol"
@@ -46353,7 +46353,7 @@
    "date": "2024-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 16,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -47424,7 +47424,7 @@
    "date": "2024-05-23",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -47793,7 +47793,7 @@
    "date": "2024-07-03",
    "litcalId": "thomas_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sant Tomàs, apòstol",
    "group": "cel|Sant Tomàs, apòstol"
@@ -47865,7 +47865,7 @@
    "date": "2024-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -47964,7 +47964,7 @@
    "date": "2024-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -48099,7 +48099,7 @@
    "date": "2024-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -48135,7 +48135,7 @@
    "date": "2024-08-10",
    "litcalId": "lawrence_of_rome_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Llorenç, diaca i màrtir",
    "group": "cel|Sant Llorenç, diaca i màrtir"
@@ -48261,7 +48261,7 @@
    "date": "2024-08-24",
    "litcalId": "bartholomew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Sant Bartomeu, apòstol",
    "group": "cel|Sant Bartomeu, apòstol"
@@ -49647,7 +49647,7 @@
    "date": "2025-01-25",
    "litcalId": "conversion_of_saint_paul_the_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 15,
+   "minorityCells": 14,
    "type": "F",
    "title": "Conversió de sant Pau, apòstol",
    "group": "cel|Conversió de sant Pau, apòstol"
@@ -49719,7 +49719,7 @@
    "date": "2025-02-02",
    "litcalId": "presentation_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Presentació del Senyor",
    "group": "cel|Presentació del Senyor"
@@ -49827,7 +49827,7 @@
    "date": "2025-02-14",
    "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
    "litcalIsFerial": false,
-   "minorityCells": 9,
+   "minorityCells": 8,
    "type": "F",
    "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
    "group": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
@@ -50781,7 +50781,7 @@
    "date": "2025-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 15,
+   "minorityCells": 14,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -50889,7 +50889,7 @@
    "date": "2025-06-12",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -51078,7 +51078,7 @@
    "date": "2025-07-03",
    "litcalId": "thomas_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sant Tomàs, apòstol",
    "group": "cel|Sant Tomàs, apòstol"
@@ -51150,7 +51150,7 @@
    "date": "2025-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -51249,7 +51249,7 @@
    "date": "2025-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -51258,7 +51258,7 @@
    "date": "2025-07-23",
    "litcalId": "bridget_of_sweden_religious",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Santa Brígida, religiosa, patrona d’Europa",
    "group": "cel|Santa Brígida, religiosa, patrona d’Europa"
@@ -51384,7 +51384,7 @@
    "date": "2025-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -51411,7 +51411,7 @@
    "date": "2025-08-09",
    "litcalId": "teresa_benedicta_of_the_cross_stein_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 18,
    "type": "F",
    "title": "Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
    "group": "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa"
@@ -51681,7 +51681,7 @@
    "date": "2025-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -51870,7 +51870,7 @@
    "date": "2025-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -52014,7 +52014,7 @@
    "date": "2025-10-15",
    "litcalId": "teresa_of_jesus_of_avila_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
    "group": "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
@@ -52041,7 +52041,7 @@
    "date": "2025-10-18",
    "litcalId": "luke_evangelist",
    "litcalIsFerial": false,
-   "minorityCells": 30,
+   "minorityCells": 29,
    "type": "F",
    "title": "Sant Lluc, evangelista",
    "group": "cel|Sant Lluc, evangelista"
@@ -52131,7 +52131,7 @@
    "date": "2025-10-28",
    "litcalId": "simon_and_jude_apostles",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sants Simó i Judes, apòstols",
    "group": "cel|Sants Simó i Judes, apòstols"
@@ -52239,7 +52239,7 @@
    "date": "2025-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -53112,7 +53112,7 @@
    "date": "2026-02-14",
    "litcalId": "cyril_constantine_the_philosopher_monk_and_methodius_michael_of_thessaloniki_bishop",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
    "group": "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
@@ -54039,7 +54039,7 @@
    "date": "2026-05-28",
    "litcalId": "our_lord_jesus_christ_the_eternal_high_priest",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Jesucrist, gran sacerdot per sempre",
    "group": "cel|Jesucrist, gran sacerdot per sempre"
@@ -54363,7 +54363,7 @@
    "date": "2026-07-03",
    "litcalId": "thomas_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sant Tomàs, apòstol",
    "group": "cel|Sant Tomàs, apòstol"
@@ -54435,7 +54435,7 @@
    "date": "2026-07-11",
    "litcalId": "benedict_of_nursia_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Sant Benet, abat, patró d’Europa",
    "group": "cel|Sant Benet, abat, patró d’Europa"
@@ -54534,7 +54534,7 @@
    "date": "2026-07-22",
    "litcalId": "mary_magdalene",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Santa Maria Magdalena",
    "group": "cel|Santa Maria Magdalena"
@@ -54543,7 +54543,7 @@
    "date": "2026-07-23",
    "litcalId": "bridget_of_sweden_religious",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Santa Brígida, religiosa, patrona d’Europa",
    "group": "cel|Santa Brígida, religiosa, patrona d’Europa"
@@ -54669,7 +54669,7 @@
    "date": "2026-08-06",
    "litcalId": "transfiguration_of_the_lord",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Transfiguració del Senyor",
    "group": "cel|Transfiguració del Senyor"
@@ -54966,7 +54966,7 @@
    "date": "2026-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -55083,7 +55083,7 @@
    "date": "2026-09-21",
    "litcalId": "matthew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Sant Mateu, apòstol i evangelista",
    "group": "cel|Sant Mateu, apòstol i evangelista"
@@ -55155,7 +55155,7 @@
    "date": "2026-09-29",
    "litcalId": "michael_gabriel_and_raphael_archangels",
    "litcalIsFerial": false,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "F",
    "title": "Sants arcàngels Miquel, Gabriel i Rafael",
    "group": "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -55272,7 +55272,7 @@
    "date": "2026-10-12",
    "litcalId": "our_lady_of_the_pillar",
    "litcalIsFerial": false,
-   "minorityCells": 18,
+   "minorityCells": 17,
    "type": "F",
    "title": "Mare de Déu del Pilar",
    "group": "cel|Mare de Déu del Pilar"
@@ -55299,7 +55299,7 @@
    "date": "2026-10-15",
    "litcalId": "teresa_of_jesus_of_avila_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Santa Teresa de Jesús, verge i doctora de l’Església",
    "group": "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
@@ -55416,7 +55416,7 @@
    "date": "2026-10-28",
    "litcalId": "simon_and_jude_apostles",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "F",
    "title": "Sants Simó i Judes, apòstols",
    "group": "cel|Sants Simó i Judes, apòstols"
@@ -55524,7 +55524,7 @@
    "date": "2026-11-09",
    "litcalId": "dedication_of_the_lateran_basilica",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 5,
    "type": "F",
    "title": "Dedicació de la Basílica del Laterà",
    "group": "cel|Dedicació de la Basílica del Laterà"
@@ -55713,7 +55713,7 @@
    "date": "2026-11-30",
    "litcalId": "andrew_apostle",
    "litcalIsFerial": false,
-   "minorityCells": 19,
+   "minorityCells": 16,
    "type": "F",
    "title": "Sant Andreu, apòstol",
    "group": "cel|Sant Andreu, apòstol"
@@ -57296,12 +57296,6 @@
   "salmos_antifonas/5460": [
    "cel|Baptisme del Senyor"
   ],
-  "salmos_antifonas/3378": [
-   "cel|Sant Tomàs, apòstol",
-   "cel|Sant Bartomeu, apòstol",
-   "cel|Sant Mateu, apòstol i evangelista",
-   "cel|Sant Lluc, evangelista"
-  ],
   "salmos_antifonas/9296": [
    "cel|Sant Ireneu, bisbe, màrtir i doctor de l'Església"
   ],
@@ -57324,11 +57318,6 @@
    "ferial|advent_3_wednesday",
    "cel|Sant Joan de la Creu, prevere i doctor de l’Església"
   ],
-  "salmos_antifonas/3513": [
-   "cel|Sant Tomàs, apòstol",
-   "cel|Sant Bartomeu, apòstol",
-   "cel|Sant Mateu, apòstol i evangelista"
-  ],
   "salmos_antifonas/9344": [
    "cel|Sant Joan de la Creu, prevere i doctor de l’Església"
   ],
@@ -57347,11 +57336,6 @@
   "salmos_antifonas/211": [
    "ferial|advent_3_thursday"
   ],
-  "salmos_antifonas/3408": [
-   "cel|Jesucrist, gran sacerdot per sempre",
-   "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
-   "cel|Sant Tomàs, apòstol"
-  ],
   "salmos_antifonas/8333": [
    "ferial|christmas_time_january_5",
    "ferial|christmas_time_january_4",
@@ -57368,10 +57352,7 @@
    "cel|Santíssim Nom de Jesús"
   ],
   "salmos_antifonas/3419": [
-   "cel|Sants Simó i Judes, apòstols",
-   "cel|Sant Tomàs, apòstol",
-   "cel|Sants arcàngels Miquel, Gabriel i Rafael",
-   "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa"
+   "cel|Sants Simó i Judes, apòstols"
   ],
   "salmos_antifonas/9362": [
    "cel|Sants Andreu Dũng-Lac, prevere, i companys, màrtirs",
@@ -57399,49 +57380,14 @@
   "salmos_antifonas/8190": [
    "ferial|second_sunday_after_christmas"
   ],
-  "salmos_antifonas/3519": [
-   "cel|Transfiguració del Senyor"
-  ],
   "salmos_antifonas/3361": [
-   "cel|Transfiguració del Senyor",
-   "cel|Sants Simó i Judes, apòstols",
-   "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
-   "cel|Sants arcàngels Miquel, Gabriel i Rafael"
-  ],
-  "salmos_antifonas/3505": [
-   "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
-   "cel|Sant Benet, abat, patró d’Europa",
-   "cel|Transfiguració del Senyor",
-   "cel|Sants arcàngels Miquel, Gabriel i Rafael",
    "cel|Sants Simó i Judes, apòstols"
   ],
   "salmos_antifonas/3388": [
-   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "cel|Sant Benet, abat, patró d’Europa",
-   "cel|Sants Simó i Judes, apòstols",
-   "cel|Sants arcàngels Miquel, Gabriel i Rafael",
-   "cel|Transfiguració del Senyor"
+   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa"
   ],
   "salmos_antifonas/3381": [
-   "cel|Naixement de la Benaurada Verge Maria",
-   "cel|Sant Llorenç, diaca i màrtir",
-   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "cel|Sant Andreu, apòstol",
-   "cel|Sants Simó i Judes, apòstols",
-   "cel|Conversió de sant Pau, apòstol",
-   "cel|Transfiguració del Senyor",
-   "cel|Sant Benet, abat, patró d’Europa"
-  ],
-  "salmos_antifonas/3412": [
-   "cel|Naixement de la Benaurada Verge Maria",
-   "cel|Sant Llorenç, diaca i màrtir",
-   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "cel|Conversió de sant Pau, apòstol"
-  ],
-  "salmos_antifonas/3522": [
-   "cel|Conversió de sant Pau, apòstol",
-   "cel|Naixement de la Benaurada Verge Maria",
-   "cel|Sant Llorenç, diaca i màrtir"
+   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa"
   ],
   "salmos_antifonas/9254": [
    "cel|Conversió de sant Pau, apòstol",
@@ -57469,17 +57415,6 @@
    "cel|Sants Carles Luanga i companys, màrtirs",
    "cel|Cor Immaculat de la Benaurada Verge Maria"
   ],
-  "salmos_antifonas/3443": [
-   "cel|Mare de Déu del Pilar",
-   "cel|Dedicació de la Basílica del Laterà",
-   "cel|Conversió de sant Pau, apòstol",
-   "cel|Jesucrist, gran sacerdot per sempre",
-   "cel|Naixement de la Benaurada Verge Maria"
-  ],
-  "salmos_antifonas/3788": [
-   "cel|Conversió de sant Pau, apòstol",
-   "cel|Jesucrist, gran sacerdot per sempre"
-  ],
   "salmos_antifonas/9551": [
    "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
   ],
@@ -57488,10 +57423,6 @@
   ],
   "salmos_antifonas/9553": [
    "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
-  ],
-  "salmos_antifonas/3385": [
-   "cel|Mare de Déu del Pilar",
-   "cel|Dedicació de la Basílica del Laterà"
   ],
   "salmos_antifonas/8186": [
    "cel|Naixement de sant Joan Baptista"
@@ -57503,8 +57434,6 @@
    "cel|Naixement de sant Joan Baptista"
   ],
   "salmos_antifonas/3689": [
-   "cel|Naixement de sant Joan Baptista",
-   "cel|Santa Maria Magdalena",
    "cel|Mare de Déu del Pilar",
    "cel|Dedicació de la Basílica del Laterà"
   ],
@@ -57532,10 +57461,6 @@
    "ferial|ordinary_time_32_monday",
    "cel|Sant Lleó el Gran, papa i doctor de l’Església"
   ],
-  "salmos_antifonas/3351": [
-   "cel|Presentació del Senyor",
-   "cel|Dedicació de la Basílica del Laterà"
-  ],
   "salmos_antifonas/8285": [
    "ferial|easter_time_4_monday",
    "cel|Sant Adalbert, bisbe i màrtir"
@@ -57544,41 +57469,15 @@
    "ferial|easter_time_4_monday",
    "cel|Sant Adalbert, bisbe i màrtir"
   ],
-  "salmos_antifonas/3424": [
-   "cel|Santa Brígida, religiosa, patrona d’Europa",
-   "cel|Santa Maria Magdalena",
-   "cel|Santa Teresa de Jesús, verge i doctora de l’Església",
-   "cel|Mare de Déu del Pilar",
-   "cel|Dedicació de la Basílica del Laterà"
-  ],
   "salmos_antifonas/3364": [
    "cel|Santa Brígida, religiosa, patrona d’Europa",
-   "cel|Santa Maria Magdalena",
-   "cel|Santa Teresa de Jesús, verge i doctora de l’Església",
-   "cel|Mare de Déu del Pilar",
-   "cel|Dedicació de la Basílica del Laterà"
+   "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
   ],
   "salmos_antifonas/247": [
    "cel|Commemoració de tots els fidels difunts"
   ],
   "salmos_antifonas/3454": [
-   "cel|Sant Lluc, evangelista",
-   "cel|Santa Maria Magdalena",
-   "cel|Santa Brígida, religiosa, patrona d’Europa",
-   "cel|Mare de Déu del Pilar",
-   "cel|Visitació de la Benaurada Verge Maria",
-   "cel|Dedicació de la Basílica del Laterà",
-   "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
-  ],
-  "salmos_antifonas/3416": [
-   "cel|Sant Bartomeu, apòstol",
-   "cel|Sant Mateu, apòstol i evangelista",
-   "cel|Sant Lluc, evangelista",
-   "cel|Visitació de la Benaurada Verge Maria",
-   "cel|Santa Brígida, religiosa, patrona d’Europa",
-   "cel|Santa Maria Magdalena",
-   "cel|Santa Teresa de Jesús, verge i doctora de l’Església",
-   "cel|Jesucrist, gran sacerdot per sempre"
+   "cel|Visitació de la Benaurada Verge Maria"
   ],
   "salmos_antifonas/8444": [
    "ferial|advent_december_24"
@@ -57590,12 +57489,7 @@
    "ferial|advent_december_24"
   ],
   "salmos_antifonas/3391": [
-   "cel|Sant Bartomeu, apòstol",
-   "cel|Sant Mateu, apòstol i evangelista",
    "cel|Sant Lluc, evangelista",
-   "cel|Santa Brígida, religiosa, patrona d’Europa",
-   "cel|Santa Maria Magdalena",
-   "cel|Santa Teresa de Jesús, verge i doctora de l’Església",
    "cel|Visitació de la Benaurada Verge Maria"
   ],
   "salmos_antifonas/9350": [
@@ -57620,12 +57514,7 @@
    "ferial|advent_december_24"
   ],
   "salmos_antifonas/3447": [
-   "cel|Sants Pere i Pau, apòstols",
-   "cel|Sant Bartomeu, apòstol",
-   "cel|Sant Mateu, apòstol i evangelista",
-   "cel|Sant Lluc, evangelista",
-   "cel|Santa Brígida, religiosa, patrona d’Europa",
-   "cel|Santa Teresa de Jesús, verge i doctora de l’Església"
+   "cel|Sant Mateu, apòstol i evangelista"
   ],
   "salmos_antifonas/9332": [
    "cel|Sants Joaquim i Anna, pares de la Benaurada Verge Maria",
@@ -57655,10 +57544,7 @@
   ],
   "salmos_antifonas/3434": [
    "cel|Sant Tomàs, apòstol",
-   "cel|Sant Bartomeu, apòstol",
-   "cel|Sant Mateu, apòstol i evangelista",
-   "cel|Sant Lluc, evangelista",
-   "cel|Visitació de la Benaurada Verge Maria"
+   "cel|Sant Bartomeu, apòstol"
   ],
   "salmos_antifonas/9341": [
    "cel|Sant Ireneu, bisbe, màrtir i doctor de l'Església"
@@ -57670,11 +57556,6 @@
    "cel|Sant Maximilià Maria Kolbe, prevere i màrtir",
    "cel|Sant Ireneu, bisbe, màrtir i doctor de l'Església"
   ],
-  "salmos_antifonas/3484": [
-   "cel|Sants arcàngels Miquel, Gabriel i Rafael",
-   "cel|Sants Ciril, monjo, i Metodi, bisbe, patrons d’Europa",
-   "cel|Sant Tomàs, apòstol"
-  ],
   "salmos_antifonas/9515": [
    "cel|Sant Ambròs, bisbe i doctor de l’Església"
   ],
@@ -57682,15 +57563,7 @@
    "cel|Sant Ambròs, bisbe i doctor de l’Església"
   ],
   "salmos_antifonas/3476": [
-   "cel|Sant Llorenç, diaca i màrtir",
-   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "cel|Commemoració de tots els fidels difunts",
-   "cel|Sant Andreu, apòstol",
-   "cel|Sants Simó i Judes, apòstols",
-   "cel|Jesucrist, gran sacerdot per sempre",
-   "cel|Sant Benet, abat, patró d’Europa",
-   "cel|Transfiguració del Senyor",
-   "cel|Sants arcàngels Miquel, Gabriel i Rafael"
+   "cel|Commemoració de tots els fidels difunts"
   ],
   "salmos_antifonas/8153": [
    "ferial|saturday_after_epiphany"
@@ -57703,20 +57576,10 @@
   ],
   "salmos_antifonas/3457": [
    "cel|Commemoració de tots els fidels difunts",
-   "cel|Naixement de la Benaurada Verge Maria",
-   "cel|Sant Llorenç, diaca i màrtir",
-   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "cel|Sant Andreu, apòstol",
-   "cel|Conversió de sant Pau, apòstol",
-   "cel|Sant Benet, abat, patró d’Europa",
-   "cel|Transfiguració del Senyor"
+   "cel|Sant Andreu, apòstol"
   ],
   "salmos_antifonas/3427": [
-   "cel|Sant Llorenç, diaca i màrtir",
-   "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
-   "cel|Conversió de sant Pau, apòstol",
-   "cel|Sant Benet, abat, patró d’Europa",
-   "cel|Naixement de la Benaurada Verge Maria"
+   "cel|Sant Llorenç, diaca i màrtir"
   ],
   "salmos_antifonas/9335": [
    "cel|Naixement de sant Joan Baptista",
@@ -57930,8 +57793,7 @@
    "cel|Sants Felip i Jaume, apòstols",
    "cel|Sant Maties, apòstol",
    "cel|Sant Isidor, bisbe i doctor de l’Església",
-   "cel|Santa Caterina de Siena, verge i doctora de l’Església, patrona d’Europa",
-   "cel|Visitació de la Benaurada Verge Maria"
+   "cel|Santa Caterina de Siena, verge i doctora de l’Església, patrona d’Europa"
   ],
   "salmos_antifonas/9521": [
    "ferial|easter_time_2_saturday",
@@ -58055,14 +57917,7 @@
    "ferial|advent_4_sunday"
   ],
   "salmos_antifonas/3600": [
-   "cel|Immaculada Concepció de la Benaurada Verge Maria",
-   "cel|Sant Andreu, apòstol"
-  ],
-  "salmos_antifonas/3618": [
-   "cel|Sant Andreu, apòstol"
-  ],
-  "salmos_antifonas/3725": [
-   "cel|Sant Andreu, apòstol"
+   "cel|Immaculada Concepció de la Benaurada Verge Maria"
   ],
   "salmos_antifonas/1194": [
    "ferial|advent_3_sunday"

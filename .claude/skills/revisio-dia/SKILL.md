@@ -1,13 +1,21 @@
 ---
 name: revisio-dia
-description: Revisa dia a dia i camp a camp tot el que resa cpl-app —les set hores de l'ofici i les lectures de la missa— contra saints-app (eprex), diu de qui és la culpa de cada divergència amb proves, i deixa un prompt llest per aplicar cada correcció. Fes-la servir quan es demani revisar dies, comparar les dues apps, investigar per què un dia no surt bé, o buscar bugs litúrgics. Exemples "revisa del 20 al 24 d'agost", "què passa el 2026-08-24", "compara les dues apps aquesta setmana".
+description: Analitza un dia concret camp a camp —les set hores de l'ofici i les lectures de la missa— de cpl-app contra saints-app (eprex) i respon al terminal per què aquell dia no és al 100%, de qui és la culpa de cada forat amb proves, quines accions concretes i quines decisions calen per arribar-hi. És el punt de partida per treballar un dia fins al 100%, no un informe. Sense data, el dia d'avui. Fes-la servir quan es demani avaluar o revisar un dia, comparar les dues apps, investigar per què un dia no surt bé, o buscar bugs litúrgics. Exemples "avalua el dia d'avui", "què passa el 2026-08-24", "per què el 8 de setembre no és al 100%".
 ---
 
-# Revisió dia a dia: cpl-app ↔ saints-app
+# Revisió d'un dia: què el separa del 100%
 
-Compara, per a cada dia i cada camp, què resa cpl-app i què resarà saints-app; classifica
-cada diferència en un dels cinc veredictes; i deixa la feina preparada perquè algú altre
-l'apliqui.
+Compara, camp a camp, què resa cpl-app i què resarà saints-app aquell dia; classifica cada
+forat en un dels cinc veredictes; i respon **al terminal** amb una anàlisi per començar a
+treballar: per què no és al 100%, de qui és la culpa, què cal fer i què cal decidir.
+
+**El resultat és la resposta al fil, no un document.** Res d'artefactes, ni de publicar
+`review.html`, ni de fitxers d'informe: en Pau hi seguirà treballant en aquest mateix fil, i
+el que necessita és saber per on començar.
+
+**Quin dia**: el que es demani; si no se'n diu cap, o es diu «avui», el d'avui (`date +%F`).
+Si es demanen diversos dies, la mateixa anàlisi per a cadascun, i al final només el que tinguin
+en comú (una acció que arregla tres dies val més que tres accions).
 
 **Què cobreix**: l'Ofici de lectura, Laudes, Tèrcia, Sexta, Nona, Vespres, l'Invitatori i les
 lectures de la missa — entre 130 i 145 camps per dia. Les Completes no hi entren: no passen per
@@ -19,18 +27,20 @@ llegeixen tant el comparador com `build-rows.js`, **derivades, no copiades**: un
 entra sola. Ho van ser fins al 8 de setembre de 2026, i mentrestant l'Ofici es revisava amb el
 vocabulari de Laudes —11 dels seus 25 camps— i la missa no es revisava gens.
 
-**Aquesta skill no escriu res fora del seu `run/`.** No toca `cpl-app.db`, no fa commits, no
-aplica correccions. El que produeix és un informe i, per a cada correcció, un prompt per
-enganxar en un fil nou. Aquesta és una decisió explícita: investigar i corregir són dues
-feines amb riscos diferents.
+**Aquesta skill no corregeix res.** No toca `cpl-app.db`, no fa commits, no aplica
+correccions: acaba amb l'anàlisi i s'espera. Aplicar-les ve després, quan en Pau triï per on
+començar. Investigar i corregir són dues feines amb riscos diferents. L'única escriptura és
+`run/` i, quan una investigació tanca un forat, la troballa nova a `review/findings.js` (amb
+el seu `CLAIMS`), perquè la passada següent ja la conegui i no la torni a marcar com a
+«sense investigar».
 
 ## Els cinc veredictes
 
 | | | què se'n fa |
 |---|---|---|
-| **1** | error de cpl-app | prompt: fix + test + dossier `CPL-LIT-NNN` |
-| **2** | error de saints-app / eprex | prompt: proposta amb els ids concrets (repo aliè) |
-| **3** | error de les nostres eines | prompt: fix + tornar a córrer el join |
+| **1** | error de cpl-app | acció: fix + test + dossier `CPL-LIT-NNN` |
+| **2** | error de saints-app / eprex | acció: proposta amb els ids concrets (repo aliè) |
+| **3** | error de les nostres eines | acció: fix + tornar a córrer el join |
 | **4** | no és error | només s'informa |
 | **5** | no ho sé | només s'informa, amb el que falta per decidir |
 
@@ -42,8 +52,14 @@ una celebració germana, això és prova sense sortir de les dades.
 ## Com córrer-la
 
 ```sh
-make review DATES=2026-08-20,2026-08-21,2026-08-22,2026-08-23,2026-08-24
+make review DATES=2026-09-08
 ```
+
+L'última passa és `day-gap.js`, que escriu en text pla **tot el que no és al 100%** del dia:
+cada camp divergent amb la troballa que l'explica o `SENSE INVESTIGAR`, les caselles
+retingudes agrupades pel conflicte que les reté (amb quants dies trencaria cada tria), les que
+no tenen font, i les troballes del dia. És la matèria primera de la resposta, no la resposta:
+no l'enganxis tal qual.
 
 O pas a pas, si cal depurar:
 
@@ -58,11 +74,12 @@ node migration-to-saints/review/build-rows.js
 # 3. d'on es pot treure el que sembla no tenir font
 node migration-to-saints/review/commons-proposal.js
 
-# 4. l'informe + els prompts
-node migration-to-saints/review/build-report.js
+# 4. la distància al 100%, en text
+node migration-to-saints/review/day-gap.js 2026-09-08
 ```
 
-Després, publica `run/review.html` com a artifact i dona l'enllaç.
+`build-report.js` (`make review-html`) encara fa la pàgina per a escombrar molts dies d'un cop,
+però aquesta skill no la fa servir ni la publica.
 
 ## Els tres canals de comparació
 
@@ -88,11 +105,43 @@ mateixa segons l'any, aquelles dates són on hi ha el bug. El CPL-LIT-002 eren 2
 El denominador del progrés **no és el total de caselles**: és `fetes + retingudes + per collir`.
 Poca cobertura vol dir «encara no fet», no «trencat» — no s'ha de pintar de vermell.
 
-## Forma de l'informe
+## Com es treballa el dia
 
-Dia primer. Una línia de resum a dalt i prou; després els cinc dies, i res més pel mig. Cada
-troballa viu **dins del dia** on es veu, amb les proves plegades darrere d'un `<details>`.
-Els prompts van al final, perquè són el que es fa després de llegir, no mentre es llegeix.
+1. Corre el pipeline i llegeix `day-gap.js`.
+2. **Tota línia `SENSE INVESTIGAR` s'investiga abans de respondre**, amb C3 i perseguint la
+   minoria fora del dia. Cada investigació acaba en un veredicte (i, si és 1-3, en una troballa
+   a `findings.js`). Si n'hi ha massa per a una sola passada, digues quantes en queden i
+   quines, no les amaguis dins d'una xifra.
+3. Les **retingudes** no són divergències però sí forat de progrés: per a cada grup, digues
+   quina tria l'allibera i què trencaria (`triar la majoritària trenca N de M dies`). Si la
+   tria no és tècnica, és una decisió d'en Pau.
+4. Torna a córrer `day-gap.js` si has afegit troballes, perquè les xifres de la resposta
+   siguin les de després d'investigar.
+
+## Forma de la resposta
+
+Al terminal, en català, i **per causes, no per camps**: onze antífones que falten per un sol
+override d'eprex són una causa, no onze línies. Sense taules de camps ni textos llargs; la
+prova, en una frase i amb l'enllaç o l'id que la sosté.
+
+1. **On som** — una línia: el dia i la celebració, contingut `X/Y (Z%)`, progrés `A/B (C%)`, i
+   la distància al 100% en caselles.
+2. **Per què no és al 100%** — una entrada per causa: quantes caselles, **el culpable**
+   (veredicte 1-5), la prova en una frase, i l'estat (obert, corregit i pendent de
+   reexportar, proposat i pendent d'enviar…).
+3. **Accions per arribar-hi** — llista **ordenada per caselles que allibera respecte de
+   l'esforç**. Cadascuna concreta: què es fa, on (fitxer, taula, repo), qui ho ha de fer
+   (nosaltres; cpl-app → `CPL-LIT-NNN`; eprex → proposta), quantes caselles mou i de què
+   depèn. Una acció que depèn d'una decisió ho diu.
+4. **Decisions que et toquen** — cada una com a pregunta tancada, amb les opcions, la teva
+   recomanació i què desbloqueja. Si ja té número (`D-00N` al registre), cita'l.
+5. **El 100% real** — el que no s'hi arribarà mai i per què (veredicte 4, conflictes
+   estructurals com els tres cicles de diumenge, D-001), perquè el sostre del dia quedi dit i
+   no es persegueixi.
+6. **Per on començaria** — una sola recomanació, i atura't aquí.
+
+Els prompts de `fix-prompts.js` no s'enganxen a la resposta. Si en Pau vol portar una acció a
+un fil nou, `node migration-to-saints/review/fix-prompts.js` els genera.
 
 ## Paranys
 
@@ -122,8 +171,9 @@ Els prompts van al final, perquè són el que es fa després de llegir, no mentr
 | `review/build-rows.js` | cada camp, ca + es, amb conflicte i causa |
 | `review/commons-proposal.js` | `OficisComuns` → caselles sense font |
 | `review/findings.js` | les troballes, com a dades, lligades al seu dia |
-| `review/fix-prompts.js` | una troballa → un prompt per enganxar |
-| `review/build-report.js` | l'informe |
+| `review/day-gap.js` | la distància al 100% d'un dia, en text: la base de la resposta |
+| `review/fix-prompts.js` | una troballa → un prompt per enganxar (només si es demana) |
+| `review/build-report.js` | la pàgina de molts dies (`make review-html`); aquí no s'usa |
 | `day-check.js` · `day-compare.js` | les eines que ja hi havia; no les dupliquis |
 | `cpl-bugs/CPL-LIT-*.md` | el model de dossier a seguir |
 

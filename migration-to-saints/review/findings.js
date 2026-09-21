@@ -746,6 +746,249 @@ const FINDINGS = [
       promptable: true,
     },
   },
+  {
+    id: 'F17',
+    verdict: 3,
+    days: ['2026-09-08'],
+    headline: 'La revisió comparava les citacions de salm en cru — 5 divergències inventades',
+    detail:
+      'cpl-app guarda la referència i la línia descriptiva en dues columnes, i les taules pròpies '
+      + 'deixen la línia fora; saints-app té una sola casella i el join hi escriu la grafia més '
+      + 'completa. Cada dia amb salmòdia pròpia llegia, doncs, «Salm 23 / Entrada del Senyor al '
+      + 'santuari» al costat del «Salm 23» pelat, i ho comptava com a divergència.',
+    why:
+      'El canal C2 comparava les citacions per empremta —llibre i capítol— des del primer dia. El '
+      + '<strong>C1</strong>, el que s’aplica quan la casella catalana ja té text, les comparava byte '
+      + 'a byte, tot i que ja calculava <code>fpCa</code> i ja importava <code>splitHeading</code> '
+      + 'sense fer servir mai cap dels dos.',
+    impact:
+      'El 8-IX passa de 18 divergències a <strong>13</strong>. Sobre vuit festes del 2026, de 122 a '
+      + '<strong>79</strong>: un 35 % del que la revisió donava per divergent no ho era.',
+    proof: [
+      ['La decisió que ho origina', 'lib/citation-headings.js — «keep one heading, the fullest one» (Pau, 14-VIII-2026)', null],
+      ['Les 43 caselles excusades', 'Totes tenen la primera línia idèntica als dos costats; cap no ha calgut mirar-la a mà', null],
+    ],
+    fix: {
+      where: 'migration-to-saints/review/build-rows.js',
+      summary:
+        'APLICAT. Al C1, una citació que difereix només en la línia descriptiva és '
+        + '<code>sameRefHeading</code>. S’excusa únicament que la línia falti en un costat: dues '
+        + 'descripcions diferents per a una referència segueixen sent visibles.',
+      note: 'Registre: MIGRA-011.',
+      promptable: false,
+    },
+  },
+  {
+    id: 'F18',
+    verdict: 3,
+    days: ['2026-09-08'],
+    hours: ['Office'],
+    headline: 'L’Ofici resa el salm 23 i el 86 amb un asterisc de menys cadascun',
+    detail:
+      'A <code>salmos_textos/112</code> falta el <code>*</code> de «És el Senyor, valent i poderós,» i '
+      + 'a <code>salmos_textos/367</code> el de «El Senyor va escrivint al registre dels pobles:». '
+      + 'Tota la resta dels dos salms és idèntica a cpl-app.',
+    why:
+      'Cap de les dues caselles no és a l’exportació d’avui: el join les <strong>reté</strong>, perquè '
+      + 'les 52 celebracions que se les reparteixen no s’hi posen d’acord. Hi són perquè una passada '
+      + 'antiga les va publicar, i <code>export-to-saints-app.js</code> és additiu — «never used to '
+      + 'blank the destination»— i no esborra mai el que ja no avala. El text publicat és el de la '
+      + '<strong>Mare de Déu del Toro</strong> (8 de maig, Menorca, <code>santsSolemnitats</code> fila '
+      + '147), la variant minoritària.',
+    impact:
+      '<strong>521 caselles</strong> de saints-app ja no les produeix l’exportació d’avui; de les '
+      + '<strong>349</strong> que el join declara en conflicte, 265 duen la variant majoritària, '
+      + '<strong>68 una de minoritària</strong> i <strong>16 no coincideixen amb cap variant '
+      + 'coneguda</strong> — la mateixa família que els quatre precs de MIGRA-008.',
+    table: {
+      head: ['', 'caselles'],
+      rows: [
+        ['publicades que l’exportació d’avui ja no produeix', '521'],
+        ['…que el join declara ara en conflicte', '349'],
+        ['…amb la variant majoritària (l’atzar va sortir bé)', '265'],
+        ['…amb una variant minoritària', '68'],
+        ['…que no coincideixen amb cap variant coneguda', '16'],
+      ],
+    },
+    proof: [
+      ['Retingudes avui', '112 i 367 són a join-pending-review.json i no a output/commons-ca', null],
+      ['D’on ve el text publicat', 'Idèntic byte a byte al de l’exportació del commit 5668ed5', null],
+      ['L’exportació no esborra', 'export-to-saints-app.js:75 — «if (!(k in dest))»; cap camí d’esborrat', null],
+    ],
+    fix: {
+      where: 'migration-to-saints/export-to-saints-app.js · decisió D-007',
+      summary:
+        'La sortida no és tècnica: esborrar-les vol dir canviar text dolent per «[ERR-001] Element no '
+        + 'trobat». Tres opcions al registre (D-007); la del mig és esborrar les 84 minoritàries i '
+        + 'desconegudes i deixar les 265 majoritàries.',
+      note: 'Passi el que passi, l’exportació hauria de reportar les òrfenes com ja fa amb les del Comú.',
+      promptable: true,
+    },
+  },
+  {
+    id: 'F19',
+    verdict: 1,
+    days: ['2026-09-08'],
+    headline: 'A la Mare de Déu del Toro li falten dos asteriscs a l’Ofici',
+    detail:
+      'La fila 147 de <code>santsSolemnitats</code> (8 de maig, Menorca, Comú de la Mare de Déu en '
+      + 'temps pasqual) és l’única de les 23 que duen aquests salms a l’Ofici a què falta el marcador '
+      + 'de mitja estrofa, i li falta <strong>als dos</strong>.',
+    table: {
+      head: ['columna', 'files amb el salm', 'amb <code>*</code>', 'sense'],
+      rows: [
+        ['salm1Ofici — Salm 23', '23', '22', '<strong>santsSolemnitats#147</strong>'],
+        ['salm3Ofici — Salm 86', '23', '22', '<strong>santsSolemnitats#147</strong>'],
+      ],
+    },
+    why:
+      'És una errata de dades, no una variant d’edició: el <code>*</code> és el marcador de cesura del '
+      + 'vers, i les altres 22 còpies del mateix salm a la mateixa columna el duen. No és una qüestió '
+      + 'de redacció catalana —no toca cap paraula— i per tant no cal el volum imprès per a dir-ho.',
+    impact:
+      'A cpl-app es veu el 8 de maig a Menorca. A saints-app s’ha vist a tot arreu, perquè aquesta '
+      + 'fila és la que va guanyar les caselles compartides (F18).',
+    proof: [
+      ['Recompte intern', '22 de 23 files amb l’asterisc, a les dues columnes, la mateixa fila fora', null],
+      ['La resta del salm quadra', 'Els altres 8 asteriscs i els 2 creuets de la fila 147 hi són', null],
+    ],
+    fix: {
+      where: 'src/Assets/db/cpl-app.db · santsSolemnitats',
+      summary:
+        'Afegir «    *» al final de «És el Senyor, valent i poderós,» de salm1Ofici i de «El Senyor va '
+        + 'escrivint al registre dels pobles:» de salm3Ofici, filtrant per l’estat incorrecte i no per id.',
+      note: 'Va amb db-fixes/CPL-LIT-NNN.sql, test de regressió i dossier, segons el CLAUDE.md.',
+      promptable: true,
+    },
+  },
+  {
+    id: 'F20',
+    verdict: 2,
+    days: ['2026-09-08'],
+    hours: ['Tercia', 'Sexta', 'Nona'],
+    headline: 'Les hores menors de la festa resen les antífones de la fèria',
+    detail:
+      'cpl-app diu una antífona pròpia per hora —«Avui és el Naixement de santa Maria Verge…» a '
+      + 'Tèrcia— i saints-app en diu tres, les del salteri corrent («Qui estima ha complert tota la '
+      + 'Llei»). Nou caselles: tres que difereixen i sis que només són a l’app.',
+    why:
+      'És l’EPREX-005, ja dossieritzat: <code>terciaStore.ts</code> i els seus bessons substitueixen, '
+      + 'en una festa, els nou camps de la salmòdia pels de la fèria — i s’enduen també l’antífona '
+      + 'pròpia que l’índex duu per a aquell dia. El 8-IX <code>all_tercia.json</code> diu '
+      + '<code>primer_salmo_antifona: 4811</code> i <code>-1</code> a les altres dues, que és '
+      + 'exactament el que resa cpl-app. La 4811 no l’obre ningú.',
+    impact: '513 dies de la finestra 2017-2026 fan això, en totes les llengües.',
+    proof: [
+      ['Dossier', 'eprex-bugs/EPREX-005.md — proposat, pendent d’enviar', null],
+      ['L’índex ja hi és', 'all_tercia.json du una sola antífona per a aquest dia, com mana l’OGLH', null],
+    ],
+    fix: {
+      where: 'eprex · terciaStore.ts, sextaStore.ts, nonaStore.ts',
+      summary: 'Override: antífones de la fèria només si la festa du primer_salmo_antifona = -1; si du id, es respecten. '
+        + 'Dades (saints-admin): -1,-1,-1 a les 16 festes que hi tenen desades antífones d’una fèria concreta.',
+      note: 'NO n’hi ha prou de treure les tres línies: 16 de les 37 entrades FEAST/SPECIAL guarden les antífones '
+        + 'd’una fèria congelada i quedarien desaparellades dels salms. OGLH 232: a les festes les antífones són de la '
+        + 'fèria tret que el llibre n’indiqui de pròpies (la Liturgia Horarum sí que en dona per al 8-IX i el 14-IX). '
+        + 'Repo aliè: es proposa, no s’aplica.',
+      promptable: true,
+    },
+  },
+  {
+    id: 'F21',
+    verdict: 4,
+    days: ['2026-09-08'],
+    hours: ['Mass'],
+    headline: 'La primera lectura: el Missal n’ofereix dues i cadascú en tria una',
+    detail:
+      'cpl-app dona <strong>Rm 8,28-30</strong> («Déu estima els qui coneixia d’abans que '
+      + 'existissin») i eprex <strong>Mi 5,1-4a</strong> («Fins que la mare haurà tingut un fill»). '
+      + 'Les dues són al Missal per al Naixement de la Mare de Déu.',
+    why:
+      'No és error de ningú: és una tria d’edició, com la D-001 i la D-003. Es deixa constar perquè '
+      + 'el lector de les dues apps veurà lectures diferents, i perquè no s’ha de tornar a investigar.',
+    proof: [
+      ['Castellà, data exacta', 'apps.idteologia.org dona Mi 5, 1-4 — el mateix que eprex', 'https://apps.idteologia.org/index.php?fecha=2026-09-08&r=misa'],
+      ['Ja anotat', 'Commit f31d6d2: «El Missal ofereix les dues per a aquell dia»', null],
+    ],
+    fix: null,
+  },
+  {
+    id: 'F22',
+    verdict: 2,
+    days: ['2026-09-14'],
+    hours: ['Tercia', 'Sexta', 'Nona'],
+    headline: 'La Santa Creu no és marcada com a festa a les hores menors i resa uns salms fixos',
+    detail:
+      'cpl-app resa a les tres hores la salmòdia del dia corrent (dilluns IV: Salm 118,129-136 · '
+      + 'Salm 81 · Salm 119). saints-app resa el Salm 118,121-128 i el Salm 33 I-II a Tèrcia i Sexta '
+      + '(dissabte III) i el Salm 118,113-120, 78 i 79 a Nona (dijous III), cada any igual. '
+      + 'Onze caselles diferents i vuit de retingudes.',
+    why:
+      '<code>terciaStore.ts</code> i els seus bessons substitueixen els salms pels de la fèria quan '
+      + 'la clau acaba en <code>__FEAST</code>. A <code>all_tercia/sexta/nona.json</code> hi ha 33 festes '
+      + 'amb aquesta clau (Transfiguració, Naixement de la Mare de Déu, els apòstols…), però la Santa Creu '
+      + 'hi és com a <code>exaltation_of_the_holy_cross__ANY</code>. Amb <code>__ANY</code> no se substitueix '
+      + 'res i surten els ids que l’entrada duu desats. Entre les claus <code>__ANY</code> que no són '
+      + 'de temps litúrgic, és l’única festa del calendari general: la resta són solemnitats.',
+    impact:
+      'Els 10 anys de la finestra. Els salms fixos no poden encertar mai els dos dies alhora: Tèrcia i Nona '
+      + 'porten dies del salteri diferents.',
+    proof: [
+      ['Prova interna', '33 festes del mateix índex duen __FEAST; la fèria ordinary_time_24_monday (salmos_citas 3453-3455) és exactament Salm 118,129-136 · 81 · 119, el que resa cpl-app', null],
+      ['cpl-app', 'salteriComuHora id 23 (setmana IV, dilluns) = Salm 118,129-136 · Salm 81 · Salm 119', null],
+      ['Norma', 'OGLH 134: «a l’hora intermèdia de les festes, els salms són del dia corrent»; OGLH 232: salms i antífones de la fèria, tret que el llibre n’indiqui de pròpies', 'https://www.liturgyoffice.org.uk/Resources/Rites/GILH.pdf'],
+      ['Liturgia Horarum (llatí), data exacta', 'Ad Tertiam 14-IX-2026: una antífona pròpia «Salva nos, Christe salvator, per virtutem crucis» · Ps 118,129-136 · Ps 81 · Ps 119 · He 5,7-9 — idèntic a cpl-app', 'https://www.societaslaudis.org/fr/2026-09-14/hebdomada-xxiv-per-annum/in-exaltatione-sanctae-crucis-festum/liturgia-horarum/ad-tertiam/'],
+    ],
+    fix: {
+      where: 'eprex · all_tercia.json, all_sexta.json, all_nona.json',
+      summary: 'Canviar la clau exaltation_of_the_holy_cross__ANY per exaltation_of_the_holy_cross__FEAST a les tres hores.',
+      note: 'Mentre l’EPREX-005 (F20) no es corregeixi, el mateix override s’endurà les antífones pròpies 5690, '
+        + '6064 i 6616, que avui coincideixen. Convé proposar els dos canvis junts. Repo aliè: es proposa, no s’aplica.',
+      promptable: true,
+    },
+  },
+  {
+    id: 'F23',
+    verdict: 1,
+    days: ['2026-09-14', '2025-09-14'],
+    hours: ['Office'],
+    headline: 'La lectura patrística de la Santa Creu diu «atraure» quan la festa cau en diumenge',
+    detail:
+      'La casella oficio_textos/455 és retinguda perquè cpl-app en dona dues versions: 9 anys amb '
+      + '«Quan seré enlairat, atrauré tothom cap a mi» i el 2025-09-14, un diumenge, amb «atraure».',
+    why:
+      'En diumenge cpl-app pren l’ofici de <code>diesespecials</code> (id 10, <code>lectura2</code>) i no '
+      + 'de <code>santsSolemnitats</code>. La fila de diesespecials és l’única de la base amb «atraure»: és '
+      + 'la cita de Jn 12,32, en futur. Les altres còpies del mateix passatge duen l’accent.',
+    proof: [
+      ['Prova interna', 'santsSolemnitats (ids 91 i 141) i la resta de còpies de la base diuen «atrauré»; només diesespecials/10 no', null],
+      ['Volum imprès', 'Per confirmar al volum IV (14 de setembre), segons el parany 7', null],
+    ],
+    fix: {
+      where: 'cpl-app.db · diesespecials id 10, lectura2',
+      summary: '«atraure tothom» → «atrauré tothom», amb db-fixes/CPL-LIT-NNN.sql que filtri pel text.',
+      note: 'Allibera la casella oficio_textos/455 sense trencar cap dia.',
+      promptable: true,
+    },
+  },
+  {
+    id: 'F24',
+    verdict: 4,
+    days: ['2026-09-14'],
+    hours: ['Mass'],
+    headline: 'La primera lectura: Nm 21 o Fl 2, i cadascú en tria una',
+    detail:
+      'cpl-app llegeix <strong>Fl 2,6-11</strong> i eprex <strong>Nm 21,4b-9</strong>, amb el mateix '
+      + 'salm (Sl 77) i el mateix evangeli (Jo 3,13-17).',
+    why:
+      'El Leccionari dona totes dues lectures a la festa. Si no cau en diumenge, se’n llegeix una sola. '
+      + 'La mateixa casella de cita d’eprex ho diu: «Si la fiesta cae en domingo, la Opción 2 se toma como '
+      + 'segunda lectura». Hi ha una rúbrica al lloc de la cita. No és error de ningú, com la F21.',
+    proof: [
+      ['eprex', 'lecturas_referencia/25 (es) = la rúbrica de l’opció 2; lecturas_texto/33 = Nm 21', null],
+    ],
+    fix: null,
+  },
 ];
 
 const VERDICTS = {
@@ -772,6 +1015,21 @@ const CLAIMS = {
   // Nomes l'antifona: la resta de la salmodia d'aquestes Vespres quadra amb el castella.
   F13: (date, row) => row.hour === 'Vespers' && row.key === 'tercer_salmo_antifona'
     && ['9340', '9256'].includes(String(row.id)),
+  // Les dues caselles que un export antic va congelar amb la variant sense asterisc.
+  F18: (date, row) => date === '2026-09-08' && row.hour === 'Office'
+    && ['112', '367'].includes(String(row.id)),
+  // Les tres antifones de les hores menors, a les tres hores: EPREX-005.
+  F20: (date, row) => date === '2026-09-08'
+    && ['Tercia', 'Sexta', 'Nona'].includes(row.hour)
+    && ['3412', '3413', '3414'].includes(String(row.id)),
+  F21: (date, row) => date === '2026-09-08' && row.hour === 'Mass'
+    && String(row.key).startsWith('FIRSTLECTURE'),
+  // Els salms de les hores menors: la clau __ANY que hauria de ser __FEAST.
+  F22: (date, row) => date === '2026-09-14'
+    && ['Tercia', 'Sexta', 'Nona'].includes(row.hour)
+    && /^(primer|segundo|tercer)_salmo_(cita|texto)$/.test(row.key),
+  F24: (date, row) => date === '2026-09-14' && row.hour === 'Mass'
+    && String(row.key).startsWith('FIRSTLECTURE'),
 };
 
 function claimFor(date, row) {
@@ -793,4 +1051,23 @@ function forDates(dates) {
   return FINDINGS.filter((f) => f.days.some((d) => set.has(d)));
 }
 
-module.exports = { FINDINGS, VERDICTS, forDay, forDates, claimFor };
+// A row is divergent when the comparison says so — a Catalan cell that differs, or a
+// citation naming different scripture — or when an investigated finding claims it, which is
+// how the prose divergences (only visible to a reader) get counted.
+//
+// Divergence and explanation are separate on purpose: a divergent row with no finding is the
+// session's to-do list, and must never be silently dropped.
+function isDivergent(date, row) {
+  if (row.match === 'diff' || row.match === 'diffRef') return true;
+  // The app shows a line cpl-app does not pray that day. Not a text disagreement — there is
+  // no cpl-app text to compare — but a difference the reader sees, so it counts. Excused only
+  // where cpl-app was structurally never going to have a value (see build-rows.js).
+  if (isOnlyApp(row)) return true;
+  return claimFor(date, row) !== null;
+}
+
+// An `onlyApp` row has no cpl-app text to put beside the Catalan one, so calling it
+// "divergeix" without saying why reads as a mistake in the data rather than as what it is.
+const isOnlyApp = (row) => row.match === 'onlyApp' && !row.expectedNoSource;
+
+module.exports = { FINDINGS, VERDICTS, forDay, forDates, claimFor, isDivergent, isOnlyApp };

@@ -1,4 +1,4 @@
-<title>Revisió litúrgica 12 d'agost – 16 de setembre de 2026</title>
+<title>Revisió litúrgica 8 de setembre de 2026</title>
 <style>
 :root{
   --bg:#FCFCFB; --sf:#FFFFFF; --sf2:#F5F4F1;
@@ -137,9 +137,9 @@ a:focus-visible,summary:focus-visible{outline:2px solid var(--ac);outline-offset
 
 <div class="w">
 
-<h1>Revisió litúrgica · 12 d'agost – 16 de setembre de 2026</h1>
-<p class="sub">388 camps comparats entre cpl-app i saints-app · <strong>26 divergeixen</strong>, <strong class="openw">26 encara sense investigar</strong> ·
-337 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
+<h1>Revisió litúrgica · 8 de setembre de 2026</h1>
+<p class="sub">125 camps comparats entre cpl-app i saints-app · <strong>13 divergeixen</strong> ·
+110 caselles ja migrades al català i totes coincideixen · 0 caselles per collir del Comú.
 Diòcesi de Barcelona.</p>
 
 <article class="day" id="d2026-09-08">
@@ -148,330 +148,236 @@ Diòcesi de Barcelona.</p>
         <h3>8 de setembre · dimarts</h3>
         <p class="cel">Naixement de la Benaurada Verge Maria</p>
       </div>
-      <div class="sts"><span class="st bad">20 camps divergeixen</span><span class="st open">20 sense investigar</span></div>
+      <div class="sts"><span class="st bad">13 camps divergeixen</span><span class="st note-st">5 troballes</span></div>
     </header>
 
+    <div class="fs"><div class="finding v3" id="F17-2026-09-08">
+    <p class="fh"><a class="fid" href="#F17-2026-09-08">F17</a>
+      <span class="vp v3">les nostres eines</span>
+      
+      <strong>La revisió comparava les citacions de salm en cru — 5 divergències inventades</strong></p>
+    <p class="fd">cpl-app guarda la referència i la línia descriptiva en dues columnes, i les taules pròpies deixen la línia fora; saints-app té una sola casella i el join hi escriu la grafia més completa. Cada dia amb salmòdia pròpia llegia, doncs, «Salm 23 / Entrada del Senyor al santuari» al costat del «Salm 23» pelat, i ho comptava com a divergència.</p>
     
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>El canal C2 comparava les citacions per empremta —llibre i capítol— des del primer dia. El <strong>C1</strong>, el que s’aplica quan la casella catalana ja té text, les comparava byte a byte, tot i que ja calculava <code>fpCa</code> i ja importava <code>splitHeading</code> sense fer servir mai cap dels dos.</p>
+        <p><strong>Conseqüència:</strong> El 8-IX passa de 18 divergències a <strong>13</strong>. Sobre vuit festes del 2026, de 122 a <strong>79</strong>: un 35 % del que la revisió donava per divergent no ho era.</p>
+        <ul class="pl"><li><strong>La decisió que ho origina</strong> — lib/citation-headings.js — «keep one heading, the fullest one» (Pau, 14-VIII-2026)</li><li><strong>Les 43 caselles excusades</strong> — Totes tenen la primera línia idèntica als dos costats; cap no ha calgut mirar-la a mà</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> APLICAT. Al C1, una citació que difereix només en la línia descriptiva és <code>sameRefHeading</code>. S’excusa únicament que la línia falti en un costat: dues descripcions diferents per a una referència segueixen sent visibles. <code>migration-to-saints/review/build-rows.js</code></p>
+        
+        
+        <p class="note">Registre: MIGRA-011.</p>
+        
+      </div>
+    </details>
+  </div><div class="finding v3" id="F18-2026-09-08">
+    <p class="fh"><a class="fid" href="#F18-2026-09-08">F18</a>
+      <span class="vp v3">les nostres eines</span>
+      
+      <strong>L’Ofici resa el salm 23 i el 86 amb un asterisc de menys cadascun</strong></p>
+    <p class="fd">A <code>salmos_textos/112</code> falta el <code>*</code> de «És el Senyor, valent i poderós,» i a <code>salmos_textos/367</code> el de «El Senyor va escrivint al registre dels pobles:». Tota la resta dels dos salms és idèntica a cpl-app.</p>
+    <div class="tw"><table><thead><tr><th></th><th>caselles</th></tr></thead>
+    <tbody><tr><td class="k">publicades que l’exportació d’avui ja no produeix</td><td>521</td></tr><tr><td class="k">…que el join declara ara en conflicte</td><td>349</td></tr><tr><td class="k">…amb la variant majoritària (l’atzar va sortir bé)</td><td>265</td></tr><tr><td class="k">…amb una variant minoritària</td><td>68</td></tr><tr><td class="k">…que no coincideixen amb cap variant coneguda</td><td>16</td></tr></tbody></table></div>
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>Cap de les dues caselles no és a l’exportació d’avui: el join les <strong>reté</strong>, perquè les 52 celebracions que se les reparteixen no s’hi posen d’acord. Hi són perquè una passada antiga les va publicar, i <code>export-to-saints-app.js</code> és additiu — «never used to blank the destination»— i no esborra mai el que ja no avala. El text publicat és el de la <strong>Mare de Déu del Toro</strong> (8 de maig, Menorca, <code>santsSolemnitats</code> fila 147), la variant minoritària.</p>
+        <p><strong>Conseqüència:</strong> <strong>521 caselles</strong> de saints-app ja no les produeix l’exportació d’avui; de les <strong>349</strong> que el join declara en conflicte, 265 duen la variant majoritària, <strong>68 una de minoritària</strong> i <strong>16 no coincideixen amb cap variant coneguda</strong> — la mateixa família que els quatre precs de MIGRA-008.</p>
+        <ul class="pl"><li><strong>Retingudes avui</strong> — 112 i 367 són a join-pending-review.json i no a output/commons-ca</li><li><strong>D’on ve el text publicat</strong> — Idèntic byte a byte al de l’exportació del commit 5668ed5</li><li><strong>L’exportació no esborra</strong> — export-to-saints-app.js:75 — «if (!(k in dest))»; cap camí d’esborrat</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> La sortida no és tècnica: esborrar-les vol dir canviar text dolent per «[ERR-001] Element no trobat». Tres opcions al registre (D-007); la del mig és esborrar les 84 minoritàries i desconegudes i deixar les 265 majoritàries. <code>migration-to-saints/export-to-saints-app.js · decisió D-007</code></p>
+        
+        
+        <p class="note">Passi el que passi, l’exportació hauria de reportar les òrfenes com ja fa amb les del Comú.</p>
+        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
+      </div>
+    </details>
+  </div><div class="finding v1" id="F19-2026-09-08">
+    <p class="fh"><a class="fid" href="#F19-2026-09-08">F19</a>
+      <span class="vp v1">cpl-app</span>
+      
+      <strong>A la Mare de Déu del Toro li falten dos asteriscs a l’Ofici</strong></p>
+    <p class="fd">La fila 147 de <code>santsSolemnitats</code> (8 de maig, Menorca, Comú de la Mare de Déu en temps pasqual) és l’única de les 23 que duen aquests salms a l’Ofici a què falta el marcador de mitja estrofa, i li falta <strong>als dos</strong>.</p>
+    <div class="tw"><table><thead><tr><th>columna</th><th>files amb el salm</th><th>amb &lt;code&gt;*&lt;/code&gt;</th><th>sense</th></tr></thead>
+    <tbody><tr><td class="k">salm1Ofici — Salm 23</td><td>23</td><td>22</td><td>&lt;strong&gt;santsSolemnitats#147&lt;/strong&gt;</td></tr><tr><td class="k">salm3Ofici — Salm 86</td><td>23</td><td>22</td><td>&lt;strong&gt;santsSolemnitats#147&lt;/strong&gt;</td></tr></tbody></table></div>
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>És una errata de dades, no una variant d’edició: el <code>*</code> és el marcador de cesura del vers, i les altres 22 còpies del mateix salm a la mateixa columna el duen. No és una qüestió de redacció catalana —no toca cap paraula— i per tant no cal el volum imprès per a dir-ho.</p>
+        <p><strong>Conseqüència:</strong> A cpl-app es veu el 8 de maig a Menorca. A saints-app s’ha vist a tot arreu, perquè aquesta fila és la que va guanyar les caselles compartides (F18).</p>
+        <ul class="pl"><li><strong>Recompte intern</strong> — 22 de 23 files amb l’asterisc, a les dues columnes, la mateixa fila fora</li><li><strong>La resta del salm quadra</strong> — Els altres 8 asteriscs i els 2 creuets de la fila 147 hi són</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> Afegir «    *» al final de «És el Senyor, valent i poderós,» de salm1Ofici i de «El Senyor va escrivint al registre dels pobles:» de salm3Ofici, filtrant per l’estat incorrecte i no per id. <code>src/Assets/db/cpl-app.db · santsSolemnitats</code></p>
+        
+        
+        <p class="note">Va amb db-fixes/CPL-LIT-NNN.sql, test de regressió i dossier, segons el CLAUDE.md.</p>
+        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
+      </div>
+    </details>
+  </div><div class="finding v2" id="F20-2026-09-08">
+    <p class="fh"><a class="fid" href="#F20-2026-09-08">F20</a>
+      <span class="vp v2">saints-app / eprex</span>
+      
+      <strong>Les hores menors de la festa resen les antífones de la fèria</strong></p>
+    <p class="fd">cpl-app diu una antífona pròpia per hora —«Avui és el Naixement de santa Maria Verge…» a Tèrcia— i saints-app en diu tres, les del salteri corrent («Qui estima ha complert tota la Llei»). Nou caselles: tres que difereixen i sis que només són a l’app.</p>
+    
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>És l’EPREX-005, ja dossieritzat: <code>terciaStore.ts</code> i els seus bessons substitueixen, en una festa, els nou camps de la salmòdia pels de la fèria — i s’enduen també l’antífona pròpia que l’índex duu per a aquell dia. El 8-IX <code>all_tercia.json</code> diu <code>primer_salmo_antifona: 4811</code> i <code>-1</code> a les altres dues, que és exactament el que resa cpl-app. La 4811 no l’obre ningú.</p>
+        <p><strong>Conseqüència:</strong> 513 dies de la finestra 2017-2026 fan això, en totes les llengües.</p>
+        <ul class="pl"><li><strong>Dossier</strong> — eprex-bugs/EPREX-005.md — proposat, pendent d’enviar</li><li><strong>L’índex ja hi és</strong> — all_tercia.json du una sola antífona per a aquest dia, com mana l’OGLH</li></ul>
+        <p class="fixline"><span class="who">correcció proposada</span> Treure les tres línies d’antífona de l’override de FEAST/SPECIAL i deixar-hi els salms. <code>eprex · terciaStore.ts, sextaStore.ts, nonaStore.ts</code></p>
+        
+        
+        <p class="note">Repo aliè: es proposa, no s’aplica.</p>
+        <p class="note">Hi ha un prompt llest per enganxar a <a href="#prompts">Què fer ara</a>.</p>
+      </div>
+    </details>
+  </div><div class="finding v4" id="F21-2026-09-08">
+    <p class="fh"><a class="fid" href="#F21-2026-09-08">F21</a>
+      <span class="vp v4">no és error</span>
+      
+      <strong>La primera lectura: el Missal n’ofereix dues i cadascú en tria una</strong></p>
+    <p class="fd">cpl-app dona <strong>Rm 8,28-30</strong> («Déu estima els qui coneixia d’abans que existissin») i eprex <strong>Mi 5,1-4a</strong> («Fins que la mare haurà tingut un fill»). Les dues són al Missal per al Naixement de la Mare de Déu.</p>
+    
+    <details class="more">
+      <summary>Per què, i com es va provar</summary>
+      <div class="mb">
+        <p>No és error de ningú: és una tria d’edició, com la D-001 i la D-003. Es deixa constar perquè el lector de les dues apps veurà lectures diferents, i perquè no s’ha de tornar a investigar.</p>
+        
+        <ul class="pl"><li><strong>Castellà, data exacta</strong> — apps.idteologia.org dona Mi 5, 1-4 — el mateix que eprex <a href="https://apps.idteologia.org/index.php?fecha=2026-09-08&amp;r=misa" target="_blank" rel="noopener">font ↗</a></li><li><strong>Ja anotat</strong> — Commit f31d6d2: «El Missal ofereix les dues per a aquell dia»</li></ul>
+        
+        
+        
+        
+        
+      </div>
+    </details>
+  </div></div>
 
     
 
     <div class="prog">
-      <div class="bar" role="img" aria-label="114 fetes, 20 retingudes, 0 per collir, 1 sense font, de 135">
-        <span class="sg have" style="width:84.44444444444444%"></span>
-        <span class="sg blk" style="width:14.814814814814815%"></span>
+      <div class="bar" role="img" aria-label="117 fetes, 17 retingudes, 0 per collir, 1 sense font, de 135">
+        <span class="sg have" style="width:86.66666666666667%"></span>
+        <span class="sg blk" style="width:12.592592592592593%"></span>
         <span class="sg hav" style="width:0%"></span>
       </div>
       <p class="lg">
-        <span class="k have"></span>114 fetes
-        <span class="k blk"></span>20 retingudes
+        <span class="k have"></span>117 fetes
+        <span class="k blk"></span>17 retingudes
         
         <span class="k out"></span>1 sense font
-        <span class="pc">85% de 134 assolibles</span>
+        <span class="pc">87% de 134 assolibles</span>
       </p>
     </div>
 
-    <details class="camps"><summary>Els 132 camps, un per un</summary><section class="hr">
-      <h4>Ofici de lectura <span class="hc">5 de 24 divergeixen</span></h4>
+    <details class="camps"><summary>Els 125 camps, un per un</summary><section class="hr">
+      <h4>Ofici de lectura <span class="hc">2 de 24 divergeixen</span></h4>
       <ul class="fl"><li class="fr no">
-    <span>1r salm — cita <span class="cell">salmos_citas/111</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 23</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 23 Entrada del Senyor al santuari</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>1r salm — text <span class="cell">salmos_textos/112</span> <span class="ref open">sense investigar</span></span>
+    <span>1r salm — text <span class="cell">salmos_textos/112</span> <a class="ref" href="#F18-2026-09-08">F18</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">És del Senyor la terra i tot el que s’hi mou, * el món i tots els qui l’habiten. Li ha posat els fonaments dins els mars, * i les bases, a les fonts dels rius. ¿Qui pot pujar a la muntanya del Senyor? * ¿Qui pot estar-se al recinte sagrat? El qui té el cor sincer i les mans sense culpa, † que no confia en els déus falsos, * ni jura per ganes d’enganyar. Rebrà benediccions del Senyor, * rebrà els favors del Déu que salva. Aquests són els qui vénen a buscar-vos, Senyor, * per veure-us de cara, Déu de Jacob. Portals, alceu les llindes; † engrandiu-vos, portalades eternes, * que ha d’entrar el rei de la glòria! ¿Qui és aquest rei de la glòria? † És el Senyor, valent i poderós, * és el Senyor, victoriós en el combat. Portals, alceu les llindes; † engrandiu-vos, portalades eternes, * que ha d’entrar el rei de la glòria! ¿Qui és aquest rei de la glòria? † És el Senyor, Déu de l’univers, * és aquest el rei de la glòria.</p></div>
       <div><span class="who">saints-app</span><p class="lit">És del Senyor la terra i tot el que s’hi mou, * el món i tots els qui l’habiten. Li ha posat els fonaments dins els mars, * i les bases, a les fonts dels rius. ¿Qui pot pujar a la muntanya del Senyor? * ¿Qui pot estar-se al recinte sagrat? El qui té el cor sincer i les mans sense culpa, † que no confia en els déus falsos, * ni jura per ganes d’enganyar. Rebrà benediccions del Senyor, * rebrà els favors del Déu que salva. Aquests són els qui vénen a buscar-vos, Senyor, * per veure-us de cara, Déu de Jacob. Portals, alceu les llindes; † engrandiu-vos, portalades eternes, * que ha d’entrar el rei de la glòria! ¿Qui és aquest rei de la glòria? † És el Senyor, valent i poderós, és el Senyor, victoriós en el combat. Portals, alceu les llindes; † engrandiu-vos, portalades eternes, * que ha d’entrar el rei de la glòria! ¿Qui és aquest rei de la glòria? † És el Senyor, Déu de l’univers, * és aquest el rei de la glòria.</p></div>
     </div>
   </li><li class="fr no">
-    <span>2n salm — cita <span class="cell">salmos_citas/10624</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 45</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 45 Déu, refugi i fortalesa del seu poble</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>3r salm — cita <span class="cell">salmos_citas/366</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 86</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 86 Jerusalem, mare de totes les nacions</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>3r salm — text <span class="cell">salmos_textos/367</span> <span class="ref open">sense investigar</span></span>
+    <span>3r salm — text <span class="cell">salmos_textos/367</span> <a class="ref" href="#F18-2026-09-08">F18</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">El Senyor té el palau a la muntanya santa, † i estima més els portals de Sió * que totes les viles de Jacob. S’han dit de tu, ciutat de Déu, oracles gloriosos: † «Compto Egipte i Babilònia * entre els fidels que em coneixen. A Filistea, a Tir i a Etiòpia els dic: * “Fills de Sió.”» Diuen d’ella: † «És l’Altíssim mateix qui l’ha fundada; * aquest i aquell altre són fills de Sió.» El Senyor va escrivint al registre dels pobles: * «Fill de Sió.» I els cantors i els dansaires responen: * «De tu brollen totes les meves fonts!»</p></div>
       <div><span class="who">saints-app</span><p class="lit">El Senyor té el palau a la muntanya santa, † i estima més els portals de Sió * que totes les viles de Jacob. S’han dit de tu, ciutat de Déu, oracles gloriosos: † «Compto Egipte i Babilònia * entre els fidels que em coneixen. A Filistea, a Tir i a Etiòpia els dic: * “Fills de Sió.”» Diuen d’ella: † «És l’Altíssim mateix qui l’ha fundada; * aquest i aquell altre són fills de Sió.» El Senyor va escrivint al registre dels pobles: «Fill de Sió.» I els cantors i els dansaires responen: * «De tu brollen totes les meves fonts!»</p></div>
     </div>
   </li></ul>
-      <details class="fold"><summary>19 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9011</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9012</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/10625</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/9013</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (1/2) <span class="cell">responsorios/13163</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (2/2) <span class="cell">responsorios/13164</span></span></li><li class="fr ok"><span>Lectura bíblica — cita <span class="cell">oficio_citas/867</span></span></li><li class="fr ok"><span>Lectura bíblica — títol <span class="cell">oficio_titulos/867</span></span></li><li class="fr ok"><span>Lectura bíblica — text <span class="cell">oficio_textos/867</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (1/3) <span class="cell">responsorios/20505</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (2/3) <span class="cell">responsorios/20506</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (3/3) <span class="cell">responsorios/20507</span></span></li><li class="fr ok"><span>Lectura patrística — cita <span class="cell">oficio_citas/868</span></span></li><li class="fr ok"><span>Lectura patrística — títol <span class="cell">oficio_titulos/868</span></span></li><li class="fr ok"><span>Lectura patrística — text <span class="cell">oficio_textos/868</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (1/3) <span class="cell">responsorios/20508</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (2/3) <span class="cell">responsorios/20509</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (3/3) <span class="cell">responsorios/20510</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/37</span></span></li></ul></details>
+      <details class="fold"><summary>22 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/111</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9011</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/10624</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9012</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/10625</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/366</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/9013</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (1/2) <span class="cell">responsorios/13163</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (2/2) <span class="cell">responsorios/13164</span></span></li><li class="fr ok"><span>Lectura bíblica — cita <span class="cell">oficio_citas/867</span></span></li><li class="fr ok"><span>Lectura bíblica — títol <span class="cell">oficio_titulos/867</span></span></li><li class="fr ok"><span>Lectura bíblica — text <span class="cell">oficio_textos/867</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (1/3) <span class="cell">responsorios/20505</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (2/3) <span class="cell">responsorios/20506</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (3/3) <span class="cell">responsorios/20507</span></span></li><li class="fr ok"><span>Lectura patrística — cita <span class="cell">oficio_citas/868</span></span></li><li class="fr ok"><span>Lectura patrística — títol <span class="cell">oficio_titulos/868</span></span></li><li class="fr ok"><span>Lectura patrística — text <span class="cell">oficio_textos/868</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (1/3) <span class="cell">responsorios/20508</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (2/3) <span class="cell">responsorios/20509</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (3/3) <span class="cell">responsorios/20510</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/37</span></span></li></ul></details>
     </section><section class="hr">
       <h4>Laudes <span class="hc">25 camps, tots coincideixen</span></h4>
       
       <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/63</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/926</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/64</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/64</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/927</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/65</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/65</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/928</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/66</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/232</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/233</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/1703</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/1704</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/1705</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/1706</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/1707</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/1708</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/294</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/64</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/64</span></span></li><li class="fr ok"><span>Precs — peticions (1/4) <span class="cell">preces_contenido/1173</span></span></li><li class="fr ok"><span>Precs — peticions (2/4) <span class="cell">preces_contenido/1174</span></span></li><li class="fr ok"><span>Precs — peticions (3/4) <span class="cell">preces_contenido/1175</span></span></li><li class="fr ok"><span>Precs — peticions (4/4) <span class="cell">preces_contenido/1176</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/355</span></span></li></ul></details>
     </section><section class="hr">
-      <h4>Tèrcia <span class="hc">2 de 14 divergeixen · 2 que l’app mostra i cpl-app no resa</span></h4>
+      <h4>Tèrcia <span class="hc">3 de 14 divergeixen · 2 que l’app mostra i cpl-app no resa</span></h4>
       <ul class="fl"><li class="fr no">
-    <span>2n salm — antífona <span class="cell">salmos_antifonas/3413</span> <span class="ref open">sense investigar</span></span>
+    <span>1r salm — antífona <span class="cell">salmos_antifonas/3412</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
+    <div class="two">
+      <div><span class="who">cpl-app</span><p class="lit">Avui és el Naixement de santa Maria Verge; ella, amb la seva santedat, ennobleix totes les Esglésies.</p></div>
+      <div><span class="who">saints-app</span><p class="lit">Qui estima ha complert tota la Llei.</p></div>
+    </div>
+  </li><li class="fr no">
+    <span>2n salm — antífona <span class="cell">salmos_antifonas/3413</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">—</p></div>
       <div><span class="who">saints-app</span><p class="lit">Recordeu-vos, Senyor, del vostre poble que en altre temps us vau fer vostre.</p></div>
     </div>
   </li><li class="fr no">
-    <span>3r salm — antífona <span class="cell">salmos_antifonas/3414</span> <span class="ref open">sense investigar</span></span>
+    <span>3r salm — antífona <span class="cell">salmos_antifonas/3414</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">—</p></div>
       <div><span class="who">saints-app</span><p class="lit">Alceu-vos, Senyor, defenseu la vostra causa.</p></div>
     </div>
   </li></ul>
-      <details class="fold"><summary>12 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/3372</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3412</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/3373</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3373</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3374</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3374</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3375</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1818</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1819</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/7759</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/7760</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1820</span></span></li></ul></details>
+      <details class="fold"><summary>11 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/3372</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/3373</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3373</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3374</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3374</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3375</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1818</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1819</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/7759</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/7760</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1820</span></span></li></ul></details>
     </section><section class="hr">
-      <h4>Sexta <span class="hc">2 de 14 divergeixen · 2 que l’app mostra i cpl-app no resa</span></h4>
+      <h4>Sexta <span class="hc">3 de 14 divergeixen · 2 que l’app mostra i cpl-app no resa</span></h4>
       <ul class="fl"><li class="fr no">
-    <span>2n salm — antífona <span class="cell">salmos_antifonas/3413</span> <span class="ref open">sense investigar</span></span>
+    <span>1r salm — antífona <span class="cell">salmos_antifonas/3412</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
+    <div class="two">
+      <div><span class="who">cpl-app</span><p class="lit">Maria, d’ascendència reial, té un naixement gloriós. Demanem-li que ens ajudi amb la seva pregària.</p></div>
+      <div><span class="who">saints-app</span><p class="lit">Qui estima ha complert tota la Llei.</p></div>
+    </div>
+  </li><li class="fr no">
+    <span>2n salm — antífona <span class="cell">salmos_antifonas/3413</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">—</p></div>
       <div><span class="who">saints-app</span><p class="lit">Recordeu-vos, Senyor, del vostre poble que en altre temps us vau fer vostre.</p></div>
     </div>
   </li><li class="fr no">
-    <span>3r salm — antífona <span class="cell">salmos_antifonas/3414</span> <span class="ref open">sense investigar</span></span>
+    <span>3r salm — antífona <span class="cell">salmos_antifonas/3414</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">—</p></div>
       <div><span class="who">saints-app</span><p class="lit">Alceu-vos, Senyor, defenseu la vostra causa.</p></div>
     </div>
   </li></ul>
-      <details class="fold"><summary>12 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/3372</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3412</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/3373</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3373</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3374</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3374</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3375</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/2764</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/2765</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/9651</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/9652</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1820</span></span></li></ul></details>
+      <details class="fold"><summary>11 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/3372</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/3373</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3373</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3374</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3374</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3375</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/2764</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/2765</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/9651</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/9652</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1820</span></span></li></ul></details>
     </section><section class="hr">
-      <h4>Nona <span class="hc">2 de 14 divergeixen · 2 que l’app mostra i cpl-app no resa</span></h4>
+      <h4>Nona <span class="hc">3 de 14 divergeixen · 2 que l’app mostra i cpl-app no resa</span></h4>
       <ul class="fl"><li class="fr no">
-    <span>2n salm — antífona <span class="cell">salmos_antifonas/3413</span> <span class="ref open">sense investigar</span></span>
+    <span>1r salm — antífona <span class="cell">salmos_antifonas/3412</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
+    <div class="two">
+      <div><span class="who">cpl-app</span><p class="lit">Glorifiquem el Crist amb tota la nostra ànima en aquesta festa de la santíssima Mare de Déu.</p></div>
+      <div><span class="who">saints-app</span><p class="lit">Qui estima ha complert tota la Llei.</p></div>
+    </div>
+  </li><li class="fr no">
+    <span>2n salm — antífona <span class="cell">salmos_antifonas/3413</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">—</p></div>
       <div><span class="who">saints-app</span><p class="lit">Recordeu-vos, Senyor, del vostre poble que en altre temps us vau fer vostre.</p></div>
     </div>
   </li><li class="fr no">
-    <span>3r salm — antífona <span class="cell">salmos_antifonas/3414</span> <span class="ref open">sense investigar</span></span>
+    <span>3r salm — antífona <span class="cell">salmos_antifonas/3414</span> <a class="ref" href="#F20-2026-09-08">F20</a></span>
     <div class="two">
       <div><span class="who">cpl-app</span><p class="lit">—</p></div>
       <div><span class="who">saints-app</span><p class="lit">Alceu-vos, Senyor, defenseu la vostra causa.</p></div>
     </div>
   </li></ul>
-      <details class="fold"><summary>12 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/3372</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3412</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/3373</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3373</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3374</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3374</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3375</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/2305</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/2306</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/8733</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/8734</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1820</span></span></li></ul></details>
+      <details class="fold"><summary>11 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/3372</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/3373</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3373</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3374</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3374</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3375</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/2305</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/2306</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/8733</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/8734</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1820</span></span></li></ul></details>
     </section><section class="hr">
-      <h4>Vespres <span class="hc">2 de 26 divergeixen</span></h4>
-      <ul class="fl"><li class="fr no">
-    <span>1r salm — cita <span class="cell">salmos_citas/4577</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 121</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 121 Pelegrinatge a la ciutat santa</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>2n salm — cita <span class="cell">salmos_citas/3424</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 126</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 126 L’esforç humà és inútil sense Déu</p></div>
-    </div>
-  </li></ul>
-      <details class="fold"><summary>24 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/10112</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/4578</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/10113</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3425</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11042</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/10114</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11043</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3642</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3643</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/15499</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/15500</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/15501</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/15502</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/15503</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/15504</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1390</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1145</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1145</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/5922</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/5923</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/5924</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/5925</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/5926</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/355</span></span></li></ul></details>
+      <h4>Vespres <span class="hc">26 camps, tots coincideixen</span></h4>
+      
+      <details class="fold"><summary>26 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/4577</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/10112</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/4578</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3424</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/10113</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3425</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11042</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/10114</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11043</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3642</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3643</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/15499</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/15500</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/15501</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/15502</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/15503</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/15504</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1390</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1145</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1145</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/5922</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/5923</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/5924</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/5925</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/5926</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/355</span></span></li></ul></details>
     </section><section class="hr">
-      <h4>Missa <span class="hc">7 de 15 divergeixen</span></h4>
+      <h4>Missa <span class="hc">2 de 8 divergeixen</span></h4>
       <ul class="fl"><li class="fr no">
-    <span>1a lectura — cita <span class="cell">lecturas_referencia/1156</span> <span class="ref open">sense investigar</span></span>
+    <span>1a lectura — cita <span class="cell">lecturas_referencia/1156</span> <a class="ref" href="#F21-2026-09-08">F21</a></span>
     <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">1C 6,1-11: És que un germà ha de pledejar contra el seu germà, i ho ha de fer, a més, davant els tribunals dels qui no són creients?</p></div>
+      <div><span class="who">cpl-app</span><p class="lit">Rm 8,28-30: Déu estima els qui coneixia d’abans que existissin</p></div>
       <div><span class="who">saints-app</span><p class="lit">Mi 5,1-4a: Fins que la mare haurà tingut un fill</p></div>
     </div>
   </li><li class="fr no">
-    <span>1a lectura — text <span class="cell">lecturas_texto/1444</span> <span class="ref open">sense investigar</span></span>
+    <span>1a lectura — text <span class="cell">lecturas_texto/1444</span> <a class="ref" href="#F21-2026-09-08">F21</a></span>
     <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Germans, és possible que entre vosaltres hi hagi algú que, quan té un plet contra un altre, gosi recórrer a un tribunal pagà, en lloc de demanar l'arbitratge d'altres cristians? No sabeu que el poble de Déu un dia haurà de judicar el món? I si el món ha de ser sotmès al vostre judici, ara no seríeu capaços de resoldre aquests petits litigis? No sabeu que haurem de judicar fins i tot els àngels? Què són davant d'això les discussions sobre la vida de cada dia! Per a dirimir aquests afers podeu recórrer a les persones menys considerades de la comunitat. Exagero per a fer-vos reaccionar. És que un germà ha de pledejar contra el seu germà, i ho ha de fer, a més, davant els tribunals dels qui no són creients? Ja és del tot un descrèdit que pledegeu entre vosaltres. Abans d'arribar a aquí, per què no deixeu que us perjudiquin i us desposseeixin? Però no: sou vosaltres qui perjudiqueu i desposseïu els vostres mateixos germans. No sabeu que els injustos no posseiran el Regne de Déu? No us feu il·lusions! Els llicenciosos, els idòlatres, els adúlters, els sodomites, els lladres, els usurers, els bevedors, els calumniadors, els estafadors no posseiran el Regne de Déu. Alguns de vosaltres éreu així, però ara, en el nom de Jesús, el Senyor, i per l'Esperit del nostre Déu, ja heu estat rentats, santificats, fets justos.</p></div>
+      <div><span class="who">cpl-app</span><p class="lit">Germans, nosaltres sabem que Déu ho disposa tot en bé dels qui l’estimen, dels qui ell ha cridat per decisió seva; perquè ell, que els coneixia d’abans que existissin, els destinà a ser imatges vives del seu Fill, que ha estat així el primer d’una multitud de germans. Ell, que els havia destinat, els crida, els fa justos i els glorifica.</p></div>
       <div><span class="who">saints-app</span><p class="lit">Això diu el Senyor: «Tu Betlem Efrata, petita per figurar entre les famílies de Judà: de tu en sortirà el qui ha de regir Israel». Els seus orígens són llunyans, des dels temps eterns. Els tindrà abandonats fins que la mare haurà tingut un fill; aleshores la resta dels germans tornarà cap al poble d’Israel. Es presentarà a fer de pastor amb la majestat del seu Déu, amb la glòria del nom del Senyor. I viuran en pau, perquè ara serà gran d’un cap a l’altre de la terra. Ell serà la pau.</p></div>
     </div>
-  </li><li class="fr no">
-    <span>Salm responsorial — cita <span class="cell">lecturas_referencia/1158</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Sl 149,1-2.3-4.5-6a i 9b (R.: 4a)</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Sl 12,6ab.6cd. (R.: Is 61,10)</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>Salm responsorial — text <span class="cell">lecturas_texto/1446</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Canteu al Senyor un càntic nou, canteu les seves lloances davant dels qui l’estimen. Se sent feliç Israel del qui l’ha creat, s’alegren del seu rei els fills de Sió. R. El Senyor estima el seu poble. Lloen el seu nom, el lloen tot dansant, acompanyen els seus cants amb els tambors i les cítares. Perquè el Senyor estima el seu poble, coronarà de triomf els humils. R. Els fidels celebren la seva glòria, des dels seus rengles aclamen plens de goig, mentre els seus llavis glorifiquen Déu. És la glòria reservada als qui l’estimen. R.</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Jo, sabent que m’estimeu, tinc plena confiança. El meu cor s’alegra: ja em veig salvat. R. Aclamo el Senyor plena de goig. I canto al Senyor pels seus favors. R.</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>Al·leluia — text <span class="cell">lecturas_texto/6148</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Soc jo qui us he escollit del món per confiar-vos la missió d’anar pertot arreu i donar fruit, i el vostre fruit perdurarà.</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Sou feliç, santa Verge Maria, i digna de ser lloada per sempre; de vós ha nascut el sol de justícia, Crist, Déu nostre.</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>Evangeli — cita <span class="cell">lecturas_referencia/1159</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Lc 6,12-19: Passà tota la nit pregant Déu. Després n’elegí dotze i els donà el nom d’apòstols</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Mt 1,1-25: Ella ha concebut per obra de l’Esperit Sant</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>Evangeli — text <span class="cell">lecturas_texto/1447</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">En aquells dies, Jesús se n’anà a la muntanya a pregar, i passà tota la nit pregant Déu. Quan es va fer de dia, cridà els seus deixebles, n’elegí dotze i els donà el nom d’apòstols. Eren Simó, que ell anomenà també Pere, i Andreu, el seu germà, Jaume, Joan, Felip, Bartomeu, Mateu, Tomàs, Jaume d’Alfeu, Simó, anomenat Zelota, Judes de Jaume i Judes Iscariot, que va ser el traïdor. Després Jesús amb els deixebles baixà de la muntanya i s’aturà en un indret pla on hi havia molts dels seus seguidors i una gentada del poble, que havia vingut de tot el país dels jueus, de Jerusalem i de la costa de Tir i de Sidó, per escoltar-lo i fer-se curar de les seves malalties. També alliberava els qui eren importunats pels esperits malignes. Tota la gent el volia tocar, perquè sortia d’ell un poder que curava tothom.</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Genealogia de Jesús, el Messies, fill de David, fill d’Abraham. Abraham va ser pare d’Isaac; Isaac, de Jacob; Jacob, de Judà i dels seus germans. Judà va ser pare de Fares i Zaré, i la mare d’ells era Tamar. Fares va ser pare d’Hesron; Hesron, d’Aram; Aram, d’Aminadab; Aminadab, de Nahason; Nahason, de Salmon; Salmon, de Booz, i la mare de Booz era Rahab. Booz va ser pare d’Obed, i la mare d’Obed era Rut. Obed va ser pare de Jesè, i Jesè, de David, el rei. David va ser pare de Salomó, nascut de la muller d’Uries; Salomó va ser pare de Roboam; Roboam, d’Abies; Abies, d’Asà; Asà, de Josafat; Josafat, de Joram; Joram, d’Ozies; Ozies, de Joatam; Joatam, d’Acaz; Acaz, d’Ezequies; Ezequies, de Manasés; Manasés, d’Amon; Amon, de Josies, i Josies, de Jeconies i dels seus germans, en temps de la deportació a Babilònia. Després de la deportació a Babilònia Jeconies va ser pare de Salatiel; Salatiel, de Zorobabel; Zorobabel, d’Abihud; Abihud, d’Eljaquim; Eljaquim, d’Azor; Azor, de Sadoc; Sadoc, d’Aquim; Aquim, d’Elihud; Elihud, d’Eleazar; Eleazar, de Matan; Matan, de Jacob, i Jacob va ser pare de Josep, l’espòs de Maria, de la qual nasqué Jesús, anomenat Messies. En total, doncs, hi ha catorze generacions d’Abraham fins a David, catorze, de David fins a la deportació a Babilònia, i catorze, de la deportació a Babilònia fins al Messies. Jesús, el Messies, vingué al món d’aquesta manera: Maria, la seva mare, promesa amb Josep, abans de viure junts, es trobà que esperava un fill per obra de l’Esperit Sant. Josep, el seu espòs, que era un home bo, no volent fer-ho saber públicament, es proposava de desfer en secret l’acord matrimonial. Mentre ell hi pensava, se li aparegué en somni un àngel del Senyor que li digué: «Josep, fill de David, no tinguis por de prendre a casa teva Maria com a esposa. És cert que ella ha concebut per obra de l’Esperit Sant; ha de tenir un fill i li has de posar el nom de Jesús, perquè ell salvarà dels pecats el seu poble». Tot això va succeir perquè es complís el que el Senyor havia anunciat pel profeta: «La verge tindrà un fill, i li posaran Emmanuel», que vol dir «Déu-és-amb-nosaltres». Josep es despertà i, complint el que l’àngel del Senyor li havia manat, la prengué a casa com a esposa; el fill va néixer sense haver tingut relacions matrimonials. I li posà el nom de Jesús.</p></div>
-    </div>
   </li></ul>
-      <details class="fold"><summary>8 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>Al·leluia — cita <span class="cell">lecturas_referencia/6000</span></span></li><li class="fr ok"><span>Celebració · 1a lectura — cita <span class="cell">/</span></span></li><li class="fr ok"><span>Celebració · 1a lectura — text <span class="cell">/</span></span></li><li class="fr ok"><span>Celebració · Salm responsorial — cita <span class="cell">/</span></span></li><li class="fr ok"><span>Celebració · Salm responsorial — text <span class="cell">/</span></span></li><li class="fr ok"><span>Celebració · Al·leluia — text <span class="cell">/</span></span></li><li class="fr ok"><span>Celebració · Evangeli — cita <span class="cell">/</span></span></li><li class="fr ok"><span>Celebració · Evangeli — text <span class="cell">/</span></span></li></ul></details>
-    </section></details>
-  </article><article class="day" id="d2026-09-16">
-    <header>
-      <div class="dt">
-        <h3>16 de setembre · dimecres</h3>
-        <p class="cel">Sants Corneli, papa, i Cebrià, bisbe, màrtirs</p>
-      </div>
-      <div class="sts"><span class="st good">cap divergència</span></div>
-    </header>
-
-    
-
-    <p class="note">Dia de memòria: la pestanya del sant de saints-app segueix
-      el <strong>Comú</strong> i cpl-app resa la fèria. Les dues coses són lícites (OGLH 235b) i
-      la diferència és <strong>volguda</strong> — decisió D-001. Per això la comparació d'aquí
-      sota es fa contra la casella ferial, que és on va el text de cpl-app; el Comú va a la
-      casella del sant, que cpl-app no omple mai.</p>
-
-    <div class="prog">
-      <div class="bar" role="img" aria-label="122 fetes, 14 retingudes, 0 per collir, 5 sense font, de 141">
-        <span class="sg have" style="width:86.52482269503547%"></span>
-        <span class="sg blk" style="width:9.929078014184396%"></span>
-        <span class="sg hav" style="width:0%"></span>
-      </div>
-      <p class="lg">
-        <span class="k have"></span>122 fetes
-        <span class="k blk"></span>14 retingudes
-        
-        <span class="k out"></span>5 sense font
-        <span class="pc">90% de 136 assolibles</span>
-      </p>
-    </div>
-
-    <details class="camps"><summary>Els 131 camps, un per un</summary><section class="hr">
-      <h4>Ofici de lectura <span class="hc">24 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>24 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/10128</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/8351</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/10129</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/10129</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/8352</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/10130</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/10130</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/8353</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/10131</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (1/2) <span class="cell">responsorios/11378</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (2/2) <span class="cell">responsorios/11379</span></span></li><li class="fr ok"><span>Lectura bíblica — cita <span class="cell">oficio_citas/498</span></span></li><li class="fr ok"><span>Lectura bíblica — títol <span class="cell">oficio_titulos/498</span></span></li><li class="fr ok"><span>Lectura bíblica — text <span class="cell">oficio_textos/498</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (1/3) <span class="cell">responsorios/12863</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (2/3) <span class="cell">responsorios/12864</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (3/3) <span class="cell">responsorios/12865</span></span></li><li class="fr ok"><span>Lectura patrística — cita <span class="cell">oficio_citas/281</span></span></li><li class="fr ok"><span>Lectura patrística — títol <span class="cell">oficio_titulos/281</span></span></li><li class="fr ok"><span>Lectura patrística — text <span class="cell">oficio_textos/281</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (1/3) <span class="cell">responsorios/11982</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (2/3) <span class="cell">responsorios/11983</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (3/3) <span class="cell">responsorios/11984</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/149</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Laudes <span class="hc">25 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/246</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/245</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/247</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/247</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/246</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/248</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/248</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/247</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/249</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/262</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/263</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/2264</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/2265</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/2266</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/2267</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/2268</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/2269</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/88</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/197</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/197</span></span></li><li class="fr ok"><span>Precs — peticions (1/4) <span class="cell">preces_contenido/1561</span></span></li><li class="fr ok"><span>Precs — peticions (2/4) <span class="cell">preces_contenido/1562</span></span></li><li class="fr ok"><span>Precs — peticions (3/4) <span class="cell">preces_contenido/1563</span></span></li><li class="fr ok"><span>Precs — peticions (4/4) <span class="cell">preces_contenido/1564</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/149</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Tèrcia <span class="hc">14 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>14 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/150</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3454</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/151</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3502</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/3455</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3503</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3503</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/3456</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3504</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1357</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1358</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/8657</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/8658</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1181</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Sexta <span class="hc">14 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>14 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/150</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3454</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/151</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3502</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/3455</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3503</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3503</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/3456</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3504</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1211</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1212</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/8335</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/8336</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1213</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Nona <span class="hc">14 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>14 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/150</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3454</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/151</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3502</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/3455</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3503</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3503</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/3456</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3504</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1439</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1254</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/7835</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/7836</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1190</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Vespres <span class="hc">26 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>26 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/11208</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9431</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/11209</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/11209</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9432</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/11210</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11072</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/9295</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11073</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3551</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3552</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/16071</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/16072</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/16073</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/16074</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/16075</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/16076</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1206</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1293</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1293</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/6404</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/6405</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/6406</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/6407</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/6408</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/149</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Missa <span class="hc">14 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>14 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1a lectura — cita <span class="cell">lecturas_referencia/3113</span></span></li><li class="fr ok"><span>1a lectura — text <span class="cell">lecturas_texto/3891</span></span></li><li class="fr ok"><span>Salm responsorial — cita <span class="cell">lecturas_referencia/3114</span></span></li><li class="fr ok"><span>Salm responsorial — text <span class="cell">lecturas_texto/3892</span></span></li><li class="fr ok"><span>Al·leluia — cita <span class="cell">lecturas_referencia/6000</span></span></li><li class="fr ok"><span>Al·leluia — text <span class="cell">lecturas_texto/6065</span></span></li><li class="fr ok"><span>Evangeli — cita <span class="cell">lecturas_referencia/3115</span></span></li><li class="fr ok"><span>Evangeli — text <span class="cell">lecturas_texto/311</span></span></li><li class="fr ok"><span>Celebració · 1a lectura — cita <span class="cell">lecturas_referencia/336</span></span></li><li class="fr ok"><span>Celebració · 1a lectura — text <span class="cell">lecturas_texto/418</span></span></li><li class="fr ok"><span>Celebració · Salm responsorial — cita <span class="cell">lecturas_referencia/253</span></span></li><li class="fr ok"><span>Celebració · Salm responsorial — text <span class="cell">lecturas_texto/165</span></span></li><li class="fr ok"><span>Celebració · Evangeli — cita <span class="cell">lecturas_referencia/338</span></span></li><li class="fr ok"><span>Celebració · Evangeli — text <span class="cell">lecturas_texto/420</span></span></li></ul></details>
-    </section></details>
-  </article><article class="day" id="d2026-08-12">
-    <header>
-      <div class="dt">
-        <h3>12 d'agost · dimecres</h3>
-        <p class="cel">Santa Joana Francesca de Chantal, religiosa</p>
-      </div>
-      <div class="sts"><span class="st bad">6 camps divergeixen</span><span class="st open">6 sense investigar</span></div>
-    </header>
-
-    
-
-    
-
-    <div class="prog">
-      <div class="bar" role="img" aria-label="122 fetes, 12 retingudes, 0 per collir, 1 sense font, de 135">
-        <span class="sg have" style="width:90.37037037037037%"></span>
-        <span class="sg blk" style="width:8.88888888888889%"></span>
-        <span class="sg hav" style="width:0%"></span>
-      </div>
-      <p class="lg">
-        <span class="k have"></span>122 fetes
-        <span class="k blk"></span>12 retingudes
-        
-        <span class="k out"></span>1 sense font
-        <span class="pc">91% de 134 assolibles</span>
-      </p>
-    </div>
-
-    <details class="camps"><summary>Els 125 camps, un per un</summary><section class="hr">
-      <h4>Ofici de lectura <span class="hc">24 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>24 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/9960</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/8183</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/9961</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/9961</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/8184</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/9962</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/9962</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/8185</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/9963</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (1/2) <span class="cell">responsorios/11742</span></span></li><li class="fr ok"><span>Responsori de la salmòdia (2/2) <span class="cell">responsorios/11743</span></span></li><li class="fr ok"><span>Lectura bíblica — cita <span class="cell">oficio_citas/410</span></span></li><li class="fr ok"><span>Lectura bíblica — títol <span class="cell">oficio_titulos/410</span></span></li><li class="fr ok"><span>Lectura bíblica — text <span class="cell">oficio_textos/410</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (1/3) <span class="cell">responsorios/12507</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (2/3) <span class="cell">responsorios/12508</span></span></li><li class="fr ok"><span>Responsori de la lectura bíblica (3/3) <span class="cell">responsorios/12509</span></span></li><li class="fr ok"><span>Lectura patrística — cita <span class="cell">oficio_citas/853</span></span></li><li class="fr ok"><span>Lectura patrística — títol <span class="cell">oficio_titulos/853</span></span></li><li class="fr ok"><span>Lectura patrística — text <span class="cell">oficio_textos/853</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (1/3) <span class="cell">responsorios/20460</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (2/3) <span class="cell">responsorios/20461</span></span></li><li class="fr ok"><span>Responsori de la lectura patrística (3/3) <span class="cell">responsorios/20462</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/285</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Laudes <span class="hc">25 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>25 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/35</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/137</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/36</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/139</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/138</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/140</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/140</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/139</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/141</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/90</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/91</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/1606</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/1607</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/1608</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/1609</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/1610</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/1611</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/31</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/25</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/25</span></span></li><li class="fr ok"><span>Precs — peticions (1/4) <span class="cell">preces_contenido/1103</span></span></li><li class="fr ok"><span>Precs — peticions (2/4) <span class="cell">preces_contenido/1104</span></span></li><li class="fr ok"><span>Precs — peticions (3/4) <span class="cell">preces_contenido/1105</span></span></li><li class="fr ok"><span>Precs — peticions (4/4) <span class="cell">preces_contenido/1106</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/92</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Tèrcia <span class="hc">2 de 14 divergeixen</span></h4>
-      <ul class="fl"><li class="fr no">
-    <span>1r salm — cita <span class="cell">salmos_citas/3498</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 118, 105-112 XIV (Nun)</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 109</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>1r salm — text <span class="cell">salmos_textos/3499</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">La vostra promesa fa llum als meus passos, * és la claror que m’il·lumina el camí. Vull complir el que he jurat: * sostindré que són justes les vostres decisions. Que en són, de grans, les penes que sofreixo; * feu que visqui, com ho havíeu promès. Accepteu, Senyor, l’ofrena que us prometo, * i feu que aprengui les vostres decisions. La meva vida està sempre en perill, * però no oblido mai la vostra llei. M’han tirat un llaç els injustos, * però no m’he desviat dels preceptes. Tindré sempre per herència el vostre pacte, * és l’alegria del meu cor. Compliré de tot cor els vostres decrets, * del tot i per sempre.</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Oracle del Senyor al meu Senyor: † «Seu a la meva dreta, * i espera que faci dels enemics l’escambell dels teus peus.» Que el Senyor estengui lluny des de Sió † el poder del teu ceptre. * Impera enmig dels enemics. «Ja eres príncep el dia que vas néixer, † tens la glòria sagrada des del si de la mare, * abans de l’aurora jo t’he engendrat.» El Senyor no es desdiu del que jurà: † «Ets sacerdot per sempre, * segons l’orde de Melquisedec.» El Senyor és al teu costat, * i abat els reis el dia que s’indigna; judica els pobles i els fa presoners, * abat governants arreu de la terra. Pel camí beuràs del torrent, * així redreçaràs el cap.</p></div>
-    </div>
-  </li></ul>
-      <details class="fold"><summary>12 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3522</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3499</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/3523</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3500</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3500</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/3524</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3501</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1252</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1251</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/7073</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/7074</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1181</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Sexta <span class="hc">2 de 14 divergeixen</span></h4>
-      <ul class="fl"><li class="fr no">
-    <span>1r salm — cita <span class="cell">salmos_citas/3498</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 118, 105-112 XIV (Nun)</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 109</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>1r salm — text <span class="cell">salmos_textos/3499</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">La vostra promesa fa llum als meus passos, * és la claror que m’il·lumina el camí. Vull complir el que he jurat: * sostindré que són justes les vostres decisions. Que en són, de grans, les penes que sofreixo; * feu que visqui, com ho havíeu promès. Accepteu, Senyor, l’ofrena que us prometo, * i feu que aprengui les vostres decisions. La meva vida està sempre en perill, * però no oblido mai la vostra llei. M’han tirat un llaç els injustos, * però no m’he desviat dels preceptes. Tindré sempre per herència el vostre pacte, * és l’alegria del meu cor. Compliré de tot cor els vostres decrets, * del tot i per sempre.</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Oracle del Senyor al meu Senyor: † «Seu a la meva dreta, * i espera que faci dels enemics l’escambell dels teus peus.» Que el Senyor estengui lluny des de Sió † el poder del teu ceptre. * Impera enmig dels enemics. «Ja eres príncep el dia que vas néixer, † tens la glòria sagrada des del si de la mare, * abans de l’aurora jo t’he engendrat.» El Senyor no es desdiu del que jurà: † «Ets sacerdot per sempre, * segons l’orde de Melquisedec.» El Senyor és al teu costat, * i abat els reis el dia que s’indigna; judica els pobles i els fa presoners, * abat governants arreu de la terra. Pel camí beuràs del torrent, * així redreçaràs el cap.</p></div>
-    </div>
-  </li></ul>
-      <details class="fold"><summary>12 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3522</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3499</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/3523</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3500</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3500</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/3524</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3501</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1853</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1556</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/10045</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/10046</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1213</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Nona <span class="hc">2 de 14 divergeixen</span></h4>
-      <ul class="fl"><li class="fr no">
-    <span>1r salm — cita <span class="cell">salmos_citas/3498</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">Salm 118, 105-112 XIV (Nun)</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Salm 109</p></div>
-    </div>
-  </li><li class="fr no">
-    <span>1r salm — text <span class="cell">salmos_textos/3499</span> <span class="ref open">sense investigar</span></span>
-    <div class="two">
-      <div><span class="who">cpl-app</span><p class="lit">La vostra promesa fa llum als meus passos, * és la claror que m’il·lumina el camí. Vull complir el que he jurat: * sostindré que són justes les vostres decisions. Que en són, de grans, les penes que sofreixo; * feu que visqui, com ho havíeu promès. Accepteu, Senyor, l’ofrena que us prometo, * i feu que aprengui les vostres decisions. La meva vida està sempre en perill, * però no oblido mai la vostra llei. M’han tirat un llaç els injustos, * però no m’he desviat dels preceptes. Tindré sempre per herència el vostre pacte, * és l’alegria del meu cor. Compliré de tot cor els vostres decrets, * del tot i per sempre.</p></div>
-      <div><span class="who">saints-app</span><p class="lit">Oracle del Senyor al meu Senyor: † «Seu a la meva dreta, * i espera que faci dels enemics l’escambell dels teus peus.» Que el Senyor estengui lluny des de Sió † el poder del teu ceptre. * Impera enmig dels enemics. «Ja eres príncep el dia que vas néixer, † tens la glòria sagrada des del si de la mare, * abans de l’aurora jo t’he engendrat.» El Senyor no es desdiu del que jurà: † «Ets sacerdot per sempre, * segons l’orde de Melquisedec.» El Senyor és al teu costat, * i abat els reis el dia que s’indigna; judica els pobles i els fa presoners, * abat governants arreu de la terra. Pel camí beuràs del torrent, * així redreçaràs el cap.</p></div>
-    </div>
-  </li></ul>
-      <details class="fold"><summary>12 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/3522</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3499</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/3523</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3500</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/3500</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/3524</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/3501</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/1867</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/1242</span></span></li><li class="fr ok"><span>Responsori breu (1/2) <span class="cell">responsorios/10515</span></span></li><li class="fr ok"><span>Responsori breu (2/2) <span class="cell">responsorios/10516</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/1190</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Vespres <span class="hc">26 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>26 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1r salm — cita <span class="cell">salmos_citas/3423</span></span></li><li class="fr ok"><span>1r salm — antífona <span class="cell">salmos_antifonas/9323</span></span></li><li class="fr ok"><span>1r salm — text <span class="cell">salmos_textos/3424</span></span></li><li class="fr ok"><span>2n salm — cita <span class="cell">salmos_citas/3424</span></span></li><li class="fr ok"><span>2n salm — antífona <span class="cell">salmos_antifonas/9324</span></span></li><li class="fr ok"><span>2n salm — text <span class="cell">salmos_textos/3425</span></span></li><li class="fr ok"><span>3r salm — cita <span class="cell">salmos_citas/11072</span></span></li><li class="fr ok"><span>3r salm — antífona <span class="cell">salmos_antifonas/9325</span></span></li><li class="fr ok"><span>3r salm — text <span class="cell">salmos_textos/11073</span></span></li><li class="fr ok"><span>Lectura breu — cita <span class="cell">lectura_breve_citas/3379</span></span></li><li class="fr ok"><span>Lectura breu — text <span class="cell">lectura_breve_textos/3380</span></span></li><li class="fr ok"><span>Responsori breu (1/6) <span class="cell">responsorios/15402</span></span></li><li class="fr ok"><span>Responsori breu (2/6) <span class="cell">responsorios/15403</span></span></li><li class="fr ok"><span>Responsori breu (3/6) <span class="cell">responsorios/15404</span></span></li><li class="fr ok"><span>Responsori breu (4/6) <span class="cell">responsorios/15405</span></span></li><li class="fr ok"><span>Responsori breu (5/6) <span class="cell">responsorios/15406</span></span></li><li class="fr ok"><span>Responsori breu (6/6) <span class="cell">responsorios/15407</span></span></li><li class="fr ok"><span>Càntic evangèlic — antífona <span class="cell">cantico_evangelico_antifonas/1127</span></span></li><li class="fr ok"><span>Precs — introducció <span class="cell">preces_intro/1121</span></span></li><li class="fr ok"><span>Precs — resposta <span class="cell">preces_respuesta/1121</span></span></li><li class="fr ok"><span>Precs — peticions (1/5) <span class="cell">preces_contenido/5836</span></span></li><li class="fr ok"><span>Precs — peticions (2/5) <span class="cell">preces_contenido/5837</span></span></li><li class="fr ok"><span>Precs — peticions (3/5) <span class="cell">preces_contenido/5838</span></span></li><li class="fr ok"><span>Precs — peticions (4/5) <span class="cell">preces_contenido/5839</span></span></li><li class="fr ok"><span>Precs — peticions (5/5) <span class="cell">preces_contenido/5840</span></span></li><li class="fr ok"><span>Oració final <span class="cell">oraciones_finales/3746</span></span></li></ul></details>
-    </section><section class="hr">
-      <h4>Missa <span class="hc">8 camps, tots coincideixen</span></h4>
-      
-      <details class="fold"><summary>8 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>1a lectura — cita <span class="cell">lecturas_referencia/2530</span></span></li><li class="fr ok"><span>1a lectura — text <span class="cell">lecturas_texto/3162</span></span></li><li class="fr ok"><span>Salm responsorial — cita <span class="cell">lecturas_referencia/2531</span></span></li><li class="fr ok"><span>Salm responsorial — text <span class="cell">lecturas_texto/3163</span></span></li><li class="fr ok"><span>Al·leluia — cita <span class="cell">lecturas_referencia/6000</span></span></li><li class="fr ok"><span>Al·leluia — text <span class="cell">lecturas_texto/6033</span></span></li><li class="fr ok"><span>Evangeli — cita <span class="cell">lecturas_referencia/628</span></span></li><li class="fr ok"><span>Evangeli — text <span class="cell">lecturas_texto/787</span></span></li></ul></details>
+      <details class="fold"><summary>6 camps que coincideixen</summary><ul class="fl"><li class="fr ok"><span>Salm responsorial — cita <span class="cell">lecturas_referencia/1158</span></span></li><li class="fr ok"><span>Salm responsorial — text <span class="cell">lecturas_texto/1446</span></span></li><li class="fr ok"><span>Al·leluia — cita <span class="cell">lecturas_referencia/6000</span></span></li><li class="fr ok"><span>Al·leluia — text <span class="cell">lecturas_texto/6148</span></span></li><li class="fr ok"><span>Evangeli — cita <span class="cell">lecturas_referencia/1159</span></span></li><li class="fr ok"><span>Evangeli — text <span class="cell">lecturas_texto/1447</span></span></li></ul></details>
     </section></details>
   </article>
 
@@ -479,7 +385,130 @@ Diòcesi de Barcelona.</p>
 <h2 id="prompts">Què fer ara</h2>
 <p class="sub">La revisió no toca res. Cada correcció va amb un prompt per enganxar en un fil
 nou, que ja porta les proves a dins perquè no s'hagi de tornar a investigar.</p>
+<div class="pr">
+  <h3><span class="vp v3">F18 · les nostres eines</span> L’Ofici resa el salm 23 i el 86 amb un asterisc de menys cadascun</h3>
+  <pre><code># F18 · L’Ofici resa el salm 23 i el 86 amb un asterisc de menys cadascun
 
+Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
+Veredicte de la revisió: **3 — les nostres eines**.
+Dies on es va veure: 2026-09-08.
+
+## Què passa
+A salmos_textos/112 falta el * de «És el Senyor, valent i poderós,» i a salmos_textos/367 el de «El Senyor va escrivint al registre dels pobles:». Tota la resta dels dos salms és idèntica a cpl-app.
+
+Cap de les dues caselles no és a l’exportació d’avui: el join les reté, perquè les 52 celebracions que se les reparteixen no s’hi posen d’acord. Hi són perquè una passada antiga les va publicar, i export-to-saints-app.js és additiu — «never used to blank the destination»— i no esborra mai el que ja no avala. El text publicat és el de la Mare de Déu del Toro (8 de maig, Menorca, santsSolemnitats fila 147), la variant minoritària.
+
+**Conseqüència:** 521 caselles de saints-app ja no les produeix l’exportació d’avui; de les 349 que el join declara en conflicte, 265 duen la variant majoritària, 68 una de minoritària i 16 no coincideixen amb cap variant coneguda — la mateixa família que els quatre precs de MIGRA-008.
+
+|  | caselles |
+|---|---|
+| publicades que l’exportació d’avui ja no produeix | 521 |
+| …que el join declara ara en conflicte | 349 |
+| …amb la variant majoritària (l’atzar va sortir bé) | 265 |
+| …amb una variant minoritària | 68 |
+| …que no coincideixen amb cap variant coneguda | 16 |
+
+## Com es va provar
+- **Retingudes avui** — 112 i 367 són a join-pending-review.json i no a output/commons-ca
+- **D’on ve el text publicat** — Idèntic byte a byte al de l’exportació del commit 5668ed5
+- **L’exportació no esborra** — export-to-saints-app.js:75 — «if (!(k in dest))»; cap camí d’esborrat
+
+## Què s’ha de canviar
+A: `migration-to-saints/export-to-saints-app.js · decisió D-007`
+
+La sortida no és tècnica: esborrar-les vol dir canviar text dolent per «[ERR-001] Element no trobat». Tres opcions al registre (D-007); la del mig és esborrar les 84 minoritàries i desconegudes i deixar les 265 majoritàries.
+
+&gt; Passi el que passi, l’exportació hauria de reportar les òrfenes com ja fa amb les del Comú.
+
+## Com tancar-ho
+- És codi nostre: aplica el canvi, afegeix el test que detecti la regressió, i commiteja.
+- Si el canvi afecta el join, **torna'l a córrer** i apunta com queden els pendents abans i després.
+
+## Comprovació
+Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
+
+```sh
+make review DATES=2026-09-08
+```</code></pre>
+</div><div class="pr">
+  <h3><span class="vp v1">F19 · cpl-app</span> A la Mare de Déu del Toro li falten dos asteriscs a l’Ofici</h3>
+  <pre><code># F19 · A la Mare de Déu del Toro li falten dos asteriscs a l’Ofici
+
+Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
+Veredicte de la revisió: **1 — cpl-app**.
+Dies on es va veure: 2026-09-08.
+
+## Què passa
+La fila 147 de santsSolemnitats (8 de maig, Menorca, Comú de la Mare de Déu en temps pasqual) és l’única de les 23 que duen aquests salms a l’Ofici a què falta el marcador de mitja estrofa, i li falta als dos.
+
+És una errata de dades, no una variant d’edició: el * és el marcador de cesura del vers, i les altres 22 còpies del mateix salm a la mateixa columna el duen. No és una qüestió de redacció catalana —no toca cap paraula— i per tant no cal el volum imprès per a dir-ho.
+
+**Conseqüència:** A cpl-app es veu el 8 de maig a Menorca. A saints-app s’ha vist a tot arreu, perquè aquesta fila és la que va guanyar les caselles compartides (F18).
+
+| columna | files amb el salm | amb &lt;code&gt;*&lt;/code&gt; | sense |
+|---|---|---|---|
+| salm1Ofici — Salm 23 | 23 | 22 | &lt;strong&gt;santsSolemnitats#147&lt;/strong&gt; |
+| salm3Ofici — Salm 86 | 23 | 22 | &lt;strong&gt;santsSolemnitats#147&lt;/strong&gt; |
+
+## Com es va provar
+- **Recompte intern** — 22 de 23 files amb l’asterisc, a les dues columnes, la mateixa fila fora
+- **La resta del salm quadra** — Els altres 8 asteriscs i els 2 creuets de la fila 147 hi són
+
+## Què s’ha de canviar
+A: `src/Assets/db/cpl-app.db · santsSolemnitats`
+
+Afegir « *» al final de «És el Senyor, valent i poderós,» de salm1Ofici i de «El Senyor va escrivint al registre dels pobles:» de salm3Ofici, filtrant per l’estat incorrecte i no per id.
+
+&gt; Va amb db-fixes/CPL-LIT-NNN.sql, test de regressió i dossier, segons el CLAUDE.md.
+
+## Com tancar-ho
+- Fix al codi de cpl-app, test de regressió a `__tests__/Services/`, i dossier a `migration-to-saints/cpl-bugs/CPL-LIT-NNN.md`.
+- Si el problema és de DADES i no de codi: **no toquis `src/Assets/db/cpl-app.db` a mà**. Escriu `db-fixes/CPL-LIT-NNN.sql` idempotent (que corregeixi per l'estat incorrecte, no per `id` de fila) i documenta-ho al dossier.
+- Commit amb el trailer `Cpl-Bug: CPL-LIT-NNN`.
+
+## Comprovació
+Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
+
+```sh
+make review DATES=2026-09-08
+```</code></pre>
+</div><div class="pr">
+  <h3><span class="vp v2">F20 · saints-app / eprex</span> Les hores menors de la festa resen les antífones de la fèria</h3>
+  <pre><code># F20 · Les hores menors de la festa resen les antífones de la fèria
+
+Repositori: `/Users/pau/projects/personal/cpl-app` (branca `catalan-migration`).
+Veredicte de la revisió: **2 — saints-app / eprex**.
+Dies on es va veure: 2026-09-08.
+
+## Què passa
+cpl-app diu una antífona pròpia per hora —«Avui és el Naixement de santa Maria Verge…» a Tèrcia— i saints-app en diu tres, les del salteri corrent («Qui estima ha complert tota la Llei»). Nou caselles: tres que difereixen i sis que només són a l’app.
+
+És l’EPREX-005, ja dossieritzat: terciaStore.ts i els seus bessons substitueixen, en una festa, els nou camps de la salmòdia pels de la fèria — i s’enduen també l’antífona pròpia que l’índex duu per a aquell dia. El 8-IX all_tercia.json diu primer_salmo_antifona: 4811 i -1 a les altres dues, que és exactament el que resa cpl-app. La 4811 no l’obre ningú.
+
+**Conseqüència:** 513 dies de la finestra 2017-2026 fan això, en totes les llengües.
+
+## Com es va provar
+- **Dossier** — eprex-bugs/EPREX-005.md — proposat, pendent d’enviar
+- **L’índex ja hi és** — all_tercia.json du una sola antífona per a aquest dia, com mana l’OGLH
+
+## Què s’ha de canviar
+A: `eprex · terciaStore.ts, sextaStore.ts, nonaStore.ts`
+
+Treure les tres línies d’antífona de l’override de FEAST/SPECIAL i deixar-hi els salms.
+
+&gt; Repo aliè: es proposa, no s’aplica.
+
+## Com tancar-ho
+- El contingut és d'eprex, **fora d'aquest repositori**. No hi facis canvis directament.
+- Deixa la proposta escrita a `migration-to-saints/cpl-bugs/` amb els ids concrets, perquè es pugui passar a qui manté saints-app.
+
+## Comprovació
+Torna a córrer la revisió dels mateixos dies i confirma que la troballa ha desaparegut:
+
+```sh
+make review DATES=2026-09-08
+```</code></pre>
+</div>
 
 <hr>
 <p class="note">cpl-app resolt amb els seus Serveis reals sobre <code>cpl-app.db</code>;
