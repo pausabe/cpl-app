@@ -12,6 +12,7 @@ npm-debug.*
 web-build/
 package-lock.json
 .vscode/*
+*.code-workspace
 .idea/*
 
 # macOS
@@ -21,3 +22,11 @@ package-lock.json
 *.db
 *.lock
 dist
+
+# Memòria cau del comparador de dia: es regenera sola des de cpl-app.db i de litcal
+migration-to-saints/output/raw/cpl-days/
+migration-to-saints/output/raw/litcal-days/
+
+# Còpia de les sortides commons-ca d'abans de regenerar-les: la fa el pipeline i
+# el git ja en guarda l'historial
+migration-to-saints/output/.ca-backup/
