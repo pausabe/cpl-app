@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import HoursLiturgyButtonsComponent from './HoursLiturgyButtonsComponent';
 import GlobalKeys from '../../Utils/GlobalKeys';
-import {CurrentHoursLiturgy, CurrentSettings} from "../../Services/DataService";
+import {CurrentHoursLiturgy} from "../../Services/DataService";
 
 export default class HoursLiturgyPrayerMainScreen extends Component {
   constructor(props) {
@@ -21,34 +21,10 @@ export default class HoursLiturgyPrayerMainScreen extends Component {
     this._unsubscribe();
   }
 
-  LHButtonCB(type, superTestMode) {
+  LHButtonCB(type) {
     let title = type;
     if (type === 'Ofici') title = 'Ofici de lectura';
-
-    const params = {
-      title: title,
-      props: {
-        superTestMode: superTestMode,
-        nextDayTestCB: this.nextDayTest.bind(this),
-        setNumSalmInv: this.setNumSalmInv.bind(this),
-        setNumAntMare: this.setNumAntMare.bind(this),
-        type: type,
-        events: this.eventEmitter
-      },
-    };
-    this.props.navigation.navigate('LHDisplay', params);
-  }
-
-  nextDayTest() {
-
-  }
-
-  setNumSalmInv(numSalm) {
-    CurrentSettings.InvitationPsalmOption = numSalm;
-  }
-
-  setNumAntMare(numAntMare) {
-    CurrentSettings.VirginAntiphonOption = numAntMare;
+    this.props.navigation.navigate('LHDisplay', { type: type, title: title });
   }
 
   render() {
@@ -60,13 +36,13 @@ export default class HoursLiturgyPrayerMainScreen extends Component {
                 null :
                 <View style={styles.liturgiaContainer}>
                   <HoursLiturgyButtonsComponent
-                    oficiCB={this.LHButtonCB.bind(this, "Ofici", false)}
-                    laudesCB={this.LHButtonCB.bind(this, "Laudes", false)}
-                    terciaCB={this.LHButtonCB.bind(this, "Tèrcia", false)}
-                    sextaCB={this.LHButtonCB.bind(this, "Sexta", false)}
-                    nonaCB={this.LHButtonCB.bind(this, "Nona", false)}
-                    vespresCB={this.LHButtonCB.bind(this, "Vespres", false)}
-                    completesCB={this.LHButtonCB.bind(this, "Completes", false)} />
+                    oficiCB={this.LHButtonCB.bind(this, "Ofici")}
+                    laudesCB={this.LHButtonCB.bind(this, "Laudes")}
+                    terciaCB={this.LHButtonCB.bind(this, "Tèrcia")}
+                    sextaCB={this.LHButtonCB.bind(this, "Sexta")}
+                    nonaCB={this.LHButtonCB.bind(this, "Nona")}
+                    vespresCB={this.LHButtonCB.bind(this, "Vespres")}
+                    completesCB={this.LHButtonCB.bind(this, "Completes")} />
                 </View>
               }
             </ImageBackground>

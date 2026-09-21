@@ -5,7 +5,8 @@
 // Colours are reduced to what they mean, rubric (R) or text (T), so that a new shade of red
 // or a dark background do not count as a change. A colour that is neither shows up as is.
 const RUBRIC = new Set(['red', '#FA8072', '#B3261E', '#F28B82']);
-const TEXT = new Set(['black', 'white', '#000000', '#FFFFFF', '#182322', '#E6ECEB']);
+// The softer text of the comments (text2) is still text
+const TEXT = new Set(['black', 'white', '#000000', '#FFFFFF', '#182322', '#E6ECEB', '#475756', '#B3C0BE']);
 const INTERACTIVE_ROLES = new Set(['button', 'radio', 'switch', 'link', 'togglebutton', 'tab']);
 
 function flatten(style) {

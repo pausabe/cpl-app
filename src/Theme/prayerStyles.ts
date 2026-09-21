@@ -18,6 +18,10 @@ export interface PrayerTextStyles {
     redCenterBold: TextStyle;
     redSmallItalicRight: TextStyle;
     sectionTitle: TextStyle;
+    // The reference of a reading ("Mt 9,9-13"): rubric, a little heavier
+    reference: TextStyle;
+    // The phrase that sums up a reading, in italics and a softer colour
+    comment: TextStyle;
 }
 
 const cache = new WeakMap<Theme, PrayerTextStyles>();
@@ -44,6 +48,8 @@ export function prayerTextStyles(theme: Theme): PrayerTextStyles {
         redCenter: {...rubric, textAlign: 'center'},
         redCenterBold: {...rubric, textAlign: 'center', fontWeight: 'bold'},
         redSmallItalicRight: {...rubric, fontSize: smallSize, lineHeight: smallLineHeight, fontStyle: 'italic', textAlign: 'right'},
+        reference: {...rubric, fontWeight: '600'},
+        comment: {...text, fontStyle: 'italic', color: theme.colors.text2},
         sectionTitle: {
             color: theme.colors.rubric,
             fontSize: sectionTitleSize,

@@ -5,9 +5,9 @@ const React = require('react');
 // Through the module: `screen` is replaced on every render, a destructured copy would go stale.
 const RNTL = require('@testing-library/react-native');
 const { SafeAreaProvider } = require('react-native-safe-area-context');
-const DataService = require('../../src/Services/DataService');
-const HoursLiturgyPrayerScreen = require('../../src/Views/HoursLiturgy/HoursLiturgyPrayerScreen').default;
-const MassLiturgyPrayerScreen = require('../../src/Views/MassLiturgy/MassLiturgyPrayerScreen').default;
+const LiturgyStore = require('../../src/Controllers/LiturgyStore');
+const { HoursPrayerController, MassPrayerController } = require('../../src/Controllers/PrayerController');
+const AppThemeProvider = require('../../src/Controllers/AppThemeProvider').default;
 const { textRuns } = require('./renderedText');
 
 const METRICS = { frame: { x: 0, y: 0, width: 390, height: 844 }, insets: { top: 47, left: 0, right: 0, bottom: 34 } };
@@ -15,42 +15,35 @@ const navigation = { setOptions: () => {}, addListener: () => () => {}, navigate
 
 const HOURS = ['Ofici', 'Laudes', 'Tèrcia', 'Sexta', 'Nona', 'Vespres', 'Completes'];
 
+// As in the app: the theme of the loaded settings around the screen. The day was loaded with
+// DataService directly (liturgyDay.loadDay), so the screens are told first. One screen at a
+// time, as in the app: the one before is closed.
+let current;
 function mount(element) {
-  return RNTL.render(React.createElement(SafeAreaProvider, { initialMetrics: METRICS }, element));
+  if (current) {
+    current.unmount();
+    current = undefined;
+  }
+  LiturgyStore.publish();
+  current = RNTL.render(React.createElement(SafeAreaProvider, { initialMetrics: METRICS },
+    React.createElement(AppThemeProvider, null, element)));
+  return current;
 }
 
 async function settle() {
   await RNTL.act(async () => { await Promise.resolve(); });
 }
 
-function hoursParams(type) {
-  return {
-    title: type === 'Ofici' ? 'Ofici de lectura' : type,
-    props: {
-      type,
-      superTestMode: false,
-      nextDayTestCB: () => {},
-      setNumSalmInv: (n) => { DataService.CurrentSettings.InvitationPsalmOption = n; },
-      setNumAntMare: (n) => { DataService.CurrentSettings.VirginAntiphonOption = n; },
-      events: undefined,
-    },
-  };
-}
-
 async function openHour(type) {
-  const view = mount(React.createElement(HoursLiturgyPrayerScreen, { route: { params: hoursParams(type) }, navigation }));
+  const params = { type, title: type === 'Ofici' ? 'Ofici de lectura' : type };
+  const view = mount(React.createElement(HoursPrayerController, { route: { params }, navigation }));
   await settle();
   return view;
 }
 
-function massParams(type, useVespersTexts, needSecondReading) {
-  return { title: 'Missa', props: { type, events: undefined, need_lectura2: needSecondReading, useVespersTexts } };
-}
-
 async function openMass(type, useVespersTexts, needSecondReading) {
-  const view = mount(React.createElement(MassLiturgyPrayerScreen, {
-    route: { params: massParams(type, useVespersTexts, needSecondReading) }, navigation,
-  }));
+  const params = { type, title: 'Missa', need_lectura2: needSecondReading, useVespersTexts };
+  const view = mount(React.createElement(MassPrayerController, { route: { params }, navigation }));
   await settle();
   return view;
 }

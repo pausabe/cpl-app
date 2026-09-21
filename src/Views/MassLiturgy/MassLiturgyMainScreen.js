@@ -99,18 +99,12 @@ export default class MassLiturgyMainScreen extends Component {
 
     //CALLBACKS ----------------------------------------------------------------------------
     On_Button_Pressed(prayer_type, need_lectura2) {
-        const title = "Missa";
-
-        const params = {
-            title: title,
-            props: {
-                type: prayer_type,
-                events: this.eventEmitter,
-                need_lectura2: need_lectura2,
-                useVespersTexts: this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS
-            },
-        };
-        this.props.navigation.navigate('LDDisplay', params);
+        this.props.navigation.navigate('LDDisplay', {
+            type: prayer_type,
+            title: "Missa",
+            need_lectura2: need_lectura2,
+            useVespersTexts: this.CURRENT_VESPERS_SELECTOR_TYPE === VESPERS_SELECTOR_TYPES.VESPERS
+        });
     }
 
     //RENDER -------------------------------------------------------------------------------

@@ -11,16 +11,15 @@ import SettingsScreen from '../Views/Settings/SettingsScreen';
 import DonationScreen from '../Views/DonationScreen';
 import CommentScreen from '../Views/CommentScreen';
 import HoursLiturgyPrayerMainScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerMainScreen';
-import HoursLiturgyPrayerScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerScreen';
 import MassLiturgyMainScreen from '../Views/MassLiturgy/MassLiturgyMainScreen';
 import Icon from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
-import {navigationTheme, ThemeProvider, useTheme} from '../Theme';
-import {useAppearance} from './LiturgyStore';
+import {HoursPrayerController, MassPrayerController} from './PrayerController';
+import AppThemeProvider from './AppThemeProvider';
+import {navigationTheme, useTheme} from '../Theme';
 
 const HomeStack = createStackNavigator();
 const LHStack = createStackNavigator();
@@ -30,11 +29,10 @@ const Stack = createStackNavigator();
 
 // The theme follows the settings of the loaded day: the dark mode and the text size.
 export default function NavigationController(props){
-    const {dark, textSize} = useAppearance();
     return (
-        <ThemeProvider dark={dark} textSize={textSize}>
+        <AppThemeProvider>
             <NavigationContainerView/>
-        </ThemeProvider>
+        </AppThemeProvider>
     );
 }
 
@@ -272,11 +270,11 @@ function NavigationContainerView(){
                     />
                     <Stack.Screen
                         name="LHDisplay"
-                        component={HoursLiturgyPrayerScreen}
+                        component={HoursPrayerController}
                         options={({route }) => {
                             // The whole name of the hour: "Ofici de lectura", not "Ofici"
                             // @ts-ignore
-                            const title = route.params?.title ?? route.params?.props?.type;
+                            const title = route.params?.title;
                             return ({
                                 title: title,
                                 animation: Platform.OS === "ios" ? "default" : "none",
@@ -290,7 +288,7 @@ function NavigationContainerView(){
                     />
                     <Stack.Screen
                         name="LDDisplay"
-                        component={MassLiturgyPrayerScreen}
+                        component={MassPrayerController}
                         options={() => ({
                             title: "Missa",
                             animation: Platform.OS === "ios" ? "default" : "none",
