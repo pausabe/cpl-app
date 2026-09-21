@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, StyleSheet, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 import Ofici from './SpecificHourLiturgy/OfficeComponent'
 import Laudes from './SpecificHourLiturgy/LaudesComponent'
@@ -10,7 +11,18 @@ import Completes from './SpecificHourLiturgy/NightPrayerComponent'
 import {CurrentSettings, CurrentHoursLiturgy} from '../../Services/DataService';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 
+// While a prayer is open the screen does not go off
+const KEEP_AWAKE_TAG = 'hours-prayer';
+
 export default class HoursLiturgyPrayerScreen extends Component {
+
+  componentDidMount() {
+    activateKeepAwakeAsync(KEEP_AWAKE_TAG).catch(() => {});
+  }
+
+  componentWillUnmount() {
+    Promise.resolve(deactivateKeepAwake(KEEP_AWAKE_TAG)).catch(() => {});
+  }
 
   UNSAFE_componentWillMount() {
     this.screen_props = this.props.route.params.props;

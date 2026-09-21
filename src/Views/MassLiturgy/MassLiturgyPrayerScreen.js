@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { View, ScrollView, Text, Platform, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import YoutubePlayer from 'react-native-youtube-iframe';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import HR from '../../Components/HRComponent';
 import * as Logger from '../../Utils/Logger';
@@ -14,7 +15,18 @@ import SettingsService from "../../Services/SettingsService";
 import {YearType} from "../../Services/DatabaseEnums";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
 
+// While the readings are open the screen does not go off
+const KEEP_AWAKE_TAG = 'mass-readings';
+
 export default class MassLiturgyPrayerScreen extends Component {
+    componentDidMount() {
+        activateKeepAwakeAsync(KEEP_AWAKE_TAG).catch(() => {});
+    }
+
+    componentWillUnmount() {
+        Promise.resolve(deactivateKeepAwake(KEEP_AWAKE_TAG)).catch(() => {});
+    }
+
     //PREVIEWS --------------------------------------------------------------------------
     UNSAFE_componentWillMount() {
         this.screen_props = this.props.route.params.props;

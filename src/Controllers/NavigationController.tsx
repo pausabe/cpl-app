@@ -274,8 +274,9 @@ function NavigationContainerView(){
                         name="LHDisplay"
                         component={HoursLiturgyPrayerScreen}
                         options={({route }) => {
+                            // The whole name of the hour: "Ofici de lectura", not "Ofici"
                             // @ts-ignore
-                            const title = route.params?.props.type;
+                            const title = route.params?.title ?? route.params?.props?.type;
                             return ({
                                 title: title,
                                 animation: Platform.OS === "ios" ? "default" : "none",
