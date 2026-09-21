@@ -73,8 +73,7 @@ export default class HoursLiturgyPrayerScreen extends Component {
           <Ofici
             {...common}
             titols={this.getTitles()}
-            onInvitationPsalmChange={this.props.onInvitationPsalmChange}
-            setNumSalmInv={this.props.onInvitationPsalmChange}/>
+            onInvitationPsalmChange={this.props.onInvitationPsalmChange}/>
         )
 
       case 'Laudes':
@@ -82,8 +81,7 @@ export default class HoursLiturgyPrayerScreen extends Component {
           <Laudes
             {...common}
             titols={this.getTitles()}
-            onInvitationPsalmChange={this.props.onInvitationPsalmChange}
-            setNumSalmInv={this.props.onInvitationPsalmChange}/>
+            onInvitationPsalmChange={this.props.onInvitationPsalmChange}/>
         )
 
       case 'Vespres':
@@ -102,8 +100,7 @@ export default class HoursLiturgyPrayerScreen extends Component {
         return(
           <Completes
             {...common}
-            onVirginAntiphonChange={this.props.onVirginAntiphonChange}
-            setNumAntMare={this.props.onVirginAntiphonChange}/>
+            onVirginAntiphonChange={this.props.onVirginAntiphonChange}/>
         )
 
       default:

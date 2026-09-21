@@ -22,6 +22,8 @@ export interface PrayerTextStyles {
     reference: TextStyle;
     // The phrase that sums up a reading, in italics and a softer colour
     comment: TextStyle;
+    // A title in the middle of a prayer: "Antífona final de la Mare de Déu"
+    centeredTitle: TextStyle;
 }
 
 const cache = new WeakMap<Theme, PrayerTextStyles>();
@@ -50,6 +52,13 @@ export function prayerTextStyles(theme: Theme): PrayerTextStyles {
         redSmallItalicRight: {...rubric, fontSize: smallSize, lineHeight: smallLineHeight, fontStyle: 'italic', textAlign: 'right'},
         reference: {...rubric, fontWeight: '600'},
         comment: {...text, fontStyle: 'italic', color: theme.colors.text2},
+        centeredTitle: {
+            ...rubric,
+            fontSize: Math.round(fontSize * 0.9),
+            lineHeight: Math.round(fontSize * 0.9 * 1.3),
+            fontWeight: '600',
+            textAlign: 'center',
+        },
         sectionTitle: {
             color: theme.colors.rubric,
             fontSize: sectionTitleSize,

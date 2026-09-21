@@ -1,133 +1,99 @@
 import React, {Component} from 'react';
 import {
-    AppRegistry,
     Text,
     View,
-    Platform,
-    TouchableOpacity
 } from 'react-native';
 import HR from '../../../Components/HRComponent';
-import GlobalKeys from '../../../Utils/GlobalKeys';
+import Gap from '../../../Components/Gap';
+import Rubric from '../../../Components/Rubric';
+import SectionTitle from '../../../Components/SectionTitle';
+import ChoiceChips from '../../../Components/ChoiceChips';
 import GlobalViewFunctions from '../../../Utils/GlobalViewFunctions';
-import SettingsService from '../../../Services/SettingsService';
 import * as Logger from '../../../Utils/Logger';
-import {CurrentHoursLiturgy, CurrentLiturgyDayInformation, CurrentSettings} from "../../../Services/DataService";
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../../Services/CelebrationTimeEnums";
 import {StringManagement} from "../../../Utils/StringManagement";
+import {ThemeContext, prayerTextStyles} from "../../../Theme";
 
+// The four Marian antiphons to choose from outside Easter (in Easter, only the fifth)
+const MARIAN_ANTIPHONS = ['1', '2', '3', '4'].map((value) => ({value, label: `Ant. ${value}`}));
+
+// Completes. Gets through props the hours of the day (hours), the day (today) and the settings;
+// a new Marian antiphon goes to onVirginAntiphonChange.
 export default class NightPrayerComponent extends Component {
+    static contextType = ThemeContext;
+
     constructor(props) {
         super(props);
-        
-        this.styles = {
-            black: GlobalViewFunctions.getStyle("GENERIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackBold: GlobalViewFunctions.getStyle("GENERIC_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackItalic: GlobalViewFunctions.getStyle("GENERIC_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackSmallItalicRight: GlobalViewFunctions.getStyle("GENERIC_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            blackJustified: GlobalViewFunctions.getStyle("GENERIC_JUSTIFIED", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            red: GlobalViewFunctions.getStyle("ACCENT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redItalic: GlobalViewFunctions.getStyle("ACCENT_ITALIC", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenter: GlobalViewFunctions.getStyle("ACCENT_CENTER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redCenterBold: GlobalViewFunctions.getStyle("ACCENT_CENTER_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            redSmallItalicRight: GlobalViewFunctions.getStyle("ACCENT_SMALL_ITALIC_RIGHT", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            hiddenPrayerButton: GlobalViewFunctions.getStyle("HIDDEN_PRAYER_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButton: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-            prayerTabButtonBold: GlobalViewFunctions.getStyle("PRAYER_TAB_BUTTON_BOLD", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled),
-        };
 
-        let auxNumAntMare = CurrentSettings.VirginAntiphonOption;
+        // In Easter, always the fifth antiphon (Regina caeli); outside it, the one chosen last time
+        let auxNumAntMare = props.settings.VirginAntiphonOption;
 
-        if (CurrentLiturgyDayInformation.Today.GenericLiturgyTime === GenericLiturgyTimeType.Easter && auxNumAntMare !== '5') {
+        if (props.today.GenericLiturgyTime === GenericLiturgyTimeType.Easter && auxNumAntMare !== '5') {
             auxNumAntMare = '5';
-            props.setNumAntMare('5');
-            SettingsService.setSettingNumAntMare('5');
-        } else if (!(CurrentLiturgyDayInformation.Today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) && auxNumAntMare === '5') {
+            props.onVirginAntiphonChange('5');
+        } else if (!(props.today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) && auxNumAntMare === '5') {
             auxNumAntMare = '1';
-            props.setNumAntMare('1');
-            SettingsService.setSettingNumAntMare('1');
+            props.onVirginAntiphonChange('1');
         }
 
         this.state = {
             numAntMare: auxNumAntMare
         }
+    }
 
-        this.COMPLETES = CurrentHoursLiturgy.NightPrayer;
-        this.setNumAntMare = props.setNumAntMare;
+    get styles() {
+        return prayerTextStyles(this.context);
+    }
+
+    get hours() {
+        return this.props.hours;
+    }
+
+    get today() {
+        return this.props.today;
+    }
+
+    get COMPLETES() {
+        return this.props.hours.NightPrayer;
     }
 
     onAntMarePress(numAntMare) {
         this.setState({numAntMare: numAntMare});
-        this.setNumAntMare(numAntMare);
-        SettingsService.setSettingNumAntMare(numAntMare);
+        this.props.onVirginAntiphonChange(numAntMare);
     }
 
     antMareComp(numAntMare) {
-        let ant1Style = this.styles.prayerTabButton;
-        let ant2Style = this.styles.prayerTabButton;
-        let ant3Style = this.styles.prayerTabButton;
-        let ant4Style = this.styles.prayerTabButton;
-        let ant5Style = this.styles.prayerTabButton;
-
         let antMare;
 
         switch (numAntMare) {
             case '1':
                 antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFirstOption);
-                ant1Style = this.styles.prayerTabButtonBold;
                 break;
             case '2':
                 antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonSecondOption);
-                ant2Style = this.styles.prayerTabButtonBold;
                 break;
             case '3':
                 antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonThirdOption);
-                ant3Style = this.styles.prayerTabButtonBold;
                 break;
             case '4':
                 antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFourthOption);
-                ant4Style = this.styles.prayerTabButtonBold;
                 break;
             case '5':
                 antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFifthOption);
-                ant5Style = this.styles.prayerTabButtonBold;
                 break;
         }
 
         return (
             <View>
-                <View style={{alignItems: 'center'}}>
-                    <View style={{flexDirection: 'row', paddingVertical: 10}}>
-                        {!(CurrentLiturgyDayInformation.Today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) ?
-                            <TouchableOpacity onPress={this.onAntMarePress.bind(this, '1')}>
-                                <Text style={ant1Style}>{"Ant. 1  "}</Text>
-                            </TouchableOpacity>
-                            :
-                            null
-                        }
-                        {!(CurrentLiturgyDayInformation.Today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) ?
-                            <TouchableOpacity onPress={this.onAntMarePress.bind(this, '2')}>
-                                <Text style={ant2Style}>{"  Ant. 2  "}</Text>
-                            </TouchableOpacity>
-                            :
-                            null
-                        }
-                        {!(CurrentLiturgyDayInformation.Today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) ?
-                            <TouchableOpacity onPress={this.onAntMarePress.bind(this, '3')}>
-                                <Text style={ant3Style}>{"  Ant. 3  "}</Text>
-                            </TouchableOpacity>
-                            :
-                            null
-                        }
-                        {!(CurrentLiturgyDayInformation.Today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) ?
-                            <TouchableOpacity onPress={this.onAntMarePress.bind(this, '4')}>
-                                <Text style={ant4Style}>{"  Ant. 4"}</Text>
-                            </TouchableOpacity>
-                            :
-                            null
-                        }
-                    </View>
-                </View>
-
+                {!(this.today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) ?
+                    <ChoiceChips
+                        accessibilityLabel="Antífona final de la Mare de Déu"
+                        options={MARIAN_ANTIPHONS}
+                        value={numAntMare}
+                        onChange={this.onAntMarePress.bind(this)}/>
+                    :
+                    <Gap size="small"/>
+                }
                 <Text selectable={true} style={this.styles.black}>{antMare}</Text>
             </View>
         );
@@ -138,16 +104,16 @@ export default class NightPrayerComponent extends Component {
             if (this.COMPLETES !== null) {
                 const gloriaStringIntro = "Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.";
                 const is_special_initial_message =
-                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum &&
-                    CurrentLiturgyDayInformation.Today.Date.getDay() === 6;
+                    this.today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum &&
+                    this.today.Date.getDay() === 6;
                 const aux_special_initial_message = "Avui, només han de dir aquestes Completes els qui no participen en la Vetlla pasqual.";
                 const aux_sigueu = "Sigueu amb nosaltres, Déu nostre.";
                 const aux_veniu = "Senyor, veniu a ajudar-nos.";
-                const is_aleluia = CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
-                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
-                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
-                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-                    CurrentLiturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
+                const is_aleluia = this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+                    this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+                    this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+                    this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+                    this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
                 const aux_lloable = "És lloable que aquí es faci examen de consciència.";
                 const aux_acte_pen = this.COMPLETES.PenitentialAct;
                 const aux_himne = GlobalViewFunctions.rs(this.COMPLETES.Anthem);
@@ -199,229 +165,177 @@ export default class NightPrayerComponent extends Component {
                             <View>
                                 <Text selectable={true}
                                       style={this.styles.redCenter}>{aux_special_initial_message}</Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 <HR/>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                             </View>
                             :
                             null
                         }
-                        <Text selectable={true} style={this.styles.red}>{"V. "}
-                            <Text selectable={true} style={this.styles.black}>{aux_sigueu}</Text>
-                        </Text>
-                        <Text selectable={true} style={this.styles.red}>{"R. "}
-                            <Text selectable={true} style={this.styles.black}>{aux_veniu}</Text>
-                        </Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Rubric label={"V. "}>{aux_sigueu}</Rubric>
+                        <Rubric label={"R. "}>{aux_veniu}</Rubric>
+                        <Gap/>
                         <Text selectable={true} style={this.styles.black}>{gloriaStringIntro}
                             {is_aleluia ?
                                 <Text selectable={true} style={this.styles.black}>{" Al·leluia."}</Text> : null
                             }
                         </Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <Text selectable={true} style={this.styles.redCenter}>{aux_lloable}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <Text selectable={true} style={this.styles.black}>{aux_acte_pen}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"HIMNE"}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <SectionTitle>{"HIMNE"}</SectionTitle>
                         <Text selectable={true} style={this.styles.black}>{aux_himne}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"SALMÒDIA"}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <SectionTitle>{"SALMÒDIA"}</SectionTitle>
                         {is_dos_salms ?
                             <View>
                                 {has_distint_ant ?
-                                    <Text selectable={true} style={this.styles.red}>{"Ant. 1. "}
-                                        <Text selectable={true} style={this.styles.black}>{aux_ant1}</Text>
-                                    </Text>
+                                    <Rubric label={"Ant. 1. "}>{aux_ant1}</Rubric>
                                     :
-                                    <Text selectable={true} style={this.styles.red}>{"Ant. "}
-                                        <Text selectable={true} style={this.styles.black}>{aux_ant1}</Text>
-                                    </Text>
+                                    <Rubric label={"Ant. "}>{aux_ant1}</Rubric>
                                 }
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol1}</Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {has_com1 ?
                                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View
                                         style={{flex: 2}}>
                                         <Text selectable={true}
                                               style={this.styles.blackSmallItalicRight}>{aux_com1}</Text>
-                                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                        <Gap/>
                                     </View></View> : null}
                                 <Text selectable={true} style={this.styles.black}>{aux_salm1}</Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {this.COMPLETES.FirstPsalm.HasGloryPrayer ?
                                     <Text selectable={true} style={this.styles.blackItalic}>{"Glòria."}</Text>
                                     :
                                     <Text selectable={true} style={this.styles.redItalic}>{"S'omet el Glòria."}</Text>}
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {has_distint_ant ?
                                     <View>
-                                        <Text selectable={true} style={this.styles.red}>{"Ant. 1. "}
-                                            <Text selectable={true} style={this.styles.black}>{aux_ant1}</Text>
-                                        </Text>
-                                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                                        <Text selectable={true} style={this.styles.red}>{"Ant. 2. "}
-                                            <Text selectable={true} style={this.styles.black}>{aux_ant2}</Text>
-                                        </Text>
-                                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                        <Rubric label={"Ant. 1. "}>{aux_ant1}</Rubric>
+                                        <Gap/>
+                                        <Rubric label={"Ant. 2. "}>{aux_ant2}</Rubric>
+                                        <Gap/>
                                     </View>
                                     : null
                                 }
                                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol2}</Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {has_com2 !== '-' ?
                                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View
                                         style={{flex: 2}}>
                                         <Text selectable={true}
                                               style={this.styles.blackSmallItalicRight}>{aux_com2}</Text>
-                                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                        <Gap/>
                                     </View></View> : null}
                                 <Text selectable={true} style={this.styles.black}>{aux_salm2}</Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {this.COMPLETES.SecondPsalm.HasGloryPrayer ?
                                     <Text selectable={true} style={this.styles.blackItalic}>{"Glòria."}</Text>
                                     :
                                     <Text selectable={true} style={this.styles.redItalic}>{"S'omet el Glòria."}</Text>}
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {has_distint_ant ?
                                     <View>
-                                        <Text selectable={true} style={this.styles.red}>{"Ant. 2. "}
-                                            <Text selectable={true} style={this.styles.black}>{aux_ant2}</Text>
-                                        </Text>
+                                        <Rubric label={"Ant. 2. "}>{aux_ant2}</Rubric>
                                     </View>
                                     :
                                     <View>
-                                        <Text selectable={true} style={this.styles.red}>{"Ant. "}
-                                            <Text selectable={true} style={this.styles.black}>{aux_ant1}</Text>
-                                        </Text>
+                                        <Rubric label={"Ant. "}>{aux_ant1}</Rubric>
                                     </View>
                                 }
                             </View>
                             :
                             <View>
-                                <Text selectable={true} style={this.styles.red}>{"Ant. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_ant1}</Text>
-                                </Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Rubric label={"Ant. "}>{aux_ant1}</Rubric>
+                                <Gap/>
                                 <Text selectable={true} style={this.styles.redCenter}>{aux_titol1}</Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {has_com1 ?
                                     <View style={{flexDirection: 'row'}}><View style={{flex: 1}}/><View
                                         style={{flex: 2}}>
                                         <Text selectable={true}
                                               style={this.styles.blackSmallItalicRight}>{aux_com1}</Text>
-                                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                        <Gap/>
                                     </View></View> : null}
                                 <Text selectable={true} style={this.styles.black}>{aux_salm1}</Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                                <Gap/>
                                 {this.COMPLETES.FirstPsalm.HasGloryPrayer ?
                                     <Text selectable={true} style={this.styles.blackItalic}>{"Glòria."}</Text>
                                     :
                                     <Text selectable={true} style={this.styles.redItalic}>{"S'omet el Glòria."}</Text>}
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                                <Text selectable={true} style={this.styles.red}>{"Ant. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_ant1}</Text>
-                                </Text>
+                                <Gap/>
+                                <Rubric label={"Ant. "}>{aux_ant1}</Rubric>
                             </View>
                         }
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"LECTURA BREU"}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <SectionTitle>{"LECTURA BREU"}</SectionTitle>
                         <Text selectable={true} style={this.styles.red}>{aux_vers}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <Text selectable={true} style={this.styles.black}>{aux_lectura_breu}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"RESPONSORI BREU"}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <SectionTitle>{"RESPONSORI BREU"}</SectionTitle>
                         {is_normal_resp ?
                             <View>
-                                <Text selectable={true} style={this.styles.red}>{"V. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_resp_1_2}</Text>
-                                </Text>
-                                <Text selectable={true} style={this.styles.red}>{"R. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_resp_1_2}</Text>
-                                </Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                                <Text selectable={true} style={this.styles.red}>{"V. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_resp_3}</Text>
-                                </Text>
-                                <Text selectable={true} style={this.styles.red}>{"R. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_resp_2}</Text>
-                                </Text>
-                                {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                                <Text selectable={true} style={this.styles.red}>{"V. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_gloria_half}</Text>
-                                </Text>
-                                <Text selectable={true} style={this.styles.red}>{"R. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_resp_1_2}</Text>
-                                </Text>
+                                <Rubric label={"V. "}>{aux_resp_1_2}</Rubric>
+                                <Rubric label={"R. "}>{aux_resp_1_2}</Rubric>
+                                <Gap/>
+                                <Rubric label={"V. "}>{aux_resp_3}</Rubric>
+                                <Rubric label={"R. "}>{aux_resp_2}</Rubric>
+                                <Gap/>
+                                <Rubric label={"V. "}>{aux_gloria_half}</Rubric>
+                                <Rubric label={"R. "}>{aux_resp_1_2}</Rubric>
                             </View>
                             :
                             <View>
-                                <Text selectable={true} style={this.styles.red}>{"Ant. "}
-                                    <Text selectable={true} style={this.styles.black}>{aux_ant_special}</Text>
-                                </Text>
+                                <Rubric label={"Ant. "}>{aux_ant_special}</Rubric>
                             </View>
                         }
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"CÀNTIC DE SIMEÓ"}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"Ant. "}
-                            <Text selectable={true} style={this.styles.black}>{aux_ant_cantic}</Text>
-                        </Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <SectionTitle>{"CÀNTIC DE SIMEÓ"}</SectionTitle>
+                        <Rubric label={"Ant. "}>{aux_ant_cantic}</Rubric>
+                        <Gap/>
                         <Text selectable={true} style={this.styles.redCenter}>{aux_titol_cantic}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <Text selectable={true} style={this.styles.black}>{aux_cantic}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
                         <Text selectable={true} style={this.styles.blackItalic}>{aux_gloria_cantic}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"Ant. "}
-                            <Text selectable={true} style={this.styles.black}>{aux_ant_cantic}</Text>
-                        </Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <Rubric label={"Ant. "}>{aux_ant_cantic}</Rubric>
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"ORACIÓ"}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <SectionTitle>{"ORACIÓ"}</SectionTitle>
                         <Text selectable={true} style={this.styles.blackBold}>{"Preguem."}</Text>
                         <Text selectable={true} style={this.styles.black}>{aux_oracio}</Text>
-                        <Text selectable={true} style={this.styles.red}>{"R. "}
-                            <Text selectable={true} style={this.styles.black}>{"Amén."}</Text>
-                        </Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Rubric label={"R. "}>{"Amén."}</Rubric>
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"CONCLUSIÓ"}</Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.red}>{"V. "}
-                            <Text selectable={true} style={this.styles.black}>{aux_fi_benaurada}</Text>
-                        </Text>
-                        <Text selectable={true} style={this.styles.red}>{"R. "}
-                            <Text selectable={true} style={this.styles.black}>{"Amén."}</Text>
-                        </Text>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
+                        <Gap/>
+                        <SectionTitle>{"CONCLUSIÓ"}</SectionTitle>
+                        <Rubric label={"V. "}>{aux_fi_benaurada}</Rubric>
+                        <Rubric label={"R. "}>{"Amén."}</Rubric>
+                        <Gap/>
                         <HR/>
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        <Text selectable={true} style={this.styles.redCenter}>{aux_antifona_final}</Text>
+                        <Gap/>
+                        <Text selectable={true} accessibilityRole="header" style={this.styles.centeredTitle}>{aux_antifona_final}</Text>
                         {this.antMareComp(this.state.numAntMare)}
-                        {Platform.OS === 'android' ? <Text>{"\n"}</Text> : <Text/>}
-                        {Platform.OS === 'android' ? null : <Text/>}
+                        <Gap/>
                     </View>
                 );
             } else {
@@ -449,4 +363,3 @@ export default class NightPrayerComponent extends Component {
 
 }
 
-AppRegistry.registerComponent('NightPrayerComponent', () => NightPrayerComponent);
