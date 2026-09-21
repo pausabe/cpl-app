@@ -11,7 +11,6 @@ import {
   Linking,
   Platform
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@expo/vector-icons/Ionicons';
 import { AntDesign } from '@expo/vector-icons'; 
 import GLOBAL from "../Utils/GlobalKeys";
@@ -193,13 +192,13 @@ export default class HomeScreen extends Component {
       const date_getday = CurrentLiturgyDayInformation.Today.Date.getDay();
       this.switchValue = CurrentSettings.OptionalFestivityEnabled;
       return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
+        <View style={{ flex: 1, backgroundColor: GLOBAL.screensBackgroundColor}} >
           <ImageBackground source={require('../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
             {this.Top_Info(date_getdate, date_getmonth, date_getfullyear)}
             {this.Info_Liturgica(date_getday)}
             {this.Cel_Info()}
           </ImageBackground>
-        </SafeAreaView>
+        </View>
       )
     }
     catch (error) {

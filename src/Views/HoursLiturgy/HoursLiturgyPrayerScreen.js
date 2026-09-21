@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, StyleSheet, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Ofici from './SpecificHourLiturgy/OfficeComponent'
 import Laudes from './SpecificHourLiturgy/LaudesComponent'
@@ -20,13 +21,13 @@ export default class HoursLiturgyPrayerScreen extends Component {
 
   render() {
     return (
-      <View style={GlobalViewFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
+      <SafeAreaView edges={["bottom"]} style={GlobalViewFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
         <ScrollView automaticallyAdjustContentInsets={false}>
           <View style={{paddingHorizontal: 10, paddingTop: 10}}>
             {this.liturgyComponent(this.state.type)}
           </View>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     )
   }
 

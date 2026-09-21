@@ -57,7 +57,7 @@ function getHeaderLeft(navigation, route){
             }
             return (
                 <TouchableOpacity
-                    style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
+                    style={{ height: '100%', justifyContent: 'center' }}
                     accessibilityRole="button"
                     accessibilityLabel="Calendari"
                     onPress={() => params?.calPres() }>
@@ -86,7 +86,7 @@ function getHeaderRight(navigation, route){
             }
             return (
                 <TouchableOpacity
-                    style={{ flex: 1, alignItems: 'center', justifyContent: 'center', }}
+                    style={{ height: '100%', justifyContent: 'center' }}
                     accessibilityRole="button"
                     accessibilityLabel="Configuració"
                     onPress={() => navigation.navigate('Settings', { Refresh_Date: params?.Refresh_Date })}>

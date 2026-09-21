@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { View, ScrollView, Text, Platform, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import HR from '../../Components/HRComponent';
@@ -65,7 +66,7 @@ export default class MassLiturgyPrayerScreen extends Component {
     render() {
         try {
             return (
-                <View style={GlobalViewFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
+                <SafeAreaView edges={["bottom"]} style={GlobalViewFunctions.getStyle("CONTAINER", Platform.OS, CurrentSettings.TextSize, CurrentSettings.DarkModeEnabled)}>
                     <ScrollView automaticallyAdjustContentInsets={false} >
                         <View style={{ flex: 1, paddingHorizontal: 10, paddingTop: 10 }}>
                             {this.state.VetllaPasquaLecturesSalms ?
@@ -97,7 +98,7 @@ export default class MassLiturgyPrayerScreen extends Component {
                             {Platform.OS === 'android' ? null : <Text />}
                         </View>
                     </ScrollView>
-                </View>
+                </SafeAreaView>
             )
         }
         catch (error) {

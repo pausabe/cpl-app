@@ -4,7 +4,6 @@ import {
   StyleSheet,
   ImageBackground,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import HoursLiturgyButtonsComponent from './HoursLiturgyButtonsComponent';
 import GlobalKeys from '../../Utils/GlobalKeys';
 import {CurrentHoursLiturgy, CurrentSettings} from "../../Services/DataService";
@@ -54,7 +53,7 @@ export default class HoursLiturgyPrayerMainScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor }}>
+      <View style={{ flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor }}>
           {
             <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')} style={styles.backgroundImage} blurRadius={5}>
               {CurrentHoursLiturgy.Vespers === undefined ?
@@ -72,7 +71,7 @@ export default class HoursLiturgyPrayerMainScreen extends Component {
               }
             </ImageBackground>
           }
-      </SafeAreaView>
+      </View>
     );
   }
 }

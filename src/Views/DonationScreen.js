@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Platform
  } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
  import WebView from 'react-native-webview'
 import * as DeviceInfo from 'expo-device';
 import GLOBAL from "../Utils/GlobalKeys";
@@ -30,13 +31,13 @@ export default class DonationScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView edges={["bottom"]} style={styles.container}>
         <WebView
           source={{uri: 'https://buy.stripe.com/6oE16v3LV6oa7VC4gg'}}
           startInLoadingState={true}
           renderError={() => this.Internet_Error() }
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

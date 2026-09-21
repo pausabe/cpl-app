@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     ImageBackground,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Logger from '../../Utils/Logger';
 import EventEmitter from 'react-native/Libraries/vendor/emitter/EventEmitter'
 import HR from '../../Components/HRComponent';
@@ -134,7 +133,7 @@ export default class MassLiturgyMainScreen extends Component {
             }
 
             return (
-                <SafeAreaView style={{flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor}}>
+                <View style={{flex: 1, backgroundColor: GlobalKeys.screensBackgroundColor}}>
                     {
                         <ImageBackground source={require('../../Assets/img/bg/home_background.jpg')}
                                          style={styles.backgroundImage} blurRadius={5}>
@@ -152,7 +151,7 @@ export default class MassLiturgyMainScreen extends Component {
                             </View>
                         </ImageBackground>
                     }
-                </SafeAreaView>
+                </View>
             );
 
         } catch (error) {

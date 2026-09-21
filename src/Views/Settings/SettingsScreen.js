@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Platform, ScrollView, Appearance} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ExpoApplication from 'expo-application'
 import * as Updates from 'expo-updates';
 import * as Logger from '../../Utils/Logger';
@@ -52,13 +53,13 @@ export default class SettingsScreen extends Component {
     render() {
         if (!this.state || this.state && !this.state.options) {
             return (
-                <View style={styles.scrollContainer}>
+                <SafeAreaView edges={["bottom"]} style={styles.scrollContainer}>
                     <ScrollView automaticallyAdjustContentInsets={false} style={styles.itemList}/>
-                </View>
+                </SafeAreaView>
             );
         }
         return (
-            <View style={styles.scrollContainer}>
+            <SafeAreaView edges={["bottom"]} style={styles.scrollContainer}>
                 <ScrollView automaticallyAdjustContentInsets={false} style={styles.itemList}>
                     <View style={{height: 15}}/>
 
@@ -119,7 +120,7 @@ export default class SettingsScreen extends Component {
                     </View>
                     <View style={{height: 20}}/>
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         );
     }
 }

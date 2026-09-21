@@ -6,6 +6,7 @@ import {
   Platform,
   ActivityIndicator
  } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import WebView from 'react-native-webview'
 import * as DeviceInfo from 'expo-device';
 import GLOBAL from "../Utils/GlobalKeys";
@@ -31,13 +32,13 @@ export default class CommentScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView edges={["bottom"]} style={styles.container}>
         <WebView
           source={{uri: 'https://www.cpl.es/contacto/'}}
           startInLoadingState={true}
           renderError={() => this.Internet_Error() }
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }
