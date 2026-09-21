@@ -213,7 +213,7 @@ function NavigationContainerView(){
     return (
         <NavigationContainer >
             <View style={{flex: 1}}>
-                <Stack.Navigator>
+                <Stack.Navigator screenOptions={{ headerBackAccessibilityLabel: "Enrere" }}>
                     <Stack.Screen
                         name="Home"
                         component={Tabs}

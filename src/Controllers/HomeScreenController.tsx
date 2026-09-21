@@ -328,8 +328,10 @@ function HomeScreenView(navigation, setState){
                   animationType="fade" // slide, fade, none
                   transparent={true}
                   visible={CurrentState.DateTimePickerIsVisible === true}>
-                <TouchableOpacity activeOpacity={1} style={styles.DatePickerWholeModal} onPress={() => HandleDatePickerIOSCancel(setState)}>
-                  <TouchableOpacity activeOpacity={1} style={{margin: 10, marginHorizontal: 30, backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white', borderRadius: 20, padding: 10, paddingBottom: 20, shadowColor: '#000', shadowOffset: {width: 0,height: 2,}}}>
+                {/* The two wrappers only catch taps outside the calendar. Not accessibility
+                    elements: on iOS they would swallow the calendar and its buttons into one. */}
+                <TouchableOpacity accessible={false} activeOpacity={1} style={styles.DatePickerWholeModal} onPress={() => HandleDatePickerIOSCancel(setState)}>
+                  <TouchableOpacity accessible={false} activeOpacity={1} style={{margin: 10, marginHorizontal: 30, backgroundColor: Appearance.getColorScheme() === 'dark'? 'black' : 'white', borderRadius: 20, padding: 10, paddingBottom: 20, shadowColor: '#000', shadowOffset: {width: 0,height: 2,}}}>
                     <View style={{ marginHorizontal: 10, marginBottom: 5 }}>
                       <DateTimePicker
                           mode="date"
@@ -341,13 +343,13 @@ function HomeScreenView(navigation, setState){
                       />
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
-                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSCancel(setState)}>
+                      <TouchableOpacity accessibilityRole="button" style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSCancel(setState)}>
                         <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Cancel·la'}</Text>
                       </TouchableOpacity >
-                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSToday(setState)}>
+                      <TouchableOpacity accessibilityRole="button" style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSToday(setState)}>
                         <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Avui'}</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSAccept(setState)}>
+                      <TouchableOpacity accessibilityRole="button" style={{ flex: 1, alignItems: 'center'}} onPress={() => HandleDatePickerIOSAccept(setState)}>
                         <Text style={{fontSize: 19, color: 'rgb(14,122,254)'}}>{'Canvia'}</Text>
                       </TouchableOpacity>
                     </View>

@@ -58,7 +58,8 @@ export default class HoursLiturgyButtonsComponent extends Component {
           </View>
         </View>
         <HR margin_horizontal={20} />
-        <TouchableOpacity style={styles.buttonContainer} onPress={this.props.vespresCB}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={this.props.vespresCB}
+          accessibilityRole="button" accessibilityLabel="Vespres" accessibilityHint={CurrentHoursLiturgy.Vespers.Title}>
           {hour > 17 && hour <= 23 ?
             <Text style={styles.buttonTextBold}>{"Vespres"}</Text>
             :

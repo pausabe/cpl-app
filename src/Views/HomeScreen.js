@@ -331,7 +331,8 @@ export default class HomeScreen extends Component {
                   </View>
                   : null
                 }
-                <TouchableOpacity activeOpacity={1.0} style={{ flex: 20, flexDirection: 'row' }} onPress={this.props.santCB}>
+                <TouchableOpacity activeOpacity={1.0} style={{ flex: 20, flexDirection: 'row' }} onPress={this.props.santCB}
+                  accessibilityRole="button" accessibilityLabel={CurrentCelebrationInformation.Title}>
                   {StringManagement.HasLiturgyContent(CurrentCelebrationInformation.Description) && 
                   CurrentLiturgyDayInformation.Today.CelebrationType !== CelebrationType.OptionalMemory ?
                     <View style={{ width: arrowWidth }} />
@@ -400,7 +401,8 @@ export default class HomeScreen extends Component {
       return (
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 20}}>
           <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: 10, justifyContent: 'flex-start', }}>
-            <TouchableOpacity style={styles.two_buttons} onPress={this.On_Comment_Press.bind(this)}>
+            <TouchableOpacity style={styles.two_buttons} onPress={this.On_Comment_Press.bind(this)}
+              accessibilityRole="button" accessibilityLabel="Missatge">
               <Icon
                 name="mail"
                 size={75}
@@ -410,7 +412,8 @@ export default class HomeScreen extends Component {
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 10, justifyContent: 'flex-start', }}>
-            <TouchableOpacity style={styles.two_buttons} onPress={this.On_Give_Press.bind(this)}>
+            <TouchableOpacity style={styles.two_buttons} onPress={this.On_Give_Press.bind(this)}
+              accessibilityRole="button" accessibilityLabel="Donatiu lliure">
               <Icon
                 name="card"
                 size={75}
