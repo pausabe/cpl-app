@@ -10,9 +10,6 @@ import SettingsComponentAdapter from "./SettingsComponentAdapter";
 import * as DeviceInfo from 'expo-device';
 import {SessionLogs} from "../../Utils/Logger";
 import Constants from "expo-constants"
-import {
-    CurrentDatabaseInformation, CurrentHoursLiturgy,
-} from "../../Services/DataService";
 
 let logsPressedTimes;
 
@@ -26,7 +23,7 @@ export default class SettingsScreen extends Component {
     }
 
     refreshHome() {
-        this.props.route.params.Refresh_Date();
+        this.props.onSettingsChanged();
     }
 
     UNSAFE_componentWillMount() {
@@ -83,7 +80,7 @@ export default class SettingsScreen extends Component {
                             textAlign: 'center',
                             color: 'grey',
                             fontSize: 11
-                        }}>{"Versió de la base de dades: "}{CurrentDatabaseInformation.Version}</Text>
+                        }}>{"Versió de la base de dades: "}{this.props.databaseVersion}</Text>
                         <UpdateStatus/>
                         <Text style={{
                             textAlign: 'center',
@@ -94,7 +91,7 @@ export default class SettingsScreen extends Component {
                             textAlign: 'center',
                             color: 'grey',
                             fontSize: 11
-                        }}>{`Precedència: avui (${CurrentHoursLiturgy.TodayCelebrationInformation.Precedence}) demà (${CurrentHoursLiturgy.TomorrowCelebrationInformation.Precedence})`}</Text>
+                        }}>{`Precedència: avui (${this.props.precedence.today}) demà (${this.props.precedence.tomorrow})`}</Text>
                         <Text style={{
                             textAlign: 'center',
                             color: 'grey',

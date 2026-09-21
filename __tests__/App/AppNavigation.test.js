@@ -53,14 +53,19 @@ async function goBack(textOnTheScreen) {
 test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
   render(<App />);
 
-  // Home: today's celebration
+  // The first time 9.0.0 opens, a notice says where everything is now
+  fireEvent.press(await findText('D’acord'));
+  await waitFor(() => expect(screen.queryByText('Ara ho tens tot a l’inici')).toBeNull());
+
+  // Home: today's celebration, and no tabs any more
   await findText('Diumenge de Pasqua');
   expect(DataService.CurrentLiturgyDayInformation.Today.Date.getDate()).toBe(5);
+  expect(screen.queryByLabelText('Litúrgia de les hores')).toBeNull();
+  expect(screen.getByText('Diumenge, 5 d’abril')).toBeTruthy();
 
-  // Liturgy of the Hours: every hour opens and shows its texts
-  fireEvent.press(screen.getByLabelText('Litúrgia de les hores'));
+  // Liturgy of the Hours, from the home: every hour opens, with its whole name on top
   for (const hour of ['Ofici de lectura', 'Laudes', 'Tèrcia', 'Sexta', 'Nona', 'Vespres', 'Completes']) {
-    fireEvent.press(await findText(hour));
+    fireEvent.press(screen.getByRole('button', { name: hour }));
     const hours = DataService.CurrentHoursLiturgy;
     const expected = {
       'Ofici de lectura': hours.Office.FirstPsalm.Antiphon,
@@ -72,19 +77,20 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
       Completes: hours.NightPrayer.FinalPrayer,
     }[hour];
     await waitFor(() => expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0));
+    expect(screen.getAllByText(hour).length).toBeGreaterThan(0);
+    expect(screen.getByRole('button', { name: 'Mida del text i mode fosc' })).toBeTruthy();
     await goBack(new RegExp(escape(firstWords(expected))));
   }
 
-  // Mass: the readings open
-  fireEvent.press(screen.getByLabelText('Missa'));
-  fireEvent.press(await findText(/Evangeli/));
+  // Mass, from the home: the phrase of the Gospel, and the Gospel opens
+  expect(screen.getByText(DataService.CurrentMassLiturgy.Today.Gospel.Comment)).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'Evangeli' }));
   const gospel = new RegExp(escape(firstWords(DataService.CurrentMassLiturgy.Today.Gospel.Gospel)));
   await waitFor(() => expect(screen.getAllByText(gospel).length).toBeGreaterThan(0));
   await goBack(gospel);
 
   // Home: the contact page opens in a web view; the donation goes to Stripe in the browser
   // (the tests run as iOS; on Android it is a web view too)
-  fireEvent.press(screen.getByLabelText('Inici'));
   fireEvent.press(await findText('Missatge'));
   await screen.findByTestId('webview', {}, { timeout: 15000 });
   fireEvent.press(screen.getAllByRole('button', { name: /back|enrere/i })[0]);
@@ -94,7 +100,7 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
   fireEvent.press(await findText('Donatiu lliure'));
   expect(openURL).toHaveBeenCalledWith(expect.stringContaining('stripe.com'));
 
-  // Settings open from Home
+  // Settings open from the top bar
   fireEvent.press(await screen.findByLabelText('Configuració'));
   await findText(/Diòcesi/);
 });
