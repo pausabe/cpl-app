@@ -1,11 +1,7 @@
 appId: cpl.cpl
 name: "S'obren les pàgines de contacte i de donatiu"
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: "Missatge"
-    timeout: 60000
+- runFlow: subflows/obrir.yaml
 - tapOn: "Missatge"
 - assertVisible: "Missatge"
 - waitForAnimationToEnd:

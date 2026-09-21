@@ -23,7 +23,7 @@ export default function HeaderButton({accessibilityLabel, onPress, icon, text, t
             accessibilityLabel={accessibilityLabel}
             hitSlop={4}
             onPress={onPress}
-            style={({pressed}) => [styles.button, pressed ? styles.pressed : null]}>
+            style={({pressed}) => [styles.button, text ? styles.withText : null, pressed ? styles.pressed : null]}>
             {icon ? <Icon name={icon} size={27} color={color}/> : null}
             {text ? (
                 <View style={[styles.pill, {borderColor: 'rgba(255,255,255,0.55)'}]}>
@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: 4,
+    },
+    // The "Aa" pill does not touch the edge of the screen
+    withText: {
+        marginRight: 8,
     },
     pressed: {
         opacity: 0.6,

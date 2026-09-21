@@ -1,7 +1,4 @@
 import * as Logger from './Logger';
-import {convertTextSize} from '../Theme/typography';
-import {createTheme} from '../Theme/Theme';
-import {prayerTextStyles} from '../Theme/prayerStyles';
 
 let GlobalViewFunctions = {
   canticSpace(titolCantic){
@@ -152,85 +149,6 @@ let GlobalViewFunctions = {
     }
 
     return result;
-  },
-
-  getMonthText(monthNum){
-    switch (monthNum) {
-      case 0:
-        return "gener"
-        break;
-      case 1:
-        return "febrer"
-        break;
-      case 2:
-        return "març"
-        break;
-      case 3:
-        return "abril"
-        break;
-      case 4:
-        return "maig"
-        break;
-      case 5:
-        return "juny"
-        break;
-      case 6:
-        return "juliol"
-        break;
-      case 7:
-        return "agost"
-        break;
-      case 8:
-        return "setembre"
-        break;
-      case 9:
-        return "octubre"
-        break;
-      case 10:
-        return "novembre"
-        break;
-      case 11:
-        return "desembre"
-        break;
-    }
-  },
-
-  // The styles of the prayer texts, from the theme (src/Theme/prayerStyles.ts). Kept with its old
-  // codes for whatever still asks for them this way.
-  getStyle(typeCode, platformOS, textSizeConfigured, darkModeEnabled){
-    try {
-      const theme = createTheme({dark: darkModeEnabled === true, textSize: textSizeConfigured});
-      const styles = prayerTextStyles(theme);
-      const muted = {color: theme.colors.text3, fontSize: theme.prayer.fontSize - 3};
-      const tab = {color: theme.colors.text3, fontSize: theme.prayer.fontSize > 17 ? 17 : theme.prayer.fontSize - 3};
-
-      switch (typeCode){
-        case 'CONTAINER': return styles.container;
-        case 'GENERIC': return styles.black;
-        case 'GENERIC_BOLD': return styles.blackBold;
-        case 'GENERIC_ITALIC': return styles.blackItalic;
-        case 'GENERIC_SMALL_ITALIC_RIGHT': return styles.blackSmallItalicRight;
-        case 'GENERIC_JUSTIFIED': return styles.blackJustified;
-        case 'ACCENT': return styles.red;
-        case 'ACCENT_ITALIC': return styles.redItalic;
-        case 'ACCENT_CENTER': return styles.redCenter;
-        case 'ACCENT_CENTER_BOLD': return styles.redCenterBold;
-        case 'ACCENT_SMALL_ITALIC_RIGHT': return styles.redSmallItalicRight;
-        case 'HIDDEN_PRAYER_BUTTON': return muted;
-        case 'PRAYER_TAB_BUTTON': return tab;
-        case 'PRAYER_TAB_BUTTON_BOLD': return {...tab, fontWeight: 'bold'};
-        default:
-          Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", new Error("getTextStyle NOT FOUND!!!! -> " + typeCode));
-          break;
-      }
-    } catch (error) {
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, "getStyle", error);
-    }
-  },
-
-  // The size of the prayer text for the setting "1" to "10": now in src/Theme/typography.ts
-  convertTextSize(value){
-    return convertTextSize(value);
   },
 }
 

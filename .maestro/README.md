@@ -21,10 +21,25 @@ Els mateixos fluxos serveixen per a totes dues plataformes. On l'app es comporta
 hi ha una branca `when: platform:` —tornar enrere, el calendari (diàleg d'Android / calendari
 propi a iOS) i el donatiu (webview a Android / Safari a iOS).
 
-Cada flux comença amb `clearState`: l'app com acabada d'instal·lar, la configuració per
-defecte i el dia d'avui. Les comprovacions són sobre textos que no depenen del dia (els
-encapçalaments HIMNE, SALMÒDIA, ORACIÓ…), així que es poden executar qualsevol dia. Les
-captures queden a `~/.maestro/tests/<data>/`.
+Cada flux comença amb `subflows/obrir.yaml`: `clearState`, l'app com acabada d'instal·lar, la
+configuració per defecte i el dia d'avui, i tanca els avisos que surten en obrir-la (el de
+novetats, la primera vegada, i el de mitjanit, de 0 a 3 h). Les comprovacions són sobre textos
+que no depenen del dia (els noms de les hores, els encapçalaments HIMNE, SALMÒDIA, ORACIÓ…),
+així que es poden executar qualsevol dia. El que només passa alguns dies (la vida del sant, la
+memòria lliure, la missa vespertina) es comprova quan hi és; els casos de cada dia concret els
+proven els tests de Jest (`__tests__/Screens/Home.test.js`), amb el rellotge fixat. Les captures
+queden a `~/.maestro/tests/<data>/`.
+
+| Flux | Què comprova |
+|---|---|
+| 01-arrencada | L'inici: el dia en paraules, la setmana del salteri, les set hores i la missa |
+| 02-hores | Les set hores s'obren des de l'inici i es llegeixen fins al final |
+| 03-missa | L'Evangeli i la primera lectura; «Continua amb el Salm» |
+| 04-configuracio | Diòcesi i mode fosc es desen, i es mantenen en tornar a obrir l'app |
+| 05-calendari | Canviar de dia amb el calendari |
+| 06-webs | Missatge i Donatiu |
+| 07-inici | Una hora des de l'inici, el botó Aa i el full de la vida del sant |
+| 08-dissabte | Al proper dissabte: Avui / Vespertina i la memòria lliure (només Android) |
 
 Amb 16 GB de RAM, millor una plataforma cada vegada: l'emulador d'Android i el simulador
 d'iOS alhora, amb una compilació al darrere, fan que el Mac enviï memòria al disc i els

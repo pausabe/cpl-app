@@ -1,0 +1,49 @@
+appId: cpl.cpl
+name: "Dissabte: la missa vespertina i la memòria lliure"
+---
+# El proper dissabte, amb el calendari: té missa vespertina (la de diumenge) i, sovint, la
+# memòria de Santa Maria. Només a Android: el calendari d'iOS es mou d'una altra manera.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - runFlow: subflows/obrir.yaml
+      - evalScript: ${(function () { var today = new Date(); var add = (6 - today.getDay() + 7) % 7 || 7; var saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + add); output.day = String(saturday.getDate()); output.nextMonth = saturday.getMonth() !== today.getMonth(); })()}
+      - tapOn: "Calendari"
+      - runFlow:
+          when:
+            true: ${output.nextMonth}
+          commands:
+            - tapOn: "Next month|Mes següent|Mes siguiente"
+      - tapOn:
+          text: ${output.day}
+          index: 0
+      - tapOn: "OK|D'acord|Acceptar|Aceptar"
+      - extendedWaitUntil:
+          visible: "Dissabte, .+"
+          timeout: 15000
+      # «Avui | Vespertina»: les lectures de cada missa
+      - runFlow:
+          when:
+            visible: "Vespertina"
+          commands:
+            - tapOn: "Avui"
+            - takeScreenshot: 08-missa-avui
+            - tapOn: "Vespertina"
+            - assertVisible: "Segona lectura"
+            - takeScreenshot: 08-missa-vespertina
+      # La memòria lliure: l'interruptor canvia què es resa, i ho diu
+      - runFlow:
+          when:
+            visible: "Celebrar la memòria"
+          commands:
+            - assertVisible: "Si no l.actives, avui es resa la fèria."
+            - tapOn: "Celebrar la memòria"
+            - extendedWaitUntil:
+                visible: "Avui es resa la memòria."
+                timeout: 15000
+            - takeScreenshot: 08-memoria-lliure
+            - tapOn: "Celebrar la memòria"
+            - extendedWaitUntil:
+                visible: "Si no l.actives, avui es resa la fèria."
+                timeout: 15000

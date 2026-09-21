@@ -1,4 +1,8 @@
 ## v9.0.0 (21.09.2026)[90]
+- New design. The home has everything of every day on one screen, without tabs: the card of the day on its liturgical colour, the seven hours with the current one marked, and the Mass with the phrase of the Gospel and a button for each reading. The saint's story opens in a sheet
+- Prayer and readings: even spacing, clearer section titles, the liturgical red darker so that it can be read, selectors and "Continua amb…" as real buttons, the full name of the hour on top, an "Aa" button for the text size and the dark mode, and the screen no longer turns off while praying
+- Settings in three groups, with a sample sentence for the text size; dark mode on every screen
+- Fix: changing two settings one after the other could leave the home blank
 - Upgrade to Expo SDK 57 (React Native 0.86, React 19, New Architecture) and React Navigation 7: targets Android 16 (API 36), required by Google Play to keep the app visible on new phones
 - Minimum Android version is now 7.0 (was 6.0)
 - Accessibility: screen readers now name the tabs, header buttons and home buttons, and can reach the iOS calendar
