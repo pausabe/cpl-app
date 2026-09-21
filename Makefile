@@ -20,8 +20,8 @@ help:
 	@echo "make start             Només el servidor de desenvolupament (Metro), si l'app ja hi és instal·lada"
 	@echo ""
 	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~1,5 min)"
-	@echo "make tests-fast        Els mateixos sense els dos recorreguts llargs de la litúrgia"
-	@echo "make golden            Refà el golden de la litúrgia amb aquesta versió (només si l'has revisat)"
+	@echo "make tests-fast        Els mateixos sense els recorreguts llargs (litúrgia i text de les pantalles)"
+	@echo "make golden            Refà els goldens (litúrgia i text de les pantalles) amb aquesta versió (només si l'has revisat)"
 	@echo ""
 	@echo "make android-app       Compila la release d'Android i la instal·la a l'emulador o mòbil connectat"
 	@echo "make ios-app           Compila la release per al simulador d'iOS i la instal·la al simulador obert"
@@ -54,12 +54,14 @@ tests:
 	npx jest
 
 tests-fast:
-	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/Liturgy/(LiturgyGolden|YearSweep)'
+	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/Liturgy/(LiturgyGolden|YearSweep)' '/Screens/PrayerTextGolden'
 
 # El golden és el que diu «així ha de sortir». Es refà només després d'haver comprovat a mà
-# que la litúrgia d'aquesta versió és correcta: si no, deixa de detectar res.
+# que la litúrgia d'aquesta versió és correcta: si no, deixa de detectar res. El de les pantalles
+# (prayer-screens.json) és el text que mostren les hores i les lectures: es va fer abans del
+# redisseny, i ha de continuar igual.
 golden:
-	UPDATE_GOLDEN=1 npx jest __tests__/Liturgy
+	UPDATE_GOLDEN=1 npx jest __tests__/Liturgy __tests__/Screens/PrayerTextGolden
 
 # --- Compilacions locals per als tests de Maestro --------------------------------------------
 # /android i /ios són generats (gitignorats): es refan de zero perquè no quedi res d'un SDK
