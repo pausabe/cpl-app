@@ -1,3 +1,10 @@
+## v9.0.0 (21.09.2026)[90]
+- Upgrade to Expo SDK 57 (React Native 0.86, React 19, New Architecture) and React Navigation 7: targets Android 16 (API 36), required by Google Play to keep the app visible on new phones
+- Minimum Android version is now 7.0 (was 6.0)
+- Accessibility: screen readers now name the tabs, header buttons and home buttons, and can reach the iOS calendar
+- Remove unused libraries
+- Test battery: Jest (liturgy golden, every day of 2025-2026, app navigation, services) and Maestro flows for Android and iOS
+
 ## v8.0.2 (07.01.2025)[89]
 - Add Menorca
 

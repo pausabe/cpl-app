@@ -1,13 +1,13 @@
 {
   "build": {
     "production": {
-      "channel": "production_89"
+      "channel": "production_90"
     },
     "test": {
-      "channel": "test_89"
+      "channel": "test_90"
     },
     "apk": {
-      "channel": "apk_89",
+      "channel": "apk_90",
       "android": {
         "buildType": "apk"
       }
