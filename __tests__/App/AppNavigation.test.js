@@ -102,7 +102,7 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
 
   // Settings open from the top bar
   fireEvent.press(await screen.findByLabelText('Configuració'));
-  await findText(/Diòcesi/);
+  expect(await screen.findByRole('button', { name: 'Diòcesi: Barcelona' }, { timeout: 15000 })).toBeTruthy();
 });
 
 function firstWords(text) {

@@ -1,37 +1,25 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform
- } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
- import WebView from 'react-native-webview'
-import * as DeviceInfo from 'expo-device';
-import GLOBAL from "../Utils/GlobalKeys";
+import WebView from 'react-native-webview'
+import { ThemeContext } from '../Theme';
 
-function paddingBar(){
-  if(Platform.OS === 'ios'){
-    var iosVer = parseInt(DeviceInfo.osVersion.split(".",1));
-    if(iosVer>=11) return 44;
-    return 64;
-  }
-  return 0;
-}
-
+// The donation page (Stripe), in the app on Android; iOS opens it in the browser
 export default class DonationScreen extends Component {
+  static contextType = ThemeContext;
+
   Internet_Error(){
+    const {colors} = this.context;
     return (
-      <View style={styles.internet_error_container}>
-        <Text/>
-        <Text style={styles.internal_error_text}>{"És necessari tenir una connexió a internet"}</Text>
+      <View style={[styles.internet_error_container, {backgroundColor: colors.homeBackground}]}>
+        <Text style={[styles.internal_error_text, {color: colors.text}]}>{"És necessari tenir una connexió a internet"}</Text>
       </View>
     );
   }
 
   render() {
     return (
-      <SafeAreaView edges={["bottom"]} style={styles.container}>
+      <SafeAreaView edges={["bottom"]} style={[styles.container, {backgroundColor: this.context.colors.homeBackground}]}>
         <WebView
           source={{uri: 'https://buy.stripe.com/6oE16v3LV6oa7VC4gg'}}
           startInLoadingState={true}
@@ -48,9 +36,11 @@ const styles = StyleSheet.create({
   },
   internet_error_container: {
     flex: 1,
-    paddingTop: paddingBar()
+    justifyContent: 'center',
+    paddingHorizontal: 24,
   },
   internal_error_text: {
     textAlign: 'center',
+    fontSize: 17,
   }
 });

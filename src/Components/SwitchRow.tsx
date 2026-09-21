@@ -11,10 +11,11 @@ interface SwitchRowProps {
     onValueChange: (value: boolean) => void;
     style?: StyleProp<ViewStyle>;
     labelWeight?: '400' | '600';
+    labelSize?: number;
     testID?: string;
 }
 
-export default function SwitchRow({label, caption, value, onValueChange, style, labelWeight = '400', testID}: SwitchRowProps) {
+export default function SwitchRow({label, caption, value, onValueChange, style, labelWeight = '400', labelSize = 16, testID}: SwitchRowProps) {
     const theme = useTheme();
     const {colors} = theme;
     return (
@@ -27,7 +28,7 @@ export default function SwitchRow({label, caption, value, onValueChange, style, 
             onPress={() => onValueChange(!value)}
             style={[styles.row, {minHeight: theme.touch.comfortable}, style]}>
             <View style={styles.texts}>
-                <Text style={[styles.label, {color: colors.text, fontWeight: labelWeight}]}>{label}</Text>
+                <Text style={[styles.label, {color: colors.text, fontWeight: labelWeight, fontSize: labelSize}]}>{label}</Text>
                 {caption ? <Text style={[styles.caption, {color: colors.text2}]}>{caption}</Text> : null}
             </View>
             <Switch
