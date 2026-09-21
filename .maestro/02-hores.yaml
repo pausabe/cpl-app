@@ -6,7 +6,10 @@ name: "S'obren les set hores i es llegeixen fins a l'oració"
 - extendedWaitUntil:
     visible: "Missatge"
     timeout: 60000
-- tapOn: "Litúrgia de les hores"
+- tapOn:
+    text: "Litúrgia de les hores"
+    # En un mòbil lent el primer toc pot arribar abans que la pestanya respongui
+    retryTapIfNoChange: true
 - runFlow:
     file: subflows/hora.yaml
     env: { HORA: "Ofici de lectura", FINAL: "ORACIÓ" }

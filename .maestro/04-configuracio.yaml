@@ -56,14 +56,20 @@ name: "La configuració es desa i canvia la litúrgia"
     timeout: 15000
 - takeScreenshot: 04-andorra
 # L'inici té un fons fix; el mode fosc es veu dins de les hores
-- tapOn: "Litúrgia de les hores"
+- tapOn:
+    text: "Litúrgia de les hores"
+    # En un mòbil lent el primer toc pot arribar abans que la pestanya respongui
+    retryTapIfNoChange: true
 - tapOn: "Laudes"
 - extendedWaitUntil:
     visible: "HIMNE.*"
     timeout: 15000
 - takeScreenshot: 04-laudes-mode-fosc
 - runFlow: subflows/enrere.yaml
-- tapOn: "Inici"
+- tapOn:
+    text: "Inici"
+    # En un mòbil lent el primer toc pot arribar abans que la pestanya respongui
+    retryTapIfNoChange: true
 # Es manté després de tancar i tornar a obrir l'app
 - stopApp
 - launchApp
