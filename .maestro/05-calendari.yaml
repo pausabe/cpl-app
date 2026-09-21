@@ -1,0 +1,23 @@
+appId: cpl.cpl
+name: "Es pot canviar de dia amb el calendari"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 60000
+- tapOn: "Calendari"
+# El selector de data d'Android: el dia 15 del mes que mostra, i acceptar
+- tapOn:
+    text: "15"
+    index: 0
+- tapOn: "OK|D'acord|Acceptar|Aceptar"
+- extendedWaitUntil:
+    visible: ".* - 15/[0-9]{2}/[0-9]{4}"
+    timeout: 15000
+- takeScreenshot: 05-dia-15
+# I les hores d'aquell dia s'obren
+- tapOn: "Litúrgia de les hores"
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Laudes", FINAL: "ORACIÓ" }

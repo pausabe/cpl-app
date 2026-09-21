@@ -1,0 +1,21 @@
+appId: cpl.cpl
+name: "S'obren les pàgines de contacte i de donatiu"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 60000
+- tapOn: "Missatge"
+- assertVisible: "Missatge"
+- waitForAnimationToEnd:
+    timeout: 10000
+- takeScreenshot: 06-missatge
+- back
+- tapOn: "Donatiu lliure"
+- assertVisible: "Donatiu lliure"
+- waitForAnimationToEnd:
+    timeout: 10000
+- takeScreenshot: 06-donatiu
+- back
+- assertVisible: "Missatge"

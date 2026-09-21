@@ -1,0 +1,38 @@
+appId: cpl.cpl
+name: "La configuració es desa i canvia la litúrgia"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 60000
+- tapOn: "Configuració"
+- assertVisible: "Diòcesi"
+- assertVisible: "Versió de la base de dades: .*"
+- takeScreenshot: 04-configuracio
+# Diòcesi: Barcelona → Girona
+- tapOn: "Barcelona"
+- tapOn: "Girona"
+# Mode obscur: → Activat
+- tapOn: "Automàtic"
+- tapOn: "Activat"
+- back
+- extendedWaitUntil:
+    visible: "Girona \\(Diòcesi\\).*"
+    timeout: 15000
+- takeScreenshot: 04-girona
+# L'inici té un fons fix; el mode fosc es veu dins de les hores
+- tapOn: "Litúrgia de les hores"
+- tapOn: "Laudes"
+- extendedWaitUntil:
+    visible: "HIMNE.*"
+    timeout: 15000
+- takeScreenshot: 04-laudes-mode-fosc
+- back
+- tapOn: "Inici"
+# Es manté després de tancar i tornar a obrir l'app
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible: "Girona \\(Diòcesi\\).*"
+    timeout: 60000

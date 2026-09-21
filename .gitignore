@@ -33,3 +33,7 @@ migration-to-saints/output/.ca-backup/
 
 # Golden de la litúrgia resolta: es fa a partir de cpl-app.db, que tampoc és al git
 __tests__/golden/
+
+# Carpetes natives que genera `expo prebuild` / `expo run`: EAS les torna a generar a cada build
+/android
+/ios

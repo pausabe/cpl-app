@@ -1,0 +1,20 @@
+appId: cpl.cpl
+name: "S'obren les lectures de la missa"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 60000
+- tapOn: "Missa"
+- tapOn: "Evangeli"
+- extendedWaitUntil:
+    visible: "Lectura de l.evangeli.*"
+    timeout: 15000
+- takeScreenshot: 03-evangeli
+- back
+- tapOn:
+    text: "Primera lectura"
+    optional: true
+- takeScreenshot: 03-primera-lectura
+- back

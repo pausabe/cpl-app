@@ -1,0 +1,30 @@
+appId: cpl.cpl
+name: "S'obren les set hores i es llegeixen fins a l'oració"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 60000
+- tapOn: "Litúrgia de les hores"
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Ofici de lectura", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Laudes", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Tèrcia", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Sexta", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Nona", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Vespres", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Completes", FINAL: "Antífona final de la Mare de Déu" }

@@ -1,0 +1,14 @@
+appId: cpl.cpl
+---
+- tapOn: ${HORA}
+- extendedWaitUntil:
+    visible: "HIMNE.*"
+    timeout: 15000
+- takeScreenshot: hora-${HORA}
+# L'Ofici, amb dues lectures, és molt llarg: desplaçament ràpid i marge ample
+- scrollUntilVisible:
+    element: ${FINAL}
+    direction: DOWN
+    speed: 90
+    timeout: 180000
+- back

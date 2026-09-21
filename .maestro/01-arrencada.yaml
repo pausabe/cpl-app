@@ -1,0 +1,12 @@
+appId: cpl.cpl
+name: "L'app s'obre al dia d'avui"
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "Litúrgia de les Hores - Setmana.*"
+    timeout: 60000
+- assertVisible: "Barcelona \\(Diòcesi\\).*"
+- assertVisible: "Missatge"
+- assertVisible: "Donatiu lliure"
+- takeScreenshot: 01-inici
