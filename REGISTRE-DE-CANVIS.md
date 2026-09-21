@@ -22,6 +22,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 
 | ID | Data | On | Tipus | Cal reaplicar-ho? | Commit |
 |---|---|---|---|---|---|
+| [APP-001](#app-001) | 2026-09-21 | cpl-app | **actualització** (Expo 51 → 57) | No — va al git | branca `upgrade-expo-57`, local |
 | [CPL-LIT-001](#cpl-lit-001) | 2026-08-14 | cpl-app | codi | No — va al git | `cdc8c79` |
 | [CPL-LIT-002](#cpl-lit-002) | 2026-08-15 | cpl-app | **dades (BD)** | **Sí** | `6726622` |
 | [CPL-LIT-003](#cpl-lit-003) | 2026-09-02 | cpl-app | **dades (BD)** | **Sí** | `9f472d8` |
@@ -114,6 +115,44 @@ recompte és el que el wiki de CPL fa servir per comparar amb la versió publica
 ---
 
 # Errors de cpl-app
+
+## APP-001
+
+**L'app no apareixia a la Play Store als mòbils nous: actualització a Expo 57** · 21 de setembre de 2026
+
+El client va avisar que alguns usuaris no trobaven l'app. Les captures (un Redmi A7 Pro amb
+Android 16) mostraven «*s'ha creat per a una versió anterior d'Android*»: Google Play amaga
+l'app als mòbils amb un Android més nou que el `targetSdk` de l'app, i el binari publicat (89,
+de novembre de 2024, Expo SDK 51) apuntava a l'API 34. Només es publicaven OTA, que no canvien
+el binari. A més, `master` no compilava: `expo-splash-screen ^0.29` era de l'SDK 52.
+
+L'actualització s'ha fet SDK per SDK (51 → 57), amb una bateria de tests escrita **abans** de
+tocar cap llibreria per demostrar que l'app continua fent el mateix.
+
+| | |
+|---|---|
+| Branca | `upgrade-expo-57`, que surt de `master` (no porta res de la migració) |
+| Resultat | Versió 9.0.0 (90): Expo SDK 57, React Native 0.86, React 19.2, Nova Arquitectura, React Navigation 7. `targetSdk 36`, `minSdk 24` |
+| Conseqüència | Deixen de rebre actualitzacions els mòbils amb Android 6 (el mínim passa a Android 7) i els iPhones que no poden passar d'iOS 16.4 |
+| Tests de Jest | 383, `make tests`: golden de la litúrgia (68 dies × 5 configuracions, text a text), tots els dies de 2025 i 2026, l'app sencera navegant, serveis. La litúrgia ha sortit **idèntica** a cada salt |
+| Tests de Maestro | 6 fluxos, `make ui-tests`. SDK 57: passen a Android 16, normal i amb pàgines de 16 KB. iOS 26 validat fins a l'SDK 53; per compilar l'SDK 57 en local cal Xcode 26.4+ (el Mac en té la 26.0). A EAS no afecta |
+| Fixes de l'app trobats pel camí | Accessibilitat: VoiceOver llegia el glif de les icones («`U+ED31` Missatge») i no podia arribar al calendari d'iOS; les pestanyes i la capçalera no tenien nom. Tres regressions visuals de la pantalla de vora a vora, corregides abans de publicar |
+| Reaplicar | **No** — és codi, va al git |
+
+**Pendent de fer fora del repositori** (en Pau): `eas channel:create` per als canals `_90`,
+`eas build --platform all --profile production`, pujar-ho a les botigues i «Update Production
+Repository» a la web de Deployment. El servidor de Deployment publica les OTA i l'SDK 57 hi
+demana Node 22.13 o superior i un `eas-cli` recent (pas 11 del wiki).
+
+**Trobat, no corregit** (no depèn de l'actualització):
+
+- **La base de dades s'acaba el 31-12-2026.** Els dies 30 i 31 de desembre l'app ja falla (li
+  cal el dia de demà) i l'1 de gener no obrirà. Cal que CPL publiqui el 2027 abans. El test
+  `DatabaseCoverage` es posarà vermell quan faltin menys de 45 dies.
+- **Dilluns a Dijous Sant de 2026**: Laudes, Vespres i l'Ofici surten sense l'antífona
+  evangèlica, les pregàries ni l'oració final. Altres forats d'un sol dia: Sexta i Nona de
+  Pentecosta sense himne, i el 3 de desembre sense segona lectura de missa. Pendent de revisar
+  com a possibles CPL-LIT.
 
 ## CPL-LIT-001
 
