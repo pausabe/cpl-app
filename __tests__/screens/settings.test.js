@@ -51,7 +51,7 @@ test('three groups with the usual six options, and the saved values', async () =
   expect(
     screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' }).props.accessibilityState.checked,
   ).toBe(false);
-  expect(styleOf(screen.getByTestId('text-size-preview')).fontSize).toBe(21);
+  expect(styleOf(screen.getByTestId('text-size-preview', { includeHiddenElements: true })).fontSize).toBe(21);
   await waitFor(() =>
     expect(screen.getByRole('radio', { name: 'Automàtic' }).props.accessibilityState.checked).toBe(true),
   );
@@ -114,18 +114,20 @@ test('the theme, Automàtic, Clar or Fosc, is applied at once and saved as alway
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
 });
 
-test('the text size is shown in a sample phrase and is saved on release', async () => {
+test('the text size goes up and down with A+ and A−, the same control as in the prayer', async () => {
   await open();
-  // The slider is native: its props are the ones of the React component
-  const slider = screen.UNSAFE_getByType(require('@react-native-community/slider').default);
-  expect(slider.props.accessibilityLabel).toBe('Mida del text');
-  act(() => slider.props.onValueChange(6));
-  expect(styleOf(screen.getByTestId('text-size-preview')).fontSize).toBe(30);
   await act(async () => {
-    slider.props.onSlidingComplete(6);
+    fireEvent.press(screen.getByRole('button', { name: 'Text més gran' }));
   });
-  expect(DataService.CurrentSettings.textSize).toBe('6');
-  expect(await AsyncStorage.getItem('textSize')).toBe('6');
+  expect(DataService.CurrentSettings.textSize).toBe('4');
+  expect(await AsyncStorage.getItem('textSize')).toBe('4');
+  expect(styleOf(screen.getByTestId('text-size-preview', { includeHiddenElements: true })).fontSize).toBe(24);
+  expect(screen.getByTestId('text-size-value').props.children).toBe('Mida 4 de 10');
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('button', { name: 'Text més petit' }));
+  });
+  expect(await AsyncStorage.getItem('textSize')).toBe('3');
 });
 
 // iOS has no bar at the bottom, only the home indicator (34 points on the test phone)
@@ -136,20 +138,13 @@ test('Settings scrolls to the bottom edge, and ends above the home indicator', a
   expect(scroll.props.scrollIndicatorInsets).toEqual({ bottom: 34 });
 });
 
-// On iOS the native slider drew its thumb at the start the first time Settings opened
-test('on iOS the slider gets the chosen size once it has its width, so that its thumb moves there', async () => {
-  await AsyncStorage.setItem('textSize', '5');
+test('at the biggest size, A+ can no longer be pressed', async () => {
+  await AsyncStorage.setItem('textSize', '10');
   await DataService.reloadAllData(new Date(2026, 8, 21), null);
   await open();
-  const slider = () => screen.UNSAFE_getByType(require('@react-native-community/slider').default);
-  const layout = (width) => ({ nativeEvent: { layout: { x: 0, y: 0, width, height: 40 } } });
-  expect(slider().props.accessibilityValue).toEqual({ text: 'Mida 5 de 10' });
-  expect(slider().props.value).toBe(1);
-
-  act(() => slider().props.onLayout(layout(0)));
-  expect(slider().props.value).toBe(1);
-  act(() => slider().props.onLayout(layout(280)));
-  expect(slider().props.value).toBe(5);
+  expect(screen.getByTestId('text-size-value').props.children).toBe('Mida 10 de 10');
+  expect(screen.getByRole('button', { name: 'Text més gran' }).props.accessibilityState.disabled).toBe(true);
+  expect(screen.getByRole('button', { name: 'Text més petit' }).props.accessibilityState.disabled).toBe(false);
 });
 
 test('in plain sight, the approval text and the versions; the technical data, behind ten taps', async () => {

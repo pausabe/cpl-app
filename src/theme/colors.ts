@@ -26,8 +26,6 @@ export interface Palette {
   onAccent: string;
   accentText: string;
   switchOff: string;
-  track: string;
-  preview: string;
   // Liturgical red for rubrics: V., R., Ant. and the section titles
   rubric: string;
   // Behind a sheet or a dialog
@@ -54,8 +52,6 @@ export const palettes: Record<ColorSchemeName, Palette> = {
     onAccent: '#FFFFFF',
     accentText: '#00696D',
     switchOff: '#B9C6C5',
-    track: '#D3DEDD',
-    preview: '#F4F8F7',
     rubric: '#B3261E',
     backdrop: 'rgba(0,0,0,0.42)',
   },
@@ -78,8 +74,6 @@ export const palettes: Record<ColorSchemeName, Palette> = {
     onAccent: '#FFFFFF',
     accentText: '#7FD1CC',
     switchOff: '#3A4645',
-    track: '#34403F',
-    preview: '#111918',
     rubric: '#F28B82',
     backdrop: 'rgba(0,0,0,0.55)',
   },

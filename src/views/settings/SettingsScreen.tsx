@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { LayoutChangeEvent, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import Slider from '@react-native-community/slider';
-import { convertTextSize, MAX_TEXT_SIZE_SETTING, MIN_TEXT_SIZE_SETTING, useTheme } from '../../theme';
+import React, { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { MAX_TEXT_SIZE_SETTING, useTheme } from '../../theme';
 import Card from '../../components/Card';
 import EdgeToEdgeScrollView from '../../components/EdgeToEdgeScrollView';
 import Icon from '../../components/Icon';
 import OptionSheet from '../../components/OptionSheet';
 import SegmentedControl from '../../components/SegmentedControl';
 import SwitchRow from '../../components/SwitchRow';
+import TextSizeControl from '../../components/TextSizeControl';
 import UpdateStatus from '../../components/UpdateStatusComponent';
 import { DarkModeChoice, THEME_SEGMENTS } from '../../components/TextSettingsSheet';
 
@@ -53,20 +53,8 @@ export default function SettingsScreen(props: SettingsScreenProps) {
   const { colors } = theme;
   const { values, info } = props;
   const [sheet, setSheet] = useState<'diocese' | 'place' | null>(null);
-  const [previewStep, setPreviewStep] = useState<number | null>(null);
   const [touches, setTouches] = useState(0);
   const technicalVisible = touches >= TOUCHES_FOR_TECHNICAL_DATA;
-
-  const step = previewStep ?? values?.textSizeStep ?? 3;
-  useEffect(() => setPreviewStep(null), [values?.textSizeStep]);
-
-  // On iOS the native slider, the first time it is created, drew its thumb at the start and
-  // not at the size chosen; the next times its view is reused and it was right. It gets the
-  // size once it has its width: a real change of value puts the thumb in its place.
-  const [sliderReady, setSliderReady] = useState(Platform.OS !== 'ios');
-  const onSliderLayout = (event: LayoutChangeEvent) => {
-    if (event.nativeEvent.layout.width > 0) setSliderReady(true);
-  };
 
   const divider = <View style={[styles.divider, { backgroundColor: colors.divider }]} />;
   const groupLabel = (label: string, first = false) => (
@@ -109,49 +97,11 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                 <View style={styles.block}>
                   <View style={styles.sizeTitle}>
                     <Text style={[styles.rowLabel, { color: colors.text }]}>Mida del text</Text>
-                    {/* As in the "Aa" sheet. The slider says it to the screen reader. */}
-                    <Text
-                      testID="text-size-value"
-                      accessibilityElementsHidden={true}
-                      importantForAccessibility="no"
-                      style={[styles.sizeValue, { color: colors.text2 }]}
-                    >
-                      {`Mida ${step} de ${MAX_TEXT_SIZE_SETTING}`}
+                    <Text testID="text-size-value" style={[styles.sizeValue, { color: colors.text2 }]}>
+                      {`Mida ${values.textSizeStep} de ${MAX_TEXT_SIZE_SETTING}`}
                     </Text>
                   </View>
-                  <View style={styles.sliderRow}>
-                    <Text style={[styles.sliderA, { color: colors.text2 }]}>A</Text>
-                    <Slider
-                      testID="text-size-slider"
-                      accessibilityLabel="Mida del text"
-                      accessibilityValue={{ text: `Mida ${step} de ${MAX_TEXT_SIZE_SETTING}` }}
-                      style={styles.slider}
-                      minimumValue={MIN_TEXT_SIZE_SETTING}
-                      maximumValue={MAX_TEXT_SIZE_SETTING}
-                      step={1}
-                      value={sliderReady ? values.textSizeStep : MIN_TEXT_SIZE_SETTING}
-                      onLayout={onSliderLayout}
-                      minimumTrackTintColor={colors.accentFill}
-                      maximumTrackTintColor={colors.track}
-                      thumbTintColor={colors.accentFill}
-                      onValueChange={(value) => setPreviewStep(Math.round(value))}
-                      onSlidingComplete={(value) => props.onTextSizeChange(Math.round(value))}
-                    />
-                    <Text style={[styles.sliderABig, { color: colors.text2 }]}>A</Text>
-                  </View>
-                  <View style={[styles.preview, { backgroundColor: colors.preview }]}>
-                    <Text
-                      testID="text-size-preview"
-                      style={{
-                        fontSize: convertTextSize(step),
-                        lineHeight: Math.round(convertTextSize(step) * 1.35),
-                        color: colors.text,
-                      }}
-                    >
-                      <Text style={{ color: colors.rubric }}>V.</Text>
-                      {' Obriu-me els llavis, Senyor.'}
-                    </Text>
-                  </View>
+                  <TextSizeControl step={values.textSizeStep} onChange={props.onTextSizeChange} />
                 </View>
                 {divider}
                 <View style={styles.block}>
@@ -294,26 +244,6 @@ const styles = StyleSheet.create({
   },
   sizeValue: {
     fontSize: 15,
-  },
-  sliderRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  sliderA: {
-    fontSize: 15,
-  },
-  sliderABig: {
-    fontSize: 26,
-  },
-  slider: {
-    flex: 1,
-    height: 40,
-  },
-  preview: {
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
   },
   divider: {
     height: 1,
