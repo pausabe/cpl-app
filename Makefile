@@ -19,11 +19,11 @@ help:
 	@echo "make run-web           Obre l'app en mode desenvolupament al navegador, sense emulador"
 	@echo "make start             Només el servidor de desenvolupament (Metro), si l'app ja hi és instal·lada"
 	@echo ""
-	@echo "make checks            Lint i tots els tests de Jest: el que passa el hook abans de cada push (~3 min)"
+	@echo "make checks            Prettier, lint i tots els tests de Jest: el que passa el hook abans de cada push (~4 min)"
 	@echo "make lint              ESLint (la configuració d'Expo): només els errors aturen, els avisos no"
-	@echo "make format            Formata el codi (JS i TS) amb Prettier"
+	@echo "make format            Formata el codi (JS i TS) amb Prettier: arregla el que make checks hi troba"
 	@echo ""
-	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~3 min)"
+	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~4 min)"
 	@echo "make tests-fast        Els mateixos sense els recorreguts llargs (litúrgia i text de les pantalles)"
 	@echo "make golden            Refà els goldens (litúrgia i text de les pantalles) amb aquesta versió (només si l'has revisat)"
 	@echo ""
@@ -56,7 +56,9 @@ run-web:
 # make checks és el que corre el hook .githooks/pre-push abans de cada push. Els tests, amb
 # --ci i sense UPDATE_GOLDEN: així comparen amb els goldens en lloc de reescriure'ls.
 
-checks: lint
+checks:
+	npx prettier . --check
+	npx eslint .
 	env -u UPDATE_GOLDEN npx jest --ci
 
 lint:

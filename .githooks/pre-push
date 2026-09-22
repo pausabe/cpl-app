@@ -1,6 +1,6 @@
 #!/bin/sh
-# Abans de cada push, a qualsevol branca, make checks: el lint i tots els tests de Jest. Si falla,
-# no es puja res. Per saltar-ho en un cas concret: git push --no-verify.
+# Abans de cada push, a qualsevol branca, make checks: Prettier, el lint i tots els tests de Jest.
+# Si falla, no es puja res. Per saltar-ho en un cas concret: git push --no-verify.
 #
 # L'activa el "prepare" del package.json (git config core.hooksPath .githooks), que corre amb
 # cada npm install / yarn install.
@@ -31,7 +31,7 @@ if [ -n "$(git status --porcelain)" ]; then
   echo "pre-push: atenció, hi ha canvis sense commit: els tests els inclouen, però no es pugen."
 fi
 
-echo "pre-push: make checks abans de pujar (~3 min)…"
+echo "pre-push: make checks abans de pujar (~4 min)…"
 if ! make checks; then
   echo "pre-push: make checks falla; no s'ha pujat res."
   exit 1
