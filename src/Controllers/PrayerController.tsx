@@ -15,6 +15,9 @@ export interface HoursRouteParams {
     type: string;
     // For the top bar: "Ofici de lectura"
     title: string;
+    // What the home shows under the name of the hour, shortened when it does not fit: the first
+    // Vespers of tomorrow's celebration ("Mare de Déu de la Mercè"). The prayer shows it whole.
+    subtitle?: string;
 }
 
 export interface MassRouteParams {
@@ -62,6 +65,7 @@ export function HoursPrayerController({route, navigation}: {route: {params: Hour
         <>
             <HoursLiturgyPrayerScreen
                 type={route.params.type}
+                celebration={route.params.subtitle}
                 hours={hours}
                 today={day.Today}
                 settings={settings}

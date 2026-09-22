@@ -130,6 +130,14 @@ test('primeres vespres i missa vespertina: a les 19 h, la vespertina triada', as
   expect(await AsyncStorage.getItem('none')).toBe('31:9:2026_normal');
 });
 
+test('en entrar a les vespres de la vigília de la Mercè, el títol que es veu a l’inici hi és sencer', async () => {
+  await openAt(new Date(2026, 8, 23, 19, 0));
+  expect(tile('Vespres').props.accessibilityHint).toBe('Mare de Déu de la Mercè');
+  fireEvent.press(tile('Vespres'));
+  const heading = await screen.findByTestId('hour-celebration', {}, { timeout: 15000 });
+  expect(heading.props.children).toBe('Mare de Déu de la Mercè');
+});
+
 test('al matí, la missa del dia; la tria feta es manté tot el dia', async () => {
   await openAt(new Date(2026, 9, 31, 9, 0), { none: '31:9:2026_vespers' });
   await waitFor(() => expect(screen.getByRole('radio', { name: 'Vespertina, Tots Sants' }).props.accessibilityState.checked).toBe(true));

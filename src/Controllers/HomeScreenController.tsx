@@ -83,12 +83,16 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
     const [whatsNewPending, setWhatsNewPending] = useState(false);
     const [webPage, setWebPage] = useState<'message' | 'donation' | null>(null);
     const [massChoice, setMassChoice] = useState<{day: string; choice: MassChoice} | null>(null);
+    // Whether this home has loaded the day itself: until then the store may still hold a day
+    // loaded before (in the tests, the previous test's), which must not decide the Mass
+    const [loadedHere, setLoadedHere] = useState(false);
     const started = useRef(false);
 
     const load = useCallback(async (date: Date, databaseAsset?: unknown): Promise<boolean> => {
         try {
             await LiturgyStore.reload(date, databaseAsset);
             setStatus('ready');
+            setLoadedHere(true);
             return true;
         } catch (error) {
             Logger.LogError(Logger.LogKeys.HomeScreenController, 'load', error as Error);
@@ -168,7 +172,7 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
     const todayKey = today ? DateManagement.GetDateKeyToBeStored(today) : '';
 
     // --- Avui | Vespertina: the choice of the day, kept for the day ---------------------------
-    const choiceInput = status === 'ready' && today ? {
+    const choiceInput = status === 'ready' && loadedHere && today ? {
         todayKey,
         hasVespers: !!snapshot.mass.HasVespers,
         tomorrowIsEasterSunday: snapshot.day.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday,
@@ -189,7 +193,7 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
         return () => {
             active = false;
         };
-    }, [snapshot.revision, status]);
+    }, [snapshot.revision, status, loadedHere]);
 
     const choice: MassChoice = massChoice && massChoice.day === todayKey
         ? massChoice.choice
@@ -226,7 +230,11 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
         await load(today);
     };
 
-    const onOpenHour = (tile: HourTile) => navigation.navigate('LHDisplay', {type: tile.screenType, title: tile.label});
+    const onOpenHour = (tile: HourTile) => navigation.navigate('LHDisplay', {
+        type: tile.screenType,
+        title: tile.label,
+        ...(tile.subtitle ? {subtitle: tile.subtitle} : {}),
+    });
 
     const onOpenReading = (opens: MassScreenType) => {
         if (!model) return;

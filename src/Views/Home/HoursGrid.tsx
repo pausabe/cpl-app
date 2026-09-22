@@ -1,14 +1,13 @@
-import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useState} from 'react';
+import {LayoutChangeEvent, Pressable, StyleSheet, Text, View} from 'react-native';
 import {fitLabel, useTheme} from '../../Theme';
 import HourIcon from '../../Components/HourIcon';
 import {HourTile} from '../../ViewModels/Hours';
 import SectionLabel from './SectionLabel';
 
 // The seven hours in three rows (Ofici de lectura · Laudes / Tèrcia · Sexta · Nona / Vespres ·
-// Completes). The one of now is filled and says "Ara", next to the name or under it when there is
-// no room (the three of the middle row, always on a phone). The rows grow when there is room,
-// up to a limit.
+// Completes). The one of now is filled, and says "Ara" next to the name when there is room for
+// it. The rows grow when there is room, up to a limit.
 interface HoursGridProps {
     hours: HourTile[];
     onOpen: (tile: HourTile) => void;
@@ -17,6 +16,7 @@ interface HoursGridProps {
 const ROWS: string[][] = [['ofici', 'laudes'], ['tercia', 'sexta', 'nona'], ['vespres', 'completes']];
 export const MAX_HOURS_HEIGHT = 380;
 const MIN_TILE_HEIGHT = 56;
+const BADGE_GAP = 8;
 
 export default function HoursGrid({hours, onOpen}: HoursGridProps) {
     const byKey = new Map(hours.map((tile) => [tile.key as string, tile]));
@@ -43,6 +43,26 @@ function Tile({tile, compact, onOpen}: {tile: HourTile; compact: boolean; onOpen
     const now = tile.isNow;
     const foreground = now ? colors.onAccent : colors.text;
     const scale = theme.maxFontScaleForLabels;
+
+    // "Ara" only next to the name, and only if both fit on the line at their full size. The minor
+    // hours, three to a row, never have room for it on a phone; on a narrow one Laudes neither.
+    // Then the filled tile says it alone, and the screen reader still hears "Ara".
+    const withBadge = now && !compact;
+    const [room, setRoom] = useState({line: 0, needed: 0});
+    const badgeFits = withBadge && room.line > 0 && room.needed > 0 && room.needed <= room.line;
+    const measureLine = (event: LayoutChangeEvent) => {
+        const line = event.nativeEvent.layout.width;
+        setRoom((current) => (current.line === line ? current : {...current, line}));
+    };
+    const measureNeeded = (event: LayoutChangeEvent) => {
+        const needed = event.nativeEvent.layout.width;
+        setRoom((current) => (current.needed === needed ? current : {...current, needed}));
+    };
+    const badge = (testID?: string) => (
+        <View testID={testID} style={styles.badge}>
+            <Text maxFontSizeMultiplier={scale} style={[styles.badgeText, {color: colors.accentFill}]}>Ara</Text>
+        </View>
+    );
     return (
         <Pressable
             testID={`hour-${tile.key}`}
@@ -63,19 +83,17 @@ function Tile({tile, compact, onOpen}: {tile: HourTile; compact: boolean; onOpen
             ]}>
             <HourIcon hour={tile.key} color={now ? colors.onAccent : colors.accentText}/>
             <View style={compact ? styles.compactLabels : styles.labels}>
-                {/* The badge goes under the name when both don't fit on one line */}
-                <View testID={`hour-${tile.key}-title`} style={styles.titleLine}>
+                <View
+                    testID={`hour-${tile.key}-title`}
+                    style={styles.titleLine}
+                    onLayout={withBadge ? measureLine : undefined}>
                     <Text
                         maxFontSizeMultiplier={scale}
                         {...fitLabel(tile.label)}
                         style={[styles.label, {color: foreground, fontWeight: now ? '700' : '500'}]}>
                         {tile.label}
                     </Text>
-                    {now ? (
-                        <View testID="hour-now-badge" style={styles.badge}>
-                            <Text maxFontSizeMultiplier={scale} style={[styles.badgeText, {color: colors.accentFill}]}>Ara</Text>
-                        </View>
-                    ) : null}
+                    {badgeFits ? badge('hour-now-badge') : null}
                 </View>
                 {tile.subtitle ? (
                     <Text
@@ -86,6 +104,22 @@ function Tile({tile, compact, onOpen}: {tile: HourTile; compact: boolean; onOpen
                     </Text>
                 ) : null}
             </View>
+            {withBadge ? (
+                // The name and "Ara" side by side at their full size, out of sight and out of
+                // reach: how much room the two need
+                <View
+                    testID={`hour-${tile.key}-measure`}
+                    pointerEvents="none"
+                    accessibilityElementsHidden={true}
+                    importantForAccessibility="no-hide-descendants"
+                    onLayout={measureNeeded}
+                    style={styles.measure}>
+                    <Text maxFontSizeMultiplier={scale} numberOfLines={1} style={[styles.label, {fontWeight: '700'}]}>
+                        {tile.label}
+                    </Text>
+                    {badge()}
+                </View>
+            ) : null}
         </Pressable>
     );
 }
@@ -134,11 +168,18 @@ const styles = StyleSheet.create({
     },
     titleLine: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
-        columnGap: 8,
-        rowGap: 3,
+        columnGap: BADGE_GAP,
+    },
+    measure: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        columnGap: BADGE_GAP,
+        opacity: 0,
     },
     label: {
         fontSize: 16.5,

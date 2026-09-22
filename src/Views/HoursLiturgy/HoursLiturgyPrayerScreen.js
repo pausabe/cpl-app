@@ -8,6 +8,7 @@ import Laudes from './SpecificHourLiturgy/LaudesComponent'
 import Vespres from './SpecificHourLiturgy/VespersComponent'
 import HoraMenor from './SpecificHourLiturgy/HoursComponent'
 import Completes from './SpecificHourLiturgy/NightPrayerComponent'
+import Gap from '../../Components/Gap';
 import { ThemeContext, prayerTextStyles } from '../../Theme';
 
 // While a prayer is open the screen does not go off
@@ -15,7 +16,9 @@ const KEEP_AWAKE_TAG = 'hours-prayer';
 
 // One hour of the Liturgy of the Hours. Everything comes through props from its controller
 // (Controllers/PrayerController): the hours of the day (hours), the day (today), the settings and
-// what to do when the user picks another invitatory psalm or Marian antiphon.
+// what to do when the user picks another invitatory psalm or Marian antiphon. When the home says
+// something under the name of the hour (celebration: the first Vespers of tomorrow's feast), it
+// goes on top, whole, as the heading of the prayer.
 export default class HoursLiturgyPrayerScreen extends Component {
   static contextType = ThemeContext;
 
@@ -33,6 +36,16 @@ export default class HoursLiturgyPrayerScreen extends Component {
       <SafeAreaView edges={["bottom"]} style={prayerTextStyles(theme).container}>
         <ScrollView automaticallyAdjustContentInsets={false} contentContainerStyle={styles.content}>
           <View style={[styles.column, { maxWidth: theme.layout.readingMaxWidth }]}>
+            {this.props.celebration ?
+              <Text
+                testID="hour-celebration"
+                selectable={true}
+                accessibilityRole="header"
+                style={prayerTextStyles(theme).centeredTitle}>
+                {this.props.celebration}
+              </Text>
+              : null}
+            {this.props.celebration ? <Gap/> : null}
             {this.liturgyComponent(this.props.type)}
           </View>
         </ScrollView>

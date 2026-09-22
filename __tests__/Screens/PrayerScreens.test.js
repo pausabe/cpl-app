@@ -93,6 +93,22 @@ test('l’antífona de la Mare de Déu triada es recorda', async () => {
   expect(await AsyncStorage.getItem('antMare')).toBe('3');
 });
 
+test('les primeres vespres porten a dalt, sencer, el títol que l’inici escurça', async () => {
+  await loadDay('2026-09-23');
+  await open(HoursPrayerController, { type: 'Vespres', title: 'Vespres', subtitle: 'Mare de Déu de la Mercè' });
+  const heading = screen.getByRole('header', { name: 'Mare de Déu de la Mercè' });
+  expect(heading.props.testID).toBe('hour-celebration');
+  expect(heading.props.numberOfLines).toBeUndefined();
+  // Red and centred, like the heading of the final antiphon of Completes
+  expect(styleOf(heading)).toMatchObject({ color: '#B3261E', textAlign: 'center' });
+});
+
+test('una hora sense res a sota del nom, a l’inici, no porta cap títol de més', async () => {
+  await loadDay('2026-09-22');
+  await open(HoursPrayerController, { type: 'Vespres', title: 'Vespres' });
+  expect(screen.queryByTestId('hour-celebration')).toBeNull();
+});
+
 test('a Pasqua només hi ha la cinquena antífona, sense selector', async () => {
   await loadDay('2026-04-05');
   await open(HoursPrayerController, { type: 'Completes', title: 'Completes' });
