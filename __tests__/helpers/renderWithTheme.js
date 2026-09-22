@@ -3,7 +3,7 @@
 const React = require('react');
 const RNTL = require('@testing-library/react-native');
 const { SafeAreaProvider } = require('react-native-safe-area-context');
-const { ThemeProvider } = require('../../src/Theme');
+const { ThemeProvider } = require('../../src/theme');
 
 const METRICS = { frame: { x: 0, y: 0, width: 390, height: 844 }, insets: { top: 47, left: 0, right: 0, bottom: 34 } };
 

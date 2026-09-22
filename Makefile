@@ -52,7 +52,7 @@ run-android:
 run-ios:
 	npx expo run:ios
 
-# In the browser the database opens in memory (DatabaseManagerService.web.tsx). There is no date
+# In the browser the database opens in memory (databaseManagerService.web.ts). There is no date
 # picker in the calendar and no YouTube video in the Mass.
 run-web:
 	npx expo start --web
@@ -83,14 +83,14 @@ tests:
 	npx jest
 
 tests-fast:
-	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/Liturgy/(LiturgyGolden|YearSweep)' '/Screens/PrayerTextGolden'
+	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/liturgy/(liturgyGolden|yearSweep)' '/screens/prayerTextGolden'
 
 # A golden is what says «this is how it has to come out». It is rewritten only after checking by
 # hand that the liturgy of this build is right: otherwise it stops catching anything. The screens
 # one (prayer-screens.json) is the text the hours and the readings show: it was made before the
 # redesign, and it has to stay the same.
 golden:
-	UPDATE_GOLDEN=1 npx jest __tests__/Liturgy __tests__/Screens/PrayerTextGolden
+	UPDATE_GOLDEN=1 npx jest __tests__/liturgy __tests__/screens/prayerTextGolden
 
 # --- Local builds for the Maestro tests -------------------------------------------------------
 # /android and /ios are generated (and gitignored): they are rebuilt from scratch so that nothing

@@ -2,8 +2,8 @@
 // DataService.ReloadAllData. The caller must mock DatabaseManagerService with
 // ./mockDatabaseManager (jest.mock factories can't be shared from here: they are hoisted).
 const AsyncStorage = require('@react-native-async-storage/async-storage');
-const DataService = require('../../src/Services/DataService');
-const StorageKeys = require('../../src/Services/Storage/StorageKeys').default;
+const DataService = require('../../src/services/dataService');
+const StorageKeys = require('../../src/services/storage/storageKeys').default;
 
 // Setting combinations a real user can pick in the Settings screen. Values are the strings
 // SettingsService stores. Between them they cover every option that changes the texts.

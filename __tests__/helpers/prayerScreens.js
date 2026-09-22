@@ -5,9 +5,9 @@ const React = require('react');
 // Through the module: `screen` is replaced on every render, a destructured copy would go stale.
 const RNTL = require('@testing-library/react-native');
 const { SafeAreaProvider } = require('react-native-safe-area-context');
-const LiturgyStore = require('../../src/Controllers/LiturgyStore');
-const { HoursPrayerController, MassPrayerController } = require('../../src/Controllers/PrayerController');
-const AppThemeProvider = require('../../src/Controllers/AppThemeProvider').default;
+const LiturgyStore = require('../../src/controllers/liturgyStore');
+const { HoursPrayerController, MassPrayerController } = require('../../src/controllers/PrayerController');
+const AppThemeProvider = require('../../src/controllers/AppThemeProvider').default;
 const { textRuns } = require('./renderedText');
 
 const METRICS = { frame: { x: 0, y: 0, width: 390, height: 844 }, insets: { top: 47, left: 0, right: 0, bottom: 34 } };
