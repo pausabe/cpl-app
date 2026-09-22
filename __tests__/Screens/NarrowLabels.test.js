@@ -10,6 +10,7 @@ import CalendarDialog from '../../src/Views/Home/CalendarDialog';
 import SegmentedControl from '../../src/Components/SegmentedControl';
 import { buildHours } from '../../src/ViewModels/Hours';
 import { fitLabel } from '../../src/Theme';
+import { THEME_SEGMENTS } from '../../src/Components/TextSettingsSheet';
 
 const hoursAt = (hour) => buildHours({ vespersTitle: '', specificLiturgyTime: '', hour });
 
@@ -34,19 +35,19 @@ test('les hores: el nom no es parteix, i «Ara» va dins la línia del nom, on p
   expect(within(within(line).getByTestId('hour-now-badge')).getByText('Ara')).toBeTruthy();
 });
 
-test('les hores de tres per fila no porten «Ara»: només el fons ple', () => {
+test('les hores menors, tres per fila, també diuen «Ara», que hi baixa a sota del nom', () => {
   renderWithTheme(<HoursGrid hours={hoursAt(10)} onOpen={jest.fn()}/>);
   expect(screen.getByRole('button', { name: 'Tèrcia' }).props.accessibilityValue).toEqual({ text: 'Ara' });
-  expect(screen.queryByTestId('hour-now-badge')).toBeNull();
+  const line = within(screen.getByTestId('hour-tercia')).getByTestId('hour-tercia-title');
+  expect(styleOf(line)).toMatchObject({ flexDirection: 'row', flexWrap: 'wrap' });
+  expect(within(within(line).getByTestId('hour-now-badge')).getByText('Ara')).toBeTruthy();
+  expect(screen.getAllByTestId('hour-now-badge')).toHaveLength(1);
   expect(label('Tèrcia').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
 });
 
-test('les opcions del mode fosc no es parteixen', () => {
-  const segments = [
-    { value: 'auto', label: 'Automàtic' }, { value: 'on', label: 'Activat' }, { value: 'off', label: 'Desactivat' },
-  ];
-  renderWithTheme(<SegmentedControl segments={segments} value="auto" onChange={jest.fn()} accessibilityLabel="Mode fosc"/>);
-  for (const text of ['Automàtic', 'Activat', 'Desactivat']) {
+test('les opcions del tema no es parteixen', () => {
+  renderWithTheme(<SegmentedControl segments={THEME_SEGMENTS} value="Automàtic" onChange={jest.fn()} accessibilityLabel="Tema"/>);
+  for (const text of ['Automàtic', 'Clar', 'Fosc']) {
     expect(label(text).props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
   }
 });

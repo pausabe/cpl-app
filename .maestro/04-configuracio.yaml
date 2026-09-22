@@ -9,8 +9,8 @@ name: "La configuració es desa i canvia la litúrgia"
 # a iOS la fila és un sol botó, «Diòcesi: Barcelona».
 - tapOn: "(Diòcesi: )?Barcelona"
 - tapOn: "Andorra"
-# Mode fosc: Automàtic → Activat, amb els tres botons
-- tapOn: "Activat"
+# Tema: Automàtic → Fosc, amb els tres botons
+- tapOn: "Fosc"
 - scrollUntilVisible:
     element: "(?s).*Versió de la base de dades: .*"
     direction: DOWN
@@ -18,7 +18,7 @@ name: "La configuració es desa i canvia la litúrgia"
 - extendedWaitUntil:
     visible: "Andorra \\(Diòcesi\\)"
     timeout: 15000
-# Amb el mode fosc, també l'inici és fosc
+# Amb el tema fosc, també l'inici és fosc
 - takeScreenshot: 04-andorra-mode-fosc
 - tapOn: "Laudes"
 - extendedWaitUntil:

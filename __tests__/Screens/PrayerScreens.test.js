@@ -35,7 +35,7 @@ async function open(Controller, params) {
 // The header belongs to the navigator: the button the screen asks for is pressed as it is given
 async function pressHeaderButton(headerRight) {
   const button = headerRight();
-  expect(button.props.accessibilityLabel).toBe('Mida del text i mode fosc');
+  expect(button.props.accessibilityLabel).toBe('Mida del text i tema');
   expect(button.props.text).toBe('Aa');
   await act(async () => { button.props.onPress(); });
 }
@@ -61,10 +61,10 @@ test('el botó Aa obre el full; A+ fa el text més gran a l’instant i ho desa'
   expect(view.queryByText('Mida 4 de 10')).toBeNull();
 });
 
-test('el mode fosc es tria al mateix full i la pregària es torna fosca', async () => {
+test('el tema fosc es tria al mateix full i la pregària es torna fosca', async () => {
   const { view, headerRight } = await open(HoursPrayerController, { type: 'Vespres', title: 'Vespres' });
   await pressHeaderButton(headerRight);
-  await act(async () => { fireEvent.press(view.getByRole('radio', { name: 'Activat' })); });
+  await act(async () => { fireEvent.press(view.getByRole('radio', { name: 'Fosc' })); });
   expect(DataService.CurrentSettings.DarkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
   expect(styleOf(view.getByText('HIMNE')).color).toBe('#F28B82');
@@ -111,7 +111,21 @@ test('les lectures: «Continua amb el Salm» mostra el salm a sota', async () =>
 
 test('el vídeo de llengua de signes només surt si està activat', async () => {
   await open(MassPrayerController, { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false });
-  expect(screen.queryByTestId('youtube')).toBeNull();
+  expect(screen.queryByTestId('gospel-video')).toBeNull();
+});
+
+// The only Mass with a video in the database: the 30th Sunday of the year, cycle C
+test('amb el vídeo activat, surt sobre l’Evangeli del 26 d’octubre de 2025, tan ample com la columna', async () => {
+  await loadDay('2025-10-26');
+  await AsyncStorage.setItem('showVideos', 'true');
+  await open(MassPrayerController, { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false });
+  // The setting is read when the screen opens
+  const frame = await screen.findByTestId('gospel-video');
+  expect(styleOf(frame)).toMatchObject({ width: '100%', aspectRatio: 16 / 9 });
+  // The player, once the frame knows its width: 16:9 of it
+  fireEvent(frame, 'layout', { nativeEvent: { layout: { width: 352, height: 198 } } });
+  expect(screen.getByTestId('youtube').props).toMatchObject({ videoId: 'futmD6C8ryw', width: 352, height: 198 });
+  await AsyncStorage.removeItem('showVideos');
 });
 
 test('les lectures s’alineen a l’esquerra i tenen una amplada màxima', async () => {

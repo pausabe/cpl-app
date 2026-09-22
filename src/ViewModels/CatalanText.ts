@@ -11,10 +11,14 @@ export function monthName(month: number): string {
     return MONTHS[month] ?? '';
 }
 
-// "de setembre", "d’octubre": the preposition elides before a vowel
-export function ofMonth(month: number): string {
-    const name = monthName(month);
+// "de Quaresma", "d’Advent": the preposition elides before a vowel
+export function ofName(name: string): string {
     return /^[aeiouàèéíòóú]/i.test(name) ? `d${APOSTROPHE}${name}` : `de ${name}`;
+}
+
+// "de setembre", "d’octubre"
+export function ofMonth(month: number): string {
+    return ofName(monthName(month));
 }
 
 // "21 de setembre", "4 d’abril"

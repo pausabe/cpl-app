@@ -4,11 +4,17 @@ import * as Updates from 'expo-updates';
 
 // State of the OTA updates, with the versions at the bottom of Settings: whether one is being
 // downloaded, or is already downloaded and only waits for the app to restart.
+//
+// A copy built on a computer (make android-app, make ios-device) has no channel: it cannot ask
+// for updates, and used to say it had not been able to check. It says what it is instead.
 export default function UpdateStatusComponent() {
     const updates = Updates.useUpdates();
 
     if (!Updates.isEnabled) {
         return <Text style={styles.text}>{"Actualitzacions: desactivades en desenvolupament"}</Text>;
+    }
+    if (!Updates.channel) {
+        return <Text style={styles.text}>{"Còpia de proves, sense canal: no rep actualitzacions"}</Text>;
     }
 
     return (

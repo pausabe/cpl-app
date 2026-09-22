@@ -5,14 +5,17 @@ import BottomSheet from './BottomSheet';
 import SegmentedControl from './SegmentedControl';
 import ActionButton from './ActionButton';
 
-// The "Aa" sheet of the prayer: the text size and the dark mode, without leaving the prayer.
-// Same settings as in Configuració.
+// The "Aa" sheet of the prayer: the text size and the theme, without leaving the prayer. Same
+// settings as in Configuració.
+//
+// The theme is stored as the dark mode always was (Automàtic / Activat / Desactivat), so that
+// nobody loses their choice; it is shown as Automàtic / Clar / Fosc.
 export type DarkModeChoice = 'Automàtic' | 'Activat' | 'Desactivat';
 
-const DARK_MODE_SEGMENTS: {value: DarkModeChoice; label: string}[] = [
+export const THEME_SEGMENTS: {value: DarkModeChoice; label: string}[] = [
     {value: 'Automàtic', label: 'Automàtic'},
-    {value: 'Activat', label: 'Activat'},
-    {value: 'Desactivat', label: 'Desactivat'},
+    {value: 'Desactivat', label: 'Clar'},
+    {value: 'Activat', label: 'Fosc'},
 ];
 
 interface TextSettingsSheetProps {
@@ -44,7 +47,7 @@ export default function TextSettingsSheet(props: TextSettingsSheetProps) {
     );
 
     return (
-        <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="Mida del text i mode fosc" testID="text-settings">
+        <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="Mida del text i tema" testID="text-settings">
             <View style={styles.content}>
                 <Text accessibilityRole="header" style={[styles.heading, {color: colors.text}]}>Mida del text</Text>
                 <View style={styles.sizeRow}>
@@ -58,12 +61,12 @@ export default function TextSettingsSheet(props: TextSettingsSheetProps) {
                     {sizeButton('A+', 'Text més gran', bigger, 23, textSizeStep >= MAX_TEXT_SIZE_SETTING)}
                 </View>
                 <Text style={[styles.sizeLabel, {color: colors.text3}]}>{`Mida ${textSizeStep} de ${MAX_TEXT_SIZE_SETTING}`}</Text>
-                <Text accessibilityRole="header" style={[styles.heading, styles.darkHeading, {color: colors.text}]}>Mode fosc</Text>
+                <Text accessibilityRole="header" style={[styles.heading, styles.darkHeading, {color: colors.text}]}>Tema</Text>
                 <SegmentedControl
-                    segments={DARK_MODE_SEGMENTS}
+                    segments={THEME_SEGMENTS}
                     value={darkMode}
                     onChange={onDarkModeChange}
-                    accessibilityLabel="Mode fosc"
+                    accessibilityLabel="Tema"
                     minHeight={theme.touch.comfortable}/>
                 <ActionButton label="Fet" onPress={onClose} style={styles.done}/>
             </View>

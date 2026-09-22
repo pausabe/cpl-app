@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import { View, ScrollView, Text, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import YoutubePlayer from 'react-native-youtube-iframe';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import HR from '../../Components/HRComponent';
@@ -12,6 +11,8 @@ import ChoiceChips from '../../Components/ChoiceChips';
 import * as Logger from '../../Utils/Logger';
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from "../../Services/CelebrationTimeEnums";
 import {palmSundayGospel} from "../../ViewModels/PalmSundayGospel";
+import {youtubeVideoId} from "../../ViewModels/Video";
+import GospelVideo from "./GospelVideo";
 import {ThemeContext, prayerTextStyles} from "../../Theme";
 
 // While the readings are open the screen does not go off
@@ -43,8 +44,7 @@ export default class MassLiturgyPrayerScreen extends Component {
             Lect2: type === '2Lect',
             Evangeli: type === 'Evangeli',
             DisplayVespers: props.useVespersTexts,
-            evangeliType: 'normal',
-            videoLoading: true
+            evangeliType: 'normal'
         };
     }
 
@@ -363,7 +363,8 @@ export default class MassLiturgyPrayerScreen extends Component {
             <View>
                 <SectionTitle>{"Evangeli"}</SectionTitle>
                 
-                {this.props.showVideos && this.renderYoutubeVideo(videoUrl)}
+                {this.props.showVideos && youtubeVideoId(videoUrl) ?
+                    <View><GospelVideo videoId={youtubeVideoId(videoUrl)}/><Gap/></View> : null}
                 
                 {(this.props.today.GenericLiturgyTime !== GenericLiturgyTimeType.Lent && this.props.today.GenericLiturgyTime !== GenericLiturgyTimeType.PaschalTriduum) ?
                     <Text selectable={true} style={this.styles.red}>{"Al·leluia. "}{aleluia_quote}</Text>
@@ -447,91 +448,6 @@ export default class MassLiturgyPrayerScreen extends Component {
 
     CredoText() {
         return <Text selectable={true} style={this.styles.blackJustified}>{"Crec en un Déu\nPare totpoderós,\ncreador del cel i de la terra.\n\nI en Jesucrist, únic Fill seu i Senyor nostre;\nel qual fou concebut per obra de l'Esperit Sant,\nnasqué de Maria Verge;\npatí sota el poder de Ponç Pilat,\nfou crucificat, mort i sepultat;\ndavallà als inferns,\nressuscità el tercer dia d'entre els morts;\nse'n pujà al cel,\nseu a la dreta de Déu Pare totpoderós;\ni d'allí ha de venir a judicar els vius i els morts.\n\nCrec en l'Esperit Sant;\nla santa Mare Església catòlica,\nla comunió dels sants;\nla remissió dels pecats;\nla resurrecció de la carn;\nla vida perdurable. Amén."}</Text>;
-    }
-
-    // Extract YouTube video ID from URL
-    getYoutubeVideoId(url) {
-        if (!url) return null;
-        
-        // Remove any tracking parameters (like si=...)
-        const cleanUrl = url.split('?')[0] + (url.includes('?v=') ? '?v=' + url.split('?v=')[1].split('&')[0] : '');
-        
-        // Regular expressions for different YouTube URL formats
-        const patterns = [
-            /(?:youtube\.com\/watch\?v=)([^&]+)/,
-            /(?:youtube\.com\/embed\/)([^?&]+)/,
-            /(?:youtu\.be\/)([^?&]+)/,
-            /(?:youtube\.com\/v\/)([^?&]+)/
-        ];
-        
-        for (let pattern of patterns) {
-            const match = cleanUrl.match(pattern);
-            if (match && match[1]) {
-                // Clean the video ID from any remaining parameters
-                return match[1].split('?')[0].split('&')[0];
-            }
-        }
-        
-        return null;
-    }
-
-    // Render YouTube video player
-    renderYoutubeVideo(videoUrl) {
-        if (!videoUrl || videoUrl === '' || videoUrl === '-') {
-            return null;
-        }
-
-        const videoId = this.getYoutubeVideoId(videoUrl);
-        if (!videoId) {
-            return null;
-        }
-
-        const { width } = Dimensions.get('window');
-        const videoWidth = width - 20;
-
-        return (
-            <View style={{ 
-                marginTop: 0,
-                marginBottom: 20,
-                borderRadius: 8,
-                overflow: 'hidden'
-            }}>
-                {this.state.videoLoading && (
-                    <View style={{
-                        position: 'absolute',
-                        width: videoWidth,
-                        height: videoWidth * (9 / 16),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 10,
-                        backgroundColor: '#e0e0e0'
-                    }}>
-                        <ActivityIndicator 
-                            size="large" 
-                            color="#999999"
-                        />
-                    </View>
-                )}
-                <YoutubePlayer
-                    height={videoWidth * (9 / 16)}
-                    play={false}
-                    videoId={videoId}
-                    onChangeState={(state) => {
-                        if (state === 'ready' || state === 'playing' || state === 'paused') {
-                            this.setState({ videoLoading: false });
-                        } else if (state === 'buffering') {
-                            this.setState({ videoLoading: true });
-                        } else if (state === 'error') {
-                            this.setState({ videoLoading: false });
-                            Logger.LogError(Logger.LogKeys.Screens, "YouTube player error", "Error loading video");
-                        }
-                    }}
-                    onReady={() => {
-                        this.setState({ videoLoading: false });
-                    }}
-                />
-            </View>
-        );
     }
 
     //------------------------------------------------------------------------------------

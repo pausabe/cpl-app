@@ -9,7 +9,7 @@ import OptionSheet from '../../Components/OptionSheet';
 import SegmentedControl from '../../Components/SegmentedControl';
 import SwitchRow from '../../Components/SwitchRow';
 import UpdateStatus from '../../Components/UpdateStatusComponent';
-import {DarkModeChoice} from '../../Components/TextSettingsSheet';
+import {DarkModeChoice, THEME_SEGMENTS} from '../../Components/TextSettingsSheet';
 
 // Configuració: the same six options as always, in three groups. Everything comes from its
 // controller (Controllers/SettingsController), which also saves the changes.
@@ -46,12 +46,6 @@ export interface SettingsScreenProps {
 
 const APPROVAL = "Text oficial de la Comissió Interdiocesana de Litúrgia de la Conferència Episcopal Tarraconense, aprovat pels bisbes de les diòcesis de parla catalana i confirmat per la Congregació per al Culte Diví i la Disciplina dels Sagraments: Prot. N. 312/15, 27 d'abril de 2016";
 const TOUCHES_FOR_TECHNICAL_DATA = 10;
-
-const DARK_MODE_SEGMENTS: {value: DarkModeChoice; label: string}[] = [
-    {value: 'Automàtic', label: 'Automàtic'},
-    {value: 'Activat', label: 'Activat'},
-    {value: 'Desactivat', label: 'Desactivat'},
-];
 
 export default function SettingsScreen(props: SettingsScreenProps) {
     const theme = useTheme();
@@ -94,7 +88,17 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                             {groupLabel('Lectura', true)}
                             <Card radius={theme.radius.tile}>
                                 <View style={styles.block}>
-                                    <Text style={[styles.rowLabel, {color: colors.text}]}>Mida del text</Text>
+                                    <View style={styles.sizeTitle}>
+                                        <Text style={[styles.rowLabel, {color: colors.text}]}>Mida del text</Text>
+                                        {/* As in the "Aa" sheet. The slider says it to the screen reader. */}
+                                        <Text
+                                            testID="text-size-value"
+                                            accessibilityElementsHidden={true}
+                                            importantForAccessibility="no"
+                                            style={[styles.sizeValue, {color: colors.text2}]}>
+                                            {`Mida ${step} de ${MAX_TEXT_SIZE_SETTING}`}
+                                        </Text>
+                                    </View>
                                     <View style={styles.sliderRow}>
                                         <Text style={[styles.sliderA, {color: colors.text2}]}>A</Text>
                                         <Slider
@@ -124,10 +128,10 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                                 </View>
                                 {divider}
                                 <View style={styles.block}>
-                                    <Text style={[styles.rowLabel, {color: colors.text}]}>Mode fosc</Text>
+                                    <Text style={[styles.rowLabel, {color: colors.text}]}>Tema</Text>
                                     <SegmentedControl
-                                        accessibilityLabel="Mode fosc"
-                                        segments={DARK_MODE_SEGMENTS}
+                                        accessibilityLabel="Tema"
+                                        segments={THEME_SEGMENTS}
                                         value={values.darkMode}
                                         onChange={props.onDarkModeChange}/>
                                 </View>
@@ -238,6 +242,15 @@ const styles = StyleSheet.create({
     },
     rowLabel: {
         fontSize: 17,
+    },
+    sizeTitle: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
+        gap: 8,
+    },
+    sizeValue: {
+        fontSize: 15,
     },
     sliderRow: {
         flexDirection: 'row',

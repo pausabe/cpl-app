@@ -1,9 +1,9 @@
 // Sheets, dialogs, buttons and the rest of the controls shared by the screens.
 import React from 'react';
 import { Text } from 'react-native';
-import { screen, fireEvent } from '@testing-library/react-native';
+import { screen, fireEvent, act } from '@testing-library/react-native';
 import { renderWithTheme, withTheme, styleOf } from '../helpers/renderWithTheme';
-import BottomSheet from '../../src/Components/BottomSheet';
+import BottomSheet, { closesWhenReleased } from '../../src/Components/BottomSheet';
 import Dialog from '../../src/Components/Dialog';
 import ActionButton from '../../src/Components/ActionButton';
 import HeaderButton from '../../src/Components/HeaderButton';
@@ -43,6 +43,53 @@ describe('BottomSheet', () => {
     const { height } = require('react-native').Dimensions.get('window');
     expect(styleOf(screen.getByTestId('full')).maxHeight).toBeCloseTo(height * 0.8, 0);
   });
+
+  test('una pàgina web hi va de vora a vora, en el 92 % de l’alçada', () => {
+    renderWithTheme(<BottomSheet visible={true} tall={true} onClose={() => {}} accessibilityLabel="Web" testID="web"><Text>Web</Text></BottomSheet>);
+    const { height } = require('react-native').Dimensions.get('window');
+    expect(styleOf(screen.getByTestId('web'))).toMatchObject({ height: height * 0.92, paddingHorizontal: 0 });
+  });
+
+  // A finger on the top of the sheet: it goes down dy points in ms milliseconds, and lets go
+  function pull(handle, dy, ms) {
+    const touch = (y, t) => ({
+      touchActive: true, startPageX: 100, startPageY: 500, startTimeStamp: 0,
+      currentPageX: 100, currentPageY: y, currentTimeStamp: t,
+      previousPageX: 100, previousPageY: 500, previousTimeStamp: 0,
+    });
+    const event = (y, t, active) => ({
+      nativeEvent: { touches: active ? [{}] : [], changedTouches: [{}], pageX: 100, pageY: y, timestamp: t },
+      touchHistory: { numberActiveTouches: active ? 1 : 0, indexOfSingleActiveTouch: 0, mostRecentTimeStamp: t,
+        touchBank: [{ ...touch(y, t), touchActive: active }] },
+    });
+    act(() => {
+      handle.props.onResponderGrant(event(500, 0, true));
+      handle.props.onResponderMove(event(500 + dy, ms, true));
+      handle.props.onResponderRelease(event(500 + dy, ms, false));
+    });
+  }
+
+  test('es tanca estirant-lo avall per dalt; si no s’estira prou, torna a lloc', () => {
+    jest.useFakeTimers();
+    const onClose = jest.fn();
+    renderWithTheme(<BottomSheet visible={true} onClose={onClose} accessibilityLabel="Full" testID="full"><Text>Text</Text></BottomSheet>);
+    const handle = screen.getByTestId('full-handle', { includeHiddenElements: true });
+
+    pull(handle, 40, 400);
+    act(() => jest.advanceTimersByTime(1000));
+    expect(onClose).not.toHaveBeenCalled();
+
+    pull(handle, 160, 400);
+    act(() => jest.advanceTimersByTime(1000));
+    expect(onClose).toHaveBeenCalledTimes(1);
+    jest.useRealTimers();
+  });
+
+  test('llançat avall, es tanca encara que s’hagi mogut poc', () => {
+    expect(closesWhenReleased(30, 1.5)).toBe(true);
+    expect(closesWhenReleased(120, 0)).toBe(true);
+    expect(closesWhenReleased(40, 0.2)).toBe(false);
+  });
 });
 
 describe('Dialog', () => {
@@ -69,16 +116,19 @@ describe('ActionButton', () => {
   });
 });
 
-test('els botons de la capçalera tenen nom i fan 48 d’alt', () => {
+test('els botons de la capçalera tenen nom, caben a la barra de l’iPhone i es toquen amb 56 de marge', () => {
   const onPress = jest.fn();
   renderWithTheme(<HeaderButton accessibilityLabel="Calendari" icon="calendar" onPress={onPress}/>);
   const button = screen.getByRole('button', { name: 'Calendari' });
-  expect(styleOf(button).height).toBe(48);
+  // 44 high, the bar of iOS, and 6 more on each side to touch it
+  expect(styleOf(button).height).toBe(44);
+  expect(button.props.hitSlop).toBe(6);
   fireEvent.press(button);
   expect(onPress).toHaveBeenCalled();
 
-  renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i mode fosc" text="Aa" onPress={() => {}}/>);
-  expect(screen.getByText('Aa')).toBeTruthy();
+  renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i tema" text="Aa" onPress={() => {}}/>);
+  // The pill leaves 5 above and below inside the 44 of the bar
+  expect(styleOf(screen.getByText('Aa').parent.parent)).toMatchObject({ height: 34 });
 });
 
 describe('SegmentedControl', () => {

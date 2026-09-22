@@ -33,7 +33,7 @@ test('als extrems, el botó que no pot anar més enllà queda desactivat', () =>
 
 test('el mode fosc es tria amb tres botons', () => {
   const { onDarkModeChange } = open();
-  fireEvent.press(screen.getByText('Activat'));
+  fireEvent.press(screen.getByText('Fosc'));
   expect(onDarkModeChange).toHaveBeenCalledWith('Activat');
 });
 

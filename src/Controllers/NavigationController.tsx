@@ -6,13 +6,12 @@ import HomeScreenController from './HomeScreenController';
 import {HoursPrayerController, MassPrayerController} from './PrayerController';
 import SettingsController from './SettingsController';
 import AppThemeProvider from './AppThemeProvider';
-import DonationScreen from '../Views/DonationScreen';
-import CommentScreen from '../Views/CommentScreen';
 import Icon from '../Components/Icon';
 import {headerOptions, navigationTheme, useTheme} from '../Theme';
 
-// One stack, no tabs: the home has everything of every day, and each hour, each reading, the
-// settings, the message and the donation open over it. Back always returns to the home.
+// One stack, no tabs: the home has everything of every day, and each hour, each reading and the
+// settings open over it. Back always returns to the home. The message and the donation are
+// sheets of the home (HomeScreenController).
 const Stack = createStackNavigator();
 
 export default function NavigationController() {
@@ -62,14 +61,6 @@ function Navigator() {
                     name="Settings"
                     component={SettingsController}
                     options={{...inner, title: 'Configuració'}}/>
-                <Stack.Screen
-                    name="Comment"
-                    component={CommentScreen}
-                    options={{...inner, title: 'Missatge'}}/>
-                <Stack.Screen
-                    name="Donation"
-                    component={DonationScreen}
-                    options={{...inner, title: 'Donatiu lliure'}}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

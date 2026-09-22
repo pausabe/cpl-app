@@ -1,7 +1,7 @@
 import {CelebrationType} from '../Services/DatabaseEnums';
 import {GenericLiturgyTimeType, SpecificLiturgyTimeType} from '../Services/CelebrationTimeEnums';
 import {hasContent, hasVisibleText} from './content';
-import {longDate, romanize, weekdayName} from './CatalanText';
+import {longDate, ofName, romanize, weekdayName} from './CatalanText';
 
 // The day card at the top of the home: where, when, what is celebrated and the colour.
 //
@@ -46,7 +46,7 @@ export interface DayCard {
     title: string;
     // An optional memorial that is not being celebrated: its label and title go grey
     muted: boolean;
-    // "Dilluns de la setmana XXV · Any A · Setmana I del salteri"
+    // "Setmana XXV · Any A · Setmana I del salteri"
     meta: string;
     description: string | null;
     optionalMemory: OptionalMemory | null;
@@ -87,6 +87,17 @@ export function weekText(day: DayInput): string | null {
     return null;
 }
 
+// The week of a celebration, on the line under its title: "Setmana XXV", and out of the ordinary
+// time "Setmana II de Quaresma". Without the weekday, which the date above already says: with it
+// ("Dilluns de la setmana XXV · Any A · …") the line always took two. The days after Ash
+// Wednesday have no week: "Dijous després de Cendra".
+export function weekOfSeason(day: DayInput): string | null {
+    if (!validNumber(day.Week)) return weekText(day);
+    const week = `Setmana ${romanize(day.Week)}`;
+    const season = day.GenericLiturgyTime;
+    return !season || season === GenericLiturgyTimeType.Ordinary ? week : `${week} ${ofName(season)}`;
+}
+
 // What HomeScreen.transfromCelTypeName wrote above the title
 export function celebrationTypeLabel(type: string, genericLiturgyTime: string): string | null {
     const lent = genericLiturgyTime === GenericLiturgyTimeType.Lent;
@@ -117,7 +128,7 @@ export function buildDayCard(day: DayInput, celebration: CelebrationInput, setti
     let first: string | null;
     if (hasTitle) {
         title = celebration.Title;
-        first = week && WEEKDAY_CELEBRATIONS.includes(day.CelebrationType) ? week : season;
+        first = week && WEEKDAY_CELEBRATIONS.includes(day.CelebrationType) ? weekOfSeason(day) : season;
     } else if (week) {
         title = week;
         first = season;

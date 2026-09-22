@@ -21,7 +21,10 @@
       "bundleIdentifier": "cpl.cpl",
       "buildNumber": "90",
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "infoPlist": {
+        "CADisableMinimumFrameDurationOnPhone": true
+      }
     },
     "android": {
       "package": "cpl.cpl",

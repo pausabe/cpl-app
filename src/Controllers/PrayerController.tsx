@@ -33,7 +33,7 @@ function useTextSettingsButton(navigation: any) {
             headerRight: () => (
                 <HeaderButton
                     text="Aa"
-                    accessibilityLabel="Mida del text i mode fosc"
+                    accessibilityLabel="Mida del text i tema"
                     testID="text-settings-button"
                     onPress={() => setOpen(true)}/>
             ),

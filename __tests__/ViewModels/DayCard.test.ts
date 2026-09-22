@@ -1,4 +1,4 @@
-import {buildDayCard, celebrationTypeLabel, colorCode, seasonName, weekText, DayInput} from '../../src/ViewModels/DayCard';
+import {buildDayCard, celebrationTypeLabel, colorCode, seasonName, weekOfSeason, weekText, DayInput} from '../../src/ViewModels/DayCard';
 
 const day = (overrides: Partial<DayInput> = {}): DayInput => ({
   Date: new Date(2026, 8, 22),
@@ -38,7 +38,8 @@ describe('targeta del dia', () => {
       barcelona);
     expect(card.typeLabel).toBe('Festa');
     expect(card.title).toBe('Sant Mateu, apòstol i evangelista');
-    expect(card.meta).toBe('Dilluns de la setmana XXV · Any A · Setmana I del salteri');
+    // The weekday is already in the date: the line fits in one
+    expect(card.meta).toBe('Setmana XXV · Any A · Setmana I del salteri');
     expect(card.colorName).toBe('Vermell');
     expect(card.description).toBe('Era cobrador d’impostos…');
   });
@@ -68,7 +69,7 @@ describe('targeta del dia', () => {
     expect(card.typeLabel).toBe('Memòria lliure');
     expect(card.muted).toBe(true);
     expect(card.optionalMemory).toEqual({enabled: false, caption: 'Si no l’actives, avui es resa la fèria.'});
-    expect(card.meta).toBe('Dissabte de la setmana XXV · Any A · Setmana I del salteri');
+    expect(card.meta).toBe('Setmana XXV · Any A · Setmana I del salteri');
   });
 
   test('memòria lliure celebrada', () => {
@@ -91,6 +92,18 @@ describe('targeta del dia', () => {
       day({Date: new Date(2026, 3, 4), LiturgyColor: 'M', GenericLiturgyTime: 'Tridu Pasqual', SpecificLiturgyTime: 'Q_TRIDU', Week: '0', WeekCycle: '2'}),
       {Title: 'Dissabte Sant', Description: '-'}, barcelona);
     expect(card.meta).toBe('Tridu Pasqual · Any A · Setmana II del salteri');
+  });
+
+  test('la setmana d’una celebració: sola durant l’any, amb el temps a la resta', () => {
+    expect(weekOfSeason(day({Week: '25'}))).toBe('Setmana XXV');
+    expect(weekOfSeason(day({Week: '3', GenericLiturgyTime: 'Quaresma'}))).toBe('Setmana III de Quaresma');
+    expect(weekOfSeason(day({Week: '1', GenericLiturgyTime: 'Advent'}))).toBe('Setmana I d’Advent');
+    expect(weekOfSeason(day({Week: '2', GenericLiturgyTime: 'Pasqua'}))).toBe('Setmana II de Pasqua');
+    expect(weekOfSeason(day({Date: new Date(2026, 1, 19), SpecificLiturgyTime: 'Q_CENDRA', Week: '0'}))).toBe('Dijous després de Cendra');
+    const lent = buildDayCard(
+      day({Date: new Date(2026, 2, 7), CelebrationType: 'M', GenericLiturgyTime: 'Quaresma', Week: '2', WeekCycle: '2'}),
+      {Title: 'Santes Perpètua i Felicitat, màrtirs', Description: '-'}, barcelona);
+    expect(lent.meta).toBe('Setmana II de Quaresma · Any A · Setmana II del salteri');
   });
 
   test('els dies després de Cendra', () => {

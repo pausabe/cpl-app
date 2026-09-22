@@ -6,7 +6,9 @@ import {HourTile} from '../../ViewModels/Hours';
 import SectionLabel from './SectionLabel';
 
 // The seven hours in three rows (Ofici de lectura · Laudes / Tèrcia · Sexta · Nona / Vespres ·
-// Completes). The one of now is filled. The rows grow when there is room, up to a limit.
+// Completes). The one of now is filled and says "Ara", next to the name or under it when there is
+// no room (the three of the middle row, always on a phone). The rows grow when there is room,
+// up to a limit.
 interface HoursGridProps {
     hours: HourTile[];
     onOpen: (tile: HourTile) => void;
@@ -69,7 +71,7 @@ function Tile({tile, compact, onOpen}: {tile: HourTile; compact: boolean; onOpen
                         style={[styles.label, {color: foreground, fontWeight: now ? '700' : '500'}]}>
                         {tile.label}
                     </Text>
-                    {now && !compact ? (
+                    {now ? (
                         <View testID="hour-now-badge" style={styles.badge}>
                             <Text maxFontSizeMultiplier={scale} style={[styles.badgeText, {color: colors.accentFill}]}>Ara</Text>
                         </View>

@@ -77,9 +77,9 @@ test('el vídeo de llengua de signes es desa', async () => {
   expect(await AsyncStorage.getItem('showVideos')).toBe('true');
 });
 
-test('el mode fosc, amb tres botons, s’aplica a l’instant', async () => {
+test('el tema, Automàtic, Clar o Fosc, s’aplica a l’instant i es desa com sempre', async () => {
   await open();
-  await act(async () => { fireEvent.press(screen.getByRole('radio', { name: 'Activat' })); });
+  await act(async () => { fireEvent.press(screen.getByRole('radio', { name: 'Fosc' })); });
   expect(DataService.CurrentSettings.DarkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
 });

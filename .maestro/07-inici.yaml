@@ -8,7 +8,7 @@ name: "L'inici porta a pregar: les hores, el full del sant i el botó Aa"
     visible: "HIMNE.*"
     timeout: 15000
 - assertVisible: "Ofici de lectura"
-- tapOn: "Mida del text i mode fosc"
+- tapOn: "Mida del text i tema"
 - assertVisible: "Mida 3 de 10"
 - tapOn: "Text més gran"
 - assertVisible: "Mida 4 de 10"

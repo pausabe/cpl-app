@@ -14,13 +14,15 @@ jest.mock('expo-updates', () => ({
   useUpdates: () => ({ currentlyRunning: { isEmbeddedLaunch: true }, isChecking: false, isDownloading: false, isUpdatePending: false }),
   runtimeVersion: 'test', channel: 'test', updateId: 'test',
 }));
-jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}) }));
+jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}), setOptions: jest.fn() }));
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
   const WebView = (props) => <View testID="webview" {...props} />;
   return { __esModule: true, default: WebView, WebView };
 });
 jest.mock('react-native-youtube-iframe', () => () => null);
+// Whether the app had been opened before, by the old version: yes, unless a test says otherwise
+jest.mock('../../src/Controllers/FirstRun', () => ({ wasOpenedBefore: jest.fn(async () => true) }));
 
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,6 +30,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-
 import App from '../../App';
 import * as DataService from '../../src/Services/DataService';
 import { styleOf } from '../helpers/renderWithTheme';
+import { wasOpenedBefore } from '../../src/Controllers/FirstRun';
 
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 
@@ -56,7 +59,7 @@ test('una festa: el dia en paraules, el color, el tipus, el títol i la setmana;
   expect(screen.getByLabelText('Color litúrgic: Vermell')).toBeTruthy();
   expect(screen.getByText('Festa')).toBeTruthy();
   expect(screen.getByText('Sant Mateu, apòstol i evangelista')).toBeTruthy();
-  expect(screen.getByText('Dilluns de la setmana XXV · Any A · Setmana I del salteri')).toBeTruthy();
+  expect(screen.getByText('Setmana XXV · Any A · Setmana I del salteri')).toBeTruthy();
   expect(tile('Laudes').props.accessibilityValue).toEqual({ text: 'Ara' });
   expect(tile('Tèrcia').props.accessibilityValue?.text).toBeUndefined();
   expect(screen.getByText('Evangeli · Mt 9,9-13')).toBeTruthy();
@@ -212,10 +215,20 @@ test('amb el mode fosc activat, l’inici també és fosc', async () => {
   expect(styleOf(screen.getByTestId('home')).backgroundColor).toBe('#0E1413');
 });
 
-test('la primera vegada surt l’avís de novetats, i només la primera', async () => {
+test('qui ve de la versió anterior veu l’avís de novetats, i només la primera vegada', async () => {
   jest.setSystemTime(new Date(2026, 8, 21, 10, 0));
   await AsyncStorage.clear();
   render(<App/>);
   fireEvent.press(await findText('D’acord'));
   await waitFor(async () => expect(await AsyncStorage.getItem('WhatsNewSeen_9.0.0')).toBe('true'));
+});
+
+test('qui instal·la l’app de nou no veu l’avís de novetats: no té res a comparar', async () => {
+  wasOpenedBefore.mockResolvedValueOnce(false);
+  jest.setSystemTime(new Date(2026, 8, 21, 10, 0));
+  await AsyncStorage.clear();
+  render(<App/>);
+  await screen.findByTestId('day-card', {}, { timeout: 15000 });
+  await waitFor(async () => expect(await AsyncStorage.getItem('WhatsNewSeen_9.0.0')).toBe('true'));
+  expect(screen.queryByText('Ara ho tens tot a l’inici')).toBeNull();
 });

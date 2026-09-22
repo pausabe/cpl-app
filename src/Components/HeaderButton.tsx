@@ -3,8 +3,9 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {useTheme} from '../Theme';
 import Icon, {IconName} from './Icon';
 
-// A button of the top bar: an icon (calendar, settings) or the "Aa" of the text size. 48 × 48,
-// so that it is easy to hit.
+// A button of the top bar: an icon (calendar, settings) or the "Aa" of the text size. It is
+// 44 high, the height of the bar on iOS, and takes touches 6 beyond that. The "Aa" pill is 34
+// high: at 40 it touched the bottom of the bar on the iPhone.
 interface HeaderButtonProps {
     accessibilityLabel: string;
     onPress: () => void;
@@ -21,7 +22,7 @@ export default function HeaderButton({accessibilityLabel, onPress, icon, text, t
             testID={testID}
             accessibilityRole="button"
             accessibilityLabel={accessibilityLabel}
-            hitSlop={4}
+            hitSlop={6}
             onPress={onPress}
             style={({pressed}) => [styles.button, text ? styles.withText : null, pressed ? styles.pressed : null]}>
             {icon ? <Icon name={icon} size={27} color={color}/> : null}
@@ -36,8 +37,8 @@ export default function HeaderButton({accessibilityLabel, onPress, icon, text, t
 
 const styles = StyleSheet.create({
     button: {
-        minWidth: 48,
-        height: 48,
+        minWidth: 44,
+        height: 44,
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: 4,
@@ -50,15 +51,15 @@ const styles = StyleSheet.create({
         opacity: 0.6,
     },
     pill: {
-        width: 52,
-        height: 40,
-        borderRadius: 20,
+        width: 50,
+        height: 34,
+        borderRadius: 17,
         borderWidth: 1.5,
         alignItems: 'center',
         justifyContent: 'center',
     },
     text: {
-        fontSize: 19,
+        fontSize: 18,
         fontWeight: '700',
     },
 });

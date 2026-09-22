@@ -13,7 +13,7 @@ jest.mock('expo-updates', () => ({
   useUpdates: () => ({ currentlyRunning: { isEmbeddedLaunch: true }, isChecking: false, isDownloading: false, isUpdatePending: false }),
   runtimeVersion: 'test', channel: 'test', updateId: 'test',
 }));
-jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}) }));
+jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}), setOptions: jest.fn() }));
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
   const WebView = (props) => <View testID="webview" {...props} />;

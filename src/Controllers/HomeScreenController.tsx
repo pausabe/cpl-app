@@ -17,6 +17,8 @@ import HomeScreen from '../Views/Home/HomeScreen';
 import LatePrayerDialog from '../Views/Home/LatePrayerDialog';
 import CalendarDialog from '../Views/Home/CalendarDialog';
 import WhatsNewSheet from '../Views/Home/WhatsNewSheet';
+import WebSheet from '../Components/WebSheet';
+import {wasOpenedBefore} from './FirstRun';
 import LoadError from '../Views/Home/LoadError';
 import {buildDayCard} from '../ViewModels/DayCard';
 import {buildHours, HourTile} from '../ViewModels/Hours';
@@ -30,6 +32,7 @@ import {latePrayerTexts} from '../ViewModels/Notices';
 // gives it to the view (Views/Home/HomeScreen), which only draws.
 
 const LOAD_ERROR_MESSAGE = "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
+const MESSAGE_URL = 'https://www.cpl.es/contacto/';
 const DONATION_URL = 'https://buy.stripe.com/6oE16v3LV6oa7VC4gg';
 
 // The notice "Ara ho tens tot a l'inici", once. Set to false to stop showing it.
@@ -78,6 +81,7 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
     const [latePrayerVisible, setLatePrayerVisible] = useState(false);
     const [calendarVisible, setCalendarVisible] = useState(false);
     const [whatsNewPending, setWhatsNewPending] = useState(false);
+    const [webPage, setWebPage] = useState<'message' | 'donation' | null>(null);
     const [massChoice, setMassChoice] = useState<{day: string; choice: MassChoice} | null>(null);
     const started = useRef(false);
 
@@ -105,17 +109,22 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
         if (!databaseAssets || !databaseAssets[0]) return;
         started.current = true;
         (async () => {
+            // Before the first load, which copies the database
+            const openedBefore = await wasOpenedBefore();
             const loaded = await load(new Date(), databaseAssets[0]);
             const late = loaded && isLatePrayer();
             setLatePrayerVisible(late);
             if (loaded && SHOW_WHATS_NEW && !(await StorageService.GetData(WHATS_NEW_SEEN_KEY))) {
-                setWhatsNewPending(true);
+                // Only to whoever knew the old home
+                if (openedBefore) setWhatsNewPending(true);
+                else StorageService.StoreData(WHATS_NEW_SEEN_KEY, 'true');
             }
-            // Some time to finish drawing. With the midnight notice on iOS the splash, the modal
-            // and the timer do not get along: at once.
+            // The splash has covered everything until now (App.js): it goes once the day is
+            // drawn, with the colours of the chosen theme. With the midnight notice on iOS the
+            // splash, the modal and the timer do not get along: at once.
             setTimeout(() => {
                 SplashScreen.hideAsync().catch(() => undefined);
-            }, late && Platform.OS === 'ios' ? 0 : 500);
+            }, late && Platform.OS === 'ios' ? 0 : 100);
         })();
     }, [databaseAssets, databaseAssetsError]);
 
@@ -224,11 +233,13 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
         navigation.navigate('LDDisplay', {type: opens, title: 'Missa', ...model.mass.params});
     };
 
+    // On iOS the donation goes to Safari: the App Store only lets an app collect donations
+    // outside it (guideline 3.2.2). On Android, in a sheet like the message.
     const onDonation = () => {
         if (Platform.OS === 'ios') {
             Linking.openURL(DONATION_URL);
         } else {
-            navigation.navigate('Donation');
+            setWebPage('donation');
         }
     };
 
@@ -254,8 +265,20 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
                 onOpenReading={onOpenReading}
                 onMassChoice={onMassChoice}
                 onOptionalMemoryChange={onOptionalMemoryChange}
-                onMessage={() => navigation.navigate('Comment')}
+                onMessage={() => setWebPage('message')}
                 onDonation={onDonation}/>
+            <WebSheet
+                visible={webPage === 'message'}
+                title="Missatge"
+                url={MESSAGE_URL}
+                onClose={() => setWebPage(null)}
+                testID="message-sheet"/>
+            <WebSheet
+                visible={webPage === 'donation'}
+                title="Donatiu lliure"
+                url={DONATION_URL}
+                onClose={() => setWebPage(null)}
+                testID="donation-sheet"/>
             <CalendarDialog
                 visible={calendarVisible}
                 value={today}
