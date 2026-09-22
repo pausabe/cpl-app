@@ -28,6 +28,9 @@ test('els colors del disseny, clar i fosc', () => {
 test('els colors litúrgics de la targeta del dia', () => {
   expect(liturgicalColor('R', 'light')).toMatchObject({dot: '#C62828', tint: '#F8E7E5', accent: '#B3261E'});
   expect(liturgicalColor('V', 'dark')).toMatchObject({dot: '#2E7D32', tint: '#16241A', accent: '#8CC98F'});
+  // Green, most of the year, is only the background now: it must not be the home's own
+  expect(liturgicalColor('V', 'light').tint).toBe('#DDEEDA');
+  expect(liturgicalColor('V', 'light').tint).not.toBe(palettes.light.homeBackground);
   expect(liturgicalColor('M', 'light')).toMatchObject({dot: '#6A3D9A', tint: '#EFE8F4', accent: '#6A3D9A'});
   expect(liturgicalColor('B', 'light')).toMatchObject({dot: '#FFFFFF', dotOutlined: true, tint: '#F7F1E3', accent: '#7A5F14'});
   expect(liturgicalColor('B', 'dark')).toMatchObject({tint: '#26221A', accent: '#E3C877'});

@@ -101,7 +101,8 @@ export interface LiturgicalColor {
 
 const LITURGICAL: Record<LiturgicalColorCode, { name: string; dot: string; light: [string, string]; dark: [string, string] }> = {
     R: { name: 'Vermell', dot: '#C62828', light: ['#F8E7E5', '#B3261E'], dark: ['#2A1917', '#F28B82'] },
-    V: { name: 'Verd', dot: '#2E7D32', light: ['#E5F1E6', '#2E6B30'], dark: ['#16241A', '#8CC98F'] },
+    // Greener than it was (#E5F1E6), which was almost the background of the home (#E7F2F1)
+    V: { name: 'Verd', dot: '#2E7D32', light: ['#DDEEDA', '#2E6B30'], dark: ['#16241A', '#8CC98F'] },
     M: { name: 'Morat', dot: '#6A3D9A', light: ['#EFE8F4', '#6A3D9A'], dark: ['#221B2B', '#C9A7EB'] },
     // White is ivory with dark gold, so that it can be read on a light screen
     B: { name: 'Blanc', dot: '#FFFFFF', light: ['#F7F1E3', '#7A5F14'], dark: ['#26221A', '#E3C877'] },

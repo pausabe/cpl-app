@@ -7,6 +7,10 @@ import {DayCard as DayCardModel} from '../../ViewModels/DayCard';
 
 // The card of the day, on the soft colour of the liturgical colour: where and when, what is
 // celebrated, the week, and the optional memorial and the saint's story when there are.
+//
+// The colour is only the background (and the type of celebration): no dot or name. White is
+// ivory and gold, and next to the word «Blanc» it looked yellow. The screen reader still hears
+// it, with the place.
 interface DayCardProps {
     day: DayCardModel;
     onOptionalMemoryChange: (enabled: boolean) => void;
@@ -22,13 +26,12 @@ export default function DayCard({day, onOptionalMemoryChange, onReadMore}: DayCa
 
     return (
         <View testID="day-card" style={[styles.card, {backgroundColor: liturgical.tint, borderRadius: theme.radius.dayCard}]}>
-            <View style={styles.topRow}>
-                <Text maxFontSizeMultiplier={scale} style={[styles.small, {color: colors.text2, flexShrink: 1}]}>{day.place}</Text>
-                <View style={styles.colorName} accessible={true} accessibilityLabel={`Color litúrgic: ${day.colorName}`}>
-                    <View style={[styles.dot, {backgroundColor: liturgical.dot}]}/>
-                    <Text maxFontSizeMultiplier={scale} style={[styles.small, {color: colors.text2}]}>{day.colorName}</Text>
-                </View>
-            </View>
+            <Text
+                maxFontSizeMultiplier={scale}
+                accessibilityLabel={`${day.place}. Color litúrgic: ${day.colorName}`}
+                style={[styles.small, {color: colors.text2}]}>
+                {day.place}
+            </Text>
             <Text accessibilityRole="header" style={[styles.date, {color: colors.text, fontFamily: theme.fonts.serifSemiBold}]}>
                 {day.dateText}
             </Text>
@@ -69,26 +72,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 12,
     },
-    topRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 12,
-    },
     small: {
         fontSize: 13,
-    },
-    colorName: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 6,
-    },
-    dot: {
-        width: 11,
-        height: 11,
-        borderRadius: 6,
-        borderWidth: 1,
-        borderColor: 'rgba(0,0,0,0.25)',
     },
     date: {
         marginTop: 4,

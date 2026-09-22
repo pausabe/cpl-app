@@ -71,7 +71,7 @@ export default function HomeScreen(props: HomeScreenProps) {
 // The fade above the bottom bar
 const FADE_HEIGHT = 28;
 // Between the card of the day, the hours and the Mass: more than inside each of them
-const SECTION_GAP = 22;
+const SECTION_GAP = 30;
 
 const styles = StyleSheet.create({
     screen: {

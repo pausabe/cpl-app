@@ -56,7 +56,7 @@ test('una festa: el dia en paraules, el color, el tipus, el títol i la setmana;
   await openAt(new Date(2026, 8, 21, 7, 30));
   expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
   expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
-  expect(screen.getByLabelText('Color litúrgic: Vermell')).toBeTruthy();
+  expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Vermell')).toBeTruthy();
   expect(screen.getByText('Festa')).toBeTruthy();
   expect(screen.getByText('Sant Mateu, apòstol i evangelista')).toBeTruthy();
   expect(screen.getByText('Setmana XXV · Any A · Setmana I del salteri')).toBeTruthy();
@@ -81,7 +81,7 @@ test('una fèria: el dia de la setmana fa de títol, sense «Llegeix-ne més»',
   await openAt(new Date(2026, 8, 22, 10, 0));
   expect(screen.getByText('Dimarts de la setmana XXV')).toBeTruthy();
   expect(screen.getByText("Durant l'any · Any A · Setmana I del salteri")).toBeTruthy();
-  expect(screen.getByLabelText('Color litúrgic: Verd')).toBeTruthy();
+  expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Verd')).toBeTruthy();
   expect(screen.queryByRole('button', { name: 'Llegeix-ne més' })).toBeNull();
   expect(tile('Tèrcia').props.accessibilityValue).toEqual({ text: 'Ara' });
 });
@@ -155,7 +155,7 @@ test('Diumenge de Rams: la frase i el botó de la benedicció, que obre l’evan
 test('Dissabte Sant: la Vetlla Pasqual, amb «Lectures i salms» i «Evangeli»', async () => {
   await openAt(new Date(2026, 3, 4, 10, 0));
   expect(screen.getByText('Vetlla Pasqual')).toBeTruthy();
-  expect(screen.getByLabelText('Color litúrgic: Morat')).toBeTruthy();
+  expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Morat')).toBeTruthy();
   expect(screen.getByText('Ha ressuscitat i anirà davant vostre a Galilea')).toBeTruthy();
   expect(screen.getByRole('button', { name: 'Lectures i salms' })).toBeTruthy();
   expect(screen.queryByRole('button', { name: 'Primera lectura' })).toBeNull();
@@ -165,7 +165,7 @@ test('Dissabte Sant: la Vetlla Pasqual, amb «Lectures i salms» i «Evangeli»'
 
 test('Diumenge de Pasqua: blanc i solemnitat', async () => {
   await openAt(new Date(2026, 3, 5, 10, 0));
-  expect(screen.getByLabelText('Color litúrgic: Blanc')).toBeTruthy();
+  expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Blanc')).toBeTruthy();
   expect(screen.getByText('Solemnitat')).toBeTruthy();
   expect(screen.getByText('Pasqua · Any A · Setmana I del salteri')).toBeTruthy();
 });
