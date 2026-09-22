@@ -1,41 +1,46 @@
-# Entrades de desenvolupament de cpl-app: tests i compilacions locals per provar-los.
-# L'app en desenvolupament es continua obrint amb expo (npm run ios / npm run android).
+# Development entry points for cpl-app: tests, checks and local builds to try them on.
+# The development app still opens with expo (npm run ios / npm run android).
 
 export ANDROID_HOME ?= $(HOME)/Library/Android/sdk
 ADB := $(ANDROID_HOME)/platform-tools/adb
 MAESTRO ?= $(HOME)/.maestro/bin/maestro
 APK := android/app/build/outputs/apk/release/app-release.apk
 IOS_APP := ios/build/Build/Products/Release-iphonesimulator/CPL.app
+IPHONE_APP := ios/build/Build/Products/Release-iphoneos/CPL.app
 
-# El primer emulador/mòbil Android connectat i el primer simulador d'iOS obert
+# The first Android emulator or phone connected, and the first iOS simulator open
 ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
 IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
+# The first iPhone connected (by cable, or over the network with Xcode open)
+IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
 
-.PHONY: help start run-android run-ios run-web checks lint format tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
+.PHONY: help start run-android run-ios run-web checks lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios
 
 help:
-	@echo "make run-android       Obre l'app en mode desenvolupament a l'emulador o mòbil Android"
-	@echo "make run-ios           Obre l'app en mode desenvolupament al simulador d'iOS"
-	@echo "make run-web           Obre l'app en mode desenvolupament al navegador, sense emulador"
-	@echo "make start             Només el servidor de desenvolupament (Metro), si l'app ja hi és instal·lada"
+	@echo "make run-android       Open the development app on the Android emulator or phone"
+	@echo "make run-ios           Open the development app on the iOS simulator"
+	@echo "make run-web           Open the development app in the browser, with no emulator"
+	@echo "make start             Only the development server (Metro), if the app is already installed"
 	@echo ""
-	@echo "make checks            Prettier, lint i tots els tests de Jest: el que passa el hook abans de cada push (~4 min)"
-	@echo "make lint              ESLint (la configuració d'Expo): només els errors aturen, els avisos no"
-	@echo "make format            Formata el codi (JS i TS) amb Prettier: arregla el que make checks hi troba"
+	@echo "make checks            Prettier, lint, types and every Jest test: what the hook runs before each push (~4 min)"
+	@echo "make lint              ESLint (the Expo config): only errors stop a push, warnings do not"
+	@echo "make types             TypeScript, without emitting anything (tsc --noEmit)"
+	@echo "make format            Format the code (JS and TS) with Prettier: fixes what make checks reports"
 	@echo ""
-	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~4 min)"
-	@echo "make tests-fast        Els mateixos sense els recorreguts llargs (litúrgia i text de les pantalles)"
-	@echo "make golden            Refà els goldens (litúrgia i text de les pantalles) amb aquesta versió (només si l'has revisat)"
+	@echo "make tests             Every Jest test: liturgy, app and services (~4 min)"
+	@echo "make tests-fast        The same ones without the long sweeps (liturgy and screen text)"
+	@echo "make golden            Rewrites the goldens (liturgy and screen text) from this build (only if you checked it)"
 	@echo ""
-	@echo "make android-app       Compila la release d'Android i la instal·la a l'emulador o mòbil connectat"
-	@echo "make ios-app           Compila la release per al simulador d'iOS i la instal·la al simulador obert"
-	@echo "make ui-tests          Fluxos de Maestro a Android i a iOS"
-	@echo "make ui-tests-android  Només Android"
-	@echo "make ui-tests-ios      Només iOS"
+	@echo "make android-app       Build the Android release and install it on the emulator or phone connected"
+	@echo "make ios-app           Build the release for the iOS simulator and install it on the simulator open"
+	@echo "make ios-device        Build the release for the iPhone connected and install it there as «CPL 9»"
+	@echo "make ui-tests          Maestro flows on Android and on iOS"
+	@echo "make ui-tests-android  Android only"
+	@echo "make ui-tests-ios      iOS only"
 
-# --- Desenvolupament -------------------------------------------------------------------------
-# El primer cop compilen i instal·len l'app de desenvolupament (expo-dev-client); després, els
-# canvis de JS es veuen a l'instant. Per a una release com la de les botigues, make android-app /
+# --- Development -----------------------------------------------------------------------------
+# The first time these build and install the development app (expo-dev-client); after that, JS
+# changes show up right away. For a release like the ones in the stores, make android-app /
 # ios-app.
 
 start:
@@ -47,24 +52,28 @@ run-android:
 run-ios:
 	npx expo run:ios
 
-# Al navegador la base de dades s'obre en memòria (DatabaseManagerService.web.tsx). No hi ha el
-# selector de data del calendari ni el vídeo de YouTube de la Missa.
+# In the browser the database opens in memory (DatabaseManagerService.web.tsx). There is no date
+# picker in the calendar and no YouTube video in the Mass.
 run-web:
 	npx expo start --web
 
-# --- Comprovacions ---------------------------------------------------------------------------
-# make checks és el que corre el hook .githooks/pre-push abans de cada push. Els tests, amb
-# --ci i sense UPDATE_GOLDEN: així comparen amb els goldens en lloc de reescriure'ls.
+# --- Checks ----------------------------------------------------------------------------------
+# make checks is what the .githooks/pre-push hook runs before each push. The tests run with --ci
+# and without UPDATE_GOLDEN, so they compare against the goldens instead of rewriting them.
 
 checks:
 	npx prettier . --check
 	npx eslint .
+	npx tsc --noEmit
 	env -u UPDATE_GOLDEN npx jest --ci
 
 lint:
 	npx eslint .
 
-# Els textos, els fluxos de Maestro i les dades no hi entren (.prettierignore)
+types:
+	npx tsc --noEmit
+
+# The texts, the Maestro flows and the data stay out of it (.prettierignore)
 format:
 	npx prettier . --write
 
@@ -76,39 +85,53 @@ tests:
 tests-fast:
 	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/Liturgy/(LiturgyGolden|YearSweep)' '/Screens/PrayerTextGolden'
 
-# El golden és el que diu «així ha de sortir». Es refà només després d'haver comprovat a mà
-# que la litúrgia d'aquesta versió és correcta: si no, deixa de detectar res. El de les pantalles
-# (prayer-screens.json) és el text que mostren les hores i les lectures: es va fer abans del
-# redisseny, i ha de continuar igual.
+# A golden is what says «this is how it has to come out». It is rewritten only after checking by
+# hand that the liturgy of this build is right: otherwise it stops catching anything. The screens
+# one (prayer-screens.json) is the text the hours and the readings show: it was made before the
+# redesign, and it has to stay the same.
 golden:
 	UPDATE_GOLDEN=1 npx jest __tests__/Liturgy __tests__/Screens/PrayerTextGolden
 
-# --- Compilacions locals per als tests de Maestro --------------------------------------------
-# /android i /ios són generats (gitignorats): es refan de zero perquè no quedi res d'un SDK
-# anterior.
+# --- Local builds for the Maestro tests -------------------------------------------------------
+# /android and /ios are generated (and gitignored): they are rebuilt from scratch so that nothing
+# is left from an earlier SDK.
 
 android-app:
-	@test -n "$(ANDROID_DEVICE)" || (echo "Cap emulador ni mòbil Android connectat (adb devices)" && exit 1)
+	@test -n "$(ANDROID_DEVICE)" || (echo "No Android emulator or phone connected (adb devices)" && exit 1)
 	npx expo prebuild -p android --clean --no-install
 	cd android && ./gradlew assembleRelease
 	$(ADB) -s $(ANDROID_DEVICE) install -r $(APK)
 
 ios-app:
-	@test -n "$(IOS_DEVICE)" || (echo "Cap simulador d'iOS obert (open -a Simulator)" && exit 1)
+	@test -n "$(IOS_DEVICE)" || (echo "No iOS simulator open (open -a Simulator)" && exit 1)
 	npx expo prebuild -p ios --clean
 	xcodebuild -workspace ios/CPL.xcworkspace -scheme CPL -configuration Release \
 		-sdk iphonesimulator -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO -quiet
 	xcrun simctl install $(IOS_DEVICE) $(IOS_APP)
 
+# On the iPhone, next to the CPL from the store: that one belongs to team JB7WHGG69R, which we do
+# not have on this Mac, and iOS does not allow replacing it. This one is cpl.cpl.dev («CPL 9»),
+# signed with Joan's team (N65TK8GHAL). It needs Xcode 26.4 or later (Swift 6.3, for Expo 57).
+ios-device:
+	@test -n "$(IPHONE)" || (echo "No iPhone connected (xcrun devicectl list devices)" && exit 1)
+	npx expo prebuild -p ios --clean
+	sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = cpl\.cpl;/PRODUCT_BUNDLE_IDENTIFIER = cpl.cpl.dev;/' ios/CPL.xcodeproj/project.pbxproj
+	plutil -replace CFBundleDisplayName -string "CPL 9" ios/CPL/Info.plist
+	xcodebuild -workspace ios/CPL.xcworkspace -scheme CPL -configuration Release \
+		-destination id=$(IPHONE) -derivedDataPath ios/build \
+		-allowProvisioningUpdates DEVELOPMENT_TEAM=N65TK8GHAL -quiet
+	xcrun devicectl device install app --device $(IPHONE) $(IPHONE_APP)
+	xcrun devicectl device process launch --device $(IPHONE) cpl.cpl.dev
+
 # --- Maestro ---------------------------------------------------------------------------------
-# Fan servir l'app que hi ha instal·lada: després d'un canvi, primer make android-app / ios-app.
+# They use the app already installed: after a change, run make android-app / ios-app first.
 
 ui-tests: ui-tests-android ui-tests-ios
 
 ui-tests-android:
-	@test -n "$(ANDROID_DEVICE)" || (echo "Cap emulador ni mòbil Android connectat (adb devices)" && exit 1)
+	@test -n "$(ANDROID_DEVICE)" || (echo "No Android emulator or phone connected (adb devices)" && exit 1)
 	$(MAESTRO) --device $(ANDROID_DEVICE) test .maestro/
 
 ui-tests-ios:
-	@test -n "$(IOS_DEVICE)" || (echo "Cap simulador d'iOS obert (open -a Simulator)" && exit 1)
+	@test -n "$(IOS_DEVICE)" || (echo "No iOS simulator open (open -a Simulator)" && exit 1)
 	$(MAESTRO) --device $(IOS_DEVICE) test .maestro/

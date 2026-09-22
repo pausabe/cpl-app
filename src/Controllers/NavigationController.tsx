@@ -42,7 +42,7 @@ function Navigator() {
   };
   return (
     <NavigationContainer ref={navigationRef} theme={navigationTheme(theme)}>
-      <Stack.Navigator>
+      <Stack.Navigator id={undefined}>
         <Stack.Screen
           name="Home"
           component={HomeScreenController}

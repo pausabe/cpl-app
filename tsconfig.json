@@ -1,4 +1,10 @@
 {
-  "compilerOptions": {},
-  "extends": "expo/tsconfig.base"
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    // TypeScript 6 turns strict on and stops loading @types by itself. The app was written
+    // without strict, so it stays off here until the code is ready for it; the tests need the
+    // globals of Jest.
+    "strict": false,
+    "types": ["jest", "node"]
+  }
 }
