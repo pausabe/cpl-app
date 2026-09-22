@@ -3,7 +3,8 @@ import {Pressable, StyleProp, StyleSheet, Switch, Text, View, ViewStyle} from 'r
 import {useTheme} from '../Theme';
 
 // A setting that is on or off, with a line that says what it does. The whole row can be
-// touched, not only the switch.
+// touched, not only the switch. The screen reader hears the line with the name, always: as a
+// hint it could be turned off, and on iOS it was not an element of its own.
 interface SwitchRowProps {
     label: string;
     caption?: string;
@@ -23,8 +24,7 @@ export default function SwitchRow({label, caption, value, onValueChange, style, 
             testID={testID}
             accessibilityRole="switch"
             accessibilityState={{checked: value}}
-            accessibilityLabel={label}
-            accessibilityHint={caption}
+            accessibilityLabel={caption ? `${label}. ${caption}` : label}
             onPress={() => onValueChange(!value)}
             style={[styles.row, {minHeight: theme.touch.comfortable}, style]}>
             <View style={styles.texts}>

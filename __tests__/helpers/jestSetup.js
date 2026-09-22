@@ -8,8 +8,8 @@ jest.spyOn(console, 'log').mockImplementation(() => {});
 // Native module the navigators need; the library ships its own Jest setup.
 require('react-native-gesture-handler/jestSetup');
 
-// Icon fonts: jest-expo's native mock of the font loader doesn't return a list, and
-// @expo/vector-icons asks it whether its font is loaded. In a test it always is.
+// Fonts: jest-expo's native mock of the font loader doesn't return a list, and the app asks it
+// whether Literata is loaded. In a test it always is.
 jest.mock('expo-font', () => ({
   ...jest.requireActual('expo-font'),
   isLoaded: () => true,

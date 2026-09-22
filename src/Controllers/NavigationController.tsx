@@ -1,18 +1,25 @@
 import * as React from 'react';
-import {Platform, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {Platform} from 'react-native';
+import {createNavigationContainerRef, NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeScreenController from './HomeScreenController';
 import {HoursPrayerController, MassPrayerController} from './PrayerController';
 import SettingsController from './SettingsController';
 import AppThemeProvider from './AppThemeProvider';
-import Icon from '../Components/Icon';
 import {headerOptions, navigationTheme, useTheme} from '../Theme';
 
 // One stack, no tabs: the home has everything of every day, and each hour, each reading and the
 // settings open over it. Back always returns to the home. The message and the donation are
 // sheets of the home (HomeScreenController).
-const Stack = createStackNavigator();
+//
+// The stack is the native one (UINavigationController on iOS, fragments on Android): on iOS the
+// transition and the swipe back are the system's own, at the refresh rate of the screen. The
+// stack drawn by JavaScript did not look smooth going back on an iPhone of 120 Hz.
+const Stack = createNativeStackNavigator();
+
+// The navigator from outside the screens. The tests go back through it: the back arrow is the
+// system's own now, and it is not drawn by JavaScript.
+export const navigationRef = createNavigationContainerRef();
 
 export default function NavigationController() {
     return (
@@ -27,19 +34,15 @@ function Navigator() {
     const header = headerOptions(theme);
     const inner = {
         ...header,
-        // As before: sliding on iOS, straight on Android
+        // Sliding on iOS, as the system does; straight on Android, as before
         animation: Platform.OS === 'ios' ? 'default' as const : 'none' as const,
+        // The system's back arrow, alone. «Enrere» is what the screen reader hears on iOS.
         headerBackButtonDisplayMode: 'minimal' as const,
-        headerBackAccessibilityLabel: 'Enrere',
-        headerBackImage: () => (
-            <View style={{paddingHorizontal: Platform.OS === 'ios' ? 8 : 0}}>
-                <Icon name="back" size={28} color={theme.colors.onHeader}/>
-            </View>
-        ),
+        headerBackTitle: 'Enrere',
     };
     return (
-        <NavigationContainer theme={navigationTheme(theme)}>
-            <Stack.Navigator screenOptions={{headerBackAccessibilityLabel: 'Enrere'}}>
+        <NavigationContainer ref={navigationRef} theme={navigationTheme(theme)}>
+            <Stack.Navigator>
                 <Stack.Screen
                     name="Home"
                     component={HomeScreenController}
@@ -47,7 +50,7 @@ function Navigator() {
                         ...header,
                         title: 'CPL',
                         headerTitleAlign: 'center',
-                        headerTitleStyle: {...header.headerTitleStyle, fontWeight: '700', letterSpacing: 0.4},
+                        headerTitleStyle: {...header.headerTitleStyle, fontWeight: '700'},
                     }}/>
                 <Stack.Screen
                     name="LHDisplay"

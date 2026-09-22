@@ -26,18 +26,19 @@ name: "Dissabte: la missa vespertina i la memòria lliure"
       - tapOn: "Vespertina"
       - assertVisible: "Segona lectura"
       - takeScreenshot: 08-missa-vespertina
-# La memòria lliure: l'interruptor canvia què es resa, i ho diu
+# La memòria lliure: l'interruptor canvia què es resa, i ho diu. A iOS la frase va a l'etiqueta
+# de la fila, amb el nom: «Celebrar la memòria. Si no l'actives…»
 - runFlow:
     when:
-      visible: "Celebrar la memòria"
+      visible: "Celebrar la memòria.*"
     commands:
-      - assertVisible: "Si no l.actives, avui es resa la fèria."
-      - tapOn: "Celebrar la memòria"
+      - assertVisible: ".*Si no l.actives, avui es resa la fèria."
+      - tapOn: "Celebrar la memòria.*"
       - extendedWaitUntil:
-          visible: "Avui es resa la memòria."
+          visible: ".*Avui es resa la memòria."
           timeout: 15000
       - takeScreenshot: 08-memoria-lliure
-      - tapOn: "Celebrar la memòria"
+      - tapOn: "Celebrar la memòria.*"
       - extendedWaitUntil:
-          visible: "Si no l.actives, avui es resa la fèria."
+          visible: ".*Si no l.actives, avui es resa la fèria."
           timeout: 15000

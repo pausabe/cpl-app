@@ -16,7 +16,7 @@ name: "La configuració es desa i canvia la litúrgia"
     direction: DOWN
 - runFlow: subflows/enrere.yaml
 - extendedWaitUntil:
-    visible: "Andorra \\(Diòcesi\\)"
+    visible: "Andorra \\(Diòcesi\\).*"
     timeout: 15000
 # Amb el tema fosc, també l'inici és fosc
 - takeScreenshot: 04-andorra-mode-fosc
@@ -31,11 +31,11 @@ name: "La configuració es desa i canvia la litúrgia"
 - launchApp
 # L'inici, o l'avís de mitjanit a sobre (de 0 a 3 h), que el tapa
 - extendedWaitUntil:
-    visible: "Andorra \\(Diòcesi\\)|No, la d.avui"
+    visible: "Andorra \\(Diòcesi\\).*|No, la d.avui"
     timeout: 60000
 - tapOn:
     text: "No, la d.avui"
     optional: true
 - extendedWaitUntil:
-    visible: "Andorra \\(Diòcesi\\)"
+    visible: "Andorra \\(Diòcesi\\).*"
     timeout: 15000

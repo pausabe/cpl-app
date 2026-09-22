@@ -98,7 +98,8 @@ test('diumenge: quatre lectures, que en un mòbil estret es fan petites abans de
 test('memòria lliure: l’interruptor la fa celebrar, i es recorda per al dia', async () => {
   await openAt(new Date(2026, 8, 26, 8, 0));
   expect(screen.getByText('Memòria lliure')).toBeTruthy();
-  const memory = screen.getByRole('switch', { name: 'Celebrar la memòria' });
+  // The screen reader hears the name and the line under it together
+  const memory = screen.getByRole('switch', { name: 'Celebrar la memòria. Si no l’actives, avui es resa la fèria.' });
   expect(memory.props.accessibilityState.checked).toBe(false);
   expect(screen.getByText('Si no l’actives, avui es resa la fèria.')).toBeTruthy();
   expect(styleOf(screen.getByText('Sants Cosme i Damià, màrtirs')).color).toBe('#475756');

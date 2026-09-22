@@ -30,6 +30,7 @@ import React from 'react';
 import { Linking } from 'react-native';
 import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react-native';
 import App from '../../App';
+import { navigationRef } from '../../src/Controllers/NavigationController';
 import * as DataService from '../../src/Services/DataService';
 
 // Easter Sunday 2026, mid-morning.
@@ -45,8 +46,9 @@ afterAll(() => {
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 // Back, and wait until the screen is really gone: navigating while it is still closing
 // would land on the closing route instead of opening a new one.
+// The back arrow is the system's own (native stack): back through the navigator, as it does
 async function goBack(textOnTheScreen) {
-  fireEvent.press(screen.getAllByRole('button', { name: /back|enrere/i })[0]);
+  act(() => navigationRef.goBack());
   await waitFor(() => expect(screen.queryAllByText(textOnTheScreen)).toHaveLength(0), { timeout: 15000 });
   await act(async () => { jest.advanceTimersByTime(2000); });
 }
@@ -78,7 +80,8 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
       Completes: hours.NightPrayer.FinalPrayer,
     }[hour];
     await waitFor(() => expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0));
-    expect(screen.getAllByText(hour).length).toBeGreaterThan(0);
+    // The title of the (native) top bar
+    expect(navigationRef.getCurrentOptions().title).toBe(hour);
     expect(screen.getByRole('button', { name: 'Mida del text i tema' })).toBeTruthy();
     await goBack(new RegExp(escape(firstWords(expected))));
   }

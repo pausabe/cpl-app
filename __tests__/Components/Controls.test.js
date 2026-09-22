@@ -126,9 +126,17 @@ test('els botons de la capçalera tenen nom, caben a la barra de l’iPhone i es
   fireEvent.press(button);
   expect(onPress).toHaveBeenCalled();
 
-  renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i tema" text="Aa" onPress={() => {}}/>);
-  // The pill leaves 5 above and below inside the 44 of the bar
-  expect(styleOf(screen.getByText('Aa').parent.parent)).toMatchObject({ height: 34 });
+  renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i tema" text="Aa" testID="aa" onPress={() => {}}/>);
+  // The pill leaves 5 above and below inside the 44 of the bar, with its own border
+  expect(styleOf(screen.getByTestId('aa-pill'))).toMatchObject({ height: 34, borderWidth: 1.5 });
+});
+
+test('a iOS 26 el sistema posa el botó Aa en una càpsula de vidre: la píndola no hi porta vora', () => {
+  const { Platform } = require('react-native');
+  jest.spyOn(Platform, 'Version', 'get').mockReturnValue('26.0');
+  renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i tema" text="Aa" testID="aa" onPress={() => {}}/>);
+  expect(styleOf(screen.getByTestId('aa-pill'))).toMatchObject({ height: 34, borderWidth: 0 });
+  jest.restoreAllMocks();
 });
 
 describe('SegmentedControl', () => {
@@ -148,7 +156,8 @@ describe('SwitchRow', () => {
   test('tota la fila canvia l’interruptor, i diu què fa', () => {
     const onChange = jest.fn();
     renderWithTheme(<SwitchRow label="Celebrar la memòria" caption="Si no l’actives, avui es resa la fèria." value={false} onValueChange={onChange}/>);
-    const row = screen.getByRole('switch', { name: 'Celebrar la memòria' });
+    const row = screen.getByRole('switch', { name: 'Celebrar la memòria. Si no l’actives, avui es resa la fèria.' });
+    expect(row.props.accessibilityHint).toBeUndefined();
     expect(row.props.accessibilityState.checked).toBe(false);
     expect(screen.getByText('Si no l’actives, avui es resa la fèria.')).toBeTruthy();
     fireEvent.press(row);

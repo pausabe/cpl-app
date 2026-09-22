@@ -3,7 +3,8 @@ name: "L'app s'obre al dia d'avui"
 ---
 - runFlow: subflows/obrir.yaml
 # La targeta del dia: el lloc, la data en paraules i la setmana del salteri
-- assertVisible: "Barcelona \\(Diòcesi\\)"
+# A iOS és l'etiqueta del lector de pantalla, que hi afegeix el color: «… Color litúrgic: Verd»
+- assertVisible: "Barcelona \\(Diòcesi\\).*"
 - assertVisible: "Di[a-z]+, [0-9]+ d.+"
 - assertVisible: ".*Setmana [IV]+ del salteri"
 # Les set hores i la missa, a l'inici mateix
