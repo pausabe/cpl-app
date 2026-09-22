@@ -5,14 +5,14 @@ import { Settings } from '../../models/Settings';
 import { Psalm, ShortResponsory } from '../../models/liturgy-masters/CommonParts';
 import { GenericLiturgyTimeType, SpecificLiturgyTimeType } from '../celebrationTimeEnums';
 
-export function ObtainNightPrayer(
+export function obtainNightPrayer(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   settings: Settings,
 ): NightPrayer {
   let nightPrayer = new NightPrayer();
-  nightPrayer.Anthem = GetAnthem(liturgyMasters, liturgyDayInformation, settings);
-  const psalmody = GetPsalmody(liturgyMasters, liturgyDayInformation);
+  nightPrayer.Anthem = getAnthem(liturgyMasters, liturgyDayInformation, settings);
+  const psalmody = getPsalmody(liturgyMasters, liturgyDayInformation);
   nightPrayer.FirstPsalm = psalmody.FirstPsalm;
   nightPrayer.SecondPsalm = psalmody.SecondPsalm;
   nightPrayer.HasMultiplePsalms = liturgyMasters.CommonNightPrayerPsalter.HasTwoPsalms;
@@ -20,8 +20,8 @@ export function ObtainNightPrayer(
     liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks &&
     liturgyDayInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter;
   nightPrayer.ShortReading = liturgyMasters.CommonNightPrayerPsalter.ShortReading;
-  nightPrayer.ShortResponsory = GetShortResponsory(liturgyMasters, liturgyDayInformation);
-  nightPrayer.EvangelicalAntiphon = GetEvangelicalAntiphon(liturgyMasters, liturgyDayInformation);
+  nightPrayer.ShortResponsory = getShortResponsory(liturgyMasters, liturgyDayInformation);
+  nightPrayer.EvangelicalAntiphon = getEvangelicalAntiphon(liturgyMasters, liturgyDayInformation);
   nightPrayer.EvangelicalChant = liturgyMasters.Various.NightPrayerEvangelicalChant;
   nightPrayer.FinalPrayer = liturgyMasters.CommonNightPrayerPsalter.FinalPrayer;
   if (settings.UseLatin) {
@@ -43,7 +43,7 @@ export function ObtainNightPrayer(
   return nightPrayer;
 }
 
-function GetAnthem(
+function getAnthem(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   settings: Settings,
@@ -90,7 +90,7 @@ function GetAnthem(
   return anthem;
 }
 
-function GetPsalmody(
+function getPsalmody(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
 ): { FirstPsalm: Psalm; SecondPsalm: Psalm } {
@@ -104,7 +104,7 @@ function GetPsalmody(
   return psalmody;
 }
 
-function GetShortResponsory(
+function getShortResponsory(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
 ): ShortResponsory {
@@ -146,7 +146,7 @@ function GetShortResponsory(
   return shortResponsory;
 }
 
-function GetEvangelicalAntiphon(
+function getEvangelicalAntiphon(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
 ): string {

@@ -79,7 +79,7 @@ export default class MassLiturgyPrayerScreen extends Component {
         </View>
       );
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, 'render', error);
+      Logger.logError(Logger.LogKeys.Screens, 'render', error);
       return null;
     }
   }

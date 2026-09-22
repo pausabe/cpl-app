@@ -1,5 +1,5 @@
 // Loads one day exactly as the app does when it opens: settings read from AsyncStorage, then
-// DataService.ReloadAllData. The caller must mock DatabaseManagerService with
+// DataService.reloadAllData. The caller must mock DatabaseManagerService with
 // ./mockDatabaseManager (jest.mock factories can't be shared from here: they are hoisted).
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const DataService = require('../../src/services/dataService');
@@ -53,7 +53,7 @@ async function loadDay(isoDate, profileName = 'barcelona') {
   const [y, m, d] = isoDate.split('-').map(Number);
   const date = new Date(y, m - 1, d);
   await applyProfile(PROFILES[profileName], date);
-  await DataService.ReloadAllData(date, null);
+  await DataService.reloadAllData(date, null);
   return currentState();
 }
 

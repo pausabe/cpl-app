@@ -66,7 +66,7 @@ afterEach(() => {
 });
 
 test('si la litúrgia no es pot carregar, ho diu en lloc de deixar l’inici en blanc', async () => {
-  jest.spyOn(DataService, 'ReloadAllData').mockRejectedValue(new Error('database closed'));
+  jest.spyOn(DataService, 'reloadAllData').mockRejectedValue(new Error('database closed'));
   await openAt(new Date(2026, 8, 21, 10, 0));
   expect(await screen.findByText(/Ha sorgit un error inesperat/, {}, { timeout: 15000 })).toBeTruthy();
   expect(screen.queryByTestId('day-card')).toBeNull();
@@ -94,7 +94,7 @@ test('tornant a l’app un altre dia, carrega la litúrgia d’avui', async () =
 test('tornant a l’app el mateix dia, no recarrega res', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
-  const reload = jest.spyOn(DataService, 'ReloadAllData');
+  const reload = jest.spyOn(DataService, 'reloadAllData');
   jest.setSystemTime(new Date(2026, 8, 21, 18, 0));
   await comeBack();
   expect(reload).not.toHaveBeenCalled();

@@ -21,17 +21,17 @@ export const LogKeys = {
   NavigationController: { name: 'NavigationController', enabled: true },
 };
 
-export function Debug(message, param) {
-  Log(LogKeys.Debug, '', message, param);
+export function debug(message, param) {
+  log(LogKeys.Debug, '', message, param);
 }
 
-export function Log(logKey, methodName, message, param = undefined, limit = MessageCharacterLimit) {
+export function log(logKey, methodName, message, param = undefined, limit = MessageCharacterLimit) {
   if (logKey.enabled) {
-    log('[' + logKey.name + ' - ' + methodName + ']', message, param, limit);
+    printLine('[' + logKey.name + ' - ' + methodName + ']', message, param, limit);
   }
 }
 
-export function LogError(logKey, methodName, error: Error = undefined, limit = MessageCharacterLimit) {
+export function logError(logKey, methodName, error: Error = undefined, limit = MessageCharacterLimit) {
   let errorName = '';
   let errorMessage = '';
   let param = '';
@@ -47,10 +47,10 @@ export function LogError(logKey, methodName, error: Error = undefined, limit = M
       param = fatherMethod + ' > ' + method;
     } catch {}
   }
-  log('[' + logKey.name + ' - ' + methodName + '] ERROR:', errorName + ' ' + errorMessage, param, limit);
+  printLine('[' + logKey.name + ' - ' + methodName + '] ERROR:', errorName + ' ' + errorMessage, param, limit);
 }
 
-function log(logKey, message, param, limit) {
+function printLine(prefix, message, param, limit) {
   try {
     if (LogsEnabled) {
       message = message.substring(0, limit);
@@ -62,7 +62,7 @@ function log(logKey, message, param, limit) {
         new Date().getSeconds().toString() +
         '.' +
         new Date().getMilliseconds().toString();
-      let finalMessageNoParam = time + ' ' + logKey + ' ' + message + ' | ';
+      let finalMessageNoParam = time + ' ' + prefix + ' ' + message + ' | ';
       if (param === undefined) {
         finalMessageNoParam += '-';
         SessionLogs += finalMessageNoParam + '\n';

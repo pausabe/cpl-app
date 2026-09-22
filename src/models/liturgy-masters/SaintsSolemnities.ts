@@ -13,7 +13,7 @@ export default class SaintsSolemnities extends Solemnity {
     if (databaseRow) {
       this.Id = databaseRow.id;
 
-      this.Celebration.SpecificClassification = this.GetSpecificClassificationByCelebrationType(
+      this.Celebration.SpecificClassification = this.getSpecificClassificationByCelebrationType(
         databaseRow.Precedencia,
         databaseRow.Cat,
         databaseRow.Diocesis,
@@ -178,10 +178,10 @@ export default class SaintsSolemnities extends Solemnity {
     }
   }
 
-  private GetSpecificClassificationByCelebrationType(precedence: string, celebrationType: string, diocese: string) {
+  private getSpecificClassificationByCelebrationType(precedence: string, celebrationType: string, diocese: string) {
     let specificClassification: CelebrationSpecificClassification;
     if (celebrationType === CelebrationType.Solemnity || celebrationType === CelebrationType.Festivity) {
-      specificClassification = this.GetSpecificClassification(precedence);
+      specificClassification = this.getSpecificClassification(precedence);
     } else {
       specificClassification =
         diocese === '-' ? CelebrationSpecificClassification.Generic : CelebrationSpecificClassification.Own;

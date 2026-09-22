@@ -1,7 +1,7 @@
 import { CelebrationSpecificClassification } from '../../services/databaseEnums';
 
 export default class Solemnity {
-  protected GetSpecificClassification(precedence: string) {
+  protected getSpecificClassification(precedence: string) {
     let specificClassification = CelebrationSpecificClassification.NoClassification;
     switch (precedence) {
       case '2':

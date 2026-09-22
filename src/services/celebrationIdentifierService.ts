@@ -41,7 +41,7 @@ export enum Celebration {
   SacredFamily,
 }
 
-export function CheckCelebration(
+export function checkCelebration(
   celebration: Celebration,
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
   settings?: Settings,
@@ -57,137 +57,137 @@ export function CheckCelebration(
   switch (celebration) {
     // Can be moved
     case Celebration.Assumption:
-      isCelebrationWhenNotMoved = IsAssumption(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsAssumption(dateWhenMoved);
+      isCelebrationWhenNotMoved = isAssumption(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isAssumption(dateWhenMoved);
       break;
     case Celebration.ImmaculateConception:
-      isCelebrationWhenNotMoved = IsImmaculateConception(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsImmaculateConception(dateWhenMoved);
+      isCelebrationWhenNotMoved = isImmaculateConception(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isImmaculateConception(dateWhenMoved);
       break;
     case Celebration.SaintJoseph:
-      isCelebrationWhenNotMoved = IsSaintJoseph(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsSaintJoseph(dateWhenMoved);
+      isCelebrationWhenNotMoved = isSaintJoseph(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isSaintJoseph(dateWhenMoved);
       break;
     case Celebration.SaintTecla:
-      isCelebrationWhenNotMoved = IsSaintTecla(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsSaintTecla(dateWhenMoved);
+      isCelebrationWhenNotMoved = isSaintTecla(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isSaintTecla(dateWhenMoved);
       break;
     case Celebration.MatherOfGodOfMerce:
-      isCelebrationWhenNotMoved = IsMatherOfGodOfMerce(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsMatherOfGodOfMerce(dateWhenMoved);
+      isCelebrationWhenNotMoved = isMatherOfGodOfMerce(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isMatherOfGodOfMerce(dateWhenMoved);
       break;
     case Celebration.SaintsPereAndPau:
-      isCelebrationWhenNotMoved = IsSaintsPereAndPau(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsSaintsPereAndPau(dateWhenMoved);
+      isCelebrationWhenNotMoved = isSaintsPereAndPau(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isSaintsPereAndPau(dateWhenMoved);
       break;
     case Celebration.SaintJames:
-      isCelebrationWhenNotMoved = IsSaintJames(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsSaintJames(dateWhenMoved);
+      isCelebrationWhenNotMoved = isSaintJames(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isSaintJames(dateWhenMoved);
       break;
     case Celebration.SaintJohnBaptist:
-      isCelebrationWhenNotMoved = IsSaintJohnBaptist(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsSaintJohnBaptist(dateWhenMoved);
+      isCelebrationWhenNotMoved = isSaintJohnBaptist(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isSaintJohnBaptist(dateWhenMoved);
       break;
     case Celebration.AllSaints:
-      isCelebrationWhenNotMoved = IsAllSaints(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsAllSaints(dateWhenMoved);
+      isCelebrationWhenNotMoved = isAllSaints(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isAllSaints(dateWhenMoved);
       break;
     case Celebration.SaintJohn:
-      isCelebrationWhenNotMoved = IsSaintJohn(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsSaintJohn(dateWhenMoved);
+      isCelebrationWhenNotMoved = isSaintJohn(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isSaintJohn(dateWhenMoved);
       break;
     case Celebration.SaintEulalia:
-      isCelebrationWhenNotMoved = IsSaintEulalia(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsSaintEulalia(dateWhenMoved);
+      isCelebrationWhenNotMoved = isSaintEulalia(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isSaintEulalia(dateWhenMoved);
       break;
     case Celebration.DedicationSantJoanLatera:
-      isCelebrationWhenNotMoved = IsDedicationSantJoanLatera(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsDedicationSantJoanLatera(dateWhenMoved);
+      isCelebrationWhenNotMoved = isDedicationSantJoanLatera(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isDedicationSantJoanLatera(dateWhenMoved);
       break;
     case Celebration.ExaltationHolyCross:
-      isCelebrationWhenNotMoved = IsExaltationHolyCross(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsExaltationHolyCross(dateWhenMoved);
+      isCelebrationWhenNotMoved = isExaltationHolyCross(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isExaltationHolyCross(dateWhenMoved);
       break;
     case Celebration.LordTransfiguration:
-      isCelebrationWhenNotMoved = IsLordTransfiguration(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsLordTransfiguration(dateWhenMoved);
+      isCelebrationWhenNotMoved = isLordTransfiguration(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isLordTransfiguration(dateWhenMoved);
       break;
     case Celebration.LordPresentation:
-      isCelebrationWhenNotMoved = IsLordPresentation(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsLordPresentation(dateWhenMoved);
+      isCelebrationWhenNotMoved = isLordPresentation(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isLordPresentation(dateWhenMoved);
       break;
     case Celebration.Epiphany:
-      isCelebrationWhenNotMoved = IsEpiphany(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsEpiphany(dateWhenMoved);
+      isCelebrationWhenNotMoved = isEpiphany(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isEpiphany(dateWhenMoved);
       break;
     case Celebration.Baptism:
-      isCelebrationWhenNotMoved = IsBaptism(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsBaptism(dateWhenMoved);
+      isCelebrationWhenNotMoved = isBaptism(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isBaptism(dateWhenMoved);
       break;
     case Celebration.MatherOfGod:
-      isCelebrationWhenNotMoved = IsMatherOfGod(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsMatherOfGod(dateWhenMoved);
+      isCelebrationWhenNotMoved = isMatherOfGod(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isMatherOfGod(dateWhenMoved);
       break;
     case Celebration.Christmas:
-      isCelebrationWhenNotMoved = IsChristmas(dateWhenNotMoved);
-      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && IsChristmas(dateWhenMoved);
+      isCelebrationWhenNotMoved = isChristmas(dateWhenNotMoved);
+      isCelebrationWhenMoved = todayWeCelebrateAMovedDay && isChristmas(dateWhenMoved);
       break;
 
     // Never will be moved
     case Celebration.HolyHeartOfJesus:
-      isCelebrationWhenNotMoved = IsHolyHeartOfJesus(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isHolyHeartOfJesus(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.Pentecost:
-      isCelebrationWhenNotMoved = IsPentecost(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isPentecost(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.HolyBodyAndBloodOfChrist:
-      isCelebrationWhenNotMoved = IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isHolyBodyAndBloodOfChrist(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.HolyTrinity:
-      isCelebrationWhenNotMoved = IsHolyTrinity(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isHolyTrinity(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.BodyAndBlood:
-      isCelebrationWhenNotMoved = IsBodyAndBlood(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isBodyAndBlood(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.SacredHeartOfJesus:
-      isCelebrationWhenNotMoved = IsSacredHeartOfJesus(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isSacredHeartOfJesus(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.OurLordJesusChrist:
-      isCelebrationWhenNotMoved = IsOurLordJesusChrist(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isOurLordJesusChrist(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.AshWednesday:
-      isCelebrationWhenNotMoved = IsAshWednesday(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isAshWednesday(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.ImmaculateHeartOfTheBlessedVirginMary:
-      isCelebrationWhenNotMoved = IsImmaculateHeartOfTheBlessedVirginMary(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isImmaculateHeartOfTheBlessedVirginMary(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.MotherOfGodFromTheTibbon:
-      isCelebrationWhenNotMoved = IsMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date, settings);
+      isCelebrationWhenNotMoved = isMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date, settings);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.JesusChristHighPriestForever:
-      isCelebrationWhenNotMoved = IsJesusChristHighPriestForever(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isJesusChristHighPriestForever(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.BlessedVirginMaryMotherOfTheChurch:
-      isCelebrationWhenNotMoved = IsBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.Ascension:
-      isCelebrationWhenNotMoved = IsAscension(liturgySpecificDayInformation);
+      isCelebrationWhenNotMoved = isAscension(liturgySpecificDayInformation);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.SacredFamily:
-      isCelebrationWhenNotMoved = IsSacredFamily(liturgySpecificDayInformation.Date);
+      isCelebrationWhenNotMoved = isSacredFamily(liturgySpecificDayInformation.Date);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
   }
@@ -210,7 +210,7 @@ export function CheckCelebration(
   return isCelebrationWhenNotMoved;
 }
 
-export function GetSaturdayBeforePentecostDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
+export function getSaturdayBeforePentecostDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
   let saturdayBeforePentecost = new Date(
     liturgySpecificDayInformation.PentecostDay.getFullYear(),
     liturgySpecificDayInformation.PentecostDay.getMonth(),
@@ -220,7 +220,7 @@ export function GetSaturdayBeforePentecostDate(liturgySpecificDayInformation: Li
   return saturdayBeforePentecost;
 }
 
-export function GetMondayAfterEasterOctaveDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
+export function getMondayAfterEasterOctaveDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
   let mondayAfterEasterOctave = new Date(
     liturgySpecificDayInformation.PentecostDay.getFullYear(),
     liturgySpecificDayInformation.PentecostDay.getMonth(),
@@ -230,7 +230,7 @@ export function GetMondayAfterEasterOctaveDate(liturgySpecificDayInformation: Li
   return mondayAfterEasterOctave;
 }
 
-export function GetSaturdayAfterEpiphanyDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
+export function getSaturdayAfterEpiphanyDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
   let saturdayAfterEpiphany = new Date(liturgySpecificDayInformation.Date.getFullYear(), 0, 6);
   if (saturdayAfterEpiphany.getDay() === 6) {
     saturdayAfterEpiphany.setDate(saturdayAfterEpiphany.getDate() + 1);
@@ -241,7 +241,7 @@ export function GetSaturdayAfterEpiphanyDate(liturgySpecificDayInformation: Litu
   return saturdayAfterEpiphany;
 }
 
-export function GetSacredFamily(fullYear: number): Date {
+export function getSacredFamily(fullYear: number): Date {
   let sacredFamily: Date;
   for (let i = 26; i <= 31; i++) {
     sacredFamily = new Date(fullYear, 11, i);
@@ -253,7 +253,7 @@ export function GetSacredFamily(fullYear: number): Date {
   return new Date(fullYear, 11, 30);
 }
 
-export function GetSecondSundayAfterChristmas(date: Date): Date {
+export function getSecondSundayAfterChristmas(date: Date): Date {
   // From a week after christmas to first sunday = second sunday
   let dateIterator = new Date(date.getFullYear(), 0, 1);
   while (dateIterator.getDay() !== 0) {
@@ -264,94 +264,94 @@ export function GetSecondSundayAfterChristmas(date: Date): Date {
 
 // The following celebrations can be moved for precedence purposes
 
-function IsAssumption(date: Date): boolean {
+function isAssumption(date: Date): boolean {
   return date.getMonth() === 7 && date.getDate() === 15;
 }
 
-function IsImmaculateConception(date: Date): boolean {
+function isImmaculateConception(date: Date): boolean {
   return date.getMonth() === 11 && date.getDate() === 8;
 }
 
-function IsSaintJoseph(date: Date) {
+function isSaintJoseph(date: Date) {
   return date.getMonth() === 2 && date.getDate() === 19;
 }
 
-function IsSaintTecla(date: Date): boolean {
+function isSaintTecla(date: Date): boolean {
   return date.getMonth() === 8 && date.getDate() === 23;
 }
 
-function IsMatherOfGodOfMerce(date: Date): boolean {
+function isMatherOfGodOfMerce(date: Date): boolean {
   return date.getMonth() === 8 && date.getDate() === 24;
 }
 
-function IsSaintsPereAndPau(date: Date): boolean {
+function isSaintsPereAndPau(date: Date): boolean {
   return date.getMonth() === 5 && date.getDate() === 29;
 }
 
-function IsSaintJames(date: Date): boolean {
+function isSaintJames(date: Date): boolean {
   return date.getMonth() === 6 && date.getDate() === 25;
 }
 
-function IsSaintJohnBaptist(date: Date): boolean {
+function isSaintJohnBaptist(date: Date): boolean {
   return date.getMonth() === 5 && date.getDate() === 24;
 }
 
-function IsAllSaints(date: Date): boolean {
+function isAllSaints(date: Date): boolean {
   return date.getMonth() === 10 && date.getDate() === 1;
 }
 
-function IsSaintJohn(date: Date): boolean {
+function isSaintJohn(date: Date): boolean {
   return date.getMonth() === 5 && date.getDate() === 24;
 }
 
-function IsSaintEulalia(date: Date): boolean {
+function isSaintEulalia(date: Date): boolean {
   return date.getMonth() === 1 && date.getDate() === 12;
 }
 
-function IsDedicationSantJoanLatera(date: Date): boolean {
+function isDedicationSantJoanLatera(date: Date): boolean {
   return date.getMonth() === 10 && date.getDate() === 9;
 }
 
-function IsExaltationHolyCross(date: Date): boolean {
+function isExaltationHolyCross(date: Date): boolean {
   return date.getMonth() === 8 && date.getDate() === 14;
 }
 
-function IsLordTransfiguration(date: Date): boolean {
+function isLordTransfiguration(date: Date): boolean {
   return date.getMonth() === 7 && date.getDate() === 6;
 }
 
-function IsLordPresentation(date: Date): boolean {
+function isLordPresentation(date: Date): boolean {
   return date.getMonth() === 1 && date.getDate() === 2;
 }
 
-function IsEpiphany(date: Date): boolean {
+function isEpiphany(date: Date): boolean {
   return date.getDate() === 6 && date.getMonth() === 0;
 }
 
-function IsChristmas(date: Date): boolean {
+function isChristmas(date: Date): boolean {
   return date.getDate() === 25 && date.getMonth() === 11;
 }
 
-function IsBaptism(date: Date): boolean {
+function isBaptism(date: Date): boolean {
   if (date.getMonth() !== 0) return false;
   if (date.getDay() !== 0) return false;
   return !(date.getDate() < 7 || date.getDate() > 13);
 }
 
-function IsMatherOfGod(date: Date): boolean {
+function isMatherOfGod(date: Date): boolean {
   return date.getMonth() === 0 && date.getDate() === 1;
 }
 
 // The following celebrations can't be moved for precedence purposes
 
-function IsPentecost(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  return DateManagement.DatesAreTheEqual(
+function isPentecost(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+  return DateManagement.datesAreTheEqual(
     liturgySpecificDayInformation.Date,
     liturgySpecificDayInformation.PentecostDay,
   );
 }
 
-function IsHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //Divendres de la tercera setmana després de Pentecosta (Divendres després de Corpus) A (166) B (167) C (168)
   //Sagrat cor de Jesús
   const holyHeartOfJesus = new Date(
@@ -359,10 +359,10 @@ function IsHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInf
     liturgySpecificDayInformation.PentecostDay.getMonth(),
     liturgySpecificDayInformation.PentecostDay.getDate() + 19,
   );
-  return DateManagement.DatesAreTheEqual(liturgySpecificDayInformation.Date, holyHeartOfJesus);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, holyHeartOfJesus);
 }
 
-function IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //Diumenge després de la Santíssima Trinitat A (163) B (164) C (165)
   //Santíssim cos i sang de crist
   const holyBodyAndBloodOfChrist = new Date(
@@ -370,16 +370,16 @@ function IsHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: LiturgySpecif
     liturgySpecificDayInformation.PentecostDay.getMonth(),
     liturgySpecificDayInformation.PentecostDay.getDate() + 14,
   );
-  return DateManagement.DatesAreTheEqual(liturgySpecificDayInformation.Date, holyBodyAndBloodOfChrist);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, holyBodyAndBloodOfChrist);
 }
 
-function IsHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //Diumenge després de Pentecosta A (160) B (161) C (162)
-  const holyTrinity = GetHolyTrinity(liturgySpecificDayInformation);
-  return DateManagement.DatesAreTheEqual(liturgySpecificDayInformation.Date, holyTrinity);
+  const holyTrinity = getHolyTrinity(liturgySpecificDayInformation);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, holyTrinity);
 }
 
-function GetHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
+function getHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
   return new Date(
     liturgySpecificDayInformation.PentecostDay.getFullYear(),
     liturgySpecificDayInformation.PentecostDay.getMonth(),
@@ -387,23 +387,23 @@ function GetHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInforma
   );
 }
 
-function IsBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  const bodyAndBlood = GetBodyAndBlood(liturgySpecificDayInformation);
-  return DateManagement.DatesAreTheEqual(liturgySpecificDayInformation.Date, bodyAndBlood);
+function isBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+  const bodyAndBlood = getBodyAndBlood(liturgySpecificDayInformation);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, bodyAndBlood);
 }
 
-function GetBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
-  const holyTrinity = GetHolyTrinity(liturgySpecificDayInformation);
+function getBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
+  const holyTrinity = getHolyTrinity(liturgySpecificDayInformation);
   return new Date(holyTrinity.getFullYear(), holyTrinity.getMonth(), holyTrinity.getDate() + 7);
 }
 
-function IsSacredHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  const bodyAndBlood = GetBodyAndBlood(liturgySpecificDayInformation);
+function isSacredHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+  const bodyAndBlood = getBodyAndBlood(liturgySpecificDayInformation);
   const sacredHeartOfJesus = new Date(bodyAndBlood.getFullYear(), bodyAndBlood.getMonth(), bodyAndBlood.getDate() + 5);
-  return DateManagement.DatesAreTheEqual(liturgySpecificDayInformation.Date, sacredHeartOfJesus);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, sacredHeartOfJesus);
 }
 
-function IsOurLordJesusChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isOurLordJesusChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
     liturgySpecificDayInformation.Date.getDay() === 0 &&
     liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
@@ -411,14 +411,14 @@ function IsOurLordJesusChrist(liturgySpecificDayInformation: LiturgySpecificDayI
   );
 }
 
-function IsAshWednesday(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isAshWednesday(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
     liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes &&
     liturgySpecificDayInformation.DayOfTheWeek === 3
   );
 }
 
-function IsImmaculateHeartOfTheBlessedVirginMary(
+function isImmaculateHeartOfTheBlessedVirginMary(
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
 ): boolean {
   //santsMemories M - dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
@@ -439,7 +439,7 @@ function IsImmaculateHeartOfTheBlessedVirginMary(
   return false;
 }
 
-function IsMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
+function isMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
   //santsMemories M - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
   //santsSolemnitats S - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
   // This celebration is specific to the Diocese of Tortosa
@@ -457,10 +457,10 @@ function IsMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
     dies += 1;
   }
   const tibbonDate = new Date(date.getFullYear(), 8, dies);
-  return DateManagement.DatesAreTheEqual(date, tibbonDate);
+  return DateManagement.datesAreTheEqual(date, tibbonDate);
 }
 
-function IsJesusChristHighPriestForever(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isJesusChristHighPriestForever(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //santsSolemnitats F - dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
   if (liturgySpecificDayInformation.CelebrationType === CelebrationType.Festivity) {
     const granSacerdot = new Date(
@@ -468,14 +468,14 @@ function IsJesusChristHighPriestForever(liturgySpecificDayInformation: LiturgySp
       liturgySpecificDayInformation.PentecostDay.getMonth(),
       liturgySpecificDayInformation.PentecostDay.getDate() + 4,
     );
-    if (DateManagement.DatesAreTheEqual(liturgySpecificDayInformation.Date, granSacerdot)) {
+    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, granSacerdot)) {
       return true;
     }
   }
   return false;
 }
 
-function IsBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //santsMemories M - dilluns després de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
   if (liturgySpecificDayInformation.CelebrationType === CelebrationType.Memory) {
     const benaurada = new Date(
@@ -483,14 +483,14 @@ function IsBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation: Lit
       liturgySpecificDayInformation.PentecostDay.getMonth(),
       liturgySpecificDayInformation.PentecostDay.getDate() + 1,
     );
-    if (DateManagement.DatesAreTheEqual(liturgySpecificDayInformation.Date, benaurada)) {
+    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, benaurada)) {
       return true;
     }
   }
   return false;
 }
 
-function IsAscension(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isAscension(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
     liturgySpecificDayInformation.Date.getDay() === 0 &&
     liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks &&
@@ -498,7 +498,7 @@ function IsAscension(liturgySpecificDayInformation: LiturgySpecificDayInformatio
   );
 }
 
-function IsSacredFamily(date: Date): boolean {
-  const sacredFamilyDate = GetSacredFamily(date.getFullYear());
-  return DateManagement.DatesAreTheEqual(date, sacredFamilyDate);
+function isSacredFamily(date: Date): boolean {
+  const sacredFamilyDate = getSacredFamily(date.getFullYear());
+  return DateManagement.datesAreTheEqual(date, sacredFamilyDate);
 }

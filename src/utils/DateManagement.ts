@@ -1,5 +1,5 @@
 export class DateManagement {
-  static DatesAreTheEqual(firstDate: Date, secondDate: Date): boolean {
+  static datesAreTheEqual(firstDate: Date, secondDate: Date): boolean {
     return (
       firstDate.getDate() === secondDate.getDate() &&
       firstDate.getMonth() === secondDate.getMonth() &&
@@ -7,8 +7,8 @@ export class DateManagement {
     );
   }
 
-  static FirstDateIsBeforeOrEqualToSecondDate(firstDate: Date, secondDate: Date): boolean {
-    if (this.DatesAreTheEqual(firstDate, secondDate)) {
+  static firstDateIsBeforeOrEqualToSecondDate(firstDate: Date, secondDate: Date): boolean {
+    if (this.datesAreTheEqual(firstDate, secondDate)) {
       return true;
     }
     if (firstDate.getFullYear() < secondDate.getFullYear()) {
@@ -20,8 +20,8 @@ export class DateManagement {
     return firstDate.getDate() < secondDate.getDate();
   }
 
-  static FirstDateIsAfterOrEqualToSecondDate(firstDate: Date, secondDate: Date): boolean {
-    if (this.DatesAreTheEqual(firstDate, secondDate)) {
+  static firstDateIsAfterOrEqualToSecondDate(firstDate: Date, secondDate: Date): boolean {
+    if (this.datesAreTheEqual(firstDate, secondDate)) {
       return true;
     }
     if (firstDate.getFullYear() > secondDate.getFullYear()) {
@@ -33,18 +33,18 @@ export class DateManagement {
     return firstDate.getDate() > secondDate.getDate();
   }
 
-  static FirstDateIsInBetweenSecondAndThirdDatesInclusively(
+  static firstDateIsInBetweenSecondAndThirdDatesInclusively(
     firstDate: Date,
     secondDate: Date,
     thirdDate: Date,
   ): boolean {
     return (
-      this.FirstDateIsAfterOrEqualToSecondDate(firstDate, secondDate) &&
-      this.FirstDateIsBeforeOrEqualToSecondDate(firstDate, thirdDate)
+      this.firstDateIsAfterOrEqualToSecondDate(firstDate, secondDate) &&
+      this.firstDateIsBeforeOrEqualToSecondDate(firstDate, thirdDate)
     );
   }
 
-  static WeekDayName(num) {
+  static weekDayName(num) {
     switch (num) {
       case 0:
         return 'Diumenge';
@@ -64,17 +64,17 @@ export class DateManagement {
     return '';
   }
 
-  static GetDateKeyToBeStored(date: Date): string {
+  static getDateKeyToBeStored(date: Date): string {
     return date.getDate() + ':' + date.getMonth() + ':' + date.getFullYear();
   }
 
-  static GetYesterday(date: Date): Date {
+  static getYesterday(date: Date): Date {
     let yesterday = new Date(date.getFullYear(), date.getMonth());
     yesterday.setDate(date.getDate() - 1);
     return yesterday;
   }
 
-  static DifferenceBetweenDatesInSeconds(smallestDate: Date, biggestDate: Date): number {
+  static differenceBetweenDatesInSeconds(smallestDate: Date, biggestDate: Date): number {
     // @ts-ignore
     return (biggestDate - smallestDate) / 1000;
   }

@@ -3,7 +3,7 @@ import ConcreteNamesInPrayers from '../../models/hours-liturgy/ConcreteNamesInPr
 import { Settings } from '../../models/Settings';
 import { DioceseName } from '../SettingsService';
 
-export function ObtainConcreteNamesInPrayers(
+export function obtainConcreteNamesInPrayers(
   liturgyMasters: LiturgyMasters,
   settings: Settings,
 ): ConcreteNamesInPrayers {

@@ -16,43 +16,43 @@ import CelebrationInformation from '../../models/hours-liturgy/CelebrationInform
 import * as ConcreteNamesInPrayers from './concreteNamesInPrayersService';
 import { StringManagement } from '../../utils/StringManagement';
 
-export async function ObtainHoursLiturgy(
+export async function obtainHoursLiturgy(
   todayLiturgyMasters: LiturgyMasters,
   tomorrowLiturgyMasters: LiturgyMasters,
   liturgyDayInformation: liturgyDayInformation,
   settings: Settings,
 ): Promise<HoursLiturgy> {
   let hoursLiturgy = new HoursLiturgy();
-  const celebrationHoursLiturgy = CelebrationHoursLiturgyService.ObtainCelebrationHoursLiturgy(
+  const celebrationHoursLiturgy = CelebrationHoursLiturgyService.obtainCelebrationHoursLiturgy(
     todayLiturgyMasters,
     tomorrowLiturgyMasters,
     liturgyDayInformation,
     settings,
   );
-  hoursLiturgy.TodayCelebrationInformation = CelebrationInformationService.ObtainCelebrationInformation(
+  hoursLiturgy.TodayCelebrationInformation = CelebrationInformationService.obtainCelebrationInformation(
     liturgyDayInformation.Today,
     celebrationHoursLiturgy.TodayCelebrationInformation,
   );
-  hoursLiturgy.TomorrowCelebrationInformation = CelebrationInformationService.ObtainCelebrationInformation(
+  hoursLiturgy.TomorrowCelebrationInformation = CelebrationInformationService.obtainCelebrationInformation(
     liturgyDayInformation.Tomorrow,
     celebrationHoursLiturgy.TomorrowCelebrationInformation,
   );
-  hoursLiturgy.ConcreteNamesInPrayers = ConcreteNamesInPrayers.ObtainConcreteNamesInPrayers(
+  hoursLiturgy.ConcreteNamesInPrayers = ConcreteNamesInPrayers.obtainConcreteNamesInPrayers(
     todayLiturgyMasters,
     settings,
   );
-  hoursLiturgy.Invitation = InvitationService.ObtainInvitation(
+  hoursLiturgy.Invitation = InvitationService.obtainInvitation(
     todayLiturgyMasters,
     liturgyDayInformation.Today,
     celebrationHoursLiturgy.Invitation,
   );
-  hoursLiturgy.Office = OfficeService.ObtainOffice(
+  hoursLiturgy.Office = OfficeService.obtainOffice(
     todayLiturgyMasters,
     liturgyDayInformation.Today,
     celebrationHoursLiturgy.Office,
     settings,
   );
-  hoursLiturgy.Laudes = LaudesService.ObtainLaudes(
+  hoursLiturgy.Laudes = LaudesService.obtainLaudes(
     todayLiturgyMasters,
     liturgyDayInformation.Today,
     celebrationHoursLiturgy.Laudes,
@@ -62,12 +62,12 @@ export async function ObtainHoursLiturgy(
     celebrationHoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration;
   hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration =
     celebrationHoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration;
-  hoursLiturgy.VespersOptions.VespersWithoutCelebration = VespersService.ObtainVespers(
+  hoursLiturgy.VespersOptions.VespersWithoutCelebration = VespersService.obtainVespers(
     todayLiturgyMasters,
     liturgyDayInformation.Today,
     settings,
   );
-  hoursLiturgy.Vespers = GetVespersWithLowerPrecedence(
+  hoursLiturgy.Vespers = getVespersWithLowerPrecedence(
     todayLiturgyMasters,
     liturgyDayInformation,
     hoursLiturgy.TodayCelebrationInformation,
@@ -75,13 +75,13 @@ export async function ObtainHoursLiturgy(
     settings,
     hoursLiturgy.VespersOptions,
   );
-  hoursLiturgy.Hours = HoursService.ObtainHours(
+  hoursLiturgy.Hours = HoursService.obtainHours(
     todayLiturgyMasters,
     liturgyDayInformation.Today,
     celebrationHoursLiturgy.Hours,
     settings,
   );
-  hoursLiturgy.NightPrayer = NightPrayerService.ObtainNightPrayer(
+  hoursLiturgy.NightPrayer = NightPrayerService.obtainNightPrayer(
     todayLiturgyMasters,
     liturgyDayInformation.Today,
     settings,
@@ -89,7 +89,7 @@ export async function ObtainHoursLiturgy(
   return hoursLiturgy;
 }
 
-export function GetVespersWithLowerPrecedence(
+export function getVespersWithLowerPrecedence(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgyDayInformation,
   todayCelebrationInformation: CelebrationInformation,
@@ -103,14 +103,14 @@ export function GetVespersWithLowerPrecedence(
     */
 
   if (
-    TomorrowIsMoreImportant(
+    tomorrowIsMoreImportant(
       todayCelebrationInformation.Precedence,
       tomorrowCelebrationInformation.Precedence,
       vespersOptions.TodaySecondVespersWithCelebration,
       vespersOptions.TomorrowFirstVespersWithCelebration,
     )
   ) {
-    return VespersService.MergeVespersWithCelebration(
+    return VespersService.mergeVespersWithCelebration(
       liturgyMasters,
       liturgyDayInformation.Tomorrow,
       settings,
@@ -118,7 +118,7 @@ export function GetVespersWithLowerPrecedence(
       vespersOptions.TomorrowFirstVespersWithCelebration,
     );
   } else {
-    return VespersService.MergeVespersWithCelebration(
+    return VespersService.mergeVespersWithCelebration(
       liturgyMasters,
       liturgyDayInformation.Today,
       settings,
@@ -128,7 +128,7 @@ export function GetVespersWithLowerPrecedence(
   }
 }
 
-function TomorrowIsMoreImportant(
+function tomorrowIsMoreImportant(
   todayPrecedence: number,
   tomorrowPrecedence: number,
   todayFirstVespersWithCelebration: Vespers,
@@ -138,8 +138,8 @@ function TomorrowIsMoreImportant(
     // When is the same precedence, we decide by the emptiness of the content.
     // TODO: If both celebrations have content, we should decide by another factor. We could create a "hardcoded" list of celebrations.
     return (
-      StringManagement.HasLiturgyContent(tomorrowSecondVespersWithCelebration.EvangelicalAntiphon) &&
-      !StringManagement.HasLiturgyContent(todayFirstVespersWithCelebration.EvangelicalAntiphon)
+      StringManagement.hasLiturgyContent(tomorrowSecondVespersWithCelebration.EvangelicalAntiphon) &&
+      !StringManagement.hasLiturgyContent(todayFirstVespersWithCelebration.EvangelicalAntiphon)
     );
   }
 

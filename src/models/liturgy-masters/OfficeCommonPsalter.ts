@@ -35,7 +35,7 @@ export default class OfficeCommonPsalter {
     }
   }
 
-  AdaptWithStrongTimes(commonOfficeWhenStrongTimesPsalter: CommonOfficeWhenStrongTimesPsalter) {
+  adaptWithStrongTimes(commonOfficeWhenStrongTimesPsalter: CommonOfficeWhenStrongTimesPsalter) {
     this.Id = commonOfficeWhenStrongTimesPsalter.Id;
     this.NightLatinAnthem = commonOfficeWhenStrongTimesPsalter.LatinAnthem;
     this.NightCatalanAnthem = commonOfficeWhenStrongTimesPsalter.CatalanAnthem;

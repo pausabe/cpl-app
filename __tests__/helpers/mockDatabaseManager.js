@@ -14,7 +14,7 @@ function database() {
 
 module.exports = {
   DB_PATH,
-  OpenDatabase: async () => {
+  openDatabase: async () => {
     database();
   },
   executeQueryAsync: (query) => {

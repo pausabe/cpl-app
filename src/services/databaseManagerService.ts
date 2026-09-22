@@ -6,14 +6,14 @@ import { FileSystemService } from './FileSystemService';
 
 let CPLDataBase = undefined;
 
-export async function OpenDatabase(databaseAsset: Asset) {
-  await CreateDirectory();
-  const databaseName = await UpdateDatabaseFile(databaseAsset);
+export async function openDatabase(databaseAsset: Asset) {
+  await createDirectory();
+  const databaseName = await updateDatabaseFile(databaseAsset);
 
-  if (!(await DatabaseExists(databaseName))) {
+  if (!(await databaseExists(databaseName))) {
     throw 'There is no database to open';
   }
-  Logger.Log(Logger.LogKeys.DatabaseManagerService, 'OpenDatabase', `Opening database '${databaseName}'`);
+  Logger.log(Logger.LogKeys.DatabaseManagerService, 'openDatabase', `Opening database '${databaseName}'`);
   CPLDataBase = await SQLite.openDatabaseAsync(databaseName);
 }
 
@@ -29,7 +29,7 @@ export function executeQueryAsync(query): Promise<any> {
 
 async function executeQuery(query, callback, errorCallback) {
   if (CPLDataBase === undefined) {
-    throw new Error('You must call OpenDatabase function to execute queries');
+    throw new Error('You must call openDatabase function to execute queries');
   }
 
   try {
@@ -40,36 +40,36 @@ async function executeQuery(query, callback, errorCallback) {
   }
 }
 
-async function DatabaseExists(databaseName) {
+async function databaseExists(databaseName) {
   return (
     databaseName && (await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/' + databaseName)).exists
   );
 }
 
-async function CreateDirectory() {
+async function createDirectory() {
   if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/')).exists) {
     await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
   }
 }
 
-async function UpdateDatabaseFile(databaseCandidateToBeTheNewOneAsset: Asset) {
-  const currentDatabaseFileName = await GetCurrentDatabaseFileName();
+async function updateDatabaseFile(databaseCandidateToBeTheNewOneAsset: Asset) {
+  const currentDatabaseFileName = await getCurrentDatabaseFileName();
   const candidateDatabaseFileName = databaseCandidateToBeTheNewOneAsset
-    ? DatabaseNameFromUri(databaseCandidateToBeTheNewOneAsset.localUri)
+    ? databaseNameFromUri(databaseCandidateToBeTheNewOneAsset.localUri)
     : '';
   const isNecessaryToUpdateTheDatabase =
     candidateDatabaseFileName !== '' && currentDatabaseFileName !== candidateDatabaseFileName;
 
-  Logger.Log(
+  Logger.log(
     Logger.LogKeys.DatabaseManagerService,
-    'UpdateDatabaseFile',
+    'updateDatabaseFile',
     `currentName = '${currentDatabaseFileName}' vs candidateName = '${candidateDatabaseFileName}' => ${isNecessaryToUpdateTheDatabase ? 'We need to update' : 'No necessary to update'}`,
   );
 
   if (isNecessaryToUpdateTheDatabase) {
     // We delete all possible files just in case. It should only be one database
-    await FileSystemService.DeleteFilesInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
-    await FileSystemService.CopyFile(
+    await FileSystemService.deleteFilesInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
+    await FileSystemService.copyFile(
       databaseCandidateToBeTheNewOneAsset.localUri,
       `${FileSystem.documentDirectory}SQLite/${candidateDatabaseFileName}`,
     );
@@ -78,21 +78,21 @@ async function UpdateDatabaseFile(databaseCandidateToBeTheNewOneAsset: Asset) {
   return currentDatabaseFileName;
 }
 
-async function GetCurrentDatabaseFileName() {
+async function getCurrentDatabaseFileName() {
   let currentDatabaseFileName = '';
-  const listOfDatabaseFiles = await FileSystemService.GetFileUrisInDirectory(
+  const listOfDatabaseFiles = await FileSystemService.getFileUrisInDirectory(
     `${FileSystem.documentDirectory}SQLite/`,
     'db',
   );
   if (listOfDatabaseFiles.length > 0) {
     // It should be just one database
     const currentDatabaseUri = listOfDatabaseFiles[0];
-    currentDatabaseFileName = DatabaseNameFromUri(currentDatabaseUri);
+    currentDatabaseFileName = databaseNameFromUri(currentDatabaseUri);
   }
   return currentDatabaseFileName;
 }
 
-function DatabaseNameFromUri(uri) {
+function databaseNameFromUri(uri) {
   if (!uri) {
     return '';
   }
@@ -103,7 +103,7 @@ async function _executeQuery(query: string): Promise<any> {
   try {
     return await CPLDataBase.getAllAsync(query);
   } catch (error) {
-    Logger.LogError(
+    Logger.logError(
       Logger.LogKeys.DatabaseManagerService,
       '_executeQuery',
       new Error(`Error in query (${query}): ${error.message}`),

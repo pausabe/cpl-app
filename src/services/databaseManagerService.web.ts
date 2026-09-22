@@ -6,10 +6,10 @@ import { Asset } from 'expo-asset';
 // database into, so we download the asset and open it as an in-memory database.
 let CPLDataBase = undefined;
 
-export async function OpenDatabase(databaseAsset: Asset) {
-  Logger.Log(
+export async function openDatabase(databaseAsset: Asset) {
+  Logger.log(
     Logger.LogKeys.DatabaseManagerService,
-    'OpenDatabase',
+    'openDatabase',
     `Opening database '${databaseAsset.uri}' in memory`,
   );
   const response = await fetch(databaseAsset.uri);
@@ -19,13 +19,13 @@ export async function OpenDatabase(databaseAsset: Asset) {
 
 export async function executeQueryAsync(query: string): Promise<any> {
   if (CPLDataBase === undefined) {
-    throw new Error('You must call OpenDatabase function to execute queries');
+    throw new Error('You must call openDatabase function to execute queries');
   }
 
   try {
     return await CPLDataBase.getAllAsync(query);
   } catch (error) {
-    Logger.LogError(
+    Logger.logError(
       Logger.LogKeys.DatabaseManagerService,
       '_executeQuery',
       new Error(`Error in query (${query}): ${error.message}`),

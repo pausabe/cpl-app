@@ -13,7 +13,7 @@ export default class SolemnityAndFestivityParts extends Solemnity {
 
       this.Celebration.Title = databaseRow.nomMemoria;
       this.Celebration.Category = databaseRow.Cat;
-      this.Celebration.SpecificClassification = this.GetSpecificClassification(databaseRow.Precedencia);
+      this.Celebration.SpecificClassification = this.getSpecificClassification(databaseRow.Precedencia);
 
       this.FirstVespersLatinAnthem = databaseRow.himneVespres1Llati;
       this.FirstVespersCatalanAnthem = databaseRow.himneVespres1Cat;

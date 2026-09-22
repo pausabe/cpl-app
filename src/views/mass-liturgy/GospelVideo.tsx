@@ -23,7 +23,7 @@ export default function GospelVideo({ videoId }: { videoId: string }) {
   const onError = (error: string) => {
     setLoading(false);
     setFailed(true);
-    Logger.LogError(Logger.LogKeys.Screens, 'GospelVideo', new Error(`YouTube: ${error}`));
+    Logger.logError(Logger.LogKeys.Screens, 'GospelVideo', new Error(`YouTube: ${error}`));
   };
 
   return (

@@ -8,7 +8,7 @@ import * as Logger from '../utils/logger';
 import { LogKeys } from '../utils/logger';
 import { DateManagement } from '../utils/DateManagement';
 
-export function ObtainPrecedenceByLiturgyTime(
+export function obtainPrecedenceByLiturgyTime(
   dateLiturgyInformation: LiturgySpecificDayInformation,
   celebrationInformation: CelebrationInformation,
 ): number {
@@ -19,11 +19,11 @@ export function ObtainPrecedenceByLiturgyTime(
     return 1;
   }
   if (
-    CelebrationIdentifierService.CheckCelebration(Celebration.Christmas, dateLiturgyInformation) ||
-    CelebrationIdentifierService.CheckCelebration(Celebration.Epiphany, dateLiturgyInformation) ||
-    CelebrationIdentifierService.CheckCelebration(Celebration.Ascension, dateLiturgyInformation) ||
-    CelebrationIdentifierService.CheckCelebration(Celebration.Pentecost, dateLiturgyInformation) ||
-    CelebrationIdentifierService.CheckCelebration(Celebration.AshWednesday, dateLiturgyInformation) ||
+    CelebrationIdentifierService.checkCelebration(Celebration.Christmas, dateLiturgyInformation) ||
+    CelebrationIdentifierService.checkCelebration(Celebration.Epiphany, dateLiturgyInformation) ||
+    CelebrationIdentifierService.checkCelebration(Celebration.Ascension, dateLiturgyInformation) ||
+    CelebrationIdentifierService.checkCelebration(Celebration.Pentecost, dateLiturgyInformation) ||
+    CelebrationIdentifierService.checkCelebration(Celebration.AshWednesday, dateLiturgyInformation) ||
     (dateLiturgyInformation.DayOfTheWeek === 0 &&
       (dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent ||
         dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Lent ||
@@ -41,7 +41,7 @@ export function ObtainPrecedenceByLiturgyTime(
       (celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Lord ||
         celebrationInformation.SpecificClassification === CelebrationSpecificClassification.MotherOfGod ||
         celebrationInformation.SpecificClassification === CelebrationSpecificClassification.Generic)) ||
-    CelebrationIdentifierService.CheckCelebration(Celebration.AllSaints, dateLiturgyInformation)
+    CelebrationIdentifierService.checkCelebration(Celebration.AllSaints, dateLiturgyInformation)
   ) {
     return 3;
   }
@@ -114,7 +114,7 @@ export function ObtainPrecedenceByLiturgyTime(
   if (
     (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
       dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Advent &&
-      DateManagement.FirstDateIsBeforeOrEqualToSecondDate(
+      DateManagement.firstDateIsBeforeOrEqualToSecondDate(
         dateLiturgyInformation.Date,
         new Date(dateLiturgyInformation.Date.getFullYear(), 11, 16),
       )) ||
@@ -123,19 +123,19 @@ export function ObtainPrecedenceByLiturgyTime(
       dateLiturgyInformation.Date.getMonth() === 0 &&
       dateLiturgyInformation.Date.getDate() > 1 &&
       dateLiturgyInformation.Date.getDate() <=
-        CelebrationIdentifierService.GetSaturdayAfterEpiphanyDate(dateLiturgyInformation).getDate()) ||
+        CelebrationIdentifierService.getSaturdayAfterEpiphanyDate(dateLiturgyInformation).getDate()) ||
     (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
       dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Easter &&
-      DateManagement.FirstDateIsInBetweenSecondAndThirdDatesInclusively(
+      DateManagement.firstDateIsInBetweenSecondAndThirdDatesInclusively(
         dateLiturgyInformation.Date,
-        CelebrationIdentifierService.GetMondayAfterEasterOctaveDate(dateLiturgyInformation),
-        CelebrationIdentifierService.GetSaturdayBeforePentecostDate(dateLiturgyInformation),
+        CelebrationIdentifierService.getMondayAfterEasterOctaveDate(dateLiturgyInformation),
+        CelebrationIdentifierService.getSaturdayBeforePentecostDate(dateLiturgyInformation),
       )) ||
     (dateLiturgyInformation.CelebrationType === CelebrationType.Fair &&
       dateLiturgyInformation.GenericLiturgyTime === GenericLiturgyTimeType.Ordinary)
   ) {
     return 13;
   }
-  Logger.LogError(LogKeys.PrecedenceService, 'ObtainPrecedenceByLiturgyTime', new Error('Precedence not found'));
+  Logger.logError(LogKeys.PrecedenceService, 'obtainPrecedenceByLiturgyTime', new Error('Precedence not found'));
   return 999;
 }

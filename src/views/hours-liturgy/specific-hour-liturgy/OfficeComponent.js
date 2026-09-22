@@ -145,7 +145,7 @@ export default class OfficeComponent extends Component {
         );
       }
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, 'remder', error);
+      Logger.logError(Logger.LogKeys.Screens, 'remder', error);
       return null;
     }
   }
@@ -380,19 +380,19 @@ export default class OfficeComponent extends Component {
     const aux_ant1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Antiphon);
     const aux_titol1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Title);
     let aux_com1 = '';
-    if (StringManagement.HasLiturgyContent(this.hours.Office.FirstPsalm.Comment))
+    if (StringManagement.hasLiturgyContent(this.hours.Office.FirstPsalm.Comment))
       aux_com1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Comment);
     const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Psalm));
     const aux_ant2 = GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Antiphon);
     const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Title));
     let aux_com2 = '';
-    if (StringManagement.HasLiturgyContent(this.hours.Office.SecondPsalm.Comment))
+    if (StringManagement.hasLiturgyContent(this.hours.Office.SecondPsalm.Comment))
       aux_com2 = GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Comment);
     const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Psalm));
     const aux_ant3 = GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Antiphon);
     const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Title));
     let aux_com3 = '';
-    if (StringManagement.HasLiturgyContent(this.hours.Office.ThirdPsalm.Comment))
+    if (StringManagement.hasLiturgyContent(this.hours.Office.ThirdPsalm.Comment))
       aux_com3 = GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Comment);
     const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Psalm));
 
@@ -404,7 +404,7 @@ export default class OfficeComponent extends Component {
           {aux_titol1}
         </Text>
         <Gap />
-        {StringManagement.HasLiturgyContent(this.hours.Office.FirstPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.Office.FirstPsalm.Comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -437,7 +437,7 @@ export default class OfficeComponent extends Component {
           {aux_titol2}
         </Text>
         <Gap />
-        {StringManagement.HasLiturgyContent(this.hours.Office.SecondPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.Office.SecondPsalm.Comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -470,7 +470,7 @@ export default class OfficeComponent extends Component {
           {aux_titol3}
         </Text>
         <Gap />
-        {StringManagement.HasLiturgyContent(this.hours.Office.ThirdPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.Office.ThirdPsalm.Comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -607,7 +607,7 @@ export default class OfficeComponent extends Component {
         </View>
       );
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, 'lectures', error);
+      Logger.logError(Logger.LogKeys.Screens, 'lectures', error);
       return null;
     }
   }

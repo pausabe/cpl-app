@@ -1,7 +1,7 @@
 import { DioceseName, PrayingPlace } from './SettingsService';
 import { CelebrationType, DioceseCode } from './databaseEnums';
 
-export function GetDioceseCodeFromDioceseName(dioceseName, place) {
+export function getDioceseCodeFromDioceseName(dioceseName, place) {
   switch (dioceseName) {
     case DioceseName.Barcelona:
       switch (place) {
@@ -129,7 +129,7 @@ export function GetDioceseCodeFromDioceseName(dioceseName, place) {
   return DioceseCode.BaD;
 }
 
-export function GetCelebrationTypeFromTodayLiurgyRow(
+export function getCelebrationTypeFromTodayLiurgyRow(
   dioceseCode: string,
   liturgyYearDatabaseRow: any,
 ): CelebrationType {
@@ -213,20 +213,20 @@ export function GetCelebrationTypeFromTodayLiurgyRow(
   return liturgyYearDatabaseRow.BaD;
 }
 
-export function IsMovedDiocese(dioceseCode: string, dioceseCodeMoved: string): boolean {
+export function isMovedDiocese(dioceseCode: string, dioceseCodeMoved: string): boolean {
   if (!dioceseCode || dioceseCode === '' || dioceseCodeMoved === '-' || dioceseCode === undefined) return false;
   if (dioceseCodeMoved === '*') return true;
   if (dioceseCode === dioceseCodeMoved) return true;
   return dioceseCode === dioceseCodeMoved;
 }
 
-export function GetDateShortDatabaseCode(
+export function getDateShortDatabaseCode(
   date: Date,
   dioceseCode2Letters: string = '-',
   movedDay: string = '-',
   dioceseCodeMoved: string = '-',
 ): string {
-  if (movedDay !== '-' && IsMovedDiocese(dioceseCode2Letters, dioceseCodeMoved)) {
+  if (movedDay !== '-' && isMovedDiocese(dioceseCode2Letters, dioceseCodeMoved)) {
     return movedDay;
   }
 
@@ -280,7 +280,7 @@ export function GetDateShortDatabaseCode(
   return dayShort + '-' + monthShort;
 }
 
-export function GetDateFromShortDatabaseCode(dateString: string, year: number): Date {
+export function getDateFromShortDatabaseCode(dateString: string, year: number): Date {
   if (!dateString || !dateString.includes('-')) {
     return undefined;
   }

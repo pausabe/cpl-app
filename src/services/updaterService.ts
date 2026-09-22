@@ -31,21 +31,21 @@ export const doUpdateIfAvailable = async () => {
   updater.lastTimeCheck = getUnixEpoch();
 
   if (__DEV__) {
-    Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', 'Unable to update or check for updates in DEV');
+    Logger.log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', 'Unable to update or check for updates in DEV');
     return false;
   }
 
   try {
-    Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', 'Checking for updates...');
+    Logger.log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', 'Checking for updates...');
     const checkResult = await Updates.checkForUpdateAsync();
 
-    Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', `Update available? ${checkResult.isAvailable}`);
+    Logger.log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', `Update available? ${checkResult.isAvailable}`);
     if (!checkResult.isAvailable) return false;
 
     // The server compares with the running update, not with the downloaded one: until the app
     // restarts, it keeps offering the update that is already here
     if (checkResult.manifest?.id && checkResult.manifest.id === updater.downloadedUpdateId) {
-      Logger.Log(
+      Logger.log(
         Logger.LogKeys.UpdaterService,
         'doUpdateIfAvailable',
         'Update already downloaded, waiting for the app to restart',
@@ -53,19 +53,19 @@ export const doUpdateIfAvailable = async () => {
       return false;
     }
 
-    Logger.Log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', 'Fetching Update in background');
+    Logger.log(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', 'Fetching Update in background');
     const fetchResult = await Updates.fetchUpdateAsync();
     if (!fetchResult.isNew) return false;
 
     updater.downloadedUpdateId = fetchResult.manifest.id;
-    Logger.Log(
+    Logger.log(
       Logger.LogKeys.UpdaterService,
       'doUpdateIfAvailable',
       `Update ${updater.downloadedUpdateId} fetched successfully. Will be applied on next app restart.`,
     );
     return true;
   } catch (e) {
-    Logger.LogError(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', e);
+    Logger.logError(Logger.LogKeys.UpdaterService, 'doUpdateIfAvailable', e);
     return false;
   }
 };
@@ -73,7 +73,7 @@ export const doUpdateIfAvailable = async () => {
 // Restarts the app with the most recently downloaded update
 const restartWithDownloadedUpdate = async () => {
   try {
-    Logger.Log(
+    Logger.log(
       Logger.LogKeys.UpdaterService,
       'restartWithDownloadedUpdate',
       'Restarting to apply the downloaded update',
@@ -81,7 +81,7 @@ const restartWithDownloadedUpdate = async () => {
     await Updates.reloadAsync({ reloadScreenOptions: ReloadScreenOptions });
     return true;
   } catch (e) {
-    Logger.LogError(Logger.LogKeys.UpdaterService, 'restartWithDownloadedUpdate', e);
+    Logger.logError(Logger.LogKeys.UpdaterService, 'restartWithDownloadedUpdate', e);
     return false;
   }
 };
@@ -96,12 +96,12 @@ export const handleAppStateChange = async (nextAppState) => {
 
   // On another day the app goes back to the day's Home anyway, so restarting it now doesn't get in the way
   if (isAnotherDay && updater.downloadedUpdateId) {
-    Logger.Log(Logger.LogKeys.UpdaterService, 'appStateChangeHandler', 'Back on another day with an update downloaded');
+    Logger.log(Logger.LogKeys.UpdaterService, 'appStateChangeHandler', 'Back on another day with an update downloaded');
     if (await restartWithDownloadedUpdate()) return;
   }
 
   const isTimeToCheck = getUnixEpoch() - updater.lastTimeCheck > MinSecondsBetweenChecks;
-  Logger.Log(
+  Logger.log(
     Logger.LogKeys.UpdaterService,
     'appStateChangeHandler',
     `AppState: ${nextAppState}, NeedToCheckForUpdate? ${isTimeToCheck}`,

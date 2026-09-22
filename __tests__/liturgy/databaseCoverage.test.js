@@ -4,12 +4,12 @@
 // goes red with enough time to ask CPL for the next year's data and ship it.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 
-const { ObtainMinimumAndMaximumSelectableDates } = require('../../src/services/databaseDataService');
+const { obtainMinimumAndMaximumSelectableDates } = require('../../src/services/databaseDataService');
 
 const DAYS_OF_NOTICE = 45;
 
 test(`la base de dades cobreix com a mínim els pròxims ${DAYS_OF_NOTICE} dies`, async () => {
-  const { MaximumSelectableDate } = await ObtainMinimumAndMaximumSelectableDates();
+  const { MaximumSelectableDate } = await obtainMinimumAndMaximumSelectableDates();
   const deadline = new Date();
   deadline.setDate(deadline.getDate() + DAYS_OF_NOTICE);
   expect(MaximumSelectableDate.getTime()).toBeGreaterThan(deadline.getTime());

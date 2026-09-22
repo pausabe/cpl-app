@@ -4,7 +4,7 @@ import { LiturgySpecificDayInformation } from '../../models/LiturgyDayInformatio
 import { SpecificLiturgyTimeType } from '../celebrationTimeEnums';
 import { StringManagement } from '../../utils/StringManagement';
 
-export function ObtainInvitation(
+export function obtainInvitation(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationInvitation: Invitation,
@@ -16,7 +16,7 @@ export function ObtainInvitation(
   invitation.Psalm66 = liturgyMasters.Various.Psalm66;
   invitation.Psalm99 = liturgyMasters.Various.Psalm99;
 
-  if (StringManagement.HasLiturgyContent(celebrationInvitation.InvitationAntiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationInvitation.InvitationAntiphon)) {
     invitation.InvitationAntiphon = celebrationInvitation.InvitationAntiphon;
   } else {
     invitation.InvitationAntiphon = liturgyMasters.InvitationCommonPsalter.Antiphon;

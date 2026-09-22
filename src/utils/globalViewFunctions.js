@@ -111,7 +111,7 @@ let GlobalViewFunctions = {
       if (lastChar === ' ' || lastChar === '\n') return text.slice(0, length - 1);
       return text;
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, 'trim', error);
+      Logger.logError(Logger.LogKeys.GlobalFunctions, 'trim', error);
       return text;
     }
   },
@@ -141,7 +141,7 @@ let GlobalViewFunctions = {
         result = r1 + ' ' + r2.charAt(0).toLowerCase() + r2.slice(1);
     } else {
       const errorMessage = `First Part = '${r1}', Second Part = '${r2}'`;
-      Logger.LogError(Logger.LogKeys.GlobalFunctions, 'respTogether', new Error(errorMessage));
+      Logger.logError(Logger.LogKeys.GlobalFunctions, 'respTogether', new Error(errorMessage));
     }
 
     return result;

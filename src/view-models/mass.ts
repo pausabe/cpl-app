@@ -64,7 +64,7 @@ export interface MassBlock {
 export interface MassChoiceInput {
   // What was saved: "21:8:2026_vespers" (StorageKeys.CurrentMassVespersSelector)
   stored: string | null | undefined;
-  // The day being shown, as DateManagement.GetDateKeyToBeStored writes it
+  // The day being shown, as DateManagement.getDateKeyToBeStored writes it
   todayKey: string;
   hasVespers: boolean;
   tomorrowIsEasterSunday: boolean;

@@ -64,7 +64,7 @@ export default class SettingsService {
    * Returns an asynchronous Promise with the callback set when callback is a Function, if not, returns just the Promise.
    */
   static _getStorageValue(key, callback, defaultValue) {
-    let getPromise = StorageService.GetData(key);
+    let getPromise = StorageService.getData(key);
     let settingsPromise = new Promise((resolve, reject) => {
       getPromise
         .then((value) => {
@@ -79,7 +79,7 @@ export default class SettingsService {
   }
 
   static _setStorageValue(key, value, callback) {
-    let savePromise = StorageService.StoreData(key, value);
+    let savePromise = StorageService.storeData(key, value);
     if (callback) savePromise.then(callback);
     return savePromise;
   }

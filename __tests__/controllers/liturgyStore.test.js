@@ -13,7 +13,7 @@ jest.mock('../../src/services/dataService', () => {
     CurrentHoursLiturgy: {},
     CurrentMassLiturgy: {},
     LastRefreshDate: new Date(2026, 8, 21),
-    ReloadAllData: jest.fn(async (date) => {
+    reloadAllData: jest.fn(async (date) => {
       state.running++;
       state.maxRunning = Math.max(state.maxRunning, state.running);
       state.calls.push(date);
@@ -83,7 +83,7 @@ test('la mida del text i el mode fosc es canvien sense recarregar, i avisen', ()
   LiturgyStore.updateSettings({ TextSize: '5', DarkModeEnabled: true });
   expect(DataService.CurrentSettings).toMatchObject({ TextSize: '5', DarkModeEnabled: true });
   expect(listener).toHaveBeenCalledTimes(1);
-  expect(DataService.ReloadAllData).not.toHaveBeenCalledWith(undefined);
+  expect(DataService.reloadAllData).not.toHaveBeenCalledWith(undefined);
   LiturgyStore.updateSettings({ InvitationPsalmOption: '99' }, false);
   expect(listener).toHaveBeenCalledTimes(1);
   unsubscribe();

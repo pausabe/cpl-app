@@ -139,7 +139,7 @@ test('Configuració scrolls to the bottom edge, and ends above the home indicato
 // On iOS the native slider drew its thumb at the start the first time Configuració opened
 test('on iOS the slider gets the chosen size once it has its width, so that its thumb moves there', async () => {
   await AsyncStorage.setItem('textSize', '5');
-  await DataService.ReloadAllData(new Date(2026, 8, 21), null);
+  await DataService.reloadAllData(new Date(2026, 8, 21), null);
   await open();
   const slider = () => screen.UNSAFE_getByType(require('@react-native-community/slider').default);
   const layout = (width) => ({ nativeEvent: { layout: { x: 0, y: 0, width, height: 40 } } });

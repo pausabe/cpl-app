@@ -1,15 +1,15 @@
 import * as Logger from '../../utils/logger';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export async function StoreData(storageKey, value) {
+export async function storeData(storageKey, value) {
   try {
     await AsyncStorage.setItem(storageKey, value.toString());
   } catch (e) {
-    Logger.LogError(Logger.LogKeys.StorageService, 'StoreData', e);
+    Logger.logError(Logger.LogKeys.StorageService, 'storeData', e);
   }
 }
 
-export async function GetData(storageKey, defaultValue?) {
+export async function getData(storageKey, defaultValue?) {
   try {
     const value = await AsyncStorage.getItem(storageKey);
     if (!value) {
@@ -17,7 +17,7 @@ export async function GetData(storageKey, defaultValue?) {
     }
     return value;
   } catch (e) {
-    Logger.LogError(Logger.LogKeys.StorageService, 'GetData', e);
+    Logger.logError(Logger.LogKeys.StorageService, 'getData', e);
     return defaultValue;
   }
 }

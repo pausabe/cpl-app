@@ -96,7 +96,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       setLoadedHere(true);
       return true;
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.HomeScreenController, 'load', error as Error);
+      Logger.logError(Logger.LogKeys.HomeScreenController, 'load', error as Error);
       setStatus('error');
       return false;
     }
@@ -119,10 +119,10 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       const loaded = await load(new Date(), databaseAssets[0]);
       const late = loaded && isLatePrayer();
       setLatePrayerVisible(late);
-      if (loaded && SHOW_WHATS_NEW && !(await StorageService.GetData(WHATS_NEW_SEEN_KEY))) {
+      if (loaded && SHOW_WHATS_NEW && !(await StorageService.getData(WHATS_NEW_SEEN_KEY))) {
         // Only to whoever knew the old home
         if (openedBefore) setWhatsNewPending(true);
-        else StorageService.StoreData(WHATS_NEW_SEEN_KEY, 'true');
+        else StorageService.storeData(WHATS_NEW_SEEN_KEY, 'true');
       }
       // The splash has covered everything until now (App.js): it goes once the day is
       // drawn, with the colours of the chosen theme. With the midnight notice on iOS the
@@ -141,7 +141,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     const appState = AppState.addEventListener('change', async (next) => {
       if (next !== 'active' || !LiturgyStore.isLoaded()) return;
       const now = new Date();
-      if (!DateManagement.DatesAreTheEqual(now, LiturgyStore.lastRefreshDate())) {
+      if (!DateManagement.datesAreTheEqual(now, LiturgyStore.lastRefreshDate())) {
         navigation.popToTop();
         setCalendarVisible(false);
         setLatePrayerVisible(false);
@@ -150,7 +150,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     });
     const appearance = Appearance.addChangeListener(() => {
       followSystemAppearance().catch((error) =>
-        Logger.LogError(Logger.LogKeys.HomeScreenController, 'followSystemAppearance', error),
+        Logger.logError(Logger.LogKeys.HomeScreenController, 'followSystemAppearance', error),
       );
     });
     return () => {
@@ -182,7 +182,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   }, [navigation]);
 
   const today: Date | undefined = snapshot.day.Today.Date;
-  const todayKey = today ? DateManagement.GetDateKeyToBeStored(today) : '';
+  const todayKey = today ? DateManagement.getDateKeyToBeStored(today) : '';
 
   // --- Avui | Vespertina: the choice of the day, kept for the day ---------------------------
   const choiceInput =
@@ -198,12 +198,12 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   useEffect(() => {
     if (!choiceInput) return;
     let active = true;
-    StorageService.GetData(StorageKeys.CurrentMassVespersSelector).then((stored) => {
+    StorageService.getData(StorageKeys.CurrentMassVespersSelector).then((stored) => {
       const decision = resolveMassChoice({ ...choiceInput, stored: stored as string });
       if (!active) return;
       setMassChoice({ day: choiceInput.todayKey, choice: decision.choice });
       if (decision.save) {
-        StorageService.StoreData(
+        StorageService.storeData(
           StorageKeys.CurrentMassVespersSelector,
           massChoiceToStore(choiceInput.todayKey, decision.choice),
         );
@@ -223,7 +223,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
 
   const onMassChoice = (next: MassChoice) => {
     setMassChoice({ day: todayKey, choice: next });
-    StorageService.StoreData(StorageKeys.CurrentMassVespersSelector, massChoiceToStore(todayKey, next));
+    StorageService.storeData(StorageKeys.CurrentMassVespersSelector, massChoiceToStore(todayKey, next));
   };
 
   // --- What the home shows -------------------------------------------------------------------
@@ -245,15 +245,15 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   const showDate = async (date: Date) => {
     setCalendarVisible(false);
     setLatePrayerVisible(false);
-    if (today && DateManagement.DatesAreTheEqual(date, today)) return;
+    if (today && DateManagement.datesAreTheEqual(date, today)) return;
     await load(date);
   };
 
   const onOptionalMemoryChange = async (enabled: boolean) => {
     if (!today) return;
-    await StorageService.StoreData(
+    await StorageService.storeData(
       StorageKeys.OptionalFestivity,
-      enabled ? DateManagement.GetDateKeyToBeStored(today) : 'none',
+      enabled ? DateManagement.getDateKeyToBeStored(today) : 'none',
     );
     LiturgyStore.updateSettings({ OptionalFestivityEnabled: enabled });
     await load(today);
@@ -283,7 +283,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
 
   const closeWhatsNew = () => {
     setWhatsNewPending(false);
-    StorageService.StoreData(WHATS_NEW_SEEN_KEY, 'true');
+    StorageService.storeData(WHATS_NEW_SEEN_KEY, 'true');
   };
 
   if (status === 'error') {
@@ -331,8 +331,8 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       />
       <LatePrayerDialog
         visible={latePrayerVisible}
-        texts={latePrayerTexts(today, DateManagement.GetYesterday(today))}
-        onYesterday={() => showDate(DateManagement.GetYesterday(today))}
+        texts={latePrayerTexts(today, DateManagement.getYesterday(today))}
+        onYesterday={() => showDate(DateManagement.getYesterday(today))}
         onToday={() => setLatePrayerVisible(false)}
       />
       <WhatsNewSheet visible={whatsNewPending && !latePrayerVisible} onClose={closeWhatsNew} />

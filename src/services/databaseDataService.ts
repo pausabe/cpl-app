@@ -16,7 +16,7 @@ export function getDatabaseVersion(): Promise<number> {
         resolve(databaseVersion);
       })
       .catch((error) => {
-        Logger.Log(
+        Logger.log(
           Logger.LogKeys.DatabaseDataService,
           'getDatabaseVersion',
           'Error trying to get the database version',
@@ -27,16 +27,16 @@ export function getDatabaseVersion(): Promise<number> {
   });
 }
 
-export async function ObtainMasterRowFromDatabase(master: string, rowId: number) {
+export async function obtainMasterRowFromDatabase(master: string, rowId: number) {
   const result = await executeQueryAsync(`SELECT * FROM ${master} WHERE id = ${rowId}`);
   return result[0];
 }
 
-export async function ObtainMasterTableFromDatabase(master: string) {
+export async function obtainMasterTableFromDatabase(master: string) {
   return await executeQueryAsync(`SELECT * FROM ${master}`);
 }
 
-export async function ObtainLiturgySpecificDayInformation(
+export async function obtainLiturgySpecificDayInformation(
   date: Date,
   currentSettings: Settings,
 ): Promise<LiturgySpecificDayInformation> {
@@ -46,19 +46,19 @@ export async function ObtainLiturgySpecificDayInformation(
   const todayLiturgy = result[0];
   let liturgyDayInformation = new LiturgySpecificDayInformation();
   liturgyDayInformation.Date = date;
-  liturgyDayInformation.PentecostDay = await ObtainPentecostDay(liturgyDayInformation.Date);
-  liturgyDayInformation.CelebrationType = DatabaseHelper.GetCelebrationTypeFromTodayLiurgyRow(
+  liturgyDayInformation.PentecostDay = await obtainPentecostDay(liturgyDayInformation.Date);
+  liturgyDayInformation.CelebrationType = DatabaseHelper.getCelebrationTypeFromTodayLiurgyRow(
     currentSettings.DioceseCode,
     todayLiturgy,
   );
 
   // Moved day is used to detect if today's celebrations is meant to be celebrated in another day
   liturgyDayInformation.MovedDay.OriginDateShortDatabaseCode = todayLiturgy.diaMogut;
-  liturgyDayInformation.MovedDay.TodayIsMoved = await DateIsMoved(
+  liturgyDayInformation.MovedDay.TodayIsMoved = await dateIsMoved(
     liturgyDayInformation.Date,
     currentSettings.DioceseCode2Letters,
   );
-  liturgyDayInformation.MovedDay.OriginDate = DatabaseHelper.GetDateFromShortDatabaseCode(
+  liturgyDayInformation.MovedDay.OriginDate = DatabaseHelper.getDateFromShortDatabaseCode(
     todayLiturgy.diaMogut,
     date.getFullYear(),
   );
@@ -76,14 +76,14 @@ export async function ObtainLiturgySpecificDayInformation(
   return liturgyDayInformation;
 }
 
-export async function ObtainPentecostDay(date: Date) {
+export async function obtainPentecostDay(date: Date) {
   const result = await executeQueryAsync(
     `SELECT * FROM anyliturgic WHERE any = '${date.getFullYear()}' AND temps = '${SpecificLiturgyTimeType.EasterWeeks}' AND NumSet = '8' AND DiadelaSetmana = 'Dg'`,
   );
   return new Date(date.getFullYear(), result[0].mes - 1, result[0].dia);
 }
 
-export async function ObtainMinimumAndMaximumSelectableDates(): Promise<{
+export async function obtainMinimumAndMaximumSelectableDates(): Promise<{
   MinimumSelectableDate: Date;
   MaximumSelectableDate: Date;
 }> {
@@ -103,7 +103,7 @@ export async function ObtainMinimumAndMaximumSelectableDates(): Promise<{
   };
 }
 
-export async function ObtainSolemnitiesAndMemoriesAsync(
+export async function obtainSolemnitiesAndMemoriesAsync(
   masterName: string,
   dateString: string,
   dioceseCode: string,
@@ -115,15 +115,15 @@ export async function ObtainSolemnitiesAndMemoriesAsync(
   let auxDiocese = dioceseCode;
   if (dioceseCode === DioceseCode.Andorra && dateString !== '08-sep') {
     auxDioceseName = DioceseName.Urgell;
-    auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(DioceseName.Urgell, prayingPlace);
+    auxDiocese = DatabaseHelper.getDioceseCodeFromDioceseName(DioceseName.Urgell, prayingPlace);
   }
   let auxDioceseQuery = `'${auxDiocese}'`;
   if (prayingPlace === PrayingPlace.City) {
-    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}'`;
+    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}'`;
   } else if (prayingPlace === PrayingPlace.Cathedral) {
-    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
+    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese)}' OR Diocesis = '${DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
   } else if (prayingPlace === PrayingPlace.Diocese) {
-    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}' OR Diocesis = '${DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
+    auxDioceseQuery = `'${auxDiocese}' OR Diocesis = '${DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Cathedral)}' OR Diocesis = '${DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City)}'`;
   }
   const query = `SELECT * FROM ${masterName} WHERE (Diocesis = ${auxDioceseQuery} OR Diocesis = '-') AND dia = '${dateString}' AND Temps = '${genericLiturgyTime}'`;
 
@@ -132,7 +132,7 @@ export async function ObtainSolemnitiesAndMemoriesAsync(
   return result[index];
 }
 
-export async function ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
+export async function obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
   masterCode: string,
   masterIdentifier: number,
 ) {
@@ -141,19 +141,19 @@ export async function ObtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemni
   return result[0];
 }
 
-export async function ObtainFreeVirginMemoryAsync() {
+export async function obtainFreeVirginMemoryAsync() {
   let query = `SELECT * FROM santsMemories WHERE id = 457`;
   const result = await executeQueryAsync(query);
   return result[0];
 }
 
-export async function ObtainCommonOfficesAsync(categoria) {
+export async function obtainCommonOfficesAsync(categoria) {
   let query = `SELECT * FROM OficisComuns WHERE Categoria = '${categoria}'`;
   const result = await executeQueryAsync(query);
   return result[0];
 }
 
-export async function GetHolyDaysMass(
+export async function getHolyDaysMass(
   holyDayMassIdentifier: number,
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
   settings: Settings,
@@ -161,17 +161,17 @@ export async function GetHolyDaysMass(
   // Assuming that day with ID > day without it. I think it's correct, but maybe I should
   //   have some way to identify the precedences and decide later the most important. Like LDSantoral.Precedence
   return holyDayMassIdentifier === -1
-    ? GetHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation, settings)
-    : GetHolyDaysMassWithIdentifier(holyDayMassIdentifier);
+    ? getHolyDaysMassWithoutIdentifier(liturgySpecificDayInformation, settings)
+    : getHolyDaysMassWithIdentifier(holyDayMassIdentifier);
 }
 
-export async function GetHolyDaysMassWithIdentifier(holyDayMassIdentifier: number): Promise<DayMassLiturgy> {
+export async function getHolyDaysMassWithIdentifier(holyDayMassIdentifier: number): Promise<DayMassLiturgy> {
   let query = `SELECT * FROM LDSantoral WHERE id = '${holyDayMassIdentifier}'`;
   const result = await executeQueryAsync(query);
-  return RowToMassLiturgy(result[0]);
+  return rowToMassLiturgy(result[0]);
 }
 
-export async function GetNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation) {
+export async function getNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation) {
   let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${liturgyDayInformation.GenericLiturgyTime}' AND DiadelaSetmana = '${liturgyDayInformation.DayOfTheWeekNameShort}' AND NumSet = '${liturgyDayInformation.Week}'`;
   const result = await executeQueryAsync(query);
   let index = getNormalDaysMassLiturgyIndex(
@@ -180,10 +180,10 @@ export async function GetNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpe
     liturgyDayInformation.YearIsEven ? 'II' : 'I',
     liturgyDayInformation.DayOfTheWeekNameShort,
   );
-  return RowToMassLiturgy(result[index]);
+  return rowToMassLiturgy(result[index]);
 }
 
-function RowToMassLiturgy(row): DayMassLiturgy {
+function rowToMassLiturgy(row): DayMassLiturgy {
   let dayMassLiturgy = new DayMassLiturgy();
   if (row !== undefined) {
     dayMassLiturgy.HasGlory = row.Gloria === '1';
@@ -209,11 +209,11 @@ function RowToMassLiturgy(row): DayMassLiturgy {
   return dayMassLiturgy;
 }
 
-async function GetHolyDaysMassWithoutIdentifier(
+async function getHolyDaysMassWithoutIdentifier(
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
   settings: Settings,
 ): Promise<DayMassLiturgy> {
-  const dateString = DatabaseHelper.GetDateShortDatabaseCode(
+  const dateString = DatabaseHelper.getDateShortDatabaseCode(
     liturgySpecificDayInformation.Date,
     settings.DioceseCode,
     liturgySpecificDayInformation.MovedDay.OriginDateShortDatabaseCode,
@@ -224,11 +224,11 @@ async function GetHolyDaysMassWithoutIdentifier(
     : liturgySpecificDayInformation.GenericLiturgyTime;
   const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgySpecificDayInformation.YearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${liturgySpecificDayInformation.DayOfTheWeekNameShort}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${liturgySpecificDayInformation.YearIsEven ? 'II' : 'I'}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE (LDSantoral.Categoria = '-' OR LDSantoral.Categoria = '${liturgySpecificDayInformation.CelebrationType}') AND LDSantoral.tempsespecific = '${customizedSpecificTime}'AND LDSantoral.dia = '${dateString}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.DioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
   const result = await executeQueryAsync(query);
-  return RowToMassLiturgy(result[0]);
+  return rowToMassLiturgy(result[0]);
 }
 
-async function DateIsMoved(date: Date, dioceseCode2Letters: string): Promise<boolean> {
-  const movedDateShortDatabaseCode = DatabaseHelper.GetDateShortDatabaseCode(date);
+async function dateIsMoved(date: Date, dioceseCode2Letters: string): Promise<boolean> {
+  const movedDateShortDatabaseCode = DatabaseHelper.getDateShortDatabaseCode(date);
   const query = `SELECT any, mes, dia
                    FROM anyliturgic
                    WHERE any = '${date.getFullYear()}'
@@ -249,7 +249,7 @@ function findCorrectIndexFromSettings(result, length, diocese, dioceseName, plac
     i += 1;
   }
   if (place === PrayingPlace.City) {
-    auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
+    auxDiocese = DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
     i = 0;
     while (i < length) {
       if (result[i].Diocesis === auxDiocese) return i;
@@ -257,13 +257,13 @@ function findCorrectIndexFromSettings(result, length, diocese, dioceseName, plac
     }
   }
   if (place === PrayingPlace.Cathedral) {
-    auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City);
+    auxDiocese = DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.City);
     i = 0;
     while (i < length) {
       if (result[i].Diocesis === auxDiocese) return i;
       i += 1;
     }
-    auxDiocese = DatabaseHelper.GetDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
+    auxDiocese = DatabaseHelper.getDioceseCodeFromDioceseName(auxDioceseName, PrayingPlace.Diocese);
     i = 0;
     while (i < length) {
       if (result[i].Diocesis === auxDiocese) return i;

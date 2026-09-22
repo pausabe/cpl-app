@@ -6,28 +6,28 @@ import { StringManagement } from '../../utils/StringManagement';
 import { DateManagement } from '../../utils/DateManagement';
 import * as PrecedenceService from '../precedenceService';
 
-export function ObtainCelebrationInformation(
+export function obtainCelebrationInformation(
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
   celebrationInformationFromCelebration: CelebrationInformation,
 ): CelebrationInformation {
   // With this service I'm trying to separate Celebration by some kind of Saint from Celebration from the liturgy time
-  let celebrationInformation = BuildCelebrationInformation(
+  let celebrationInformation = buildCelebrationInformation(
     liturgySpecificDayInformation,
     celebrationInformationFromCelebration,
   );
-  celebrationInformation.Precedence = PrecedenceService.ObtainPrecedenceByLiturgyTime(
+  celebrationInformation.Precedence = PrecedenceService.obtainPrecedenceByLiturgyTime(
     liturgySpecificDayInformation,
     celebrationInformationFromCelebration,
   );
   return celebrationInformation;
 }
 
-function BuildCelebrationInformation(
+function buildCelebrationInformation(
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
   celebrationInformationFromCelebration: CelebrationInformation,
 ): CelebrationInformation {
   let celebrationInformation = new CelebrationInformation();
-  if (StringManagement.HasLiturgyContent(celebrationInformationFromCelebration.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationInformationFromCelebration.Title)) {
     celebrationInformation = celebrationInformationFromCelebration;
   } else {
     celebrationInformation.Title = '';
@@ -37,7 +37,7 @@ function BuildCelebrationInformation(
       liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
       liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum
     ) {
-      celebrationInformation.Title = DateManagement.WeekDayName(liturgySpecificDayInformation.Date.getDay()) + ' Sant';
+      celebrationInformation.Title = DateManagement.weekDayName(liturgySpecificDayInformation.Date.getDay()) + ' Sant';
     } else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
       celebrationInformation.Title = 'Octava de Pasqua';
     } else if (

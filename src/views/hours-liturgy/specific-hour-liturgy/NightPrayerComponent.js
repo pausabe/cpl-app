@@ -123,7 +123,7 @@ export default class NightPrayerComponent extends Component {
         const has_distint_ant = !this.COMPLETES.UseOnlyFirstPsalmAntiphon;
         const aux_ant1 = GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Antiphon);
         const aux_titol1 = GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Title);
-        const has_com1 = StringManagement.HasLiturgyContent(this.COMPLETES.FirstPsalm.Comment);
+        const has_com1 = StringManagement.hasLiturgyContent(this.COMPLETES.FirstPsalm.Comment);
         const aux_com1 = has_com1 ? GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Comment) : '';
         const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Psalm));
         let aux_ant2;
@@ -134,7 +134,7 @@ export default class NightPrayerComponent extends Component {
         if (is_dos_salms) {
           aux_ant2 = has_distint_ant ? GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Antiphon) : '';
           aux_titol2 = GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Title);
-          has_com2 = StringManagement.HasLiturgyContent(this.COMPLETES.SecondPsalm.Comment);
+          has_com2 = StringManagement.hasLiturgyContent(this.COMPLETES.SecondPsalm.Comment);
           aux_com2 = has_com2 ? GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Comment) : '';
           aux_salm2 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Psalm));
         }
@@ -406,11 +406,11 @@ export default class NightPrayerComponent extends Component {
           </View>
         );
       } else {
-        Logger.LogError(Logger.LogKeys.Screens, 'render', new Error('wierd error.......'));
+        Logger.logError(Logger.LogKeys.Screens, 'render', new Error('wierd error.......'));
         return null;
       }
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, 'render', error);
+      Logger.logError(Logger.LogKeys.Screens, 'render', error);
       return null;
     }
   }

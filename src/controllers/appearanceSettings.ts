@@ -9,7 +9,7 @@ import * as LiturgyStore from './liturgyStore';
 
 export type DarkModeChoice = 'Automàtic' | 'Activat' | 'Desactivat';
 
-// What DataService does when it loads the settings (DetermineDarkModeIsEnabled)
+// What DataService does when it loads the settings (determineDarkModeIsEnabled)
 export function darkModeEnabledFor(choice: string, systemScheme: string | null | undefined): boolean {
   switch (choice) {
     case DarkModeOption.On:

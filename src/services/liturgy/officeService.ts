@@ -9,7 +9,7 @@ import { StringManagement } from '../../utils/StringManagement';
 import * as CelebrationIdentifier from '../celebrationIdentifierService';
 import { Celebration } from '../celebrationIdentifierService';
 
-export function ObtainOffice(
+export function obtainOffice(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationOffice: Office,
@@ -23,14 +23,14 @@ export function ObtainOffice(
       Object.create(Object.getPrototypeOf(liturgyMasters.OfficeCommonPsalter)),
       liturgyMasters.OfficeCommonPsalter,
     ) as OfficeCommonPsalter;
-    currentOfficeCommonPsalter.AdaptWithStrongTimes(liturgyMasters.CommonOfficeWhenStrongTimesPsalter);
+    currentOfficeCommonPsalter.adaptWithStrongTimes(liturgyMasters.CommonOfficeWhenStrongTimesPsalter);
   }
 
   if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     office = celebrationOffice;
   } else {
-    office.IsDarkAnthem = IsDarkAnthem();
-    office.Anthem = GetAnthem(
+    office.IsDarkAnthem = isDarkAnthem();
+    office.Anthem = getAnthem(
       office.IsDarkAnthem,
       currentOfficeCommonPsalter,
       liturgyMasters,
@@ -38,27 +38,27 @@ export function ObtainOffice(
       celebrationOffice,
       settings,
     );
-    const psalmody = GetPsalmody(currentOfficeCommonPsalter, liturgyMasters, liturgyDayInformation, celebrationOffice);
+    const psalmody = getPsalmody(currentOfficeCommonPsalter, liturgyMasters, liturgyDayInformation, celebrationOffice);
     office.FirstPsalm = psalmody.FirstPsalm;
     office.SecondPsalm = psalmody.SecondPsalm;
     office.ThirdPsalm = psalmody.ThirdPsalm;
-    office.Responsory = GetResponsory(
+    office.Responsory = getResponsory(
       currentOfficeCommonPsalter,
       liturgyMasters,
       liturgyDayInformation,
       celebrationOffice,
     );
-    const readings = GetReadings(currentOfficeCommonPsalter, liturgyMasters, liturgyDayInformation, celebrationOffice);
+    const readings = getReadings(currentOfficeCommonPsalter, liturgyMasters, liturgyDayInformation, celebrationOffice);
     office.FirstReading = readings.FirstReading;
     office.SecondReading = readings.SecondReading;
-    office.TeDeumInformation = GetTeDeumInformation(
+    office.TeDeumInformation = getTeDeumInformation(
       currentOfficeCommonPsalter,
       liturgyMasters,
       liturgyDayInformation,
       celebrationOffice,
       settings,
     );
-    office.FinalPrayer = GetFinalPrayer(
+    office.FinalPrayer = getFinalPrayer(
       currentOfficeCommonPsalter,
       liturgyMasters,
       liturgyDayInformation,
@@ -68,13 +68,13 @@ export function ObtainOffice(
   return office;
 }
 
-function IsDarkAnthem() {
+function isDarkAnthem() {
   const nowDate = new Date();
   const hour = nowDate.getHours();
   return hour < 6;
 }
 
-function GetAnthem(
+function getAnthem(
   isDarkAnthem: boolean,
   currentOfficeCommonPsalter: OfficeCommonPsalter,
   liturgyMasters: LiturgyMasters,
@@ -82,7 +82,7 @@ function GetAnthem(
   celebrationOffice: Office,
   settings: Settings,
 ): string {
-  if (StringManagement.HasLiturgyContent(celebrationOffice.Anthem)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.Anthem)) {
     return celebrationOffice.Anthem;
   }
 
@@ -183,7 +183,7 @@ function GetAnthem(
   return anthem;
 }
 
-function GetPsalmody(
+function getPsalmody(
   currentOfficeCommonPsalter: OfficeCommonPsalter,
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
@@ -263,7 +263,7 @@ function GetPsalmody(
       }
       break;
     case SpecificLiturgyTimeType.ChristmasOctave:
-      if (!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)) {
+      if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
         psalmody.FirstPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstPsalm;
         psalmody.FirstPsalm.Comment = '-';
         psalmody.SecondPsalm = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondPsalm;
@@ -274,22 +274,22 @@ function GetPsalmody(
       break;
   }
 
-  if (StringManagement.HasLiturgyContent(celebrationOffice.FirstPsalm.Antiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.FirstPsalm.Antiphon)) {
     psalmody.FirstPsalm.Antiphon = celebrationOffice.FirstPsalm.Antiphon;
   }
-  if (StringManagement.HasLiturgyContent(celebrationOffice.FirstPsalm.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.FirstPsalm.Title)) {
     psalmody.FirstPsalm = celebrationOffice.FirstPsalm;
   }
-  if (StringManagement.HasLiturgyContent(celebrationOffice.SecondPsalm.Antiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.SecondPsalm.Antiphon)) {
     psalmody.SecondPsalm.Antiphon = celebrationOffice.SecondPsalm.Antiphon;
   }
-  if (StringManagement.HasLiturgyContent(celebrationOffice.SecondPsalm.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.SecondPsalm.Title)) {
     psalmody.SecondPsalm = celebrationOffice.SecondPsalm;
   }
-  if (StringManagement.HasLiturgyContent(celebrationOffice.ThirdPsalm.Antiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.ThirdPsalm.Antiphon)) {
     psalmody.ThirdPsalm.Antiphon = celebrationOffice.ThirdPsalm.Antiphon;
   }
-  if (StringManagement.HasLiturgyContent(celebrationOffice.ThirdPsalm.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.ThirdPsalm.Title)) {
     psalmody.ThirdPsalm = celebrationOffice.ThirdPsalm;
   }
 
@@ -313,13 +313,13 @@ function GetPsalmody(
   return psalmody;
 }
 
-function GetResponsory(
+function getResponsory(
   currentOfficeCommonPsalter: OfficeCommonPsalter,
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationOffice: Office,
 ): Responsory {
-  if (StringManagement.HasLiturgyContent(celebrationOffice.Responsory.Response)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.Responsory.Response)) {
     return celebrationOffice.Responsory;
   }
 
@@ -353,7 +353,7 @@ function GetResponsory(
   return currentOfficeCommonPsalter.Responsory;
 }
 
-function GetReadings(
+function getReadings(
   currentOfficeCommonPsalter: OfficeCommonPsalter,
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
@@ -401,7 +401,7 @@ function GetReadings(
       readings.SecondReading = liturgyMasters.AdventFairDaysParts.OfficeSecondReading;
       break;
     case SpecificLiturgyTimeType.ChristmasOctave:
-      if (!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)) {
+      if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
         readings.FirstReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeFirstReading;
         readings.SecondReading = liturgyMasters.ChristmasWhenOctaveParts.OfficeSecondReading;
       }
@@ -413,16 +413,16 @@ function GetReadings(
       }
       break;
   }
-  if (StringManagement.HasLiturgyContent(celebrationOffice.FirstReading.Reading)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.FirstReading.Reading)) {
     readings.FirstReading = celebrationOffice.FirstReading;
   }
-  if (StringManagement.HasLiturgyContent(celebrationOffice.SecondReading.Reading)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.SecondReading.Reading)) {
     readings.SecondReading = celebrationOffice.SecondReading;
   }
   return readings;
 }
 
-function GetTeDeumInformation(
+function getTeDeumInformation(
   currentOfficeCommonPsalter: OfficeCommonPsalter,
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
@@ -447,13 +447,13 @@ function GetTeDeumInformation(
   return teDeumInformation;
 }
 
-function GetFinalPrayer(
+function getFinalPrayer(
   currentOfficeCommonPsalter: OfficeCommonPsalter,
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationOffice: Office,
 ): string {
-  if (StringManagement.HasLiturgyContent(celebrationOffice.FinalPrayer)) {
+  if (StringManagement.hasLiturgyContent(celebrationOffice.FinalPrayer)) {
     return celebrationOffice.FinalPrayer;
   }
 

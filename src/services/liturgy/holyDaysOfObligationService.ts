@@ -2,22 +2,22 @@ import * as CelebrationIdentifier from '../celebrationIdentifierService';
 import { Celebration } from '../celebrationIdentifierService';
 import { LiturgySpecificDayInformation } from '../../models/LiturgyDayInformation';
 
-export function IsHolyDaysOfObligation(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+export function isHolyDaysOfObligation(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
-    CelebrationIdentifier.CheckCelebration(Celebration.MatherOfGod, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.Epiphany, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.Assumption, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.AllSaints, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.ImmaculateConception, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgySpecificDayInformation)
+    CelebrationIdentifier.checkCelebration(Celebration.MatherOfGod, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.Epiphany, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.Assumption, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.AllSaints, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.ImmaculateConception, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgySpecificDayInformation)
   );
 }
 
-export function IsHolyDaysButNotObligated(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+export function isHolyDaysButNotObligated(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
-    CelebrationIdentifier.CheckCelebration(Celebration.SaintJoseph, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.SaintJohnBaptist, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.SaintsPereAndPau, liturgySpecificDayInformation) ||
-    CelebrationIdentifier.CheckCelebration(Celebration.SaintJames, liturgySpecificDayInformation)
+    CelebrationIdentifier.checkCelebration(Celebration.SaintJoseph, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.SaintJohnBaptist, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.SaintsPereAndPau, liturgySpecificDayInformation) ||
+    CelebrationIdentifier.checkCelebration(Celebration.SaintJames, liturgySpecificDayInformation)
   );
 }

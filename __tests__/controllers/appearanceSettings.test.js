@@ -8,7 +8,7 @@ jest.mock('../../src/services/dataService', () => ({
   CurrentHoursLiturgy: {},
   CurrentMassLiturgy: {},
   LastRefreshDate: new Date(),
-  ReloadAllData: jest.fn(),
+  reloadAllData: jest.fn(),
 }));
 
 import { Appearance } from 'react-native';
@@ -44,7 +44,7 @@ test('la mida del text es desa com a text, s’aplica tot seguit i no recarrega 
   expect(await AsyncStorage.getItem('textSize')).toBe('5');
   expect(DataService.CurrentSettings.TextSize).toBe('5');
   expect(listener).toHaveBeenCalled();
-  expect(DataService.ReloadAllData).not.toHaveBeenCalled();
+  expect(DataService.reloadAllData).not.toHaveBeenCalled();
   await setTextSize(14);
   expect(await AsyncStorage.getItem('textSize')).toBe('10');
   unsubscribe();

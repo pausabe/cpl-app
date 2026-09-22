@@ -9,7 +9,7 @@ import { FileSystemService } from '../services/FileSystemService';
 // the app afresh has nothing to compare with.
 export async function wasOpenedBefore(): Promise<boolean> {
   try {
-    const databases = await FileSystemService.GetFileUrisInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
+    const databases = await FileSystemService.getFileUrisInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
     return databases.length > 0;
   } catch {
     // Better a notice too many than none to someone who is used to the old home

@@ -1,5 +1,5 @@
 export class StringManagement {
-  static SafeSubstring(value: string, desiredLimit: number, endOfTheValue: boolean = true): string {
+  static safeSubstring(value: string, desiredLimit: number, endOfTheValue: boolean = true): string {
     if (!value) {
       return '';
     }
@@ -7,7 +7,7 @@ export class StringManagement {
     return value.substring(endOfTheValue ? value.length - limit : 0, endOfTheValue ? value.length : limit);
   }
 
-  static HasLiturgyContent(value: string): boolean {
+  static hasLiturgyContent(value: string): boolean {
     return value !== undefined && value !== '' && value !== '-';
   }
 }

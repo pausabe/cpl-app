@@ -10,14 +10,14 @@ import * as Logger from '../utils/logger';
 import { Settings } from '../models/Settings';
 import DatabaseInformation from '../models/DatabaseInformation';
 import LiturgyDayInformation, { LiturgySpecificDayInformation } from '../models/LiturgyDayInformation';
-import { ObtainHoursLiturgy } from './liturgy/hoursLiturgyService';
-import { ObtainLiturgyMasters } from './liturgy/liturgyMastersService';
+import { obtainHoursLiturgy } from './liturgy/hoursLiturgyService';
+import { obtainLiturgyMasters } from './liturgy/liturgyMastersService';
 import HoursLiturgy from '../models/hours-liturgy/HoursLiturgy';
 import MassLiturgy from '../models/MassLiturgy';
 import CelebrationInformation from '../models/hours-liturgy/CelebrationInformation';
-import { ObtainMassLiturgy } from './liturgy/massLiturgyService';
+import { obtainMassLiturgy } from './liturgy/massLiturgyService';
 import { DateManagement } from '../utils/DateManagement';
-import { GetDioceseCodeFromDioceseName } from './databaseDataHelper';
+import { getDioceseCodeFromDioceseName } from './databaseDataHelper';
 import { SpecificLiturgyTimeType } from './celebrationTimeEnums';
 import * as CelebrationIdentifierService from './celebrationIdentifierService';
 import { Celebration } from './celebrationIdentifierService';
@@ -34,45 +34,45 @@ export let CurrentCelebrationInformation = new CelebrationInformation();
 export let CurrentHoursLiturgy = new HoursLiturgy();
 export let CurrentMassLiturgy = new MassLiturgy();
 
-export async function ReloadAllData(date: Date, databaseAsset: Asset) {
-  Logger.Log(Logger.LogKeys.FileSystemService, 'ReloadAllData', 'Starting reloading data');
+export async function reloadAllData(date: Date, databaseAsset: Asset) {
+  Logger.log(Logger.LogKeys.FileSystemService, 'reloadAllData', 'Starting reloading data');
   LastRefreshDate = new Date();
-  await DatabaseManagerService.OpenDatabase(databaseAsset);
-  CurrentSettings = await ObtainCurrentSettings(date);
-  CurrentDatabaseInformation = await ObtainCurrentDatabaseInformation();
-  CurrentLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(date, CurrentSettings);
-  const tomorrowLiturgyDayInformation = await ObtainCurrentLiturgyDayInformation(
+  await DatabaseManagerService.openDatabase(databaseAsset);
+  CurrentSettings = await obtainCurrentSettings(date);
+  CurrentDatabaseInformation = await obtainCurrentDatabaseInformation();
+  CurrentLiturgyDayInformation = await obtainCurrentLiturgyDayInformation(date, CurrentSettings);
+  const tomorrowLiturgyDayInformation = await obtainCurrentLiturgyDayInformation(
     CurrentLiturgyDayInformation.Tomorrow.Date,
     CurrentSettings,
   );
-  const todayLiturgyMasters = await ObtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
-  const tomorrowLiturgyMasters = await ObtainLiturgyMasters(tomorrowLiturgyDayInformation, CurrentSettings);
-  CurrentHoursLiturgy = await ObtainHoursLiturgy(
+  const todayLiturgyMasters = await obtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
+  const tomorrowLiturgyMasters = await obtainLiturgyMasters(tomorrowLiturgyDayInformation, CurrentSettings);
+  CurrentHoursLiturgy = await obtainHoursLiturgy(
     todayLiturgyMasters,
     tomorrowLiturgyMasters,
     CurrentLiturgyDayInformation,
     CurrentSettings,
   );
-  CurrentCelebrationInformation = ObtainCurrentCelebrationInformation(CurrentHoursLiturgy);
-  CurrentMassLiturgy = await ObtainMassLiturgy(
+  CurrentCelebrationInformation = obtainCurrentCelebrationInformation(CurrentHoursLiturgy);
+  CurrentMassLiturgy = await obtainMassLiturgy(
     CurrentLiturgyDayInformation,
     CurrentHoursLiturgy.TodayCelebrationInformation,
     CurrentHoursLiturgy.TomorrowCelebrationInformation,
     CurrentSettings,
   );
-  Logger.Log(
+  Logger.log(
     Logger.LogKeys.FileSystemService,
-    'ReloadAllData',
+    'reloadAllData',
     'Total time reloading data: ',
-    DateManagement.DifferenceBetweenDatesInSeconds(LastRefreshDate, new Date()) + 's',
+    DateManagement.differenceBetweenDatesInSeconds(LastRefreshDate, new Date()) + 's',
   );
 }
 
-async function ObtainCurrentSettings(date: Date): Promise<Settings> {
+async function obtainCurrentSettings(date: Date): Promise<Settings> {
   let currentSettings = new Settings();
   currentSettings.PrayingPlace = (await SettingsService.getSettingLloc()) as string;
   currentSettings.DioceseName = (await SettingsService.getSettingDiocesis()) as string;
-  currentSettings.DioceseCode = GetDioceseCodeFromDioceseName(
+  currentSettings.DioceseCode = getDioceseCodeFromDioceseName(
     currentSettings.DioceseName,
     currentSettings.PrayingPlace,
   );
@@ -82,14 +82,14 @@ async function ObtainCurrentSettings(date: Date): Promise<Settings> {
       : currentSettings.DioceseCode.substring(0, 2);
   currentSettings.UseLatin = (await SettingsService.getSettingUseLatin()) === 'true';
   currentSettings.TextSize = (await SettingsService.getSettingTextSize()) as number;
-  currentSettings.DarkModeEnabled = DetermineDarkModeIsEnabled((await SettingsService.getSettingDarkMode()) as string);
+  currentSettings.DarkModeEnabled = determineDarkModeIsEnabled((await SettingsService.getSettingDarkMode()) as string);
   currentSettings.InvitationPsalmOption = (await SettingsService.getSettingNumSalmInv()) as string;
   currentSettings.VirginAntiphonOption = (await SettingsService.getSettingNumAntMare()) as string;
-  currentSettings.OptionalFestivityEnabled = await DetermineOptionalFestivityEnabled(date);
+  currentSettings.OptionalFestivityEnabled = await determineOptionalFestivityEnabled(date);
   return currentSettings;
 }
 
-function DetermineDarkModeIsEnabled(darkModeConfiguration: string): boolean {
+function determineDarkModeIsEnabled(darkModeConfiguration: string): boolean {
   let currentDarkModeEnabled = false;
   switch (darkModeConfiguration) {
     case DarkModeOption.On:
@@ -105,9 +105,9 @@ function DetermineDarkModeIsEnabled(darkModeConfiguration: string): boolean {
   return currentDarkModeEnabled;
 }
 
-async function DetermineOptionalFestivityEnabled(date: Date): Promise<boolean> {
+async function determineOptionalFestivityEnabled(date: Date): Promise<boolean> {
   let optionalFestivityEnabled = false;
-  const optionalFestivityDate = (await StorageService.GetData(StorageKeys.OptionalFestivity)) as string;
+  const optionalFestivityDate = (await StorageService.getData(StorageKeys.OptionalFestivity)) as string;
   if (optionalFestivityDate && optionalFestivityDate !== 'none') {
     // 'none' if from the code before the refactor, legacy
     let dateArray = optionalFestivityDate.split(':');
@@ -121,43 +121,43 @@ async function DetermineOptionalFestivityEnabled(date: Date): Promise<boolean> {
   return optionalFestivityEnabled;
 }
 
-async function ObtainCurrentDatabaseInformation(): Promise<DatabaseInformation> {
+async function obtainCurrentDatabaseInformation(): Promise<DatabaseInformation> {
   let databaseInformation = new DatabaseInformation();
   databaseInformation.Version = await getDatabaseVersion();
-  let minimumAndMaximumSelectableDates = await DatabaseDataService.ObtainMinimumAndMaximumSelectableDates();
+  let minimumAndMaximumSelectableDates = await DatabaseDataService.obtainMinimumAndMaximumSelectableDates();
   databaseInformation.MinimumSelectableDate = minimumAndMaximumSelectableDates.MinimumSelectableDate;
   databaseInformation.MaximumSelectableDate = minimumAndMaximumSelectableDates.MaximumSelectableDate;
   return databaseInformation;
 }
 
-async function ObtainCurrentLiturgyDayInformation(date: Date, settings: Settings): Promise<LiturgyDayInformation> {
+async function obtainCurrentLiturgyDayInformation(date: Date, settings: Settings): Promise<LiturgyDayInformation> {
   let currentLiturgyDayInformation = new LiturgyDayInformation();
-  currentLiturgyDayInformation.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, settings);
-  currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(
+  currentLiturgyDayInformation.Today = await DatabaseDataService.obtainLiturgySpecificDayInformation(date, settings);
+  currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
     currentLiturgyDayInformation.Today,
     settings,
   );
-  currentLiturgyDayInformation.Today.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Today);
+  currentLiturgyDayInformation.Today.IsSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.Today);
   const tomorrowDate = new Date(date);
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-  currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(
+  currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.obtainLiturgySpecificDayInformation(
     tomorrowDate,
     settings,
   );
-  currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(
+  currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
     currentLiturgyDayInformation.Tomorrow,
     settings,
   );
-  currentLiturgyDayInformation.Tomorrow.IsSpecialChristmas = IsSpecialChristmas(currentLiturgyDayInformation.Tomorrow);
+  currentLiturgyDayInformation.Tomorrow.IsSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.Tomorrow);
   return currentLiturgyDayInformation;
 }
 
-function IsSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
+function isSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
     return false;
   }
 
-  if (CelebrationIdentifierService.CheckCelebration(Celebration.SacredFamily, liturgySpecificDayInformation)) {
+  if (CelebrationIdentifierService.checkCelebration(Celebration.SacredFamily, liturgySpecificDayInformation)) {
     return false;
   }
 
@@ -192,7 +192,7 @@ function IsSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInf
   return false;
 }
 
-function ObtainCurrentCelebrationInformation(hoursLiturgy: HoursLiturgy): CelebrationInformation {
+function obtainCurrentCelebrationInformation(hoursLiturgy: HoursLiturgy): CelebrationInformation {
   // For now, celebration information is inside hour's data. In the future it should be complete separated
   return hoursLiturgy.TodayCelebrationInformation;
 }

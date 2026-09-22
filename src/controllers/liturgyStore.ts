@@ -73,7 +73,7 @@ let queue: Promise<unknown> = Promise.resolve();
 
 export function reload(date: Date, databaseAsset?: unknown): Promise<void> {
   const run = queue.then(async () => {
-    await DataService.ReloadAllData(date, databaseAsset as any);
+    await DataService.reloadAllData(date, databaseAsset as any);
     publish();
   });
   // The next one waits for this one whether it worked or not

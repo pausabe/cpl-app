@@ -21,21 +21,21 @@ export default function UpdateStatusComponent() {
     <View>
       <Text style={styles.text}>
         {'Actualització en ús: '}
-        {RunningUpdateText(updates.currentlyRunning)}
+        {runningUpdateText(updates.currentlyRunning)}
       </Text>
-      <Text style={styles.text}>{StatusText(updates)}</Text>
+      <Text style={styles.text}>{statusText(updates)}</Text>
     </View>
   );
 }
 
-function RunningUpdateText(currentlyRunning) {
+function runningUpdateText(currentlyRunning) {
   if (currentlyRunning.isEmbeddedLaunch || !currentlyRunning.createdAt) {
     return 'la de la botiga';
   }
-  return `${DateText(currentlyRunning.createdAt)} ${TimeText(currentlyRunning.createdAt)}`;
+  return `${dateText(currentlyRunning.createdAt)} ${timeText(currentlyRunning.createdAt)}`;
 }
 
-function StatusText(updates) {
+function statusText(updates) {
   if (updates.isDownloading) {
     const percentage = Math.round((updates.downloadProgress ?? 0) * 100);
     return "S'està baixant una actualització…" + (percentage > 0 ? ` ${percentage}%` : '');
@@ -53,16 +53,16 @@ function StatusText(updates) {
     return "No s'ha pogut comprovar si hi ha actualitzacions.";
   }
   if (updates.lastCheckForUpdateTimeSinceRestart) {
-    return `L'aplicació està al dia (comprovat a les ${TimeText(updates.lastCheckForUpdateTimeSinceRestart)})`;
+    return `L'aplicació està al dia (comprovat a les ${timeText(updates.lastCheckForUpdateTimeSinceRestart)})`;
   }
   return "Encara no s'ha comprovat si hi ha actualitzacions.";
 }
 
-function DateText(date) {
+function dateText(date) {
   return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 }
 
-function TimeText(date) {
+function timeText(date) {
   return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
 }
 

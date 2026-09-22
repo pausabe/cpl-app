@@ -36,7 +36,7 @@ beforeEach(() => {
 });
 
 test('al primer arrencament copia la base de dades i la fa servir', async () => {
-  await DatabaseManagerService.OpenDatabase(asset('abc123.db'));
+  await DatabaseManagerService.openDatabase(asset('abc123.db'));
 
   expect(FileSystem.copyAsync).toHaveBeenCalledWith({
     from: 'file:///bundle/abc123.db',
@@ -49,7 +49,7 @@ test('al primer arrencament copia la base de dades i la fa servir', async () => 
 test('amb la mateixa base de dades no la torna a copiar', async () => {
   FileSystem.__files.add('file:///docs/SQLite/abc123.db');
 
-  await DatabaseManagerService.OpenDatabase(asset('abc123.db'));
+  await DatabaseManagerService.openDatabase(asset('abc123.db'));
 
   expect(FileSystem.copyAsync).not.toHaveBeenCalled();
   expect(SQLite.openDatabaseAsync).toHaveBeenCalledWith('abc123.db');
@@ -58,7 +58,7 @@ test('amb la mateixa base de dades no la torna a copiar', async () => {
 test("una versió nova de l'app substitueix la base de dades antiga", async () => {
   FileSystem.__files.add('file:///docs/SQLite/old999.db');
 
-  await DatabaseManagerService.OpenDatabase(asset('new456.db'));
+  await DatabaseManagerService.openDatabase(asset('new456.db'));
 
   expect(FileSystem.deleteAsync).toHaveBeenCalledWith('file:///docs/SQLite/old999.db');
   expect([...FileSystem.__files]).toEqual(['file:///docs/SQLite/new456.db']);

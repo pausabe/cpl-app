@@ -7,7 +7,7 @@ import { YearType } from '../databaseEnums';
 import { SpecificLiturgyTimeType } from '../celebrationTimeEnums';
 import { StringManagement } from '../../utils/StringManagement';
 
-export function ObtainLaudes(
+export function obtainLaudes(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
@@ -17,28 +17,28 @@ export function ObtainLaudes(
   if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     laudes = celebrationLaudes;
   } else {
-    laudes.Anthem = GetAnthem(liturgyMasters, liturgyDayInformation, celebrationLaudes, settings);
-    const psalmody = GetPsalmody(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+    laudes.Anthem = getAnthem(liturgyMasters, liturgyDayInformation, celebrationLaudes, settings);
+    const psalmody = getPsalmody(liturgyMasters, liturgyDayInformation, celebrationLaudes);
     laudes.FirstPsalm = psalmody.FirstPsalm;
     laudes.SecondPsalm = psalmody.SecondPsalm;
     laudes.ThirdPsalm = psalmody.ThirdPsalm;
-    laudes.ShortReading = GetShortReading(liturgyMasters, liturgyDayInformation, celebrationLaudes);
-    laudes.ShortResponsory = GetShortResponsory(liturgyMasters, liturgyDayInformation, celebrationLaudes);
-    laudes.EvangelicalAntiphon = GetEvangelicalAntiphon(liturgyMasters, liturgyDayInformation, celebrationLaudes);
-    laudes.Prayers = GetPrayers(liturgyMasters, liturgyDayInformation, celebrationLaudes);
-    laudes.FinalPrayer = GetFinalPrayer(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+    laudes.ShortReading = getShortReading(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+    laudes.ShortResponsory = getShortResponsory(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+    laudes.EvangelicalAntiphon = getEvangelicalAntiphon(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+    laudes.Prayers = getPrayers(liturgyMasters, liturgyDayInformation, celebrationLaudes);
+    laudes.FinalPrayer = getFinalPrayer(liturgyMasters, liturgyDayInformation, celebrationLaudes);
   }
   laudes.EvangelicalChant = liturgyMasters.Various.LaudesEvangelicalChant;
   return laudes;
 }
 
-function GetAnthem(
+function getAnthem(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
   settings: Settings,
 ): string {
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.Anthem)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.Anthem)) {
     return celebrationLaudes.Anthem;
   }
 
@@ -139,7 +139,7 @@ function GetAnthem(
   return anthem;
 }
 
-function GetPsalmody(
+function getPsalmody(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
@@ -373,36 +373,36 @@ function GetPsalmody(
       break;
   }
 
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.FirstPsalm.Antiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.FirstPsalm.Antiphon)) {
     psalmody.FirstPsalm.Antiphon = celebrationLaudes.FirstPsalm.Antiphon;
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.FirstPsalm.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.FirstPsalm.Title)) {
     psalmody.FirstPsalm.Title = celebrationLaudes.FirstPsalm.Title;
     psalmody.FirstPsalm.Comment = '-';
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.FirstPsalm.Psalm)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.FirstPsalm.Psalm)) {
     psalmody.FirstPsalm.Psalm = celebrationLaudes.FirstPsalm.Psalm;
     psalmody.FirstPsalm.HasGloryPrayer = celebrationLaudes.FirstPsalm.HasGloryPrayer;
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.SecondPsalm.Antiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.SecondPsalm.Antiphon)) {
     psalmody.SecondPsalm.Antiphon = celebrationLaudes.SecondPsalm.Antiphon;
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.SecondPsalm.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.SecondPsalm.Title)) {
     psalmody.SecondPsalm.Title = celebrationLaudes.SecondPsalm.Title;
     psalmody.SecondPsalm.Comment = '-';
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.SecondPsalm.Psalm)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.SecondPsalm.Psalm)) {
     psalmody.SecondPsalm.Psalm = celebrationLaudes.SecondPsalm.Psalm;
     psalmody.SecondPsalm.HasGloryPrayer = celebrationLaudes.SecondPsalm.HasGloryPrayer;
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.ThirdPsalm.Antiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.ThirdPsalm.Antiphon)) {
     psalmody.ThirdPsalm.Antiphon = celebrationLaudes.ThirdPsalm.Antiphon;
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.ThirdPsalm.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.ThirdPsalm.Title)) {
     psalmody.ThirdPsalm.Title = celebrationLaudes.ThirdPsalm.Title;
     psalmody.ThirdPsalm.Comment = '-';
   }
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.ThirdPsalm.Psalm)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.ThirdPsalm.Psalm)) {
     psalmody.ThirdPsalm.Psalm = celebrationLaudes.ThirdPsalm.Psalm;
     psalmody.ThirdPsalm.HasGloryPrayer = celebrationLaudes.ThirdPsalm.HasGloryPrayer;
   }
@@ -410,12 +410,12 @@ function GetPsalmody(
   return psalmody;
 }
 
-function GetShortReading(
+function getShortReading(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
 ): ShortReading {
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.ShortReading.Quote)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.ShortReading.Quote)) {
     return celebrationLaudes.ShortReading;
   }
 
@@ -450,14 +450,14 @@ function GetShortReading(
   return shortReading;
 }
 
-function GetShortResponsory(
+function getShortResponsory(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
 ): ShortResponsory {
   if (
     liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ||
-    StringManagement.HasLiturgyContent(celebrationLaudes.ShortResponsory.FirstPart)
+    StringManagement.hasLiturgyContent(celebrationLaudes.ShortResponsory.FirstPart)
   ) {
     return celebrationLaudes.ShortResponsory;
   } else {
@@ -496,12 +496,12 @@ function GetShortResponsory(
   return shortResponsory;
 }
 
-function GetEvangelicalAntiphon(
+function getEvangelicalAntiphon(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
 ): string {
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.EvangelicalAntiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.EvangelicalAntiphon)) {
     return celebrationLaudes.EvangelicalAntiphon;
   }
 
@@ -592,12 +592,12 @@ function GetEvangelicalAntiphon(
   return evangelicalAntiphon;
 }
 
-function GetPrayers(
+function getPrayers(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
 ): string {
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.Prayers)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.Prayers)) {
     return celebrationLaudes.Prayers;
   }
 
@@ -632,12 +632,12 @@ function GetPrayers(
   return prayers;
 }
 
-function GetFinalPrayer(
+function getFinalPrayer(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationLaudes: Laudes,
 ): string {
-  if (StringManagement.HasLiturgyContent(celebrationLaudes.FinalPrayer)) {
+  if (StringManagement.hasLiturgyContent(celebrationLaudes.FinalPrayer)) {
     return celebrationLaudes.FinalPrayer;
   }
 

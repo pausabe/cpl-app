@@ -3,11 +3,11 @@ import * as Logger from '../utils/logger';
 import { StringManagement } from '../utils/StringManagement';
 
 export class FileSystemService {
-  static async CopyFile(fromPath: string, toPath: string): Promise<void> {
-    Logger.Log(
+  static async copyFile(fromPath: string, toPath: string): Promise<void> {
+    Logger.log(
       Logger.LogKeys.FileSystemService,
-      'CopyFile',
-      `Copying file '...${StringManagement.SafeSubstring(fromPath, 50)}' to '...${StringManagement.SafeSubstring(toPath, 50)}'`,
+      'copyFile',
+      `Copying file '...${StringManagement.safeSubstring(fromPath, 50)}' to '...${StringManagement.safeSubstring(toPath, 50)}'`,
     );
     if (!fromPath || !toPath) {
       return;
@@ -15,20 +15,20 @@ export class FileSystemService {
     await FileSystem.copyAsync({ from: fromPath, to: toPath });
   }
 
-  static async DeleteFilesInDirectory(directoryPath: string, fileExtension: string): Promise<void> {
-    const listOfFileUris = await FileSystemService.GetFileUrisInDirectory(directoryPath, fileExtension);
+  static async deleteFilesInDirectory(directoryPath: string, fileExtension: string): Promise<void> {
+    const listOfFileUris = await FileSystemService.getFileUrisInDirectory(directoryPath, fileExtension);
     for (let i = 0; i < listOfFileUris.length; i++) {
       const fileUri = listOfFileUris[i];
-      Logger.Log(
+      Logger.log(
         Logger.LogKeys.FileSystemService,
-        'DeleteFilesInDirectory',
+        'deleteFilesInDirectory',
         `Deleting file: ${fileUri.split('/').pop()}`,
       );
       await FileSystem.deleteAsync(fileUri);
     }
   }
 
-  static async GetFileUrisInDirectory(directoryPath: string, fileExtension: string): Promise<string[]> {
+  static async getFileUrisInDirectory(directoryPath: string, fileExtension: string): Promise<string[]> {
     let listOfFiles = [];
     if (!directoryPath || !fileExtension) {
       return listOfFiles;

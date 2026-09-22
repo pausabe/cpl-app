@@ -234,7 +234,7 @@ export default class LaudesComponent extends Component {
         </View>
       );
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, 'render', error);
+      Logger.logError(Logger.LogKeys.Screens, 'render', error);
       return null;
     }
   }
@@ -338,19 +338,19 @@ export default class LaudesComponent extends Component {
     const aux_ant1 = GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Antiphon);
     const aux_titol1 = GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Title);
     let aux_com1 = '';
-    if (StringManagement.HasLiturgyContent(this.hours.Laudes.FirstPsalm.Comment))
+    if (StringManagement.hasLiturgyContent(this.hours.Laudes.FirstPsalm.Comment))
       aux_com1 = GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Comment);
     const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Psalm));
     const aux_ant2 = GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Antiphon);
     const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Title));
     let aux_com2 = '';
-    if (StringManagement.HasLiturgyContent(this.hours.Laudes.SecondPsalm.Comment))
+    if (StringManagement.hasLiturgyContent(this.hours.Laudes.SecondPsalm.Comment))
       aux_com2 = GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Comment);
     const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Psalm));
     const aux_ant3 = GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Antiphon);
     const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Title));
     let aux_com3 = '';
-    if (StringManagement.HasLiturgyContent(this.hours.Laudes.ThirdPsalm.Comment))
+    if (StringManagement.hasLiturgyContent(this.hours.Laudes.ThirdPsalm.Comment))
       aux_com3 = GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Comment);
     const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Psalm));
 
@@ -362,7 +362,7 @@ export default class LaudesComponent extends Component {
           {aux_titol1}
         </Text>
         <Gap />
-        {StringManagement.HasLiturgyContent(this.hours.Laudes.FirstPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.Laudes.FirstPsalm.Comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -395,7 +395,7 @@ export default class LaudesComponent extends Component {
           {aux_titol2}
         </Text>
         <Gap />
-        {StringManagement.HasLiturgyContent(this.hours.Laudes.SecondPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.Laudes.SecondPsalm.Comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -428,7 +428,7 @@ export default class LaudesComponent extends Component {
           {aux_titol3}
         </Text>
         <Gap />
-        {StringManagement.HasLiturgyContent(this.hours.Laudes.ThirdPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.Laudes.ThirdPsalm.Comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -597,7 +597,7 @@ export default class LaudesComponent extends Component {
           }
         }
       } else {
-        Logger.Log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 1');
+        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 1');
         return (
           <Text selectable={true} style={this.styles.black}>
             {allPregs}
@@ -609,7 +609,7 @@ export default class LaudesComponent extends Component {
       if (pregsNoIntro.search(respPregs + '\n\n') !== -1) {
         pregaries = pregsNoIntro.replace(respPregs + '\n\n', '');
       } else {
-        Logger.Log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 2');
+        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 2');
         return (
           <Text selectable={true} style={this.styles.black}>
             {allPregs}
@@ -620,7 +620,7 @@ export default class LaudesComponent extends Component {
       if (pregaries.search(': Pare nostre.') !== -1) {
         pregaries = pregaries.replace(': Pare nostre.', ':');
       } else {
-        Logger.Log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 3');
+        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 3');
         return (
           <Text selectable={true} style={this.styles.black}>
             {allPregs}
@@ -632,7 +632,7 @@ export default class LaudesComponent extends Component {
       if (pregaries.search('\n\n' + pregsFinalPart) !== -1) {
         pregaries = pregaries.replace('\n\n' + pregsFinalPart, '');
       } else {
-        Logger.Log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 4');
+        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 4');
         return (
           <Text selectable={true} style={this.styles.black}>
             {allPregs}

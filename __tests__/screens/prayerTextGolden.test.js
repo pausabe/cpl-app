@@ -128,7 +128,7 @@ async function massTexts() {
   const masses = [['Avui', false, CurrentMassLiturgy.Today]];
   if (CurrentMassLiturgy.HasVespers) masses.push(['Vespertina', true, CurrentMassLiturgy.Vespers]);
   for (const [name, vespers, mass] of masses) {
-    const needSecondReading = StringManagement.HasLiturgyContent(mass.SecondReading.Reading);
+    const needSecondReading = StringManagement.hasLiturgyContent(mass.SecondReading.Reading);
     if (CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
       Object.assign(out, await massChain(`${name}: Rams`, 'Rams', vespers, needSecondReading));
     }

@@ -84,7 +84,7 @@ export default class HoursComponent extends Component {
         </View>
       );
     } catch (error) {
-      Logger.LogError(Logger.LogKeys.Screens, 'render', error);
+      Logger.logError(Logger.LogKeys.Screens, 'render', error);
       return null;
     }
   }
@@ -116,17 +116,17 @@ export default class HoursComponent extends Component {
     const aux_ant1 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Antiphon) : '';
     const aux_ant = !aux_antifones ? GlobalViewFunctions.rs(this.specificHour.UniqueAntiphon) : '';
     const aux_titol1 = GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Title);
-    const aux_has_com1 = StringManagement.HasLiturgyContent(this.specificHour.FirstPsalm.Comment);
+    const aux_has_com1 = StringManagement.hasLiturgyContent(this.specificHour.FirstPsalm.Comment);
     const aux_com1 = aux_has_com1 ? GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Comment) : '';
     const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Psalm));
     const aux_ant2 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Antiphon) : '';
     const aux_titol2 = GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Title);
-    const aux_has_com2 = StringManagement.HasLiturgyContent(this.specificHour.SecondPsalm.Comment);
+    const aux_has_com2 = StringManagement.hasLiturgyContent(this.specificHour.SecondPsalm.Comment);
     const aux_com2 = aux_has_com2 ? GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Comment) : '';
     const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Psalm));
     const aux_ant3 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Antiphon) : '';
     const aux_titol3 = GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Title);
-    const aux_has_com3 = StringManagement.HasLiturgyContent(this.specificHour.ThirdPsalm.Comment);
+    const aux_has_com3 = StringManagement.hasLiturgyContent(this.specificHour.ThirdPsalm.Comment);
     const aux_com3 = aux_has_com3 ? GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Comment) : '';
     const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Psalm));
 

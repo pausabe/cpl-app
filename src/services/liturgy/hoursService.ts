@@ -8,7 +8,7 @@ import { StringManagement } from '../../utils/StringManagement';
 import * as CelebrationIdentifier from '../celebrationIdentifierService';
 import { Celebration } from '../celebrationIdentifierService';
 
-export function ObtainHours(
+export function obtainHours(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationHours: Hours,
@@ -18,11 +18,11 @@ export function ObtainHours(
   if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     hours = celebrationHours;
   } else {
-    const hourAnthems = GetHourAnthems(liturgyMasters, liturgyDayInformation, celebrationHours, settings);
-    const hourPsalmody = GetHoursPsalmody(liturgyMasters, liturgyDayInformation, celebrationHours);
-    const hourResponsory = GetResponsory(liturgyMasters, liturgyDayInformation, celebrationHours);
-    const hourShortReading = GetShortReading(liturgyMasters, liturgyDayInformation, celebrationHours);
-    const hourFinalPraying = GetFinalPraying(liturgyMasters, liturgyDayInformation, celebrationHours);
+    const hourAnthems = getHourAnthems(liturgyMasters, liturgyDayInformation, celebrationHours, settings);
+    const hourPsalmody = getHoursPsalmody(liturgyMasters, liturgyDayInformation, celebrationHours);
+    const hourResponsory = getResponsory(liturgyMasters, liturgyDayInformation, celebrationHours);
+    const hourShortReading = getShortReading(liturgyMasters, liturgyDayInformation, celebrationHours);
+    const hourFinalPraying = getFinalPraying(liturgyMasters, liturgyDayInformation, celebrationHours);
 
     hours.ThirdHour.Anthem = hourAnthems.ThirdValue;
     hours.ThirdHour.HasMultipleAntiphons = hourPsalmody.ThirdValue.HasMultipleAntiphons;
@@ -57,7 +57,7 @@ export function ObtainHours(
   return hours;
 }
 
-function GetHourAnthems(
+function getHourAnthems(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationHours: Hours,
@@ -69,7 +69,7 @@ function GetHourAnthems(
     NinthValue: '',
   };
 
-  if (StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.Anthem)) {
+  if (StringManagement.hasLiturgyContent(celebrationHours.ThirdHour.Anthem)) {
     hourAnthems.ThirdValue = celebrationHours.ThirdHour.Anthem;
     hourAnthems.SixthValue = celebrationHours.SixthHour.Anthem;
     hourAnthems.NinthValue = celebrationHours.NinthHour.Anthem;
@@ -163,7 +163,7 @@ function GetHourAnthems(
           liturgyDayInformation.Date.getDate() != 13;
         const christmasOctaveConditions =
           liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-          !CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation);
+          !CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation);
         if (
           (liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
             beforeChristmasConditions) &&
@@ -186,7 +186,7 @@ function GetHourAnthems(
   return hourAnthems;
 }
 
-function GetHoursPsalmody(
+function getHoursPsalmody(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationHours: Hours,
@@ -238,7 +238,7 @@ function GetHoursPsalmody(
   };
 
   // Antiphon
-  if (StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.UniqueAntiphon)) {
+  if (StringManagement.hasLiturgyContent(celebrationHours.ThirdHour.UniqueAntiphon)) {
     psalmody.ThirdValue.HasMultipleAntiphons = celebrationHours.ThirdHour.HasMultipleAntiphons;
     psalmody.ThirdValue.UniqueAntiphon = celebrationHours.ThirdHour.UniqueAntiphon;
     psalmody.SixthValue.HasMultipleAntiphons = celebrationHours.SixthHour.HasMultipleAntiphons;
@@ -246,7 +246,7 @@ function GetHoursPsalmody(
     psalmody.NinthValue.HasMultipleAntiphons = celebrationHours.NinthHour.HasMultipleAntiphons;
     psalmody.NinthValue.UniqueAntiphon = celebrationHours.NinthHour.UniqueAntiphon;
   } else {
-    if (StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.FirstPsalm.Antiphon)) {
+    if (StringManagement.hasLiturgyContent(celebrationHours.ThirdHour.FirstPsalm.Antiphon)) {
       psalmody.ThirdValue.HasMultipleAntiphons = false;
       psalmody.ThirdValue.FirstPsalm.Antiphon = celebrationHours.ThirdHour.FirstPsalm.Antiphon;
       psalmody.ThirdValue.SecondPsalm.Antiphon = celebrationHours.ThirdHour.SecondPsalm.Antiphon;
@@ -313,7 +313,7 @@ function GetHoursPsalmody(
             liturgyDayInformation.Date.getDate() != 13;
           const christmasOctaveConditions =
             liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-            !CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation);
+            !CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation);
           if (
             (liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
               beforeChristmasConditions) &&
@@ -333,7 +333,7 @@ function GetHoursPsalmody(
   }
 
   // Psalms
-  if (StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.FirstPsalm.Psalm)) {
+  if (StringManagement.hasLiturgyContent(celebrationHours.ThirdHour.FirstPsalm.Psalm)) {
     psalmody.ThirdValue.FirstPsalm = celebrationHours.ThirdHour.FirstPsalm;
     psalmody.ThirdValue.SecondPsalm = celebrationHours.ThirdHour.SecondPsalm;
     psalmody.ThirdValue.ThirdPsalm = celebrationHours.ThirdHour.ThirdPsalm;
@@ -418,7 +418,7 @@ function GetHoursPsalmody(
   return psalmody;
 }
 
-function GetResponsory(
+function getResponsory(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationHours: Hours,
@@ -429,7 +429,7 @@ function GetResponsory(
     NinthValue: new Responsory(),
   };
 
-  if (StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.Responsory.Versicle)) {
+  if (StringManagement.hasLiturgyContent(celebrationHours.ThirdHour.Responsory.Versicle)) {
     hourAnthems.ThirdValue = celebrationHours.ThirdHour.Responsory;
     hourAnthems.SixthValue = celebrationHours.SixthHour.Responsory;
     hourAnthems.NinthValue = celebrationHours.NinthHour.Responsory;
@@ -487,7 +487,7 @@ function GetResponsory(
         hourAnthems.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.Responsory;
         break;
       case SpecificLiturgyTimeType.ChristmasOctave:
-        if (!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)) {
+        if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
           hourAnthems.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.Responsory;
           hourAnthems.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.Responsory;
           hourAnthems.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.Responsory;
@@ -509,7 +509,7 @@ function GetResponsory(
   return hourAnthems;
 }
 
-function GetShortReading(
+function getShortReading(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationHours: Hours,
@@ -520,7 +520,7 @@ function GetShortReading(
     NinthValue: new ShortReading(),
   };
 
-  if (StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.ShortReading.ShortReading)) {
+  if (StringManagement.hasLiturgyContent(celebrationHours.ThirdHour.ShortReading.ShortReading)) {
     hourShortReading.ThirdValue = celebrationHours.ThirdHour.ShortReading;
     hourShortReading.SixthValue = celebrationHours.SixthHour.ShortReading;
     hourShortReading.NinthValue = celebrationHours.NinthHour.ShortReading;
@@ -575,7 +575,7 @@ function GetShortReading(
         hourShortReading.NinthValue = liturgyMasters.AdventFairDaysParts.NinthHourParts.ShortReading;
         break;
       case SpecificLiturgyTimeType.ChristmasOctave:
-        if (!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)) {
+        if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
           hourShortReading.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.ThirdHourParts.ShortReading;
           hourShortReading.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.SixthHourParts.ShortReading;
           hourShortReading.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.NinthHourParts.ShortReading;
@@ -597,7 +597,7 @@ function GetShortReading(
   return hourShortReading;
 }
 
-function GetFinalPraying(
+function getFinalPraying(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
   celebrationHours: Hours,
@@ -608,7 +608,7 @@ function GetFinalPraying(
     NinthValue: '',
   };
 
-  if (StringManagement.HasLiturgyContent(celebrationHours.ThirdHour.FinalPrayer)) {
+  if (StringManagement.hasLiturgyContent(celebrationHours.ThirdHour.FinalPrayer)) {
     finalPraying.ThirdValue = celebrationHours.ThirdHour.FinalPrayer;
     finalPraying.SixthValue = celebrationHours.SixthHour.FinalPrayer;
     finalPraying.NinthValue = celebrationHours.NinthHour.FinalPrayer;
@@ -660,7 +660,7 @@ function GetFinalPraying(
         finalPraying.NinthValue = liturgyMasters.AdventFairDaysParts.LaudesFinalPrayer;
         break;
       case SpecificLiturgyTimeType.ChristmasOctave:
-        if (!CelebrationIdentifier.CheckCelebration(Celebration.Christmas, liturgyDayInformation)) {
+        if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
           finalPraying.ThirdValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
           finalPraying.SixthValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
           finalPraying.NinthValue = liturgyMasters.ChristmasWhenOctaveParts.LaudesFinalPrayer;
@@ -679,11 +679,11 @@ function GetFinalPraying(
         break;
     }
 
-    if (!StringManagement.HasLiturgyContent(finalPraying.ThirdValue) && liturgyDayInformation.DayOfTheWeek === 0) {
+    if (!StringManagement.hasLiturgyContent(finalPraying.ThirdValue) && liturgyDayInformation.DayOfTheWeek === 0) {
       finalPraying.ThirdValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
       finalPraying.SixthValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
       finalPraying.NinthValue = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
-    } else if (!StringManagement.HasLiturgyContent(finalPraying.ThirdValue)) {
+    } else if (!StringManagement.hasLiturgyContent(finalPraying.ThirdValue)) {
       finalPraying.ThirdValue = liturgyMasters.CommonHourPsalter.ThirdHourParts.FinalPrayer;
       finalPraying.SixthValue = liturgyMasters.CommonHourPsalter.SixthHourParts.FinalPrayer;
       finalPraying.NinthValue = liturgyMasters.CommonHourPsalter.NinthHourParts.FinalPrayer;
