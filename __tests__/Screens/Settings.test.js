@@ -127,6 +127,22 @@ test('la mida del text es veu en una frase de mostra i es desa en deixar anar', 
   expect(await AsyncStorage.getItem('textSize')).toBe('6');
 });
 
+// On iOS the native slider drew its thumb at the start the first time Configuració opened
+test('on iOS the slider gets the chosen size once it has its width, so that its thumb moves there', async () => {
+  await AsyncStorage.setItem('textSize', '5');
+  await DataService.ReloadAllData(new Date(2026, 8, 21), null);
+  await open();
+  const slider = () => screen.UNSAFE_getByType(require('@react-native-community/slider').default);
+  const layout = (width) => ({ nativeEvent: { layout: { x: 0, y: 0, width, height: 40 } } });
+  expect(slider().props.accessibilityValue).toEqual({ text: 'Mida 5 de 10' });
+  expect(slider().props.value).toBe(1);
+
+  act(() => slider().props.onLayout(layout(0)));
+  expect(slider().props.value).toBe(1);
+  act(() => slider().props.onLayout(layout(280)));
+  expect(slider().props.value).toBe(5);
+});
+
 test('a la vista, el text d’aprovació i les versions; les dades tècniques, darrere deu tocs', async () => {
   await open();
   expect(screen.getByText(/Versió de l'aplicació: 9\.0\.0 \(90\)/)).toBeTruthy();

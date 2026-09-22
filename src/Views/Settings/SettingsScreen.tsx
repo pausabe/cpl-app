@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { LayoutChangeEvent, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@react-native-community/slider';
 import { convertTextSize, MAX_TEXT_SIZE_SETTING, MIN_TEXT_SIZE_SETTING, useTheme } from '../../Theme';
@@ -59,6 +59,14 @@ export default function SettingsScreen(props: SettingsScreenProps) {
 
   const step = previewStep ?? values?.textSizeStep ?? 3;
   useEffect(() => setPreviewStep(null), [values?.textSizeStep]);
+
+  // On iOS the native slider, the first time it is created, drew its thumb at the start and
+  // not at the size chosen; the next times its view is reused and it was right. It gets the
+  // size once it has its width: a real change of value puts the thumb in its place.
+  const [sliderReady, setSliderReady] = useState(Platform.OS !== 'ios');
+  const onSliderLayout = (event: LayoutChangeEvent) => {
+    if (event.nativeEvent.layout.width > 0) setSliderReady(true);
+  };
 
   const divider = <View style={[styles.divider, { backgroundColor: colors.divider }]} />;
   const groupLabel = (label: string, first = false) => (
@@ -121,7 +129,8 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                       minimumValue={MIN_TEXT_SIZE_SETTING}
                       maximumValue={MAX_TEXT_SIZE_SETTING}
                       step={1}
-                      value={values.textSizeStep}
+                      value={sliderReady ? values.textSizeStep : MIN_TEXT_SIZE_SETTING}
+                      onLayout={onSliderLayout}
                       minimumTrackTintColor={colors.accentFill}
                       maximumTrackTintColor={colors.track}
                       thumbTintColor={colors.accentFill}
