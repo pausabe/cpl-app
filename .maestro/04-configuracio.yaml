@@ -29,6 +29,13 @@ name: "La configuració es desa i canvia la litúrgia"
 # Es manté després de tancar i tornar a obrir l'app
 - stopApp
 - launchApp
+# L'inici, o l'avís de mitjanit a sobre (de 0 a 3 h), que el tapa
+- extendedWaitUntil:
+    visible: "Andorra \\(Diòcesi\\)|No, la d.avui"
+    timeout: 60000
+- tapOn:
+    text: "No, la d.avui"
+    optional: true
 - extendedWaitUntil:
     visible: "Andorra \\(Diòcesi\\)"
-    timeout: 60000
+    timeout: 15000

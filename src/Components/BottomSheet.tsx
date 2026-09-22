@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useLayoutEffect, useRef} from 'react';
 import {Animated, Modal, Pressable, StyleSheet, useWindowDimensions, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTheme} from '../Theme';
@@ -20,7 +20,8 @@ export default function BottomSheet({visible, onClose, accessibilityLabel, child
     const {height} = useWindowDimensions();
     const rise = useRef(new Animated.Value(0)).current;
 
-    useEffect(() => {
+    // Before the first frame: opened again, it starts from below and not where it was
+    useLayoutEffect(() => {
         if (visible) {
             rise.setValue(0);
             Animated.timing(rise, {toValue: 1, duration: 220, useNativeDriver: true}).start();
