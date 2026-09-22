@@ -201,13 +201,13 @@ test('at midnight, «No, la d’avui» stays on the day', async () => {
   expect(screen.getByText('Dimarts, 22 de setembre')).toBeTruthy();
 });
 
-test('the calendar changes the day; «Cancel·la» closes it without changing it', async () => {
+test('the calendar changes the day; touching outside closes it without changing it', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   expect(await screen.findByTestId('calendar')).toBeTruthy();
   expect(screen.getByText('setembre de 2026')).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'dimarts, 15 de setembre' }));
-  fireEvent.press(screen.getByRole('button', { name: 'Cancel·la' }));
+  fireEvent.press(screen.getByTestId('calendar-backdrop', { includeHiddenElements: true }));
   await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull());
   expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
 

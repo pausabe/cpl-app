@@ -6,7 +6,7 @@ import React from 'react';
 import { screen, within, fireEvent } from '@testing-library/react-native';
 import { renderWithTheme, styleOf } from '../helpers/renderWithTheme';
 import HoursGrid from '../../src/views/home/HoursGrid';
-import CalendarDialog from '../../src/views/home/CalendarDialog';
+import CalendarSheet from '../../src/views/home/CalendarSheet';
 import SegmentedControl from '../../src/components/SegmentedControl';
 import { buildHours } from '../../src/view-models/hours';
 import { fitLabel } from '../../src/theme';
@@ -63,17 +63,19 @@ test('the theme options are not broken', () => {
   }
 });
 
-test('the calendar buttons are not broken', () => {
+test('the month of the calendar is not broken between the two arrows', () => {
   renderWithTheme(
-    <CalendarDialog
+    <CalendarSheet
       visible={true}
       value={new Date(2026, 8, 21)}
-      onCancel={jest.fn()}
+      onClose={jest.fn()}
       onToday={jest.fn()}
       onChange={jest.fn()}
     />,
   );
-  for (const text of ['Cancel·la', 'Avui', 'Canvia']) {
-    expect(label(text).props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
-  }
+  expect(label('setembre de 2026').props).toMatchObject({
+    numberOfLines: 2,
+    adjustsFontSizeToFit: true,
+    minimumFontScale: 0.7,
+  });
 });

@@ -15,7 +15,7 @@ import { useTheme } from '../theme';
 import HeaderButton from '../components/HeaderButton';
 import HomeScreen from '../views/home/HomeScreen';
 import LatePrayerDialog from '../views/home/LatePrayerDialog';
-import CalendarDialog from '../views/home/CalendarDialog';
+import CalendarSheet from '../views/home/CalendarSheet';
 import WhatsNewSheet from '../views/home/WhatsNewSheet';
 import WebSheet from '../components/WebSheet';
 import { wasOpenedBefore } from './firstRun';
@@ -320,12 +320,12 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         onClose={() => setWebPage(null)}
         testID="donation-sheet"
       />
-      <CalendarDialog
+      <CalendarSheet
         visible={calendarVisible}
         value={today}
         minimumDate={snapshot.database.minimumSelectableDate}
         maximumDate={snapshot.database.maximumSelectableDate}
-        onCancel={() => setCalendarVisible(false)}
+        onClose={() => setCalendarVisible(false)}
         onToday={() => showDate(new Date())}
         onChange={showDate}
       />

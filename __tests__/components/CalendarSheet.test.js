@@ -1,9 +1,9 @@
-// The calendar of the home, on its own: months, the day chosen, today, and the limits of the
-// database.
+// The calendar of the home, on its own: months, the day chosen, today, the limits of the
+// database, and the sheet it comes up in.
 import React from 'react';
 import { screen, fireEvent, within } from '@testing-library/react-native';
 import { renderWithTheme, styleOf } from '../helpers/renderWithTheme';
-import CalendarDialog from '../../src/views/home/CalendarDialog';
+import CalendarSheet from '../../src/views/home/CalendarSheet';
 
 const NOW = new Date(2026, 8, 22, 10, 0);
 
@@ -15,8 +15,8 @@ afterAll(() => {
 });
 
 function open(props = {}) {
-  const handlers = { onCancel: jest.fn(), onToday: jest.fn(), onChange: jest.fn() };
-  renderWithTheme(<CalendarDialog visible={true} value={new Date(2026, 8, 21, 10, 0)} {...handlers} {...props} />);
+  const handlers = { onClose: jest.fn(), onToday: jest.fn(), onChange: jest.fn() };
+  renderWithTheme(<CalendarSheet visible={true} value={new Date(2026, 8, 21, 10, 0)} {...handlers} {...props} />);
   return handlers;
 }
 
@@ -36,12 +36,14 @@ test('a day is chosen and «Canvia» applies it', () => {
   expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 26));
 });
 
-test('«Avui» and «Cancel·la»', () => {
-  const { onToday, onCancel } = open();
+test('«Avui» goes back to today, and touching outside the sheet closes it without changing the day', () => {
+  const { onToday, onClose, onChange } = open();
   fireEvent.press(screen.getByRole('button', { name: 'Avui' }));
   expect(onToday).toHaveBeenCalled();
-  fireEvent.press(screen.getByRole('button', { name: 'Cancel·la' }));
-  expect(onCancel).toHaveBeenCalled();
+  fireEvent.press(screen.getByRole('button', { name: 'dissabte, 26 de setembre' }));
+  fireEvent.press(screen.getByTestId('calendar-backdrop', { includeHiddenElements: true }));
+  expect(onClose).toHaveBeenCalled();
+  expect(onChange).not.toHaveBeenCalled();
 });
 
 test('it moves from month to month forward and back, and from year to year too', () => {
@@ -66,10 +68,10 @@ test('outside the database, the days can be neither chosen nor reached', () => {
 
 test('in dark mode, the dark colours', () => {
   renderWithTheme(
-    <CalendarDialog
+    <CalendarSheet
       visible={true}
       value={new Date(2026, 8, 21)}
-      onCancel={() => {}}
+      onClose={() => {}}
       onToday={() => {}}
       onChange={() => {}}
     />,

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { fitLabel, useTheme } from '../../theme';
-import Dialog from '../../components/Dialog';
+import ActionButton from '../../components/ActionButton';
+import BottomSheet from '../../components/BottomSheet';
 import Icon from '../../components/Icon';
 import {
   calendarMonth,
@@ -12,29 +13,34 @@ import {
   WEEKDAY_INITIALS,
 } from '../../view-models/calendar';
 
-// Choosing another day: a month in a card, the same on Android and on iOS, in Catalan and in
-// the colours of the app. A day is chosen with a touch and applied with "Canvia"; "Avui" goes
-// back to today at once. Days outside the database cannot be chosen. The title of the month
-// opens the list of years, to go to another year without going month by month.
-interface CalendarDialogProps {
+// Choosing another day: a month in a sheet that comes up from the bottom, like everything else
+// the reader asks for, with the day's card still in sight above it. The same on Android and on
+// iOS, in Catalan and in the colours of the app. A day is chosen with a touch and applied with
+// "Canvia"; "Avui" goes back to today at once. Days outside the database cannot be chosen. The
+// title of the month opens the list of years, to go to another year without going month by
+// month. It closes by pulling it down, touching outside, or the back button on Android.
+interface CalendarSheetProps {
   visible: boolean;
   value: Date;
   minimumDate?: Date;
   maximumDate?: Date;
-  onCancel: () => void;
+  onClose: () => void;
   onToday: () => void;
   onChange: (date: Date) => void;
 }
 
-export default function CalendarDialog({
+// The month does not grow wider than this: on a tablet the sheet is much wider than a month
+const MONTH_MAX_WIDTH = 380;
+
+export default function CalendarSheet({
   visible,
   value,
   minimumDate,
   maximumDate,
-  onCancel,
+  onClose,
   onToday,
   onChange,
-}: CalendarDialogProps) {
+}: CalendarSheetProps) {
   const theme = useTheme();
   const { colors } = theme;
   const scale = theme.maxFontScaleForLabels;
@@ -142,90 +148,72 @@ export default function CalendarDialog({
     );
   };
 
-  const action = (label: string, onPress: () => void, bold = false) => (
-    <Pressable
-      accessibilityRole="button"
-      onPress={onPress}
-      style={({ pressed }) => [styles.action, { opacity: pressed ? 0.6 : 1 }]}
-    >
-      <Text
-        maxFontSizeMultiplier={scale}
-        {...fitLabel(label)}
-        style={[styles.actionText, { color: colors.accentText, fontWeight: bold ? '700' : '400' }]}
-      >
-        {label}
-      </Text>
-    </Pressable>
-  );
-
   return (
-    <Dialog
-      visible={visible}
-      onDismiss={onCancel}
-      accessibilityLabel="Tria un dia"
-      maxWidth={380}
-      style={styles.card}
-      testID="calendar"
-    >
-      <View style={styles.header}>
-        {pickingYear ? <View style={styles.arrow} /> : arrow('Mes anterior', 'back', month.canGoBack, -1)}
-        <Pressable
-          testID="calendar-title"
-          accessibilityRole="button"
-          accessibilityLabel={month.title}
-          accessibilityHint={pickingYear ? 'Torna als dies del mes' : 'Tria un altre any'}
-          accessibilityState={{ expanded: pickingYear }}
-          accessibilityLiveRegion="polite"
-          onPress={() => setPickingYear(!pickingYear)}
-          style={({ pressed }) => [styles.titleButton, { opacity: pressed ? 0.6 : 1 }]}
-        >
-          <Text
-            maxFontSizeMultiplier={scale}
-            {...fitLabel(month.title)}
-            style={[styles.title, { color: colors.text, fontFamily: theme.fonts.serifSemiBold }]}
+    <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="Tria un dia" testID="calendar">
+      <View style={styles.month}>
+        <View style={styles.header}>
+          {pickingYear ? <View style={styles.arrow} /> : arrow('Mes anterior', 'back', month.canGoBack, -1)}
+          <Pressable
+            testID="calendar-title"
+            accessibilityRole="button"
+            accessibilityLabel={month.title}
+            accessibilityHint={pickingYear ? 'Torna als dies del mes' : 'Tria un altre any'}
+            accessibilityState={{ expanded: pickingYear }}
+            accessibilityLiveRegion="polite"
+            onPress={() => setPickingYear(!pickingYear)}
+            style={({ pressed }) => [styles.titleButton, { opacity: pressed ? 0.6 : 1 }]}
           >
-            {month.title}
-          </Text>
-          <Icon name="chevronDown" size={18} color={colors.accentText} strokeWidth={2.2} />
-        </Pressable>
-        {pickingYear ? <View style={styles.arrow} /> : arrow('Mes següent', 'chevronRight', month.canGoForward, 1)}
-      </View>
-      {pickingYear ? (
-        <View testID="calendar-years" style={styles.years}>
-          {selectableYears(shown.year, minimumDate, maximumDate).map(yearCell)}
+            <Text
+              maxFontSizeMultiplier={scale}
+              {...fitLabel(month.title)}
+              style={[styles.title, { color: colors.text, fontFamily: theme.fonts.serifSemiBold }]}
+            >
+              {month.title}
+            </Text>
+            <Icon name="chevronDown" size={18} color={colors.accentText} strokeWidth={2.2} />
+          </Pressable>
+          {pickingYear ? <View style={styles.arrow} /> : arrow('Mes següent', 'chevronRight', month.canGoForward, 1)}
         </View>
-      ) : (
-        <>
-          <View style={styles.row} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants">
-            {WEEKDAY_INITIALS.map((initial) => (
-              <Text key={initial} maxFontSizeMultiplier={1.3} style={[styles.weekday, { color: colors.text3 }]}>
-                {initial}
-              </Text>
-            ))}
-          </View>
-          <View style={styles.grid}>
-            {month.weeks.map((week, row) => (
-              <View key={row} style={styles.row}>
-                {week.map((day, column) => dayCell(day, row * 7 + column))}
-              </View>
-            ))}
-          </View>
-        </>
-      )}
-      <View style={[styles.actions, { borderTopColor: colors.rule }]}>
-        {action('Cancel·la', onCancel)}
-        {action('Avui', onToday)}
-        {action('Canvia', () => onChange(selected), true)}
+        {pickingYear ? (
+          <ScrollView style={styles.yearList}>
+            <View testID="calendar-years" style={styles.years}>
+              {selectableYears(shown.year, minimumDate, maximumDate).map(yearCell)}
+            </View>
+          </ScrollView>
+        ) : (
+          <>
+            <View style={styles.row} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants">
+              {WEEKDAY_INITIALS.map((initial) => (
+                <Text key={initial} maxFontSizeMultiplier={1.3} style={[styles.weekday, { color: colors.text3 }]}>
+                  {initial}
+                </Text>
+              ))}
+            </View>
+            <View style={styles.grid}>
+              {month.weeks.map((week, row) => (
+                <View key={row} style={styles.row}>
+                  {week.map((day, column) => dayCell(day, row * 7 + column))}
+                </View>
+              ))}
+            </View>
+          </>
+        )}
+        <View style={styles.actions}>
+          <ActionButton label="Avui" variant="outlined" onPress={onToday} style={styles.action} />
+          <ActionButton label="Canvia" onPress={() => onChange(selected)} style={styles.action} />
+        </View>
       </View>
-    </Dialog>
+    </BottomSheet>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    paddingTop: 16,
-    paddingHorizontal: 14,
-    paddingBottom: 10,
+  month: {
+    width: '100%',
+    maxWidth: MONTH_MAX_WIDTH,
+    alignSelf: 'center',
+    // So that the list of years, and not the month or the buttons, gives way inside the sheet
+    flexShrink: 1,
     gap: 6,
   },
   header: {
@@ -251,6 +239,11 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     textAlign: 'center',
     fontSize: 19,
+  },
+  // With many years in the database, the list scrolls inside the sheet
+  yearList: {
+    flexGrow: 0,
+    flexShrink: 1,
   },
   years: {
     flexDirection: 'row',
@@ -305,16 +298,10 @@ const styles = StyleSheet.create({
   },
   actions: {
     flexDirection: 'row',
-    borderTopWidth: 1,
-    marginTop: 4,
+    gap: 10,
+    marginTop: 10,
   },
   action: {
     flex: 1,
-    minHeight: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  actionText: {
-    fontSize: 17,
   },
 });
