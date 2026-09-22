@@ -15,7 +15,7 @@ import { ThemeContext, prayerTextStyles } from '../../../theme';
 const INVITATORY_PSALMS = ['94', '99', '66', '23'];
 
 // The Office of Readings. Gets through props the hours of the day (hours), the day (today), the
-// settings and the titles of the day's psalms (titols); a new invitatory psalm goes to
+// settings and the titles of the day's psalms (titles); a new invitatory psalm goes to
 // onInvitationPsalmChange.
 export default class OfficeComponent extends Component {
   static contextType = ThemeContext;
@@ -24,15 +24,15 @@ export default class OfficeComponent extends Component {
     super(props);
 
     // The invitatory psalm chosen last time, unless it is one of the psalms of the day
-    let auxNumSalmInv = props.settings.invitationPsalmOption;
-    if (!GlobalViewFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
-      auxNumSalmInv = '94';
+    let invitatoryPsalmNumber = props.settings.invitationPsalmOption;
+    if (!GlobalViewFunctions.invitatoryPsalmExists(invitatoryPsalmNumber, props.titles)) {
+      invitatoryPsalmNumber = '94';
       props.onInvitationPsalmChange('94');
     }
 
     this.state = {
-      invitatori: false,
-      numSalmInv: auxNumSalmInv,
+      showInvitatory: false,
+      invitatoryPsalmNumber: invitatoryPsalmNumber,
     };
   }
 
@@ -48,36 +48,36 @@ export default class OfficeComponent extends Component {
     return this.props.today;
   }
 
-  get titols() {
-    return this.props.titols;
+  get titles() {
+    return this.props.titles;
   }
 
   render() {
     try {
       if (this.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
-        let aux_vetlla = "La Vetlla pasqual substitueix avui l'Ofici de lectura.";
-        let aux_participen =
+        let easterVigilReplacesOffice = "La Vetlla pasqual substitueix avui l'Ofici de lectura.";
+        let easterVigilReadingsNotice =
           "Els qui no participen en la solemne Vetlla pasqual n'escolliran almenys quatre lectures, amb els corresponents salms responsorials i oracions. Les lectures més adients són les que segueixen.";
-        let aux_comença = "L'Ofici comença directament per les lectures.";
+        let officeStartsWithReadings = "L'Ofici comença directament per les lectures.";
 
         return (
           <View>
             <Text selectable={true} style={this.styles.redCenter}>
-              {aux_vetlla}
+              {easterVigilReplacesOffice}
             </Text>
             <Gap />
             <Text selectable={true} style={this.styles.redCenter}>
-              {aux_participen}
+              {easterVigilReadingsNotice}
             </Text>
             <Gap />
             <Text selectable={true} style={this.styles.redCenter}>
-              {aux_comença}
+              {officeStartsWithReadings}
             </Text>
             <Gap />
             <HR />
             <Gap />
-            {this.lecturesDiumPasqua()}
-            {this.himneOhDeu()}
+            {this.easterSundayReadings()}
+            {this.teDeumHymn()}
             <Gap />
             <HR />
             <Gap />
@@ -108,23 +108,23 @@ export default class OfficeComponent extends Component {
                 ? ' (nit)'
                 : ' (dia)'}
             </SectionTitle>
-            {this.himne()}
+            {this.hymn()}
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'SALMÒDIA'}</SectionTitle>
-            {this.salmodia()}
+            {this.psalmody()}
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'VERS'}</SectionTitle>
-            {this.vers()}
+            {this.versicle()}
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'LECTURES'}</SectionTitle>
-            {this.lectures()}
-            {this.himneOhDeu()}
+            {this.readings()}
+            {this.teDeumHymn()}
             <Gap />
             <HR />
             <Gap />
@@ -150,47 +150,47 @@ export default class OfficeComponent extends Component {
     }
   }
 
-  onSalmInvPress(numSalm) {
-    this.setState({ numSalmInv: numSalm });
-    this.props.onInvitationPsalmChange(numSalm);
+  onInvitatoryPsalmPress(psalmNumber) {
+    this.setState({ invitatoryPsalmNumber: psalmNumber });
+    this.props.onInvitationPsalmChange(psalmNumber);
   }
 
-  salmInvitatori(numSalm) {
-    let salm94 = this.hours.invitation.psalm94;
-    let salm99 = this.hours.invitation.psalm99;
-    let salm66 = this.hours.invitation.psalm66;
-    let salm23 = this.hours.invitation.psalm23;
+  invitatoryPsalm(psalmNumber) {
+    let psalm94 = this.hours.invitation.psalm94;
+    let psalm99 = this.hours.invitation.psalm99;
+    let psalm66 = this.hours.invitation.psalm66;
+    let psalm23 = this.hours.invitation.psalm23;
 
     let psalmTitle = '';
     let psalmReference = '';
     let psalmText = '';
 
-    switch (numSalm) {
+    switch (psalmNumber) {
       case '94':
         psalmTitle = 'Salm 94\nInvitació a lloar Déu';
         psalmReference = 'Mentre repetim aquell «avui», exhortem-nos cada dia els uns als altres (He 3, 13)';
-        psalmText = salm94;
+        psalmText = psalm94;
         break;
       case '99':
         psalmTitle = 'Salm 99\nInvitació a lloar Déu en el seu temple';
         psalmReference = 'El Senyor vol que els redimits cantin himnes de victòria (St. Atanasi)';
-        psalmText = salm99;
+        psalmText = psalm99;
         break;
       case '66':
         psalmTitle = 'Salm 66\nInvitació als pobles a lloar Déu';
         psalmReference =
           'Sapigueu que el missatge de la salvació de Déu ha estat enviat a tots els pobles (Fets 28, 28)';
-        psalmText = salm66;
+        psalmText = psalm66;
         break;
       case '23':
         psalmTitle = 'Salm 23\nEntrada del Senyor al santuari';
         psalmReference = "Les portes del cel s'obriren a Crist quan hi fou endut amb la seva humanitat (St. Ireneu)";
-        psalmText = salm23;
+        psalmText = psalm23;
         break;
     }
 
-    const estrofes = psalmText.split('\n\n');
-    const antifona = GlobalViewFunctions.rs(this.hours.invitation.invitationAntiphon);
+    const stanzas = psalmText.split('\n\n');
+    const antiphon = GlobalViewFunctions.rs(this.hours.invitation.invitationAntiphon);
     const gloriaString =
       'Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.';
 
@@ -199,13 +199,13 @@ export default class OfficeComponent extends Component {
         <ChoiceChips
           accessibilityLabel="Salm de l'invitatori"
           options={INVITATORY_PSALMS.filter(
-            (psalm) => psalm === '94' || GlobalViewFunctions.salmInvExists(psalm, this.titols),
+            (psalm) => psalm === '94' || GlobalViewFunctions.invitatoryPsalmExists(psalm, this.titles),
           ).map((psalm) => ({ value: psalm, label: `Salm ${psalm}` }))}
-          value={numSalm}
-          onChange={this.onSalmInvPress.bind(this)}
+          value={psalmNumber}
+          onChange={this.onInvitatoryPsalmPress.bind(this)}
         />
 
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
           {psalmTitle}
@@ -221,56 +221,56 @@ export default class OfficeComponent extends Component {
         </View>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[0]}
+          {stanzas[0]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[1]}
+          {stanzas[1]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[2]}
+          {stanzas[2]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[3]}
+          {stanzas[3]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
-        {estrofes.length > 4 ? (
+        {stanzas.length > 4 ? (
           <View>
             <Text selectable={true} style={this.styles.black}>
-              {estrofes[4]}
+              {stanzas[4]}
             </Text>
             <Gap />
-            <Rubric label={'Ant. '}>{antifona}</Rubric>
+            <Rubric label={'Ant. '}>{antiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
-        {estrofes.length > 5 ? (
+        {stanzas.length > 5 ? (
           <View>
             <Text selectable={true} style={this.styles.black}>
-              {estrofes[5]}
+              {stanzas[5]}
             </Text>
             <Gap />
-            <Rubric label={'Ant. '}>{antifona}</Rubric>
+            <Rubric label={'Ant. '}>{antiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
-        {estrofes.length > 6 ? (
+        {stanzas.length > 6 ? (
           <View>
             <Text selectable={true} style={this.styles.black}>
-              {estrofes[6]}
+              {stanzas[6]}
             </Text>
             <Gap />
-            <Rubric label={'Ant. '}>{antifona}</Rubric>
+            <Rubric label={'Ant. '}>{antiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
@@ -278,34 +278,34 @@ export default class OfficeComponent extends Component {
           {gloriaString}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
       </View>
     );
   }
 
   // TODO: [UI Refactor] duplicated code
-  salm(salm) {
-    if (!salm) return null;
-    salm = salm.replace(/    [*]/g, '');
-    salm = salm.replace(/   [*]/g, '');
-    salm = salm.replace(/  [*]/g, '');
-    salm = salm.replace(/ [*]/g, '');
-    salm = salm.replace(/    [†]/g, '');
-    salm = salm.replace(/   [†]/g, '');
-    salm = salm.replace(/  [†]/g, '');
-    salm = salm.replace(/ [†]/g, '');
-    return salm;
+  psalm(psalm) {
+    if (!psalm) return null;
+    psalm = psalm.replace(/    [*]/g, '');
+    psalm = psalm.replace(/   [*]/g, '');
+    psalm = psalm.replace(/  [*]/g, '');
+    psalm = psalm.replace(/ [*]/g, '');
+    psalm = psalm.replace(/    [†]/g, '');
+    psalm = psalm.replace(/   [†]/g, '');
+    psalm = psalm.replace(/  [†]/g, '');
+    psalm = psalm.replace(/ [†]/g, '');
+    return psalm;
   }
 
   // TODO: [UI Refactor] duplicated code
-  invitatoriButtons() {
+  invitatoryButtons() {
     return (
       <View>
         <ContinueButton
-          label={(this.state.invitatori ? 'Amagar' : 'Començar amb') + " l'invitatori"}
-          onPress={() => this.setState({ invitatori: !this.state.invitatori })}
+          label={(this.state.showInvitatory ? 'Amagar' : 'Començar amb') + " l'invitatori"}
+          onPress={() => this.setState({ showInvitatory: !this.state.showInvitatory })}
         />
-        {this.state.invitatori ? (
+        {this.state.showInvitatory ? (
           <View>
             <SectionTitle>{'INVITATORI'}</SectionTitle>
           </View>
@@ -318,28 +318,28 @@ export default class OfficeComponent extends Component {
   introduction() {
     const gloriaStringIntro =
       'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
-    const showInvitatory = this.state.invitatori;
+    const showInvitatory = this.state.showInvitatory;
 
     if (showInvitatory) {
-      const aux_obriume = 'Obriu-me els llavis, Senyor.';
-      const aux_proclamare = 'I proclamaré la vostra lloança.';
+      const openLipsVersicle = 'Obriu-me els llavis, Senyor.';
+      const openLipsResponse = 'I proclamaré la vostra lloança.';
 
       return (
         <View>
-          {this.invitatoriButtons()}
-          <Rubric label={'V. '}>{aux_obriume}</Rubric>
-          <Rubric label={'R. '}>{aux_proclamare}</Rubric>
+          {this.invitatoryButtons()}
+          <Rubric label={'V. '}>{openLipsVersicle}</Rubric>
+          <Rubric label={'R. '}>{openLipsResponse}</Rubric>
           <Gap />
           <HR />
           <Gap />
-          {this.salmInvitatori(this.state.numSalmInv)}
+          {this.invitatoryPsalm(this.state.invitatoryPsalmNumber)}
         </View>
       );
     } else {
-      const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
-      const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
+      const openingVersicle = 'Sigueu amb nosaltres, Déu nostre.';
+      const openingResponse = 'Senyor, veniu a ajudar-nos.';
       // TODO: [UI Refactor] encapsulate
-      const aux_isAleluia =
+      const isAlleluia =
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
@@ -348,13 +348,13 @@ export default class OfficeComponent extends Component {
 
       return (
         <View>
-          {this.invitatoriButtons()}
-          <Rubric label={'V. '}>{aux_sigueu}</Rubric>
-          <Rubric label={'R. '}>{aux_senyor_veniu}</Rubric>
+          {this.invitatoryButtons()}
+          <Rubric label={'V. '}>{openingVersicle}</Rubric>
+          <Rubric label={'R. '}>{openingResponse}</Rubric>
           <Gap />
           <Text selectable={true} style={this.styles.black}>
             {gloriaStringIntro}
-            {aux_isAleluia ? (
+            {isAlleluia ? (
               <Text selectable={true} style={this.styles.black}>
                 {' Al·leluia.'}
               </Text>
@@ -366,42 +366,42 @@ export default class OfficeComponent extends Component {
   }
 
   // TODO: [UI Refactor] duplicated code
-  himne() {
-    const aux_himne = GlobalViewFunctions.rs(this.hours.office.anthem);
+  hymn() {
+    const hymn = GlobalViewFunctions.rs(this.hours.office.anthem);
     return (
       <Text selectable={true} style={this.styles.black}>
-        {aux_himne}
+        {hymn}
       </Text>
     );
   }
 
   // TODO: [UI Refactor] at this point I will stop mention duplication. Is all super duplicated and all Views need a complete refactor
-  salmodia() {
-    const aux_ant1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.antiphon);
-    const aux_titol1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.title);
-    let aux_com1 = '';
+  psalmody() {
+    const firstAntiphon = GlobalViewFunctions.rs(this.hours.office.firstPsalm.antiphon);
+    const firstTitle = GlobalViewFunctions.rs(this.hours.office.firstPsalm.title);
+    let firstComment = '';
     if (StringManagement.hasLiturgyContent(this.hours.office.firstPsalm.comment))
-      aux_com1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.comment);
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.office.firstPsalm.psalm));
-    const aux_ant2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.antiphon);
-    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.office.secondPsalm.title));
-    let aux_com2 = '';
+      firstComment = GlobalViewFunctions.rs(this.hours.office.firstPsalm.comment);
+    const firstPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.office.firstPsalm.psalm));
+    const secondAntiphon = GlobalViewFunctions.rs(this.hours.office.secondPsalm.antiphon);
+    const secondTitle = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.office.secondPsalm.title));
+    let secondComment = '';
     if (StringManagement.hasLiturgyContent(this.hours.office.secondPsalm.comment))
-      aux_com2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.comment);
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.office.secondPsalm.psalm));
-    const aux_ant3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.antiphon);
-    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.title));
-    let aux_com3 = '';
+      secondComment = GlobalViewFunctions.rs(this.hours.office.secondPsalm.comment);
+    const secondPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.office.secondPsalm.psalm));
+    const thirdAntiphon = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.antiphon);
+    const thirdTitle = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.title));
+    let thirdComment = '';
     if (StringManagement.hasLiturgyContent(this.hours.office.thirdPsalm.comment))
-      aux_com3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.comment);
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.psalm));
+      thirdComment = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.comment);
+    const thirdPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.psalm));
 
     return (
       <View>
-        <Rubric label={'Ant. 1.'}> {aux_ant1}</Rubric>
+        <Rubric label={'Ant. 1.'}> {firstAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol1}
+          {firstTitle}
         </Text>
         <Gap />
         {StringManagement.hasLiturgyContent(this.hours.office.firstPsalm.comment) ? (
@@ -409,14 +409,14 @@ export default class OfficeComponent extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com1}
+                {firstComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm1}
+          {firstPsalm}
         </Text>
         <Gap />
         {this.hours.office.firstPsalm.hasGloryPrayer ? (
@@ -429,12 +429,12 @@ export default class OfficeComponent extends Component {
           </Text>
         )}
         <Gap />
-        <Rubric label={'Ant. 1.'}> {aux_ant1}</Rubric>
+        <Rubric label={'Ant. 1.'}> {firstAntiphon}</Rubric>
         <Gap />
-        <Rubric label={'Ant. 2.'}> {aux_ant2}</Rubric>
+        <Rubric label={'Ant. 2.'}> {secondAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol2}
+          {secondTitle}
         </Text>
         <Gap />
         {StringManagement.hasLiturgyContent(this.hours.office.secondPsalm.comment) ? (
@@ -442,14 +442,14 @@ export default class OfficeComponent extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com2}
+                {secondComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm2}
+          {secondPsalm}
         </Text>
         <Gap />
         {this.hours.office.secondPsalm.hasGloryPrayer ? (
@@ -462,12 +462,12 @@ export default class OfficeComponent extends Component {
           </Text>
         )}
         <Gap />
-        <Rubric label={'Ant. 2.'}> {aux_ant2}</Rubric>
+        <Rubric label={'Ant. 2.'}> {secondAntiphon}</Rubric>
         <Gap />
-        <Rubric label={'Ant. 3.'}> {aux_ant3}</Rubric>
+        <Rubric label={'Ant. 3.'}> {thirdAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol3}
+          {thirdTitle}
         </Text>
         <Gap />
         {StringManagement.hasLiturgyContent(this.hours.office.thirdPsalm.comment) ? (
@@ -475,14 +475,14 @@ export default class OfficeComponent extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com3}
+                {thirdComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm3}
+          {thirdPsalm}
         </Text>
         <Gap />
         {this.hours.office.thirdPsalm.hasGloryPrayer ? (
@@ -495,54 +495,60 @@ export default class OfficeComponent extends Component {
           </Text>
         )}
         <Gap />
-        <Rubric label={'Ant. 3.'}> {aux_ant3}</Rubric>
+        <Rubric label={'Ant. 3.'}> {thirdAntiphon}</Rubric>
       </View>
     );
   }
 
-  vers() {
-    const aux_respV = GlobalViewFunctions.rs(this.hours.office.responsory.versicle);
-    const aux_respR = GlobalViewFunctions.rs(this.hours.office.responsory.response);
+  versicle() {
+    const responsoryVersicle = GlobalViewFunctions.rs(this.hours.office.responsory.versicle);
+    const responsoryResponse = GlobalViewFunctions.rs(this.hours.office.responsory.response);
 
     return (
       <View>
-        <Rubric label={'V. '}>{aux_respV}</Rubric>
-        <Rubric label={'R. '}>{aux_respR}</Rubric>
+        <Rubric label={'V. '}>{responsoryVersicle}</Rubric>
+        <Rubric label={'R. '}>{responsoryResponse}</Rubric>
       </View>
     );
   }
 
-  lectures() {
+  readings() {
     try {
-      const aux_referencia1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reference);
-      const aux_titol_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.title);
-      const aux_has_cita1 = this.hours.office.firstReading.quote !== '-';
-      const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(this.hours.office.firstReading.quote) : '';
-      const aux_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reading);
-      const aux_has_citaResp1 = this.hours.office.firstReading.responsory.quote !== '-';
-      const aux_cita_resp1 = aux_has_citaResp1
+      const firstReadingReference = GlobalViewFunctions.rs(this.hours.office.firstReading.reference);
+      const firstReadingTitle = GlobalViewFunctions.rs(this.hours.office.firstReading.title);
+      const hasFirstReadingQuote = this.hours.office.firstReading.quote !== '-';
+      const firstReadingQuote = hasFirstReadingQuote
+        ? GlobalViewFunctions.rs(this.hours.office.firstReading.quote)
+        : '';
+      const firstReadingText = GlobalViewFunctions.rs(this.hours.office.firstReading.reading);
+      const hasFirstResponsoryQuote = this.hours.office.firstReading.responsory.quote !== '-';
+      const firstResponsoryQuote = hasFirstResponsoryQuote
         ? GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.quote)
         : '';
-      const aux_resp1_1_2 = GlobalViewFunctions.respTogether(
+      const firstResponsoryFirstAndSecondPart = GlobalViewFunctions.respTogether(
         GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.firstPart),
         GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.secondPart),
       );
-      const aux_resp1_2 = GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.secondPart);
-      const aux_resp1_3 = GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.thirdPart);
-      const aux_referencia2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reference);
-      const aux_titol_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.title);
-      const aux_has_cita2 =
+      const firstResponsorySecondPart = GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.secondPart);
+      const firstResponsoryThirdPart = GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.thirdPart);
+      const secondReadingReference = GlobalViewFunctions.rs(this.hours.office.secondReading.reference);
+      const secondReadingTitle = GlobalViewFunctions.rs(this.hours.office.secondReading.title);
+      const hasSecondReadingQuote =
         this.hours.office.secondReading.quote != null && this.hours.office.secondReading.quote !== '-';
-      const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(this.hours.office.secondReading.quote) : '';
-      const aux_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reading);
-      const aux_has_vers2 = this.hours.office.secondReading.responsory.quote !== '-';
-      const aux_vers2 = aux_has_vers2 ? GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.quote) : '';
-      const aux_resp2_1_2 = GlobalViewFunctions.respTogether(
+      const secondReadingQuote = hasSecondReadingQuote
+        ? GlobalViewFunctions.rs(this.hours.office.secondReading.quote)
+        : '';
+      const secondReadingText = GlobalViewFunctions.rs(this.hours.office.secondReading.reading);
+      const hasSecondResponsoryQuote = this.hours.office.secondReading.responsory.quote !== '-';
+      const secondResponsoryQuote = hasSecondResponsoryQuote
+        ? GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.quote)
+        : '';
+      const secondResponsoryFirstAndSecondPart = GlobalViewFunctions.respTogether(
         GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.firstPart),
         GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.secondPart),
       );
-      const aux_resp2_2 = GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.secondPart);
-      const aux_resp2_3 = GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.thirdPart);
+      const secondResponsorySecondPart = GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.secondPart);
+      const secondResponsoryThirdPart = GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.thirdPart);
 
       return (
         <View>
@@ -550,110 +556,114 @@ export default class OfficeComponent extends Component {
             {'Lectura primera'}
           </Text>
           <Text selectable={true} style={this.styles.black}>
-            {aux_referencia1}
+            {firstReadingReference}
           </Text>
-          {aux_has_cita1 ? (
+          {hasFirstReadingQuote ? (
             <Text selectable={true} style={this.styles.red}>
-              {aux_cita1}
+              {firstReadingQuote}
             </Text>
           ) : null}
           <Gap />
           <Text selectable={true} style={this.styles.redCenterBold}>
-            {aux_titol_lectura1}
+            {firstReadingTitle}
           </Text>
           <Gap />
           <Text selectable={true} style={this.styles.blackJustified}>
-            {aux_lectura1}
+            {firstReadingText}
           </Text>
           <Gap />
           <Text selectable={true} style={this.styles.red}>
             {'Responsori'}
           </Text>
-          {aux_has_citaResp1 ? (
+          {hasFirstResponsoryQuote ? (
             <Text selectable={true} style={this.styles.red}>
-              {aux_cita_resp1}
+              {firstResponsoryQuote}
             </Text>
           ) : null}
-          <Rubric label={'R. '}>{aux_resp1_1_2}</Rubric>
-          <Rubric label={'V. '}>{aux_resp1_3}</Rubric>
-          <Rubric label={'R. '}>{aux_resp1_2}</Rubric>
+          <Rubric label={'R. '}>{firstResponsoryFirstAndSecondPart}</Rubric>
+          <Rubric label={'V. '}>{firstResponsoryThirdPart}</Rubric>
+          <Rubric label={'R. '}>{firstResponsorySecondPart}</Rubric>
           <Gap />
           <Text selectable={true} style={this.styles.red}>
             {'Lectura segona'}
           </Text>
           <Text selectable={true} style={this.styles.black}>
-            {aux_referencia2}
+            {secondReadingReference}
           </Text>
           <Gap />
           <Text selectable={true} style={this.styles.redCenterBold}>
-            {aux_titol_lectura2}
+            {secondReadingTitle}
           </Text>
           <Gap />
           <Text selectable={true} style={this.styles.blackJustified}>
-            {aux_lectura2}
+            {secondReadingText}
           </Text>
           <Gap />
           <Text selectable={true} style={this.styles.red}>
             {'Responsori'}
           </Text>
-          {aux_has_vers2 ? (
+          {hasSecondResponsoryQuote ? (
             <Text selectable={true} style={this.styles.red}>
-              {aux_vers2}
+              {secondResponsoryQuote}
             </Text>
           ) : null}
-          <Rubric label={'R. '}>{aux_resp2_1_2}</Rubric>
-          <Rubric label={'V. '}>{aux_resp2_3}</Rubric>
-          <Rubric label={'R. '}>{aux_resp2_2}</Rubric>
+          <Rubric label={'R. '}>{secondResponsoryFirstAndSecondPart}</Rubric>
+          <Rubric label={'V. '}>{secondResponsoryThirdPart}</Rubric>
+          <Rubric label={'R. '}>{secondResponsorySecondPart}</Rubric>
         </View>
       );
     } catch (error) {
-      Logger.logError(Logger.LogKeys.Screens, 'lectures', error);
+      Logger.logError(Logger.LogKeys.Screens, 'readings', error);
       return null;
     }
   }
 
-  lecturesDiumPasqua() {
-    const aux_referencia1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reference);
-    const aux_titol_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.title);
-    const aux_has_cita1 = this.hours.office.firstReading.quote !== '-';
-    const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(this.hours.office.firstReading.quote) : '';
-    const aux_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reading);
+  easterSundayReadings() {
+    const firstReadingReference = GlobalViewFunctions.rs(this.hours.office.firstReading.reference);
+    const firstReadingTitle = GlobalViewFunctions.rs(this.hours.office.firstReading.title);
+    const hasFirstReadingQuote = this.hours.office.firstReading.quote !== '-';
+    const firstReadingQuote = hasFirstReadingQuote ? GlobalViewFunctions.rs(this.hours.office.firstReading.quote) : '';
+    const firstReadingText = GlobalViewFunctions.rs(this.hours.office.firstReading.reading);
 
-    const aux_ant1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.antiphon);
-    const aux_titol1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.title);
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.office.firstPsalm.psalm));
-    const aux_gloria1 = 'Glòria.';
-    const aux_oracio1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.prayer);
+    const firstAntiphon = GlobalViewFunctions.rs(this.hours.office.firstPsalm.antiphon);
+    const firstTitle = GlobalViewFunctions.rs(this.hours.office.firstPsalm.title);
+    const firstPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.office.firstPsalm.psalm));
+    const firstGloria = 'Glòria.';
+    const firstPrayer = GlobalViewFunctions.rs(this.hours.office.firstPsalm.prayer);
 
-    const aux_referencia2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reference);
-    const aux_titol_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.title);
-    const aux_has_cita2 = this.hours.office.secondReading.quote !== '-';
-    const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(this.hours.office.secondReading.quote) : '';
-    const aux_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reading);
+    const secondReadingReference = GlobalViewFunctions.rs(this.hours.office.secondReading.reference);
+    const secondReadingTitle = GlobalViewFunctions.rs(this.hours.office.secondReading.title);
+    const hasSecondReadingQuote = this.hours.office.secondReading.quote !== '-';
+    const secondReadingQuote = hasSecondReadingQuote
+      ? GlobalViewFunctions.rs(this.hours.office.secondReading.quote)
+      : '';
+    const secondReadingText = GlobalViewFunctions.rs(this.hours.office.secondReading.reading);
 
-    const aux_ant2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.antiphon);
-    const aux_titol2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.title);
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.office.secondPsalm.psalm));
-    const aux_gloria2 = 'Glòria.';
-    const aux_oracio2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.prayer);
+    const secondAntiphon = GlobalViewFunctions.rs(this.hours.office.secondPsalm.antiphon);
+    const secondTitle = GlobalViewFunctions.rs(this.hours.office.secondPsalm.title);
+    const secondPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.office.secondPsalm.psalm));
+    const secondGloria = 'Glòria.';
+    const secondPrayer = GlobalViewFunctions.rs(this.hours.office.secondPsalm.prayer);
 
-    const aux_referencia3 = GlobalViewFunctions.rs(this.hours.office.thirdReading.reference);
-    const aux_titol_lectura3 = GlobalViewFunctions.rs(this.hours.office.thirdReading.title);
-    const aux_has_cita3 = this.hours.office.thirdReading.quote !== '-';
-    const aux_cita3 = aux_has_cita3 ? GlobalViewFunctions.rs(this.hours.office.thirdReading.quote) : '';
-    const aux_lectura3 = GlobalViewFunctions.rs(this.hours.office.thirdReading.reading);
+    const thirdReadingReference = GlobalViewFunctions.rs(this.hours.office.thirdReading.reference);
+    const thirdReadingTitle = GlobalViewFunctions.rs(this.hours.office.thirdReading.title);
+    const hasThirdReadingQuote = this.hours.office.thirdReading.quote !== '-';
+    const thirdReadingQuote = hasThirdReadingQuote ? GlobalViewFunctions.rs(this.hours.office.thirdReading.quote) : '';
+    const thirdReadingText = GlobalViewFunctions.rs(this.hours.office.thirdReading.reading);
 
-    const aux_ant3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.antiphon);
-    const aux_titol3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.title);
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.psalm));
-    const aux_gloria3 = 'Glòria.';
-    const aux_oracio3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.prayer);
+    const thirdAntiphon = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.antiphon);
+    const thirdTitle = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.title);
+    const thirdPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.psalm));
+    const thirdGloria = 'Glòria.';
+    const thirdPrayer = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.prayer);
 
-    const aux_referencia4 = GlobalViewFunctions.rs(this.hours.office.fourthReading.reference);
-    const aux_titol_lectura4 = GlobalViewFunctions.rs(this.hours.office.fourthReading.title);
-    const aux_has_cita4 = this.hours.office.fourthReading.quote !== '-';
-    const aux_cita4 = aux_has_cita4 ? GlobalViewFunctions.rs(this.hours.office.fourthReading.quote) : '';
-    const aux_lectura4 = GlobalViewFunctions.rs(this.hours.office.fourthReading.reading);
+    const fourthReadingReference = GlobalViewFunctions.rs(this.hours.office.fourthReading.reference);
+    const fourthReadingTitle = GlobalViewFunctions.rs(this.hours.office.fourthReading.title);
+    const hasFourthReadingQuote = this.hours.office.fourthReading.quote !== '-';
+    const fourthReadingQuote = hasFourthReadingQuote
+      ? GlobalViewFunctions.rs(this.hours.office.fourthReading.quote)
+      : '';
+    const fourthReadingText = GlobalViewFunctions.rs(this.hours.office.fourthReading.reading);
 
     return (
       <View>
@@ -661,43 +671,43 @@ export default class OfficeComponent extends Component {
           {'Lectura primera'}
         </Text>
         <Text selectable={true} style={this.styles.black}>
-          {aux_referencia1}
+          {firstReadingReference}
         </Text>
-        {aux_has_cita1 ? (
+        {hasFirstReadingQuote ? (
           <Text selectable={true} style={this.styles.red}>
-            {aux_cita1}
+            {firstReadingQuote}
           </Text>
         ) : null}
         <Gap />
         <Text selectable={true} style={this.styles.redCenterBold}>
-          {aux_titol_lectura1}
+          {firstReadingTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {aux_lectura1}
+          {firstReadingText}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{aux_ant1}</Rubric>
+        <Rubric label={'Ant. '}>{firstAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol1}
+          {firstTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm1}
+          {firstPsalm}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackItalic}>
-          {aux_gloria1}
+          {firstGloria}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{aux_ant1}</Rubric>
+        <Rubric label={'Ant. '}>{firstAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.blackBold}>
           {'Preguem.'}
         </Text>
         <Text selectable={true} style={this.styles.black}>
-          {aux_oracio1}
+          {firstPrayer}
         </Text>
         <Rubric label={'R. '}>{'Amén.'}</Rubric>
         <Gap />
@@ -705,43 +715,43 @@ export default class OfficeComponent extends Component {
           {'Lectura segona'}
         </Text>
         <Text selectable={true} style={this.styles.black}>
-          {aux_referencia2}
+          {secondReadingReference}
         </Text>
-        {aux_has_cita2 ? (
+        {hasSecondReadingQuote ? (
           <Text selectable={true} style={this.styles.red}>
-            {aux_cita2}
+            {secondReadingQuote}
           </Text>
         ) : null}
         <Gap />
         <Text selectable={true} style={this.styles.redCenterBold}>
-          {aux_titol_lectura2}
+          {secondReadingTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {aux_lectura2}
+          {secondReadingText}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{aux_ant2}</Rubric>
+        <Rubric label={'Ant. '}>{secondAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol2}
+          {secondTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm2}
+          {secondPsalm}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackItalic}>
-          {aux_gloria2}
+          {secondGloria}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{aux_ant2}</Rubric>
+        <Rubric label={'Ant. '}>{secondAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.blackBold}>
           {'Preguem.'}
         </Text>
         <Text selectable={true} style={this.styles.black}>
-          {aux_oracio2}
+          {secondPrayer}
         </Text>
         <Rubric label={'R. '}>{'Amén.'}</Rubric>
         <Gap />
@@ -749,67 +759,67 @@ export default class OfficeComponent extends Component {
           {'Lectura tercera'}
         </Text>
         <Text selectable={true} style={this.styles.black}>
-          {aux_referencia3}
+          {thirdReadingReference}
         </Text>
-        {aux_has_cita3 ? (
+        {hasThirdReadingQuote ? (
           <Text selectable={true} style={this.styles.red}>
-            {aux_cita3}
+            {thirdReadingQuote}
           </Text>
         ) : null}
         <Gap />
         <Text selectable={true} style={this.styles.redCenterBold}>
-          {aux_titol_lectura3}
+          {thirdReadingTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {aux_lectura3}
+          {thirdReadingText}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{aux_ant3}</Rubric>
+        <Rubric label={'Ant. '}>{thirdAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol3}
+          {thirdTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm3}
+          {thirdPsalm}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackItalic}>
-          {aux_gloria3}
+          {thirdGloria}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{aux_ant3}</Rubric>
+        <Rubric label={'Ant. '}>{thirdAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Lectura quarta'}
         </Text>
         <Text selectable={true} style={this.styles.black}>
-          {aux_referencia4}
+          {fourthReadingReference}
         </Text>
-        {aux_has_cita4 ? (
+        {hasFourthReadingQuote ? (
           <Text selectable={true} style={this.styles.red}>
-            {aux_cita4}
+            {fourthReadingQuote}
           </Text>
         ) : null}
         <Gap />
         <Text selectable={true} style={this.styles.redCenterBold}>
-          {aux_titol_lectura4}
+          {fourthReadingTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {aux_lectura4}
+          {fourthReadingText}
         </Text>
       </View>
     );
   }
 
-  himneOhDeu() {
+  teDeumHymn() {
     if (this.hours.office.teDeumInformation.enabled) {
-      const aux0 = this.hours.office.teDeumInformation.anthem.split('\n\n[')[0];
-      const aux1 = this.hours.office.teDeumInformation.anthem.split('\n\n[')[1];
-      const himnePart1 = aux0;
-      const himnePart2 = aux1.split(']')[0];
+      const anthemFirstPart = this.hours.office.teDeumInformation.anthem.split('\n\n[')[0];
+      const anthemRest = this.hours.office.teDeumInformation.anthem.split('\n\n[')[1];
+      const hymnFirstPart = anthemFirstPart;
+      const hymnSecondPart = anthemRest.split(']')[0];
       return (
         <View>
           <Gap />
@@ -817,14 +827,14 @@ export default class OfficeComponent extends Component {
           <Gap />
           <SectionTitle>{'HIMNE'}</SectionTitle>
           <Text selectable={true} style={this.styles.black}>
-            {himnePart1}
+            {hymnFirstPart}
           </Text>
           <Gap />
           <Text selectable={true} style={this.styles.redItalic}>
             {'Aquesta última part es pot ometre:\n'}
           </Text>
           <Text selectable={true} style={this.styles.black}>
-            {himnePart2}
+            {hymnSecondPart}
           </Text>
         </View>
       );
@@ -832,10 +842,10 @@ export default class OfficeComponent extends Component {
   }
 
   finalPrayer() {
-    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.hours.office.finalPrayer), false);
+    const prayer = GlobalViewFunctions.completePrayer(GlobalViewFunctions.rs(this.hours.office.finalPrayer), false);
     return (
       <Text selectable={true} style={this.styles.black}>
-        {aux_oracio}
+        {prayer}
       </Text>
     );
   }

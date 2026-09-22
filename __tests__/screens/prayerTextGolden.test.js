@@ -141,7 +141,7 @@ async function massTexts() {
   return out;
 }
 
-describe('text de les pantalles de pregària i de lectures, contra el golden', () => {
+describe('text of the prayer and reading screens, against the golden', () => {
   const resolved = {};
   let golden;
 

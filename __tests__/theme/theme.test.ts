@@ -8,7 +8,7 @@ import {
   textSizeStep,
 } from '../../src/theme';
 
-test('la mida del text: deu passos de 3 px des de 15, i 21 per defecte', () => {
+test('the text size: ten steps of 3 px from 15, and 21 by default', () => {
   expect(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'].map(convertTextSize)).toEqual([
     15, 18, 21, 24, 27, 30, 33, 36, 39, 42,
   ]);
@@ -19,7 +19,7 @@ test('la mida del text: deu passos de 3 px des de 15, i 21 per defecte', () => {
   expect(textSizeStep('abc')).toBe(3);
 });
 
-test('els colors del disseny, clar i fosc', () => {
+test('the colours of the design, light and dark', () => {
   expect(palettes.light).toMatchObject({
     header: '#006064',
     homeBackground: '#E7F2F1',
@@ -48,7 +48,7 @@ test('els colors del disseny, clar i fosc', () => {
   });
 });
 
-test('els colors litúrgics de la targeta del dia', () => {
+test('the liturgical colours of the day card', () => {
   expect(liturgicalColor('R', 'light')).toMatchObject({ dot: '#C62828', tint: '#F8E7E5', accent: '#B3261E' });
   expect(liturgicalColor('V', 'dark')).toMatchObject({ dot: '#2E7D32', tint: '#16241A', accent: '#8CC98F' });
   // Green, most of the year, is only the background now: it must not be the home's own
@@ -65,7 +65,7 @@ test('els colors litúrgics de la targeta del dia', () => {
   expect(liturgicalColor('?', 'light').code).toBe('V');
 });
 
-test('el text de la pregària: la mida triada, la rúbrica vermella i les lectures a l’esquerra', () => {
+test('the text of the prayer: the chosen size, the red rubric and the readings on the left', () => {
   const styles = prayerTextStyles(createTheme({ dark: false, textSize: '3' }));
   expect(styles.black).toMatchObject({ color: '#182322', fontSize: 21, lineHeight: 30 });
   expect(styles.red).toMatchObject({ color: '#B3261E', fontSize: 21 });
@@ -80,12 +80,12 @@ test('el text de la pregària: la mida triada, la rúbrica vermella i les lectur
   expect(dark.container.backgroundColor).toBe('#0B0F0E');
 });
 
-test('el mateix tema dona els mateixos estils (no es recalculen a cada render)', () => {
+test('the same theme gives the same styles (they are not recomputed on every render)', () => {
   const theme = createTheme({ textSize: '4' });
   expect(prayerTextStyles(theme)).toBe(prayerTextStyles(theme));
 });
 
-test('React Navigation pren els colors del tema', () => {
+test('React Navigation takes the colours of the theme', () => {
   const nav = navigationTheme(createTheme({ dark: true }));
   expect(nav.colors).toMatchObject({ primary: '#1F7F7B', background: '#0E1413', card: '#006064', text: '#E6ECEB' });
   expect(navigationTheme(createTheme()).colors).toMatchObject({
@@ -95,7 +95,7 @@ test('React Navigation pren els colors del tema', () => {
   });
 });
 
-test('per a React Navigation el tema és fosc als dos modes: la barra de dalt és verd fosc', () => {
+test('for React Navigation the theme is dark in both modes: the top bar is dark green', () => {
   // The native stack draws the top bar of iOS with it: in light mode, iOS 26 made the glass
   // of its buttons whitish and the back arrow black
   expect(navigationTheme(createTheme()).dark).toBe(true);

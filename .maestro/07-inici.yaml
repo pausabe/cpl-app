@@ -1,8 +1,8 @@
 appId: cpl.cpl
-name: "L'inici porta a pregar: les hores, el full del sant i el botó Aa"
+name: "The home screen leads to praying: the hours, the saint's sheet and the Aa button"
 ---
 - runFlow: subflows/obrir.yaml
-# Una hora s'obre des de l'inici, amb el nom sencer a la capçalera i el botó Aa
+# An hour opens from the home screen, with the full name in the header and the Aa button
 - tapOn: "Ofici de lectura"
 - extendedWaitUntil:
     visible: "HIMNE.*"
@@ -18,8 +18,8 @@ name: "L'inici porta a pregar: les hores, el full del sant i el botó Aa"
 - assertNotVisible: "Mida 3 de 10"
 - runFlow: subflows/enrere.yaml
 - assertVisible: "Missatge"
-# «Llegeix-ne més» obre la vida del sant en un full; «Tanca» el tanca, i a Android també el
-# botó enrere. Només els dies que el sant del dia en té.
+# «Llegeix-ne més» opens the saint's life in a sheet; «Tanca» closes it, and on Android
+# so does the back button. Only on the days when the day's saint has one.
 - runFlow:
     when:
       visible: "Llegeix-ne més"

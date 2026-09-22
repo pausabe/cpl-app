@@ -1,7 +1,7 @@
 appId: cpl.cpl
 ---
-# Android: el botó enrere del sistema. iOS no en té: la fletxa de la capçalera, que l'app
-# anomena «Enrere» per als lectors de pantalla.
+# Android: the system back button. iOS has none: the arrow in the header, which the app
+# calls «Enrere» for screen readers.
 - runFlow:
     when:
       platform: Android

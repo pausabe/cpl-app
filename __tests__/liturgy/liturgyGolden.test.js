@@ -91,7 +91,7 @@ const DAYS = [
 const PROFILES = ['barcelona', 'tarragonaCatedral', 'gironaCiutat', 'andorra', 'mallorcaLliure'];
 const GOLDEN = 'liturgy-days';
 
-describe('litúrgia completa de dies triats, contra el golden', () => {
+describe('full liturgy of selected days, against the golden', () => {
   const resolved = {};
   let golden;
 

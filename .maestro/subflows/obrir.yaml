@@ -1,12 +1,12 @@
 appId: cpl.cpl
 ---
-# L'app com acabada d'instal·lar, al dia d'avui, amb l'inici a punt. Tanca els avisos que
-# poden sortir en obrir-la: el de mitjanit (de 0 a 3 h, «No, la d'avui») i el de novetats, que
-# només surt a qui ve de la versió anterior (després de clearState no hauria de sortir).
+# The app as just installed, on today, with the home screen ready. It closes the notices that
+# can appear when opening it: the midnight one (from 0 to 3 h, «No, la d'avui») and the what's
+# new one, shown only to someone from the previous version (after clearState it should not).
 - launchApp:
     clearState: true
-# L'inici, o un dels avisos a sobre (el de mitjanit o el de novetats): són modals, i mentre
-# hi són l'inici no es veu
+# The home screen, or one of the notices on top of it (the midnight one or the what's new one):
+# they are modal, and while they are there the home screen is not visible
 - extendedWaitUntil:
     visible: "Missatge|No, la d.avui|D.acord"
     timeout: 60000

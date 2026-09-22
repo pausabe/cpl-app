@@ -20,7 +20,7 @@ function open(props = {}) {
   return handlers;
 }
 
-test('s’obre al mes del dia que es mostra, amb aquell dia triat i avui marcat', () => {
+test('it opens on the month of the day being shown, with that day chosen and today marked', () => {
   open();
   expect(screen.getByRole('button', { name: 'setembre de 2026' })).toBeTruthy();
   expect(screen.getByRole('button', { name: 'dilluns, 21 de setembre' }).props.accessibilityState.selected).toBe(true);
@@ -28,7 +28,7 @@ test('s’obre al mes del dia que es mostra, amb aquell dia triat i avui marcat'
   expect(styleOf(screen.getByTestId('calendar-day-22'))).toMatchObject({ borderColor: '#00696D' });
 });
 
-test('es tria un dia i «Canvia» l’aplica', () => {
+test('a day is chosen and «Canvia» applies it', () => {
   const { onChange } = open();
   fireEvent.press(screen.getByRole('button', { name: 'dissabte, 26 de setembre' }));
   expect(onChange).not.toHaveBeenCalled();
@@ -36,7 +36,7 @@ test('es tria un dia i «Canvia» l’aplica', () => {
   expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 26));
 });
 
-test('«Avui» i «Cancel·la»', () => {
+test('«Avui» and «Cancel·la»', () => {
   const { onToday, onCancel } = open();
   fireEvent.press(screen.getByRole('button', { name: 'Avui' }));
   expect(onToday).toHaveBeenCalled();
@@ -44,7 +44,7 @@ test('«Avui» i «Cancel·la»', () => {
   expect(onCancel).toHaveBeenCalled();
 });
 
-test('es passa de mes endavant i enrere, també d’any', () => {
+test('it moves from month to month forward and back, and from year to year too', () => {
   open({ value: new Date(2026, 11, 30) });
   fireEvent.press(screen.getByRole('button', { name: 'Mes següent' }));
   expect(screen.getByText('gener de 2027')).toBeTruthy();
@@ -53,7 +53,7 @@ test('es passa de mes endavant i enrere, també d’any', () => {
   expect(screen.getByText('novembre de 2026')).toBeTruthy();
 });
 
-test('fora de la base de dades, els dies no es poden triar ni s’hi pot anar', () => {
+test('outside the database, the days can be neither chosen nor reached', () => {
   const { onChange } = open({ minimumDate: new Date(2026, 8, 10), maximumDate: new Date(2026, 8, 25) });
   expect(screen.getByRole('button', { name: 'dimecres, 9 de setembre' }).props.accessibilityState.disabled).toBe(true);
   expect(screen.getByRole('button', { name: 'dissabte, 26 de setembre' }).props.accessibilityState.disabled).toBe(true);
@@ -64,7 +64,7 @@ test('fora de la base de dades, els dies no es poden triar ni s’hi pot anar', 
   expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 21, 10, 0));
 });
 
-test('en mode fosc, els colors fosc', () => {
+test('in dark mode, the dark colours', () => {
   renderWithTheme(
     <CalendarDialog
       visible={true}
@@ -78,10 +78,10 @@ test('en mode fosc, els colors fosc', () => {
   expect(styleOf(screen.getByTestId('calendar-day-21')).backgroundColor).toBe('#1F7F7B');
 });
 
-describe('la llista d’anys', () => {
+describe('the list of years', () => {
   const limits = { minimumDate: new Date(2017, 0, 3), maximumDate: new Date(2026, 11, 29) };
 
-  test('el títol del mes l’obre, amb els anys de la base de dades i el que es veu, triat', () => {
+  test('the title of the month opens it, with the years of the database and the one shown, chosen', () => {
     open(limits);
     const title = screen.getByRole('button', { name: 'setembre de 2026' });
     expect(title.props.accessibilityHint).toBe('Tria un altre any');
@@ -98,7 +98,7 @@ describe('la llista d’anys', () => {
     expect(screen.queryByTestId('calendar-day-21')).toBeNull();
   });
 
-  test('en triar un any torna als dies, al mateix mes d’aquell any', () => {
+  test('on choosing a year it goes back to the days, in the same month of that year', () => {
     const handlers = open(limits);
     fireEvent.press(screen.getByRole('button', { name: 'setembre de 2026' }));
     fireEvent.press(screen.getByRole('button', { name: '2025' }));
@@ -108,7 +108,7 @@ describe('la llista d’anys', () => {
     expect(handlers.onChange).toHaveBeenCalledWith(new Date(2025, 8, 26));
   });
 
-  test('tornant a tocar el títol, torna als dies sense canviar d’any', () => {
+  test('touching the title again goes back to the days without changing the year', () => {
     open(limits);
     const title = screen.getByRole('button', { name: 'setembre de 2026' });
     fireEvent.press(title);

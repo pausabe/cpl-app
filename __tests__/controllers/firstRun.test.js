@@ -8,18 +8,18 @@ jest.mock('expo-file-system/legacy', () => ({ documentDirectory: 'file:///docume
 import { FileSystemService } from '../../src/services/FileSystemService';
 import { wasOpenedBefore } from '../../src/controllers/firstRun';
 
-test('amb una base de dades d’abans, l’app ja s’havia obert', async () => {
+test('with a database from before, the app had already been opened', async () => {
   FileSystemService.getFileUrisInDirectory.mockResolvedValueOnce(['file:///documents/SQLite/cpl-app-12530.db']);
   expect(await wasOpenedBefore()).toBe(true);
   expect(FileSystemService.getFileUrisInDirectory).toHaveBeenLastCalledWith('file:///documents/SQLite/', 'db');
 });
 
-test('sense cap base de dades, és una instal·lació nova', async () => {
+test('with no database at all, it is a fresh install', async () => {
   FileSystemService.getFileUrisInDirectory.mockResolvedValueOnce([]);
   expect(await wasOpenedBefore()).toBe(false);
 });
 
-test('si no es pot mirar, compta que ja s’havia obert: millor un avís de més que un de menys', async () => {
+test('if it cannot look, it counts as already opened: better one notice too many than one too few', async () => {
   FileSystemService.getFileUrisInDirectory.mockRejectedValueOnce(new Error('no'));
   expect(await wasOpenedBefore()).toBe(true);
 });

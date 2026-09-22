@@ -53,7 +53,7 @@ beforeEach(async () => {
   await loadDay('2026-09-21');
 });
 
-test('el botó Aa obre el full; A+ fa el text més gran a l’instant i ho desa', async () => {
+test('the Aa button opens the sheet; A+ makes the text bigger at once and saves it', async () => {
   const { view, headerRight } = await open(HoursPrayerController, { type: 'Laudes', title: 'Laudes' });
   expect(styleOf(view.getByText('Sigueu amb nosaltres, Déu nostre.')).fontSize).toBe(21);
 
@@ -72,7 +72,7 @@ test('el botó Aa obre el full; A+ fa el text més gran a l’instant i ho desa'
   expect(view.queryByText('Mida 4 de 10')).toBeNull();
 });
 
-test('el tema fosc es tria al mateix full i la pregària es torna fosca', async () => {
+test('the dark theme is chosen in the same sheet and the prayer turns dark', async () => {
   const { view, headerRight } = await open(HoursPrayerController, { type: 'Vespres', title: 'Vespres' });
   await pressHeaderButton(headerRight);
   await act(async () => {
@@ -83,7 +83,7 @@ test('el tema fosc es tria al mateix full i la pregària es torna fosca', async 
   expect(styleOf(view.getByText('HIMNE')).color).toBe('#F28B82');
 });
 
-test('el salm invitatori triat es recorda', async () => {
+test('the invitatory psalm chosen is remembered', async () => {
   await open(HoursPrayerController, { type: 'Laudes', title: 'Laudes' });
   fireEvent.press(screen.getByRole('button', { name: "Començar amb l'invitatori" }));
   expect(screen.getByRole('radio', { name: 'Salm 94' }).props.accessibilityState.checked).toBe(true);
@@ -98,7 +98,7 @@ test('el salm invitatori triat es recorda', async () => {
   expect(screen.getByRole('button', { name: "Amagar l'invitatori" })).toBeTruthy();
 });
 
-test('l’antífona de la Mare de Déu triada es recorda', async () => {
+test('the antiphon of the Mother of God chosen is remembered', async () => {
   await open(HoursPrayerController, { type: 'Completes', title: 'Completes' });
   expect(screen.getByRole('header', { name: 'Antífona final de la Mare de Déu' })).toBeTruthy();
   fireEvent.press(screen.getByRole('radio', { name: 'Ant. 3' }));
@@ -110,7 +110,7 @@ test('l’antífona de la Mare de Déu triada es recorda', async () => {
   expect(await AsyncStorage.getItem('antMare')).toBe('3');
 });
 
-test('les primeres vespres porten a dalt, sencer, el títol que l’inici escurça', async () => {
+test('first Vespers carry at the top, in full, the title the home shortens', async () => {
   await loadDay('2026-09-23');
   await open(HoursPrayerController, { type: 'Vespres', title: 'Vespres', subtitle: 'Mare de Déu de la Mercè' });
   const heading = screen.getByRole('header', { name: 'Mare de Déu de la Mercè' });
@@ -120,21 +120,21 @@ test('les primeres vespres porten a dalt, sencer, el títol que l’inici escur�
   expect(styleOf(heading)).toMatchObject({ color: '#B3261E', textAlign: 'center' });
 });
 
-test('una hora sense res a sota del nom, a l’inici, no porta cap títol de més', async () => {
+test('an hour with nothing under its name on the home carries no extra title', async () => {
   await loadDay('2026-09-22');
   await open(HoursPrayerController, { type: 'Vespres', title: 'Vespres' });
   expect(screen.queryByTestId('hour-celebration')).toBeNull();
 });
 
-test('a Pasqua només hi ha la cinquena antífona, sense selector', async () => {
+test('at Easter there is only the fifth antiphon, with no selector', async () => {
   await loadDay('2026-04-05');
   await open(HoursPrayerController, { type: 'Completes', title: 'Completes' });
   expect(screen.queryAllByRole('radio')).toHaveLength(0);
   expect(DataService.CurrentSettings.virginAntiphonOption).toBe('5');
 });
 
-test('les lectures: «Continua amb el Salm» mostra el salm a sota', async () => {
-  await open(MassPrayerController, { type: '1Lect', title: 'Missa', need_lectura2: false, useVespersTexts: false });
+test('the readings: «Continua amb el Salm» shows the psalm below', async () => {
+  await open(MassPrayerController, { type: '1Lect', title: 'Missa', needSecondReading: false, useVespersTexts: false });
   expect(screen.getByRole('header', { name: 'Lectura primera' })).toBeTruthy();
   expect(screen.queryByRole('header', { name: 'Salm responsorial' })).toBeNull();
   fireEvent.press(screen.getByRole('button', { name: 'Continua amb el Salm' }));
@@ -142,16 +142,26 @@ test('les lectures: «Continua amb el Salm» mostra el salm a sota', async () =>
   expect(screen.getByRole('button', { name: "Continua amb l'Evangeli" })).toBeTruthy();
 });
 
-test('el vídeo de llengua de signes només surt si està activat', async () => {
-  await open(MassPrayerController, { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false });
+test('the sign language video only appears if it is turned on', async () => {
+  await open(MassPrayerController, {
+    type: 'Evangeli',
+    title: 'Missa',
+    needSecondReading: false,
+    useVespersTexts: false,
+  });
   expect(screen.queryByTestId('gospel-video')).toBeNull();
 });
 
 // The only Mass with a video in the database: the 30th Sunday of the year, cycle C
-test('amb el vídeo activat, surt sobre l’Evangeli del 26 d’octubre de 2025, tan ample com la columna', async () => {
+test('with the video turned on, it appears above the Gospel of 26 October 2025, as wide as the column', async () => {
   await loadDay('2025-10-26');
   await AsyncStorage.setItem('showVideos', 'true');
-  await open(MassPrayerController, { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false });
+  await open(MassPrayerController, {
+    type: 'Evangeli',
+    title: 'Missa',
+    needSecondReading: false,
+    useVespersTexts: false,
+  });
   // The setting is read when the screen opens
   const frame = await screen.findByTestId('gospel-video');
   expect(styleOf(frame)).toMatchObject({ width: '100%', aspectRatio: 16 / 9 });
@@ -161,8 +171,13 @@ test('amb el vídeo activat, surt sobre l’Evangeli del 26 d’octubre de 2025,
   await AsyncStorage.removeItem('showVideos');
 });
 
-test('les lectures s’alineen a l’esquerra i tenen una amplada màxima', async () => {
-  await open(MassPrayerController, { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false });
+test('the readings are aligned to the left and have a maximum width', async () => {
+  await open(MassPrayerController, {
+    type: 'Evangeli',
+    title: 'Missa',
+    needSecondReading: false,
+    useVespersTexts: false,
+  });
   const gospel = DataService.CurrentMassLiturgy.today.gospel.gospel.replace(/\s+$/, '');
   expect(styleOf(screen.getByText(gospel)).textAlign).toBe('left');
 });
@@ -173,7 +188,7 @@ test.each([
   [
     'the readings',
     MassPrayerController,
-    { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false },
+    { type: 'Evangeli', title: 'Missa', needSecondReading: false, useVespersTexts: false },
   ],
 ])('the text of %s runs to the bottom edge, and ends above the home indicator', async (_, Controller, params) => {
   await open(Controller, params);

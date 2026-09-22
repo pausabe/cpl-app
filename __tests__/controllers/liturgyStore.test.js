@@ -41,7 +41,7 @@ beforeEach(() => {
   DataService.__state.calls = [];
 });
 
-test('dues recàrregues seguides es fan una darrere l’altra, mai alhora', async () => {
+test('two reloads in a row happen one after the other, never at the same time', async () => {
   const first = new Date(2026, 8, 21);
   const second = new Date(2026, 8, 22);
   await Promise.all([LiturgyStore.reload(first), LiturgyStore.reload(second)]);
@@ -50,7 +50,7 @@ test('dues recàrregues seguides es fan una darrere l’altra, mai alhora', asyn
   expect(LiturgyStore.currentDate()).toBe(second);
 });
 
-test('si una recàrrega falla, la següent es fa igualment, i qui l’ha demanada se n’assabenta', async () => {
+test('if a reload fails, the next one happens all the same, and whoever asked for it is told', async () => {
   const failing = LiturgyStore.reload('error');
   const next = LiturgyStore.reload(new Date(2026, 8, 23));
   await expect(failing).rejects.toThrow('database closed');
@@ -58,7 +58,7 @@ test('si una recàrrega falla, la següent es fa igualment, i qui l’ha demanad
   expect(LiturgyStore.currentDate()).toEqual(new Date(2026, 8, 23));
 });
 
-test('cada recàrrega avisa les pantalles amb una foto nova', async () => {
+test('every reload tells the screens with a new snapshot', async () => {
   const listener = jest.fn();
   const unsubscribe = LiturgyStore.subscribe(listener);
   const before = LiturgyStore.getSnapshot();
@@ -73,11 +73,11 @@ test('cada recàrrega avisa les pantalles amb una foto nova', async () => {
   expect(listener).toHaveBeenCalledTimes(1);
 });
 
-test('la foto no canvia si no hi ha res de nou', () => {
+test('the snapshot does not change if there is nothing new', () => {
   expect(LiturgyStore.getSnapshot()).toBe(LiturgyStore.getSnapshot());
 });
 
-test('la mida del text i el mode fosc es canvien sense recarregar, i avisen', () => {
+test('the text size and dark mode change without reloading, and tell the screens', () => {
   const listener = jest.fn();
   const unsubscribe = LiturgyStore.subscribe(listener);
   LiturgyStore.updateSettings({ textSize: '5', darkModeEnabled: true });
@@ -89,19 +89,19 @@ test('la mida del text i el mode fosc es canvien sense recarregar, i avisen', ()
   unsubscribe();
 });
 
-test('useAppearance dona el mode fosc i la mida, i es posa al dia', () => {
+test('useAppearance gives the dark mode and the size, and keeps itself up to date', () => {
   function Probe() {
     const { dark, textSize } = LiturgyStore.useAppearance();
-    return <Text>{`${dark ? 'fosc' : 'clar'} ${textSize}`}</Text>;
+    return <Text>{`${dark ? 'dark' : 'light'} ${textSize}`}</Text>;
   }
   LiturgyStore.updateSettings({ textSize: '3', darkModeEnabled: false });
   render(<Probe />);
-  expect(screen.getByText('clar 3')).toBeTruthy();
+  expect(screen.getByText('light 3')).toBeTruthy();
   act(() => LiturgyStore.updateSettings({ textSize: '7', darkModeEnabled: true }));
-  expect(screen.getByText('fosc 7')).toBeTruthy();
+  expect(screen.getByText('dark 7')).toBeTruthy();
 });
 
-test('sap si ja hi ha dades i quan es van carregar', async () => {
+test('it knows whether there is data already and when it was loaded', async () => {
   await LiturgyStore.reload(new Date(2026, 8, 26));
   expect(LiturgyStore.isLoaded()).toBe(true);
   expect(LiturgyStore.lastRefreshDate()).toEqual(new Date(2026, 8, 21));

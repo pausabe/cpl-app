@@ -327,7 +327,7 @@ function getCelebrationVariableIdentifier(
       : SoulKeys.LDSantoral_BenauradaVergeMariaMareEsglesiaI;
   }
 
-  //Diumenge dins l’Octava de Nadal A (146) B (149) C (152)
+  //Sunday within the Octave of Christmas A (146) B (149) C (152)
   if (
     CelebrationIdentifierService.checkCelebration(Celebration.SacredFamily, liturgySpecificDayInformation) &&
     liturgySpecificDayInformation.date.getDay() == 0
@@ -342,7 +342,7 @@ function getCelebrationVariableIdentifier(
     }
   }
 
-  //Diumenge després del dia 6 de gener A (157) B (158) C (159)
+  //Sunday after 6 January A (157) B (158) C (159)
   if (
     liturgySpecificDayInformation.date.getMonth() == 0 &&
     liturgySpecificDayInformation.date.getDay() == 0 &&
@@ -402,22 +402,22 @@ function getCelebrationVariableIdentifier(
 }
 
 function getSpecialOptionalDayIdentifier(date: Date): number {
-  // Pasqua 01-may -> 209 (Sant Josep obrer)
+  // Easter 01-may -> 209 (Saint Joseph the Worker)
   if (date.getDate() == 1 && date.getMonth() == 4) {
     return SoulKeys.LDSantoral_SantJosepObrer;
   }
 
-  // Ordinari 18-nov -> 210 ([-] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
+  // Ordinary 18-nov -> 210 ([-] Dedication of the Basilicas of Saints Peter and Paul, apostles)
   if (date.getDate() == 18 && date.getMonth() == 10) {
     return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostols;
   }
 
-  // Ordinari 19-nov -> 211 ([BaD] Dedicació de les Basíliques dels sants Pere i Pau, apòstols)
+  // Ordinary 19-nov -> 211 ([BaD] Dedication of the Basilicas of Saints Peter and Paul, apostles)
   if (date.getDate() == 19 && date.getMonth() == 10) {
     return SoulKeys.LDSantoral_DedicacioBasiliquesSantsPerePauApostolsBaD;
   }
 
-  // Nadal 03-ene -> 219 ([-] Santíssim Nom de Jesús)
+  // Christmas 03-jan -> 219 ([-] Most Holy Name of Jesus)
   if (date.getDate() == 3 && date.getMonth() == 0) {
     return SoulKeys.LDSantoral_SantissimNomDeJesus;
   }

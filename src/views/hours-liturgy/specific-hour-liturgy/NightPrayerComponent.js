@@ -14,7 +14,7 @@ import { ThemeContext, prayerTextStyles } from '../../../theme';
 // The four Marian antiphons to choose from outside Easter (in Easter, only the fifth)
 const MARIAN_ANTIPHONS = ['1', '2', '3', '4'].map((value) => ({ value, label: `Ant. ${value}` }));
 
-// Completes. Gets through props the hours of the day (hours), the day (today) and the settings;
+// Night Prayer. Gets through props the hours of the day (hours), the day (today) and the settings;
 // a new Marian antiphon goes to onVirginAntiphonChange.
 export default class NightPrayerComponent extends Component {
   static contextType = ThemeContext;
@@ -23,18 +23,18 @@ export default class NightPrayerComponent extends Component {
     super(props);
 
     // In Easter, always the fifth antiphon (Regina caeli); outside it, the one chosen last time
-    let auxNumAntMare = props.settings.virginAntiphonOption;
+    let marianAntiphonNumber = props.settings.virginAntiphonOption;
 
-    if (props.today.genericLiturgyTime === GenericLiturgyTimeType.Easter && auxNumAntMare !== '5') {
-      auxNumAntMare = '5';
+    if (props.today.genericLiturgyTime === GenericLiturgyTimeType.Easter && marianAntiphonNumber !== '5') {
+      marianAntiphonNumber = '5';
       props.onVirginAntiphonChange('5');
-    } else if (!(props.today.genericLiturgyTime === GenericLiturgyTimeType.Easter) && auxNumAntMare === '5') {
-      auxNumAntMare = '1';
+    } else if (!(props.today.genericLiturgyTime === GenericLiturgyTimeType.Easter) && marianAntiphonNumber === '5') {
+      marianAntiphonNumber = '1';
       props.onVirginAntiphonChange('1');
     }
 
     this.state = {
-      numAntMare: auxNumAntMare,
+      marianAntiphonNumber: marianAntiphonNumber,
     };
   }
 
@@ -50,33 +50,33 @@ export default class NightPrayerComponent extends Component {
     return this.props.today;
   }
 
-  get COMPLETES() {
+  get nightPrayer() {
     return this.props.hours.nightPrayer;
   }
 
-  onAntMarePress(numAntMare) {
-    this.setState({ numAntMare: numAntMare });
-    this.props.onVirginAntiphonChange(numAntMare);
+  onMarianAntiphonPress(marianAntiphonNumber) {
+    this.setState({ marianAntiphonNumber: marianAntiphonNumber });
+    this.props.onVirginAntiphonChange(marianAntiphonNumber);
   }
 
-  antMareComp(numAntMare) {
-    let antMare;
+  marianAntiphon(marianAntiphonNumber) {
+    let antiphon;
 
-    switch (numAntMare) {
+    switch (marianAntiphonNumber) {
       case '1':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonFirstOption);
+        antiphon = GlobalViewFunctions.rs(this.nightPrayer.virginMaryFinalAntiphonFirstOption);
         break;
       case '2':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonSecondOption);
+        antiphon = GlobalViewFunctions.rs(this.nightPrayer.virginMaryFinalAntiphonSecondOption);
         break;
       case '3':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonThirdOption);
+        antiphon = GlobalViewFunctions.rs(this.nightPrayer.virginMaryFinalAntiphonThirdOption);
         break;
       case '4':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonFourthOption);
+        antiphon = GlobalViewFunctions.rs(this.nightPrayer.virginMaryFinalAntiphonFourthOption);
         break;
       case '5':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonFifthOption);
+        antiphon = GlobalViewFunctions.rs(this.nightPrayer.virginMaryFinalAntiphonFifthOption);
         break;
     }
 
@@ -86,14 +86,14 @@ export default class NightPrayerComponent extends Component {
           <ChoiceChips
             accessibilityLabel="Antífona final de la Mare de Déu"
             options={MARIAN_ANTIPHONS}
-            value={numAntMare}
-            onChange={this.onAntMarePress.bind(this)}
+            value={marianAntiphonNumber}
+            onChange={this.onMarianAntiphonPress.bind(this)}
           />
         ) : (
           <Gap size="small" />
         )}
         <Text selectable={true} style={this.styles.black}>
-          {antMare}
+          {antiphon}
         </Text>
       </View>
     );
@@ -101,87 +101,87 @@ export default class NightPrayerComponent extends Component {
 
   render() {
     try {
-      if (this.COMPLETES !== null) {
+      if (this.nightPrayer !== null) {
         const gloriaStringIntro =
           'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
-        const is_special_initial_message =
+        const isSpecialInitialMessage =
           this.today.specificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum && this.today.date.getDay() === 6;
-        const aux_special_initial_message =
+        const specialInitialMessage =
           'Avui, només han de dir aquestes Completes els qui no participen en la Vetlla pasqual.';
-        const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
-        const aux_veniu = 'Senyor, veniu a ajudar-nos.';
-        const is_aleluia =
+        const openingVersicle = 'Sigueu amb nosaltres, Déu nostre.';
+        const openingResponse = 'Senyor, veniu a ajudar-nos.';
+        const isAlleluia =
           this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
           this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
           this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
           this.today.specificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
           this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
-        const aux_lloable = 'És lloable que aquí es faci examen de consciència.';
-        const aux_acte_pen = this.COMPLETES.penitentialAct;
-        const aux_himne = GlobalViewFunctions.rs(this.COMPLETES.anthem);
-        const is_dos_salms = this.COMPLETES.hasMultiplePsalms;
-        const has_distint_ant = !this.COMPLETES.useOnlyFirstPsalmAntiphon;
-        const aux_ant1 = GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.antiphon);
-        const aux_titol1 = GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.title);
-        const has_com1 = StringManagement.hasLiturgyContent(this.COMPLETES.firstPsalm.comment);
-        const aux_com1 = has_com1 ? GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.comment) : '';
-        const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.psalm));
-        let aux_ant2;
-        let aux_titol2;
-        let has_com2;
-        let aux_com2;
-        let aux_salm2;
-        if (is_dos_salms) {
-          aux_ant2 = has_distint_ant ? GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.antiphon) : '';
-          aux_titol2 = GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.title);
-          has_com2 = StringManagement.hasLiturgyContent(this.COMPLETES.secondPsalm.comment);
-          aux_com2 = has_com2 ? GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.comment) : '';
-          aux_salm2 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.psalm));
+        const examinationOfConscienceRubric = 'És lloable que aquí es faci examen de consciència.';
+        const penitentialAct = this.nightPrayer.penitentialAct;
+        const hymn = GlobalViewFunctions.rs(this.nightPrayer.anthem);
+        const hasTwoPsalms = this.nightPrayer.hasMultiplePsalms;
+        const hasDifferentAntiphons = !this.nightPrayer.useOnlyFirstPsalmAntiphon;
+        const firstAntiphon = GlobalViewFunctions.rs(this.nightPrayer.firstPsalm.antiphon);
+        const firstTitle = GlobalViewFunctions.rs(this.nightPrayer.firstPsalm.title);
+        const hasFirstComment = StringManagement.hasLiturgyContent(this.nightPrayer.firstPsalm.comment);
+        const firstComment = hasFirstComment ? GlobalViewFunctions.rs(this.nightPrayer.firstPsalm.comment) : '';
+        const firstPsalm = this.psalm(GlobalViewFunctions.rs(this.nightPrayer.firstPsalm.psalm));
+        let secondAntiphon;
+        let secondTitle;
+        let hasSecondComment;
+        let secondComment;
+        let secondPsalm;
+        if (hasTwoPsalms) {
+          secondAntiphon = hasDifferentAntiphons ? GlobalViewFunctions.rs(this.nightPrayer.secondPsalm.antiphon) : '';
+          secondTitle = GlobalViewFunctions.rs(this.nightPrayer.secondPsalm.title);
+          hasSecondComment = StringManagement.hasLiturgyContent(this.nightPrayer.secondPsalm.comment);
+          secondComment = hasSecondComment ? GlobalViewFunctions.rs(this.nightPrayer.secondPsalm.comment) : '';
+          secondPsalm = this.psalm(GlobalViewFunctions.rs(this.nightPrayer.secondPsalm.psalm));
         }
-        const aux_vers = GlobalViewFunctions.rs(this.COMPLETES.shortReading.quote);
-        const aux_lectura_breu = GlobalViewFunctions.rs(this.COMPLETES.shortReading.shortReading);
-        let aux_ant_special;
-        let aux_resp_1_2;
-        let aux_resp_2;
-        let aux_resp_3;
-        const is_normal_resp = !this.COMPLETES.shortResponsory.hasSpecialAntiphon;
-        if (is_normal_resp) {
-          aux_resp_1_2 = GlobalViewFunctions.respTogether(
-            GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.firstPart),
-            GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.secondPart),
+        const shortReadingQuote = GlobalViewFunctions.rs(this.nightPrayer.shortReading.quote);
+        const shortReadingText = GlobalViewFunctions.rs(this.nightPrayer.shortReading.shortReading);
+        let specialAntiphon;
+        let responsoryFirstAndSecondPart;
+        let responsorySecondPart;
+        let responsoryThirdPart;
+        const isNormalResponsory = !this.nightPrayer.shortResponsory.hasSpecialAntiphon;
+        if (isNormalResponsory) {
+          responsoryFirstAndSecondPart = GlobalViewFunctions.respTogether(
+            GlobalViewFunctions.rs(this.nightPrayer.shortResponsory.firstPart),
+            GlobalViewFunctions.rs(this.nightPrayer.shortResponsory.secondPart),
           );
-          aux_resp_2 = GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.secondPart);
-          aux_resp_3 = GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.thirdPart);
+          responsorySecondPart = GlobalViewFunctions.rs(this.nightPrayer.shortResponsory.secondPart);
+          responsoryThirdPart = GlobalViewFunctions.rs(this.nightPrayer.shortResponsory.thirdPart);
         } else {
-          aux_ant_special = GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.specialAntiphon);
+          specialAntiphon = GlobalViewFunctions.rs(this.nightPrayer.shortResponsory.specialAntiphon);
         }
-        const aux_gloria_half = " Glòria al Pare i al Fill i a l'Esperit Sant.";
-        const aux_ant_cantic = GlobalViewFunctions.rs(this.COMPLETES.evangelicalAntiphon);
-        const aux_titol_cantic = "Càntic\nLc 2, 29-32\nCrist, llum de les nacions i glòria d'Israel";
-        const aux_cantic = this.salm(GlobalViewFunctions.rs(this.COMPLETES.evangelicalChant));
-        const aux_gloria_cantic = 'Glòria.';
-        const aux_oracio = GlobalViewFunctions.rs(this.COMPLETES.finalPrayer);
-        const aux_fi_benaurada = 'Que el Senyor totpoderós ens concedeixi una nit tranquil·la i una fi benaurada.';
-        const aux_antifona_final = 'Antífona final de la Mare de Déu';
+        const halfGloria = " Glòria al Pare i al Fill i a l'Esperit Sant.";
+        const canticleAntiphon = GlobalViewFunctions.rs(this.nightPrayer.evangelicalAntiphon);
+        const canticleTitle = "Càntic\nLc 2, 29-32\nCrist, llum de les nacions i glòria d'Israel";
+        const canticleText = this.psalm(GlobalViewFunctions.rs(this.nightPrayer.evangelicalChant));
+        const canticleGloria = 'Glòria.';
+        const prayer = GlobalViewFunctions.rs(this.nightPrayer.finalPrayer);
+        const blessedEndVersicle = 'Que el Senyor totpoderós ens concedeixi una nit tranquil·la i una fi benaurada.';
+        const finalAntiphonTitle = 'Antífona final de la Mare de Déu';
 
         return (
           <View>
-            {is_special_initial_message ? (
+            {isSpecialInitialMessage ? (
               <View>
                 <Text selectable={true} style={this.styles.redCenter}>
-                  {aux_special_initial_message}
+                  {specialInitialMessage}
                 </Text>
                 <Gap />
                 <HR />
                 <Gap />
               </View>
             ) : null}
-            <Rubric label={'V. '}>{aux_sigueu}</Rubric>
-            <Rubric label={'R. '}>{aux_veniu}</Rubric>
+            <Rubric label={'V. '}>{openingVersicle}</Rubric>
+            <Rubric label={'R. '}>{openingResponse}</Rubric>
             <Gap />
             <Text selectable={true} style={this.styles.black}>
               {gloriaStringIntro}
-              {is_aleluia ? (
+              {isAlleluia ? (
                 <Text selectable={true} style={this.styles.black}>
                   {' Al·leluia.'}
                 </Text>
@@ -191,51 +191,51 @@ export default class NightPrayerComponent extends Component {
             <HR />
             <Gap />
             <Text selectable={true} style={this.styles.redCenter}>
-              {aux_lloable}
+              {examinationOfConscienceRubric}
             </Text>
             <Gap />
             <Text selectable={true} style={this.styles.black}>
-              {aux_acte_pen}
+              {penitentialAct}
             </Text>
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'HIMNE'}</SectionTitle>
             <Text selectable={true} style={this.styles.black}>
-              {aux_himne}
+              {hymn}
             </Text>
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'SALMÒDIA'}</SectionTitle>
-            {is_dos_salms ? (
+            {hasTwoPsalms ? (
               <View>
-                {has_distint_ant ? (
-                  <Rubric label={'Ant. 1. '}>{aux_ant1}</Rubric>
+                {hasDifferentAntiphons ? (
+                  <Rubric label={'Ant. 1. '}>{firstAntiphon}</Rubric>
                 ) : (
-                  <Rubric label={'Ant. '}>{aux_ant1}</Rubric>
+                  <Rubric label={'Ant. '}>{firstAntiphon}</Rubric>
                 )}
                 <Gap />
                 <Text selectable={true} style={this.styles.redCenter}>
-                  {aux_titol1}
+                  {firstTitle}
                 </Text>
                 <Gap />
-                {has_com1 ? (
+                {hasFirstComment ? (
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 1 }} />
                     <View style={{ flex: 2 }}>
                       <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                        {aux_com1}
+                        {firstComment}
                       </Text>
                       <Gap />
                     </View>
                   </View>
                 ) : null}
                 <Text selectable={true} style={this.styles.black}>
-                  {aux_salm1}
+                  {firstPsalm}
                 </Text>
                 <Gap />
-                {this.COMPLETES.firstPsalm.hasGloryPrayer ? (
+                {this.nightPrayer.firstPsalm.hasGloryPrayer ? (
                   <Text selectable={true} style={this.styles.blackItalic}>
                     {'Glòria.'}
                   </Text>
@@ -245,34 +245,34 @@ export default class NightPrayerComponent extends Component {
                   </Text>
                 )}
                 <Gap />
-                {has_distint_ant ? (
+                {hasDifferentAntiphons ? (
                   <View>
-                    <Rubric label={'Ant. 1. '}>{aux_ant1}</Rubric>
+                    <Rubric label={'Ant. 1. '}>{firstAntiphon}</Rubric>
                     <Gap />
-                    <Rubric label={'Ant. 2. '}>{aux_ant2}</Rubric>
+                    <Rubric label={'Ant. 2. '}>{secondAntiphon}</Rubric>
                     <Gap />
                   </View>
                 ) : null}
                 <Text selectable={true} style={this.styles.redCenter}>
-                  {aux_titol2}
+                  {secondTitle}
                 </Text>
                 <Gap />
-                {has_com2 !== '-' ? (
+                {hasSecondComment !== '-' ? (
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 1 }} />
                     <View style={{ flex: 2 }}>
                       <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                        {aux_com2}
+                        {secondComment}
                       </Text>
                       <Gap />
                     </View>
                   </View>
                 ) : null}
                 <Text selectable={true} style={this.styles.black}>
-                  {aux_salm2}
+                  {secondPsalm}
                 </Text>
                 <Gap />
-                {this.COMPLETES.secondPsalm.hasGloryPrayer ? (
+                {this.nightPrayer.secondPsalm.hasGloryPrayer ? (
                   <Text selectable={true} style={this.styles.blackItalic}>
                     {'Glòria.'}
                   </Text>
@@ -282,40 +282,40 @@ export default class NightPrayerComponent extends Component {
                   </Text>
                 )}
                 <Gap />
-                {has_distint_ant ? (
+                {hasDifferentAntiphons ? (
                   <View>
-                    <Rubric label={'Ant. 2. '}>{aux_ant2}</Rubric>
+                    <Rubric label={'Ant. 2. '}>{secondAntiphon}</Rubric>
                   </View>
                 ) : (
                   <View>
-                    <Rubric label={'Ant. '}>{aux_ant1}</Rubric>
+                    <Rubric label={'Ant. '}>{firstAntiphon}</Rubric>
                   </View>
                 )}
               </View>
             ) : (
               <View>
-                <Rubric label={'Ant. '}>{aux_ant1}</Rubric>
+                <Rubric label={'Ant. '}>{firstAntiphon}</Rubric>
                 <Gap />
                 <Text selectable={true} style={this.styles.redCenter}>
-                  {aux_titol1}
+                  {firstTitle}
                 </Text>
                 <Gap />
-                {has_com1 ? (
+                {hasFirstComment ? (
                   <View style={{ flexDirection: 'row' }}>
                     <View style={{ flex: 1 }} />
                     <View style={{ flex: 2 }}>
                       <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                        {aux_com1}
+                        {firstComment}
                       </Text>
                       <Gap />
                     </View>
                   </View>
                 ) : null}
                 <Text selectable={true} style={this.styles.black}>
-                  {aux_salm1}
+                  {firstPsalm}
                 </Text>
                 <Gap />
-                {this.COMPLETES.firstPsalm.hasGloryPrayer ? (
+                {this.nightPrayer.firstPsalm.hasGloryPrayer ? (
                   <Text selectable={true} style={this.styles.blackItalic}>
                     {'Glòria.'}
                   </Text>
@@ -325,7 +325,7 @@ export default class NightPrayerComponent extends Component {
                   </Text>
                 )}
                 <Gap />
-                <Rubric label={'Ant. '}>{aux_ant1}</Rubric>
+                <Rubric label={'Ant. '}>{firstAntiphon}</Rubric>
               </View>
             )}
             <Gap />
@@ -333,51 +333,51 @@ export default class NightPrayerComponent extends Component {
             <Gap />
             <SectionTitle>{'LECTURA BREU'}</SectionTitle>
             <Text selectable={true} style={this.styles.red}>
-              {aux_vers}
+              {shortReadingQuote}
             </Text>
             <Gap />
             <Text selectable={true} style={this.styles.black}>
-              {aux_lectura_breu}
+              {shortReadingText}
             </Text>
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'RESPONSORI BREU'}</SectionTitle>
-            {is_normal_resp ? (
+            {isNormalResponsory ? (
               <View>
-                <Rubric label={'V. '}>{aux_resp_1_2}</Rubric>
-                <Rubric label={'R. '}>{aux_resp_1_2}</Rubric>
+                <Rubric label={'V. '}>{responsoryFirstAndSecondPart}</Rubric>
+                <Rubric label={'R. '}>{responsoryFirstAndSecondPart}</Rubric>
                 <Gap />
-                <Rubric label={'V. '}>{aux_resp_3}</Rubric>
-                <Rubric label={'R. '}>{aux_resp_2}</Rubric>
+                <Rubric label={'V. '}>{responsoryThirdPart}</Rubric>
+                <Rubric label={'R. '}>{responsorySecondPart}</Rubric>
                 <Gap />
-                <Rubric label={'V. '}>{aux_gloria_half}</Rubric>
-                <Rubric label={'R. '}>{aux_resp_1_2}</Rubric>
+                <Rubric label={'V. '}>{halfGloria}</Rubric>
+                <Rubric label={'R. '}>{responsoryFirstAndSecondPart}</Rubric>
               </View>
             ) : (
               <View>
-                <Rubric label={'Ant. '}>{aux_ant_special}</Rubric>
+                <Rubric label={'Ant. '}>{specialAntiphon}</Rubric>
               </View>
             )}
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'CÀNTIC DE SIMEÓ'}</SectionTitle>
-            <Rubric label={'Ant. '}>{aux_ant_cantic}</Rubric>
+            <Rubric label={'Ant. '}>{canticleAntiphon}</Rubric>
             <Gap />
             <Text selectable={true} style={this.styles.redCenter}>
-              {aux_titol_cantic}
+              {canticleTitle}
             </Text>
             <Gap />
             <Text selectable={true} style={this.styles.black}>
-              {aux_cantic}
+              {canticleText}
             </Text>
             <Gap />
             <Text selectable={true} style={this.styles.blackItalic}>
-              {aux_gloria_cantic}
+              {canticleGloria}
             </Text>
             <Gap />
-            <Rubric label={'Ant. '}>{aux_ant_cantic}</Rubric>
+            <Rubric label={'Ant. '}>{canticleAntiphon}</Rubric>
             <Gap />
             <HR />
             <Gap />
@@ -386,22 +386,22 @@ export default class NightPrayerComponent extends Component {
               {'Preguem.'}
             </Text>
             <Text selectable={true} style={this.styles.black}>
-              {aux_oracio}
+              {prayer}
             </Text>
             <Rubric label={'R. '}>{'Amén.'}</Rubric>
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'CONCLUSIÓ'}</SectionTitle>
-            <Rubric label={'V. '}>{aux_fi_benaurada}</Rubric>
+            <Rubric label={'V. '}>{blessedEndVersicle}</Rubric>
             <Rubric label={'R. '}>{'Amén.'}</Rubric>
             <Gap />
             <HR />
             <Gap />
             <Text selectable={true} accessibilityRole="header" style={this.styles.centeredTitle}>
-              {aux_antifona_final}
+              {finalAntiphonTitle}
             </Text>
-            {this.antMareComp(this.state.numAntMare)}
+            {this.marianAntiphon(this.state.marianAntiphonNumber)}
             <Gap />
           </View>
         );
@@ -415,16 +415,16 @@ export default class NightPrayerComponent extends Component {
     }
   }
 
-  salm(salm) {
-    if (!salm) return null;
-    salm = salm.replace(/    [*]/g, '');
-    salm = salm.replace(/   [*]/g, '');
-    salm = salm.replace(/  [*]/g, '');
-    salm = salm.replace(/ [*]/g, '');
-    salm = salm.replace(/    [†]/g, '');
-    salm = salm.replace(/   [†]/g, '');
-    salm = salm.replace(/  [†]/g, '');
-    salm = salm.replace(/ [†]/g, '');
-    return salm;
+  psalm(psalm) {
+    if (!psalm) return null;
+    psalm = psalm.replace(/    [*]/g, '');
+    psalm = psalm.replace(/   [*]/g, '');
+    psalm = psalm.replace(/  [*]/g, '');
+    psalm = psalm.replace(/ [*]/g, '');
+    psalm = psalm.replace(/    [†]/g, '');
+    psalm = psalm.replace(/   [†]/g, '');
+    psalm = psalm.replace(/  [†]/g, '');
+    psalm = psalm.replace(/ [†]/g, '');
+    return psalm;
   }
 }

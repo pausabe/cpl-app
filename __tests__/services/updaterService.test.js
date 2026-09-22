@@ -43,36 +43,36 @@ async function goToBackgroundAndBack(at) {
   await UpdaterService.handleAppStateChange('active');
 }
 
-test('si hi ha una actualització, la descarrega', async () => {
+test('if there is an update, it downloads it', async () => {
   publishUpdate('u1');
   await expect(UpdaterService.doUpdateIfAvailable()).resolves.toBe(true);
   expect(Updates.fetchUpdateAsync).toHaveBeenCalled();
 });
 
-test("si no n'hi ha, no descarrega res", async () => {
+test('if there is none, it downloads nothing', async () => {
   await expect(UpdaterService.doUpdateIfAvailable()).resolves.toBe(false);
   expect(Updates.fetchUpdateAsync).not.toHaveBeenCalled();
 });
 
-test("un error de xarxa no fa petar l'app", async () => {
+test('a network error does not crash the app', async () => {
   Updates.checkForUpdateAsync.mockRejectedValue(new Error('offline'));
   await expect(UpdaterService.doUpdateIfAvailable()).resolves.toBe(false);
 });
 
-test('en desenvolupament no comprova res', async () => {
+test('in development it checks nothing', async () => {
   global.__DEV__ = true;
   await expect(UpdaterService.doUpdateIfAvailable()).resolves.toBe(false);
   expect(Updates.checkForUpdateAsync).not.toHaveBeenCalled();
 });
 
-test('la que ja té baixada no la torna a demanar', async () => {
+test('the one it has already downloaded it does not ask for again', async () => {
   publishUpdate('u1');
   await UpdaterService.doUpdateIfAvailable();
   await UpdaterService.doUpdateIfAvailable();
   expect(Updates.fetchUpdateAsync).toHaveBeenCalledTimes(1);
 });
 
-test("si se'n publica una de més nova, també la baixa", async () => {
+test('if a newer one is published, it downloads that one too', async () => {
   publishUpdate('u1');
   await UpdaterService.doUpdateIfAvailable();
   publishUpdate('u2');
@@ -80,7 +80,7 @@ test("si se'n publica una de més nova, també la baixa", async () => {
   expect(Updates.fetchUpdateAsync).toHaveBeenCalledTimes(2);
 });
 
-test("tornant a l'app un altre dia, aplica l'actualització baixada", async () => {
+test('coming back to the app on another day, it applies the downloaded update', async () => {
   publishUpdate('u1');
   await UpdaterService.doUpdateIfAvailable();
 
@@ -89,7 +89,7 @@ test("tornant a l'app un altre dia, aplica l'actualització baixada", async () =
   expect(Updates.reloadAsync).toHaveBeenCalledWith({ reloadScreenOptions: expect.any(Object) });
 });
 
-test("tornant a l'app el mateix dia, no la reinicia", async () => {
+test('coming back to the app on the same day, it does not restart it', async () => {
   publishUpdate('u1');
   await UpdaterService.doUpdateIfAvailable();
 
@@ -98,7 +98,7 @@ test("tornant a l'app el mateix dia, no la reinicia", async () => {
   expect(Updates.reloadAsync).not.toHaveBeenCalled();
 });
 
-test('un altre dia sense res baixat, no reinicia i torna a comprovar', async () => {
+test('another day with nothing downloaded, it does not restart and it checks again', async () => {
   await UpdaterService.doUpdateIfAvailable();
 
   await goToBackgroundAndBack(NEXT_MORNING);
@@ -107,7 +107,7 @@ test('un altre dia sense res baixat, no reinicia i torna a comprovar', async () 
   expect(Updates.checkForUpdateAsync).toHaveBeenCalledTimes(2);
 });
 
-test('tornant al cap de poc, no torna a comprovar', async () => {
+test('coming back a short while later, it does not check again', async () => {
   await UpdaterService.doUpdateIfAvailable();
 
   await goToBackgroundAndBack(new Date(2026, 8, 21, 21, 2, 0));
@@ -115,7 +115,7 @@ test('tornant al cap de poc, no torna a comprovar', async () => {
   expect(Updates.checkForUpdateAsync).toHaveBeenCalledTimes(1);
 });
 
-test('si no es pot reiniciar, continua com sempre', async () => {
+test('if it cannot restart, it carries on as always', async () => {
   publishUpdate('u1');
   await UpdaterService.doUpdateIfAvailable();
   Updates.reloadAsync.mockRejectedValue(new Error('ERR_UPDATES_RELOAD'));

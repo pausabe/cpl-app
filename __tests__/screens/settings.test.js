@@ -1,4 +1,4 @@
-// Configuració: the groups, the current values, and each change saved where it has always been
+// Settings: the groups, the current values, and each change saved where it has always been
 // and applied. With the real liturgy, so that the changes that reload it are real too.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('expo-updates', () => ({
@@ -38,7 +38,7 @@ beforeEach(async () => {
   await loadDay('2026-09-21');
 });
 
-test('tres grups amb les sis opcions de sempre, i els valors guardats', async () => {
+test('three groups with the usual six options, and the saved values', async () => {
   await open();
   for (const group of ['Lectura', 'Calendari', 'Missa'])
     expect(screen.getByRole('header', { name: group })).toBeTruthy();
@@ -57,7 +57,7 @@ test('tres grups amb les sis opcions de sempre, i els valors guardats', async ()
   );
 });
 
-test('en una tauleta, una columna al mig tan ampla com la de l’inici', async () => {
+test('on a tablet, a column in the middle as wide as the one of the home', async () => {
   await open();
   expect(styleOf(screen.getByTestId('settings-column'))).toMatchObject({
     width: '100%',
@@ -66,7 +66,7 @@ test('en una tauleta, una columna al mig tan ampla com la de l’inici', async (
   });
 });
 
-test('la diòcesi es tria en un full; es desa i la litúrgia es recarrega amb ella', async () => {
+test('the diocese is chosen in a sheet; it is saved and the liturgy reloads with it', async () => {
   await open();
   fireEvent.press(screen.getByRole('button', { name: 'Diòcesi: Barcelona' }));
   expect(await screen.findByTestId('option-sheet')).toBeTruthy();
@@ -78,7 +78,7 @@ test('la diòcesi es tria en un full; es desa i la litúrgia es recarrega amb el
   expect(screen.getByRole('button', { name: 'Diòcesi: Andorra' })).toBeTruthy();
 });
 
-test('el lloc, també', async () => {
+test('the place, too', async () => {
   await open();
   fireEvent.press(screen.getByRole('button', { name: 'Lloc: Diòcesi' }));
   await act(async () => {
@@ -88,7 +88,7 @@ test('el lloc, també', async () => {
   expect(await AsyncStorage.getItem('lloc')).toBe('Catedral');
 });
 
-test('els himnes en llatí es desen i recarreguen la litúrgia', async () => {
+test('the Latin hymns are saved and reload the liturgy', async () => {
   await open();
   await act(async () => {
     fireEvent.press(screen.getByRole('switch', { name: 'Himnes en llatí' }));
@@ -97,7 +97,7 @@ test('els himnes en llatí es desen i recarreguen la litúrgia', async () => {
   expect(await AsyncStorage.getItem('useLatin')).toBe('true');
 });
 
-test('el vídeo de llengua de signes es desa', async () => {
+test('the sign language video is saved', async () => {
   await open();
   await act(async () => {
     fireEvent.press(screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' }));
@@ -105,7 +105,7 @@ test('el vídeo de llengua de signes es desa', async () => {
   expect(await AsyncStorage.getItem('showVideos')).toBe('true');
 });
 
-test('el tema, Automàtic, Clar o Fosc, s’aplica a l’instant i es desa com sempre', async () => {
+test('the theme, Automàtic, Clar or Fosc, is applied at once and saved as always', async () => {
   await open();
   await act(async () => {
     fireEvent.press(screen.getByRole('radio', { name: 'Fosc' }));
@@ -114,7 +114,7 @@ test('el tema, Automàtic, Clar o Fosc, s’aplica a l’instant i es desa com s
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
 });
 
-test('la mida del text es veu en una frase de mostra i es desa en deixar anar', async () => {
+test('the text size is shown in a sample phrase and is saved on release', async () => {
   await open();
   // The slider is native: its props are the ones of the React component
   const slider = screen.UNSAFE_getByType(require('@react-native-community/slider').default);
@@ -129,14 +129,14 @@ test('la mida del text es veu en una frase de mostra i es desa en deixar anar', 
 });
 
 // iOS has no bar at the bottom, only the home indicator (34 points on the test phone)
-test('Configuració scrolls to the bottom edge, and ends above the home indicator', async () => {
+test('Settings scrolls to the bottom edge, and ends above the home indicator', async () => {
   await open();
   const scroll = screen.getByTestId('settings-scroll');
   expect(StyleSheet.flatten(scroll.props.contentContainerStyle).paddingBottom).toBe(34);
   expect(scroll.props.scrollIndicatorInsets).toEqual({ bottom: 34 });
 });
 
-// On iOS the native slider drew its thumb at the start the first time Configuració opened
+// On iOS the native slider drew its thumb at the start the first time Settings opened
 test('on iOS the slider gets the chosen size once it has its width, so that its thumb moves there', async () => {
   await AsyncStorage.setItem('textSize', '5');
   await DataService.reloadAllData(new Date(2026, 8, 21), null);
@@ -152,7 +152,7 @@ test('on iOS the slider gets the chosen size once it has its width, so that its 
   expect(slider().props.value).toBe(5);
 });
 
-test('a la vista, el text d’aprovació i les versions; les dades tècniques, darrere deu tocs', async () => {
+test('in plain sight, the approval text and the versions; the technical data, behind ten taps', async () => {
   await open();
   expect(screen.getByText(/Versió de l'aplicació: 9\.0\.0 \(90\)/)).toBeTruthy();
   expect(screen.getByText(/Versió de la base de dades: \d+/)).toBeTruthy();

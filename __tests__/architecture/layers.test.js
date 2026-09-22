@@ -54,15 +54,15 @@ const inside = (target, ...folders) => folders.some((f) => target === f || targe
 // Enumerations of the domain: plain values, no data access
 const DOMAIN_ENUMS = ['services/celebrationTimeEnums', 'services/databaseEnums'];
 
-test('Theme només depèn de si mateix', () => {
+test('Theme depends only on itself', () => {
   expect(violations('theme', (t) => isPackage(t) || inside(t, 'theme', 'assets'))).toEqual([]);
 });
 
-test('Components només depenen del tema, d’altres components i dels tipus de ViewModels', () => {
+test('Components depend only on the theme, on other components and on the types of ViewModels', () => {
   expect(violations('components', (t) => isPackage(t) || inside(t, 'components', 'theme', 'view-models'))).toEqual([]);
 });
 
-test('ViewModels són funcions pures: ni React ni serveis', () => {
+test('ViewModels are pure functions: no React and no services', () => {
   expect(
     violations(
       'view-models',
@@ -73,7 +73,7 @@ test('ViewModels són funcions pures: ni React ni serveis', () => {
   ).toEqual([]);
 });
 
-test('Views només reben les dades per props: ni serveis ni controladors', () => {
+test('Views only get the data through props: no services and no controllers', () => {
   expect(
     violations(
       'views',
@@ -85,7 +85,7 @@ test('Views només reben les dades per props: ni serveis ni controladors', () =>
   ).toEqual([]);
 });
 
-test('les dades del dia (DataService) només es llegeixen des del magatzem i des dels serveis', () => {
+test('the data of the day (DataService) is read only from the store and from the services', () => {
   const readers = [];
   for (const layer of fs.readdirSync(SRC)) {
     if (!fs.statSync(path.join(SRC, layer)).isDirectory()) continue;

@@ -15,7 +15,7 @@ import Icon from '../../src/components/Icon';
 import EdgeToEdgeScrollView from '../../src/components/EdgeToEdgeScrollView';
 
 describe('BottomSheet', () => {
-  test('mostra el contingut quan és obert, i res quan és tancat', () => {
+  test('shows its content when it is open, and nothing when it is closed', () => {
     const { rerender } = renderWithTheme(
       <BottomSheet visible={true} onClose={() => {}} accessibilityLabel="Sant Mateu">
         <Text>La vida del sant</Text>
@@ -32,7 +32,7 @@ describe('BottomSheet', () => {
     expect(screen.queryByText('La vida del sant')).toBeNull();
   });
 
-  test('es tanca tocant fora', () => {
+  test('it closes when touched outside', () => {
     const onClose = jest.fn();
     renderWithTheme(
       <BottomSheet visible={true} onClose={onClose} accessibilityLabel="Full" testID="full">
@@ -44,7 +44,7 @@ describe('BottomSheet', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  test('es tanca amb el botó enrere d’Android', () => {
+  test('it closes with the Android back button', () => {
     const onClose = jest.fn();
     renderWithTheme(
       <BottomSheet visible={true} onClose={onClose} accessibilityLabel="Full">
@@ -56,7 +56,7 @@ describe('BottomSheet', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  test('ocupa com a màxim el 80 % de l’alçada', () => {
+  test('it takes at most 80 % of the height', () => {
     renderWithTheme(
       <BottomSheet visible={true} onClose={() => {}} accessibilityLabel="Full" testID="full">
         <Text>Text</Text>
@@ -66,7 +66,7 @@ describe('BottomSheet', () => {
     expect(styleOf(screen.getByTestId('full')).maxHeight).toBeCloseTo(height * 0.8, 0);
   });
 
-  test('una pàgina web hi va de vora a vora, en el 92 % de l’alçada', () => {
+  test('a web page goes edge to edge in it, at 92 % of the height', () => {
     renderWithTheme(
       <BottomSheet visible={true} tall={true} onClose={() => {}} accessibilityLabel="Web" testID="web">
         <Text>Web</Text>
@@ -106,7 +106,7 @@ describe('BottomSheet', () => {
     });
   }
 
-  test('es tanca estirant-lo avall per dalt; si no s’estira prou, torna a lloc', () => {
+  test('it closes when pulled down from the top; pulled less than enough, it goes back', () => {
     jest.useFakeTimers();
     const onClose = jest.fn();
     renderWithTheme(
@@ -126,7 +126,7 @@ describe('BottomSheet', () => {
     jest.useRealTimers();
   });
 
-  test('llançat avall, es tanca encara que s’hagi mogut poc', () => {
+  test('flung down, it closes even if it has moved little', () => {
     expect(closesWhenReleased(30, 1.5)).toBe(true);
     expect(closesWhenReleased(120, 0)).toBe(true);
     expect(closesWhenReleased(40, 0.2)).toBe(false);
@@ -161,7 +161,7 @@ describe('EdgeToEdgeScrollView', () => {
 });
 
 describe('Dialog', () => {
-  test('una targeta al mig; tocar fora o enrere la tanca', () => {
+  test('a card in the middle; touching outside or back closes it', () => {
     const onDismiss = jest.fn();
     renderWithTheme(
       <Dialog visible={true} onDismiss={onDismiss} accessibilityLabel="Avís">
@@ -175,7 +175,7 @@ describe('Dialog', () => {
 });
 
 describe('ActionButton', () => {
-  test('ple o de contorn, amb una segona línia que també es llegeix', () => {
+  test('filled or outlined, with a second line that is read out too', () => {
     const onPress = jest.fn();
     renderWithTheme(<ActionButton label="Sí, la d’ahir" sublabel="Dilluns, 21 de setembre" onPress={onPress} />);
     const button = screen.getByRole('button', { name: 'Sí, la d’ahir. Dilluns, 21 de setembre' });
@@ -188,7 +188,7 @@ describe('ActionButton', () => {
   });
 });
 
-test('els botons de la capçalera tenen nom, caben a la barra de l’iPhone i es toquen amb 56 de marge', () => {
+test('the header buttons have a name, fit the bar of the iPhone and are touched with 56 of margin', () => {
   const onPress = jest.fn();
   renderWithTheme(<HeaderButton accessibilityLabel="Calendari" icon="calendar" onPress={onPress} />);
   const button = screen.getByRole('button', { name: 'Calendari' });
@@ -203,7 +203,7 @@ test('els botons de la capçalera tenen nom, caben a la barra de l’iPhone i es
   expect(styleOf(screen.getByTestId('aa-pill'))).toMatchObject({ height: 34, borderWidth: 1.5 });
 });
 
-test('a iOS 26 el sistema posa el botó Aa en una càpsula de vidre: la píndola no hi porta vora', () => {
+test('on iOS 26 the system puts the Aa button in a capsule of glass: the pill carries no border there', () => {
   const { Platform } = require('react-native');
   jest.spyOn(Platform, 'Version', 'get').mockReturnValue('26.0');
   renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i tema" text="Aa" testID="aa" onPress={() => {}} />);
@@ -217,7 +217,7 @@ describe('SegmentedControl', () => {
     { value: 'vespers', label: 'Vespertina', sublabel: 'Tots Sants' },
   ];
 
-  test('una opció triada, i la segona línia al nom', () => {
+  test('one option chosen, and the second line in the name', () => {
     const onChange = jest.fn();
     renderWithTheme(
       <SegmentedControl segments={segments} value="vespers" onChange={onChange} accessibilityLabel="Quina missa" />,
@@ -230,7 +230,7 @@ describe('SegmentedControl', () => {
 });
 
 describe('SwitchRow', () => {
-  test('tota la fila canvia l’interruptor, i diu què fa', () => {
+  test('the whole row toggles the switch, and says what it does', () => {
     const onChange = jest.fn();
     renderWithTheme(
       <SwitchRow
@@ -248,7 +248,7 @@ describe('SwitchRow', () => {
     expect(onChange).toHaveBeenCalledWith(true);
   });
 
-  test('l’interruptor va al mig de la fila també a iOS, on React Native el posa a dalt', () => {
+  test('the switch goes in the middle of the row on iOS too, where React Native puts it at the top', () => {
     renderWithTheme(<SwitchRow label="Himnes en llatí" value={false} onValueChange={() => {}} />);
     const { Switch } = require('react-native');
     const flat = styleOf(screen.UNSAFE_getByType(Switch).children[0]);
@@ -256,7 +256,7 @@ describe('SwitchRow', () => {
   });
 });
 
-test('Card: superfície amb vora', () => {
+test('Card: a surface with a border', () => {
   renderWithTheme(
     <Card testID="card">
       <Text>Missa</Text>
@@ -270,7 +270,7 @@ test('Card: superfície amb vora', () => {
   });
 });
 
-test('una icona per a cada hora, i cap icona no es llegeix', () => {
+test('one icon for each hour, and no icon is read out', () => {
   for (const hour of ['ofici', 'laudes', 'tercia', 'sexta', 'nona', 'vespres', 'completes']) {
     renderWithTheme(<HourIcon hour={hour} color="#00696D" />);
     expect(screen.getByTestId(`hour-icon-${hour}`, { includeHiddenElements: true })).toBeTruthy();

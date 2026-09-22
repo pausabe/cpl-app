@@ -42,7 +42,7 @@ export interface MassButton {
 
 // What the reading screen needs besides where to open: as MassLiturgyMainScreen passed it
 export interface MassScreenParams {
-  need_lectura2: boolean;
+  needSecondReading: boolean;
   useVespersTexts: boolean;
 }
 
@@ -117,7 +117,7 @@ export function buildMass({ today, tomorrow, mass, choice }: MassBlockInput): Ma
   const vespers = choice === 'vespers' && !!mass.hasVespers;
   const selected = vespers ? mass.vespers : mass.today;
   const params: MassScreenParams = {
-    need_lectura2: hasContent(selected.secondReading.reading),
+    needSecondReading: hasContent(selected.secondReading.reading),
     useVespersTexts: choice === 'vespers',
   };
   const selector = mass.hasVespers
@@ -146,7 +146,7 @@ export function buildMass({ today, tomorrow, mass, choice }: MassBlockInput): Ma
   const readings: MassButton[] = [
     { label: 'Primera lectura', opens: '1Lect' },
     { label: 'Salm', opens: 'Salm' },
-    ...(params.need_lectura2 ? [{ label: 'Segona lectura', opens: '2Lect' as MassScreenType }] : []),
+    ...(params.needSecondReading ? [{ label: 'Segona lectura', opens: '2Lect' as MassScreenType }] : []),
     { label: 'Evangeli', opens: 'Evangeli' },
   ];
 

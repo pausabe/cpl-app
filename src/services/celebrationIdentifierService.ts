@@ -352,8 +352,8 @@ function isPentecost(liturgySpecificDayInformation: LiturgySpecificDayInformatio
 }
 
 function isHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  //Divendres de la tercera setmana després de Pentecosta (Divendres després de Corpus) A (166) B (167) C (168)
-  //Sagrat cor de Jesús
+  //Friday of the third week after Pentecost (Friday after Corpus Christi) A (166) B (167) C (168)
+  //Sacred Heart of Jesus
   const holyHeartOfJesus = new Date(
     liturgySpecificDayInformation.pentecostDay.getFullYear(),
     liturgySpecificDayInformation.pentecostDay.getMonth(),
@@ -363,8 +363,8 @@ function isHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInf
 }
 
 function isHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  //Diumenge després de la Santíssima Trinitat A (163) B (164) C (165)
-  //Santíssim cos i sang de crist
+  //Sunday after the Most Holy Trinity A (163) B (164) C (165)
+  //Most Holy Body and Blood of Christ
   const holyBodyAndBloodOfChrist = new Date(
     liturgySpecificDayInformation.pentecostDay.getFullYear(),
     liturgySpecificDayInformation.pentecostDay.getMonth(),
@@ -374,7 +374,7 @@ function isHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: LiturgySpecif
 }
 
 function isHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  //Diumenge després de Pentecosta A (160) B (161) C (162)
+  //Sunday after Pentecost A (160) B (161) C (162)
   const holyTrinity = getHolyTrinity(liturgySpecificDayInformation);
   return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, holyTrinity);
 }
@@ -421,17 +421,17 @@ function isAshWednesday(liturgySpecificDayInformation: LiturgySpecificDayInforma
 function isImmaculateHeartOfTheBlessedVirginMary(
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
 ): boolean {
-  //santsMemories M - dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
+  //santsMemories M - Saturday of the third week after Pentecost (IMMACULATE HEART OF THE BLESSED VIRGIN MARY)
   if (liturgySpecificDayInformation.celebrationType === CelebrationType.Memory) {
-    let corImmaculat = new Date(
+    let immaculateHeart = new Date(
       liturgySpecificDayInformation.pentecostDay.getFullYear(),
       liturgySpecificDayInformation.pentecostDay.getMonth(),
       liturgySpecificDayInformation.pentecostDay.getDate() + 20,
     );
     if (
-      liturgySpecificDayInformation.date.getDate() === corImmaculat.getDate() &&
-      liturgySpecificDayInformation.date.getMonth() === corImmaculat.getMonth() &&
-      liturgySpecificDayInformation.date.getFullYear() === corImmaculat.getFullYear()
+      liturgySpecificDayInformation.date.getDate() === immaculateHeart.getDate() &&
+      liturgySpecificDayInformation.date.getMonth() === immaculateHeart.getMonth() &&
+      liturgySpecificDayInformation.date.getFullYear() === immaculateHeart.getFullYear()
     ) {
       return true;
     }
@@ -440,35 +440,35 @@ function isImmaculateHeartOfTheBlessedVirginMary(
 }
 
 function isMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
-  //santsMemories M - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
-  //santsSolemnitats S - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
+  //santsMemories M - Saturday before the first Sunday of September (MOTHER OF GOD OF THE TIBBON)
+  //santsSolemnitats S - Saturday before the first Sunday of September (MOTHER OF GOD OF THE TIBBON)
   // This celebration is specific to the Diocese of Tortosa
   if (settings && settings.dioceseName !== DioceseName.Tortosa) {
     return false;
   }
   const auxDay = new Date(date.getFullYear(), 8, 2);
   let b = true;
-  let dies = 0;
-  while (b && dies < 7) {
+  let days = 0;
+  while (b && days < 7) {
     if (auxDay.getDay() === 0) {
       b = false;
     }
     auxDay.setDate(auxDay.getDate() + 1);
-    dies += 1;
+    days += 1;
   }
-  const tibbonDate = new Date(date.getFullYear(), 8, dies);
+  const tibbonDate = new Date(date.getFullYear(), 8, days);
   return DateManagement.datesAreTheEqual(date, tibbonDate);
 }
 
 function isJesusChristHighPriestForever(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  //santsSolemnitats F - dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
+  //santsSolemnitats F - Thursday after Pentecost (Jesus Christ, high priest for ever)
   if (liturgySpecificDayInformation.celebrationType === CelebrationType.Festivity) {
-    const granSacerdot = new Date(
+    const highPriest = new Date(
       liturgySpecificDayInformation.pentecostDay.getFullYear(),
       liturgySpecificDayInformation.pentecostDay.getMonth(),
       liturgySpecificDayInformation.pentecostDay.getDate() + 4,
     );
-    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, granSacerdot)) {
+    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, highPriest)) {
       return true;
     }
   }
@@ -476,14 +476,14 @@ function isJesusChristHighPriestForever(liturgySpecificDayInformation: LiturgySp
 }
 
 function isBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  //santsMemories M - dilluns després de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
+  //santsMemories M - Monday after Pentecost (Blessed Virgin Mary, Mother of the Church)
   if (liturgySpecificDayInformation.celebrationType === CelebrationType.Memory) {
-    const benaurada = new Date(
+    const blessedVirginMary = new Date(
       liturgySpecificDayInformation.pentecostDay.getFullYear(),
       liturgySpecificDayInformation.pentecostDay.getMonth(),
       liturgySpecificDayInformation.pentecostDay.getDate() + 1,
     );
-    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, benaurada)) {
+    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, blessedVirginMary)) {
       return true;
     }
   }

@@ -23,8 +23,8 @@ const ordinary = (): MassInput => ({
 const TODAY = { date: new Date(2026, 8, 22, 9), specificLiturgyTime: 'O_ORDINAR', yearType: 'A' };
 const TOMORROW = { specificLiturgyTime: 'O_ORDINAR' };
 
-describe('bloc de la missa', () => {
-  test('un dia feiner: la frase de l’Evangeli i tres lectures', () => {
+describe('Mass block', () => {
+  test('a weekday: the phrase of the Gospel and three readings', () => {
     const block = buildMass({ today: TODAY, tomorrow: TOMORROW, mass: ordinary(), choice: 'normal' });
     expect(block.label).toBe('Missa');
     expect(block.selector).toBeNull();
@@ -38,18 +38,18 @@ describe('bloc de la missa', () => {
       ['Salm', 'Salm'],
       ['Evangeli', 'Evangeli'],
     ]);
-    expect(block.params).toEqual({ need_lectura2: false, useVespersTexts: false });
+    expect(block.params).toEqual({ needSecondReading: false, useVespersTexts: false });
   });
 
-  test('diumenge: també la segona lectura', () => {
+  test('Sunday: the second reading too', () => {
     const mass = ordinary();
     mass.today.secondReading.reading = 'Germans, per tot el …';
     const block = buildMass({ today: TODAY, tomorrow: TOMORROW, mass, choice: 'normal' });
     expect(block.readings.map((r) => r.label)).toEqual(['Primera lectura', 'Salm', 'Segona lectura', 'Evangeli']);
-    expect(block.params.need_lectura2).toBe(true);
+    expect(block.params.needSecondReading).toBe(true);
   });
 
-  test('amb missa vespertina, el selector i, triada, la frase i les lectures d’aquella missa', () => {
+  test('with an evening Mass, the selector and, once chosen, the phrase and the readings of that Mass', () => {
     const mass: MassInput = {
       today: dayMass('Lc 14,1.7-11', 'Tothom qui s’enalteix serà humiliat, però el qui s’humilia serà enaltit'),
       hasVespers: true,
@@ -73,10 +73,10 @@ describe('bloc de la missa', () => {
       opens: 'Evangeli',
     });
     expect(evening.readings).toHaveLength(4);
-    expect(evening.params).toEqual({ need_lectura2: true, useVespersTexts: true });
+    expect(evening.params).toEqual({ needSecondReading: true, useVespersTexts: true });
   });
 
-  test('Diumenge de Rams: la frase i el botó de la benedicció', () => {
+  test('Palm Sunday: the phrase and the button of the blessing', () => {
     const mass = ordinary();
     mass.today = dayMass('Mt 26,14–27,66', '-', 'Jesucrist, que era de condició divina…', 'Diumenge de Rams');
     const block = buildMass({
@@ -94,7 +94,7 @@ describe('bloc de la missa', () => {
     expect(block.readings.map((r) => r.label)).toEqual(['Primera lectura', 'Salm', 'Segona lectura', 'Evangeli']);
   });
 
-  test('Dissabte Sant: la Vetlla Pasqual, amb dos botons', () => {
+  test('Holy Saturday: the Easter Vigil, with two buttons', () => {
     const mass = ordinary();
     mass.today = dayMass('Mt 28,1-10', 'Ha ressuscitat i anirà davant vostre a Galilea', 'En aquells dies…');
     const block = buildMass({
@@ -115,7 +115,7 @@ describe('bloc de la missa', () => {
     ]);
   });
 
-  test('sense frase a la base de dades (Divendres Sant), només la cita', () => {
+  test('with no phrase in the database (Good Friday), only the reference', () => {
     const mass = ordinary();
     mass.today = dayMass('Jo 18,1–19,42', '-');
     const block = buildMass({
@@ -132,17 +132,17 @@ describe('bloc de la missa', () => {
 describe('Avui | Vespertina', () => {
   const base = { todayKey: '31:9:2026', hasVespers: true, tomorrowIsEasterSunday: false, afternoonHour: 18 };
 
-  test('el matí tria la d’avui, i a partir de les 18 h la vespertina; es desa', () => {
+  test('the morning picks the one of today, and from 18 h the evening one; it is saved', () => {
     expect(resolveMassChoice({ ...base, stored: null, hour: 10 })).toEqual({ choice: 'normal', save: true });
     expect(resolveMassChoice({ ...base, stored: null, hour: 18 })).toEqual({ choice: 'vespers', save: true });
   });
 
-  test('sense missa vespertina, o si demà és Pasqua, sempre la d’avui', () => {
+  test('with no evening Mass, or if tomorrow is Easter, always the one of today', () => {
     expect(resolveMassChoice({ ...base, hasVespers: false, stored: null, hour: 20 }).choice).toBe('normal');
     expect(resolveMassChoice({ ...base, tomorrowIsEasterSunday: true, stored: null, hour: 20 }).choice).toBe('normal');
   });
 
-  test('la tria d’avui es recorda tot el dia, i la d’un altre dia no compta', () => {
+  test('the choice of today is remembered all day, and the one of another day does not count', () => {
     expect(resolveMassChoice({ ...base, stored: '31:9:2026_normal', hour: 20 })).toEqual({
       choice: 'normal',
       save: false,
@@ -161,7 +161,7 @@ describe('Avui | Vespertina', () => {
   });
 });
 
-test('l’evangeli de la benedicció dels rams, un per a cada any', () => {
+test('the Gospel of the blessing of the palms, one for each year', () => {
   expect(palmSundayGospel('A')!.reference).toBe('Mt 21,1-11');
   expect(palmSundayGospel('B')!.reference).toBe('Mc 11,1-10');
   expect(palmSundayGospel('C')!.reference).toBe('Lc 19,28-40');

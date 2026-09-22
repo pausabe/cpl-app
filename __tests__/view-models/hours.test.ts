@@ -1,6 +1,6 @@
 import { buildHours, currentHour, vespersSubtitle } from '../../src/view-models/hours';
 
-test('l’hora d’ara, amb les mateixes franges d’abans', () => {
+test('the hour of now, with the same bands as before', () => {
   const byHour = Array.from({ length: 24 }, (_, h) => currentHour(h));
   expect(byHour).toEqual([
     'completes',
@@ -30,7 +30,7 @@ test('l’hora d’ara, amb les mateixes franges d’abans', () => {
   ]);
 });
 
-test('set fitxes, en l’ordre del dia, i només la d’ara marcada', () => {
+test('seven tiles, in the order of the day, and only the one of now marked', () => {
   const tiles = buildHours({ vespersTitle: '', specificLiturgyTime: 'O_ORDINAR', hour: 7 });
   expect(tiles.map((t) => t.label)).toEqual([
     'Ofici de lectura',
@@ -54,7 +54,7 @@ test('set fitxes, en l’ordre del dia, i només la d’ara marcada', () => {
   expect(buildHours({ vespersTitle: '', specificLiturgyTime: 'O_ORDINAR', hour: 3 }).some((t) => t.isNow)).toBe(false);
 });
 
-test('les primeres vespres surten sota Vespres, excepte el Diumenge de Pasqua', () => {
+test('first Vespers appear under Vespers, except on Easter Sunday', () => {
   const tiles = buildHours({ vespersTitle: 'Tots Sants', specificLiturgyTime: 'O_ORDINAR', hour: 19 });
   expect(tiles.find((t) => t.key === 'vespres')!.subtitle).toBe('Tots Sants');
   expect(tiles.filter((t) => t.key !== 'vespres').every((t) => t.subtitle === null)).toBe(true);

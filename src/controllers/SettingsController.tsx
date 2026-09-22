@@ -29,8 +29,8 @@ type OtherValues = Omit<SettingsValues, 'textSizeStep' | 'darkMode'>;
 async function loadOtherValues(): Promise<OtherValues> {
   return {
     useLatin: (await SettingsService.getSettingUseLatin()) === 'true',
-    diocese: (await SettingsService.getSettingDiocesis()) as string,
-    place: (await SettingsService.getSettingLloc()) as string,
+    diocese: (await SettingsService.getSettingDiocese()) as string,
+    place: (await SettingsService.getSettingPrayingPlace()) as string,
     showVideos: (await SettingsService.getSettingShowVideos()) === 'true',
   };
 }
@@ -86,12 +86,12 @@ export default function SettingsController() {
       }}
       onDioceseChange={async (diocese) => {
         change({ diocese });
-        await SettingsService.setSettingDiocesis(diocese, undefined);
+        await SettingsService.setSettingDiocese(diocese, undefined);
         await reloadLiturgy();
       }}
       onPlaceChange={async (place) => {
         change({ place });
-        await SettingsService.setSettingLloc(place, undefined);
+        await SettingsService.setSettingPrayingPlace(place, undefined);
         await reloadLiturgy();
       }}
       onShowVideosChange={async (enabled) => {

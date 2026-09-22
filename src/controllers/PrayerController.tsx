@@ -24,7 +24,7 @@ export interface MassRouteParams {
   // "1Lect", "Salm", "2Lect", "Evangeli", "Rams", "VetllaPasquaLecturesSalms", "VetllaPasquaEvangeli"
   type: string;
   title: string;
-  need_lectura2: boolean;
+  needSecondReading: boolean;
   useVespersTexts: boolean;
 }
 
@@ -51,12 +51,12 @@ function useTextSettingsButton(navigation: any) {
 // place and save them: nothing else has to redraw.
 function chooseInvitationPsalm(psalm: string) {
   updateSettings({ invitationPsalmOption: psalm }, false);
-  SettingsService.setSettingNumSalmInv(psalm);
+  SettingsService.setSettingInvitationPsalm(psalm);
 }
 
 function chooseVirginAntiphon(antiphon: string) {
   updateSettings({ virginAntiphonOption: antiphon }, false);
-  SettingsService.setSettingNumAntMare(antiphon);
+  SettingsService.setSettingVirginAntiphon(antiphon);
 }
 
 export function HoursPrayerController({ route, navigation }: { route: { params: HoursRouteParams }; navigation: any }) {
@@ -93,7 +93,7 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
     <>
       <MassLiturgyPrayerScreen
         type={route.params.type}
-        needSecondReading={route.params.need_lectura2}
+        needSecondReading={route.params.needSecondReading}
         useVespersTexts={route.params.useVespersTexts}
         mass={mass}
         today={day.today}

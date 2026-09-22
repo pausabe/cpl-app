@@ -29,7 +29,7 @@ beforeEach(async () => {
   DataService.CurrentSettings.textSize = '3';
 });
 
-test('el mode fosc: activat, desactivat o el del sistema', () => {
+test('the dark mode: on, off or the one of the system', () => {
   expect(darkModeEnabledFor('Activat', 'light')).toBe(true);
   expect(darkModeEnabledFor('Desactivat', 'dark')).toBe(false);
   expect(darkModeEnabledFor('Automàtic', 'dark')).toBe(true);
@@ -37,7 +37,7 @@ test('el mode fosc: activat, desactivat o el del sistema', () => {
   expect(darkModeEnabledFor('?', 'dark')).toBe(false);
 });
 
-test('la mida del text es desa com a text, s’aplica tot seguit i no recarrega la litúrgia', async () => {
+test('the text size is saved as text, applied right away and does not reload the liturgy', async () => {
   const listener = jest.fn();
   const unsubscribe = LiturgyStore.subscribe(listener);
   await setTextSize(5);
@@ -50,7 +50,7 @@ test('la mida del text es desa com a text, s’aplica tot seguit i no recarrega 
   unsubscribe();
 });
 
-test('el mode fosc es desa amb el mateix nom de sempre i s’aplica', async () => {
+test('the dark mode is saved under the same name as always and is applied', async () => {
   await setDarkMode('Activat');
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
   expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);
@@ -59,7 +59,7 @@ test('el mode fosc es desa amb el mateix nom de sempre i s’aplica', async () =
   expect(DataService.CurrentSettings.darkModeEnabled).toBe(false);
 });
 
-test('en automàtic, segueix el sistema quan canvia', async () => {
+test('on automatic, it follows the system when it changes', async () => {
   const scheme = jest.spyOn(Appearance, 'getColorScheme').mockReturnValue('dark');
   await followSystemAppearance();
   expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);

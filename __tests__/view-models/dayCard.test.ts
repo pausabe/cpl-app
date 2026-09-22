@@ -22,8 +22,8 @@ const day = (overrides: Partial<DayInput> = {}): DayInput => ({
 const barcelona = { dioceseName: 'Barcelona', prayingPlace: 'Diòcesi', optionalFestivityEnabled: false };
 const noCelebration = { title: '', description: '-' };
 
-describe('targeta del dia', () => {
-  test('una fèria: el dia de la setmana fa de títol i el temps va a la línia de sota', () => {
+describe('day card', () => {
+  test('a weekday: the day of the week is the title and the season goes on the line below', () => {
     const card = buildDayCard(day(), noCelebration, barcelona);
     expect(card).toEqual({
       place: 'Barcelona (Diòcesi)',
@@ -39,7 +39,7 @@ describe('targeta del dia', () => {
     });
   });
 
-  test('una festa: tipus, títol del sant i la setmana a la línia de sota', () => {
+  test('a feast: the type, the title of the saint and the week on the line below', () => {
     const card = buildDayCard(
       day({ date: new Date(2026, 8, 21), celebrationType: 'F', liturgyColor: 'R' }),
       { title: 'Sant Mateu, apòstol i evangelista', description: 'Era cobrador d’impostos…' },
@@ -53,7 +53,7 @@ describe('targeta del dia', () => {
     expect(card.description).toBe('Era cobrador d’impostos…');
   });
 
-  test('una solemnitat del temps diu el temps, no la setmana', () => {
+  test('a solemnity of the season says the season, not the week', () => {
     const card = buildDayCard(
       day({
         date: new Date(2026, 3, 5),
@@ -71,7 +71,7 @@ describe('targeta del dia', () => {
     expect(card.colorName).toBe('Blanc');
   });
 
-  test('un dia propi del temps amb títol (Rams) no porta tipus i diu el temps', () => {
+  test('a proper day of the season with a title (Palm Sunday) carries no type and says the season', () => {
     const card = buildDayCard(
       day({
         date: new Date(2026, 2, 29),
@@ -89,7 +89,7 @@ describe('targeta del dia', () => {
     expect(card.meta).toBe('Quaresma · Any A · Setmana II del salteri');
   });
 
-  test('memòria lliure sense celebrar: en gris, amb l’interruptor apagat', () => {
+  test('an optional memorial not celebrated: in grey, with the switch off', () => {
     const card = buildDayCard(
       day({ date: new Date(2026, 8, 26), celebrationType: 'L' }),
       { title: 'Sants Cosme i Damià, màrtirs', description: 'Per memòries…' },
@@ -101,7 +101,7 @@ describe('targeta del dia', () => {
     expect(card.meta).toBe('Setmana XXV · Any A · Setmana I del salteri');
   });
 
-  test('memòria lliure celebrada', () => {
+  test('an optional memorial celebrated', () => {
     const card = buildDayCard(
       day({ celebrationType: 'V' }),
       { title: 'Memòria de Santa Maria en dissabte', description: '-' },
@@ -111,14 +111,14 @@ describe('targeta del dia', () => {
     expect(card.optionalMemory).toEqual({ enabled: true, caption: 'Avui es resa la memòria.' });
   });
 
-  test('a Quaresma, les memòries són commemoracions', () => {
+  test('in Lent, memorials are commemorations', () => {
     expect(celebrationTypeLabel('M', 'Quaresma')).toBe('Commemoració');
     expect(celebrationTypeLabel('L', 'Quaresma')).toBe('Commemoració');
     expect(celebrationTypeLabel('M', 'Ordinari')).toBe('Memòria obligatòria');
     expect(celebrationTypeLabel('-', 'Ordinari')).toBeNull();
   });
 
-  test('sense setmana (Tridu), el títol és el del dia i la línia diu el temps', () => {
+  test('with no week (the Triduum), the title is that of the day and the line says the season', () => {
     const card = buildDayCard(
       day({
         date: new Date(2026, 3, 4),
@@ -134,7 +134,7 @@ describe('targeta del dia', () => {
     expect(card.meta).toBe('Tridu Pasqual · Any A · Setmana II del salteri');
   });
 
-  test('la setmana d’una celebració: sola durant l’any, amb el temps a la resta', () => {
+  test('the week of a celebration: on its own in Ordinary Time, with the season in the rest', () => {
     expect(weekOfSeason(day({ week: '25' }))).toBe('Setmana XXV');
     expect(weekOfSeason(day({ week: '3', genericLiturgyTime: 'Quaresma' }))).toBe('Setmana III de Quaresma');
     expect(weekOfSeason(day({ week: '1', genericLiturgyTime: 'Advent' }))).toBe('Setmana I d’Advent');
@@ -156,7 +156,7 @@ describe('targeta del dia', () => {
     expect(lent.meta).toBe('Setmana II de Quaresma · Any A · Setmana II del salteri');
   });
 
-  test('els dies després de Cendra', () => {
+  test('the days after Ash Wednesday', () => {
     expect(weekText(day({ date: new Date(2026, 1, 18), specificLiturgyTime: 'Q_CENDRA', week: '0' }))).toBe(
       'Dimecres de Cendra',
     );
@@ -166,19 +166,19 @@ describe('targeta del dia', () => {
     expect(weekText(day({ week: '.', specificLiturgyTime: 'O_ORDINAR' }))).toBeNull();
   });
 
-  test('sense setmana ni títol, el títol és el temps', () => {
+  test('with neither week nor title, the title is the season', () => {
     const card = buildDayCard(day({ week: '0', weekCycle: '0' }), noCelebration, barcelona);
     expect(card.title).toBe("Durant l'any");
     expect(card.meta).toBe('');
   });
 
-  test('el temps ordinari es diu «Durant l’any»', () => {
+  test('Ordinary Time is called «Durant l’any»', () => {
     expect(seasonName('Ordinari')).toBe("Durant l'any");
     expect(seasonName('Advent')).toBe('Advent');
     expect(seasonName('')).toBe('');
   });
 
-  test('un color que la base de dades no fa servir es veu verd', () => {
+  test('a colour the database does not use shows as green', () => {
     expect(colorCode('R')).toBe('R');
     expect(colorCode('X')).toBe('V');
     expect(colorCode(undefined)).toBe('V');

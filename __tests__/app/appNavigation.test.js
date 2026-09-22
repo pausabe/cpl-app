@@ -66,7 +66,7 @@ async function goBack(textOnTheScreen) {
   });
 }
 
-test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
+test('it opens on today and the whole app can be walked through', async () => {
   render(<App />);
 
   // The first time 9.0.0 opens, a notice says where everything is now

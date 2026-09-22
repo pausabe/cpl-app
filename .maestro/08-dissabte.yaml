@@ -1,8 +1,8 @@
 appId: cpl.cpl
-name: "Dissabte: la missa vespertina i la memòria lliure"
+name: "Saturday: the evening Mass and the optional memorial"
 ---
-# El proper dissabte, amb el calendari de l'app: té missa vespertina (la de diumenge) i, sovint,
-# la memòria de Santa Maria.
+# Next Saturday, with the app's calendar: it has an evening Mass (Sunday's) and, often,
+# the memorial of Saint Mary.
 - runFlow: subflows/obrir.yaml
 - evalScript: ${(function () { var today = new Date(); var add = (6 - today.getDay() + 7) % 7 || 7; var saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + add); output.day = String(saturday.getDate()); output.nextMonth = saturday.getMonth() !== today.getMonth(); })()}
 - tapOn: "Calendari"
@@ -16,7 +16,7 @@ name: "Dissabte: la missa vespertina i la memòria lliure"
 - extendedWaitUntil:
     visible: "Dissabte, .+"
     timeout: 15000
-# «Avui | Vespertina»: les lectures de cada missa
+# «Avui | Vespertina»: the readings of each Mass
 - runFlow:
     when:
       visible: "Vespertina"
@@ -26,8 +26,8 @@ name: "Dissabte: la missa vespertina i la memòria lliure"
       - tapOn: "Vespertina"
       - assertVisible: "Segona lectura"
       - takeScreenshot: 08-missa-vespertina
-# La memòria lliure: l'interruptor canvia què es resa, i ho diu. A iOS la frase va a l'etiqueta
-# de la fila, amb el nom: «Celebrar la memòria. Si no l'actives…»
+# The optional memorial: the switch changes what is prayed, and says so. On iOS the sentence
+# goes in the row's label, with the name: «Celebrar la memòria. Si no l'actives…»
 - runFlow:
     when:
       visible: "Celebrar la memòria.*"

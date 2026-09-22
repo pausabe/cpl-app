@@ -25,7 +25,7 @@ function fingerprint(state) {
 }
 
 function describeYearSweep(year) {
-  describe(`recorregut de tots els dies del ${year}`, () => {
+  describe(`sweep of every day of ${year}`, () => {
     const results = {};
     let golden;
 
@@ -45,18 +45,18 @@ function describeYearSweep(year) {
     }, 600000);
 
     const months = Array.from({ length: 12 }, (_, m) => m);
-    test.each(months)(`mes %i: cap dia no falla ni canvia respecte del golden`, (month) => {
+    test.each(months)(`month %i: no day fails or changes against the golden`, (month) => {
       if (!golden) return;
       const changed = [];
       for (const [day, result] of Object.entries(results)) {
         if (Number(day.slice(5, 7)) !== month + 1) continue;
         const before = golden[day];
         if (!before) {
-          changed.push(`${day}: no és al golden`);
+          changed.push(`${day}: not in the golden`);
           continue;
         }
         if (before.error !== result.error) {
-          changed.push(`${day} (${result.profile}): error «${before.error ?? 'cap'}» → «${result.error ?? 'cap'}»`);
+          changed.push(`${day} (${result.profile}): error «${before.error ?? 'none'}» → «${result.error ?? 'none'}»`);
           continue;
         }
         for (const part of Object.keys({ ...before.parts, ...result.parts })) {

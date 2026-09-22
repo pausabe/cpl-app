@@ -15,7 +15,7 @@ beforeAll(async () => {
 }, 60000);
 beforeEach(() => jest.clearAllMocks());
 
-test('les hores mantenen la pantalla encesa mentre són obertes', async () => {
+test('the hours keep the screen on while they are open', async () => {
   const view = await openHour('Laudes');
   expect(KeepAwake.activateKeepAwakeAsync).toHaveBeenCalledWith('hours-prayer');
   expect(KeepAwake.deactivateKeepAwake).not.toHaveBeenCalled();
@@ -23,7 +23,7 @@ test('les hores mantenen la pantalla encesa mentre són obertes', async () => {
   expect(KeepAwake.deactivateKeepAwake).toHaveBeenCalledWith('hours-prayer');
 });
 
-test('les lectures de la missa, també', async () => {
+test('the readings of the Mass, too', async () => {
   const view = await openMass('Evangeli', false, false);
   expect(KeepAwake.activateKeepAwakeAsync).toHaveBeenCalledWith('mass-readings');
   view.unmount();

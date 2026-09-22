@@ -1,13 +1,13 @@
 appId: cpl.cpl
-name: "L'app s'obre al dia d'avui"
+name: "The app opens on today"
 ---
 - runFlow: subflows/obrir.yaml
-# La targeta del dia: el lloc, la data en paraules i la setmana del salteri
-# A iOS és l'etiqueta del lector de pantalla, que hi afegeix el color: «… Color litúrgic: Verd»
+# The day's card: the place, the date in words and the psalter week
+# On iOS it is the screen reader label, which adds the colour to it: «… Color litúrgic: Verd»
 - assertVisible: "Barcelona \\(Diòcesi\\).*"
 - assertVisible: "Di[a-z]+, [0-9]+ d.+"
 - assertVisible: ".*Setmana [IV]+ del salteri"
-# Les set hores i la missa, a l'inici mateix
+# The seven hours and the Mass, right on the home screen
 - assertVisible: "Ofici de lectura"
 - assertVisible: "Laudes"
 - assertVisible: "Tèrcia"

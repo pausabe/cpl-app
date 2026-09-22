@@ -49,7 +49,7 @@ async function openHour(type) {
 }
 
 async function openMass(type, useVespersTexts, needSecondReading) {
-  const params = { type, title: 'Missa', need_lectura2: needSecondReading, useVespersTexts };
+  const params = { type, title: 'Missa', needSecondReading: needSecondReading, useVespersTexts };
   const view = mount(React.createElement(MassPrayerController, { route: { params }, navigation }));
   await settle();
   return view;

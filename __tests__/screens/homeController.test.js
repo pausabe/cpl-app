@@ -65,14 +65,14 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('si la litúrgia no es pot carregar, ho diu en lloc de deixar l’inici en blanc', async () => {
+test('if the liturgy cannot be loaded, it says so instead of leaving the home blank', async () => {
   jest.spyOn(DataService, 'reloadAllData').mockRejectedValue(new Error('database closed'));
   await openAt(new Date(2026, 8, 21, 10, 0));
   expect(await screen.findByText(/Ha sorgit un error inesperat/, {}, { timeout: 15000 })).toBeTruthy();
   expect(screen.queryByTestId('day-card')).toBeNull();
 });
 
-test('en punt, «Ara» passa a l’hora següent', async () => {
+test('on the hour, «Ara» moves to the next hour', async () => {
   await openAt(new Date(2026, 8, 21, 8, 59, 50));
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
   expect(screen.getByRole('button', { name: 'Laudes' }).props.accessibilityValue?.text).toBe('Ara');
@@ -83,7 +83,7 @@ test('en punt, «Ara» passa a l’hora següent', async () => {
   expect(screen.getByRole('button', { name: 'Laudes' }).props.accessibilityValue?.text).toBeUndefined();
 });
 
-test('tornant a l’app un altre dia, carrega la litúrgia d’avui', async () => {
+test('coming back to the app on another day, it loads the liturgy of today', async () => {
   await openAt(new Date(2026, 8, 21, 22, 0));
   expect(await screen.findByText('Dilluns, 21 de setembre', {}, { timeout: 15000 })).toBeTruthy();
   jest.setSystemTime(new Date(2026, 8, 22, 9, 0));
@@ -91,7 +91,7 @@ test('tornant a l’app un altre dia, carrega la litúrgia d’avui', async () =
   expect(await screen.findByText('Dimarts, 22 de setembre', {}, { timeout: 15000 })).toBeTruthy();
 });
 
-test('tornant a l’app el mateix dia, no recarrega res', async () => {
+test('coming back to the app on the same day, it reloads nothing', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
   const reload = jest.spyOn(DataService, 'reloadAllData');

@@ -35,16 +35,16 @@ export default class MassLiturgyPrayerScreen extends Component {
     super(props);
     const type = props.type;
     this.state = {
-      Need_Lect2: props.needSecondReading,
-      VetllaPasquaLecturesSalms: type === 'VetllaPasquaLecturesSalms',
-      VetllaPasquaEvangeli: type === 'VetllaPasquaEvangeli',
-      Rams: type === 'Rams',
-      Lect1: type === '1Lect',
-      Salm: type === 'Salm',
-      Lect2: type === '2Lect',
-      Evangeli: type === 'Evangeli',
-      DisplayVespers: props.useVespersTexts,
-      evangeliType: 'normal',
+      needSecondReading: props.needSecondReading,
+      showEasterVigilReadingsAndPsalms: type === 'VetllaPasquaLecturesSalms',
+      showEasterVigilGospel: type === 'VetllaPasquaEvangeli',
+      showPalmSunday: type === 'Rams',
+      showFirstReading: type === '1Lect',
+      showPsalm: type === 'Salm',
+      showSecondReading: type === '2Lect',
+      showGospel: type === 'Evangeli',
+      displayVespers: props.useVespersTexts,
+      gospelType: 'normal',
     };
   }
 
@@ -59,21 +59,21 @@ export default class MassLiturgyPrayerScreen extends Component {
         <View style={this.styles.container}>
           <EdgeToEdgeScrollView testID="prayer-scroll" contentContainerStyle={styles.content}>
             <View style={[styles.column, { maxWidth: this.context.layout.readingMaxWidth }]}>
-              {this.state.VetllaPasquaLecturesSalms ? (
+              {this.state.showEasterVigilReadingsAndPsalms ? (
                 <View>
                   <Text selectable={true} style={this.styles.redCenter}>
                     {'Lectures de la Vetlla Pasqual'}
                   </Text>
                   <Gap />
-                  {this.Render_VetllaPasquaLecturesSalms()}
+                  {this.renderEasterVigilReadingsAndPsalms()}
                 </View>
               ) : null}
-              {this.state.VetllaPasquaEvangeli ? this.Render_VetllaPasquaEvangeli() : null}
-              {this.state.Rams ? this.Render_Rams() : null}
-              {this.state.Lect1 ? this.Render_1Lect() : null}
-              {this.state.Salm ? this.Render_Salm(this.state.Need_Lect2) : null}
-              {this.state.Lect2 ? this.Render_2Lect() : null}
-              {this.state.Evangeli ? this.Render_Evangeli() : null}
+              {this.state.showEasterVigilGospel ? this.renderEasterVigilGospel() : null}
+              {this.state.showPalmSunday ? this.renderPalmSunday() : null}
+              {this.state.showFirstReading ? this.renderFirstReading() : null}
+              {this.state.showPsalm ? this.renderPsalm(this.state.needSecondReading) : null}
+              {this.state.showSecondReading ? this.renderSecondReading() : null}
+              {this.state.showGospel ? this.renderGospel() : null}
             </View>
           </EdgeToEdgeScrollView>
         </View>
@@ -84,7 +84,7 @@ export default class MassLiturgyPrayerScreen extends Component {
     }
   }
 
-  Render_VetllaPasquaLecturesSalms() {
+  renderEasterVigilReadingsAndPsalms() {
     return (
       <View style={{ flex: 1 }}>
         <Text selectable={true} style={this.styles.red}>
@@ -271,7 +271,7 @@ export default class MassLiturgyPrayerScreen extends Component {
         <Gap />
 
         <SectionTitle>{'Glòria'}</SectionTitle>
-        {this.GloriaText()}
+        {this.gloriaText()}
         <Gap />
 
         <Text selectable={true} style={this.styles.red}>
@@ -292,7 +292,7 @@ export default class MassLiturgyPrayerScreen extends Component {
         </Text>
         <Gap />
 
-        {this.state.VetllaPasquaEvangeli ? (
+        {this.state.showEasterVigilGospel ? (
           <View>
             <HR />
             <Gap />
@@ -301,14 +301,14 @@ export default class MassLiturgyPrayerScreen extends Component {
           <ContinueButton
             showArrow
             label={"Continua amb l'Evangeli"}
-            onPress={() => this.setState({ VetllaPasquaEvangeli: true })}
+            onPress={() => this.setState({ showEasterVigilGospel: true })}
           />
         )}
       </View>
     );
   }
 
-  Render_VetllaPasquaEvangeli() {
+  renderEasterVigilGospel() {
     return (
       <View style={{ flex: 1 }}>
         <SectionTitle>{'Evangeli'}</SectionTitle>
@@ -340,33 +340,33 @@ export default class MassLiturgyPrayerScreen extends Component {
     );
   }
 
-  Render_Rams() {
+  renderPalmSunday() {
     // The Gospel of the blessing of the palms, shared with the home (ViewModels/PalmSundayGospel)
     const gospel = palmSundayGospel(this.props.today.yearType) || { reference: '', phrase: '', title: '', text: '' };
-    const evangeliRams = gospel.reference;
-    const evangeliCitaRams = gospel.phrase;
-    const evangeliTitolRams = gospel.title;
-    const evangeliTextRams = gospel.text;
+    const gospelReference = gospel.reference;
+    const gospelPhrase = gospel.phrase;
+    const gospelTitle = gospel.title;
+    const gospelText = gospel.text;
 
     return (
       <View style={{ flex: 1 }}>
         <SectionTitle>{'Evangeli'}</SectionTitle>
         <Text selectable={true} style={this.styles.reference}>
-          {evangeliRams}
+          {gospelReference}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {evangeliCitaRams}
+          {gospelPhrase}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {evangeliTitolRams}
+          {gospelTitle}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {evangeliTextRams}
+          {gospelText}
         </Text>
-        {this.state.Lect1 ? (
+        {this.state.showFirstReading ? (
           <View>
             <Gap />
             <HR />
@@ -376,24 +376,24 @@ export default class MassLiturgyPrayerScreen extends Component {
           <ContinueButton
             showArrow
             label={'Continua amb la primera lectura'}
-            onPress={() => this.setState({ Lect1: true })}
+            onPress={() => this.setState({ showFirstReading: true })}
           />
         )}
       </View>
     );
   }
 
-  Render_1Lect() {
+  renderFirstReading() {
     const displayGloria =
-      (this.state.DisplayVespers && this.props.mass.vespers.hasGlory) ||
-      (!this.state.DisplayVespers && this.props.mass.today.hasGlory);
+      (this.state.displayVespers && this.props.mass.vespers.hasGlory) ||
+      (!this.state.displayVespers && this.props.mass.today.hasGlory);
 
     return (
       <View style={{ flex: 1 }}>
         {displayGloria ? (
           <View>
             <SectionTitle>{'Glòria'}</SectionTitle>
-            {this.GloriaText()}
+            {this.gloriaText()}
             <Gap />
             <HR />
             <Gap />
@@ -401,42 +401,42 @@ export default class MassLiturgyPrayerScreen extends Component {
         ) : null}
         <SectionTitle>{'Lectura primera'}</SectionTitle>
         <Text selectable={true} style={this.styles.reference}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.quote)
             : GlobalViewFunctions.trim(this.props.mass.today.firstReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.comment)
             : GlobalViewFunctions.trim(this.props.mass.today.firstReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.title)
             : GlobalViewFunctions.trim(this.props.mass.today.firstReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.reading)
             : GlobalViewFunctions.trim(this.props.mass.today.firstReading.reading)}
         </Text>
         <Gap />
-        {this.state.Salm ? (
+        {this.state.showPsalm ? (
           <View>
             <HR />
             <Gap />
           </View>
         ) : (
-          <ContinueButton showArrow label={'Continua amb el Salm'} onPress={() => this.setState({ Salm: true })} />
+          <ContinueButton showArrow label={'Continua amb el Salm'} onPress={() => this.setState({ showPsalm: true })} />
         )}
       </View>
     );
   }
 
-  GloriaText() {
+  gloriaText() {
     return (
       <Text selectable={true} style={this.styles.blackJustified}>
         {
@@ -446,23 +446,23 @@ export default class MassLiturgyPrayerScreen extends Component {
     );
   }
 
-  Render_Salm(need_lect2) {
+  renderPsalm(needSecondReading) {
     return (
       <View style={{ flex: 1 }}>
         <SectionTitle>{'Salm responsorial'}</SectionTitle>
         <Text selectable={true} style={this.styles.reference}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.psalm.quote)
             : GlobalViewFunctions.trim(this.props.mass.today.psalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.psalm.psalm)
             : GlobalViewFunctions.trim(this.props.mass.today.psalm.psalm)}
         </Text>
         <Gap />
-        {(need_lect2 && this.state.Lect2) || (!need_lect2 && this.state.Evangeli) ? (
+        {(needSecondReading && this.state.showSecondReading) || (!needSecondReading && this.state.showGospel) ? (
           <View>
             <HR />
             <Gap />
@@ -470,9 +470,9 @@ export default class MassLiturgyPrayerScreen extends Component {
         ) : (
           <ContinueButton
             showArrow
-            label={'Continua amb ' + (need_lect2 ? 'la segona lectura' : "l'Evangeli")}
+            label={'Continua amb ' + (needSecondReading ? 'la segona lectura' : "l'Evangeli")}
             onPress={() => {
-              this.Set_Continue_State(need_lect2);
+              this.setContinueState(needSecondReading);
             }}
           />
         )}
@@ -480,40 +480,40 @@ export default class MassLiturgyPrayerScreen extends Component {
     );
   }
 
-  Set_Continue_State(need_lect2) {
-    if (need_lect2) this.setState({ Lect2: true });
-    else this.setState({ Evangeli: true });
+  setContinueState(needSecondReading) {
+    if (needSecondReading) this.setState({ showSecondReading: true });
+    else this.setState({ showGospel: true });
   }
 
-  Render_2Lect() {
+  renderSecondReading() {
     return (
       <View style={{ flex: 1 }}>
         <SectionTitle>{'Lectura segona'}</SectionTitle>
         <Text selectable={true} style={this.styles.reference}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.quote)
             : GlobalViewFunctions.trim(this.props.mass.today.secondReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.comment)
             : GlobalViewFunctions.trim(this.props.mass.today.secondReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.title)
             : GlobalViewFunctions.trim(this.props.mass.today.secondReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.reading)
             : GlobalViewFunctions.trim(this.props.mass.today.secondReading.reading)}
         </Text>
         <Gap />
-        {this.state.Evangeli ? (
+        {this.state.showGospel ? (
           <View>
             <HR />
             <Gap />
@@ -522,25 +522,25 @@ export default class MassLiturgyPrayerScreen extends Component {
           <ContinueButton
             showArrow
             label={"Continua amb l'Evangeli"}
-            onPress={() => this.setState({ Evangeli: true })}
+            onPress={() => this.setState({ showGospel: true })}
           />
         )}
       </View>
     );
   }
 
-  Render_Evangeli() {
-    let displayCredo =
-      (this.state.DisplayVespers && this.props.mass.vespers.hasCreed) ||
-      (!this.state.DisplayVespers && this.props.mass.today.hasCreed);
-    let aleluia_quote = this.state.DisplayVespers
+  renderGospel() {
+    let displayCreed =
+      (this.state.displayVespers && this.props.mass.vespers.hasCreed) ||
+      (!this.state.displayVespers && this.props.mass.today.hasCreed);
+    let hallelujahQuote = this.state.displayVespers
       ? this.props.mass.vespers.hallelujah.quote !== '-'
         ? this.props.mass.vespers.hallelujah.quote
         : ''
       : this.props.mass.today.hallelujah.quote !== '-'
         ? this.props.mass.today.hallelujah.quote
         : '';
-    const videoUrl = this.state.DisplayVespers ? this.props.mass.vespers.videoUrl : this.props.mass.today.videoUrl;
+    const videoUrl = this.state.displayVespers ? this.props.mass.vespers.videoUrl : this.props.mass.today.videoUrl;
 
     return (
       <View>
@@ -557,7 +557,7 @@ export default class MassLiturgyPrayerScreen extends Component {
         this.props.today.genericLiturgyTime !== GenericLiturgyTimeType.PaschalTriduum ? (
           <Text selectable={true} style={this.styles.red}>
             {'Al·leluia. '}
-            {aleluia_quote}
+            {hallelujahQuote}
           </Text>
         ) : (
           <Text selectable={true} style={this.styles.red}>
@@ -565,7 +565,7 @@ export default class MassLiturgyPrayerScreen extends Component {
           </Text>
         )}
         <Text selectable={true} style={this.styles.black}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.hallelujah.hallelujah)
             : GlobalViewFunctions.trim(this.props.mass.today.hallelujah.hallelujah)}
         </Text>
@@ -575,57 +575,57 @@ export default class MassLiturgyPrayerScreen extends Component {
           <ChoiceChips
             accessibilityLabel="Evangeli"
             options={EASTER_GOSPELS}
-            value={this.state.evangeliType}
-            onChange={this._onEvangeliPress.bind(this)}
+            value={this.state.gospelType}
+            onChange={this.onGospelPress.bind(this)}
           />
         ) : null}
 
-        <View>{this.state.evangeliType === 'normal' ? this.NormalEvangeli() : this.AlternativePasquaEvangeli()}</View>
-        {displayCredo ? (
+        <View>{this.state.gospelType === 'normal' ? this.normalGospel() : this.alternativeEasterGospel()}</View>
+        {displayCreed ? (
           <View>
             <Gap />
             <HR />
             <Gap />
             <SectionTitle>{'Credo'}</SectionTitle>
-            {this.CredoText()}
+            {this.creedText()}
           </View>
         ) : null}
       </View>
     );
   }
 
-  _onEvangeliPress(evangeliType) {
-    this.setState({ evangeliType: evangeliType });
+  onGospelPress(gospelType) {
+    this.setState({ gospelType: gospelType });
   }
 
-  NormalEvangeli() {
-    const cita = this.state.DisplayVespers
+  normalGospel() {
+    const comment = this.state.displayVespers
       ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.comment)
       : GlobalViewFunctions.trim(this.props.mass.today.gospel.comment);
     return (
       <View style={{ flex: 1 }}>
         <Text selectable={true} style={this.styles.reference}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.quote)
             : GlobalViewFunctions.trim(this.props.mass.today.gospel.quote)}
         </Text>
         <Gap />
-        {cita === undefined || cita === '-' ? null : (
+        {comment === undefined || comment === '-' ? null : (
           <View>
             <Text selectable={true} style={this.styles.comment}>
-              {cita}
+              {comment}
             </Text>
             <Gap />
           </View>
         )}
         <Text selectable={true} style={this.styles.black}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.title)
             : GlobalViewFunctions.trim(this.props.mass.today.gospel.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {this.state.DisplayVespers
+          {this.state.displayVespers
             ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.gospel)
             : GlobalViewFunctions.trim(this.props.mass.today.gospel.gospel)}
         </Text>
@@ -633,7 +633,7 @@ export default class MassLiturgyPrayerScreen extends Component {
     );
   }
 
-  AlternativePasquaEvangeli() {
+  alternativeEasterGospel() {
     return (
       <View style={{ flex: 1 }}>
         <Text selectable={true} style={this.styles.reference}>
@@ -657,7 +657,7 @@ export default class MassLiturgyPrayerScreen extends Component {
     );
   }
 
-  CredoText() {
+  creedText() {
     return (
       <Text selectable={true} style={this.styles.blackJustified}>
         {

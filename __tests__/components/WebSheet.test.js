@@ -26,7 +26,7 @@ function open(props = {}) {
   return onClose;
 }
 
-test('el títol, «Tanca» i la pàgina, en un full alt de vora a vora', () => {
+test('the title, «Tanca» and the page, in a tall sheet from edge to edge', () => {
   const onClose = open();
   const sheet = screen.getByTestId('sheet');
   expect(within(sheet).getByRole('header', { name: 'Missatge' })).toBeTruthy();
@@ -39,7 +39,7 @@ test('el títol, «Tanca» i la pàgina, en un full alt de vora a vora', () => {
   expect(onClose).toHaveBeenCalledTimes(1);
 });
 
-test('mentre carrega, una roda; sense connexió, ho diu', () => {
+test('while it loads, a spinner; with no connection, it says so', () => {
   open();
   const web = screen.getByTestId('webview');
   expect(web.props.startInLoadingState).toBe(true);

@@ -70,8 +70,8 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
 
 async function obtainCurrentSettings(date: Date): Promise<Settings> {
   let currentSettings = new Settings();
-  currentSettings.prayingPlace = (await SettingsService.getSettingLloc()) as string;
-  currentSettings.dioceseName = (await SettingsService.getSettingDiocesis()) as string;
+  currentSettings.prayingPlace = (await SettingsService.getSettingPrayingPlace()) as string;
+  currentSettings.dioceseName = (await SettingsService.getSettingDiocese()) as string;
   currentSettings.dioceseCode = getDioceseCodeFromDioceseName(
     currentSettings.dioceseName,
     currentSettings.prayingPlace,
@@ -83,8 +83,8 @@ async function obtainCurrentSettings(date: Date): Promise<Settings> {
   currentSettings.useLatin = (await SettingsService.getSettingUseLatin()) === 'true';
   currentSettings.textSize = (await SettingsService.getSettingTextSize()) as number;
   currentSettings.darkModeEnabled = determineDarkModeIsEnabled((await SettingsService.getSettingDarkMode()) as string);
-  currentSettings.invitationPsalmOption = (await SettingsService.getSettingNumSalmInv()) as string;
-  currentSettings.virginAntiphonOption = (await SettingsService.getSettingNumAntMare()) as string;
+  currentSettings.invitationPsalmOption = (await SettingsService.getSettingInvitationPsalm()) as string;
+  currentSettings.virginAntiphonOption = (await SettingsService.getSettingVirginAntiphon()) as string;
   currentSettings.optionalFestivityEnabled = await determineOptionalFestivityEnabled(date);
   return currentSettings;
 }

@@ -63,7 +63,7 @@ afterAll(() => {
   jest.useRealTimers();
 });
 
-test('una festa: el dia en paraules, el color, el tipus, el títol i la setmana; Laudes, ara', async () => {
+test('a feast: the day in words, the colour, the type, the title and the week; Lauds, now', async () => {
   await openAt(new Date(2026, 8, 21, 7, 30));
   expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
   expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
@@ -78,7 +78,7 @@ test('una festa: el dia en paraules, el color, el tipus, el títol i la setmana;
   expect(screen.queryByText('Segona lectura')).toBeNull();
 });
 
-test('«Llegeix-ne més» obre el full amb la vida del sant, i «Tanca» el tanca', async () => {
+test('«Llegeix-ne més» opens the sheet with the life of the saint, and «Tanca» closes it', async () => {
   await openAt(new Date(2026, 8, 21, 9, 0));
   expect(screen.queryByTestId('description-sheet')).toBeNull();
   fireEvent.press(screen.getByRole('button', { name: 'Llegeix-ne més' }));
@@ -88,7 +88,7 @@ test('«Llegeix-ne més» obre el full amb la vida del sant, i «Tanca» el tanc
   await waitFor(() => expect(screen.queryByTestId('description-sheet')).toBeNull());
 });
 
-test('una fèria: el dia de la setmana fa de títol, sense «Llegeix-ne més»', async () => {
+test('a weekday: the day of the week is the title, with no «Llegeix-ne més»', async () => {
   await openAt(new Date(2026, 8, 22, 10, 0));
   expect(screen.getByText('Dimarts de la setmana XXV')).toBeTruthy();
   expect(screen.getByText("Durant l'any · Any A · Setmana I del salteri")).toBeTruthy();
@@ -97,7 +97,7 @@ test('una fèria: el dia de la setmana fa de títol, sense «Llegeix-ne més»',
   expect(tile('Tèrcia').props.accessibilityValue).toEqual({ text: 'Ara' });
 });
 
-test('diumenge: quatre lectures, que en un mòbil estret es fan petites abans de partir una paraula', async () => {
+test('Sunday: four readings, which on a narrow phone get smaller before breaking a word', async () => {
   await openAt(new Date(2026, 8, 27, 12, 0));
   for (const reading of ['Primera lectura', 'Salm', 'Segona lectura', 'Evangeli']) {
     expect(screen.getByRole('button', { name: reading })).toBeTruthy();
@@ -106,7 +106,7 @@ test('diumenge: quatre lectures, que en un mòbil estret es fan petites abans de
   expect(screen.getByText('Evangeli').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
 });
 
-test('memòria lliure: l’interruptor la fa celebrar, i es recorda per al dia', async () => {
+test('an optional memorial: the switch makes it celebrated, and it is remembered for the day', async () => {
   await openAt(new Date(2026, 8, 26, 8, 0));
   expect(screen.getByText('Memòria lliure')).toBeTruthy();
   // The screen reader hears the name and the line under it together
@@ -122,7 +122,7 @@ test('memòria lliure: l’interruptor la fa celebrar, i es recorda per al dia',
   expect(styleOf(screen.getByText('Sants Cosme i Damià, màrtirs')).color).toBe('#182322');
 });
 
-test('primeres vespres i missa vespertina: a les 19 h, la vespertina triada', async () => {
+test('first Vespers and the evening Mass: at 19 h, the evening one is the chosen one', async () => {
   await openAt(new Date(2026, 9, 31, 19, 0));
   expect(screen.getByText('Memòria de Santa Maria en dissabte')).toBeTruthy();
   expect(tile('Vespres').props.accessibilityValue).toEqual({ text: 'Ara' });
@@ -142,7 +142,7 @@ test('primeres vespres i missa vespertina: a les 19 h, la vespertina triada', as
   expect(await AsyncStorage.getItem('none')).toBe('31:9:2026_normal');
 });
 
-test('en entrar a les vespres de la vigília de la Mercè, el títol que es veu a l’inici hi és sencer', async () => {
+test('on entering the Vespers of the eve of la Mercè, the title seen on the home is there in full', async () => {
   await openAt(new Date(2026, 8, 23, 19, 0));
   expect(tile('Vespres').props.accessibilityHint).toBe('Mare de Déu de la Mercè');
   fireEvent.press(tile('Vespres'));
@@ -150,14 +150,14 @@ test('en entrar a les vespres de la vigília de la Mercè, el títol que es veu 
   expect(heading.props.children).toBe('Mare de Déu de la Mercè');
 });
 
-test('al matí, la missa del dia; la tria feta es manté tot el dia', async () => {
+test('in the morning, the Mass of the day; the choice made is kept all day', async () => {
   await openAt(new Date(2026, 9, 31, 9, 0), { none: '31:9:2026_vespers' });
   await waitFor(() =>
     expect(screen.getByRole('radio', { name: 'Vespertina, Tots Sants' }).props.accessibilityState.checked).toBe(true),
   );
 });
 
-test('Diumenge de Rams: la frase i el botó de la benedicció, que obre l’evangeli dels rams', async () => {
+test('Palm Sunday: the phrase and the button of the blessing, which opens the Gospel of the palms', async () => {
   await openAt(new Date(2026, 2, 29, 10, 0));
   expect(screen.getByText('Diumenge de Rams')).toBeTruthy();
   expect(screen.getByText('Benedicció dels Rams · Mt 21,1-11')).toBeTruthy();
@@ -166,7 +166,7 @@ test('Diumenge de Rams: la frase i el botó de la benedicció, que obre l’evan
   await findText(/Quan eren prop de Jerusalem, arribaren a Betfagé/);
 });
 
-test('Dissabte Sant: la Vetlla Pasqual, amb «Lectures i salms» i «Evangeli»', async () => {
+test('Holy Saturday: the Easter Vigil, with «Lectures i salms» and «Evangeli»', async () => {
   await openAt(new Date(2026, 3, 4, 10, 0));
   expect(screen.getByText('Vetlla Pasqual')).toBeTruthy();
   expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Morat')).toBeTruthy();
@@ -177,14 +177,14 @@ test('Dissabte Sant: la Vetlla Pasqual, amb «Lectures i salms» i «Evangeli»'
   await findText('Lectures de la Vetlla Pasqual');
 });
 
-test('Diumenge de Pasqua: blanc i solemnitat', async () => {
+test('Easter Sunday: white and a solemnity', async () => {
   await openAt(new Date(2026, 3, 5, 10, 0));
   expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Blanc')).toBeTruthy();
   expect(screen.getByText('Solemnitat')).toBeTruthy();
   expect(screen.getByText('Pasqua · Any A · Setmana I del salteri')).toBeTruthy();
 });
 
-test('a mitjanit pregunta per la litúrgia d’ahir, i «Sí, la d’ahir» la carrega', async () => {
+test('at midnight it asks about the liturgy of yesterday, and «Sí, la d’ahir» loads it', async () => {
   await openAt(new Date(2026, 8, 22, 0, 30));
   expect(await findText('Ja estem a dimarts, 22 de setembre.')).toBeTruthy();
   expect(screen.getByText('Vols la litúrgia d’ahir, dilluns 21 de setembre?')).toBeTruthy();
@@ -194,14 +194,14 @@ test('a mitjanit pregunta per la litúrgia d’ahir, i «Sí, la d’ahir» la c
   expect(screen.queryByText('Ja estem a dimarts, 22 de setembre.')).toBeNull();
 });
 
-test('a mitjanit, «No, la d’avui» es queda al dia', async () => {
+test('at midnight, «No, la d’avui» stays on the day', async () => {
   await openAt(new Date(2026, 8, 22, 1, 0));
   fireEvent.press(await screen.findByRole('button', { name: 'No, la d’avui. Dimarts, 22 de setembre' }));
   await waitFor(() => expect(screen.queryByText('Ja estem a dimarts, 22 de setembre.')).toBeNull());
   expect(screen.getByText('Dimarts, 22 de setembre')).toBeTruthy();
 });
 
-test('el calendari canvia de dia; «Cancel·la» el tanca sense canviar-lo', async () => {
+test('the calendar changes the day; «Cancel·la» closes it without changing it', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   expect(await screen.findByTestId('calendar')).toBeTruthy();
@@ -217,7 +217,7 @@ test('el calendari canvia de dia; «Cancel·la» el tanca sense canviar-lo', asy
   await findText('Dimarts, 15 de setembre');
 });
 
-test('al calendari es passa de mes, i «Avui» torna a avui', async () => {
+test('in the calendar you move from month to month, and «Avui» goes back to today', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   fireEvent.press(await screen.findByRole('button', { name: 'Mes següent' }));
@@ -232,12 +232,12 @@ test('al calendari es passa de mes, i «Avui» torna a avui', async () => {
   await findText('Dilluns, 21 de setembre');
 });
 
-test('amb el mode fosc activat, l’inici també és fosc', async () => {
+test('with dark mode turned on, the home is dark too', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0), { darkMode: 'Activat' });
   expect(styleOf(screen.getByTestId('home')).backgroundColor).toBe('#0E1413');
 });
 
-test('entre la barra de dalt i la targeta del dia hi ha aire: més que als costats, menys que entre seccions', async () => {
+test('between the top bar and the day card there is air: more than at the sides, less than between sections', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   const column = styleOf(screen.getByTestId('home-column'));
   expect(column.paddingTop).toBeGreaterThan(column.paddingHorizontal);
@@ -247,16 +247,16 @@ test('entre la barra de dalt i la targeta del dia hi ha aire: més que als costa
 // The top bar is dark teal in both modes: on iOS it is drawn dark. Drawn light, iOS 26 made the
 // capsules of glass of its buttons whitish and the back arrow black.
 test.each([
-  ['clar', 'Desactivat'],
-  ['fosc', 'Activat'],
-])('en mode %s, la barra de dalt es dibuixa fosca', async (_, darkMode) => {
+  ['light', 'Desactivat'],
+  ['dark', 'Activat'],
+])('in %s mode, the top bar is drawn dark', async (_, darkMode) => {
   await openAt(new Date(2026, 8, 21, 10, 0), { darkMode });
   const bars = screen.root.findAll((node) => node.props.userInterfaceStyle !== undefined, { deep: true });
   expect(bars.length).toBeGreaterThan(0);
   for (const bar of bars) expect(bar.props.userInterfaceStyle).toBe('dark');
 });
 
-test('qui ve de la versió anterior veu l’avís de novetats, i només la primera vegada', async () => {
+test('whoever comes from the previous version sees the what’s new notice, and only the first time', async () => {
   jest.setSystemTime(new Date(2026, 8, 21, 10, 0));
   await AsyncStorage.clear();
   render(<App />);
@@ -264,7 +264,7 @@ test('qui ve de la versió anterior veu l’avís de novetats, i només la prime
   await waitFor(async () => expect(await AsyncStorage.getItem('WhatsNewSeen_9.0.0')).toBe('true'));
 });
 
-test('qui instal·la l’app de nou no veu l’avís de novetats: no té res a comparar', async () => {
+test('whoever installs the app anew does not see the what’s new notice: there is nothing to compare', async () => {
   wasOpenedBefore.mockResolvedValueOnce(false);
   jest.setSystemTime(new Date(2026, 8, 21, 10, 0));
   await AsyncStorage.clear();

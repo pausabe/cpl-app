@@ -98,7 +98,7 @@ export default class SettingsService {
     return SettingsService._getStorageValue('showGlories', callback, defaultSettings.showGlories);
   }
 
-  static getSettingPrayLliures(callback) {
+  static getSettingOptionalFestivity(callback) {
     return SettingsService._getStorageValue('prayLliures', callback, defaultSettings.prayLliures);
   }
 
@@ -114,11 +114,11 @@ export default class SettingsService {
     return SettingsService._getStorageValue('darkMode', callback, defaultSettings.darkMode);
   }
 
-  static getSettingDiocesis(callback?) {
+  static getSettingDiocese(callback?) {
     return SettingsService._getStorageValue('diocesis', callback, defaultSettings.diocesis);
   }
 
-  static getSettingLloc(callback?) {
+  static getSettingPrayingPlace(callback?) {
     return SettingsService._getStorageValue('lloc', callback, defaultSettings.lloc);
   }
 
@@ -126,11 +126,11 @@ export default class SettingsService {
     return SettingsService._getStorageValue('dayStart', callback, defaultSettings.dayStart);
   }
 
-  static getSettingNumSalmInv(callback?) {
+  static getSettingInvitationPsalm(callback?) {
     return SettingsService._getStorageValue('salmInvitatori', callback, defaultSettings.salmInvitatori);
   }
 
-  static getSettingNumAntMare(callback?) {
+  static getSettingVirginAntiphon(callback?) {
     return SettingsService._getStorageValue('antMare', callback, defaultSettings.antMare);
   }
 
@@ -146,7 +146,7 @@ export default class SettingsService {
     return SettingsService._setValueIfValid('useLatin', value, (val) => val === 'true' || val === 'false', callback);
   }
 
-  static setSettingPrayLliures(value, callback) {
+  static setSettingOptionalFestivity(value, callback) {
     return SettingsService._setValueIfValid('prayLliures', value, (val) => val || !val, callback);
   }
 
@@ -170,7 +170,7 @@ export default class SettingsService {
     );
   }
 
-  static setSettingDiocesis(value, callback) {
+  static setSettingDiocese(value, callback) {
     return SettingsService._setValueIfValid(
       'diocesis',
       value,
@@ -181,7 +181,7 @@ export default class SettingsService {
     );
   }
 
-  static setSettingLloc(value, callback) {
+  static setSettingPrayingPlace(value, callback) {
     return SettingsService._setValueIfValid(
       'lloc',
       value,
@@ -201,7 +201,7 @@ export default class SettingsService {
     );
   }
 
-  static setSettingNumSalmInv(value) {
+  static setSettingInvitationPsalm(value) {
     return SettingsService._setValueIfValid(
       'salmInvitatori',
       value,
@@ -212,7 +212,7 @@ export default class SettingsService {
     );
   }
 
-  static setSettingNumAntMare(value) {
+  static setSettingVirginAntiphon(value) {
     return SettingsService._setValueIfValid(
       'antMare',
       value,

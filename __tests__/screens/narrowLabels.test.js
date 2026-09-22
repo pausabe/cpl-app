@@ -17,12 +17,12 @@ const hoursAt = (hour) => buildHours({ vespersTitle: '', specificLiturgyTime: ''
 // The Text that draws a label (not the Pressable around it)
 const label = (text) => screen.getByText(text);
 
-test('una paraula, una línia; un nom de més paraules, dues; i sempre es pot fer més petit', () => {
+test('one word, one line; a name of more words, two; and it can always be made smaller', () => {
   expect(fitLabel('Laudes')).toEqual({ numberOfLines: 1, adjustsFontSizeToFit: true, minimumFontScale: 0.7 });
   expect(fitLabel('Ofici de lectura')).toMatchObject({ numberOfLines: 2, adjustsFontSizeToFit: true });
 });
 
-test('les hores: el nom no es parteix, i «Ara» només hi va al costat si hi cap', () => {
+test('the hours: the name is not broken, and «Ara» only goes beside it if it fits', () => {
   renderWithTheme(<HoursGrid hours={hoursAt(7)} onOpen={jest.fn()} />);
   expect(label('Laudes').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
   expect(label('Completes').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
@@ -46,7 +46,7 @@ test('les hores: el nom no es parteix, i «Ara» només hi va al costat si hi ca
   expect(screen.getByRole('button', { name: 'Laudes' }).props.accessibilityValue).toEqual({ text: 'Ara' });
 });
 
-test('les hores menors, tres per fila, no porten «Ara»: només el fons ple', () => {
+test('the minor hours, three to a row, carry no «Ara»: only the filled background', () => {
   renderWithTheme(<HoursGrid hours={hoursAt(10)} onOpen={jest.fn()} />);
   expect(screen.getByRole('button', { name: 'Tèrcia' }).props.accessibilityValue).toEqual({ text: 'Ara' });
   expect(screen.queryByTestId('hour-now-badge')).toBeNull();
@@ -54,7 +54,7 @@ test('les hores menors, tres per fila, no porten «Ara»: només el fons ple', (
   expect(label('Tèrcia').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
 });
 
-test('les opcions del tema no es parteixen', () => {
+test('the theme options are not broken', () => {
   renderWithTheme(
     <SegmentedControl segments={THEME_SEGMENTS} value="Automàtic" onChange={jest.fn()} accessibilityLabel="Tema" />,
   );
@@ -63,7 +63,7 @@ test('les opcions del tema no es parteixen', () => {
   }
 });
 
-test('els botons del calendari no es parteixen', () => {
+test('the calendar buttons are not broken', () => {
   renderWithTheme(
     <CalendarDialog
       visible={true}

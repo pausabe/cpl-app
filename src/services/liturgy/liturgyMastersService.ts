@@ -376,9 +376,9 @@ async function obtainAdventWeekParts(liturgyDayInformation: LiturgyDayInformatio
       todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)
     ) {
       //Week begins with saturday
-      let auxCicle = liturgyDayInformation.today.weekCycle;
+      let auxCycle = liturgyDayInformation.today.weekCycle;
       if (todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)) {
-        auxCicle = '1';
+        auxCycle = '1';
       }
       let id;
       if (
@@ -387,7 +387,7 @@ async function obtainAdventWeekParts(liturgyDayInformation: LiturgyDayInformatio
       ) {
         id = 1;
       } else {
-        id = (parseInt(auxCicle) - 1) * 7 + liturgyDayInformation.today.date.getDay() + 2;
+        id = (parseInt(auxCycle) - 1) * 7 + liturgyDayInformation.today.date.getDay() + 2;
       }
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventWeekParts.masterName, id);
       return new AdventWeekParts(row);
@@ -621,14 +621,14 @@ async function obtainVespersCommonPsalter(liturgyDayInformation: LiturgyDayInfor
     ) {
       let weekDayNormalVespers =
         liturgyDayInformation.today.date.getDay() === 6 ? 1 : liturgyDayInformation.today.date.getDay() + 2;
-      let cicle = parseInt(liturgyDayInformation.today.weekCycle);
+      let cycle = parseInt(liturgyDayInformation.today.weekCycle);
       if (liturgyDayInformation.today.date.getDay() === 6) {
-        cicle = cicle === 4 ? 1 : cicle + 1;
+        cycle = cycle === 4 ? 1 : cycle + 1;
       }
       if (todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)) {
-        cicle = 1;
+        cycle = 1;
       }
-      const id = (cicle - 1) * 7 + weekDayNormalVespers;
+      const id = (cycle - 1) * 7 + weekDayNormalVespers;
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(VespersCommonPsalter.masterName, id);
       return new VespersCommonPsalter(row);
     }
@@ -644,7 +644,7 @@ async function obtainSolemnityAndFestivityParts(
       liturgyDayInformation.today.specialCelebration.specialCelebrationType ===
       SpecialCelebrationTypeEnum.SolemnityAndFestivity
     ) {
-      id = liturgyDayInformation.today.specialCelebration.SolemnityAndFestivityMasterIdentifier;
+      id = liturgyDayInformation.today.specialCelebration.solemnityAndFestivityMasterIdentifier;
     } else if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
       id = SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
@@ -664,7 +664,7 @@ async function obtainSolemnityAndFestivityWhenFirstVespersParts(
       liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType ===
       SpecialCelebrationTypeEnum.SolemnityAndFestivity
     ) {
-      id = liturgyDayInformation.tomorrow.specialCelebration.SolemnityAndFestivityMasterIdentifier;
+      id = liturgyDayInformation.tomorrow.specialCelebration.solemnityAndFestivityMasterIdentifier;
     } else if (liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
       id = SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
@@ -740,7 +740,7 @@ async function obtainCommonOfficeWhenStrongTimesPsalter(
     if (
       liturgyDayInformation.today.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.StrongTime
     ) {
-      const id = liturgyDayInformation.today.specialCelebration.StrongTimesMasterIdentifier;
+      const id = liturgyDayInformation.today.specialCelebration.strongTimesMasterIdentifier;
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(
         CommonOfficeWhenStrongTimesPsalter.masterName,
         id,
@@ -930,12 +930,12 @@ async function obtainSpecialDaysParts(liturgyDayInformation: LiturgyDayInformati
       liturgyDayInformation.today.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay ||
       liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay
     ) {
-      let id = liturgyDayInformation.today.specialCelebration.SpecialDaysMasterIdentifier;
+      let id = liturgyDayInformation.today.specialCelebration.specialDaysMasterIdentifier;
       if (
         liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType ===
         SpecialCelebrationTypeEnum.SpecialDay
       ) {
-        id = liturgyDayInformation.tomorrow.specialCelebration.SpecialDaysMasterIdentifier;
+        id = liturgyDayInformation.tomorrow.specialCelebration.specialDaysMasterIdentifier;
       }
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(SpecialDaysParts.masterName, id);
       return new SpecialDaysParts(row);

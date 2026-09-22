@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
-import Ofici from './specific-hour-liturgy/OfficeComponent';
-import Laudes from './specific-hour-liturgy/LaudesComponent';
-import Vespres from './specific-hour-liturgy/VespersComponent';
-import HoraMenor from './specific-hour-liturgy/HoursComponent';
-import Completes from './specific-hour-liturgy/NightPrayerComponent';
+import OfficeComponent from './specific-hour-liturgy/OfficeComponent';
+import LaudesComponent from './specific-hour-liturgy/LaudesComponent';
+import VespersComponent from './specific-hour-liturgy/VespersComponent';
+import HoursComponent from './specific-hour-liturgy/HoursComponent';
+import NightPrayerComponent from './specific-hour-liturgy/NightPrayerComponent';
 import Gap from '../../components/Gap';
 import EdgeToEdgeScrollView from '../../components/EdgeToEdgeScrollView';
 import { ThemeContext, prayerTextStyles } from '../../theme';
@@ -55,7 +55,7 @@ export default class HoursLiturgyPrayerScreen extends Component {
   }
 
   // The titles of the psalms of the day: an invitatory psalm that is already one of them is not
-  // offered (GlobalViewFunctions.salmInvExists)
+  // offered (GlobalViewFunctions.invitatoryPsalmExists)
   getTitles() {
     const hours = this.props.hours;
     const titles = [];
@@ -84,28 +84,36 @@ export default class HoursLiturgyPrayerScreen extends Component {
     switch (type) {
       case 'Ofici':
         return (
-          <Ofici {...common} titols={this.getTitles()} onInvitationPsalmChange={this.props.onInvitationPsalmChange} />
+          <OfficeComponent
+            {...common}
+            titles={this.getTitles()}
+            onInvitationPsalmChange={this.props.onInvitationPsalmChange}
+          />
         );
 
       case 'Laudes':
         return (
-          <Laudes {...common} titols={this.getTitles()} onInvitationPsalmChange={this.props.onInvitationPsalmChange} />
+          <LaudesComponent
+            {...common}
+            titles={this.getTitles()}
+            onInvitationPsalmChange={this.props.onInvitationPsalmChange}
+          />
         );
 
       case 'Vespres':
-        return <Vespres {...common} />;
+        return <VespersComponent {...common} />;
 
       case 'Tèrcia':
-        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.hours.thirdHour} />;
+        return <HoursComponent {...common} minorHourName={type} minorHour={this.props.hours.hours.thirdHour} />;
 
       case 'Sexta':
-        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.hours.sixthHour} />;
+        return <HoursComponent {...common} minorHourName={type} minorHour={this.props.hours.hours.sixthHour} />;
 
       case 'Nona':
-        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.hours.ninthHour} />;
+        return <HoursComponent {...common} minorHourName={type} minorHour={this.props.hours.hours.ninthHour} />;
 
       case 'Completes':
-        return <Completes {...common} onVirginAntiphonChange={this.props.onVirginAntiphonChange} />;
+        return <NightPrayerComponent {...common} onVirginAntiphonChange={this.props.onVirginAntiphonChange} />;
 
       default:
         return <Text style={prayerTextStyles(this.context).black}>{type}</Text>;

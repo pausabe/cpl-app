@@ -14,8 +14,8 @@ import { ThemeContext, prayerTextStyles } from '../../../theme';
 
 const INVITATORY_PSALMS = ['94', '99', '66', '23'];
 
-// Laudes. Gets through props the hours of the day (hours), the day (today), the settings and the
-// titles of the day's psalms (titols); a new invitatory psalm goes to onInvitationPsalmChange.
+// Lauds. Gets through props the hours of the day (hours), the day (today), the settings and the
+// titles of the day's psalms (titles); a new invitatory psalm goes to onInvitationPsalmChange.
 export default class LaudesComponent extends Component {
   static contextType = ThemeContext;
 
@@ -23,15 +23,15 @@ export default class LaudesComponent extends Component {
     super(props);
 
     // The invitatory psalm chosen last time, unless it is one of the psalms of the day
-    let auxNumSalmInv = props.settings.invitationPsalmOption;
-    if (!GlobalViewFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
-      auxNumSalmInv = '94';
+    let invitatoryPsalmNumber = props.settings.invitationPsalmOption;
+    if (!GlobalViewFunctions.invitatoryPsalmExists(invitatoryPsalmNumber, props.titles)) {
+      invitatoryPsalmNumber = '94';
       props.onInvitationPsalmChange('94');
     }
 
     this.state = {
-      invitatori: false,
-      numSalmInv: auxNumSalmInv,
+      showInvitatory: false,
+      invitatoryPsalmNumber: invitatoryPsalmNumber,
     };
   }
 
@@ -47,51 +47,51 @@ export default class LaudesComponent extends Component {
     return this.props.today;
   }
 
-  get titols() {
-    return this.props.titols;
+  get titles() {
+    return this.props.titles;
   }
 
-  onSalmInvPress(numSalm) {
-    this.setState({ numSalmInv: numSalm });
-    this.props.onInvitationPsalmChange(numSalm);
+  onInvitatoryPsalmPress(psalmNumber) {
+    this.setState({ invitatoryPsalmNumber: psalmNumber });
+    this.props.onInvitationPsalmChange(psalmNumber);
   }
 
-  salmInvitatori(numSalm) {
-    let salm94 = this.hours.invitation.psalm94;
-    let salm99 = this.hours.invitation.psalm99;
-    let salm66 = this.hours.invitation.psalm66;
-    let salm23 = this.hours.invitation.psalm23;
+  invitatoryPsalm(psalmNumber) {
+    let psalm94 = this.hours.invitation.psalm94;
+    let psalm99 = this.hours.invitation.psalm99;
+    let psalm66 = this.hours.invitation.psalm66;
+    let psalm23 = this.hours.invitation.psalm23;
 
     let psalmTitle = '';
     let psalmReference = '';
     let psalmText = '';
 
-    switch (numSalm) {
+    switch (psalmNumber) {
       case '94':
         psalmTitle = 'Salm 94\nInvitació a lloar Déu';
         psalmReference = 'Mentre repetim aquell «avui», exhortem-nos cada dia els uns als altres (He 3, 13)';
-        psalmText = salm94;
+        psalmText = psalm94;
         break;
       case '99':
         psalmTitle = 'Salm 99\nInvitació a lloar Déu en el seu temple';
         psalmReference = 'El Senyor vol que els redimits cantin himnes de victòria (St. Atanasi)';
-        psalmText = salm99;
+        psalmText = psalm99;
         break;
       case '66':
         psalmTitle = 'Salm 66\nInvitació als pobles a lloar Déu';
         psalmReference =
           'Sapigueu que el missatge de la salvació de Déu ha estat enviat a tots els pobles (Fets 28, 28)';
-        psalmText = salm66;
+        psalmText = psalm66;
         break;
       case '23':
         psalmTitle = 'Salm 23\nEntrada del Senyor al santuari';
         psalmReference = "Les portes del cel s'obriren a Crist quan hi fou endut amb la seva humanitat (St. Ireneu)";
-        psalmText = salm23;
+        psalmText = psalm23;
         break;
     }
 
-    const estrofes = psalmText.split('\n\n');
-    const antifona = GlobalViewFunctions.rs(this.hours.invitation.invitationAntiphon);
+    const stanzas = psalmText.split('\n\n');
+    const antiphon = GlobalViewFunctions.rs(this.hours.invitation.invitationAntiphon);
     const gloriaString =
       'Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.';
 
@@ -100,13 +100,13 @@ export default class LaudesComponent extends Component {
         <ChoiceChips
           accessibilityLabel="Salm de l'invitatori"
           options={INVITATORY_PSALMS.filter(
-            (psalm) => psalm === '94' || GlobalViewFunctions.salmInvExists(psalm, this.titols),
+            (psalm) => psalm === '94' || GlobalViewFunctions.invitatoryPsalmExists(psalm, this.titles),
           ).map((psalm) => ({ value: psalm, label: `Salm ${psalm}` }))}
-          value={numSalm}
-          onChange={this.onSalmInvPress.bind(this)}
+          value={psalmNumber}
+          onChange={this.onInvitatoryPsalmPress.bind(this)}
         />
 
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
           {psalmTitle}
@@ -122,56 +122,56 @@ export default class LaudesComponent extends Component {
         </View>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[0]}
+          {stanzas[0]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[1]}
+          {stanzas[1]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[2]}
+          {stanzas[2]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {estrofes[3]}
+          {stanzas[3]}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
-        {estrofes.length > 4 ? (
+        {stanzas.length > 4 ? (
           <View>
             <Text selectable={true} style={this.styles.black}>
-              {estrofes[4]}
+              {stanzas[4]}
             </Text>
             <Gap />
-            <Rubric label={'Ant. '}>{antifona}</Rubric>
+            <Rubric label={'Ant. '}>{antiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
-        {estrofes.length > 5 ? (
+        {stanzas.length > 5 ? (
           <View>
             <Text selectable={true} style={this.styles.black}>
-              {estrofes[5]}
+              {stanzas[5]}
             </Text>
             <Gap />
-            <Rubric label={'Ant. '}>{antifona}</Rubric>
+            <Rubric label={'Ant. '}>{antiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
-        {estrofes.length > 6 ? (
+        {stanzas.length > 6 ? (
           <View>
             <Text selectable={true} style={this.styles.black}>
-              {estrofes[6]}
+              {stanzas[6]}
             </Text>
             <Gap />
-            <Rubric label={'Ant. '}>{antifona}</Rubric>
+            <Rubric label={'Ant. '}>{antiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
@@ -179,7 +179,7 @@ export default class LaudesComponent extends Component {
           {gloriaString}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{antifona}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
       </View>
     );
   }
@@ -193,22 +193,22 @@ export default class LaudesComponent extends Component {
           <HR />
           <Gap />
           <SectionTitle>{'HIMNE'}</SectionTitle>
-          {this.himne()}
+          {this.hymn()}
           <Gap />
           <HR />
           <Gap />
           <SectionTitle>{'SALMÒDIA'}</SectionTitle>
-          {this.salmodia()}
+          {this.psalmody()}
           <Gap />
           <HR />
           <Gap />
           <SectionTitle>{'LECTURA BREU'}</SectionTitle>
-          {this.lecturaBreu()}
+          {this.shortReading()}
           <Gap />
           <HR />
           <Gap />
           <SectionTitle>{'RESPONSORI BREU'}</SectionTitle>
-          {this.responsori()}
+          {this.responsory()}
           <Gap />
           <HR />
           <Gap />
@@ -240,28 +240,28 @@ export default class LaudesComponent extends Component {
   }
 
   // TODO: [UI Refactor] duplicated code
-  salm(salm) {
-    if (!salm) return null;
-    salm = salm.replace(/    [*]/g, '');
-    salm = salm.replace(/   [*]/g, '');
-    salm = salm.replace(/  [*]/g, '');
-    salm = salm.replace(/ [*]/g, '');
-    salm = salm.replace(/    [†]/g, '');
-    salm = salm.replace(/   [†]/g, '');
-    salm = salm.replace(/  [†]/g, '');
-    salm = salm.replace(/ [†]/g, '');
-    return salm;
+  psalm(psalm) {
+    if (!psalm) return null;
+    psalm = psalm.replace(/    [*]/g, '');
+    psalm = psalm.replace(/   [*]/g, '');
+    psalm = psalm.replace(/  [*]/g, '');
+    psalm = psalm.replace(/ [*]/g, '');
+    psalm = psalm.replace(/    [†]/g, '');
+    psalm = psalm.replace(/   [†]/g, '');
+    psalm = psalm.replace(/  [†]/g, '');
+    psalm = psalm.replace(/ [†]/g, '');
+    return psalm;
   }
 
   // TODO: [UI Refactor] duplicated code
-  invitatoriButtons() {
+  invitatoryButtons() {
     return (
       <View>
         <ContinueButton
-          label={(this.state.invitatori ? 'Amagar' : 'Començar amb') + " l'invitatori"}
-          onPress={() => this.setState({ invitatori: !this.state.invitatori })}
+          label={(this.state.showInvitatory ? 'Amagar' : 'Començar amb') + " l'invitatori"}
+          onPress={() => this.setState({ showInvitatory: !this.state.showInvitatory })}
         />
-        {this.state.invitatori ? (
+        {this.state.showInvitatory ? (
           <View>
             <SectionTitle>{'INVITATORI'}</SectionTitle>
           </View>
@@ -275,31 +275,31 @@ export default class LaudesComponent extends Component {
     const gloriaStringIntro =
       'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
     const showInvitatory =
-      this.state.invitatori || this.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday;
+      this.state.showInvitatory || this.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday;
 
     if (showInvitatory) {
-      const aux_obriume = 'Obriu-me els llavis, Senyor.';
-      const aux_proclamare = 'I proclamaré la vostra lloança.';
+      const openLipsVersicle = 'Obriu-me els llavis, Senyor.';
+      const openLipsResponse = 'I proclamaré la vostra lloança.';
 
       return (
         // TODO: [UI Refactor] imporve this method... if else.. not good
         <View>
           {this.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ? null : (
-            <View>{this.invitatoriButtons()}</View>
+            <View>{this.invitatoryButtons()}</View>
           )}
-          <Rubric label={'V. '}>{aux_obriume}</Rubric>
-          <Rubric label={'R. '}>{aux_proclamare}</Rubric>
+          <Rubric label={'V. '}>{openLipsVersicle}</Rubric>
+          <Rubric label={'R. '}>{openLipsResponse}</Rubric>
           <Gap />
           <HR />
           <Gap />
-          {this.salmInvitatori(this.state.numSalmInv)}
+          {this.invitatoryPsalm(this.state.invitatoryPsalmNumber)}
         </View>
       );
     } else {
-      const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
-      const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
+      const openingVersicle = 'Sigueu amb nosaltres, Déu nostre.';
+      const openingResponse = 'Senyor, veniu a ajudar-nos.';
       // TODO: [UI Refactor] encapsulate
-      const aux_isAleluia =
+      const isAlleluia =
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
@@ -308,13 +308,13 @@ export default class LaudesComponent extends Component {
 
       return (
         <View>
-          {this.invitatoriButtons()}
-          <Rubric label={'V. '}>{aux_sigueu}</Rubric>
-          <Rubric label={'R. '}>{aux_senyor_veniu}</Rubric>
+          {this.invitatoryButtons()}
+          <Rubric label={'V. '}>{openingVersicle}</Rubric>
+          <Rubric label={'R. '}>{openingResponse}</Rubric>
           <Gap />
           <Text selectable={true} style={this.styles.black}>
             {gloriaStringIntro}
-            {aux_isAleluia ? (
+            {isAlleluia ? (
               <Text selectable={true} style={this.styles.black}>
                 {' Al·leluia.'}
               </Text>
@@ -325,41 +325,41 @@ export default class LaudesComponent extends Component {
     }
   }
 
-  himne() {
-    const aux_himne = GlobalViewFunctions.rs(this.hours.laudes.anthem);
+  hymn() {
+    const hymn = GlobalViewFunctions.rs(this.hours.laudes.anthem);
     return (
       <Text selectable={true} style={this.styles.black}>
-        {aux_himne}
+        {hymn}
       </Text>
     );
   }
 
-  salmodia() {
-    const aux_ant1 = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.antiphon);
-    const aux_titol1 = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.title);
-    let aux_com1 = '';
+  psalmody() {
+    const firstAntiphon = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.antiphon);
+    const firstTitle = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.title);
+    let firstComment = '';
     if (StringManagement.hasLiturgyContent(this.hours.laudes.firstPsalm.comment))
-      aux_com1 = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.comment);
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.psalm));
-    const aux_ant2 = GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.antiphon);
-    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.title));
-    let aux_com2 = '';
+      firstComment = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.comment);
+    const firstPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.psalm));
+    const secondAntiphon = GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.antiphon);
+    const secondTitle = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.title));
+    let secondComment = '';
     if (StringManagement.hasLiturgyContent(this.hours.laudes.secondPsalm.comment))
-      aux_com2 = GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.comment);
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.psalm));
-    const aux_ant3 = GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.antiphon);
-    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.title));
-    let aux_com3 = '';
+      secondComment = GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.comment);
+    const secondPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.psalm));
+    const thirdAntiphon = GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.antiphon);
+    const thirdTitle = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.title));
+    let thirdComment = '';
     if (StringManagement.hasLiturgyContent(this.hours.laudes.thirdPsalm.comment))
-      aux_com3 = GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.comment);
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.psalm));
+      thirdComment = GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.comment);
+    const thirdPsalm = this.psalm(GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.psalm));
 
     return (
       <View>
-        <Rubric label={'Ant. 1.'}> {aux_ant1}</Rubric>
+        <Rubric label={'Ant. 1.'}> {firstAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol1}
+          {firstTitle}
         </Text>
         <Gap />
         {StringManagement.hasLiturgyContent(this.hours.laudes.firstPsalm.comment) ? (
@@ -367,14 +367,14 @@ export default class LaudesComponent extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com1}
+                {firstComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm1}
+          {firstPsalm}
         </Text>
         <Gap />
         {this.hours.laudes.firstPsalm.hasGloryPrayer ? (
@@ -387,12 +387,12 @@ export default class LaudesComponent extends Component {
           </Text>
         )}
         <Gap />
-        <Rubric label={'Ant. 1.'}> {aux_ant1}</Rubric>
+        <Rubric label={'Ant. 1.'}> {firstAntiphon}</Rubric>
         <Gap />
-        <Rubric label={'Ant. 2.'}> {aux_ant2}</Rubric>
+        <Rubric label={'Ant. 2.'}> {secondAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol2}
+          {secondTitle}
         </Text>
         <Gap />
         {StringManagement.hasLiturgyContent(this.hours.laudes.secondPsalm.comment) ? (
@@ -400,14 +400,14 @@ export default class LaudesComponent extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com2}
+                {secondComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm2}
+          {secondPsalm}
         </Text>
         <Gap />
         {this.hours.laudes.secondPsalm.hasGloryPrayer ? (
@@ -420,12 +420,12 @@ export default class LaudesComponent extends Component {
           </Text>
         )}
         <Gap />
-        <Rubric label={'Ant. 2.'}> {aux_ant2}</Rubric>
+        <Rubric label={'Ant. 2.'}> {secondAntiphon}</Rubric>
         <Gap />
-        <Rubric label={'Ant. 3.'}> {aux_ant3}</Rubric>
+        <Rubric label={'Ant. 3.'}> {thirdAntiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol3}
+          {thirdTitle}
         </Text>
         <Gap />
         {StringManagement.hasLiturgyContent(this.hours.laudes.thirdPsalm.comment) ? (
@@ -433,14 +433,14 @@ export default class LaudesComponent extends Component {
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com3}
+                {thirdComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm3}
+          {thirdPsalm}
         </Text>
         <Gap />
         {this.hours.laudes.thirdPsalm.hasGloryPrayer ? (
@@ -453,218 +453,229 @@ export default class LaudesComponent extends Component {
           </Text>
         )}
         <Gap />
-        <Rubric label={'Ant. 3.'}> {aux_ant3}</Rubric>
+        <Rubric label={'Ant. 3.'}> {thirdAntiphon}</Rubric>
       </View>
     );
   }
 
-  lecturaBreu() {
-    const aux_vers = GlobalViewFunctions.rs(this.hours.laudes.shortReading.quote);
-    const aux_lectura_breu = GlobalViewFunctions.rs(this.hours.laudes.shortReading.shortReading);
+  shortReading() {
+    const shortReadingQuote = GlobalViewFunctions.rs(this.hours.laudes.shortReading.quote);
+    const shortReadingText = GlobalViewFunctions.rs(this.hours.laudes.shortReading.shortReading);
     return (
       <View>
         <Text selectable={true} style={this.styles.red}>
-          {aux_vers}
+          {shortReadingQuote}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {aux_lectura_breu}
+          {shortReadingText}
         </Text>
       </View>
     );
   }
 
-  responsori() {
+  responsory() {
     if (this.hours.laudes.shortResponsory.hasSpecialAntiphon) {
-      const aux_ant = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.specialAntiphon);
+      const antiphon = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.specialAntiphon);
       return (
         <View>
-          <Rubric label={'Ant.'}> {aux_ant}</Rubric>
+          <Rubric label={'Ant.'}> {antiphon}</Rubric>
         </View>
       );
     } else {
-      const aux_resp_1_2 = GlobalViewFunctions.respTogether(
+      const responsoryFirstAndSecondPart = GlobalViewFunctions.respTogether(
         GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.firstPart),
         GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.secondPart),
       );
-      const aux_resp_2 = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.secondPart);
-      const aux_resp_3 = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.thirdPart);
-      const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
+      const responsorySecondPart = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.secondPart);
+      const responsoryThirdPart = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.thirdPart);
+      const halfGloria = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
       // TODO: [UI Refactor] duplicated code
       return (
         <View>
-          <Rubric label={'V. '}>{aux_resp_1_2}</Rubric>
-          <Rubric label={'R. '}>{aux_resp_1_2}</Rubric>
+          <Rubric label={'V. '}>{responsoryFirstAndSecondPart}</Rubric>
+          <Rubric label={'R. '}>{responsoryFirstAndSecondPart}</Rubric>
           <Gap />
-          <Rubric label={'V. '}>{aux_resp_3}</Rubric>
-          <Rubric label={'R. '}>{aux_resp_2}</Rubric>
+          <Rubric label={'V. '}>{responsoryThirdPart}</Rubric>
+          <Rubric label={'R. '}>{responsorySecondPart}</Rubric>
           <Gap />
-          <Rubric label={'V. '}>{aux_gloria_half}</Rubric>
-          <Rubric label={'R. '}>{aux_resp_1_2}</Rubric>
+          <Rubric label={'V. '}>{halfGloria}</Rubric>
+          <Rubric label={'R. '}>{responsoryFirstAndSecondPart}</Rubric>
         </View>
       );
     }
   }
 
   chant() {
-    const aux_ant = GlobalViewFunctions.rs(this.hours.laudes.evangelicalAntiphon);
-    const aux_titol = 'Càntic\nLc 1, 68-79\nEl Messies i el seu Precursor';
-    const aux_salm = this.salm(this.hours.laudes.evangelicalChant);
-    const aux_gloria = 'Glòria.';
+    const antiphon = GlobalViewFunctions.rs(this.hours.laudes.evangelicalAntiphon);
+    const title = 'Càntic\nLc 1, 68-79\nEl Messies i el seu Precursor';
+    const canticleText = this.psalm(this.hours.laudes.evangelicalChant);
+    const gloria = 'Glòria.';
 
     // TODO: [UI Refactor] duplicated code
     return (
       <View>
-        <Rubric label={'Ant. '}>{aux_ant}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol}
+          {title}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm}
+          {canticleText}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackItalic}>
-          {aux_gloria}
+          {gloria}
         </Text>
         <Gap />
-        <Rubric label={'Ant. '}>{aux_ant}</Rubric>
+        <Rubric label={'Ant. '}>{antiphon}</Rubric>
       </View>
     );
   }
 
   // TODO: [UI Refactor] duplicated code
-  convertN(pregs, papa, bisbe) {
-    if (pregs.search('papa N.') !== -1) {
-      pregs = pregs.replace('papa N.', 'papa ' + papa);
-    } else if (pregs.search('Papa N.') !== -1) {
-      pregs = pregs.replace('Papa N.', 'papa ' + papa);
+  convertN(intercessions, pope, bishop) {
+    if (intercessions.search('papa N.') !== -1) {
+      intercessions = intercessions.replace('papa N.', 'papa ' + pope);
+    } else if (intercessions.search('Papa N.') !== -1) {
+      intercessions = intercessions.replace('Papa N.', 'papa ' + pope);
     }
-    if (pregs.search('bisbe N.') !== -1) {
-      pregs = pregs.replace('bisbe N.', 'bisbe ' + bisbe);
+    if (intercessions.search('bisbe N.') !== -1) {
+      intercessions = intercessions.replace('bisbe N.', 'bisbe ' + bishop);
     }
-    return pregs;
+    return intercessions;
   }
 
   prayers() {
-    let allPregs = GlobalViewFunctions.rs(this.hours.laudes.prayers);
+    let allIntercessions = GlobalViewFunctions.rs(this.hours.laudes.prayers);
 
-    if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
+    if (
+      allIntercessions === null ||
+      allIntercessions === undefined ||
+      allIntercessions === '' ||
+      allIntercessions === '-'
+    )
       return (
         <Text selectable={true} style={this.styles.black}>
           {'-'}
         </Text>
       );
 
-    allPregs = this.convertN(
-      allPregs,
+    allIntercessions = this.convertN(
+      allIntercessions,
       this.hours.concreteNamesInPrayers.pope,
       this.hours.concreteNamesInPrayers.bishop,
     );
-    let numGuio, numEnter, introPregs, pregsNoIntro, respPregs, pregaries, pregsFinalPart;
+    let dashCount,
+      newlineCount,
+      intercessionsIntro,
+      intercessionsWithoutIntro,
+      intercessionsResponse,
+      intercessions,
+      intercessionsFinalPart;
 
-    if (allPregs.match(/—/g, '')) numGuio = allPregs.match(/—/g, '').length;
+    if (allIntercessions.match(/—/g, '')) dashCount = allIntercessions.match(/—/g, '').length;
     else
       return (
         <Text selectable={true} style={this.styles.black}>
-          {allPregs}
+          {allIntercessions}
         </Text>
       );
-    if (allPregs.match(/\n/g, '')) numEnter = allPregs.match(/\n/g, '').length;
+    if (allIntercessions.match(/\n/g, '')) newlineCount = allIntercessions.match(/\n/g, '').length;
     else
       return (
         <Text selectable={true} style={this.styles.black}>
-          {allPregs}
+          {allIntercessions}
         </Text>
       );
 
-    if (numEnter !== numGuio * 3 + 3) {
+    if (newlineCount !== dashCount * 3 + 3) {
       //every prayer have 3 spaces and intro have 3 more
       return (
         <Text selectable={true} style={this.styles.black}>
-          {allPregs}
+          {allIntercessions}
         </Text>
       );
     } else {
-      introPregs = allPregs.split(':')[0];
-      if (allPregs.search(introPregs + ':') !== -1) {
-        pregsNoIntro = allPregs.replace(introPregs + ':', '');
-        if (pregsNoIntro !== '') {
-          while (pregsNoIntro.charAt(0) === '\n' || pregsNoIntro.charAt(0) === ' ') {
-            pregsNoIntro = pregsNoIntro.substring(1, pregsNoIntro.length);
+      intercessionsIntro = allIntercessions.split(':')[0];
+      if (allIntercessions.search(intercessionsIntro + ':') !== -1) {
+        intercessionsWithoutIntro = allIntercessions.replace(intercessionsIntro + ':', '');
+        if (intercessionsWithoutIntro !== '') {
+          while (intercessionsWithoutIntro.charAt(0) === '\n' || intercessionsWithoutIntro.charAt(0) === ' ') {
+            intercessionsWithoutIntro = intercessionsWithoutIntro.substring(1, intercessionsWithoutIntro.length);
           }
         }
       } else {
-        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 1');
+        Logger.log(Logger.LogKeys.Screens, 'intercessions', 'InfoLog. something incorrect. Intercessions 1');
         return (
           <Text selectable={true} style={this.styles.black}>
-            {allPregs}
+            {allIntercessions}
           </Text>
         );
       }
 
-      respPregs = pregsNoIntro.split('\n')[0];
-      if (pregsNoIntro.search(respPregs + '\n\n') !== -1) {
-        pregaries = pregsNoIntro.replace(respPregs + '\n\n', '');
+      intercessionsResponse = intercessionsWithoutIntro.split('\n')[0];
+      if (intercessionsWithoutIntro.search(intercessionsResponse + '\n\n') !== -1) {
+        intercessions = intercessionsWithoutIntro.replace(intercessionsResponse + '\n\n', '');
       } else {
-        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 2');
+        Logger.log(Logger.LogKeys.Screens, 'intercessions', 'InfoLog. something incorrect. Intercessions 2');
         return (
           <Text selectable={true} style={this.styles.black}>
-            {allPregs}
+            {allIntercessions}
           </Text>
         );
       }
 
-      if (pregaries.search(': Pare nostre.') !== -1) {
-        pregaries = pregaries.replace(': Pare nostre.', ':');
+      if (intercessions.search(': Pare nostre.') !== -1) {
+        intercessions = intercessions.replace(': Pare nostre.', ':');
       } else {
-        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 3');
+        Logger.log(Logger.LogKeys.Screens, 'intercessions', 'InfoLog. something incorrect. Intercessions 3');
         return (
           <Text selectable={true} style={this.styles.black}>
-            {allPregs}
+            {allIntercessions}
           </Text>
         );
       }
 
-      pregsFinalPart = pregaries.split('—')[numGuio].split('.\n\n')[1];
-      if (pregaries.search('\n\n' + pregsFinalPart) !== -1) {
-        pregaries = pregaries.replace('\n\n' + pregsFinalPart, '');
+      intercessionsFinalPart = intercessions.split('—')[dashCount].split('.\n\n')[1];
+      if (intercessions.search('\n\n' + intercessionsFinalPart) !== -1) {
+        intercessions = intercessions.replace('\n\n' + intercessionsFinalPart, '');
       } else {
-        Logger.log(Logger.LogKeys.Screens, 'pregaries', 'InfoLog. something incorrect. Pregaries 4');
+        Logger.log(Logger.LogKeys.Screens, 'intercessions', 'InfoLog. something incorrect. Intercessions 4');
         return (
           <Text selectable={true} style={this.styles.black}>
-            {allPregs}
+            {allIntercessions}
           </Text>
         );
       }
     }
 
-    const aux_intencions = 'Aquí es poden afegir altres intencions.';
+    const otherIntentionsRubric = 'Aquí es poden afegir altres intencions.';
 
     // TODO: [UI Refactor] duplicated code
     return (
       <View>
         <Text selectable={true} style={this.styles.black}>
-          {introPregs}
+          {intercessionsIntro}
           {':'}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackItalic}>
-          {respPregs}
+          {intercessionsResponse}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {pregaries}
+          {intercessions}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.redItalic}>
-          {aux_intencions}
+          {otherIntentionsRubric}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {pregsFinalPart}
+          {intercessionsFinalPart}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackItalic}>
@@ -675,19 +686,19 @@ export default class LaudesComponent extends Component {
   }
 
   finalPrayer() {
-    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.hours.laudes.finalPrayer), false);
+    const prayer = GlobalViewFunctions.completePrayer(GlobalViewFunctions.rs(this.hours.laudes.finalPrayer), false);
     return (
       <Text selectable={true} style={this.styles.black}>
-        {aux_oracio}
+        {prayer}
       </Text>
     );
   }
 
   conclusion() {
-    const aux_benediccio = 'Que el Senyor ens beneeixi i ens guardi de tot mal, i ens dugui a la vida eterna.';
+    const blessingVersicle = 'Que el Senyor ens beneeixi i ens guardi de tot mal, i ens dugui a la vida eterna.';
     return (
       <View>
-        <Rubric label={'V. '}>{aux_benediccio}</Rubric>
+        <Rubric label={'V. '}>{blessingVersicle}</Rubric>
         <Rubric label={'R. '}>{'Amén.'}</Rubric>
       </View>
     );

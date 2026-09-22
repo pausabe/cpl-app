@@ -8,7 +8,7 @@ import * as DataService from '../../src/services/dataService';
 const EASTER_MONDAY = new Date(2026, 3, 6);
 beforeEach(() => AsyncStorage.clear());
 
-test("la memòria lliure només s'activa el dia en què l'usuari l'ha activat", async () => {
+test('the optional memorial is only on for the day the user turned it on', async () => {
   await AsyncStorage.setItem('lliureDate', '6:3:2026');
   await DataService.reloadAllData(EASTER_MONDAY, null);
   expect(DataService.CurrentSettings.optionalFestivityEnabled).toBe(true);
@@ -22,14 +22,14 @@ test.each([
   ['Desactivat', 'dark', false],
   ['Automàtic', 'dark', true],
   ['Automàtic', 'light', false],
-])('mode fosc «%s» amb el sistema en %s → %s', async (option, system, expected) => {
+])('dark mode «%s» with the system on %s → %s', async (option, system, expected) => {
   jest.spyOn(Appearance, 'getColorScheme').mockReturnValue(system);
   await AsyncStorage.setItem('darkMode', option);
   await DataService.reloadAllData(EASTER_MONDAY, null);
   expect(DataService.CurrentSettings.darkModeEnabled).toBe(expected);
 });
 
-test('la diòcesi i el lloc escollits arriben a la consulta', async () => {
+test('the diocese and the place chosen reach the query', async () => {
   await AsyncStorage.setItem('diocesis', 'Tarragona');
   await AsyncStorage.setItem('lloc', 'Catedral');
   await DataService.reloadAllData(EASTER_MONDAY, null);

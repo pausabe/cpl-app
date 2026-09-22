@@ -35,28 +35,28 @@ export class SpecialCelebration {
   specialCelebrationType: SpecialCelebrationTypeEnum = SpecialCelebrationTypeEnum.CelebrationNotSpecial;
 
   _specialDaysMasterIdentifier: number = NoIdentifierNumber;
-  get SpecialDaysMasterIdentifier() {
+  get specialDaysMasterIdentifier() {
     return this._specialDaysMasterIdentifier;
   }
-  set SpecialDaysMasterIdentifier(value) {
+  set specialDaysMasterIdentifier(value) {
     this._specialDaysMasterIdentifier = value;
     this.updateType();
   }
 
   _solemnityAndFestivityMasterIdentifier: number = NoIdentifierNumber;
-  get SolemnityAndFestivityMasterIdentifier() {
+  get solemnityAndFestivityMasterIdentifier() {
     return this._solemnityAndFestivityMasterIdentifier;
   }
-  set SolemnityAndFestivityMasterIdentifier(value) {
+  set solemnityAndFestivityMasterIdentifier(value) {
     this._solemnityAndFestivityMasterIdentifier = value;
     this.updateType();
   }
 
   _strongTimesMasterIdentifier: number = NoIdentifierNumber;
-  get StrongTimesMasterIdentifier() {
+  get strongTimesMasterIdentifier() {
     return this._strongTimesMasterIdentifier;
   }
-  set StrongTimesMasterIdentifier(value) {
+  set strongTimesMasterIdentifier(value) {
     this._strongTimesMasterIdentifier = value;
     this.updateType();
   }

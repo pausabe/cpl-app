@@ -10,7 +10,7 @@ import { SpecificLiturgyTimeType } from '../../../services/celebrationTimeEnums'
 import { StringManagement } from '../../../utils/StringManagement';
 import { ThemeContext, prayerTextStyles } from '../../../theme';
 
-// Tèrcia, Sexta or Nona. Gets the hour (HORA_MENOR) and the day (today) through props.
+// A minor hour: Terce, Sext or None. Gets the hour (minorHour) and the day (today) through props.
 export default class HoursComponent extends Component {
   static contextType = ThemeContext;
 
@@ -23,14 +23,14 @@ export default class HoursComponent extends Component {
   }
 
   get specificHour() {
-    return this.props.HORA_MENOR;
+    return this.props.minorHour;
   }
 
   render() {
     try {
       const gloriaStringIntro =
         'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
-      const aux_isAleluia =
+      const isAlleluia =
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
         this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
@@ -44,7 +44,7 @@ export default class HoursComponent extends Component {
           <Gap />
           <Text selectable={true} style={this.styles.black}>
             {gloriaStringIntro}
-            {aux_isAleluia ? (
+            {isAlleluia ? (
               <Text selectable={true} style={this.styles.black}>
                 {' Al·leluia.'}
               </Text>
@@ -54,17 +54,17 @@ export default class HoursComponent extends Component {
           <HR />
           <Gap />
           <SectionTitle>{'HIMNE'}</SectionTitle>
-          {this.himne()}
+          {this.hymn()}
           <Gap />
           <HR />
           <Gap />
           <SectionTitle>{'SALMÒDIA'}</SectionTitle>
-          {this.salmodia()}
+          {this.psalmody()}
           <Gap />
           <HR />
           <Gap />
           <SectionTitle>{'LECTURA BREU'}</SectionTitle>
-          {this.lecturaBreuResp()}
+          {this.shortReadingAndResponsory()}
           <Gap />
           <HR />
           <Gap />
@@ -89,76 +89,76 @@ export default class HoursComponent extends Component {
     }
   }
 
-  salm(salm) {
-    if (!salm) return null;
-    salm = salm.replace(/ {4}[*]/g, '');
-    salm = salm.replace(/ {3}[*]/g, '');
-    salm = salm.replace(/ {2}[*]/g, '');
-    salm = salm.replace(/ [*]/g, '');
-    salm = salm.replace(/ {4}[†]/g, '');
-    salm = salm.replace(/ {3}[†]/g, '');
-    salm = salm.replace(/ {2}[†]/g, '');
-    salm = salm.replace(/ [†]/g, '');
-    return salm;
+  psalm(psalm) {
+    if (!psalm) return null;
+    psalm = psalm.replace(/ {4}[*]/g, '');
+    psalm = psalm.replace(/ {3}[*]/g, '');
+    psalm = psalm.replace(/ {2}[*]/g, '');
+    psalm = psalm.replace(/ [*]/g, '');
+    psalm = psalm.replace(/ {4}[†]/g, '');
+    psalm = psalm.replace(/ {3}[†]/g, '');
+    psalm = psalm.replace(/ {2}[†]/g, '');
+    psalm = psalm.replace(/ [†]/g, '');
+    return psalm;
   }
 
-  himne() {
-    const aux_himne = GlobalViewFunctions.rs(this.specificHour.anthem);
+  hymn() {
+    const hymn = GlobalViewFunctions.rs(this.specificHour.anthem);
     return (
       <Text selectable={true} style={this.styles.black}>
-        {aux_himne}
+        {hymn}
       </Text>
     );
   }
 
-  salmodia() {
-    const aux_antifones = this.specificHour.hasMultipleAntiphons;
-    const aux_ant1 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.firstPsalm.antiphon) : '';
-    const aux_ant = !aux_antifones ? GlobalViewFunctions.rs(this.specificHour.uniqueAntiphon) : '';
-    const aux_titol1 = GlobalViewFunctions.rs(this.specificHour.firstPsalm.title);
-    const aux_has_com1 = StringManagement.hasLiturgyContent(this.specificHour.firstPsalm.comment);
-    const aux_com1 = aux_has_com1 ? GlobalViewFunctions.rs(this.specificHour.firstPsalm.comment) : '';
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.specificHour.firstPsalm.psalm));
-    const aux_ant2 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.secondPsalm.antiphon) : '';
-    const aux_titol2 = GlobalViewFunctions.rs(this.specificHour.secondPsalm.title);
-    const aux_has_com2 = StringManagement.hasLiturgyContent(this.specificHour.secondPsalm.comment);
-    const aux_com2 = aux_has_com2 ? GlobalViewFunctions.rs(this.specificHour.secondPsalm.comment) : '';
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.specificHour.secondPsalm.psalm));
-    const aux_ant3 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.thirdPsalm.antiphon) : '';
-    const aux_titol3 = GlobalViewFunctions.rs(this.specificHour.thirdPsalm.title);
-    const aux_has_com3 = StringManagement.hasLiturgyContent(this.specificHour.thirdPsalm.comment);
-    const aux_com3 = aux_has_com3 ? GlobalViewFunctions.rs(this.specificHour.thirdPsalm.comment) : '';
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.specificHour.thirdPsalm.psalm));
+  psalmody() {
+    const hasMultipleAntiphons = this.specificHour.hasMultipleAntiphons;
+    const firstAntiphon = hasMultipleAntiphons ? GlobalViewFunctions.rs(this.specificHour.firstPsalm.antiphon) : '';
+    const uniqueAntiphon = !hasMultipleAntiphons ? GlobalViewFunctions.rs(this.specificHour.uniqueAntiphon) : '';
+    const firstTitle = GlobalViewFunctions.rs(this.specificHour.firstPsalm.title);
+    const hasFirstComment = StringManagement.hasLiturgyContent(this.specificHour.firstPsalm.comment);
+    const firstComment = hasFirstComment ? GlobalViewFunctions.rs(this.specificHour.firstPsalm.comment) : '';
+    const firstPsalm = this.psalm(GlobalViewFunctions.rs(this.specificHour.firstPsalm.psalm));
+    const secondAntiphon = hasMultipleAntiphons ? GlobalViewFunctions.rs(this.specificHour.secondPsalm.antiphon) : '';
+    const secondTitle = GlobalViewFunctions.rs(this.specificHour.secondPsalm.title);
+    const hasSecondComment = StringManagement.hasLiturgyContent(this.specificHour.secondPsalm.comment);
+    const secondComment = hasSecondComment ? GlobalViewFunctions.rs(this.specificHour.secondPsalm.comment) : '';
+    const secondPsalm = this.psalm(GlobalViewFunctions.rs(this.specificHour.secondPsalm.psalm));
+    const thirdAntiphon = hasMultipleAntiphons ? GlobalViewFunctions.rs(this.specificHour.thirdPsalm.antiphon) : '';
+    const thirdTitle = GlobalViewFunctions.rs(this.specificHour.thirdPsalm.title);
+    const hasThirdComment = StringManagement.hasLiturgyContent(this.specificHour.thirdPsalm.comment);
+    const thirdComment = hasThirdComment ? GlobalViewFunctions.rs(this.specificHour.thirdPsalm.comment) : '';
+    const thirdPsalm = this.psalm(GlobalViewFunctions.rs(this.specificHour.thirdPsalm.psalm));
 
     return (
       <View>
-        {aux_antifones ? (
+        {hasMultipleAntiphons ? (
           <View>
-            <Rubric label={'Ant. 1. '}>{aux_ant1}</Rubric>
+            <Rubric label={'Ant. 1. '}>{firstAntiphon}</Rubric>
           </View>
         ) : (
           <View>
-            <Rubric label={'Ant. '}>{aux_ant}</Rubric>
+            <Rubric label={'Ant. '}>{uniqueAntiphon}</Rubric>
           </View>
         )}
         <Gap />
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol1}
+          {firstTitle}
         </Text>
         <Gap />
-        {aux_has_com1 ? (
+        {hasFirstComment ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com1}
+                {firstComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm1}
+          {firstPsalm}
         </Text>
         <Gap />
         {this.specificHour.firstPsalm.hasGloryPrayer ? (
@@ -171,31 +171,31 @@ export default class HoursComponent extends Component {
           </Text>
         )}
         <Gap />
-        {aux_antifones ? (
+        {hasMultipleAntiphons ? (
           <View>
-            <Rubric label={'Ant. 1. '}>{aux_ant1}</Rubric>
+            <Rubric label={'Ant. 1. '}>{firstAntiphon}</Rubric>
             <Gap />
-            <Rubric label={'Ant. 2. '}>{aux_ant2}</Rubric>
+            <Rubric label={'Ant. 2. '}>{secondAntiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol2}
+          {secondTitle}
         </Text>
         <Gap />
-        {aux_has_com2 ? (
+        {hasSecondComment ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com2}
+                {secondComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm2}
+          {secondPsalm}
         </Text>
         <Gap />
         {this.specificHour.secondPsalm.hasGloryPrayer ? (
@@ -208,31 +208,31 @@ export default class HoursComponent extends Component {
           </Text>
         )}
         <Gap />
-        {aux_antifones ? (
+        {hasMultipleAntiphons ? (
           <View>
-            <Rubric label={'Ant. 2. '}>{aux_ant2}</Rubric>
+            <Rubric label={'Ant. 2. '}>{secondAntiphon}</Rubric>
             <Gap />
-            <Rubric label={'Ant. 3. '}>{aux_ant3}</Rubric>
+            <Rubric label={'Ant. 3. '}>{thirdAntiphon}</Rubric>
             <Gap />
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.redCenter}>
-          {aux_titol3}
+          {thirdTitle}
         </Text>
         <Gap />
-        {aux_has_com3 ? (
+        {hasThirdComment ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
               <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                {aux_com3}
+                {thirdComment}
               </Text>
               <Gap />
             </View>
           </View>
         ) : null}
         <Text selectable={true} style={this.styles.black}>
-          {aux_salm3}
+          {thirdPsalm}
         </Text>
         <Gap />
         {this.specificHour.thirdPsalm.hasGloryPrayer ? (
@@ -245,46 +245,46 @@ export default class HoursComponent extends Component {
           </Text>
         )}
         <Gap />
-        {aux_antifones ? (
+        {hasMultipleAntiphons ? (
           <View>
-            <Rubric label={'Ant. 3. '}>{aux_ant3}</Rubric>
+            <Rubric label={'Ant. 3. '}>{thirdAntiphon}</Rubric>
           </View>
         ) : (
           <View>
-            <Rubric label={'Ant. '}>{aux_ant}</Rubric>
+            <Rubric label={'Ant. '}>{uniqueAntiphon}</Rubric>
           </View>
         )}
       </View>
     );
   }
 
-  lecturaBreuResp() {
-    const aux_vers = GlobalViewFunctions.rs(this.specificHour.shortReading.quote);
-    const aux_lecturaBreu = GlobalViewFunctions.rs(this.specificHour.shortReading.shortReading);
-    const aux_respV = GlobalViewFunctions.rs(this.specificHour.responsory.versicle);
-    const aux_respR = GlobalViewFunctions.rs(this.specificHour.responsory.response);
+  shortReadingAndResponsory() {
+    const shortReadingQuote = GlobalViewFunctions.rs(this.specificHour.shortReading.quote);
+    const shortReadingText = GlobalViewFunctions.rs(this.specificHour.shortReading.shortReading);
+    const responsoryVersicle = GlobalViewFunctions.rs(this.specificHour.responsory.versicle);
+    const responsoryResponse = GlobalViewFunctions.rs(this.specificHour.responsory.response);
 
     return (
       <View>
         <Text selectable={true} style={this.styles.red}>
-          {aux_vers}
+          {shortReadingQuote}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {aux_lecturaBreu}
+          {shortReadingText}
         </Text>
         <Gap />
-        <Rubric label={'V. '}>{aux_respV}</Rubric>
-        <Rubric label={'R. '}>{aux_respR}</Rubric>
+        <Rubric label={'V. '}>{responsoryVersicle}</Rubric>
+        <Rubric label={'R. '}>{responsoryResponse}</Rubric>
       </View>
     );
   }
 
   finalPrayer() {
-    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.specificHour.finalPrayer), true);
+    const prayer = GlobalViewFunctions.completePrayer(GlobalViewFunctions.rs(this.specificHour.finalPrayer), true);
     return (
       <Text selectable={true} style={this.styles.black}>
-        {aux_oracio}
+        {prayer}
       </Text>
     );
   }

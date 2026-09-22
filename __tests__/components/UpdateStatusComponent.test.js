@@ -24,27 +24,27 @@ function withState(state) {
   render(<UpdateStatus />);
 }
 
-test('mentre baixa, ho diu amb el percentatge', () => {
+test('while it downloads, it says so with the percentage', () => {
   withState({ isDownloading: true, downloadProgress: 0.42 });
   expect(screen.getByText("S'està baixant una actualització… 42%")).toBeTruthy();
 });
 
-test("amb una baixada feta, avisa que s'aplicarà en tornar a obrir l'app", () => {
+test('with a download done, it warns that it will apply when the app is opened again', () => {
   withState({ isUpdatePending: true });
   expect(screen.getByText("Hi ha una actualització a punt. S'aplicarà quan tornis a obrir l'aplicació.")).toBeTruthy();
 });
 
-test('al dia, diu quan ha comprovat', () => {
+test('up to date, it says when it checked', () => {
   withState({ lastCheckForUpdateTimeSinceRestart: new Date(2026, 8, 21, 9, 5) });
   expect(screen.getByText("L'aplicació està al dia (comprovat a les 09:05)")).toBeTruthy();
 });
 
-test('sense connexió, ho diu', () => {
+test('with no connection, it says so', () => {
   withState({ checkError: new Error('offline') });
   expect(screen.getByText("No s'ha pogut comprovar si hi ha actualitzacions.")).toBeTruthy();
 });
 
-test("diu quina actualització fa servir: la de la botiga o la data d'una baixada", () => {
+test('it says which update it is using: the one of the store or the date of a download', () => {
   withState({});
   expect(screen.getByText('Actualització en ús: la de la botiga')).toBeTruthy();
 
@@ -52,7 +52,7 @@ test("diu quina actualització fa servir: la de la botiga o la data d'una baixad
   expect(screen.getByText('Actualització en ús: 14/9/2026 18:30')).toBeTruthy();
 });
 
-test('una còpia feta a l’ordinador, sense canal, diu que no rep actualitzacions en lloc d’un error', () => {
+test('a copy made on the computer, with no channel, says it gets no updates instead of an error', () => {
   Updates.channel = '';
   withState({ checkError: new Error('no channel') });
   expect(screen.getByText('Còpia de proves, sense canal: no rep actualitzacions')).toBeTruthy();

@@ -10,13 +10,13 @@ function open(props = {}) {
   return handlers;
 }
 
-test('diu la mida triada i el mode fosc', () => {
+test('it says the chosen size and the dark mode', () => {
   open();
   expect(screen.getByText('Mida 3 de 10')).toBeTruthy();
   expect(screen.getByRole('radio', { name: 'Automàtic' }).props.accessibilityState.checked).toBe(true);
 });
 
-test('A+ i A− demanen la mida següent i l’anterior', () => {
+test('A+ and A− ask for the next size and the previous one', () => {
   const { onTextSizeChange } = open({ textSizeStep: 3 });
   fireEvent.press(screen.getByRole('button', { name: 'Text més gran' }));
   expect(onTextSizeChange).toHaveBeenLastCalledWith(4);
@@ -24,20 +24,20 @@ test('A+ i A− demanen la mida següent i l’anterior', () => {
   expect(onTextSizeChange).toHaveBeenLastCalledWith(2);
 });
 
-test('als extrems, el botó que no pot anar més enllà queda desactivat', () => {
+test('at the ends, the button that cannot go further is disabled', () => {
   open({ textSizeStep: 10 });
   expect(screen.getByRole('button', { name: 'Text més gran' }).props.accessibilityState.disabled).toBe(true);
   open({ textSizeStep: 1 });
   expect(screen.getByRole('button', { name: 'Text més petit' }).props.accessibilityState.disabled).toBe(true);
 });
 
-test('el mode fosc es tria amb tres botons', () => {
+test('the dark mode is chosen with three buttons', () => {
   const { onDarkModeChange } = open();
   fireEvent.press(screen.getByText('Fosc'));
   expect(onDarkModeChange).toHaveBeenCalledWith('Activat');
 });
 
-test('«Fet» el tanca', () => {
+test('«Fet» closes it', () => {
   const { onClose } = open();
   fireEvent.press(screen.getByRole('button', { name: 'Fet' }));
   expect(onClose).toHaveBeenCalled();

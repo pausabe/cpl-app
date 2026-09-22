@@ -147,8 +147,8 @@ export async function obtainFreeVirginMemoryAsync() {
   return result[0];
 }
 
-export async function obtainCommonOfficesAsync(categoria) {
-  let query = `SELECT * FROM OficisComuns WHERE Categoria = '${categoria}'`;
+export async function obtainCommonOfficesAsync(category) {
+  let query = `SELECT * FROM OficisComuns WHERE Categoria = '${category}'`;
   const result = await executeQueryAsync(query);
   return result[0];
 }
@@ -239,7 +239,7 @@ async function dateIsMoved(date: Date, dioceseCode2Letters: string): Promise<boo
 }
 
 function findCorrectIndexFromSettings(result, length, diocese, dioceseName, place) {
-  //Catedral < Ciutat < Diòcesi < -
+  //Cathedral < City < Diocese < -
   if (length === 1) return 0;
   let auxDioceseName = dioceseName;
   let auxDiocese = diocese;
@@ -273,25 +273,25 @@ function findCorrectIndexFromSettings(result, length, diocese, dioceseName, plac
   return 0;
 }
 
-function getNormalDaysMassLiturgyIndex(result, cicleABC, parImpar, diaSetmana) {
+function getNormalDaysMassLiturgyIndex(result, cycleABC, evenOrOdd, dayOfTheWeek) {
   let i;
-  //For getLDSantoral is necessari let in result just the rows with diaSetmana (just in case any of them have diaSetmana != '-')
-  let haveSomeDiaSetmana = false;
-  let DiaIsTheSame = false;
+  //For getLDSantoral it is necessary to keep in result just the rows with dayOfTheWeek (just in case any of them have dayOfTheWeek != '-')
+  let haveSomeDayOfTheWeek = false;
+  let dayIsTheSame = false;
   for (let i = 0; i < result.length; i++) {
     if (result[i].DiadelaSetmana !== '-') {
-      haveSomeDiaSetmana = true;
-      if (result[i].DiadelaSetmana === diaSetmana) DiaIsTheSame = true;
+      haveSomeDayOfTheWeek = true;
+      if (result[i].DiadelaSetmana === dayOfTheWeek) dayIsTheSame = true;
       break;
     }
   }
 
   const rows = [];
-  if (haveSomeDiaSetmana) {
+  if (haveSomeDayOfTheWeek) {
     for (let i = 0; i < result.length; i++) {
       if (
-        (DiaIsTheSame && result[i].DiadelaSetmana === diaSetmana) ||
-        (!DiaIsTheSame && result[i].DiadelaSetmana === '-')
+        (dayIsTheSame && result[i].DiadelaSetmana === dayOfTheWeek) ||
+        (!dayIsTheSame && result[i].DiadelaSetmana === '-')
       ) {
         rows.push(result[i]);
       }
@@ -307,7 +307,7 @@ function getNormalDaysMassLiturgyIndex(result, cicleABC, parImpar, diaSetmana) {
     if (rows[0].Cicle !== '-' && rows[0].paroimpar === '-') {
       //1) cicle != '-' and paroimpar != '-'
       for (i = 0; i < rows.length; i++) {
-        if (rows[i].Cicle === cicleABC) {
+        if (rows[i].Cicle === cycleABC) {
           index = i;
           break;
         }
@@ -315,7 +315,7 @@ function getNormalDaysMassLiturgyIndex(result, cicleABC, parImpar, diaSetmana) {
     } else if (rows[0].paroimpar !== '-' && rows[0].Cicle === '-') {
       //2) cicle == '-' and paroimpar != '-'
       for (i = 0; i < rows.length; i++) {
-        if (rows[i].paroimpar === parImpar) {
+        if (rows[i].paroimpar === evenOrOdd) {
           index = i;
           break;
         }
@@ -323,7 +323,7 @@ function getNormalDaysMassLiturgyIndex(result, cicleABC, parImpar, diaSetmana) {
     } else if (rows[0].paroimpar !== '-' && rows[0].Cicle !== '-') {
       //3) cicle != '-' and paroimpar != '-'
       for (i = 0; i < rows.length; i++) {
-        if (rows[i].Cicle === cicleABC && rows[i].paroimpar === parImpar) {
+        if (rows[i].Cicle === cycleABC && rows[i].paroimpar === evenOrOdd) {
           index = i;
           break;
         }
