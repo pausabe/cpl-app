@@ -23,7 +23,10 @@ test('el títol, «Tanca» i la pàgina, en un full alt de vora a vora', () => {
   expect(within(sheet).getByRole('header', { name: 'Missatge' })).toBeTruthy();
   expect(within(sheet).getByTestId('webview').props.source).toEqual({ uri: 'https://www.cpl.es/contacto/' });
   expect(styleOf(sheet)).toMatchObject({ paddingHorizontal: 0 });
-  fireEvent.press(within(sheet).getByRole('button', { name: 'Tanca' }));
+  const close = within(sheet).getByRole('button', { name: 'Tanca' });
+  // Maestro finds it by this: the backdrop behind the sheet is called "Tanca" too
+  expect(close.props.testID).toBe('sheet-close');
+  fireEvent.press(close);
   expect(onClose).toHaveBeenCalledTimes(1);
 });
 

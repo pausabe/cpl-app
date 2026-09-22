@@ -33,6 +33,7 @@ export default function WebSheet({visible, title, url, onClose, testID}: WebShee
                     {title}
                 </Text>
                 <Pressable
+                    testID={testID ? `${testID}-close` : undefined}
                     accessibilityRole="button"
                     onPress={onClose}
                     hitSlop={8}

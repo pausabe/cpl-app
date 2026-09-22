@@ -23,7 +23,8 @@ iOS). El calendari és el de l'app, igual a totes dues.
 
 Cada flux comença amb `subflows/obrir.yaml`: `clearState`, l'app com acabada d'instal·lar, la
 configuració per defecte i el dia d'avui, i tanca els avisos que surten en obrir-la (el de
-novetats, la primera vegada, i el de mitjanit, de 0 a 3 h). Les comprovacions són sobre textos
+mitjanit, de 0 a 3 h, i el de novetats, per si de cas: només surt a qui ve de la versió anterior,
+i després d'un `clearState` l'app és nova). Les comprovacions són sobre textos
 que no depenen del dia (els noms de les hores, els encapçalaments HIMNE, SALMÒDIA, ORACIÓ…),
 així que es poden executar qualsevol dia. El que només passa alguns dies (la vida del sant, la
 memòria lliure, la missa vespertina) es comprova quan hi és; els casos de cada dia concret els
