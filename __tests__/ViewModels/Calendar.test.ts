@@ -1,4 +1,4 @@
-import {calendarMonth, dayLabel, isSelectable, monthTitle, sameDay, shiftMonth, WEEKDAY_INITIALS} from '../../src/ViewModels/Calendar';
+import {calendarMonth, dayLabel, isSelectable, monthInYear, monthTitle, sameDay, selectableYears, shiftMonth, WEEKDAY_INITIALS} from '../../src/ViewModels/Calendar';
 
 const today = new Date(2026, 8, 22, 10, 30);
 
@@ -54,4 +54,19 @@ test('passar de mes, també d’un any a l’altre', () => {
   expect(shiftMonth(2026, 8, 0)).toEqual({year: 2026, month: 8});
   expect(sameDay(new Date(2026, 8, 22, 1), new Date(2026, 8, 22, 23))).toBe(true);
   expect(sameDay(null, today)).toBe(false);
+});
+
+test('la llista d’anys: els de la base de dades, o cinc a cada banda si no se saben', () => {
+  expect(selectableYears(2026, new Date(2017, 0, 3), new Date(2026, 11, 29)))
+    .toEqual([2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]);
+  expect(selectableYears(2026)).toEqual([2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031]);
+});
+
+test('en canviar d’any es queda al mateix mes, si aquell any el té', () => {
+  const min = new Date(2017, 2, 5);
+  const max = new Date(2026, 9, 20);
+  expect(monthInYear(2019, 8, min, max)).toEqual({year: 2019, month: 8});
+  // March 2017 is the first month the database has; October 2026, the last
+  expect(monthInYear(2017, 0, min, max)).toEqual({year: 2017, month: 2});
+  expect(monthInYear(2026, 11, min, max)).toEqual({year: 2026, month: 9});
 });

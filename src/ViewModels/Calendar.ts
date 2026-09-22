@@ -94,3 +94,22 @@ export function calendarMonth({year, month, selected, today, minimum, maximum}: 
         canGoForward: !maximum || monthKey(year, month) < monthKey(maximum.getFullYear(), maximum.getMonth()),
     };
 }
+
+// The years of the list that opens from the title of the month: the ones the database has. Without
+// its limits, five on each side of the one shown.
+export function selectableYears(shownYear: number, minimum?: Date | null, maximum?: Date | null): number[] {
+    const first = minimum ? minimum.getFullYear() : shownYear - 5;
+    const last = maximum ? maximum.getFullYear() : shownYear + 5;
+    const years: number[] = [];
+    for (let year = first; year <= last; year++) years.push(year);
+    return years;
+}
+
+// Another year from the list keeps the month; when that month of that year is outside the
+// database, the nearest one that is inside
+export function monthInYear(year: number, month: number, minimum?: Date | null, maximum?: Date | null): {year: number; month: number} {
+    let index = monthKey(year, month);
+    if (minimum) index = Math.max(index, monthKey(minimum.getFullYear(), minimum.getMonth()));
+    if (maximum) index = Math.min(index, monthKey(maximum.getFullYear(), maximum.getMonth()));
+    return {year: Math.floor(index / 12), month: index % 12};
+}

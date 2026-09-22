@@ -3,6 +3,14 @@ name: "Es pot canviar de dia amb el calendari"
 ---
 - runFlow: subflows/obrir.yaml
 - tapOn: "Calendari"
+# El títol del mes obre la llista d'anys: l'any passat, al mateix mes
+- tapOn:
+    id: "calendar-title"
+- assertVisible:
+    id: "calendar-years"
+- tapOn:
+    id: "calendar-year-${new Date().getFullYear() - 1}"
+- assertVisible: ".* de ${new Date().getFullYear() - 1}"
 # El calendari de l'app, igual a Android i a iOS: el dia 15 del mes que mostra, i «Canvia».
 # Cada dia és un botó «dimarts, 15 de setembre» amb el número a dins: a Android es toca el
 # número; a iOS, el botó.

@@ -37,7 +37,7 @@ queden a `~/.maestro/tests/<data>/`.
 | 02-hores | Les set hores s'obren des de l'inici i es llegeixen fins al final |
 | 03-missa | L'Evangeli i la primera lectura; «Continua amb el Salm» |
 | 04-configuracio | Diòcesi i tema es desen, i es mantenen en tornar a obrir l'app |
-| 05-calendari | Canviar de dia amb el calendari |
+| 05-calendari | Canviar de dia amb el calendari, passant per la llista d'anys |
 | 06-webs | Missatge i Donatiu, en un full que puja; el de Donatiu (Android) es tanca estirant-lo avall |
 | 07-inici | Una hora des de l'inici, el botó Aa i el full de la vida del sant |
 | 08-dissabte | Al proper dissabte: Avui / Vespertina i la memòria lliure |

@@ -3,11 +3,12 @@ import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {fitLabel, useTheme} from '../../Theme';
 import Dialog from '../../Components/Dialog';
 import Icon from '../../Components/Icon';
-import {calendarMonth, CalendarDay, shiftMonth, WEEKDAY_INITIALS} from '../../ViewModels/Calendar';
+import {calendarMonth, CalendarDay, monthInYear, selectableYears, shiftMonth, WEEKDAY_INITIALS} from '../../ViewModels/Calendar';
 
 // Choosing another day: a month in a card, the same on Android and on iOS, in Catalan and in
 // the colours of the app. A day is chosen with a touch and applied with "Canvia"; "Avui" goes
-// back to today at once. Days outside the database cannot be chosen.
+// back to today at once. Days outside the database cannot be chosen. The title of the month
+// opens the list of years, to go to another year without going month by month.
 interface CalendarDialogProps {
     visible: boolean;
     value: Date;
@@ -24,13 +25,20 @@ export default function CalendarDialog({visible, value, minimumDate, maximumDate
     const scale = theme.maxFontScaleForLabels;
     const [selected, setSelected] = useState(value);
     const [shown, setShown] = useState({year: value.getFullYear(), month: value.getMonth()});
+    const [pickingYear, setPickingYear] = useState(false);
 
     // Every time it opens, at the day being shown
     useEffect(() => {
         if (!visible) return;
         setSelected(value);
         setShown({year: value.getFullYear(), month: value.getMonth()});
+        setPickingYear(false);
     }, [visible, value]);
+
+    const chooseYear = (year: number) => {
+        setShown(monthInYear(year, shown.month, minimumDate, maximumDate));
+        setPickingYear(false);
+    };
 
     const month = calendarMonth({...shown, selected, today: new Date(), minimum: minimumDate, maximum: maximumDate});
     const go = (delta: number) => setShown(shiftMonth(shown.year, shown.month, delta));
@@ -75,6 +83,36 @@ export default function CalendarDialog({visible, value, minimumDate, maximumDate
         );
     };
 
+    const thisYear = new Date().getFullYear();
+    const yearCell = (year: number) => {
+        const chosen = year === shown.year;
+        const current = year === thisYear;
+        return (
+            <View key={year} style={styles.yearCell}>
+                <Pressable
+                    testID={`calendar-year-${year}`}
+                    accessibilityRole="button"
+                    accessibilityLabel={String(year)}
+                    accessibilityState={{selected: chosen}}
+                    onPress={() => chooseYear(year)}
+                    style={({pressed}) => [
+                        styles.year,
+                        {backgroundColor: chosen ? colors.accentFill : 'transparent', opacity: pressed ? 0.7 : 1},
+                        current && !chosen ? {borderWidth: 1.5, borderColor: colors.accentText} : null,
+                    ]}>
+                    <Text
+                        maxFontSizeMultiplier={1.3}
+                        style={[styles.yearText, {
+                            color: chosen ? colors.onAccent : current ? colors.accentText : colors.text,
+                            fontWeight: chosen || current ? '700' : '400',
+                        }]}>
+                        {year}
+                    </Text>
+                </Pressable>
+            </View>
+        );
+    };
+
     const action = (label: string, onPress: () => void, bold = false) => (
         <Pressable
             accessibilityRole="button"
@@ -92,28 +130,46 @@ export default function CalendarDialog({visible, value, minimumDate, maximumDate
     return (
         <Dialog visible={visible} onDismiss={onCancel} accessibilityLabel="Tria un dia" maxWidth={380} style={styles.card} testID="calendar">
             <View style={styles.header}>
-                {arrow('Mes anterior', 'back', month.canGoBack, -1)}
-                <Text
-                    accessibilityRole="header"
+                {pickingYear ? <View style={styles.arrow}/> : arrow('Mes anterior', 'back', month.canGoBack, -1)}
+                <Pressable
+                    testID="calendar-title"
+                    accessibilityRole="button"
+                    accessibilityLabel={month.title}
+                    accessibilityHint={pickingYear ? 'Torna als dies del mes' : 'Tria un altre any'}
+                    accessibilityState={{expanded: pickingYear}}
                     accessibilityLiveRegion="polite"
-                    maxFontSizeMultiplier={scale}
-                    style={[styles.title, {color: colors.text, fontFamily: theme.fonts.serifSemiBold}]}>
-                    {month.title}
-                </Text>
-                {arrow('Mes següent', 'chevronRight', month.canGoForward, 1)}
+                    onPress={() => setPickingYear(!pickingYear)}
+                    style={({pressed}) => [styles.titleButton, {opacity: pressed ? 0.6 : 1}]}>
+                    <Text
+                        maxFontSizeMultiplier={scale}
+                        {...fitLabel(month.title)}
+                        style={[styles.title, {color: colors.text, fontFamily: theme.fonts.serifSemiBold}]}>
+                        {month.title}
+                    </Text>
+                    <Icon name="chevronDown" size={18} color={colors.accentText} strokeWidth={2.2}/>
+                </Pressable>
+                {pickingYear ? <View style={styles.arrow}/> : arrow('Mes següent', 'chevronRight', month.canGoForward, 1)}
             </View>
-            <View style={styles.row} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants">
-                {WEEKDAY_INITIALS.map((initial) => (
-                    <Text key={initial} maxFontSizeMultiplier={1.3} style={[styles.weekday, {color: colors.text3}]}>{initial}</Text>
-                ))}
-            </View>
-            <View style={styles.grid}>
-                {month.weeks.map((week, row) => (
-                    <View key={row} style={styles.row}>
-                        {week.map((day, column) => dayCell(day, row * 7 + column))}
+            {pickingYear ? (
+                <View testID="calendar-years" style={styles.years}>
+                    {selectableYears(shown.year, minimumDate, maximumDate).map(yearCell)}
+                </View>
+            ) : (
+                <>
+                    <View style={styles.row} accessibilityElementsHidden={true} importantForAccessibility="no-hide-descendants">
+                        {WEEKDAY_INITIALS.map((initial) => (
+                            <Text key={initial} maxFontSizeMultiplier={1.3} style={[styles.weekday, {color: colors.text3}]}>{initial}</Text>
+                        ))}
                     </View>
-                ))}
-            </View>
+                    <View style={styles.grid}>
+                        {month.weeks.map((week, row) => (
+                            <View key={row} style={styles.row}>
+                                {week.map((day, column) => dayCell(day, row * 7 + column))}
+                            </View>
+                        ))}
+                    </View>
+                </>
+            )}
             <View style={[styles.actions, {borderTopColor: colors.rule}]}>
                 {action('Cancel·la', onCancel)}
                 {action('Avui', onToday)}
@@ -141,10 +197,41 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    title: {
+    titleButton: {
         flex: 1,
+        minHeight: 44,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+    },
+    title: {
+        flexShrink: 1,
         textAlign: 'center',
         fontSize: 19,
+    },
+    years: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        paddingVertical: 6,
+    },
+    yearCell: {
+        width: '33.33%',
+        height: 56,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    year: {
+        minWidth: 84,
+        height: 44,
+        borderRadius: 22,
+        paddingHorizontal: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    yearText: {
+        fontSize: 17,
+        fontVariant: ['tabular-nums'],
     },
     grid: {
         gap: 2,
