@@ -1,0 +1,21 @@
+appId: cpl.cpl
+---
+# L'app com acabada d'instal·lar, al dia d'avui, amb l'inici a punt. Tanca els avisos que
+# poden sortir en obrir-la: el de mitjanit (de 0 a 3 h, «No, la d'avui») i el de novetats, que
+# només surt a qui ve de la versió anterior (després de clearState no hauria de sortir).
+- launchApp:
+    clearState: true
+# L'inici, o un dels avisos a sobre (el de mitjanit o el de novetats): són modals, i mentre
+# hi són l'inici no es veu
+- extendedWaitUntil:
+    visible: "Missatge|No, la d.avui|D.acord"
+    timeout: 60000
+- tapOn:
+    text: "No, la d.avui"
+    optional: true
+- tapOn:
+    text: "D.acord"
+    optional: true
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 15000

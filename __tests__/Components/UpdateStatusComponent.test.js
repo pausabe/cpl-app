@@ -2,6 +2,7 @@
 // comes from expo-updates' native side through useUpdates(), replaced here by each case.
 jest.mock('expo-updates', () => ({
   isEnabled: true,
+  channel: 'production_90',
   useUpdates: jest.fn(),
 }));
 
@@ -20,7 +21,7 @@ function withState(state) {
     isUpdatePending: false,
     ...state,
   });
-  render(<UpdateStatus/>);
+  render(<UpdateStatus />);
 }
 
 test('mentre baixa, ho diu amb el percentatge', () => {
@@ -49,4 +50,12 @@ test("diu quina actualització fa servir: la de la botiga o la data d'una baixad
 
   withState({ currentlyRunning: { isEmbeddedLaunch: false, createdAt: new Date(2026, 8, 14, 18, 30) } });
   expect(screen.getByText('Actualització en ús: 14/9/2026 18:30')).toBeTruthy();
+});
+
+test('una còpia feta a l’ordinador, sense canal, diu que no rep actualitzacions en lloc d’un error', () => {
+  Updates.channel = '';
+  withState({ checkError: new Error('no channel') });
+  expect(screen.getByText('Còpia de proves, sense canal: no rep actualitzacions')).toBeTruthy();
+  expect(screen.queryByText("No s'ha pogut comprovar si hi ha actualitzacions.")).toBeNull();
+  Updates.channel = 'production_90';
 });

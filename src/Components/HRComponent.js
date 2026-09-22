@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
-import {
-  View,
- } from 'react-native';
+import { View } from 'react-native';
+import { ThemeContext } from '../Theme';
 
- export default class HRComponent extends Component {
-   render() {
-     return(
-       <View
-         style={{
-           borderBottomColor: 'rgba(144, 164, 174, 0.4)',
-           borderBottomWidth: 1,
-           marginHorizontal: (this.props.margin_horizontal !== undefined? this.props.margin_horizontal : 0),
-         }}
-       />
-     );
-   }
- }
+// The thin line between the parts of a prayer
+export default class HRComponent extends Component {
+  static contextType = ThemeContext;
+
+  render() {
+    return (
+      <View
+        testID={this.props.testID}
+        style={{
+          borderBottomColor: this.context.colors.divider,
+          borderBottomWidth: 1,
+          marginHorizontal: this.props.margin_horizontal !== undefined ? this.props.margin_horizontal : 0,
+        }}
+      />
+    );
+  }
+}

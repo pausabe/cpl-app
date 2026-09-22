@@ -21,7 +21,8 @@ function readGolden(name) {
   if (golden.databaseSha256 !== databaseSha()) {
     throw new Error(
       `${name}.json was made from another cpl-app.db. Compare against it only with the same ` +
-      'database; to start over from this one, check the app by hand and run UPDATE_GOLDEN=1.');
+        'database; to start over from this one, check the app by hand and run UPDATE_GOLDEN=1.',
+    );
   }
   return golden.data;
 }
@@ -30,7 +31,8 @@ function writeGolden(name, data) {
   fs.mkdirSync(GOLDEN_DIR, { recursive: true });
   fs.writeFileSync(
     path.join(GOLDEN_DIR, `${name}.json`),
-    JSON.stringify({ databaseSha256: databaseSha(), createdAt: new Date().toISOString(), data }, null, 1));
+    JSON.stringify({ databaseSha256: databaseSha(), createdAt: new Date().toISOString(), data }, null, 1),
+  );
 }
 
 // Leaf-by-leaf difference, so a failure says "Laudes.EvangelicalAntiphon" and not just "differs".

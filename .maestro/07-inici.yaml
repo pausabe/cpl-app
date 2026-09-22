@@ -1,0 +1,40 @@
+appId: cpl.cpl
+name: "L'inici porta a pregar: les hores, el full del sant i el botó Aa"
+---
+- runFlow: subflows/obrir.yaml
+# Una hora s'obre des de l'inici, amb el nom sencer a la capçalera i el botó Aa
+- tapOn: "Ofici de lectura"
+- extendedWaitUntil:
+    visible: "HIMNE.*"
+    timeout: 15000
+- assertVisible: "Ofici de lectura"
+- tapOn: "Mida del text i tema"
+- assertVisible: "Mida 3 de 10"
+- tapOn: "Text més gran"
+- assertVisible: "Mida 4 de 10"
+- takeScreenshot: 07-full-aa
+- tapOn: "Text més petit"
+- tapOn: "Fet"
+- assertNotVisible: "Mida 3 de 10"
+- runFlow: subflows/enrere.yaml
+- assertVisible: "Missatge"
+# «Llegeix-ne més» obre la vida del sant en un full; «Tanca» el tanca, i a Android també el
+# botó enrere. Només els dies que el sant del dia en té.
+- runFlow:
+    when:
+      visible: "Llegeix-ne més"
+    commands:
+      - tapOn: "Llegeix-ne més"
+      - assertVisible: "Tanca"
+      - takeScreenshot: 07-full-sant
+      - tapOn: "Tanca"
+      - assertNotVisible: "Tanca"
+      - runFlow:
+          when:
+            platform: Android
+          commands:
+            - tapOn: "Llegeix-ne més"
+            - assertVisible: "Tanca"
+            - back
+            - assertNotVisible: "Tanca"
+            - assertVisible: "Missatge"

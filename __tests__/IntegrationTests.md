@@ -1,15 +1,20 @@
 - Splash after loading
 - Change day using the calendar tool
 - Late hour check and popup
-- Basic navigation to all the views
+- Basic navigation to all the views (no tabs since 9.0.0: everything opens from the home)
     - Settings
     - Liturgy of the Hours and its prayers
     - Liturgy of the Mass and its prayers
     - Feedback web page
     - Give web page
-- Festivity description
+- Festivity description (the "Llegeix-ne més" sheet; Android back closes it)
 - Optional festivity with persistence
-- Dark/Light Appearance changing
+- Evening Mass selector (Avui | Vespertina), remembered for the day
+- Dark/Light Appearance changing, on every screen
+- Text size and dark mode from the "Aa" button of a prayer
+- The screen stays on while a prayer or the readings are open
+- The "Ara ho tens tot a l'inici" notice, only the first time
+- Small phone (375×667), large system font (130 %) and tablet
 - Updates
   - Only code changes with OTA
   - Only database changes with deploy website

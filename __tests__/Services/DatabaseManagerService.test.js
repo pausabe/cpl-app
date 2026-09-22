@@ -12,8 +12,12 @@ jest.mock('expo-file-system/legacy', () => {
     })),
     makeDirectoryAsync: jest.fn(async () => {}),
     readDirectoryAsync: jest.fn(async () => [...files].map((f) => f.split('/').pop())),
-    copyAsync: jest.fn(async ({ to }) => { files.add(to); }),
-    deleteAsync: jest.fn(async (path) => { files.delete(path); }),
+    copyAsync: jest.fn(async ({ to }) => {
+      files.add(to);
+    }),
+    deleteAsync: jest.fn(async (path) => {
+      files.delete(path);
+    }),
   };
 });
 jest.mock('expo-sqlite', () => ({
@@ -34,7 +38,10 @@ beforeEach(() => {
 test('al primer arrencament copia la base de dades i la fa servir', async () => {
   await DatabaseManagerService.OpenDatabase(asset('abc123.db'));
 
-  expect(FileSystem.copyAsync).toHaveBeenCalledWith({ from: 'file:///bundle/abc123.db', to: 'file:///docs/SQLite/abc123.db' });
+  expect(FileSystem.copyAsync).toHaveBeenCalledWith({
+    from: 'file:///bundle/abc123.db',
+    to: 'file:///docs/SQLite/abc123.db',
+  });
   expect(SQLite.openDatabaseAsync).toHaveBeenCalledWith('abc123.db');
   await expect(DatabaseManagerService.executeQueryAsync('SELECT 1')).resolves.toEqual([{ ok: 1 }]);
 });

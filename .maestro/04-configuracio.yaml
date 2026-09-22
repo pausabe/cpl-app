@@ -1,78 +1,41 @@
 appId: cpl.cpl
 name: "La configuració es desa i canvia la litúrgia"
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: "Missatge"
-    timeout: 60000
+- runFlow: subflows/obrir.yaml
 - tapOn: "Configuració"
-- assertVisible: "Diòcesi"
+- assertVisible: "Mida del text"
 - takeScreenshot: 04-configuracio
-# Diòcesi: Barcelona → Andorra, i mode obscur: Automàtic → Activat. Són les primeres opcions
-# de cada selector: Android obre una llista i es tria; a iOS són rodes que no exposen les
-# files, i lliscar cap avall les porta sempre a la primera.
-- runFlow:
-    when:
-      platform: Android
-    commands:
-      # El desplegable s'obre amb l'opció actual a dalt: les anteriors queden per sobre
-      - tapOn: "Barcelona"
-      - scrollUntilVisible:
-          element: "Andorra"
-          direction: UP
-      - tapOn: "Andorra"
-      - tapOn: "Automàtic"
-      - scrollUntilVisible:
-          element: "Activat"
-          direction: UP
-      - tapOn: "Activat"
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      - swipe:
-          from: "Barcelona"
-          direction: DOWN
-      - waitForAnimationToEnd
-      - swipe:
-          from: "Automàtic"
-          direction: DOWN
-      - waitForAnimationToEnd
-# A iOS les rodes ocupen molt i la versió queda més avall. Es desplaça des del marge
-# esquerre, on hi ha les etiquetes: un lliscament al mig cauria sobre una roda i la mouria.
-- repeat:
-    times: 4
-    while:
-      notVisible: "Versió de la base de dades: .*"
-    commands:
-      - swipe:
-          start: "8%, 80%"
-          end: "8%, 30%"
-- assertVisible: "Versió de la base de dades: .*"
+# Diòcesi: Barcelona → Andorra, en el full amb la llista. A Android es toca el text del valor;
+# a iOS la fila és un sol botó, «Diòcesi: Barcelona».
+- tapOn: "(Diòcesi: )?Barcelona"
+- tapOn: "Andorra"
+# Tema: Automàtic → Fosc, amb els tres botons
+- tapOn: "Fosc"
+- scrollUntilVisible:
+    element: "(?s).*Versió de la base de dades: .*"
+    direction: DOWN
 - runFlow: subflows/enrere.yaml
 - extendedWaitUntil:
     visible: "Andorra \\(Diòcesi\\).*"
     timeout: 15000
-- takeScreenshot: 04-andorra
-# L'inici té un fons fix; el mode fosc es veu dins de les hores
-- tapOn:
-    text: "Litúrgia de les hores"
-    # En un mòbil lent el primer toc pot arribar abans que la pestanya respongui
-    retryTapIfNoChange: true
+# Amb el tema fosc, també l'inici és fosc
+- takeScreenshot: 04-andorra-mode-fosc
 - tapOn: "Laudes"
 - extendedWaitUntil:
     visible: "HIMNE.*"
     timeout: 15000
 - takeScreenshot: 04-laudes-mode-fosc
 - runFlow: subflows/enrere.yaml
-- tapOn:
-    text: "Inici"
-    # En un mòbil lent el primer toc pot arribar abans que la pestanya respongui
-    retryTapIfNoChange: true
 # Es manté després de tancar i tornar a obrir l'app
 - stopApp
 - launchApp
+# L'inici, o l'avís de mitjanit a sobre (de 0 a 3 h), que el tapa
+- extendedWaitUntil:
+    visible: "Andorra \\(Diòcesi\\).*|No, la d.avui"
+    timeout: 60000
+- tapOn:
+    text: "No, la d.avui"
+    optional: true
 - extendedWaitUntil:
     visible: "Andorra \\(Diòcesi\\).*"
-    timeout: 60000
+    timeout: 15000

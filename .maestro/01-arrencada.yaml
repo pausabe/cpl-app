@@ -1,12 +1,21 @@
 appId: cpl.cpl
 name: "L'app s'obre al dia d'avui"
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: "Litúrgia de les Hores - Setmana.*"
-    timeout: 60000
+- runFlow: subflows/obrir.yaml
+# La targeta del dia: el lloc, la data en paraules i la setmana del salteri
+# A iOS és l'etiqueta del lector de pantalla, que hi afegeix el color: «… Color litúrgic: Verd»
 - assertVisible: "Barcelona \\(Diòcesi\\).*"
+- assertVisible: "Di[a-z]+, [0-9]+ d.+"
+- assertVisible: ".*Setmana [IV]+ del salteri"
+# Les set hores i la missa, a l'inici mateix
+- assertVisible: "Ofici de lectura"
+- assertVisible: "Laudes"
+- assertVisible: "Tèrcia"
+- assertVisible: "Sexta"
+- assertVisible: "Nona"
+- assertVisible: "Vespres"
+- assertVisible: "Completes"
+- assertVisible: "Evangeli"
 - assertVisible: "Missatge"
 - assertVisible: "Donatiu lliure"
 - takeScreenshot: 01-inici

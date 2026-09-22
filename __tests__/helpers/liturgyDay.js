@@ -29,19 +29,24 @@ async function applyProfile(profile, date) {
   for (const [key, value] of Object.entries(settings)) await AsyncStorage.setItem(key, value);
   if (optionalFestivity) {
     // Same format HomeScreen writes when the "memòria lliure" switch is turned on.
-    await AsyncStorage.setItem(StorageKeys.OptionalFestivity, `${date.getDate()}:${date.getMonth()}:${date.getFullYear()}`);
+    await AsyncStorage.setItem(
+      StorageKeys.OptionalFestivity,
+      `${date.getDate()}:${date.getMonth()}:${date.getFullYear()}`,
+    );
   }
 }
 
 // Everything the screens read from DataService after a reload, as plain JSON.
 function currentState() {
-  return JSON.parse(JSON.stringify({
-    settings: DataService.CurrentSettings,
-    dayInformation: DataService.CurrentLiturgyDayInformation,
-    celebration: DataService.CurrentCelebrationInformation,
-    hours: DataService.CurrentHoursLiturgy,
-    mass: DataService.CurrentMassLiturgy,
-  }));
+  return JSON.parse(
+    JSON.stringify({
+      settings: DataService.CurrentSettings,
+      dayInformation: DataService.CurrentLiturgyDayInformation,
+      celebration: DataService.CurrentCelebrationInformation,
+      hours: DataService.CurrentHoursLiturgy,
+      mass: DataService.CurrentMassLiturgy,
+    }),
+  );
 }
 
 async function loadDay(isoDate, profileName = 'barcelona') {

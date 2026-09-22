@@ -1,299 +1,70 @@
 import * as React from 'react';
-import {
-    TouchableOpacity,
-    View,
-    Platform,
-    Appearance
-} from 'react-native';
-import GLOBAL from "../Utils/GlobalKeys";
-import HomeScreen from '../Controllers/HomeScreenController';
-import SettingsScreen from '../Views/Settings/SettingsScreen';
-import DonationScreen from '../Views/DonationScreen';
-import CommentScreen from '../Views/CommentScreen';
-import HoursLiturgyPrayerMainScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerMainScreen';
-import HoursLiturgyPrayerScreen from '../Views/HoursLiturgy/HoursLiturgyPrayerScreen';
-import MassLiturgyMainScreen from '../Views/MassLiturgy/MassLiturgyMainScreen';
-import Icon from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
-import MassLiturgyPrayerScreen from '../Views/MassLiturgy/MassLiturgyPrayerScreen';
+import { Platform } from 'react-native';
+import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreenController from './HomeScreenController';
+import { HoursPrayerController, MassPrayerController } from './PrayerController';
+import SettingsController from './SettingsController';
+import AppThemeProvider from './AppThemeProvider';
+import { headerOptions, navigationTheme, useTheme } from '../Theme';
 
-const HomeStack = createStackNavigator();
-const LHStack = createStackNavigator();
-const LDStack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+// One stack, no tabs: the home has everything of every day, and each hour, each reading and the
+// settings open over it. Back always returns to the home. The message and the donation are
+// sheets of the home (HomeScreenController).
+//
+// The stack is the native one (UINavigationController on iOS, fragments on Android): on iOS the
+// transition and the swipe back are the system's own, at the refresh rate of the screen. The
+// stack drawn by JavaScript did not look smooth going back on an iPhone of 120 Hz.
+const Stack = createNativeStackNavigator();
 
-export default function NavigationController(props){
-    return NavigationContainerView();
+// The navigator from outside the screens. The tests go back through it: the back arrow is the
+// system's own now, and it is not drawn by JavaScript.
+export const navigationRef = createNavigationContainerRef();
+
+export default function NavigationController() {
+  return (
+    <AppThemeProvider>
+      <Navigator />
+    </AppThemeProvider>
+  );
 }
 
-function getHeaderTitle(route) {
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
-    switch (routeName) {
-        case 'Home-Tab':
-            return 'CPL';
-        case 'LH-Tab':
-            return 'Litúrgia de les Hores';
-        case 'LD-Tab':
-            return 'Missa';
-    }
+function Navigator() {
+  const theme = useTheme();
+  const header = headerOptions(theme);
+  const inner = {
+    ...header,
+    // Sliding on iOS, as the system does; straight on Android, as before
+    animation: Platform.OS === 'ios' ? ('default' as const) : ('none' as const),
+    // The system's back arrow, alone. «Enrere» is what the screen reader hears on iOS.
+    headerBackButtonDisplayMode: 'minimal' as const,
+    headerBackTitle: 'Enrere',
+  };
+  return (
+    <NavigationContainer ref={navigationRef} theme={navigationTheme(theme)}>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreenController}
+          options={{
+            ...header,
+            title: 'CPL',
+            headerTitleAlign: 'center',
+            headerTitleStyle: { ...header.headerTitleStyle, fontWeight: '700' },
+          }}
+        />
+        <Stack.Screen
+          name="LHDisplay"
+          component={HoursPrayerController as any}
+          options={({ route }: any) => ({ ...inner, title: route.params?.title })}
+        />
+        <Stack.Screen
+          name="LDDisplay"
+          component={MassPrayerController as any}
+          options={({ route }: any) => ({ ...inner, title: route.params?.title ?? 'Missa' })}
+        />
+        <Stack.Screen name="Settings" component={SettingsController} options={{ ...inner, title: 'Configuració' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
-
-function getHeaderLeft(navigation, route){
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
-    switch (routeName) {
-        case 'Home-Tab':
-            let params;
-            if(typeof navigation.getState().routes[0].state == "object"){
-                params = navigation.getState().routes[0].state.routes[0].state.routes[0].params;
-            }
-            return (
-                <TouchableOpacity
-                    style={{ height: '100%', justifyContent: 'center' }}
-                    accessibilityRole="button"
-                    accessibilityLabel="Calendari"
-                    onPress={() => params?.calPres() }>
-                    <View style={{ flex: 1, paddingLeft: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Icon
-                            name="calendar-sharp"
-                            size={30}
-                            color="#FFFFFF" />
-                    </View>
-                </TouchableOpacity>
-            )
-        case 'LH-Tab':
-            return null;
-        case 'LD-Tab':
-            return null;
-    }
-}
-
-function getHeaderRight(navigation, route){
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home-Tab';
-    switch (routeName) {
-        case 'Home-Tab':
-            let params;
-            if(typeof navigation.getState().routes[0].state == "object"){
-                params = navigation.getState().routes[0].state.routes[0].state.routes[0].params;
-            }
-            return (
-                <TouchableOpacity
-                    style={{ height: '100%', justifyContent: 'center' }}
-                    accessibilityRole="button"
-                    accessibilityLabel="Configuració"
-                    onPress={() => navigation.navigate('Settings', { Refresh_Date: params?.Refresh_Date })}>
-                    <View style={{ flex: 1, paddingRight: 10, alignItems: 'center', justifyContent: 'center' }}>
-                        <Icon
-                            name="settings-outline"
-                            size={30}
-                            color="#FFFFFF" />
-                    </View>
-                </TouchableOpacity>
-            )
-        case 'LH-Tab':
-            return null;
-        case 'LD-Tab':
-            return null;
-    }
-}
-
-/************ HOME ************/
-function HomeStackScreen() {
-    return (
-        <HomeStack.Navigator screenOptions={{headerShown: false}}>
-            <HomeStack.Screen
-                name="HomeStack"
-                component={HomeScreen}
-            />
-        </HomeStack.Navigator>
-    );
-}
-
-/************ LH ************/
-function LHStackScreen() {
-    return (
-        <LHStack.Navigator screenOptions={{headerShown: false}}>
-            <LHStack.Screen
-                name="LHStack"
-                component={HoursLiturgyPrayerMainScreen}
-            />
-        </LHStack.Navigator>
-    );
-}
-
-/************ LD ************/
-function LDStackScreen() {
-    return (
-        <LDStack.Navigator screenOptions={{headerShown: false}}>
-            <LDStack.Screen
-                name="LDStack"
-                component={MassLiturgyMainScreen}
-            />
-        </LDStack.Navigator>
-    );
-}
-
-/************ TABS ************/
-function Tabs() {
-    return (
-        <Tab.Navigator
-            initialRouteName="Home-Tab"
-            backBehavior="none"
-            screenOptions={{
-                tabBarStyle: { backgroundColor: GLOBAL.barColor },
-                tabBarActiveBackgroundColor: GLOBAL.barColor,
-                tabBarInactiveBackgroundColor: GLOBAL.barColor,
-                tabBarShowLabel: false,
-                lazy: true,
-                headerShown: false,
-                tabBarActiveTintColor: 'white',
-                tabBarInactiveTintColor: '#D3D3D3',
-            }}>
-            <Tab.Screen
-                name="Home-Tab"
-                component={HomeStackScreen}
-                options={{
-                    tabBarAccessibilityLabel: "Inici",
-                    lazy: true,
-                    tabBarIcon: ({ focused, color }) => (
-                        <View>
-                            {focused ?
-                                <MaterialCommunityIcons name="home" color={color} size={26} />
-                                :
-                                <MaterialCommunityIcons name="home-outline" color={color} size={26} />
-                            }
-                        </View>
-                    )
-                }}/>
-            <Tab.Screen
-                name="LH-Tab"
-                component={LHStackScreen}
-                options={{
-                    tabBarAccessibilityLabel: "Litúrgia de les hores",
-                    lazy: true,
-                    tabBarIcon: ({ focused, color }) => (
-                        <View>
-                            {focused ?
-                                <MaterialCommunityIcons name="bookmark" color={color} size={26} />
-                                :
-                                <MaterialCommunityIcons name="bookmark-outline" color={color} size={26} />
-                            }
-                        </View>
-                    )
-                }}/>
-            <Tab.Screen
-                name="LD-Tab"
-                component={LDStackScreen}
-                options={{
-                    tabBarAccessibilityLabel: "Missa",
-                    lazy: true,
-                    tabBarIcon: ({ focused, color }) => (
-                        <View>
-                            {focused ?
-                                <MaterialCommunityIcons name="book-open" color={color} size={26} />
-                                :
-                                <MaterialCommunityIcons name="book-open-outline" color={color} size={26} />
-                            }
-                        </View>
-                    )
-                }}/>
-        </Tab.Navigator>
-    );
-}
-
-function NavigationContainerView(){
-    return (
-        <NavigationContainer >
-            <View style={{flex: 1}}>
-                <Stack.Navigator screenOptions={{ headerBackAccessibilityLabel: "Enrere" }}>
-                    <Stack.Screen
-                        name="Home"
-                        component={Tabs}
-                        options={({ navigation, route }) => ({
-                            headerTitle: getHeaderTitle(route),
-                            headerTitleAlign: 'center',
-                            lazy: true,
-                            headerStyle: { backgroundColor: GLOBAL.barColor },
-                            headerTintColor: GLOBAL.itemsBarColor,
-                            headerLeft: () => getHeaderLeft(navigation, route),
-                            headerRight: () => getHeaderRight(navigation, route)
-                        })}
-                    />
-                    <Stack.Screen
-                        name="Settings"
-                        component={SettingsScreen}
-                        options={() => ({
-                            title: "Configuració",
-                            animation: Platform.OS === "ios" ? "default" : "none",
-                            headerStyle: { backgroundColor: GLOBAL.barColor },
-                            headerTintColor: GLOBAL.itemsBarColor,
-                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackButtonDisplayMode: "minimal",
-                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
-                        })}
-                    />
-                    <Stack.Screen
-                        name="Donation"
-                        component={DonationScreen}
-                        options={() => ({
-                            title: "Donatiu lliure",
-                            headerStyle: { backgroundColor: GLOBAL.barColor },
-                            headerTintColor: GLOBAL.itemsBarColor,
-                            animation: Platform.OS === "ios" ? "default" : "none",
-                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackButtonDisplayMode: "minimal",
-                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
-                        })}
-                    />
-                    <Stack.Screen
-                        name="Comment"
-                        component={CommentScreen}
-                        options={() => ({
-                            title: "Missatge",
-                            animation: Platform.OS === "ios" ? "default" : "none",
-                            headerStyle: { backgroundColor: GLOBAL.barColor },
-                            headerTintColor: GLOBAL.itemsBarColor,
-                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackButtonDisplayMode: "minimal",
-                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
-                        })}
-                    />
-                    <Stack.Screen
-                        name="LHDisplay"
-                        component={HoursLiturgyPrayerScreen}
-                        options={({route }) => {
-                            // @ts-ignore
-                            const title = route.params?.props.type;
-                            return ({
-                                title: title,
-                                animation: Platform.OS === "ios" ? "default" : "none",
-                                headerStyle: {backgroundColor: GLOBAL.barColor},
-                                headerTintColor: GLOBAL.itemsBarColor,
-                                headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                                headerBackButtonDisplayMode: "minimal",
-                                headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
-                            });
-                        }}
-                    />
-                    <Stack.Screen
-                        name="LDDisplay"
-                        component={MassLiturgyPrayerScreen}
-                        options={() => ({
-                            title: "Missa",
-                            animation: Platform.OS === "ios" ? "default" : "none",
-                            headerStyle: { backgroundColor: GLOBAL.barColor },
-                            headerTintColor: GLOBAL.itemsBarColor,
-                            headerBackTitleStyle: {color: GLOBAL.itemsBarColor},
-                            headerBackButtonDisplayMode: "minimal",
-                            headerBackImage: () => (<Icon name="chevron-back" size={30} color={GLOBAL.itemsBarColor} />)
-                        })}
-                    />
-                </Stack.Navigator>
-            </View>
-        </NavigationContainer>
-    );
-}
-

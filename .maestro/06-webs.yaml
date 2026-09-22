@@ -1,28 +1,37 @@
 appId: cpl.cpl
 name: "S'obren les pàgines de contacte i de donatiu"
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: "Missatge"
-    timeout: 60000
+- runFlow: subflows/obrir.yaml
+# Un full que puja amb la pàgina de contacte del web; «Tanca» el tanca. Es toca pel seu id: el
+# fons de darrere el full també es diu «Tanca» (per als lectors de pantalla) i el tapa el full.
 - tapOn: "Missatge"
-- assertVisible: "Missatge"
+- assertVisible:
+    id: "message-sheet-close"
 - waitForAnimationToEnd:
     timeout: 10000
 - takeScreenshot: 06-missatge
-- runFlow: subflows/enrere.yaml
+- tapOn:
+    id: "message-sheet-close"
+- waitForAnimationToEnd
 - tapOn: "Donatiu lliure"
-# Android l'obre dins l'app; iOS surt cap a Stripe a Safari i cal tornar a l'app
+# Android l'obre en un altre full, que es tanca estirant-lo avall per dalt. iOS surt cap a Stripe
+# a Safari (l'App Store només deixa recollir donatius fora de l'app) i cal tornar a l'app.
 - runFlow:
     when:
       platform: Android
     commands:
-      - assertVisible: "Donatiu lliure"
+      - assertVisible:
+          id: "donation-sheet-close"
       - waitForAnimationToEnd:
           timeout: 10000
       - takeScreenshot: 06-donatiu
-      - runFlow: subflows/enrere.yaml
+      - swipe:
+          start: "50%, 9%"
+          end: "50%, 75%"
+          duration: 500
+      - waitForAnimationToEnd
+      - assertNotVisible:
+          id: "donation-sheet-close"
 - runFlow:
     when:
       platform: iOS

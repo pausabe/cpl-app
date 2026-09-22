@@ -1,39 +1,27 @@
 appId: cpl.cpl
 name: "Es pot canviar de dia amb el calendari"
 ---
-- launchApp:
-    clearState: true
-- extendedWaitUntil:
-    visible: "Missatge"
-    timeout: 60000
+- runFlow: subflows/obrir.yaml
 - tapOn: "Calendari"
-# El dia 15 del mes que mostra, i acceptar. Android obre el seu diàleg de data; a iOS l'app
-# té un calendari propi amb els botons Cancel·la / Avui / Canvia.
-- runFlow:
-    when:
-      platform: Android
-    commands:
-      - tapOn:
-          text: "15"
-          index: 0
-      - tapOn: "OK|D'acord|Acceptar|Aceptar"
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      # Cada dia és un botó «dimarts, 15 de setembre» / «Tuesday, September 15», segons
-      # l'idioma del sistema
-      - tapOn: "[^ ]+, ([^ ]+ 15|15 .+)"
-      - tapOn: "Canvia"
+# El títol del mes obre la llista d'anys: l'any passat, al mateix mes
+- tapOn:
+    id: "calendar-title"
+- assertVisible:
+    id: "calendar-years"
+- tapOn:
+    id: "calendar-year-${new Date().getFullYear() - 1}"
+- assertVisible: ".* de ${new Date().getFullYear() - 1}"
+# El calendari de l'app, igual a Android i a iOS: el dia 15 del mes que mostra, i «Canvia».
+# Cada dia és un botó «dimarts, 15 de setembre» amb el número a dins: a Android es toca el
+# número; a iOS, el botó.
+- tapOn: "15|[^ ]+, 15 d.+"
+- tapOn: "Canvia"
+# La data, en paraules a la targeta del dia
 - extendedWaitUntil:
-    visible: ".* - 15/[0-9]{2}/[0-9]{4}"
+    visible: "Di[a-z]+, 15 d.+"
     timeout: 15000
 - takeScreenshot: 05-dia-15
 # I les hores d'aquell dia s'obren
-- tapOn:
-    text: "Litúrgia de les hores"
-    # En un mòbil lent el primer toc pot arribar abans que la pestanya respongui
-    retryTapIfNoChange: true
 - runFlow:
     file: subflows/hora.yaml
     env: { HORA: "Laudes", FINAL: "ORACIÓ" }

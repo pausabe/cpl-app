@@ -21,7 +21,10 @@
       "bundleIdentifier": "cpl.cpl",
       "buildNumber": "90",
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "infoPlist": {
+        "CADisableMinimumFrameDurationOnPhone": true
+      }
     },
     "android": {
       "package": "cpl.cpl",
@@ -39,7 +42,7 @@
         "projectId": "7b28fd03-7a72-47f9-9760-12bbaaa74516"
       }
     },
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": "9.0.0",
     "plugins": [
       "expo-asset",
       "expo-font",

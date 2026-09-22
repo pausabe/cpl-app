@@ -11,7 +11,7 @@ IOS_APP := ios/build/Build/Products/Release-iphonesimulator/CPL.app
 ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
 IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
 
-.PHONY: help start run-android run-ios run-web tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
+.PHONY: help start run-android run-ios run-web checks lint format tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
 
 help:
 	@echo "make run-android       Obre l'app en mode desenvolupament a l'emulador o mòbil Android"
@@ -19,9 +19,13 @@ help:
 	@echo "make run-web           Obre l'app en mode desenvolupament al navegador, sense emulador"
 	@echo "make start             Només el servidor de desenvolupament (Metro), si l'app ja hi és instal·lada"
 	@echo ""
-	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~1,5 min)"
-	@echo "make tests-fast        Els mateixos sense els dos recorreguts llargs de la litúrgia"
-	@echo "make golden            Refà el golden de la litúrgia amb aquesta versió (només si l'has revisat)"
+	@echo "make checks            Prettier, lint i tots els tests de Jest: el que passa el hook abans de cada push (~4 min)"
+	@echo "make lint              ESLint (la configuració d'Expo): només els errors aturen, els avisos no"
+	@echo "make format            Formata el codi (JS i TS) amb Prettier: arregla el que make checks hi troba"
+	@echo ""
+	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~4 min)"
+	@echo "make tests-fast        Els mateixos sense els recorreguts llargs (litúrgia i text de les pantalles)"
+	@echo "make golden            Refà els goldens (litúrgia i text de les pantalles) amb aquesta versió (només si l'has revisat)"
 	@echo ""
 	@echo "make android-app       Compila la release d'Android i la instal·la a l'emulador o mòbil connectat"
 	@echo "make ios-app           Compila la release per al simulador d'iOS i la instal·la al simulador obert"
@@ -48,18 +52,36 @@ run-ios:
 run-web:
 	npx expo start --web
 
+# --- Comprovacions ---------------------------------------------------------------------------
+# make checks és el que corre el hook .githooks/pre-push abans de cada push. Els tests, amb
+# --ci i sense UPDATE_GOLDEN: així comparen amb els goldens en lloc de reescriure'ls.
+
+checks:
+	npx prettier . --check
+	npx eslint .
+	env -u UPDATE_GOLDEN npx jest --ci
+
+lint:
+	npx eslint .
+
+# Els textos, els fluxos de Maestro i les dades no hi entren (.prettierignore)
+format:
+	npx prettier . --write
+
 # --- Jest ------------------------------------------------------------------------------------
 
 tests:
 	npx jest
 
 tests-fast:
-	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/Liturgy/(LiturgyGolden|YearSweep)'
+	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/Liturgy/(LiturgyGolden|YearSweep)' '/Screens/PrayerTextGolden'
 
 # El golden és el que diu «així ha de sortir». Es refà només després d'haver comprovat a mà
-# que la litúrgia d'aquesta versió és correcta: si no, deixa de detectar res.
+# que la litúrgia d'aquesta versió és correcta: si no, deixa de detectar res. El de les pantalles
+# (prayer-screens.json) és el text que mostren les hores i les lectures: es va fer abans del
+# redisseny, i ha de continuar igual.
 golden:
-	UPDATE_GOLDEN=1 npx jest __tests__/Liturgy
+	UPDATE_GOLDEN=1 npx jest __tests__/Liturgy __tests__/Screens/PrayerTextGolden
 
 # --- Compilacions locals per als tests de Maestro --------------------------------------------
 # /android i /ios són generats (gitignorats): es refan de zero perquè no quedi res d'un SDK

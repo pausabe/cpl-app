@@ -15,10 +15,22 @@ jest.mock('expo-updates', () => ({
   fetchUpdateAsync: jest.fn(),
   reloadAsync: jest.fn(),
   isEnabled: true,
-  useUpdates: () => ({ currentlyRunning: { isEmbeddedLaunch: true }, isChecking: false, isDownloading: false, isUpdatePending: false }),
-  runtimeVersion: 'test', channel: 'test', updateId: 'test',
+  useUpdates: () => ({
+    currentlyRunning: { isEmbeddedLaunch: true },
+    isChecking: false,
+    isDownloading: false,
+    isUpdatePending: false,
+  }),
+  runtimeVersion: 'test',
+  channel: 'test',
+  updateId: 'test',
 }));
-jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}) }));
+jest.mock('../../src/Controllers/FirstRun', () => ({ wasOpenedBefore: jest.fn(async () => true) }));
+jest.mock('expo-splash-screen', () => ({
+  hideAsync: jest.fn(async () => {}),
+  preventAutoHideAsync: jest.fn(async () => {}),
+  setOptions: jest.fn(),
+}));
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
   const WebView = (props) => <View testID="webview" {...props} />;
@@ -27,8 +39,9 @@ jest.mock('react-native-webview', () => {
 
 import React from 'react';
 import { Linking } from 'react-native';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react-native';
 import App from '../../App';
+import { navigationRef } from '../../src/Controllers/NavigationController';
 import * as DataService from '../../src/Services/DataService';
 
 // Easter Sunday 2026, mid-morning.
@@ -44,23 +57,31 @@ afterAll(() => {
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 // Back, and wait until the screen is really gone: navigating while it is still closing
 // would land on the closing route instead of opening a new one.
+// The back arrow is the system's own (native stack): back through the navigator, as it does
 async function goBack(textOnTheScreen) {
-  fireEvent.press(screen.getAllByRole('button', { name: /back|enrere/i })[0]);
+  act(() => navigationRef.goBack());
   await waitFor(() => expect(screen.queryAllByText(textOnTheScreen)).toHaveLength(0), { timeout: 15000 });
-  await act(async () => { jest.advanceTimersByTime(2000); });
+  await act(async () => {
+    jest.advanceTimersByTime(2000);
+  });
 }
 
 test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
   render(<App />);
 
-  // Home: today's celebration
+  // The first time 9.0.0 opens, a notice says where everything is now
+  fireEvent.press(await findText('D’acord'));
+  await waitFor(() => expect(screen.queryByText('Ara ho tens tot a l’inici')).toBeNull());
+
+  // Home: today's celebration, and no tabs any more
   await findText('Diumenge de Pasqua');
   expect(DataService.CurrentLiturgyDayInformation.Today.Date.getDate()).toBe(5);
+  expect(screen.queryByLabelText('Litúrgia de les hores')).toBeNull();
+  expect(screen.getByText('Diumenge, 5 d’abril')).toBeTruthy();
 
-  // Liturgy of the Hours: every hour opens and shows its texts
-  fireEvent.press(screen.getByLabelText('Litúrgia de les hores'));
+  // Liturgy of the Hours, from the home: every hour opens, with its whole name on top
   for (const hour of ['Ofici de lectura', 'Laudes', 'Tèrcia', 'Sexta', 'Nona', 'Vespres', 'Completes']) {
-    fireEvent.press(await findText(hour));
+    fireEvent.press(screen.getByRole('button', { name: hour }));
     const hours = DataService.CurrentHoursLiturgy;
     const expected = {
       'Ofici de lectura': hours.Office.FirstPsalm.Antiphon,
@@ -71,32 +92,39 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
       Vespres: hours.Vespers.FinalPrayer,
       Completes: hours.NightPrayer.FinalPrayer,
     }[hour];
-    await waitFor(() => expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0));
+    await waitFor(() =>
+      expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0),
+    );
+    // The title of the (native) top bar
+    expect(navigationRef.getCurrentOptions().title).toBe(hour);
+    expect(screen.getByRole('button', { name: 'Mida del text i tema' })).toBeTruthy();
     await goBack(new RegExp(escape(firstWords(expected))));
   }
 
-  // Mass: the readings open
-  fireEvent.press(screen.getByLabelText('Missa'));
-  fireEvent.press(await findText(/Evangeli/));
+  // Mass, from the home: the phrase of the Gospel, and the Gospel opens
+  expect(screen.getByText(DataService.CurrentMassLiturgy.Today.Gospel.Comment)).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'Evangeli' }));
   const gospel = new RegExp(escape(firstWords(DataService.CurrentMassLiturgy.Today.Gospel.Gospel)));
   await waitFor(() => expect(screen.getAllByText(gospel).length).toBeGreaterThan(0));
   await goBack(gospel);
 
-  // Home: the contact page opens in a web view; the donation goes to Stripe in the browser
-  // (the tests run as iOS; on Android it is a web view too)
-  fireEvent.press(screen.getByLabelText('Inici'));
+  // Home: the contact page opens in a sheet with the web, and "Tanca" closes it; the donation
+  // goes to Stripe in the browser (the tests run as iOS; on Android it is a sheet too)
   fireEvent.press(await findText('Missatge'));
-  await screen.findByTestId('webview', {}, { timeout: 15000 });
-  fireEvent.press(screen.getAllByRole('button', { name: /back|enrere/i })[0]);
+  const sheet = await screen.findByTestId('message-sheet', {}, { timeout: 15000 });
+  expect(within(sheet).getByTestId('webview').props.source).toEqual({ uri: 'https://www.cpl.es/contacto/' });
+  fireEvent.press(within(sheet).getByRole('button', { name: 'Tanca' }));
   await waitFor(() => expect(screen.queryByTestId('webview')).toBeNull(), { timeout: 15000 });
-  await act(async () => { jest.advanceTimersByTime(2000); });
+  await act(async () => {
+    jest.advanceTimersByTime(2000);
+  });
   const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
   fireEvent.press(await findText('Donatiu lliure'));
   expect(openURL).toHaveBeenCalledWith(expect.stringContaining('stripe.com'));
 
-  // Settings open from Home
+  // Settings open from the top bar
   fireEvent.press(await screen.findByLabelText('Configuració'));
-  await findText(/Diòcesi/);
+  expect(await screen.findByRole('button', { name: 'Diòcesi: Barcelona' }, { timeout: 15000 })).toBeTruthy();
 });
 
 function firstWords(text) {
