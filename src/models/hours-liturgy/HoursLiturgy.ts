@@ -8,20 +8,20 @@ import CelebrationInformation from './CelebrationInformation';
 import ConcreteNamesInPrayers from './ConcreteNamesInPrayers';
 
 export default class HoursLiturgy {
-  TodayCelebrationInformation: CelebrationInformation = new CelebrationInformation();
-  TomorrowCelebrationInformation: CelebrationInformation = new CelebrationInformation();
-  ConcreteNamesInPrayers: ConcreteNamesInPrayers = new ConcreteNamesInPrayers();
-  Invitation: Invitation = new Invitation();
-  Office: Office = new Office();
-  Laudes: Laudes = new Laudes();
-  Hours: Hours = new Hours();
-  VespersOptions: VespersOptions = new VespersOptions();
-  Vespers: Vespers = new Vespers();
-  NightPrayer: NightPrayer = new NightPrayer();
+  todayCelebrationInformation: CelebrationInformation = new CelebrationInformation();
+  tomorrowCelebrationInformation: CelebrationInformation = new CelebrationInformation();
+  concreteNamesInPrayers: ConcreteNamesInPrayers = new ConcreteNamesInPrayers();
+  invitation: Invitation = new Invitation();
+  office: Office = new Office();
+  laudes: Laudes = new Laudes();
+  hours: Hours = new Hours();
+  vespersOptions: VespersOptions = new VespersOptions();
+  vespers: Vespers = new Vespers();
+  nightPrayer: NightPrayer = new NightPrayer();
 }
 
 export class VespersOptions {
-  VespersWithoutCelebration: Vespers = new Vespers();
-  TomorrowFirstVespersWithCelebration: Vespers = new Vespers();
-  TodaySecondVespersWithCelebration: Vespers = new Vespers();
+  vespersWithoutCelebration: Vespers = new Vespers();
+  tomorrowFirstVespersWithCelebration: Vespers = new Vespers();
+  todaySecondVespersWithCelebration: Vespers = new Vespers();
 }

@@ -1,37 +1,37 @@
 import { Psalm, ShortReading } from './CommonParts';
 
 export default class CommonNightPrayerPsalter {
-  static MasterName: string = 'salteriComuCompletes';
+  static masterName: string = 'salteriComuCompletes';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
+      this.id = databaseRow.id;
 
-      this.FirstPsalm.Antiphon = databaseRow.ant1;
-      this.FirstPsalm.Title = databaseRow.titol1;
-      this.FirstPsalm.Comment = databaseRow.com1;
-      this.FirstPsalm.Psalm = databaseRow.salm1;
-      this.FirstPsalm.HasGloryPrayer = databaseRow.gloria1 === '1';
+      this.firstPsalm.antiphon = databaseRow.ant1;
+      this.firstPsalm.title = databaseRow.titol1;
+      this.firstPsalm.comment = databaseRow.com1;
+      this.firstPsalm.psalm = databaseRow.salm1;
+      this.firstPsalm.hasGloryPrayer = databaseRow.gloria1 === '1';
 
-      this.HasTwoPsalms = databaseRow.dosSalms === '1';
+      this.hasTwoPsalms = databaseRow.dosSalms === '1';
 
-      this.SecondPsalm.Antiphon = databaseRow.ant2;
-      this.SecondPsalm.Title = databaseRow.titol2;
-      this.SecondPsalm.Comment = databaseRow.com2;
-      this.SecondPsalm.Psalm = databaseRow.salm2;
-      this.SecondPsalm.HasGloryPrayer = databaseRow.gloria2 === '1';
+      this.secondPsalm.antiphon = databaseRow.ant2;
+      this.secondPsalm.title = databaseRow.titol2;
+      this.secondPsalm.comment = databaseRow.com2;
+      this.secondPsalm.psalm = databaseRow.salm2;
+      this.secondPsalm.hasGloryPrayer = databaseRow.gloria2 === '1';
 
-      this.ShortReading.Quote = databaseRow.versetLB;
-      this.ShortReading.ShortReading = databaseRow.lecturaBreu;
+      this.shortReading.quote = databaseRow.versetLB;
+      this.shortReading.shortReading = databaseRow.lecturaBreu;
 
-      this.FinalPrayer = databaseRow.oraFi;
+      this.finalPrayer = databaseRow.oraFi;
     }
   }
 
-  Id: number;
-  FirstPsalm: Psalm = new Psalm();
-  HasTwoPsalms: boolean;
-  SecondPsalm: Psalm = new Psalm();
-  ShortReading: ShortReading = new ShortReading();
-  FinalPrayer: string;
+  id: number;
+  firstPsalm: Psalm = new Psalm();
+  hasTwoPsalms: boolean;
+  secondPsalm: Psalm = new Psalm();
+  shortReading: ShortReading = new ShortReading();
+  finalPrayer: string;
 }

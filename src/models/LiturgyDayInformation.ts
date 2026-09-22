@@ -2,37 +2,37 @@ import { GenericLiturgyTimeType, SpecificLiturgyTimeType } from '../services/cel
 import { CelebrationType } from '../services/databaseEnums';
 
 export default class LiturgyDayInformation {
-  Today: LiturgySpecificDayInformation = new LiturgySpecificDayInformation();
-  Tomorrow: LiturgySpecificDayInformation = new LiturgySpecificDayInformation();
+  today: LiturgySpecificDayInformation = new LiturgySpecificDayInformation();
+  tomorrow: LiturgySpecificDayInformation = new LiturgySpecificDayInformation();
 }
 
 export class LiturgySpecificDayInformation {
-  Date: Date;
-  CelebrationType: CelebrationType;
-  MovedDay: MovedDay = new MovedDay();
-  LiturgyColor: string;
-  PentecostDay: Date;
-  GenericLiturgyTime: GenericLiturgyTimeType;
-  SpecificLiturgyTime: SpecificLiturgyTimeType;
-  WeekCycle: string; //1-4
-  Week: string; //Ordinary: 1-34, Easter: 2-7 and Lent: 1-5 or 2-7
-  YearType: string;
-  YearIsEven: boolean;
-  DayOfTheWeek: number;
-  DayOfTheWeekNameShort: string;
-  SpecialCelebration: SpecialCelebration = new SpecialCelebration();
-  IsSpecialChristmas: boolean;
+  date: Date;
+  celebrationType: CelebrationType;
+  movedDay: MovedDay = new MovedDay();
+  liturgyColor: string;
+  pentecostDay: Date;
+  genericLiturgyTime: GenericLiturgyTimeType;
+  specificLiturgyTime: SpecificLiturgyTimeType;
+  weekCycle: string; //1-4
+  week: string; //Ordinary: 1-34, Easter: 2-7 and Lent: 1-5 or 2-7
+  yearType: string;
+  yearIsEven: boolean;
+  dayOfTheWeek: number;
+  dayOfTheWeekNameShort: string;
+  specialCelebration: SpecialCelebration = new SpecialCelebration();
+  isSpecialChristmas: boolean;
 }
 
 class MovedDay {
-  TodayIsMoved: boolean;
-  OriginDateShortDatabaseCode: string;
-  OriginDate: Date;
-  DioceseCode2Letters: string;
+  todayIsMoved: boolean;
+  originDateShortDatabaseCode: string;
+  originDate: Date;
+  dioceseCode2Letters: string;
 }
 
 export class SpecialCelebration {
-  SpecialCelebrationType: SpecialCelebrationTypeEnum = SpecialCelebrationTypeEnum.CelebrationNotSpecial;
+  specialCelebrationType: SpecialCelebrationTypeEnum = SpecialCelebrationTypeEnum.CelebrationNotSpecial;
 
   _specialDaysMasterIdentifier: number = NoIdentifierNumber;
   get SpecialDaysMasterIdentifier() {
@@ -64,13 +64,13 @@ export class SpecialCelebration {
   updateType() {
     // In case of coincidences: SpecialDay > SolemnityAndFestivity > StrongTimes
     if (this._specialDaysMasterIdentifier !== NoIdentifierNumber) {
-      this.SpecialCelebrationType = SpecialCelebrationTypeEnum.SpecialDay;
+      this.specialCelebrationType = SpecialCelebrationTypeEnum.SpecialDay;
     } else if (this._solemnityAndFestivityMasterIdentifier !== NoIdentifierNumber) {
-      this.SpecialCelebrationType = SpecialCelebrationTypeEnum.SolemnityAndFestivity;
+      this.specialCelebrationType = SpecialCelebrationTypeEnum.SolemnityAndFestivity;
     } else if (this._strongTimesMasterIdentifier !== NoIdentifierNumber) {
-      this.SpecialCelebrationType = SpecialCelebrationTypeEnum.StrongTime;
+      this.specialCelebrationType = SpecialCelebrationTypeEnum.StrongTime;
     } else {
-      this.SpecialCelebrationType = SpecialCelebrationTypeEnum.CelebrationNotSpecial;
+      this.specialCelebrationType = SpecialCelebrationTypeEnum.CelebrationNotSpecial;
     }
   }
 }

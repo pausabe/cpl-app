@@ -2,201 +2,201 @@ import { HourCommonParts, ReadingOfTheOffice, Psalm, Responsory, ShortReading, S
 import CelebrationInformation from '../hours-liturgy/CelebrationInformation';
 
 export default class CommonOffice {
-  static MasterName: string = 'OficisComuns';
+  static masterName: string = 'OficisComuns';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
+      this.id = databaseRow.id;
 
-      this.Celebration.Category = databaseRow.Categoria;
-      this.Celebration.Description = databaseRow.nomMemoria;
+      this.celebration.category = databaseRow.Categoria;
+      this.celebration.description = databaseRow.nomMemoria;
 
-      this.FirstVespersLatinAnthem = databaseRow.himneVespres1Llati;
-      this.FirstVespersCatalanAnthem = databaseRow.himneVespres1Cat;
+      this.firstVespersLatinAnthem = databaseRow.himneVespres1Llati;
+      this.firstVespersCatalanAnthem = databaseRow.himneVespres1Cat;
 
-      this.FirstVespersFirstPsalm.Antiphon = databaseRow.ant1Vespres1;
-      this.FirstVespersFirstPsalm.Title = databaseRow.titol1Vespres1;
-      this.FirstVespersFirstPsalm.Psalm = databaseRow.text1Vespres1;
-      this.FirstVespersFirstPsalm.HasGloryPrayer = databaseRow.gloria1Vespres1 === '1';
+      this.firstVespersFirstPsalm.antiphon = databaseRow.ant1Vespres1;
+      this.firstVespersFirstPsalm.title = databaseRow.titol1Vespres1;
+      this.firstVespersFirstPsalm.psalm = databaseRow.text1Vespres1;
+      this.firstVespersFirstPsalm.hasGloryPrayer = databaseRow.gloria1Vespres1 === '1';
 
-      this.FirstVespersSecondPsalm.Antiphon = databaseRow.ant2Vespres1;
-      this.FirstVespersSecondPsalm.Title = databaseRow.titol2Vespres1;
-      this.FirstVespersSecondPsalm.Psalm = databaseRow.text2Vespres1;
-      this.FirstVespersSecondPsalm.HasGloryPrayer = databaseRow.gloria2Vespres1 === '1';
+      this.firstVespersSecondPsalm.antiphon = databaseRow.ant2Vespres1;
+      this.firstVespersSecondPsalm.title = databaseRow.titol2Vespres1;
+      this.firstVespersSecondPsalm.psalm = databaseRow.text2Vespres1;
+      this.firstVespersSecondPsalm.hasGloryPrayer = databaseRow.gloria2Vespres1 === '1';
 
-      this.FirstVespersThirdPsalm.Antiphon = databaseRow.ant3Vespres1;
-      this.FirstVespersThirdPsalm.Title = databaseRow.titol3Vespres1;
-      this.FirstVespersThirdPsalm.Psalm = databaseRow.text3Vespres1;
-      this.FirstVespersThirdPsalm.HasGloryPrayer = databaseRow.gloria3Vespres1 === '1';
+      this.firstVespersThirdPsalm.antiphon = databaseRow.ant3Vespres1;
+      this.firstVespersThirdPsalm.title = databaseRow.titol3Vespres1;
+      this.firstVespersThirdPsalm.psalm = databaseRow.text3Vespres1;
+      this.firstVespersThirdPsalm.hasGloryPrayer = databaseRow.gloria3Vespres1 === '1';
 
-      this.FirstVespersShortReading.Quote = databaseRow.citaLBVespres1;
-      this.FirstVespersShortReading.ShortReading = databaseRow.lecturaBreuVespres1;
+      this.firstVespersShortReading.quote = databaseRow.citaLBVespres1;
+      this.firstVespersShortReading.shortReading = databaseRow.lecturaBreuVespres1;
 
-      this.FirstVespersShortResponsory.FirstPart = databaseRow.respBreuVespres1Part1;
-      this.FirstVespersShortResponsory.SecondPart = databaseRow.respBreuVespres1Part2;
-      this.FirstVespersShortResponsory.ThirdPart = databaseRow.respBreuVespres1Part3;
+      this.firstVespersShortResponsory.firstPart = databaseRow.respBreuVespres1Part1;
+      this.firstVespersShortResponsory.secondPart = databaseRow.respBreuVespres1Part2;
+      this.firstVespersShortResponsory.thirdPart = databaseRow.respBreuVespres1Part3;
 
-      this.FirstVespersEvangelicalAntiphon = databaseRow.antMaria1A;
-      this.FirstVespersPrayers = databaseRow.pregariesVespres1;
+      this.firstVespersEvangelicalAntiphon = databaseRow.antMaria1A;
+      this.firstVespersPrayers = databaseRow.pregariesVespres1;
 
-      this.InvitationAntiphon = databaseRow.antInvitatori;
+      this.invitationAntiphon = databaseRow.antInvitatori;
 
-      this.OfficeLatinAnthem = databaseRow.himneOficiLlati;
-      this.OfficeCatalanAnthem = databaseRow.himneOficiCat;
+      this.officeLatinAnthem = databaseRow.himneOficiLlati;
+      this.officeCatalanAnthem = databaseRow.himneOficiCat;
 
-      this.OfficeFirstPsalm.Antiphon = databaseRow.ant1Ofici;
-      this.OfficeFirstPsalm.Title = databaseRow.titolSalm1Ofici;
-      this.OfficeFirstPsalm.Psalm = databaseRow.salm1Ofici;
-      this.OfficeFirstPsalm.HasGloryPrayer = databaseRow.gloriaOfici1 === '1';
+      this.officeFirstPsalm.antiphon = databaseRow.ant1Ofici;
+      this.officeFirstPsalm.title = databaseRow.titolSalm1Ofici;
+      this.officeFirstPsalm.psalm = databaseRow.salm1Ofici;
+      this.officeFirstPsalm.hasGloryPrayer = databaseRow.gloriaOfici1 === '1';
 
-      this.OfficeSecondPsalm.Antiphon = databaseRow.ant2Ofici;
-      this.OfficeSecondPsalm.Title = databaseRow.titolSalm2Ofici;
-      this.OfficeSecondPsalm.Psalm = databaseRow.salm2Ofici;
-      this.OfficeSecondPsalm.HasGloryPrayer = databaseRow.gloriaOfici2 === '1';
+      this.officeSecondPsalm.antiphon = databaseRow.ant2Ofici;
+      this.officeSecondPsalm.title = databaseRow.titolSalm2Ofici;
+      this.officeSecondPsalm.psalm = databaseRow.salm2Ofici;
+      this.officeSecondPsalm.hasGloryPrayer = databaseRow.gloriaOfici2 === '1';
 
-      this.OfficeThirdPsalm.Antiphon = databaseRow.ant3Ofici;
-      this.OfficeThirdPsalm.Title = databaseRow.titolSalm3Ofici;
-      this.OfficeThirdPsalm.Psalm = databaseRow.salm3Ofici;
-      this.OfficeThirdPsalm.HasGloryPrayer = databaseRow.gloriaOfici3 === '1';
+      this.officeThirdPsalm.antiphon = databaseRow.ant3Ofici;
+      this.officeThirdPsalm.title = databaseRow.titolSalm3Ofici;
+      this.officeThirdPsalm.psalm = databaseRow.salm3Ofici;
+      this.officeThirdPsalm.hasGloryPrayer = databaseRow.gloriaOfici3 === '1';
 
-      this.OfficeResponsory.Versicle = databaseRow.respVOfici;
-      this.OfficeResponsory.Response = databaseRow.respROfici;
+      this.officeResponsory.versicle = databaseRow.respVOfici;
+      this.officeResponsory.response = databaseRow.respROfici;
 
-      this.OfficeFirstReading.Reference = databaseRow.referencia1;
-      this.OfficeFirstReading.Quote = databaseRow.citaLect1Ofici;
-      this.OfficeFirstReading.Title = databaseRow.titolLect1Ofici;
-      this.OfficeFirstReading.Reading = databaseRow.lectura1;
-      this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1Ofici;
-      this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1Ofici;
-      this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2Ofici;
-      this.OfficeFirstReading.Responsory.ThirdPart = databaseRow.resp1Part3Ofici;
+      this.officeFirstReading.reference = databaseRow.referencia1;
+      this.officeFirstReading.quote = databaseRow.citaLect1Ofici;
+      this.officeFirstReading.title = databaseRow.titolLect1Ofici;
+      this.officeFirstReading.reading = databaseRow.lectura1;
+      this.officeFirstReading.responsory.quote = databaseRow.citaResp1Ofici;
+      this.officeFirstReading.responsory.firstPart = databaseRow.resp1Part1Ofici;
+      this.officeFirstReading.responsory.secondPart = databaseRow.resp1Part2Ofici;
+      this.officeFirstReading.responsory.thirdPart = databaseRow.resp1Part3Ofici;
 
-      this.OfficeSecondReading.Reference = databaseRow.referencia2Ofici;
-      this.OfficeSecondReading.Quote = databaseRow.citaLec2Ofici;
-      this.OfficeSecondReading.Title = databaseRow.titolLect2Ofici;
-      this.OfficeSecondReading.Reading = databaseRow.lectura2;
-      this.OfficeSecondReading.Responsory.Quote = databaseRow.citaResp2Ofici;
-      this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1Ofici;
-      this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2Ofici;
-      this.OfficeSecondReading.Responsory.ThirdPart = databaseRow.resp2Part3Ofici;
+      this.officeSecondReading.reference = databaseRow.referencia2Ofici;
+      this.officeSecondReading.quote = databaseRow.citaLec2Ofici;
+      this.officeSecondReading.title = databaseRow.titolLect2Ofici;
+      this.officeSecondReading.reading = databaseRow.lectura2;
+      this.officeSecondReading.responsory.quote = databaseRow.citaResp2Ofici;
+      this.officeSecondReading.responsory.firstPart = databaseRow.resp2Part1Ofici;
+      this.officeSecondReading.responsory.secondPart = databaseRow.resp2Part2Ofici;
+      this.officeSecondReading.responsory.thirdPart = databaseRow.resp2Part3Ofici;
 
-      this.LaudesLatinAnthem = databaseRow.himneLaudesLlati;
-      this.LaudesCatalanAnthem = databaseRow.himneLaudesCat;
+      this.laudesLatinAnthem = databaseRow.himneLaudesLlati;
+      this.laudesCatalanAnthem = databaseRow.himneLaudesCat;
 
-      this.LaudesFirstPsalm.Antiphon = databaseRow.ant1Laudes;
-      this.LaudesFirstPsalm.Title = databaseRow.titol1Laudes;
-      this.LaudesFirstPsalm.Psalm = databaseRow.Salm1Laudes;
-      this.LaudesFirstPsalm.HasGloryPrayer = databaseRow.gloria1Laudes === '1';
+      this.laudesFirstPsalm.antiphon = databaseRow.ant1Laudes;
+      this.laudesFirstPsalm.title = databaseRow.titol1Laudes;
+      this.laudesFirstPsalm.psalm = databaseRow.Salm1Laudes;
+      this.laudesFirstPsalm.hasGloryPrayer = databaseRow.gloria1Laudes === '1';
 
-      this.LaudesSecondPsalm.Antiphon = databaseRow.ant2Laudes;
-      this.LaudesSecondPsalm.Title = databaseRow.titol2Laudes;
-      this.LaudesSecondPsalm.Psalm = databaseRow.Salm2Laudes;
-      this.LaudesSecondPsalm.HasGloryPrayer = databaseRow.gloria2Laudes === '1';
+      this.laudesSecondPsalm.antiphon = databaseRow.ant2Laudes;
+      this.laudesSecondPsalm.title = databaseRow.titol2Laudes;
+      this.laudesSecondPsalm.psalm = databaseRow.Salm2Laudes;
+      this.laudesSecondPsalm.hasGloryPrayer = databaseRow.gloria2Laudes === '1';
 
-      this.LaudesThirdPsalm.Antiphon = databaseRow.ant3Laudes;
-      this.LaudesThirdPsalm.Title = databaseRow.titol3Laudes;
-      this.LaudesThirdPsalm.Psalm = databaseRow.Salm3Laudes;
-      this.LaudesThirdPsalm.HasGloryPrayer = databaseRow.gloria3Laudes === '1';
+      this.laudesThirdPsalm.antiphon = databaseRow.ant3Laudes;
+      this.laudesThirdPsalm.title = databaseRow.titol3Laudes;
+      this.laudesThirdPsalm.psalm = databaseRow.Salm3Laudes;
+      this.laudesThirdPsalm.hasGloryPrayer = databaseRow.gloria3Laudes === '1';
 
-      this.LaudesShortReading.Quote = databaseRow.citaLBLaudes;
-      this.LaudesShortReading.ShortReading = databaseRow.lecturaBreuLaudes;
+      this.laudesShortReading.quote = databaseRow.citaLBLaudes;
+      this.laudesShortReading.shortReading = databaseRow.lecturaBreuLaudes;
 
-      this.LaudesShortResponsory.FirstPart = databaseRow.respBreuLaudes1;
-      this.LaudesShortResponsory.SecondPart = databaseRow.respBreuLaudes2;
-      this.LaudesShortResponsory.ThirdPart = databaseRow.respBreuLaudes3;
+      this.laudesShortResponsory.firstPart = databaseRow.respBreuLaudes1;
+      this.laudesShortResponsory.secondPart = databaseRow.respBreuLaudes2;
+      this.laudesShortResponsory.thirdPart = databaseRow.respBreuLaudes3;
 
-      this.LaudesEvangelicalAntiphon = databaseRow.antZacaries;
-      this.LaudesPrayers = databaseRow.pregariesLaudes;
+      this.laudesEvangelicalAntiphon = databaseRow.antZacaries;
+      this.laudesPrayers = databaseRow.pregariesLaudes;
 
-      this.ThirdHourParts.Antiphon = databaseRow.antMenorTer;
-      this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
-      this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
-      this.ThirdHourParts.Responsory.Versicle = databaseRow.respVTercia;
-      this.ThirdHourParts.Responsory.Response = databaseRow.respRTercia;
+      this.thirdHourParts.antiphon = databaseRow.antMenorTer;
+      this.thirdHourParts.shortReading.quote = databaseRow.citaLBTercia;
+      this.thirdHourParts.shortReading.shortReading = databaseRow.lecturaBreuTercia;
+      this.thirdHourParts.responsory.versicle = databaseRow.respVTercia;
+      this.thirdHourParts.responsory.response = databaseRow.respRTercia;
 
-      this.SixthHourParts.Antiphon = databaseRow.antMenorSextA;
-      this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
-      this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
-      this.SixthHourParts.Responsory.Versicle = databaseRow.respVSexta;
-      this.SixthHourParts.Responsory.Response = databaseRow.respRSexta;
+      this.sixthHourParts.antiphon = databaseRow.antMenorSextA;
+      this.sixthHourParts.shortReading.quote = databaseRow.citaLBSexta;
+      this.sixthHourParts.shortReading.shortReading = databaseRow.lecturaBreuSexta;
+      this.sixthHourParts.responsory.versicle = databaseRow.respVSexta;
+      this.sixthHourParts.responsory.response = databaseRow.respRSexta;
 
-      this.NinthHourParts.Antiphon = databaseRow.antMenorNona;
-      this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
-      this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
-      this.NinthHourParts.Responsory.Versicle = databaseRow.respVNona;
-      this.NinthHourParts.Responsory.Response = databaseRow.respRNona;
+      this.ninthHourParts.antiphon = databaseRow.antMenorNona;
+      this.ninthHourParts.shortReading.quote = databaseRow.citaLBNona;
+      this.ninthHourParts.shortReading.shortReading = databaseRow.lecturaBreuNona;
+      this.ninthHourParts.responsory.versicle = databaseRow.respVNona;
+      this.ninthHourParts.responsory.response = databaseRow.respRNona;
 
-      this.SecondVespersLatinAnthem = databaseRow.himneVespresLlati;
-      this.SecondVespersCatalanAnthem = databaseRow.himneVespresCat;
+      this.secondVespersLatinAnthem = databaseRow.himneVespresLlati;
+      this.secondVespersCatalanAnthem = databaseRow.himneVespresCat;
 
-      this.SecondVespersFirstPsalm.Antiphon = databaseRow.ant1Vespres;
-      this.SecondVespersFirstPsalm.Title = databaseRow.titol1Vespres;
-      this.SecondVespersFirstPsalm.Psalm = databaseRow.Salm1Vespres;
-      this.SecondVespersFirstPsalm.HasGloryPrayer = databaseRow.gloria1Vespres === '1';
+      this.secondVespersFirstPsalm.antiphon = databaseRow.ant1Vespres;
+      this.secondVespersFirstPsalm.title = databaseRow.titol1Vespres;
+      this.secondVespersFirstPsalm.psalm = databaseRow.Salm1Vespres;
+      this.secondVespersFirstPsalm.hasGloryPrayer = databaseRow.gloria1Vespres === '1';
 
-      this.SecondVespersSecondPsalm.Antiphon = databaseRow.ant2Vespres;
-      this.SecondVespersSecondPsalm.Title = databaseRow.titol2Vespres;
-      this.SecondVespersSecondPsalm.Psalm = databaseRow.Salm2Vespres;
-      this.SecondVespersSecondPsalm.HasGloryPrayer = databaseRow.gloria2Vespres === '1';
+      this.secondVespersSecondPsalm.antiphon = databaseRow.ant2Vespres;
+      this.secondVespersSecondPsalm.title = databaseRow.titol2Vespres;
+      this.secondVespersSecondPsalm.psalm = databaseRow.Salm2Vespres;
+      this.secondVespersSecondPsalm.hasGloryPrayer = databaseRow.gloria2Vespres === '1';
 
-      this.SecondVespersThirdPsalm.Antiphon = databaseRow.ant3Vespres;
-      this.SecondVespersThirdPsalm.Title = databaseRow.titol3Vespres;
-      this.SecondVespersThirdPsalm.Psalm = databaseRow.Salm3Vespres;
-      this.SecondVespersThirdPsalm.HasGloryPrayer = databaseRow.gloria3Vespres === '1';
+      this.secondVespersThirdPsalm.antiphon = databaseRow.ant3Vespres;
+      this.secondVespersThirdPsalm.title = databaseRow.titol3Vespres;
+      this.secondVespersThirdPsalm.psalm = databaseRow.Salm3Vespres;
+      this.secondVespersThirdPsalm.hasGloryPrayer = databaseRow.gloria3Vespres === '1';
 
-      this.SecondVespersShortReading.Quote = databaseRow.citaLBVespres;
-      this.SecondVespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
+      this.secondVespersShortReading.quote = databaseRow.citaLBVespres;
+      this.secondVespersShortReading.shortReading = databaseRow.lecturaBreuVespres;
 
-      this.SecondVespersShortResponsory.FirstPart = databaseRow.respBreuVespres1;
-      this.SecondVespersShortResponsory.SecondPart = databaseRow.respBreuVespres2;
-      this.SecondVespersShortResponsory.ThirdPart = databaseRow.respBreuVespres3;
+      this.secondVespersShortResponsory.firstPart = databaseRow.respBreuVespres1;
+      this.secondVespersShortResponsory.secondPart = databaseRow.respBreuVespres2;
+      this.secondVespersShortResponsory.thirdPart = databaseRow.respBreuVespres3;
 
-      this.SecondVespersEvangelicalAntiphon = databaseRow.antMaria;
-      this.SecondVespersPrayers = databaseRow.pregariesVespres;
+      this.secondVespersEvangelicalAntiphon = databaseRow.antMaria;
+      this.secondVespersPrayers = databaseRow.pregariesVespres;
     }
   }
 
-  Id: number;
-  Celebration: CelebrationInformation = new CelebrationInformation();
-  FirstVespersLatinAnthem: string;
-  FirstVespersCatalanAnthem: string;
-  FirstVespersFirstPsalm: Psalm = new Psalm();
-  FirstVespersSecondPsalm: Psalm = new Psalm();
-  FirstVespersThirdPsalm: Psalm = new Psalm();
-  FirstVespersShortReading: ShortReading = new ShortReading();
-  FirstVespersShortResponsory: ShortResponsory = new ShortResponsory();
-  FirstVespersEvangelicalAntiphon: string;
-  FirstVespersPrayers: string;
-  FirstVespersFinalPrayer: string;
-  InvitationAntiphon: string;
-  OfficeLatinAnthem: string;
-  OfficeCatalanAnthem: string;
-  OfficeFirstPsalm: Psalm = new Psalm();
-  OfficeSecondPsalm: Psalm = new Psalm();
-  OfficeThirdPsalm: Psalm = new Psalm();
-  OfficeResponsory: Responsory = new Responsory();
-  OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
-  OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
-  LaudesLatinAnthem: string;
-  LaudesCatalanAnthem: string;
-  LaudesFirstPsalm: Psalm = new Psalm();
-  LaudesSecondPsalm: Psalm = new Psalm();
-  LaudesThirdPsalm: Psalm = new Psalm();
-  LaudesShortReading: ShortReading = new ShortReading();
-  LaudesShortResponsory: ShortResponsory = new ShortResponsory();
-  LaudesEvangelicalAntiphon: string;
-  LaudesPrayers: string;
-  ThirdHourParts: HourCommonParts = new HourCommonParts();
-  SixthHourParts: HourCommonParts = new HourCommonParts();
-  NinthHourParts: HourCommonParts = new HourCommonParts();
-  SecondVespersLatinAnthem: string;
-  SecondVespersCatalanAnthem: string;
-  SecondVespersFirstPsalm: Psalm = new Psalm();
-  SecondVespersSecondPsalm: Psalm = new Psalm();
-  SecondVespersThirdPsalm: Psalm = new Psalm();
-  SecondVespersShortReading: ShortReading = new ShortReading();
-  SecondVespersShortResponsory: ShortResponsory = new ShortResponsory();
-  SecondVespersEvangelicalAntiphon: string;
-  SecondVespersPrayers: string;
-  SecondVespersFinalPrayer: string;
+  id: number;
+  celebration: CelebrationInformation = new CelebrationInformation();
+  firstVespersLatinAnthem: string;
+  firstVespersCatalanAnthem: string;
+  firstVespersFirstPsalm: Psalm = new Psalm();
+  firstVespersSecondPsalm: Psalm = new Psalm();
+  firstVespersThirdPsalm: Psalm = new Psalm();
+  firstVespersShortReading: ShortReading = new ShortReading();
+  firstVespersShortResponsory: ShortResponsory = new ShortResponsory();
+  firstVespersEvangelicalAntiphon: string;
+  firstVespersPrayers: string;
+  firstVespersFinalPrayer: string;
+  invitationAntiphon: string;
+  officeLatinAnthem: string;
+  officeCatalanAnthem: string;
+  officeFirstPsalm: Psalm = new Psalm();
+  officeSecondPsalm: Psalm = new Psalm();
+  officeThirdPsalm: Psalm = new Psalm();
+  officeResponsory: Responsory = new Responsory();
+  officeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+  officeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+  laudesLatinAnthem: string;
+  laudesCatalanAnthem: string;
+  laudesFirstPsalm: Psalm = new Psalm();
+  laudesSecondPsalm: Psalm = new Psalm();
+  laudesThirdPsalm: Psalm = new Psalm();
+  laudesShortReading: ShortReading = new ShortReading();
+  laudesShortResponsory: ShortResponsory = new ShortResponsory();
+  laudesEvangelicalAntiphon: string;
+  laudesPrayers: string;
+  thirdHourParts: HourCommonParts = new HourCommonParts();
+  sixthHourParts: HourCommonParts = new HourCommonParts();
+  ninthHourParts: HourCommonParts = new HourCommonParts();
+  secondVespersLatinAnthem: string;
+  secondVespersCatalanAnthem: string;
+  secondVespersFirstPsalm: Psalm = new Psalm();
+  secondVespersSecondPsalm: Psalm = new Psalm();
+  secondVespersThirdPsalm: Psalm = new Psalm();
+  secondVespersShortReading: ShortReading = new ShortReading();
+  secondVespersShortResponsory: ShortResponsory = new ShortResponsory();
+  secondVespersEvangelicalAntiphon: string;
+  secondVespersPrayers: string;
+  secondVespersFinalPrayer: string;
 }

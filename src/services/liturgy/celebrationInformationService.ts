@@ -15,7 +15,7 @@ export function obtainCelebrationInformation(
     liturgySpecificDayInformation,
     celebrationInformationFromCelebration,
   );
-  celebrationInformation.Precedence = PrecedenceService.obtainPrecedenceByLiturgyTime(
+  celebrationInformation.precedence = PrecedenceService.obtainPrecedenceByLiturgyTime(
     liturgySpecificDayInformation,
     celebrationInformationFromCelebration,
   );
@@ -27,32 +27,32 @@ function buildCelebrationInformation(
   celebrationInformationFromCelebration: CelebrationInformation,
 ): CelebrationInformation {
   let celebrationInformation = new CelebrationInformation();
-  if (StringManagement.hasLiturgyContent(celebrationInformationFromCelebration.Title)) {
+  if (StringManagement.hasLiturgyContent(celebrationInformationFromCelebration.title)) {
     celebrationInformation = celebrationInformationFromCelebration;
   } else {
-    celebrationInformation.Title = '';
-    celebrationInformation.Description = '-';
-    liturgySpecificDayInformation.CelebrationType = CelebrationType.Fair;
+    celebrationInformation.title = '';
+    celebrationInformation.description = '-';
+    liturgySpecificDayInformation.celebrationType = CelebrationType.Fair;
     if (
-      liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
-      liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum
+      liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
+      liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum
     ) {
-      celebrationInformation.Title = DateManagement.weekDayName(liturgySpecificDayInformation.Date.getDay()) + ' Sant';
-    } else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
-      celebrationInformation.Title = 'Octava de Pasqua';
+      celebrationInformation.title = DateManagement.weekDayName(liturgySpecificDayInformation.date.getDay()) + ' Sant';
+    } else if (liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
+      celebrationInformation.title = 'Octava de Pasqua';
     } else if (
-      liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-      liturgySpecificDayInformation.SpecialCelebration.SpecialCelebrationType !==
+      liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
+      liturgySpecificDayInformation.specialCelebration.specialCelebrationType !==
         SpecialCelebrationTypeEnum.StrongTime &&
-      liturgySpecificDayInformation.SpecialCelebration.SpecialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay
+      liturgySpecificDayInformation.specialCelebration.specialCelebrationType !== SpecialCelebrationTypeEnum.SpecialDay
     ) {
-      celebrationInformation.Title = 'Octava de Nadal';
-    } else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
-      celebrationInformation.Title = 'Cendra';
-    } else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
-      celebrationInformation.Title = 'Fèria d’Advent';
-    } else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
-      celebrationInformation.Title = 'Diumenge de Rams';
+      celebrationInformation.title = 'Octava de Nadal';
+    } else if (liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
+      celebrationInformation.title = 'Cendra';
+    } else if (liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
+      celebrationInformation.title = 'Fèria d’Advent';
+    } else if (liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
+      celebrationInformation.title = 'Diumenge de Rams';
     }
   }
   return celebrationInformation;

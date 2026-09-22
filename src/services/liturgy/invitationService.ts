@@ -11,52 +11,52 @@ export function obtainInvitation(
 ): Invitation {
   let invitation = new Invitation();
 
-  invitation.Psalm94 = liturgyMasters.Various.Psalm94;
-  invitation.Psalm23 = liturgyMasters.Various.Psalm23;
-  invitation.Psalm66 = liturgyMasters.Various.Psalm66;
-  invitation.Psalm99 = liturgyMasters.Various.Psalm99;
+  invitation.psalm94 = liturgyMasters.various.psalm94;
+  invitation.psalm23 = liturgyMasters.various.psalm23;
+  invitation.psalm66 = liturgyMasters.various.psalm66;
+  invitation.psalm99 = liturgyMasters.various.psalm99;
 
-  if (StringManagement.hasLiturgyContent(celebrationInvitation.InvitationAntiphon)) {
-    invitation.InvitationAntiphon = celebrationInvitation.InvitationAntiphon;
+  if (StringManagement.hasLiturgyContent(celebrationInvitation.invitationAntiphon)) {
+    invitation.invitationAntiphon = celebrationInvitation.invitationAntiphon;
   } else {
-    invitation.InvitationAntiphon = liturgyMasters.InvitationCommonPsalter.Antiphon;
-    switch (liturgyDayInformation.SpecificLiturgyTime) {
+    invitation.invitationAntiphon = liturgyMasters.invitationCommonPsalter.antiphon;
+    switch (liturgyDayInformation.specificLiturgyTime) {
       case SpecificLiturgyTimeType.LentAshes:
       case SpecificLiturgyTimeType.LentWeeks:
-        invitation.InvitationAntiphon =
-          liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.InvitationAntiphonFirstOption;
+        invitation.invitationAntiphon =
+          liturgyMasters.commonPartsUntilFifthWeekOfLentTime.invitationAntiphonFirstOption;
         break;
       case SpecificLiturgyTimeType.PalmSunday:
       case SpecificLiturgyTimeType.HolyWeek:
-        invitation.InvitationAntiphon = liturgyMasters.CommonPartsOfHolyWeek.InvitationAntiphon;
+        invitation.invitationAntiphon = liturgyMasters.commonPartsOfHolyWeek.invitationAntiphon;
         break;
       case SpecificLiturgyTimeType.PaschalTriduum:
-        invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterTriduum.InvitationAntiphon;
+        invitation.invitationAntiphon = liturgyMasters.partsOfEasterTriduum.invitationAntiphon;
         break;
       case SpecificLiturgyTimeType.EasterOctave:
-        invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterBeforeAscension.InvitationAntiphon;
+        invitation.invitationAntiphon = liturgyMasters.partsOfEasterBeforeAscension.invitationAntiphon;
         break;
       case SpecificLiturgyTimeType.EasterWeeks:
-        if (liturgyDayInformation.Week === '7') {
-          invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterAfterAscension.InvitationAntiphon;
+        if (liturgyDayInformation.week === '7') {
+          invitation.invitationAntiphon = liturgyMasters.partsOfEasterAfterAscension.invitationAntiphon;
         } else {
-          invitation.InvitationAntiphon = liturgyMasters.PartsOfEasterBeforeAscension.InvitationAntiphon;
+          invitation.invitationAntiphon = liturgyMasters.partsOfEasterBeforeAscension.invitationAntiphon;
         }
         break;
       case SpecificLiturgyTimeType.AdventWeeks:
       case SpecificLiturgyTimeType.AdventFairs:
       case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
         if (
-          liturgyDayInformation.SpecificLiturgyTime != SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
-          (liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-            liturgyDayInformation.Date.getMonth() == 0 &&
-            liturgyDayInformation.Date.getDate() != 13)
+          liturgyDayInformation.specificLiturgyTime != SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
+          (liturgyDayInformation.specificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+            liturgyDayInformation.date.getMonth() == 0 &&
+            liturgyDayInformation.date.getDate() != 13)
         ) {
-          invitation.InvitationAntiphon = liturgyMasters.CommonAdventAndChristmasParts.InvitationAntiphon;
+          invitation.invitationAntiphon = liturgyMasters.commonAdventAndChristmasParts.invitationAntiphon;
         }
         break;
       case SpecificLiturgyTimeType.ChristmasOctave:
-        invitation.InvitationAntiphon = liturgyMasters.SolemnityAndFestivityParts.InvitationAntiphon;
+        invitation.invitationAntiphon = liturgyMasters.solemnityAndFestivityParts.invitationAntiphon;
         break;
     }
   }

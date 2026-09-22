@@ -120,16 +120,16 @@ async function massChain(label, type, vespers, needSecondReading) {
 async function massTexts() {
   const { CurrentMassLiturgy, CurrentLiturgyDayInformation } = DataService;
   const out = {};
-  if (CurrentLiturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
+  if (CurrentLiturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     Object.assign(out, await massChain('Vetlla: lectures i salms', 'VetllaPasquaLecturesSalms', false, false));
     Object.assign(out, await massChain('Vetlla: evangeli', 'VetllaPasquaEvangeli', false, false));
     return out;
   }
-  const masses = [['Avui', false, CurrentMassLiturgy.Today]];
-  if (CurrentMassLiturgy.HasVespers) masses.push(['Vespertina', true, CurrentMassLiturgy.Vespers]);
+  const masses = [['Avui', false, CurrentMassLiturgy.today]];
+  if (CurrentMassLiturgy.hasVespers) masses.push(['Vespertina', true, CurrentMassLiturgy.vespers]);
   for (const [name, vespers, mass] of masses) {
-    const needSecondReading = StringManagement.hasLiturgyContent(mass.SecondReading.Reading);
-    if (CurrentLiturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
+    const needSecondReading = StringManagement.hasLiturgyContent(mass.secondReading.reading);
+    if (CurrentLiturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
       Object.assign(out, await massChain(`${name}: Rams`, 'Rams', vespers, needSecondReading));
     }
     Object.assign(out, await massChain(`${name}: 1Lect`, '1Lect', vespers, needSecondReading));

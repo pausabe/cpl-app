@@ -13,26 +13,26 @@ export type MassScreenType =
 export type MassChoice = 'normal' | 'vespers';
 
 export interface MassReadingInput {
-  Quote: string;
-  Comment: string;
+  quote: string;
+  comment: string;
 }
 
 export interface DayMassInput {
-  Title: string;
-  SecondReading: { Reading: string };
-  Gospel: MassReadingInput;
+  title: string;
+  secondReading: { reading: string };
+  gospel: MassReadingInput;
 }
 
 export interface MassInput {
-  Today: DayMassInput;
-  HasVespers: boolean;
-  Vespers: DayMassInput;
+  today: DayMassInput;
+  hasVespers: boolean;
+  vespers: DayMassInput;
 }
 
 export interface MassDayInput {
-  Date: Date;
-  SpecificLiturgyTime: string;
-  YearType: string;
+  date: Date;
+  specificLiturgyTime: string;
+  yearType: string;
 }
 
 export interface MassButton {
@@ -101,7 +101,7 @@ export function resolveMassChoice(input: MassChoiceInput): MassChoiceDecision {
 
 export interface MassBlockInput {
   today: MassDayInput;
-  tomorrow: { SpecificLiturgyTime: string };
+  tomorrow: { specificLiturgyTime: string };
   mass: MassInput;
   choice: MassChoice;
 }
@@ -114,24 +114,24 @@ function gospelCaption(prefix: string | null, quote: string): string {
 const phraseOf = (comment: string) => (hasVisibleText(comment) ? singleLine(comment) : null);
 
 export function buildMass({ today, tomorrow, mass, choice }: MassBlockInput): MassBlock {
-  const vespers = choice === 'vespers' && !!mass.HasVespers;
-  const selected = vespers ? mass.Vespers : mass.Today;
+  const vespers = choice === 'vespers' && !!mass.hasVespers;
+  const selected = vespers ? mass.vespers : mass.today;
   const params: MassScreenParams = {
-    need_lectura2: hasContent(selected.SecondReading.Reading),
+    need_lectura2: hasContent(selected.secondReading.reading),
     useVespersTexts: choice === 'vespers',
   };
-  const selector = mass.HasVespers
-    ? { choice, vespersTitle: hasContent(mass.Vespers.Title) ? mass.Vespers.Title : '' }
+  const selector = mass.hasVespers
+    ? { choice, vespersTitle: hasContent(mass.vespers.title) ? mass.vespers.title : '' }
     : null;
 
   // Holy Saturday: the Easter Vigil
-  if (tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
+  if (tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     return {
       label: 'Vetlla Pasqual',
       selector,
       gospel: {
-        caption: gospelCaption(null, mass.Today.Gospel.Quote),
-        phrase: phraseOf(mass.Today.Gospel.Comment),
+        caption: gospelCaption(null, mass.today.gospel.quote),
+        phrase: phraseOf(mass.today.gospel.comment),
         opens: 'VetllaPasquaEvangeli',
       },
       extra: null,
@@ -152,7 +152,7 @@ export function buildMass({ today, tomorrow, mass, choice }: MassBlockInput): Ma
 
   // Palm Sunday: the Passion has no phrase, the Gospel of the blessing does
   const blessing =
-    today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ? palmSundayGospel(today.YearType) : null;
+    today.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ? palmSundayGospel(today.yearType) : null;
   if (blessing) {
     return {
       label: 'Missa',
@@ -169,10 +169,10 @@ export function buildMass({ today, tomorrow, mass, choice }: MassBlockInput): Ma
     selector,
     gospel: {
       caption: gospelCaption(
-        vespers && hasContent(mass.Vespers.Title) ? mass.Vespers.Title : null,
-        selected.Gospel.Quote,
+        vespers && hasContent(mass.vespers.title) ? mass.vespers.title : null,
+        selected.gospel.quote,
       ),
-      phrase: phraseOf(selected.Gospel.Comment),
+      phrase: phraseOf(selected.gospel.comment),
       opens: 'Evangeli',
     },
     extra: null,

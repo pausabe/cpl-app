@@ -1,7 +1,7 @@
 export default class Invitation {
-  InvitationAntiphon: string;
-  Psalm94: string;
-  Psalm99: string;
-  Psalm66: string;
-  Psalm23: string;
+  invitationAntiphon: string;
+  psalm94: string;
+  psalm99: string;
+  psalm66: string;
+  psalm23: string;
 }

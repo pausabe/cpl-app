@@ -1,19 +1,19 @@
 export default class AdventFairDaysAntiphons {
-  static MasterName: string = 'tempsAdventFeriesAnt';
+  static masterName: string = 'tempsAdventFeriesAnt';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
-      this.WeekDay = databaseRow.diaSetmana;
-      this.FirstAntiphon = databaseRow.ant1;
-      this.SecondAntiphon = databaseRow.ant2;
-      this.ThirdAntiphon = databaseRow.ant3;
+      this.id = databaseRow.id;
+      this.weekDay = databaseRow.diaSetmana;
+      this.firstAntiphon = databaseRow.ant1;
+      this.secondAntiphon = databaseRow.ant2;
+      this.thirdAntiphon = databaseRow.ant3;
     }
   }
 
-  Id: number;
-  WeekDay: string;
-  FirstAntiphon: string;
-  SecondAntiphon: string;
-  ThirdAntiphon: string;
+  id: number;
+  weekDay: string;
+  firstAntiphon: string;
+  secondAntiphon: string;
+  thirdAntiphon: string;
 }

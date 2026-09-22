@@ -15,8 +15,8 @@ function fingerprint(state) {
     dayInformation: state.dayInformation,
     celebration: state.celebration,
     settings: state.settings,
-    massToday: state.mass.Today,
-    massVespers: state.mass.Vespers ?? null,
+    massToday: state.mass.today,
+    massVespers: state.mass.vespers ?? null,
   };
   for (const [hour, value] of Object.entries(state.hours)) parts[`hours.${hour}`] = value;
   const out = {};

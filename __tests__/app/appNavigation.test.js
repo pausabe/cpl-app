@@ -75,7 +75,7 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
 
   // Home: today's celebration, and no tabs any more
   await findText('Diumenge de Pasqua');
-  expect(DataService.CurrentLiturgyDayInformation.Today.Date.getDate()).toBe(5);
+  expect(DataService.CurrentLiturgyDayInformation.today.date.getDate()).toBe(5);
   expect(screen.queryByLabelText('Litúrgia de les hores')).toBeNull();
   expect(screen.getByText('Diumenge, 5 d’abril')).toBeTruthy();
 
@@ -84,13 +84,13 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
     fireEvent.press(screen.getByRole('button', { name: hour }));
     const hours = DataService.CurrentHoursLiturgy;
     const expected = {
-      'Ofici de lectura': hours.Office.FirstPsalm.Antiphon,
-      Laudes: hours.Laudes.FirstPsalm.Antiphon,
-      Tèrcia: hours.Hours.ThirdHour.FirstPsalm.Antiphon ?? hours.Hours.ThirdHour.UniqueAntiphon,
-      Sexta: hours.Hours.SixthHour.FirstPsalm.Antiphon ?? hours.Hours.SixthHour.UniqueAntiphon,
-      Nona: hours.Hours.NinthHour.FirstPsalm.Antiphon ?? hours.Hours.NinthHour.UniqueAntiphon,
-      Vespres: hours.Vespers.FinalPrayer,
-      Completes: hours.NightPrayer.FinalPrayer,
+      'Ofici de lectura': hours.office.firstPsalm.antiphon,
+      Laudes: hours.laudes.firstPsalm.antiphon,
+      Tèrcia: hours.hours.thirdHour.firstPsalm.antiphon ?? hours.hours.thirdHour.uniqueAntiphon,
+      Sexta: hours.hours.sixthHour.firstPsalm.antiphon ?? hours.hours.sixthHour.uniqueAntiphon,
+      Nona: hours.hours.ninthHour.firstPsalm.antiphon ?? hours.hours.ninthHour.uniqueAntiphon,
+      Vespres: hours.vespers.finalPrayer,
+      Completes: hours.nightPrayer.finalPrayer,
     }[hour];
     await waitFor(() =>
       expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0),
@@ -102,9 +102,9 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
   }
 
   // Mass, from the home: the phrase of the Gospel, and the Gospel opens
-  expect(screen.getByText(DataService.CurrentMassLiturgy.Today.Gospel.Comment)).toBeTruthy();
+  expect(screen.getByText(DataService.CurrentMassLiturgy.today.gospel.comment)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Evangeli' }));
-  const gospel = new RegExp(escape(firstWords(DataService.CurrentMassLiturgy.Today.Gospel.Gospel)));
+  const gospel = new RegExp(escape(firstWords(DataService.CurrentMassLiturgy.today.gospel.gospel)));
   await waitFor(() => expect(screen.getAllByText(gospel).length).toBeGreaterThan(0));
   await goBack(gospel);
 

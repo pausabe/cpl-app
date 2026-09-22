@@ -9,7 +9,7 @@ const { obtainMinimumAndMaximumSelectableDates } = require('../../src/services/d
 const DAYS_OF_NOTICE = 45;
 
 test(`la base de dades cobreix com a mínim els pròxims ${DAYS_OF_NOTICE} dies`, async () => {
-  const { MaximumSelectableDate } = await obtainMinimumAndMaximumSelectableDates();
+  const { maximumSelectableDate: MaximumSelectableDate } = await obtainMinimumAndMaximumSelectableDates();
   const deadline = new Date();
   deadline.setDate(deadline.getDate() + DAYS_OF_NOTICE);
   expect(MaximumSelectableDate.getTime()).toBeGreaterThan(deadline.getTime());

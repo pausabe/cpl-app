@@ -29,61 +29,61 @@ export async function obtainHoursLiturgy(
     liturgyDayInformation,
     settings,
   );
-  hoursLiturgy.TodayCelebrationInformation = CelebrationInformationService.obtainCelebrationInformation(
-    liturgyDayInformation.Today,
-    celebrationHoursLiturgy.TodayCelebrationInformation,
+  hoursLiturgy.todayCelebrationInformation = CelebrationInformationService.obtainCelebrationInformation(
+    liturgyDayInformation.today,
+    celebrationHoursLiturgy.todayCelebrationInformation,
   );
-  hoursLiturgy.TomorrowCelebrationInformation = CelebrationInformationService.obtainCelebrationInformation(
-    liturgyDayInformation.Tomorrow,
-    celebrationHoursLiturgy.TomorrowCelebrationInformation,
+  hoursLiturgy.tomorrowCelebrationInformation = CelebrationInformationService.obtainCelebrationInformation(
+    liturgyDayInformation.tomorrow,
+    celebrationHoursLiturgy.tomorrowCelebrationInformation,
   );
-  hoursLiturgy.ConcreteNamesInPrayers = ConcreteNamesInPrayers.obtainConcreteNamesInPrayers(
+  hoursLiturgy.concreteNamesInPrayers = ConcreteNamesInPrayers.obtainConcreteNamesInPrayers(
     todayLiturgyMasters,
     settings,
   );
-  hoursLiturgy.Invitation = InvitationService.obtainInvitation(
+  hoursLiturgy.invitation = InvitationService.obtainInvitation(
     todayLiturgyMasters,
-    liturgyDayInformation.Today,
-    celebrationHoursLiturgy.Invitation,
+    liturgyDayInformation.today,
+    celebrationHoursLiturgy.invitation,
   );
-  hoursLiturgy.Office = OfficeService.obtainOffice(
+  hoursLiturgy.office = OfficeService.obtainOffice(
     todayLiturgyMasters,
-    liturgyDayInformation.Today,
-    celebrationHoursLiturgy.Office,
+    liturgyDayInformation.today,
+    celebrationHoursLiturgy.office,
     settings,
   );
-  hoursLiturgy.Laudes = LaudesService.obtainLaudes(
+  hoursLiturgy.laudes = LaudesService.obtainLaudes(
     todayLiturgyMasters,
-    liturgyDayInformation.Today,
-    celebrationHoursLiturgy.Laudes,
+    liturgyDayInformation.today,
+    celebrationHoursLiturgy.laudes,
     settings,
   );
-  hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration =
-    celebrationHoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration =
-    celebrationHoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration;
-  hoursLiturgy.VespersOptions.VespersWithoutCelebration = VespersService.obtainVespers(
+  hoursLiturgy.vespersOptions.tomorrowFirstVespersWithCelebration =
+    celebrationHoursLiturgy.vespersOptions.tomorrowFirstVespersWithCelebration;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration =
+    celebrationHoursLiturgy.vespersOptions.todaySecondVespersWithCelebration;
+  hoursLiturgy.vespersOptions.vespersWithoutCelebration = VespersService.obtainVespers(
     todayLiturgyMasters,
-    liturgyDayInformation.Today,
+    liturgyDayInformation.today,
     settings,
   );
-  hoursLiturgy.Vespers = getVespersWithLowerPrecedence(
+  hoursLiturgy.vespers = getVespersWithLowerPrecedence(
     todayLiturgyMasters,
     liturgyDayInformation,
-    hoursLiturgy.TodayCelebrationInformation,
-    hoursLiturgy.TomorrowCelebrationInformation,
+    hoursLiturgy.todayCelebrationInformation,
+    hoursLiturgy.tomorrowCelebrationInformation,
     settings,
-    hoursLiturgy.VespersOptions,
+    hoursLiturgy.vespersOptions,
   );
-  hoursLiturgy.Hours = HoursService.obtainHours(
+  hoursLiturgy.hours = HoursService.obtainHours(
     todayLiturgyMasters,
-    liturgyDayInformation.Today,
-    celebrationHoursLiturgy.Hours,
+    liturgyDayInformation.today,
+    celebrationHoursLiturgy.hours,
     settings,
   );
-  hoursLiturgy.NightPrayer = NightPrayerService.obtainNightPrayer(
+  hoursLiturgy.nightPrayer = NightPrayerService.obtainNightPrayer(
     todayLiturgyMasters,
-    liturgyDayInformation.Today,
+    liturgyDayInformation.today,
     settings,
   );
   return hoursLiturgy;
@@ -104,26 +104,26 @@ export function getVespersWithLowerPrecedence(
 
   if (
     tomorrowIsMoreImportant(
-      todayCelebrationInformation.Precedence,
-      tomorrowCelebrationInformation.Precedence,
-      vespersOptions.TodaySecondVespersWithCelebration,
-      vespersOptions.TomorrowFirstVespersWithCelebration,
+      todayCelebrationInformation.precedence,
+      tomorrowCelebrationInformation.precedence,
+      vespersOptions.todaySecondVespersWithCelebration,
+      vespersOptions.tomorrowFirstVespersWithCelebration,
     )
   ) {
     return VespersService.mergeVespersWithCelebration(
       liturgyMasters,
-      liturgyDayInformation.Tomorrow,
+      liturgyDayInformation.tomorrow,
       settings,
-      vespersOptions.VespersWithoutCelebration,
-      vespersOptions.TomorrowFirstVespersWithCelebration,
+      vespersOptions.vespersWithoutCelebration,
+      vespersOptions.tomorrowFirstVespersWithCelebration,
     );
   } else {
     return VespersService.mergeVespersWithCelebration(
       liturgyMasters,
-      liturgyDayInformation.Today,
+      liturgyDayInformation.today,
       settings,
-      vespersOptions.VespersWithoutCelebration,
-      vespersOptions.TodaySecondVespersWithCelebration,
+      vespersOptions.vespersWithoutCelebration,
+      vespersOptions.todaySecondVespersWithCelebration,
     );
   }
 }
@@ -138,8 +138,8 @@ function tomorrowIsMoreImportant(
     // When is the same precedence, we decide by the emptiness of the content.
     // TODO: If both celebrations have content, we should decide by another factor. We could create a "hardcoded" list of celebrations.
     return (
-      StringManagement.hasLiturgyContent(tomorrowSecondVespersWithCelebration.EvangelicalAntiphon) &&
-      !StringManagement.hasLiturgyContent(todayFirstVespersWithCelebration.EvangelicalAntiphon)
+      StringManagement.hasLiturgyContent(tomorrowSecondVespersWithCelebration.evangelicalAntiphon) &&
+      !StringManagement.hasLiturgyContent(todayFirstVespersWithCelebration.evangelicalAntiphon)
     );
   }
 

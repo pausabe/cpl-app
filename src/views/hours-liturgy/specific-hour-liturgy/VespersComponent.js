@@ -34,11 +34,11 @@ export default class VespersComponent extends Component {
       const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
       // TODO: [UI Refactor] encapsulate
       const aux_isAleluia =
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
 
       return (
         <View>
@@ -120,7 +120,7 @@ export default class VespersComponent extends Component {
   }
 
   himne() {
-    const aux_himne = GlobalViewFunctions.rs(this.hours.Vespers.Anthem);
+    const aux_himne = GlobalViewFunctions.rs(this.hours.vespers.anthem);
     return (
       <Text selectable={true} style={this.styles.black}>
         {aux_himne}
@@ -129,24 +129,24 @@ export default class VespersComponent extends Component {
   }
 
   salmodia() {
-    const aux_ant1 = GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Antiphon);
-    const aux_titol1 = GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Title);
+    const aux_ant1 = GlobalViewFunctions.rs(this.hours.vespers.firstPsalm.antiphon);
+    const aux_titol1 = GlobalViewFunctions.rs(this.hours.vespers.firstPsalm.title);
     let aux_com1 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Vespers.FirstPsalm.Comment))
-      aux_com1 = GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Comment);
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.Vespers.FirstPsalm.Psalm));
-    const aux_ant2 = GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Antiphon);
-    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Title));
+    if (StringManagement.hasLiturgyContent(this.hours.vespers.firstPsalm.comment))
+      aux_com1 = GlobalViewFunctions.rs(this.hours.vespers.firstPsalm.comment);
+    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.vespers.firstPsalm.psalm));
+    const aux_ant2 = GlobalViewFunctions.rs(this.hours.vespers.secondPsalm.antiphon);
+    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.vespers.secondPsalm.title));
     let aux_com2 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Vespers.SecondPsalm.Comment))
-      aux_com2 = GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Comment);
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.Vespers.SecondPsalm.Psalm));
-    const aux_ant3 = GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Antiphon);
-    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Title));
+    if (StringManagement.hasLiturgyContent(this.hours.vespers.secondPsalm.comment))
+      aux_com2 = GlobalViewFunctions.rs(this.hours.vespers.secondPsalm.comment);
+    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.vespers.secondPsalm.psalm));
+    const aux_ant3 = GlobalViewFunctions.rs(this.hours.vespers.thirdPsalm.antiphon);
+    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.vespers.thirdPsalm.title));
     let aux_com3 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Vespers.ThirdPsalm.Comment))
-      aux_com3 = GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Comment);
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.Vespers.ThirdPsalm.Psalm));
+    if (StringManagement.hasLiturgyContent(this.hours.vespers.thirdPsalm.comment))
+      aux_com3 = GlobalViewFunctions.rs(this.hours.vespers.thirdPsalm.comment);
+    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.vespers.thirdPsalm.psalm));
 
     return (
       <View>
@@ -156,7 +156,7 @@ export default class VespersComponent extends Component {
           {aux_titol1}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Vespers.FirstPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.vespers.firstPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -171,7 +171,7 @@ export default class VespersComponent extends Component {
           {aux_salm1}
         </Text>
         <Gap />
-        {this.hours.Vespers.FirstPsalm.HasGloryPrayer ? (
+        {this.hours.vespers.firstPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -189,7 +189,7 @@ export default class VespersComponent extends Component {
           {aux_titol2}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Vespers.SecondPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.vespers.secondPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -204,7 +204,7 @@ export default class VespersComponent extends Component {
           {aux_salm2}
         </Text>
         <Gap />
-        {this.hours.Vespers.SecondPsalm.HasGloryPrayer ? (
+        {this.hours.vespers.secondPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -222,7 +222,7 @@ export default class VespersComponent extends Component {
           {aux_titol3}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Vespers.ThirdPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.vespers.thirdPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -237,7 +237,7 @@ export default class VespersComponent extends Component {
           {aux_salm3}
         </Text>
         <Gap />
-        {this.hours.Vespers.ThirdPsalm.HasGloryPrayer ? (
+        {this.hours.vespers.thirdPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -253,8 +253,8 @@ export default class VespersComponent extends Component {
   }
 
   lecturaBreu() {
-    const aux_vers = GlobalViewFunctions.rs(this.hours.Vespers.ShortReading.Quote);
-    const aux_lectura_breu = GlobalViewFunctions.rs(this.hours.Vespers.ShortReading.ShortReading);
+    const aux_vers = GlobalViewFunctions.rs(this.hours.vespers.shortReading.quote);
+    const aux_lectura_breu = GlobalViewFunctions.rs(this.hours.vespers.shortReading.shortReading);
     return (
       <View>
         <Text selectable={true} style={this.styles.red}>
@@ -269,8 +269,8 @@ export default class VespersComponent extends Component {
   }
 
   responsori() {
-    if (this.hours.Vespers.ShortResponsory.HasSpecialAntiphon) {
-      const aux_ant = GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.SpecialAntiphon);
+    if (this.hours.vespers.shortResponsory.hasSpecialAntiphon) {
+      const aux_ant = GlobalViewFunctions.rs(this.hours.vespers.shortResponsory.specialAntiphon);
       return (
         <View>
           <Rubric label={'Ant.'}> {aux_ant}</Rubric>
@@ -278,11 +278,11 @@ export default class VespersComponent extends Component {
       );
     } else {
       const aux_resp_1_2 = GlobalViewFunctions.respTogether(
-        GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.FirstPart),
-        GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.SecondPart),
+        GlobalViewFunctions.rs(this.hours.vespers.shortResponsory.firstPart),
+        GlobalViewFunctions.rs(this.hours.vespers.shortResponsory.secondPart),
       );
-      const aux_resp_2 = GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.SecondPart);
-      const aux_resp_3 = GlobalViewFunctions.rs(this.hours.Vespers.ShortResponsory.ThirdPart);
+      const aux_resp_2 = GlobalViewFunctions.rs(this.hours.vespers.shortResponsory.secondPart);
+      const aux_resp_3 = GlobalViewFunctions.rs(this.hours.vespers.shortResponsory.thirdPart);
       const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
       // TODO: [UI Refactor] duplicated code
@@ -302,9 +302,9 @@ export default class VespersComponent extends Component {
   }
 
   chant() {
-    const aux_ant = GlobalViewFunctions.rs(this.hours.Vespers.EvangelicalAntiphon);
+    const aux_ant = GlobalViewFunctions.rs(this.hours.vespers.evangelicalAntiphon);
     const aux_titol = 'Càntic\nLc 1, 46-55\nLa meva ànima magnifica el Senyor';
-    const aux_salm = this.salm(this.hours.Vespers.EvangelicalChant);
+    const aux_salm = this.salm(this.hours.vespers.evangelicalChant);
     const aux_gloria = 'Glòria.';
 
     // TODO: [UI Refactor] duplicated code
@@ -342,7 +342,7 @@ export default class VespersComponent extends Component {
   }
 
   prayers() {
-    let allPregs = GlobalViewFunctions.rs(this.hours.Vespers.Prayers);
+    let allPregs = GlobalViewFunctions.rs(this.hours.vespers.prayers);
 
     if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
       return (
@@ -353,8 +353,8 @@ export default class VespersComponent extends Component {
 
     allPregs = this.convertN(
       allPregs,
-      this.hours.ConcreteNamesInPrayers.Pope,
-      this.hours.ConcreteNamesInPrayers.Bishop,
+      this.hours.concreteNamesInPrayers.pope,
+      this.hours.concreteNamesInPrayers.bishop,
     );
     let numGuio, numEnter, introPregs, pregsNoIntro, respPregs, pregaries, pregsFinalPart;
 
@@ -472,7 +472,7 @@ export default class VespersComponent extends Component {
 
   finalPrayer() {
     const aux_oracio = GlobalViewFunctions.completeOracio(
-      GlobalViewFunctions.rs(this.hours.Vespers.FinalPrayer),
+      GlobalViewFunctions.rs(this.hours.vespers.finalPrayer),
       false,
     );
     return (

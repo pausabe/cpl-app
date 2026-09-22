@@ -23,12 +23,12 @@ export default class NightPrayerComponent extends Component {
     super(props);
 
     // In Easter, always the fifth antiphon (Regina caeli); outside it, the one chosen last time
-    let auxNumAntMare = props.settings.VirginAntiphonOption;
+    let auxNumAntMare = props.settings.virginAntiphonOption;
 
-    if (props.today.GenericLiturgyTime === GenericLiturgyTimeType.Easter && auxNumAntMare !== '5') {
+    if (props.today.genericLiturgyTime === GenericLiturgyTimeType.Easter && auxNumAntMare !== '5') {
       auxNumAntMare = '5';
       props.onVirginAntiphonChange('5');
-    } else if (!(props.today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) && auxNumAntMare === '5') {
+    } else if (!(props.today.genericLiturgyTime === GenericLiturgyTimeType.Easter) && auxNumAntMare === '5') {
       auxNumAntMare = '1';
       props.onVirginAntiphonChange('1');
     }
@@ -51,7 +51,7 @@ export default class NightPrayerComponent extends Component {
   }
 
   get COMPLETES() {
-    return this.props.hours.NightPrayer;
+    return this.props.hours.nightPrayer;
   }
 
   onAntMarePress(numAntMare) {
@@ -64,25 +64,25 @@ export default class NightPrayerComponent extends Component {
 
     switch (numAntMare) {
       case '1':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFirstOption);
+        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonFirstOption);
         break;
       case '2':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonSecondOption);
+        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonSecondOption);
         break;
       case '3':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonThirdOption);
+        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonThirdOption);
         break;
       case '4':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFourthOption);
+        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonFourthOption);
         break;
       case '5':
-        antMare = GlobalViewFunctions.rs(this.COMPLETES.VirginMaryFinalAntiphonFifthOption);
+        antMare = GlobalViewFunctions.rs(this.COMPLETES.virginMaryFinalAntiphonFifthOption);
         break;
     }
 
     return (
       <View>
-        {!(this.today.GenericLiturgyTime === GenericLiturgyTimeType.Easter) ? (
+        {!(this.today.genericLiturgyTime === GenericLiturgyTimeType.Easter) ? (
           <ChoiceChips
             accessibilityLabel="Antífona final de la Mare de Déu"
             options={MARIAN_ANTIPHONS}
@@ -105,62 +105,62 @@ export default class NightPrayerComponent extends Component {
         const gloriaStringIntro =
           'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
         const is_special_initial_message =
-          this.today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum && this.today.Date.getDay() === 6;
+          this.today.specificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum && this.today.date.getDay() === 6;
         const aux_special_initial_message =
           'Avui, només han de dir aquestes Completes els qui no participen en la Vetlla pasqual.';
         const aux_sigueu = 'Sigueu amb nosaltres, Déu nostre.';
         const aux_veniu = 'Senyor, veniu a ajudar-nos.';
         const is_aleluia =
-          this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
-          this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
-          this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
-          this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-          this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
+          this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+          this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+          this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+          this.today.specificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+          this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
         const aux_lloable = 'És lloable que aquí es faci examen de consciència.';
-        const aux_acte_pen = this.COMPLETES.PenitentialAct;
-        const aux_himne = GlobalViewFunctions.rs(this.COMPLETES.Anthem);
-        const is_dos_salms = this.COMPLETES.HasMultiplePsalms;
-        const has_distint_ant = !this.COMPLETES.UseOnlyFirstPsalmAntiphon;
-        const aux_ant1 = GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Antiphon);
-        const aux_titol1 = GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Title);
-        const has_com1 = StringManagement.hasLiturgyContent(this.COMPLETES.FirstPsalm.Comment);
-        const aux_com1 = has_com1 ? GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Comment) : '';
-        const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.FirstPsalm.Psalm));
+        const aux_acte_pen = this.COMPLETES.penitentialAct;
+        const aux_himne = GlobalViewFunctions.rs(this.COMPLETES.anthem);
+        const is_dos_salms = this.COMPLETES.hasMultiplePsalms;
+        const has_distint_ant = !this.COMPLETES.useOnlyFirstPsalmAntiphon;
+        const aux_ant1 = GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.antiphon);
+        const aux_titol1 = GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.title);
+        const has_com1 = StringManagement.hasLiturgyContent(this.COMPLETES.firstPsalm.comment);
+        const aux_com1 = has_com1 ? GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.comment) : '';
+        const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.firstPsalm.psalm));
         let aux_ant2;
         let aux_titol2;
         let has_com2;
         let aux_com2;
         let aux_salm2;
         if (is_dos_salms) {
-          aux_ant2 = has_distint_ant ? GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Antiphon) : '';
-          aux_titol2 = GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Title);
-          has_com2 = StringManagement.hasLiturgyContent(this.COMPLETES.SecondPsalm.Comment);
-          aux_com2 = has_com2 ? GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Comment) : '';
-          aux_salm2 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.SecondPsalm.Psalm));
+          aux_ant2 = has_distint_ant ? GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.antiphon) : '';
+          aux_titol2 = GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.title);
+          has_com2 = StringManagement.hasLiturgyContent(this.COMPLETES.secondPsalm.comment);
+          aux_com2 = has_com2 ? GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.comment) : '';
+          aux_salm2 = this.salm(GlobalViewFunctions.rs(this.COMPLETES.secondPsalm.psalm));
         }
-        const aux_vers = GlobalViewFunctions.rs(this.COMPLETES.ShortReading.Quote);
-        const aux_lectura_breu = GlobalViewFunctions.rs(this.COMPLETES.ShortReading.ShortReading);
+        const aux_vers = GlobalViewFunctions.rs(this.COMPLETES.shortReading.quote);
+        const aux_lectura_breu = GlobalViewFunctions.rs(this.COMPLETES.shortReading.shortReading);
         let aux_ant_special;
         let aux_resp_1_2;
         let aux_resp_2;
         let aux_resp_3;
-        const is_normal_resp = !this.COMPLETES.ShortResponsory.HasSpecialAntiphon;
+        const is_normal_resp = !this.COMPLETES.shortResponsory.hasSpecialAntiphon;
         if (is_normal_resp) {
           aux_resp_1_2 = GlobalViewFunctions.respTogether(
-            GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.FirstPart),
-            GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.SecondPart),
+            GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.firstPart),
+            GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.secondPart),
           );
-          aux_resp_2 = GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.SecondPart);
-          aux_resp_3 = GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.ThirdPart);
+          aux_resp_2 = GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.secondPart);
+          aux_resp_3 = GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.thirdPart);
         } else {
-          aux_ant_special = GlobalViewFunctions.rs(this.COMPLETES.ShortResponsory.SpecialAntiphon);
+          aux_ant_special = GlobalViewFunctions.rs(this.COMPLETES.shortResponsory.specialAntiphon);
         }
         const aux_gloria_half = " Glòria al Pare i al Fill i a l'Esperit Sant.";
-        const aux_ant_cantic = GlobalViewFunctions.rs(this.COMPLETES.EvangelicalAntiphon);
+        const aux_ant_cantic = GlobalViewFunctions.rs(this.COMPLETES.evangelicalAntiphon);
         const aux_titol_cantic = "Càntic\nLc 2, 29-32\nCrist, llum de les nacions i glòria d'Israel";
-        const aux_cantic = this.salm(GlobalViewFunctions.rs(this.COMPLETES.EvangelicalChant));
+        const aux_cantic = this.salm(GlobalViewFunctions.rs(this.COMPLETES.evangelicalChant));
         const aux_gloria_cantic = 'Glòria.';
-        const aux_oracio = GlobalViewFunctions.rs(this.COMPLETES.FinalPrayer);
+        const aux_oracio = GlobalViewFunctions.rs(this.COMPLETES.finalPrayer);
         const aux_fi_benaurada = 'Que el Senyor totpoderós ens concedeixi una nit tranquil·la i una fi benaurada.';
         const aux_antifona_final = 'Antífona final de la Mare de Déu';
 
@@ -235,7 +235,7 @@ export default class NightPrayerComponent extends Component {
                   {aux_salm1}
                 </Text>
                 <Gap />
-                {this.COMPLETES.FirstPsalm.HasGloryPrayer ? (
+                {this.COMPLETES.firstPsalm.hasGloryPrayer ? (
                   <Text selectable={true} style={this.styles.blackItalic}>
                     {'Glòria.'}
                   </Text>
@@ -272,7 +272,7 @@ export default class NightPrayerComponent extends Component {
                   {aux_salm2}
                 </Text>
                 <Gap />
-                {this.COMPLETES.SecondPsalm.HasGloryPrayer ? (
+                {this.COMPLETES.secondPsalm.hasGloryPrayer ? (
                   <Text selectable={true} style={this.styles.blackItalic}>
                     {'Glòria.'}
                   </Text>
@@ -315,7 +315,7 @@ export default class NightPrayerComponent extends Component {
                   {aux_salm1}
                 </Text>
                 <Gap />
-                {this.COMPLETES.FirstPsalm.HasGloryPrayer ? (
+                {this.COMPLETES.firstPsalm.hasGloryPrayer ? (
                   <Text selectable={true} style={this.styles.blackItalic}>
                     {'Glòria.'}
                   </Text>

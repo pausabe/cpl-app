@@ -8,20 +8,20 @@ import {
 import { palmSundayGospel } from '../../src/view-models/palmSundayGospel';
 
 const dayMass = (quote: string, comment: string, secondReading = '-', title = '') => ({
-  Title: title,
-  SecondReading: { Reading: secondReading },
-  Gospel: { Quote: quote, Comment: comment },
+  title: title,
+  secondReading: { reading: secondReading },
+  gospel: { quote: quote, comment: comment },
 });
 const ordinary = (): MassInput => ({
-  Today: dayMass(
+  today: dayMass(
     'Lc 8,19-21',
     'La meva mare i els meus familiars són els qui escolten la paraula de Déu i la compleixen',
   ),
-  HasVespers: false,
-  Vespers: dayMass('', ''),
+  hasVespers: false,
+  vespers: dayMass('', ''),
 });
-const TODAY = { Date: new Date(2026, 8, 22, 9), SpecificLiturgyTime: 'O_ORDINAR', YearType: 'A' };
-const TOMORROW = { SpecificLiturgyTime: 'O_ORDINAR' };
+const TODAY = { date: new Date(2026, 8, 22, 9), specificLiturgyTime: 'O_ORDINAR', yearType: 'A' };
+const TOMORROW = { specificLiturgyTime: 'O_ORDINAR' };
 
 describe('bloc de la missa', () => {
   test('un dia feiner: la frase de l’Evangeli i tres lectures', () => {
@@ -43,7 +43,7 @@ describe('bloc de la missa', () => {
 
   test('diumenge: també la segona lectura', () => {
     const mass = ordinary();
-    mass.Today.SecondReading.Reading = 'Germans, per tot el …';
+    mass.today.secondReading.reading = 'Germans, per tot el …';
     const block = buildMass({ today: TODAY, tomorrow: TOMORROW, mass, choice: 'normal' });
     expect(block.readings.map((r) => r.label)).toEqual(['Primera lectura', 'Salm', 'Segona lectura', 'Evangeli']);
     expect(block.params.need_lectura2).toBe(true);
@@ -51,9 +51,9 @@ describe('bloc de la missa', () => {
 
   test('amb missa vespertina, el selector i, triada, la frase i les lectures d’aquella missa', () => {
     const mass: MassInput = {
-      Today: dayMass('Lc 14,1.7-11', 'Tothom qui s’enalteix serà humiliat, però el qui s’humilia serà enaltit'),
-      HasVespers: true,
-      Vespers: dayMass(
+      today: dayMass('Lc 14,1.7-11', 'Tothom qui s’enalteix serà humiliat, però el qui s’humilia serà enaltit'),
+      hasVespers: true,
+      vespers: dayMass(
         'Mt 5,1-12a',
         'Alegreu-vos i feu festa,\nperquè la vostra recompensa és gran en el cel',
         'Estimats, mireu…',
@@ -78,10 +78,10 @@ describe('bloc de la missa', () => {
 
   test('Diumenge de Rams: la frase i el botó de la benedicció', () => {
     const mass = ordinary();
-    mass.Today = dayMass('Mt 26,14–27,66', '-', 'Jesucrist, que era de condició divina…', 'Diumenge de Rams');
+    mass.today = dayMass('Mt 26,14–27,66', '-', 'Jesucrist, que era de condició divina…', 'Diumenge de Rams');
     const block = buildMass({
-      today: { Date: new Date(2026, 2, 29), SpecificLiturgyTime: 'Q_DIUM_RAMS', YearType: 'A' },
-      tomorrow: { SpecificLiturgyTime: 'Q_SETMANES' },
+      today: { date: new Date(2026, 2, 29), specificLiturgyTime: 'Q_DIUM_RAMS', yearType: 'A' },
+      tomorrow: { specificLiturgyTime: 'Q_SETMANES' },
       mass,
       choice: 'normal',
     });
@@ -96,10 +96,10 @@ describe('bloc de la missa', () => {
 
   test('Dissabte Sant: la Vetlla Pasqual, amb dos botons', () => {
     const mass = ordinary();
-    mass.Today = dayMass('Mt 28,1-10', 'Ha ressuscitat i anirà davant vostre a Galilea', 'En aquells dies…');
+    mass.today = dayMass('Mt 28,1-10', 'Ha ressuscitat i anirà davant vostre a Galilea', 'En aquells dies…');
     const block = buildMass({
-      today: { Date: new Date(2026, 3, 4), SpecificLiturgyTime: 'Q_TRIDU', YearType: 'A' },
-      tomorrow: { SpecificLiturgyTime: 'Q_DIUM_PASQUA' },
+      today: { date: new Date(2026, 3, 4), specificLiturgyTime: 'Q_TRIDU', yearType: 'A' },
+      tomorrow: { specificLiturgyTime: 'Q_DIUM_PASQUA' },
       mass,
       choice: 'normal',
     });
@@ -117,10 +117,10 @@ describe('bloc de la missa', () => {
 
   test('sense frase a la base de dades (Divendres Sant), només la cita', () => {
     const mass = ordinary();
-    mass.Today = dayMass('Jo 18,1–19,42', '-');
+    mass.today = dayMass('Jo 18,1–19,42', '-');
     const block = buildMass({
-      today: { ...TODAY, SpecificLiturgyTime: 'Q_TRIDU' },
-      tomorrow: { SpecificLiturgyTime: 'Q_TRIDU' },
+      today: { ...TODAY, specificLiturgyTime: 'Q_TRIDU' },
+      tomorrow: { specificLiturgyTime: 'Q_TRIDU' },
       mass,
       choice: 'normal',
     });

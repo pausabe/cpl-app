@@ -1,44 +1,44 @@
 export class ReadingOfTheOffice {
-  Reference: string;
-  Quote: string;
-  Title: string;
-  Reading: string;
-  Responsory: ShortResponsory = new ShortResponsory();
+  reference: string;
+  quote: string;
+  title: string;
+  reading: string;
+  responsory: ShortResponsory = new ShortResponsory();
 }
 
 export class HourCommonParts {
-  LatinAnthem: string;
-  CatalanAnthem: string;
-  Antiphon: string;
-  ShortReading: ShortReading = new ShortReading();
-  Responsory: Responsory = new Responsory();
-  FinalPrayer: string;
+  latinAnthem: string;
+  catalanAnthem: string;
+  antiphon: string;
+  shortReading: ShortReading = new ShortReading();
+  responsory: Responsory = new Responsory();
+  finalPrayer: string;
 }
 
 export class ShortReading {
-  Quote: string;
-  ShortReading: string;
+  quote: string;
+  shortReading: string;
 }
 
 export class Psalm {
-  Antiphon: string;
-  Title: string;
-  Comment: string;
-  Psalm: string;
-  HasGloryPrayer: boolean;
-  Prayer: string;
+  antiphon: string;
+  title: string;
+  comment: string;
+  psalm: string;
+  hasGloryPrayer: boolean;
+  prayer: string;
 }
 
 export class Responsory {
-  Versicle: string;
-  Response: string;
+  versicle: string;
+  response: string;
 }
 
 export class ShortResponsory {
-  Quote: string;
-  FirstPart: string;
-  SecondPart: string;
-  ThirdPart: string;
-  HasSpecialAntiphon: boolean;
-  SpecialAntiphon: string;
+  quote: string;
+  firstPart: string;
+  secondPart: string;
+  thirdPart: string;
+  hasSpecialAntiphon: boolean;
+  specialAntiphon: string;
 }

@@ -1,90 +1,90 @@
 import { HourCommonParts, ReadingOfTheOffice, Responsory, ShortReading, ShortResponsory } from './CommonParts';
 
 export default class EasterWeekParts {
-  static MasterName: string = 'tempsPasquaSetmanes';
+  static masterName: string = 'tempsPasquaSetmanes';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
+      this.id = databaseRow.id;
 
-      this.WeekDay = databaseRow.diaSet;
+      this.weekDay = databaseRow.diaSet;
 
-      this.OfficeResponsory.Versicle = databaseRow.respVOfici;
-      this.OfficeResponsory.Response = databaseRow.respROfici;
+      this.officeResponsory.versicle = databaseRow.respVOfici;
+      this.officeResponsory.response = databaseRow.respROfici;
 
-      this.OfficeFirstReading.Reference = databaseRow.referencia1;
-      this.OfficeFirstReading.Quote = databaseRow.cita1;
-      this.OfficeFirstReading.Title = databaseRow.titol1;
-      this.OfficeFirstReading.Reading = databaseRow.lectura1;
-      this.OfficeFirstReading.Responsory.Quote = databaseRow.citaResp1;
-      this.OfficeFirstReading.Responsory.FirstPart = databaseRow.resp1Part1;
-      this.OfficeFirstReading.Responsory.SecondPart = databaseRow.resp1Part2;
-      this.OfficeFirstReading.Responsory.ThirdPart = databaseRow.resp1Part3;
+      this.officeFirstReading.reference = databaseRow.referencia1;
+      this.officeFirstReading.quote = databaseRow.cita1;
+      this.officeFirstReading.title = databaseRow.titol1;
+      this.officeFirstReading.reading = databaseRow.lectura1;
+      this.officeFirstReading.responsory.quote = databaseRow.citaResp1;
+      this.officeFirstReading.responsory.firstPart = databaseRow.resp1Part1;
+      this.officeFirstReading.responsory.secondPart = databaseRow.resp1Part2;
+      this.officeFirstReading.responsory.thirdPart = databaseRow.resp1Part3;
 
-      this.OfficeSecondReading.Reference = databaseRow.referencia2;
-      this.OfficeSecondReading.Quote = databaseRow.cita2;
-      this.OfficeSecondReading.Title = databaseRow.titol2;
-      this.OfficeSecondReading.Reading = databaseRow.lectura2;
-      this.OfficeSecondReading.Responsory.Quote = databaseRow.versResp2;
-      this.OfficeSecondReading.Responsory.FirstPart = databaseRow.resp2Part1;
-      this.OfficeSecondReading.Responsory.SecondPart = databaseRow.resp2Part2;
-      this.OfficeSecondReading.Responsory.ThirdPart = databaseRow.resp2Part3;
+      this.officeSecondReading.reference = databaseRow.referencia2;
+      this.officeSecondReading.quote = databaseRow.cita2;
+      this.officeSecondReading.title = databaseRow.titol2;
+      this.officeSecondReading.reading = databaseRow.lectura2;
+      this.officeSecondReading.responsory.quote = databaseRow.versResp2;
+      this.officeSecondReading.responsory.firstPart = databaseRow.resp2Part1;
+      this.officeSecondReading.responsory.secondPart = databaseRow.resp2Part2;
+      this.officeSecondReading.responsory.thirdPart = databaseRow.resp2Part3;
 
-      this.LaudesShortReading.Quote = databaseRow.citaLBLaudes;
-      this.LaudesShortReading.ShortReading = databaseRow.lecturaBreuLaudes;
+      this.laudesShortReading.quote = databaseRow.citaLBLaudes;
+      this.laudesShortReading.shortReading = databaseRow.lecturaBreuLaudes;
 
-      this.LaudesShortResponsory.FirstPart = databaseRow.respBreuLaudes1;
-      this.LaudesShortResponsory.SecondPart = databaseRow.respBreuLaudes2;
-      this.LaudesShortResponsory.ThirdPart = databaseRow.respBreuLaudes3;
+      this.laudesShortResponsory.firstPart = databaseRow.respBreuLaudes1;
+      this.laudesShortResponsory.secondPart = databaseRow.respBreuLaudes2;
+      this.laudesShortResponsory.thirdPart = databaseRow.respBreuLaudes3;
 
-      this.LaudesEvangelicalAntiphon = databaseRow.antZacaries;
-      this.LaudesPrayers = databaseRow.pregariesLaudes;
-      this.LaudesFinalPrayer = databaseRow.oraFiLaudes;
+      this.laudesEvangelicalAntiphon = databaseRow.antZacaries;
+      this.laudesPrayers = databaseRow.pregariesLaudes;
+      this.laudesFinalPrayer = databaseRow.oraFiLaudes;
 
-      this.ThirdHourParts.ShortReading.Quote = databaseRow.citaLBTercia;
-      this.ThirdHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuTercia;
-      this.ThirdHourParts.Responsory.Versicle = databaseRow.respVTercia;
-      this.ThirdHourParts.Responsory.Response = databaseRow.respRTercia;
+      this.thirdHourParts.shortReading.quote = databaseRow.citaLBTercia;
+      this.thirdHourParts.shortReading.shortReading = databaseRow.lecturaBreuTercia;
+      this.thirdHourParts.responsory.versicle = databaseRow.respVTercia;
+      this.thirdHourParts.responsory.response = databaseRow.respRTercia;
 
-      this.SixthHourParts.ShortReading.Quote = databaseRow.citaLBSexta;
-      this.SixthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuSexta;
-      this.SixthHourParts.Responsory.Versicle = databaseRow.respVSexta;
-      this.SixthHourParts.Responsory.Response = databaseRow.respRSexta;
+      this.sixthHourParts.shortReading.quote = databaseRow.citaLBSexta;
+      this.sixthHourParts.shortReading.shortReading = databaseRow.lecturaBreuSexta;
+      this.sixthHourParts.responsory.versicle = databaseRow.respVSexta;
+      this.sixthHourParts.responsory.response = databaseRow.respRSexta;
 
-      this.NinthHourParts.ShortReading.Quote = databaseRow.citaLBNona;
-      this.NinthHourParts.ShortReading.ShortReading = databaseRow.lecturaBreuNona;
-      this.NinthHourParts.Responsory.Versicle = databaseRow.respVNona;
-      this.NinthHourParts.Responsory.Response = databaseRow.respRNona;
+      this.ninthHourParts.shortReading.quote = databaseRow.citaLBNona;
+      this.ninthHourParts.shortReading.shortReading = databaseRow.lecturaBreuNona;
+      this.ninthHourParts.responsory.versicle = databaseRow.respVNona;
+      this.ninthHourParts.responsory.response = databaseRow.respRNona;
 
-      this.VespersShortReading.Quote = databaseRow.citaLBVespres;
-      this.VespersShortReading.ShortReading = databaseRow.lecturaBreuVespres;
+      this.vespersShortReading.quote = databaseRow.citaLBVespres;
+      this.vespersShortReading.shortReading = databaseRow.lecturaBreuVespres;
 
-      this.VespersShortResponsory.FirstPart = databaseRow.respBreuVespres1;
-      this.VespersShortResponsory.SecondPart = databaseRow.respBreuVespres2;
-      this.VespersShortResponsory.ThirdPart = databaseRow.respBreuVespres3;
+      this.vespersShortResponsory.firstPart = databaseRow.respBreuVespres1;
+      this.vespersShortResponsory.secondPart = databaseRow.respBreuVespres2;
+      this.vespersShortResponsory.thirdPart = databaseRow.respBreuVespres3;
 
-      this.VespersEvangelicalAntiphon = databaseRow.antMaria;
-      this.VespersPrayers = databaseRow.pregariesVespres;
-      this.VespersFinalPrayer = databaseRow.oraFiVespres;
+      this.vespersEvangelicalAntiphon = databaseRow.antMaria;
+      this.vespersPrayers = databaseRow.pregariesVespres;
+      this.vespersFinalPrayer = databaseRow.oraFiVespres;
     }
   }
 
-  Id: number;
-  WeekDay: string;
-  OfficeResponsory: Responsory = new Responsory();
-  OfficeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
-  OfficeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
-  LaudesShortReading: ShortReading = new ShortReading();
-  LaudesShortResponsory: ShortResponsory = new ShortResponsory();
-  LaudesEvangelicalAntiphon: string;
-  LaudesPrayers: string;
-  LaudesFinalPrayer: string;
-  ThirdHourParts: HourCommonParts = new HourCommonParts();
-  SixthHourParts: HourCommonParts = new HourCommonParts();
-  NinthHourParts: HourCommonParts = new HourCommonParts();
-  VespersShortReading: ShortReading = new ShortReading();
-  VespersShortResponsory: ShortResponsory = new ShortResponsory();
-  VespersEvangelicalAntiphon: string;
-  VespersPrayers: string;
-  VespersFinalPrayer: string;
+  id: number;
+  weekDay: string;
+  officeResponsory: Responsory = new Responsory();
+  officeFirstReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+  officeSecondReading: ReadingOfTheOffice = new ReadingOfTheOffice();
+  laudesShortReading: ShortReading = new ShortReading();
+  laudesShortResponsory: ShortResponsory = new ShortResponsory();
+  laudesEvangelicalAntiphon: string;
+  laudesPrayers: string;
+  laudesFinalPrayer: string;
+  thirdHourParts: HourCommonParts = new HourCommonParts();
+  sixthHourParts: HourCommonParts = new HourCommonParts();
+  ninthHourParts: HourCommonParts = new HourCommonParts();
+  vespersShortReading: ShortReading = new ShortReading();
+  vespersShortResponsory: ShortResponsory = new ShortResponsory();
+  vespersEvangelicalAntiphon: string;
+  vespersPrayers: string;
+  vespersFinalPrayer: string;
 }

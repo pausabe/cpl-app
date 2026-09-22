@@ -24,12 +24,12 @@ export function darkModeEnabledFor(choice: string, systemScheme: string | null |
 
 export async function setTextSize(step: number): Promise<void> {
   const value = String(textSizeStep(step));
-  LiturgyStore.updateSettings({ TextSize: value as any });
+  LiturgyStore.updateSettings({ textSize: value as any });
   await SettingsService.setSettingTextSize(value, undefined);
 }
 
 export async function setDarkMode(choice: DarkModeChoice): Promise<void> {
-  LiturgyStore.updateSettings({ DarkModeEnabled: darkModeEnabledFor(choice, Appearance.getColorScheme()) });
+  LiturgyStore.updateSettings({ darkModeEnabled: darkModeEnabledFor(choice, Appearance.getColorScheme()) });
   await SettingsService.setSettingDarkMode(choice, undefined);
 }
 
@@ -41,8 +41,8 @@ export async function loadDarkMode(): Promise<DarkModeChoice> {
 export async function followSystemAppearance(): Promise<void> {
   if ((await loadDarkMode()) === DarkModeOption.System) {
     const enabled = darkModeEnabledFor(DarkModeOption.System, Appearance.getColorScheme());
-    if (LiturgyStore.getSnapshot().settings.DarkModeEnabled !== enabled) {
-      LiturgyStore.updateSettings({ DarkModeEnabled: enabled });
+    if (LiturgyStore.getSnapshot().settings.darkModeEnabled !== enabled) {
+      LiturgyStore.updateSettings({ darkModeEnabled: enabled });
     }
   }
 }
@@ -59,7 +59,7 @@ export function useTextSettings() {
     };
   }, []);
   return {
-    textSizeStep: textSizeStep(settings.TextSize),
+    textSizeStep: textSizeStep(settings.textSize),
     darkMode,
     onTextSizeChange: (step: number) => setTextSize(step),
     onDarkModeChange: (choice: DarkModeChoice) => {

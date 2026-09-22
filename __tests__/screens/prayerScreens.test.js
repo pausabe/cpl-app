@@ -65,7 +65,7 @@ test('el botó Aa obre el full; A+ fa el text més gran a l’instant i ho desa'
 
   expect(styleOf(view.getByText('Sigueu amb nosaltres, Déu nostre.')).fontSize).toBe(24);
   expect(view.getByText('Mida 4 de 10')).toBeTruthy();
-  expect(DataService.CurrentSettings.TextSize).toBe('4');
+  expect(DataService.CurrentSettings.textSize).toBe('4');
   expect(await AsyncStorage.getItem('textSize')).toBe('4');
 
   fireEvent.press(view.getByRole('button', { name: 'Fet' }));
@@ -78,7 +78,7 @@ test('el tema fosc es tria al mateix full i la pregària es torna fosca', async 
   await act(async () => {
     fireEvent.press(view.getByRole('radio', { name: 'Fosc' }));
   });
-  expect(DataService.CurrentSettings.DarkModeEnabled).toBe(true);
+  expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
   expect(styleOf(view.getByText('HIMNE')).color).toBe('#F28B82');
 });
@@ -90,7 +90,7 @@ test('el salm invitatori triat es recorda', async () => {
   fireEvent.press(screen.getByRole('radio', { name: 'Salm 99' }));
   expect(screen.getByRole('radio', { name: 'Salm 99' }).props.accessibilityState.checked).toBe(true);
   expect(screen.getByText(/Invitació a lloar Déu en el seu temple/)).toBeTruthy();
-  expect(DataService.CurrentSettings.InvitationPsalmOption).toBe('99');
+  expect(DataService.CurrentSettings.invitationPsalmOption).toBe('99');
   await act(async () => {
     await Promise.resolve();
   });
@@ -103,7 +103,7 @@ test('l’antífona de la Mare de Déu triada es recorda', async () => {
   expect(screen.getByRole('header', { name: 'Antífona final de la Mare de Déu' })).toBeTruthy();
   fireEvent.press(screen.getByRole('radio', { name: 'Ant. 3' }));
   expect(screen.getByRole('radio', { name: 'Ant. 3' }).props.accessibilityState.checked).toBe(true);
-  expect(DataService.CurrentSettings.VirginAntiphonOption).toBe('3');
+  expect(DataService.CurrentSettings.virginAntiphonOption).toBe('3');
   await act(async () => {
     await Promise.resolve();
   });
@@ -130,7 +130,7 @@ test('a Pasqua només hi ha la cinquena antífona, sense selector', async () => 
   await loadDay('2026-04-05');
   await open(HoursPrayerController, { type: 'Completes', title: 'Completes' });
   expect(screen.queryAllByRole('radio')).toHaveLength(0);
-  expect(DataService.CurrentSettings.VirginAntiphonOption).toBe('5');
+  expect(DataService.CurrentSettings.virginAntiphonOption).toBe('5');
 });
 
 test('les lectures: «Continua amb el Salm» mostra el salm a sota', async () => {
@@ -163,7 +163,7 @@ test('amb el vídeo activat, surt sobre l’Evangeli del 26 d’octubre de 2025,
 
 test('les lectures s’alineen a l’esquerra i tenen una amplada màxima', async () => {
   await open(MassPrayerController, { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false });
-  const gospel = DataService.CurrentMassLiturgy.Today.Gospel.Gospel.replace(/\s+$/, '');
+  const gospel = DataService.CurrentMassLiturgy.today.gospel.gospel.replace(/\s+$/, '');
   expect(styleOf(screen.getByText(gospel)).textAlign).toBe('left');
 });
 

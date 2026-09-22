@@ -9,47 +9,47 @@ export function obtainConcreteNamesInPrayers(
 ): ConcreteNamesInPrayers {
   let concreteNamesInPrayers = new ConcreteNamesInPrayers();
 
-  concreteNamesInPrayers.Pope = liturgyMasters.Various.Pope;
+  concreteNamesInPrayers.pope = liturgyMasters.various.pope;
 
-  switch (settings.DioceseName) {
+  switch (settings.dioceseName) {
     case DioceseName.Barcelona:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.BarcelonaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.barcelonaBishop;
       break;
     case DioceseName.Girona:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.GironaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.gironaBishop;
       break;
     case DioceseName.Lleida:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.LleidaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.lleidaBishop;
       break;
     case DioceseName.SantFeliu:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.SantFeliuBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.santFeliuBishop;
       break;
     case DioceseName.Solsona:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.SolsonaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.solsonaBishop;
       break;
     case DioceseName.Tarragona:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.TarragonaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.tarragonaBishop;
       break;
     case DioceseName.Terrassa:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.TerrassaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.terrassaBishop;
       break;
     case DioceseName.Tortosa:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.TortosaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.tortosaBishop;
       break;
     case DioceseName.Urgell:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.UrgellBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.urgellBishop;
       break;
     case DioceseName.Vic:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.VicBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.vicBishop;
       break;
     case DioceseName.Andorra:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.AndorraBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.andorraBishop;
       break;
     case DioceseName.Mallorca:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.MallorcaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.mallorcaBishop;
       break;
     case DioceseName.Menorca:
-      concreteNamesInPrayers.Bishop = liturgyMasters.Various.MenorcaBishop;
+      concreteNamesInPrayers.bishop = liturgyMasters.various.menorcaBishop;
       break;
   }
 

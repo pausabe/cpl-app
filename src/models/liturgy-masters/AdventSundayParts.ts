@@ -1,53 +1,53 @@
 export default class AdventSundayParts {
-  static MasterName: string = 'tempsAdventSetmanesDium';
+  static masterName: string = 'tempsAdventSetmanesDium';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
-      this.FirstVespersFirstAntiphon = databaseRow.ant1Vespres;
-      this.FirstVespersSecondAntiphon = databaseRow.ant2Vespres;
-      this.FirstVespersThirdAntiphon = databaseRow.ant3Vespres;
-      this.FirstVespersEvangelicalAntiphonYearA = databaseRow.antMaria1A;
-      this.FirstVespersEvangelicalAntiphonYearB = databaseRow.antMaria1B;
-      this.FirstVespersEvangelicalAntiphonYearC = databaseRow.antMaria1C;
-      this.OfficeFirstAntiphon = databaseRow.Ant1Ofici;
-      this.OfficeSecondAntiphon = databaseRow.Ant2Ofici;
-      this.OfficeThirdAntiphon = databaseRow.Ant3Ofici;
-      this.LaudesFirstAntiphon = databaseRow.ant1Laudes;
-      this.LaudesSecondAntiphon = databaseRow.ant2Laudes;
-      this.LaudesThirdAntiphon = databaseRow.ant3Laudes;
-      this.LaudesEvangelicalAntiphonYearA = databaseRow.antZacariesA;
-      this.LaudesEvangelicalAntiphonYearB = databaseRow.antZacariesB;
-      this.LaudesEvangelicalAntiphonYearC = databaseRow.antZacariesC;
-      this.SecondVespersFirstAntiphon = databaseRow.ant1Vespres2;
-      this.SecondVespersSecondAntiphon = databaseRow.ant2Vespres2;
-      this.SecondVespersThirdAntiphon = databaseRow.ant3Vespres2;
-      this.SecondVespersEvangelicalAntiphonYearA = databaseRow.antMaria2A;
-      this.SecondVespersEvangelicalAntiphonYearB = databaseRow.antMaria2B;
-      this.SecondVespersEvangelicalAntiphonYearC = databaseRow.antMaria2C;
+      this.id = databaseRow.id;
+      this.firstVespersFirstAntiphon = databaseRow.ant1Vespres;
+      this.firstVespersSecondAntiphon = databaseRow.ant2Vespres;
+      this.firstVespersThirdAntiphon = databaseRow.ant3Vespres;
+      this.firstVespersEvangelicalAntiphonYearA = databaseRow.antMaria1A;
+      this.firstVespersEvangelicalAntiphonYearB = databaseRow.antMaria1B;
+      this.firstVespersEvangelicalAntiphonYearC = databaseRow.antMaria1C;
+      this.officeFirstAntiphon = databaseRow.Ant1Ofici;
+      this.officeSecondAntiphon = databaseRow.Ant2Ofici;
+      this.officeThirdAntiphon = databaseRow.Ant3Ofici;
+      this.laudesFirstAntiphon = databaseRow.ant1Laudes;
+      this.laudesSecondAntiphon = databaseRow.ant2Laudes;
+      this.laudesThirdAntiphon = databaseRow.ant3Laudes;
+      this.laudesEvangelicalAntiphonYearA = databaseRow.antZacariesA;
+      this.laudesEvangelicalAntiphonYearB = databaseRow.antZacariesB;
+      this.laudesEvangelicalAntiphonYearC = databaseRow.antZacariesC;
+      this.secondVespersFirstAntiphon = databaseRow.ant1Vespres2;
+      this.secondVespersSecondAntiphon = databaseRow.ant2Vespres2;
+      this.secondVespersThirdAntiphon = databaseRow.ant3Vespres2;
+      this.secondVespersEvangelicalAntiphonYearA = databaseRow.antMaria2A;
+      this.secondVespersEvangelicalAntiphonYearB = databaseRow.antMaria2B;
+      this.secondVespersEvangelicalAntiphonYearC = databaseRow.antMaria2C;
     }
   }
 
-  Id: number;
-  FirstVespersFirstAntiphon: string;
-  FirstVespersSecondAntiphon: string;
-  FirstVespersThirdAntiphon: string;
-  FirstVespersEvangelicalAntiphonYearA: string;
-  FirstVespersEvangelicalAntiphonYearB: string;
-  FirstVespersEvangelicalAntiphonYearC: string;
-  OfficeFirstAntiphon: string;
-  OfficeSecondAntiphon: string;
-  OfficeThirdAntiphon: string;
-  LaudesFirstAntiphon: string;
-  LaudesSecondAntiphon: string;
-  LaudesThirdAntiphon: string;
-  LaudesEvangelicalAntiphonYearA: string;
-  LaudesEvangelicalAntiphonYearB: string;
-  LaudesEvangelicalAntiphonYearC: string;
-  SecondVespersFirstAntiphon: string;
-  SecondVespersSecondAntiphon: string;
-  SecondVespersThirdAntiphon: string;
-  SecondVespersEvangelicalAntiphonYearA: string;
-  SecondVespersEvangelicalAntiphonYearB: string;
-  SecondVespersEvangelicalAntiphonYearC: string;
+  id: number;
+  firstVespersFirstAntiphon: string;
+  firstVespersSecondAntiphon: string;
+  firstVespersThirdAntiphon: string;
+  firstVespersEvangelicalAntiphonYearA: string;
+  firstVespersEvangelicalAntiphonYearB: string;
+  firstVespersEvangelicalAntiphonYearC: string;
+  officeFirstAntiphon: string;
+  officeSecondAntiphon: string;
+  officeThirdAntiphon: string;
+  laudesFirstAntiphon: string;
+  laudesSecondAntiphon: string;
+  laudesThirdAntiphon: string;
+  laudesEvangelicalAntiphonYearA: string;
+  laudesEvangelicalAntiphonYearB: string;
+  laudesEvangelicalAntiphonYearC: string;
+  secondVespersFirstAntiphon: string;
+  secondVespersSecondAntiphon: string;
+  secondVespersThirdAntiphon: string;
+  secondVespersEvangelicalAntiphonYearA: string;
+  secondVespersEvangelicalAntiphonYearB: string;
+  secondVespersEvangelicalAntiphonYearC: string;
 }

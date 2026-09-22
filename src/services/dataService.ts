@@ -42,7 +42,7 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
   CurrentDatabaseInformation = await obtainCurrentDatabaseInformation();
   CurrentLiturgyDayInformation = await obtainCurrentLiturgyDayInformation(date, CurrentSettings);
   const tomorrowLiturgyDayInformation = await obtainCurrentLiturgyDayInformation(
-    CurrentLiturgyDayInformation.Tomorrow.Date,
+    CurrentLiturgyDayInformation.tomorrow.date,
     CurrentSettings,
   );
   const todayLiturgyMasters = await obtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
@@ -56,8 +56,8 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
   CurrentCelebrationInformation = obtainCurrentCelebrationInformation(CurrentHoursLiturgy);
   CurrentMassLiturgy = await obtainMassLiturgy(
     CurrentLiturgyDayInformation,
-    CurrentHoursLiturgy.TodayCelebrationInformation,
-    CurrentHoursLiturgy.TomorrowCelebrationInformation,
+    CurrentHoursLiturgy.todayCelebrationInformation,
+    CurrentHoursLiturgy.tomorrowCelebrationInformation,
     CurrentSettings,
   );
   Logger.log(
@@ -70,22 +70,22 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
 
 async function obtainCurrentSettings(date: Date): Promise<Settings> {
   let currentSettings = new Settings();
-  currentSettings.PrayingPlace = (await SettingsService.getSettingLloc()) as string;
-  currentSettings.DioceseName = (await SettingsService.getSettingDiocesis()) as string;
-  currentSettings.DioceseCode = getDioceseCodeFromDioceseName(
-    currentSettings.DioceseName,
-    currentSettings.PrayingPlace,
+  currentSettings.prayingPlace = (await SettingsService.getSettingLloc()) as string;
+  currentSettings.dioceseName = (await SettingsService.getSettingDiocesis()) as string;
+  currentSettings.dioceseCode = getDioceseCodeFromDioceseName(
+    currentSettings.dioceseName,
+    currentSettings.prayingPlace,
   );
-  currentSettings.DioceseCode2Letters =
-    currentSettings.DioceseCode === DioceseCode.Andorra
-      ? currentSettings.DioceseCode
-      : currentSettings.DioceseCode.substring(0, 2);
-  currentSettings.UseLatin = (await SettingsService.getSettingUseLatin()) === 'true';
-  currentSettings.TextSize = (await SettingsService.getSettingTextSize()) as number;
-  currentSettings.DarkModeEnabled = determineDarkModeIsEnabled((await SettingsService.getSettingDarkMode()) as string);
-  currentSettings.InvitationPsalmOption = (await SettingsService.getSettingNumSalmInv()) as string;
-  currentSettings.VirginAntiphonOption = (await SettingsService.getSettingNumAntMare()) as string;
-  currentSettings.OptionalFestivityEnabled = await determineOptionalFestivityEnabled(date);
+  currentSettings.dioceseCode2Letters =
+    currentSettings.dioceseCode === DioceseCode.Andorra
+      ? currentSettings.dioceseCode
+      : currentSettings.dioceseCode.substring(0, 2);
+  currentSettings.useLatin = (await SettingsService.getSettingUseLatin()) === 'true';
+  currentSettings.textSize = (await SettingsService.getSettingTextSize()) as number;
+  currentSettings.darkModeEnabled = determineDarkModeIsEnabled((await SettingsService.getSettingDarkMode()) as string);
+  currentSettings.invitationPsalmOption = (await SettingsService.getSettingNumSalmInv()) as string;
+  currentSettings.virginAntiphonOption = (await SettingsService.getSettingNumAntMare()) as string;
+  currentSettings.optionalFestivityEnabled = await determineOptionalFestivityEnabled(date);
   return currentSettings;
 }
 
@@ -123,37 +123,37 @@ async function determineOptionalFestivityEnabled(date: Date): Promise<boolean> {
 
 async function obtainCurrentDatabaseInformation(): Promise<DatabaseInformation> {
   let databaseInformation = new DatabaseInformation();
-  databaseInformation.Version = await getDatabaseVersion();
+  databaseInformation.version = await getDatabaseVersion();
   let minimumAndMaximumSelectableDates = await DatabaseDataService.obtainMinimumAndMaximumSelectableDates();
-  databaseInformation.MinimumSelectableDate = minimumAndMaximumSelectableDates.MinimumSelectableDate;
-  databaseInformation.MaximumSelectableDate = minimumAndMaximumSelectableDates.MaximumSelectableDate;
+  databaseInformation.minimumSelectableDate = minimumAndMaximumSelectableDates.minimumSelectableDate;
+  databaseInformation.maximumSelectableDate = minimumAndMaximumSelectableDates.maximumSelectableDate;
   return databaseInformation;
 }
 
 async function obtainCurrentLiturgyDayInformation(date: Date, settings: Settings): Promise<LiturgyDayInformation> {
   let currentLiturgyDayInformation = new LiturgyDayInformation();
-  currentLiturgyDayInformation.Today = await DatabaseDataService.obtainLiturgySpecificDayInformation(date, settings);
-  currentLiturgyDayInformation.Today.SpecialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
-    currentLiturgyDayInformation.Today,
+  currentLiturgyDayInformation.today = await DatabaseDataService.obtainLiturgySpecificDayInformation(date, settings);
+  currentLiturgyDayInformation.today.specialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
+    currentLiturgyDayInformation.today,
     settings,
   );
-  currentLiturgyDayInformation.Today.IsSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.Today);
+  currentLiturgyDayInformation.today.isSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.today);
   const tomorrowDate = new Date(date);
   tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-  currentLiturgyDayInformation.Tomorrow = await DatabaseDataService.obtainLiturgySpecificDayInformation(
+  currentLiturgyDayInformation.tomorrow = await DatabaseDataService.obtainLiturgySpecificDayInformation(
     tomorrowDate,
     settings,
   );
-  currentLiturgyDayInformation.Tomorrow.SpecialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
-    currentLiturgyDayInformation.Tomorrow,
+  currentLiturgyDayInformation.tomorrow.specialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
+    currentLiturgyDayInformation.tomorrow,
     settings,
   );
-  currentLiturgyDayInformation.Tomorrow.IsSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.Tomorrow);
+  currentLiturgyDayInformation.tomorrow.isSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.tomorrow);
   return currentLiturgyDayInformation;
 }
 
 function isSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
+  if (liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
     return false;
   }
 
@@ -161,32 +161,32 @@ function isSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInf
     return false;
   }
 
-  if (liturgySpecificDayInformation.Date.getMonth() === 11) {
+  if (liturgySpecificDayInformation.date.getMonth() === 11) {
     return (
-      liturgySpecificDayInformation.Date.getDate() === 17 ||
-      liturgySpecificDayInformation.Date.getDate() === 18 ||
-      liturgySpecificDayInformation.Date.getDate() === 19 ||
-      liturgySpecificDayInformation.Date.getDate() === 20 ||
-      liturgySpecificDayInformation.Date.getDate() === 21 ||
-      liturgySpecificDayInformation.Date.getDate() === 22 ||
-      liturgySpecificDayInformation.Date.getDate() === 23 ||
-      liturgySpecificDayInformation.Date.getDate() === 24 ||
-      liturgySpecificDayInformation.Date.getDate() === 29 ||
-      liturgySpecificDayInformation.Date.getDate() === 30 ||
-      liturgySpecificDayInformation.Date.getDate() === 31
+      liturgySpecificDayInformation.date.getDate() === 17 ||
+      liturgySpecificDayInformation.date.getDate() === 18 ||
+      liturgySpecificDayInformation.date.getDate() === 19 ||
+      liturgySpecificDayInformation.date.getDate() === 20 ||
+      liturgySpecificDayInformation.date.getDate() === 21 ||
+      liturgySpecificDayInformation.date.getDate() === 22 ||
+      liturgySpecificDayInformation.date.getDate() === 23 ||
+      liturgySpecificDayInformation.date.getDate() === 24 ||
+      liturgySpecificDayInformation.date.getDate() === 29 ||
+      liturgySpecificDayInformation.date.getDate() === 30 ||
+      liturgySpecificDayInformation.date.getDate() === 31
     );
-  } else if (liturgySpecificDayInformation.Date.getMonth() === 0) {
+  } else if (liturgySpecificDayInformation.date.getMonth() === 0) {
     return (
-      liturgySpecificDayInformation.Date.getDate() === 2 ||
-      liturgySpecificDayInformation.Date.getDate() === 3 ||
-      liturgySpecificDayInformation.Date.getDate() === 4 ||
-      liturgySpecificDayInformation.Date.getDate() === 5 ||
-      liturgySpecificDayInformation.Date.getDate() === 7 ||
-      liturgySpecificDayInformation.Date.getDate() === 8 ||
-      liturgySpecificDayInformation.Date.getDate() === 9 ||
-      liturgySpecificDayInformation.Date.getDate() === 10 ||
-      liturgySpecificDayInformation.Date.getDate() === 11 ||
-      liturgySpecificDayInformation.Date.getDate() === 12
+      liturgySpecificDayInformation.date.getDate() === 2 ||
+      liturgySpecificDayInformation.date.getDate() === 3 ||
+      liturgySpecificDayInformation.date.getDate() === 4 ||
+      liturgySpecificDayInformation.date.getDate() === 5 ||
+      liturgySpecificDayInformation.date.getDate() === 7 ||
+      liturgySpecificDayInformation.date.getDate() === 8 ||
+      liturgySpecificDayInformation.date.getDate() === 9 ||
+      liturgySpecificDayInformation.date.getDate() === 10 ||
+      liturgySpecificDayInformation.date.getDate() === 11 ||
+      liturgySpecificDayInformation.date.getDate() === 12
     );
   }
   return false;
@@ -194,5 +194,5 @@ function isSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInf
 
 function obtainCurrentCelebrationInformation(hoursLiturgy: HoursLiturgy): CelebrationInformation {
   // For now, celebration information is inside hour's data. In the future it should be complete separated
-  return hoursLiturgy.TodayCelebrationInformation;
+  return hoursLiturgy.todayCelebrationInformation;
 }

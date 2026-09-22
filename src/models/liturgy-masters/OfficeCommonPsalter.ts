@@ -2,75 +2,75 @@ import { Psalm, Responsory } from './CommonParts';
 import CommonOfficeWhenStrongTimesPsalter from './CommonOfficeWhenStrongTimesPsalter';
 
 export default class OfficeCommonPsalter {
-  static MasterName: string = 'salteriComuOfici';
+  static masterName: string = 'salteriComuOfici';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
-      this.NightLatinAnthem = databaseRow.himneNitLlati;
-      this.NightCatalanAnthem = databaseRow.himneNitCat;
-      this.DayLatinAnthem = databaseRow.himneDiaLlati;
-      this.DayCatalanAnthem = databaseRow.himneDiaCat;
+      this.id = databaseRow.id;
+      this.nightLatinAnthem = databaseRow.himneNitLlati;
+      this.nightCatalanAnthem = databaseRow.himneNitCat;
+      this.dayLatinAnthem = databaseRow.himneDiaLlati;
+      this.dayCatalanAnthem = databaseRow.himneDiaCat;
 
-      this.FirstPsalm.Antiphon = databaseRow.ant1;
-      this.FirstPsalm.Title = databaseRow.titol1;
-      this.FirstPsalm.Comment = databaseRow.com1;
-      this.FirstPsalm.Psalm = databaseRow.salm1;
-      this.FirstPsalm.HasGloryPrayer = databaseRow.gloria1 === '1';
+      this.firstPsalm.antiphon = databaseRow.ant1;
+      this.firstPsalm.title = databaseRow.titol1;
+      this.firstPsalm.comment = databaseRow.com1;
+      this.firstPsalm.psalm = databaseRow.salm1;
+      this.firstPsalm.hasGloryPrayer = databaseRow.gloria1 === '1';
 
-      this.SecondPsalm.Antiphon = databaseRow.ant2;
-      this.SecondPsalm.Title = databaseRow.titol2;
-      this.SecondPsalm.Comment = databaseRow.com2;
-      this.SecondPsalm.Psalm = databaseRow.salm2;
-      this.SecondPsalm.HasGloryPrayer = databaseRow.gloria2 === '1';
+      this.secondPsalm.antiphon = databaseRow.ant2;
+      this.secondPsalm.title = databaseRow.titol2;
+      this.secondPsalm.comment = databaseRow.com2;
+      this.secondPsalm.psalm = databaseRow.salm2;
+      this.secondPsalm.hasGloryPrayer = databaseRow.gloria2 === '1';
 
-      this.ThirdPsalm.Antiphon = databaseRow.ant3;
-      this.ThirdPsalm.Title = databaseRow.titol3;
-      this.ThirdPsalm.Comment = databaseRow.com3;
-      this.ThirdPsalm.Psalm = databaseRow.salm3;
-      this.ThirdPsalm.HasGloryPrayer = databaseRow.gloria3 === '1';
+      this.thirdPsalm.antiphon = databaseRow.ant3;
+      this.thirdPsalm.title = databaseRow.titol3;
+      this.thirdPsalm.comment = databaseRow.com3;
+      this.thirdPsalm.psalm = databaseRow.salm3;
+      this.thirdPsalm.hasGloryPrayer = databaseRow.gloria3 === '1';
 
-      this.Responsory.Versicle = databaseRow.respV;
-      this.Responsory.Response = databaseRow.respR;
+      this.responsory.versicle = databaseRow.respV;
+      this.responsory.response = databaseRow.respR;
     }
   }
 
   adaptWithStrongTimes(commonOfficeWhenStrongTimesPsalter: CommonOfficeWhenStrongTimesPsalter) {
-    this.Id = commonOfficeWhenStrongTimesPsalter.Id;
-    this.NightLatinAnthem = commonOfficeWhenStrongTimesPsalter.LatinAnthem;
-    this.NightCatalanAnthem = commonOfficeWhenStrongTimesPsalter.CatalanAnthem;
-    this.DayLatinAnthem = commonOfficeWhenStrongTimesPsalter.LatinAnthem;
-    this.DayCatalanAnthem = commonOfficeWhenStrongTimesPsalter.CatalanAnthem;
+    this.id = commonOfficeWhenStrongTimesPsalter.id;
+    this.nightLatinAnthem = commonOfficeWhenStrongTimesPsalter.latinAnthem;
+    this.nightCatalanAnthem = commonOfficeWhenStrongTimesPsalter.catalanAnthem;
+    this.dayLatinAnthem = commonOfficeWhenStrongTimesPsalter.latinAnthem;
+    this.dayCatalanAnthem = commonOfficeWhenStrongTimesPsalter.catalanAnthem;
 
-    this.FirstPsalm.Antiphon = commonOfficeWhenStrongTimesPsalter.FirstPsalm.Antiphon;
-    this.FirstPsalm.Title = commonOfficeWhenStrongTimesPsalter.FirstPsalm.Title;
-    this.FirstPsalm.Comment = commonOfficeWhenStrongTimesPsalter.FirstPsalm.Comment;
-    this.FirstPsalm.Psalm = commonOfficeWhenStrongTimesPsalter.FirstPsalm.Psalm;
-    this.FirstPsalm.HasGloryPrayer = commonOfficeWhenStrongTimesPsalter.FirstPsalm.HasGloryPrayer;
+    this.firstPsalm.antiphon = commonOfficeWhenStrongTimesPsalter.firstPsalm.antiphon;
+    this.firstPsalm.title = commonOfficeWhenStrongTimesPsalter.firstPsalm.title;
+    this.firstPsalm.comment = commonOfficeWhenStrongTimesPsalter.firstPsalm.comment;
+    this.firstPsalm.psalm = commonOfficeWhenStrongTimesPsalter.firstPsalm.psalm;
+    this.firstPsalm.hasGloryPrayer = commonOfficeWhenStrongTimesPsalter.firstPsalm.hasGloryPrayer;
 
-    this.SecondPsalm.Antiphon = commonOfficeWhenStrongTimesPsalter.SecondPsalm.Antiphon;
-    this.SecondPsalm.Title = commonOfficeWhenStrongTimesPsalter.SecondPsalm.Title;
-    this.SecondPsalm.Comment = commonOfficeWhenStrongTimesPsalter.SecondPsalm.Comment;
-    this.SecondPsalm.Psalm = commonOfficeWhenStrongTimesPsalter.SecondPsalm.Psalm;
-    this.SecondPsalm.HasGloryPrayer = commonOfficeWhenStrongTimesPsalter.SecondPsalm.HasGloryPrayer;
+    this.secondPsalm.antiphon = commonOfficeWhenStrongTimesPsalter.secondPsalm.antiphon;
+    this.secondPsalm.title = commonOfficeWhenStrongTimesPsalter.secondPsalm.title;
+    this.secondPsalm.comment = commonOfficeWhenStrongTimesPsalter.secondPsalm.comment;
+    this.secondPsalm.psalm = commonOfficeWhenStrongTimesPsalter.secondPsalm.psalm;
+    this.secondPsalm.hasGloryPrayer = commonOfficeWhenStrongTimesPsalter.secondPsalm.hasGloryPrayer;
 
-    this.ThirdPsalm.Antiphon = commonOfficeWhenStrongTimesPsalter.ThirdPsalm.Antiphon;
-    this.ThirdPsalm.Title = commonOfficeWhenStrongTimesPsalter.ThirdPsalm.Title;
-    this.ThirdPsalm.Comment = commonOfficeWhenStrongTimesPsalter.ThirdPsalm.Comment;
-    this.ThirdPsalm.Psalm = commonOfficeWhenStrongTimesPsalter.ThirdPsalm.Psalm;
-    this.ThirdPsalm.HasGloryPrayer = commonOfficeWhenStrongTimesPsalter.ThirdPsalm.HasGloryPrayer;
+    this.thirdPsalm.antiphon = commonOfficeWhenStrongTimesPsalter.thirdPsalm.antiphon;
+    this.thirdPsalm.title = commonOfficeWhenStrongTimesPsalter.thirdPsalm.title;
+    this.thirdPsalm.comment = commonOfficeWhenStrongTimesPsalter.thirdPsalm.comment;
+    this.thirdPsalm.psalm = commonOfficeWhenStrongTimesPsalter.thirdPsalm.psalm;
+    this.thirdPsalm.hasGloryPrayer = commonOfficeWhenStrongTimesPsalter.thirdPsalm.hasGloryPrayer;
 
-    this.Responsory.Versicle = commonOfficeWhenStrongTimesPsalter.Responsory.Versicle;
-    this.Responsory.Response = commonOfficeWhenStrongTimesPsalter.Responsory.Response;
+    this.responsory.versicle = commonOfficeWhenStrongTimesPsalter.responsory.versicle;
+    this.responsory.response = commonOfficeWhenStrongTimesPsalter.responsory.response;
   }
 
-  Id: number;
-  NightLatinAnthem: string;
-  NightCatalanAnthem: string;
-  DayLatinAnthem: string;
-  DayCatalanAnthem: string;
-  FirstPsalm: Psalm = new Psalm();
-  SecondPsalm: Psalm = new Psalm();
-  ThirdPsalm: Psalm = new Psalm();
-  Responsory: Responsory = new Responsory();
+  id: number;
+  nightLatinAnthem: string;
+  nightCatalanAnthem: string;
+  dayLatinAnthem: string;
+  dayCatalanAnthem: string;
+  firstPsalm: Psalm = new Psalm();
+  secondPsalm: Psalm = new Psalm();
+  thirdPsalm: Psalm = new Psalm();
+  responsory: Responsory = new Responsory();
 }

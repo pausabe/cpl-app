@@ -6,9 +6,9 @@ jest.mock('../../src/services/dataService', () => {
   const module = {
     __esModule: true,
     __state: state,
-    CurrentSettings: { DarkModeEnabled: false, TextSize: '3' },
+    CurrentSettings: { darkModeEnabled: false, textSize: '3' },
     CurrentDatabaseInformation: {},
-    CurrentLiturgyDayInformation: { Today: { Date: undefined } },
+    CurrentLiturgyDayInformation: { today: { date: undefined } },
     CurrentCelebrationInformation: {},
     CurrentHoursLiturgy: {},
     CurrentMassLiturgy: {},
@@ -22,7 +22,7 @@ jest.mock('../../src/services/dataService', () => {
         state.running--;
         throw new Error('database closed');
       }
-      module.CurrentLiturgyDayInformation = { Today: { Date: date } };
+      module.CurrentLiturgyDayInformation = { today: { date: date } };
       state.running--;
     }),
   };
@@ -80,11 +80,11 @@ test('la foto no canvia si no hi ha res de nou', () => {
 test('la mida del text i el mode fosc es canvien sense recarregar, i avisen', () => {
   const listener = jest.fn();
   const unsubscribe = LiturgyStore.subscribe(listener);
-  LiturgyStore.updateSettings({ TextSize: '5', DarkModeEnabled: true });
-  expect(DataService.CurrentSettings).toMatchObject({ TextSize: '5', DarkModeEnabled: true });
+  LiturgyStore.updateSettings({ textSize: '5', darkModeEnabled: true });
+  expect(DataService.CurrentSettings).toMatchObject({ textSize: '5', darkModeEnabled: true });
   expect(listener).toHaveBeenCalledTimes(1);
   expect(DataService.reloadAllData).not.toHaveBeenCalledWith(undefined);
-  LiturgyStore.updateSettings({ InvitationPsalmOption: '99' }, false);
+  LiturgyStore.updateSettings({ invitationPsalmOption: '99' }, false);
   expect(listener).toHaveBeenCalledTimes(1);
   unsubscribe();
 });
@@ -94,10 +94,10 @@ test('useAppearance dona el mode fosc i la mida, i es posa al dia', () => {
     const { dark, textSize } = LiturgyStore.useAppearance();
     return <Text>{`${dark ? 'fosc' : 'clar'} ${textSize}`}</Text>;
   }
-  LiturgyStore.updateSettings({ TextSize: '3', DarkModeEnabled: false });
+  LiturgyStore.updateSettings({ textSize: '3', darkModeEnabled: false });
   render(<Probe />);
   expect(screen.getByText('clar 3')).toBeTruthy();
-  act(() => LiturgyStore.updateSettings({ TextSize: '7', DarkModeEnabled: true }));
+  act(() => LiturgyStore.updateSettings({ textSize: '7', darkModeEnabled: true }));
   expect(screen.getByText('fosc 7')).toBeTruthy();
 });
 

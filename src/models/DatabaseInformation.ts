@@ -1,5 +1,5 @@
 export default class DatabaseInformation {
-  Version: number;
-  MinimumSelectableDate: Date;
-  MaximumSelectableDate: Date;
+  version: number;
+  minimumSelectableDate: Date;
+  maximumSelectableDate: Date;
 }

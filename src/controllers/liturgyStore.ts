@@ -83,7 +83,7 @@ export function reload(date: Date, databaseAsset?: unknown): Promise<void> {
 
 // The day being shown: the one to reload after a setting changes.
 export function currentDate(): Date {
-  return DataService.CurrentLiturgyDayInformation.Today.Date;
+  return DataService.CurrentLiturgyDayInformation.today.date;
 }
 
 // When the data was last loaded: coming back to the app on another day loads today's.
@@ -99,7 +99,7 @@ export function updateSettings(changes: Partial<Settings>, notify = true): void 
 }
 
 export function isLoaded(): boolean {
-  return DataService.CurrentLiturgyDayInformation.Today.Date !== undefined;
+  return DataService.CurrentLiturgyDayInformation.today.date !== undefined;
 }
 
 export function useLiturgy(): LiturgySnapshot {
@@ -109,5 +109,5 @@ export function useLiturgy(): LiturgySnapshot {
 // What the theme needs: the dark mode and the text size of the prayer
 export function useAppearance(): { dark: boolean; textSize: unknown } {
   const { settings } = useLiturgy();
-  return { dark: settings.DarkModeEnabled === true, textSize: settings.TextSize };
+  return { dark: settings.darkModeEnabled === true, textSize: settings.textSize };
 }

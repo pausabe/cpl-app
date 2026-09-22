@@ -23,7 +23,7 @@ export default class LaudesComponent extends Component {
     super(props);
 
     // The invitatory psalm chosen last time, unless it is one of the psalms of the day
-    let auxNumSalmInv = props.settings.InvitationPsalmOption;
+    let auxNumSalmInv = props.settings.invitationPsalmOption;
     if (!GlobalViewFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
       auxNumSalmInv = '94';
       props.onInvitationPsalmChange('94');
@@ -57,10 +57,10 @@ export default class LaudesComponent extends Component {
   }
 
   salmInvitatori(numSalm) {
-    let salm94 = this.hours.Invitation.Psalm94;
-    let salm99 = this.hours.Invitation.Psalm99;
-    let salm66 = this.hours.Invitation.Psalm66;
-    let salm23 = this.hours.Invitation.Psalm23;
+    let salm94 = this.hours.invitation.psalm94;
+    let salm99 = this.hours.invitation.psalm99;
+    let salm66 = this.hours.invitation.psalm66;
+    let salm23 = this.hours.invitation.psalm23;
 
     let psalmTitle = '';
     let psalmReference = '';
@@ -91,7 +91,7 @@ export default class LaudesComponent extends Component {
     }
 
     const estrofes = psalmText.split('\n\n');
-    const antifona = GlobalViewFunctions.rs(this.hours.Invitation.InvitationAntiphon);
+    const antifona = GlobalViewFunctions.rs(this.hours.invitation.invitationAntiphon);
     const gloriaString =
       'Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.';
 
@@ -275,7 +275,7 @@ export default class LaudesComponent extends Component {
     const gloriaStringIntro =
       'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
     const showInvitatory =
-      this.state.invitatori || this.today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday;
+      this.state.invitatori || this.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday;
 
     if (showInvitatory) {
       const aux_obriume = 'Obriu-me els llavis, Senyor.';
@@ -284,7 +284,7 @@ export default class LaudesComponent extends Component {
       return (
         // TODO: [UI Refactor] imporve this method... if else.. not good
         <View>
-          {this.today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ? null : (
+          {this.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ? null : (
             <View>{this.invitatoriButtons()}</View>
           )}
           <Rubric label={'V. '}>{aux_obriume}</Rubric>
@@ -300,11 +300,11 @@ export default class LaudesComponent extends Component {
       const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
       // TODO: [UI Refactor] encapsulate
       const aux_isAleluia =
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
 
       return (
         <View>
@@ -326,7 +326,7 @@ export default class LaudesComponent extends Component {
   }
 
   himne() {
-    const aux_himne = GlobalViewFunctions.rs(this.hours.Laudes.Anthem);
+    const aux_himne = GlobalViewFunctions.rs(this.hours.laudes.anthem);
     return (
       <Text selectable={true} style={this.styles.black}>
         {aux_himne}
@@ -335,24 +335,24 @@ export default class LaudesComponent extends Component {
   }
 
   salmodia() {
-    const aux_ant1 = GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Antiphon);
-    const aux_titol1 = GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Title);
+    const aux_ant1 = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.antiphon);
+    const aux_titol1 = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.title);
     let aux_com1 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Laudes.FirstPsalm.Comment))
-      aux_com1 = GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Comment);
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.Laudes.FirstPsalm.Psalm));
-    const aux_ant2 = GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Antiphon);
-    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Title));
+    if (StringManagement.hasLiturgyContent(this.hours.laudes.firstPsalm.comment))
+      aux_com1 = GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.comment);
+    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.laudes.firstPsalm.psalm));
+    const aux_ant2 = GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.antiphon);
+    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.title));
     let aux_com2 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Laudes.SecondPsalm.Comment))
-      aux_com2 = GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Comment);
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.Laudes.SecondPsalm.Psalm));
-    const aux_ant3 = GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Antiphon);
-    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Title));
+    if (StringManagement.hasLiturgyContent(this.hours.laudes.secondPsalm.comment))
+      aux_com2 = GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.comment);
+    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.laudes.secondPsalm.psalm));
+    const aux_ant3 = GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.antiphon);
+    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.title));
     let aux_com3 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Laudes.ThirdPsalm.Comment))
-      aux_com3 = GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Comment);
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.Laudes.ThirdPsalm.Psalm));
+    if (StringManagement.hasLiturgyContent(this.hours.laudes.thirdPsalm.comment))
+      aux_com3 = GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.comment);
+    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.laudes.thirdPsalm.psalm));
 
     return (
       <View>
@@ -362,7 +362,7 @@ export default class LaudesComponent extends Component {
           {aux_titol1}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Laudes.FirstPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.laudes.firstPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -377,7 +377,7 @@ export default class LaudesComponent extends Component {
           {aux_salm1}
         </Text>
         <Gap />
-        {this.hours.Laudes.FirstPsalm.HasGloryPrayer ? (
+        {this.hours.laudes.firstPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -395,7 +395,7 @@ export default class LaudesComponent extends Component {
           {aux_titol2}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Laudes.SecondPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.laudes.secondPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -410,7 +410,7 @@ export default class LaudesComponent extends Component {
           {aux_salm2}
         </Text>
         <Gap />
-        {this.hours.Laudes.SecondPsalm.HasGloryPrayer ? (
+        {this.hours.laudes.secondPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -428,7 +428,7 @@ export default class LaudesComponent extends Component {
           {aux_titol3}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Laudes.ThirdPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.laudes.thirdPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -443,7 +443,7 @@ export default class LaudesComponent extends Component {
           {aux_salm3}
         </Text>
         <Gap />
-        {this.hours.Laudes.ThirdPsalm.HasGloryPrayer ? (
+        {this.hours.laudes.thirdPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -459,8 +459,8 @@ export default class LaudesComponent extends Component {
   }
 
   lecturaBreu() {
-    const aux_vers = GlobalViewFunctions.rs(this.hours.Laudes.ShortReading.Quote);
-    const aux_lectura_breu = GlobalViewFunctions.rs(this.hours.Laudes.ShortReading.ShortReading);
+    const aux_vers = GlobalViewFunctions.rs(this.hours.laudes.shortReading.quote);
+    const aux_lectura_breu = GlobalViewFunctions.rs(this.hours.laudes.shortReading.shortReading);
     return (
       <View>
         <Text selectable={true} style={this.styles.red}>
@@ -475,8 +475,8 @@ export default class LaudesComponent extends Component {
   }
 
   responsori() {
-    if (this.hours.Laudes.ShortResponsory.HasSpecialAntiphon) {
-      const aux_ant = GlobalViewFunctions.rs(this.hours.Laudes.ShortResponsory.SpecialAntiphon);
+    if (this.hours.laudes.shortResponsory.hasSpecialAntiphon) {
+      const aux_ant = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.specialAntiphon);
       return (
         <View>
           <Rubric label={'Ant.'}> {aux_ant}</Rubric>
@@ -484,11 +484,11 @@ export default class LaudesComponent extends Component {
       );
     } else {
       const aux_resp_1_2 = GlobalViewFunctions.respTogether(
-        GlobalViewFunctions.rs(this.hours.Laudes.ShortResponsory.FirstPart),
-        GlobalViewFunctions.rs(this.hours.Laudes.ShortResponsory.SecondPart),
+        GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.firstPart),
+        GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.secondPart),
       );
-      const aux_resp_2 = GlobalViewFunctions.rs(this.hours.Laudes.ShortResponsory.SecondPart);
-      const aux_resp_3 = GlobalViewFunctions.rs(this.hours.Laudes.ShortResponsory.ThirdPart);
+      const aux_resp_2 = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.secondPart);
+      const aux_resp_3 = GlobalViewFunctions.rs(this.hours.laudes.shortResponsory.thirdPart);
       const aux_gloria_half = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 
       // TODO: [UI Refactor] duplicated code
@@ -508,9 +508,9 @@ export default class LaudesComponent extends Component {
   }
 
   chant() {
-    const aux_ant = GlobalViewFunctions.rs(this.hours.Laudes.EvangelicalAntiphon);
+    const aux_ant = GlobalViewFunctions.rs(this.hours.laudes.evangelicalAntiphon);
     const aux_titol = 'Càntic\nLc 1, 68-79\nEl Messies i el seu Precursor';
-    const aux_salm = this.salm(this.hours.Laudes.EvangelicalChant);
+    const aux_salm = this.salm(this.hours.laudes.evangelicalChant);
     const aux_gloria = 'Glòria.';
 
     // TODO: [UI Refactor] duplicated code
@@ -549,7 +549,7 @@ export default class LaudesComponent extends Component {
   }
 
   prayers() {
-    let allPregs = GlobalViewFunctions.rs(this.hours.Laudes.Prayers);
+    let allPregs = GlobalViewFunctions.rs(this.hours.laudes.prayers);
 
     if (allPregs === null || allPregs === undefined || allPregs === '' || allPregs === '-')
       return (
@@ -560,8 +560,8 @@ export default class LaudesComponent extends Component {
 
     allPregs = this.convertN(
       allPregs,
-      this.hours.ConcreteNamesInPrayers.Pope,
-      this.hours.ConcreteNamesInPrayers.Bishop,
+      this.hours.concreteNamesInPrayers.pope,
+      this.hours.concreteNamesInPrayers.bishop,
     );
     let numGuio, numEnter, introPregs, pregsNoIntro, respPregs, pregaries, pregsFinalPart;
 
@@ -675,7 +675,7 @@ export default class LaudesComponent extends Component {
   }
 
   finalPrayer() {
-    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.hours.Laudes.FinalPrayer), false);
+    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.hours.laudes.finalPrayer), false);
     return (
       <Text selectable={true} style={this.styles.black}>
         {aux_oracio}

@@ -46,8 +46,8 @@ export function checkCelebration(
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
   settings?: Settings,
 ): boolean {
-  const dateWhenNotMoved = liturgySpecificDayInformation.Date;
-  const dateWhenMoved = liturgySpecificDayInformation.MovedDay.OriginDate;
+  const dateWhenNotMoved = liturgySpecificDayInformation.date;
+  const dateWhenMoved = liturgySpecificDayInformation.movedDay.originDate;
   const todayWeCelebrateAMovedDay = dateWhenMoved !== undefined;
 
   let isCelebrationWhenNotMoved = false;
@@ -171,7 +171,7 @@ export function checkCelebration(
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.MotherOfGodFromTheTibbon:
-      isCelebrationWhenNotMoved = isMotherOfGodFromTheTibbon(liturgySpecificDayInformation.Date, settings);
+      isCelebrationWhenNotMoved = isMotherOfGodFromTheTibbon(liturgySpecificDayInformation.date, settings);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.JesusChristHighPriestForever:
@@ -187,7 +187,7 @@ export function checkCelebration(
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
     case Celebration.SacredFamily:
-      isCelebrationWhenNotMoved = isSacredFamily(liturgySpecificDayInformation.Date);
+      isCelebrationWhenNotMoved = isSacredFamily(liturgySpecificDayInformation.date);
       isCelebrationThatCantBeMoved = isCelebrationWhenNotMoved;
       break;
   }
@@ -201,9 +201,9 @@ export function checkCelebration(
   // For example, if today is 26-may 2024 in SF will be in a HolyTrinity Sunday but also SF Cathedral Celebration.
   // In this case, we want to move the Cathedral Celebration but celebrate HolyTrinity.
   let todayIsMovedButAlsoIsCelebrationThatCantBeMoved =
-    liturgySpecificDayInformation.MovedDay.TodayIsMoved && isCelebrationThatCantBeMoved;
+    liturgySpecificDayInformation.movedDay.todayIsMoved && isCelebrationThatCantBeMoved;
 
-  if (liturgySpecificDayInformation.MovedDay.TodayIsMoved && !todayIsMovedButAlsoIsCelebrationThatCantBeMoved) {
+  if (liturgySpecificDayInformation.movedDay.todayIsMoved && !todayIsMovedButAlsoIsCelebrationThatCantBeMoved) {
     return false;
   }
 
@@ -212,9 +212,9 @@ export function checkCelebration(
 
 export function getSaturdayBeforePentecostDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
   let saturdayBeforePentecost = new Date(
-    liturgySpecificDayInformation.PentecostDay.getFullYear(),
-    liturgySpecificDayInformation.PentecostDay.getMonth(),
-    liturgySpecificDayInformation.PentecostDay.getDate(),
+    liturgySpecificDayInformation.pentecostDay.getFullYear(),
+    liturgySpecificDayInformation.pentecostDay.getMonth(),
+    liturgySpecificDayInformation.pentecostDay.getDate(),
   );
   saturdayBeforePentecost.setDate(saturdayBeforePentecost.getDate() - 1);
   return saturdayBeforePentecost;
@@ -222,16 +222,16 @@ export function getSaturdayBeforePentecostDate(liturgySpecificDayInformation: Li
 
 export function getMondayAfterEasterOctaveDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
   let mondayAfterEasterOctave = new Date(
-    liturgySpecificDayInformation.PentecostDay.getFullYear(),
-    liturgySpecificDayInformation.PentecostDay.getMonth(),
-    liturgySpecificDayInformation.PentecostDay.getDate(),
+    liturgySpecificDayInformation.pentecostDay.getFullYear(),
+    liturgySpecificDayInformation.pentecostDay.getMonth(),
+    liturgySpecificDayInformation.pentecostDay.getDate(),
   );
   mondayAfterEasterOctave.setDate(mondayAfterEasterOctave.getDate() - 41);
   return mondayAfterEasterOctave;
 }
 
 export function getSaturdayAfterEpiphanyDate(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
-  let saturdayAfterEpiphany = new Date(liturgySpecificDayInformation.Date.getFullYear(), 0, 6);
+  let saturdayAfterEpiphany = new Date(liturgySpecificDayInformation.date.getFullYear(), 0, 6);
   if (saturdayAfterEpiphany.getDay() === 6) {
     saturdayAfterEpiphany.setDate(saturdayAfterEpiphany.getDate() + 1);
   }
@@ -346,8 +346,8 @@ function isMatherOfGod(date: Date): boolean {
 
 function isPentecost(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return DateManagement.datesAreTheEqual(
-    liturgySpecificDayInformation.Date,
-    liturgySpecificDayInformation.PentecostDay,
+    liturgySpecificDayInformation.date,
+    liturgySpecificDayInformation.pentecostDay,
   );
 }
 
@@ -355,41 +355,41 @@ function isHolyHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInf
   //Divendres de la tercera setmana després de Pentecosta (Divendres després de Corpus) A (166) B (167) C (168)
   //Sagrat cor de Jesús
   const holyHeartOfJesus = new Date(
-    liturgySpecificDayInformation.PentecostDay.getFullYear(),
-    liturgySpecificDayInformation.PentecostDay.getMonth(),
-    liturgySpecificDayInformation.PentecostDay.getDate() + 19,
+    liturgySpecificDayInformation.pentecostDay.getFullYear(),
+    liturgySpecificDayInformation.pentecostDay.getMonth(),
+    liturgySpecificDayInformation.pentecostDay.getDate() + 19,
   );
-  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, holyHeartOfJesus);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, holyHeartOfJesus);
 }
 
 function isHolyBodyAndBloodOfChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //Diumenge després de la Santíssima Trinitat A (163) B (164) C (165)
   //Santíssim cos i sang de crist
   const holyBodyAndBloodOfChrist = new Date(
-    liturgySpecificDayInformation.PentecostDay.getFullYear(),
-    liturgySpecificDayInformation.PentecostDay.getMonth(),
-    liturgySpecificDayInformation.PentecostDay.getDate() + 14,
+    liturgySpecificDayInformation.pentecostDay.getFullYear(),
+    liturgySpecificDayInformation.pentecostDay.getMonth(),
+    liturgySpecificDayInformation.pentecostDay.getDate() + 14,
   );
-  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, holyBodyAndBloodOfChrist);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, holyBodyAndBloodOfChrist);
 }
 
 function isHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //Diumenge després de Pentecosta A (160) B (161) C (162)
   const holyTrinity = getHolyTrinity(liturgySpecificDayInformation);
-  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, holyTrinity);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, holyTrinity);
 }
 
 function getHolyTrinity(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
   return new Date(
-    liturgySpecificDayInformation.PentecostDay.getFullYear(),
-    liturgySpecificDayInformation.PentecostDay.getMonth(),
-    liturgySpecificDayInformation.PentecostDay.getDate() + 7,
+    liturgySpecificDayInformation.pentecostDay.getFullYear(),
+    liturgySpecificDayInformation.pentecostDay.getMonth(),
+    liturgySpecificDayInformation.pentecostDay.getDate() + 7,
   );
 }
 
 function isBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   const bodyAndBlood = getBodyAndBlood(liturgySpecificDayInformation);
-  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, bodyAndBlood);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, bodyAndBlood);
 }
 
 function getBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInformation): Date {
@@ -400,21 +400,21 @@ function getBodyAndBlood(liturgySpecificDayInformation: LiturgySpecificDayInform
 function isSacredHeartOfJesus(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   const bodyAndBlood = getBodyAndBlood(liturgySpecificDayInformation);
   const sacredHeartOfJesus = new Date(bodyAndBlood.getFullYear(), bodyAndBlood.getMonth(), bodyAndBlood.getDate() + 5);
-  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, sacredHeartOfJesus);
+  return DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, sacredHeartOfJesus);
 }
 
 function isOurLordJesusChrist(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
-    liturgySpecificDayInformation.Date.getDay() === 0 &&
-    liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
-    liturgySpecificDayInformation.Week === '34'
+    liturgySpecificDayInformation.date.getDay() === 0 &&
+    liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
+    liturgySpecificDayInformation.week === '34'
   );
 }
 
 function isAshWednesday(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
-    liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes &&
-    liturgySpecificDayInformation.DayOfTheWeek === 3
+    liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.LentAshes &&
+    liturgySpecificDayInformation.dayOfTheWeek === 3
   );
 }
 
@@ -422,16 +422,16 @@ function isImmaculateHeartOfTheBlessedVirginMary(
   liturgySpecificDayInformation: LiturgySpecificDayInformation,
 ): boolean {
   //santsMemories M - dissabte de la tercera setmana després de Pentecosta (COR IMMACULAT DE LA BENAURADA VERGE MARIA)
-  if (liturgySpecificDayInformation.CelebrationType === CelebrationType.Memory) {
+  if (liturgySpecificDayInformation.celebrationType === CelebrationType.Memory) {
     let corImmaculat = new Date(
-      liturgySpecificDayInformation.PentecostDay.getFullYear(),
-      liturgySpecificDayInformation.PentecostDay.getMonth(),
-      liturgySpecificDayInformation.PentecostDay.getDate() + 20,
+      liturgySpecificDayInformation.pentecostDay.getFullYear(),
+      liturgySpecificDayInformation.pentecostDay.getMonth(),
+      liturgySpecificDayInformation.pentecostDay.getDate() + 20,
     );
     if (
-      liturgySpecificDayInformation.Date.getDate() === corImmaculat.getDate() &&
-      liturgySpecificDayInformation.Date.getMonth() === corImmaculat.getMonth() &&
-      liturgySpecificDayInformation.Date.getFullYear() === corImmaculat.getFullYear()
+      liturgySpecificDayInformation.date.getDate() === corImmaculat.getDate() &&
+      liturgySpecificDayInformation.date.getMonth() === corImmaculat.getMonth() &&
+      liturgySpecificDayInformation.date.getFullYear() === corImmaculat.getFullYear()
     ) {
       return true;
     }
@@ -443,7 +443,7 @@ function isMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
   //santsMemories M - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
   //santsSolemnitats S - dissabte abans del primer diumenge de setembre (MARE DE DÉU DE LA CINTA)
   // This celebration is specific to the Diocese of Tortosa
-  if (settings && settings.DioceseName !== DioceseName.Tortosa) {
+  if (settings && settings.dioceseName !== DioceseName.Tortosa) {
     return false;
   }
   const auxDay = new Date(date.getFullYear(), 8, 2);
@@ -462,13 +462,13 @@ function isMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
 
 function isJesusChristHighPriestForever(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //santsSolemnitats F - dijous després de Pentecosta (Jesucrist, gran sacerdot per sempre)
-  if (liturgySpecificDayInformation.CelebrationType === CelebrationType.Festivity) {
+  if (liturgySpecificDayInformation.celebrationType === CelebrationType.Festivity) {
     const granSacerdot = new Date(
-      liturgySpecificDayInformation.PentecostDay.getFullYear(),
-      liturgySpecificDayInformation.PentecostDay.getMonth(),
-      liturgySpecificDayInformation.PentecostDay.getDate() + 4,
+      liturgySpecificDayInformation.pentecostDay.getFullYear(),
+      liturgySpecificDayInformation.pentecostDay.getMonth(),
+      liturgySpecificDayInformation.pentecostDay.getDate() + 4,
     );
-    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, granSacerdot)) {
+    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, granSacerdot)) {
       return true;
     }
   }
@@ -477,13 +477,13 @@ function isJesusChristHighPriestForever(liturgySpecificDayInformation: LiturgySp
 
 function isBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   //santsMemories M - dilluns després de Pentecosta (Benaurada Verge Maria, Mare de l’Església)
-  if (liturgySpecificDayInformation.CelebrationType === CelebrationType.Memory) {
+  if (liturgySpecificDayInformation.celebrationType === CelebrationType.Memory) {
     const benaurada = new Date(
-      liturgySpecificDayInformation.PentecostDay.getFullYear(),
-      liturgySpecificDayInformation.PentecostDay.getMonth(),
-      liturgySpecificDayInformation.PentecostDay.getDate() + 1,
+      liturgySpecificDayInformation.pentecostDay.getFullYear(),
+      liturgySpecificDayInformation.pentecostDay.getMonth(),
+      liturgySpecificDayInformation.pentecostDay.getDate() + 1,
     );
-    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.Date, benaurada)) {
+    if (DateManagement.datesAreTheEqual(liturgySpecificDayInformation.date, benaurada)) {
       return true;
     }
   }
@@ -492,9 +492,9 @@ function isBlessedVirginMaryMotherOfTheChurch(liturgySpecificDayInformation: Lit
 
 function isAscension(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
   return (
-    liturgySpecificDayInformation.Date.getDay() === 0 &&
-    liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks &&
-    liturgySpecificDayInformation.Week === '7'
+    liturgySpecificDayInformation.date.getDay() === 0 &&
+    liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks &&
+    liturgySpecificDayInformation.week === '7'
   );
 }
 

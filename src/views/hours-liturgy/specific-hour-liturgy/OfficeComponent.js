@@ -24,7 +24,7 @@ export default class OfficeComponent extends Component {
     super(props);
 
     // The invitatory psalm chosen last time, unless it is one of the psalms of the day
-    let auxNumSalmInv = props.settings.InvitationPsalmOption;
+    let auxNumSalmInv = props.settings.invitationPsalmOption;
     if (!GlobalViewFunctions.salmInvExists(auxNumSalmInv, props.titols)) {
       auxNumSalmInv = '94';
       props.onInvitationPsalmChange('94');
@@ -54,7 +54,7 @@ export default class OfficeComponent extends Component {
 
   render() {
     try {
-      if (this.today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
+      if (this.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
         let aux_vetlla = "La Vetlla pasqual substitueix avui l'Ofici de lectura.";
         let aux_participen =
           "Els qui no participen en la solemne Vetlla pasqual n'escolliran almenys quatre lectures, amb els corresponents salms responsorials i oracions. Les lectures més adients són les que segueixen.";
@@ -104,7 +104,7 @@ export default class OfficeComponent extends Component {
             <Gap />
             <SectionTitle>
               {'HIMNE'}
-              {this.today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary && this.hours.Office.IsDarkAnthem
+              {this.today.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary && this.hours.office.isDarkAnthem
                 ? ' (nit)'
                 : ' (dia)'}
             </SectionTitle>
@@ -156,10 +156,10 @@ export default class OfficeComponent extends Component {
   }
 
   salmInvitatori(numSalm) {
-    let salm94 = this.hours.Invitation.Psalm94;
-    let salm99 = this.hours.Invitation.Psalm99;
-    let salm66 = this.hours.Invitation.Psalm66;
-    let salm23 = this.hours.Invitation.Psalm23;
+    let salm94 = this.hours.invitation.psalm94;
+    let salm99 = this.hours.invitation.psalm99;
+    let salm66 = this.hours.invitation.psalm66;
+    let salm23 = this.hours.invitation.psalm23;
 
     let psalmTitle = '';
     let psalmReference = '';
@@ -190,7 +190,7 @@ export default class OfficeComponent extends Component {
     }
 
     const estrofes = psalmText.split('\n\n');
-    const antifona = GlobalViewFunctions.rs(this.hours.Invitation.InvitationAntiphon);
+    const antifona = GlobalViewFunctions.rs(this.hours.invitation.invitationAntiphon);
     const gloriaString =
       'Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.';
 
@@ -340,11 +340,11 @@ export default class OfficeComponent extends Component {
       const aux_senyor_veniu = 'Senyor, veniu a ajudar-nos.';
       // TODO: [UI Refactor] encapsulate
       const aux_isAleluia =
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
 
       return (
         <View>
@@ -367,7 +367,7 @@ export default class OfficeComponent extends Component {
 
   // TODO: [UI Refactor] duplicated code
   himne() {
-    const aux_himne = GlobalViewFunctions.rs(this.hours.Office.Anthem);
+    const aux_himne = GlobalViewFunctions.rs(this.hours.office.anthem);
     return (
       <Text selectable={true} style={this.styles.black}>
         {aux_himne}
@@ -377,24 +377,24 @@ export default class OfficeComponent extends Component {
 
   // TODO: [UI Refactor] at this point I will stop mention duplication. Is all super duplicated and all Views need a complete refactor
   salmodia() {
-    const aux_ant1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Antiphon);
-    const aux_titol1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Title);
+    const aux_ant1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.antiphon);
+    const aux_titol1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.title);
     let aux_com1 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Office.FirstPsalm.Comment))
-      aux_com1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Comment);
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Psalm));
-    const aux_ant2 = GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Antiphon);
-    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Title));
+    if (StringManagement.hasLiturgyContent(this.hours.office.firstPsalm.comment))
+      aux_com1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.comment);
+    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.office.firstPsalm.psalm));
+    const aux_ant2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.antiphon);
+    const aux_titol2 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.office.secondPsalm.title));
     let aux_com2 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Office.SecondPsalm.Comment))
-      aux_com2 = GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Comment);
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Psalm));
-    const aux_ant3 = GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Antiphon);
-    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Title));
+    if (StringManagement.hasLiturgyContent(this.hours.office.secondPsalm.comment))
+      aux_com2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.comment);
+    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.office.secondPsalm.psalm));
+    const aux_ant3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.antiphon);
+    const aux_titol3 = GlobalViewFunctions.canticSpace(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.title));
     let aux_com3 = '';
-    if (StringManagement.hasLiturgyContent(this.hours.Office.ThirdPsalm.Comment))
-      aux_com3 = GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Comment);
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Psalm));
+    if (StringManagement.hasLiturgyContent(this.hours.office.thirdPsalm.comment))
+      aux_com3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.comment);
+    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.psalm));
 
     return (
       <View>
@@ -404,7 +404,7 @@ export default class OfficeComponent extends Component {
           {aux_titol1}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Office.FirstPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.office.firstPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -419,7 +419,7 @@ export default class OfficeComponent extends Component {
           {aux_salm1}
         </Text>
         <Gap />
-        {this.hours.Office.FirstPsalm.HasGloryPrayer ? (
+        {this.hours.office.firstPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -437,7 +437,7 @@ export default class OfficeComponent extends Component {
           {aux_titol2}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Office.SecondPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.office.secondPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -452,7 +452,7 @@ export default class OfficeComponent extends Component {
           {aux_salm2}
         </Text>
         <Gap />
-        {this.hours.Office.SecondPsalm.HasGloryPrayer ? (
+        {this.hours.office.secondPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -470,7 +470,7 @@ export default class OfficeComponent extends Component {
           {aux_titol3}
         </Text>
         <Gap />
-        {StringManagement.hasLiturgyContent(this.hours.Office.ThirdPsalm.Comment) ? (
+        {StringManagement.hasLiturgyContent(this.hours.office.thirdPsalm.comment) ? (
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flex: 1 }} />
             <View style={{ flex: 2 }}>
@@ -485,7 +485,7 @@ export default class OfficeComponent extends Component {
           {aux_salm3}
         </Text>
         <Gap />
-        {this.hours.Office.ThirdPsalm.HasGloryPrayer ? (
+        {this.hours.office.thirdPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -501,8 +501,8 @@ export default class OfficeComponent extends Component {
   }
 
   vers() {
-    const aux_respV = GlobalViewFunctions.rs(this.hours.Office.Responsory.Versicle);
-    const aux_respR = GlobalViewFunctions.rs(this.hours.Office.Responsory.Response);
+    const aux_respV = GlobalViewFunctions.rs(this.hours.office.responsory.versicle);
+    const aux_respR = GlobalViewFunctions.rs(this.hours.office.responsory.response);
 
     return (
       <View>
@@ -514,35 +514,35 @@ export default class OfficeComponent extends Component {
 
   lectures() {
     try {
-      const aux_referencia1 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Reference);
-      const aux_titol_lectura1 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Title);
-      const aux_has_cita1 = this.hours.Office.FirstReading.Quote !== '-';
-      const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(this.hours.Office.FirstReading.Quote) : '';
-      const aux_lectura1 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Reading);
-      const aux_has_citaResp1 = this.hours.Office.FirstReading.Responsory.Quote !== '-';
+      const aux_referencia1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reference);
+      const aux_titol_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.title);
+      const aux_has_cita1 = this.hours.office.firstReading.quote !== '-';
+      const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(this.hours.office.firstReading.quote) : '';
+      const aux_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reading);
+      const aux_has_citaResp1 = this.hours.office.firstReading.responsory.quote !== '-';
       const aux_cita_resp1 = aux_has_citaResp1
-        ? GlobalViewFunctions.rs(this.hours.Office.FirstReading.Responsory.Quote)
+        ? GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.quote)
         : '';
       const aux_resp1_1_2 = GlobalViewFunctions.respTogether(
-        GlobalViewFunctions.rs(this.hours.Office.FirstReading.Responsory.FirstPart),
-        GlobalViewFunctions.rs(this.hours.Office.FirstReading.Responsory.SecondPart),
+        GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.firstPart),
+        GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.secondPart),
       );
-      const aux_resp1_2 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Responsory.SecondPart);
-      const aux_resp1_3 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Responsory.ThirdPart);
-      const aux_referencia2 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Reference);
-      const aux_titol_lectura2 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Title);
+      const aux_resp1_2 = GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.secondPart);
+      const aux_resp1_3 = GlobalViewFunctions.rs(this.hours.office.firstReading.responsory.thirdPart);
+      const aux_referencia2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reference);
+      const aux_titol_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.title);
       const aux_has_cita2 =
-        this.hours.Office.SecondReading.Quote != null && this.hours.Office.SecondReading.Quote !== '-';
-      const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(this.hours.Office.SecondReading.Quote) : '';
-      const aux_lectura2 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Reading);
-      const aux_has_vers2 = this.hours.Office.SecondReading.Responsory.Quote !== '-';
-      const aux_vers2 = aux_has_vers2 ? GlobalViewFunctions.rs(this.hours.Office.SecondReading.Responsory.Quote) : '';
+        this.hours.office.secondReading.quote != null && this.hours.office.secondReading.quote !== '-';
+      const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(this.hours.office.secondReading.quote) : '';
+      const aux_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reading);
+      const aux_has_vers2 = this.hours.office.secondReading.responsory.quote !== '-';
+      const aux_vers2 = aux_has_vers2 ? GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.quote) : '';
       const aux_resp2_1_2 = GlobalViewFunctions.respTogether(
-        GlobalViewFunctions.rs(this.hours.Office.SecondReading.Responsory.FirstPart),
-        GlobalViewFunctions.rs(this.hours.Office.SecondReading.Responsory.SecondPart),
+        GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.firstPart),
+        GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.secondPart),
       );
-      const aux_resp2_2 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Responsory.SecondPart);
-      const aux_resp2_3 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Responsory.ThirdPart);
+      const aux_resp2_2 = GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.secondPart);
+      const aux_resp2_3 = GlobalViewFunctions.rs(this.hours.office.secondReading.responsory.thirdPart);
 
       return (
         <View>
@@ -613,47 +613,47 @@ export default class OfficeComponent extends Component {
   }
 
   lecturesDiumPasqua() {
-    const aux_referencia1 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Reference);
-    const aux_titol_lectura1 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Title);
-    const aux_has_cita1 = this.hours.Office.FirstReading.Quote !== '-';
-    const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(this.hours.Office.FirstReading.Quote) : '';
-    const aux_lectura1 = GlobalViewFunctions.rs(this.hours.Office.FirstReading.Reading);
+    const aux_referencia1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reference);
+    const aux_titol_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.title);
+    const aux_has_cita1 = this.hours.office.firstReading.quote !== '-';
+    const aux_cita1 = aux_has_cita1 ? GlobalViewFunctions.rs(this.hours.office.firstReading.quote) : '';
+    const aux_lectura1 = GlobalViewFunctions.rs(this.hours.office.firstReading.reading);
 
-    const aux_ant1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Antiphon);
-    const aux_titol1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Title);
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Psalm));
+    const aux_ant1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.antiphon);
+    const aux_titol1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.title);
+    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.hours.office.firstPsalm.psalm));
     const aux_gloria1 = 'Glòria.';
-    const aux_oracio1 = GlobalViewFunctions.rs(this.hours.Office.FirstPsalm.Prayer);
+    const aux_oracio1 = GlobalViewFunctions.rs(this.hours.office.firstPsalm.prayer);
 
-    const aux_referencia2 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Reference);
-    const aux_titol_lectura2 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Title);
-    const aux_has_cita2 = this.hours.Office.SecondReading.Quote !== '-';
-    const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(this.hours.Office.SecondReading.Quote) : '';
-    const aux_lectura2 = GlobalViewFunctions.rs(this.hours.Office.SecondReading.Reading);
+    const aux_referencia2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reference);
+    const aux_titol_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.title);
+    const aux_has_cita2 = this.hours.office.secondReading.quote !== '-';
+    const aux_cita2 = aux_has_cita2 ? GlobalViewFunctions.rs(this.hours.office.secondReading.quote) : '';
+    const aux_lectura2 = GlobalViewFunctions.rs(this.hours.office.secondReading.reading);
 
-    const aux_ant2 = GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Antiphon);
-    const aux_titol2 = GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Title);
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Psalm));
+    const aux_ant2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.antiphon);
+    const aux_titol2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.title);
+    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.hours.office.secondPsalm.psalm));
     const aux_gloria2 = 'Glòria.';
-    const aux_oracio2 = GlobalViewFunctions.rs(this.hours.Office.SecondPsalm.Prayer);
+    const aux_oracio2 = GlobalViewFunctions.rs(this.hours.office.secondPsalm.prayer);
 
-    const aux_referencia3 = GlobalViewFunctions.rs(this.hours.Office.ThirdReading.Reference);
-    const aux_titol_lectura3 = GlobalViewFunctions.rs(this.hours.Office.ThirdReading.Title);
-    const aux_has_cita3 = this.hours.Office.ThirdReading.Quote !== '-';
-    const aux_cita3 = aux_has_cita3 ? GlobalViewFunctions.rs(this.hours.Office.ThirdReading.Quote) : '';
-    const aux_lectura3 = GlobalViewFunctions.rs(this.hours.Office.ThirdReading.Reading);
+    const aux_referencia3 = GlobalViewFunctions.rs(this.hours.office.thirdReading.reference);
+    const aux_titol_lectura3 = GlobalViewFunctions.rs(this.hours.office.thirdReading.title);
+    const aux_has_cita3 = this.hours.office.thirdReading.quote !== '-';
+    const aux_cita3 = aux_has_cita3 ? GlobalViewFunctions.rs(this.hours.office.thirdReading.quote) : '';
+    const aux_lectura3 = GlobalViewFunctions.rs(this.hours.office.thirdReading.reading);
 
-    const aux_ant3 = GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Antiphon);
-    const aux_titol3 = GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Title);
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Psalm));
+    const aux_ant3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.antiphon);
+    const aux_titol3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.title);
+    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.hours.office.thirdPsalm.psalm));
     const aux_gloria3 = 'Glòria.';
-    const aux_oracio3 = GlobalViewFunctions.rs(this.hours.Office.ThirdPsalm.Prayer);
+    const aux_oracio3 = GlobalViewFunctions.rs(this.hours.office.thirdPsalm.prayer);
 
-    const aux_referencia4 = GlobalViewFunctions.rs(this.hours.Office.FourthReading.Reference);
-    const aux_titol_lectura4 = GlobalViewFunctions.rs(this.hours.Office.FourthReading.Title);
-    const aux_has_cita4 = this.hours.Office.FourthReading.Quote !== '-';
-    const aux_cita4 = aux_has_cita4 ? GlobalViewFunctions.rs(this.hours.Office.FourthReading.Quote) : '';
-    const aux_lectura4 = GlobalViewFunctions.rs(this.hours.Office.FourthReading.Reading);
+    const aux_referencia4 = GlobalViewFunctions.rs(this.hours.office.fourthReading.reference);
+    const aux_titol_lectura4 = GlobalViewFunctions.rs(this.hours.office.fourthReading.title);
+    const aux_has_cita4 = this.hours.office.fourthReading.quote !== '-';
+    const aux_cita4 = aux_has_cita4 ? GlobalViewFunctions.rs(this.hours.office.fourthReading.quote) : '';
+    const aux_lectura4 = GlobalViewFunctions.rs(this.hours.office.fourthReading.reading);
 
     return (
       <View>
@@ -805,9 +805,9 @@ export default class OfficeComponent extends Component {
   }
 
   himneOhDeu() {
-    if (this.hours.Office.TeDeumInformation.Enabled) {
-      const aux0 = this.hours.Office.TeDeumInformation.Anthem.split('\n\n[')[0];
-      const aux1 = this.hours.Office.TeDeumInformation.Anthem.split('\n\n[')[1];
+    if (this.hours.office.teDeumInformation.enabled) {
+      const aux0 = this.hours.office.teDeumInformation.anthem.split('\n\n[')[0];
+      const aux1 = this.hours.office.teDeumInformation.anthem.split('\n\n[')[1];
       const himnePart1 = aux0;
       const himnePart2 = aux1.split(']')[0];
       return (
@@ -832,7 +832,7 @@ export default class OfficeComponent extends Component {
   }
 
   finalPrayer() {
-    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.hours.Office.FinalPrayer), false);
+    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.hours.office.finalPrayer), false);
     return (
       <Text selectable={true} style={this.styles.black}>
         {aux_oracio}

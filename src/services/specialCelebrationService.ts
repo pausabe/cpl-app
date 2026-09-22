@@ -12,7 +12,7 @@ export function obtainSpecialCelebration(
   settings: Settings,
 ): SpecialCelebration {
   let specialCelebration = new SpecialCelebration();
-  if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
+  if (liturgyDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     return specialCelebration;
   }
 
@@ -28,10 +28,10 @@ function obtainSpecialDaysMasterIdentifier(
   liturgyDayInformation: LiturgySpecificDayInformation,
   settings: Settings,
 ): number {
-  const date = liturgyDayInformation.Date;
-  const specificLiturgyTime = liturgyDayInformation.SpecificLiturgyTime;
-  const week = liturgyDayInformation.Week;
-  const dioceseCode = settings.DioceseCode;
+  const date = liturgyDayInformation.date;
+  const specificLiturgyTime = liturgyDayInformation.specificLiturgyTime;
+  const week = liturgyDayInformation.week;
+  const dioceseCode = settings.dioceseCode;
 
   //1- Sagrada Família quan és el 30 de desembre
   if (
@@ -346,9 +346,9 @@ function obtainSolemnityAndFestivityMasterIdentifier(liturgyDayInformation: Litu
 }
 
 function obtainStrongTimesMasterIdentifier(liturgyDayInformation: LiturgySpecificDayInformation) {
-  const date = liturgyDayInformation.Date;
-  const specificLiturgyTime = liturgyDayInformation.SpecificLiturgyTime;
-  const week = liturgyDayInformation.Week;
+  const date = liturgyDayInformation.date;
+  const specificLiturgyTime = liturgyDayInformation.specificLiturgyTime;
+  const week = liturgyDayInformation.week;
 
   //1- Dissabte I Advent
   if (specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks && week === '1' && date.getDay() === 6) {

@@ -73,7 +73,7 @@ test('la diòcesi es tria en un full; es desa i la litúrgia es recarrega amb el
   await act(async () => {
     fireEvent.press(screen.getByRole('radio', { name: 'Andorra' }));
   });
-  await waitFor(() => expect(DataService.CurrentSettings.DioceseName).toBe('Andorra'));
+  await waitFor(() => expect(DataService.CurrentSettings.dioceseName).toBe('Andorra'));
   expect(await AsyncStorage.getItem('diocesis')).toBe('Andorra');
   expect(screen.getByRole('button', { name: 'Diòcesi: Andorra' })).toBeTruthy();
 });
@@ -84,7 +84,7 @@ test('el lloc, també', async () => {
   await act(async () => {
     fireEvent.press(screen.getByRole('radio', { name: 'Catedral' }));
   });
-  await waitFor(() => expect(DataService.CurrentSettings.PrayingPlace).toBe('Catedral'));
+  await waitFor(() => expect(DataService.CurrentSettings.prayingPlace).toBe('Catedral'));
   expect(await AsyncStorage.getItem('lloc')).toBe('Catedral');
 });
 
@@ -93,7 +93,7 @@ test('els himnes en llatí es desen i recarreguen la litúrgia', async () => {
   await act(async () => {
     fireEvent.press(screen.getByRole('switch', { name: 'Himnes en llatí' }));
   });
-  await waitFor(() => expect(DataService.CurrentSettings.UseLatin).toBe(true));
+  await waitFor(() => expect(DataService.CurrentSettings.useLatin).toBe(true));
   expect(await AsyncStorage.getItem('useLatin')).toBe('true');
 });
 
@@ -110,7 +110,7 @@ test('el tema, Automàtic, Clar o Fosc, s’aplica a l’instant i es desa com s
   await act(async () => {
     fireEvent.press(screen.getByRole('radio', { name: 'Fosc' }));
   });
-  expect(DataService.CurrentSettings.DarkModeEnabled).toBe(true);
+  expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
 });
 
@@ -124,7 +124,7 @@ test('la mida del text es veu en una frase de mostra i es desa en deixar anar', 
   await act(async () => {
     slider.props.onSlidingComplete(6);
   });
-  expect(DataService.CurrentSettings.TextSize).toBe('6');
+  expect(DataService.CurrentSettings.textSize).toBe('6');
   expect(await AsyncStorage.getItem('textSize')).toBe('6');
 });
 

@@ -1,19 +1,19 @@
 import { Psalm, Responsory, ShortReading } from '../liturgy-masters/CommonParts';
 
 export default class Hours {
-  ThirdHour: SpecificHour = new SpecificHour();
-  SixthHour: SpecificHour = new SpecificHour();
-  NinthHour: SpecificHour = new SpecificHour();
+  thirdHour: SpecificHour = new SpecificHour();
+  sixthHour: SpecificHour = new SpecificHour();
+  ninthHour: SpecificHour = new SpecificHour();
 }
 
 export class SpecificHour {
-  Anthem: string;
-  HasMultipleAntiphons: boolean;
-  UniqueAntiphon: string;
-  FirstPsalm: Psalm = new Psalm();
-  SecondPsalm: Psalm = new Psalm();
-  ThirdPsalm: Psalm = new Psalm();
-  ShortReading: ShortReading = new ShortReading();
-  Responsory: Responsory = new Responsory();
-  FinalPrayer: string;
+  anthem: string;
+  hasMultipleAntiphons: boolean;
+  uniqueAntiphon: string;
+  firstPsalm: Psalm = new Psalm();
+  secondPsalm: Psalm = new Psalm();
+  thirdPsalm: Psalm = new Psalm();
+  shortReading: ShortReading = new ShortReading();
+  responsory: Responsory = new Responsory();
+  finalPrayer: string;
 }

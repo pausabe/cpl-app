@@ -1,47 +1,47 @@
 export default class PartsOfEasterAfterAscension {
-  static MasterName: string = 'tempsPasquaDA';
+  static masterName: string = 'tempsPasquaDA';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
-      this.VespersLatinAnthem = databaseRow.himneVespresLlati;
-      this.VespersCatalanAnthem = databaseRow.himneVespresCat;
-      this.NightPrayerLatinAnthem = databaseRow.himneCompletesLlati;
-      this.NightPrayerCatalanAnthem = databaseRow.himneCompletesCat;
-      this.InvitationAntiphon = databaseRow.antInvitatori;
-      this.OfficeLatinAnthem = databaseRow.himneOficiLlati;
-      this.OfficeCatalanAnthem = databaseRow.himneOficiCat;
-      this.LaudesLatinAnthem = databaseRow.himneLaudesLlati;
-      this.LaudesCatalanAnthem = databaseRow.himneLaudesCat;
-      this.ThirdHourLatinAnthem = databaseRow.himneTerciaLlati;
-      this.ThirdHourCatalanAnthem = databaseRow.himneTerciaCat;
-      this.ThirdHourAntiphon = databaseRow.antTercia;
-      this.SixthHourLatinAnthem = databaseRow.himneSextaLlati;
-      this.SixthHourCatalanAnthem = databaseRow.himneSextaCat;
-      this.SixthHourAntiphon = databaseRow.antSexta;
-      this.NinthHourLatinAnthem = databaseRow.himneNonaLlati;
-      this.NinthHourCatalanAnthem = databaseRow.himneNonaCat;
-      this.NinthHourAntiphon = databaseRow.antNona;
+      this.id = databaseRow.id;
+      this.vespersLatinAnthem = databaseRow.himneVespresLlati;
+      this.vespersCatalanAnthem = databaseRow.himneVespresCat;
+      this.nightPrayerLatinAnthem = databaseRow.himneCompletesLlati;
+      this.nightPrayerCatalanAnthem = databaseRow.himneCompletesCat;
+      this.invitationAntiphon = databaseRow.antInvitatori;
+      this.officeLatinAnthem = databaseRow.himneOficiLlati;
+      this.officeCatalanAnthem = databaseRow.himneOficiCat;
+      this.laudesLatinAnthem = databaseRow.himneLaudesLlati;
+      this.laudesCatalanAnthem = databaseRow.himneLaudesCat;
+      this.thirdHourLatinAnthem = databaseRow.himneTerciaLlati;
+      this.thirdHourCatalanAnthem = databaseRow.himneTerciaCat;
+      this.thirdHourAntiphon = databaseRow.antTercia;
+      this.sixthHourLatinAnthem = databaseRow.himneSextaLlati;
+      this.sixthHourCatalanAnthem = databaseRow.himneSextaCat;
+      this.sixthHourAntiphon = databaseRow.antSexta;
+      this.ninthHourLatinAnthem = databaseRow.himneNonaLlati;
+      this.ninthHourCatalanAnthem = databaseRow.himneNonaCat;
+      this.ninthHourAntiphon = databaseRow.antNona;
     }
   }
 
-  Id: number;
-  VespersLatinAnthem: string;
-  VespersCatalanAnthem: string;
-  NightPrayerLatinAnthem: string;
-  NightPrayerCatalanAnthem: string;
-  InvitationAntiphon: string;
-  OfficeLatinAnthem: string;
-  OfficeCatalanAnthem: string;
-  LaudesLatinAnthem: string;
-  LaudesCatalanAnthem: string;
-  ThirdHourLatinAnthem: string;
-  ThirdHourCatalanAnthem: string;
-  ThirdHourAntiphon: string;
-  SixthHourLatinAnthem: string;
-  SixthHourCatalanAnthem: string;
-  SixthHourAntiphon: string;
-  NinthHourLatinAnthem: string;
-  NinthHourCatalanAnthem: string;
-  NinthHourAntiphon: string;
+  id: number;
+  vespersLatinAnthem: string;
+  vespersCatalanAnthem: string;
+  nightPrayerLatinAnthem: string;
+  nightPrayerCatalanAnthem: string;
+  invitationAntiphon: string;
+  officeLatinAnthem: string;
+  officeCatalanAnthem: string;
+  laudesLatinAnthem: string;
+  laudesCatalanAnthem: string;
+  thirdHourLatinAnthem: string;
+  thirdHourCatalanAnthem: string;
+  thirdHourAntiphon: string;
+  sixthHourLatinAnthem: string;
+  sixthHourCatalanAnthem: string;
+  sixthHourAntiphon: string;
+  ninthHourLatinAnthem: string;
+  ninthHourCatalanAnthem: string;
+  ninthHourAntiphon: string;
 }

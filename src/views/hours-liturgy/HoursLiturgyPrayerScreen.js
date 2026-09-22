@@ -60,17 +60,17 @@ export default class HoursLiturgyPrayerScreen extends Component {
     const hours = this.props.hours;
     const titles = [];
 
-    titles.push(hours.Office.FirstPsalm.Title);
-    titles.push(hours.Office.SecondPsalm.Title);
-    titles.push(hours.Office.ThirdPsalm.Title);
-    titles.push(hours.Laudes.FirstPsalm.Title);
-    titles.push(hours.Laudes.ThirdPsalm.Title);
-    titles.push(hours.Vespers.FirstPsalm.Title);
-    titles.push(hours.Vespers.SecondPsalm.Title);
-    titles.push(hours.NightPrayer.FirstPsalm.Title);
+    titles.push(hours.office.firstPsalm.title);
+    titles.push(hours.office.secondPsalm.title);
+    titles.push(hours.office.thirdPsalm.title);
+    titles.push(hours.laudes.firstPsalm.title);
+    titles.push(hours.laudes.thirdPsalm.title);
+    titles.push(hours.vespers.firstPsalm.title);
+    titles.push(hours.vespers.secondPsalm.title);
+    titles.push(hours.nightPrayer.firstPsalm.title);
 
-    if (hours.NightPrayer.HasMultiplePsalms) {
-      titles.push(hours.NightPrayer.SecondPsalm.Title);
+    if (hours.nightPrayer.hasMultiplePsalms) {
+      titles.push(hours.nightPrayer.secondPsalm.title);
     }
     return titles;
   }
@@ -96,13 +96,13 @@ export default class HoursLiturgyPrayerScreen extends Component {
         return <Vespres {...common} />;
 
       case 'Tèrcia':
-        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.ThirdHour} />;
+        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.hours.thirdHour} />;
 
       case 'Sexta':
-        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.SixthHour} />;
+        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.hours.sixthHour} />;
 
       case 'Nona':
-        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.NinthHour} />;
+        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.hours.ninthHour} />;
 
       case 'Completes':
         return <Completes {...common} onVirginAntiphonChange={this.props.onVirginAntiphonChange} />;

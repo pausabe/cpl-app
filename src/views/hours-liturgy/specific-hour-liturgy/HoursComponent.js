@@ -31,11 +31,11 @@ export default class HoursComponent extends Component {
       const gloriaStringIntro =
         'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
       const aux_isAleluia =
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
-        this.today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentWeeks &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PalmSunday &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.HolyWeek &&
+        this.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum;
 
       return (
         <View>
@@ -103,7 +103,7 @@ export default class HoursComponent extends Component {
   }
 
   himne() {
-    const aux_himne = GlobalViewFunctions.rs(this.specificHour.Anthem);
+    const aux_himne = GlobalViewFunctions.rs(this.specificHour.anthem);
     return (
       <Text selectable={true} style={this.styles.black}>
         {aux_himne}
@@ -112,23 +112,23 @@ export default class HoursComponent extends Component {
   }
 
   salmodia() {
-    const aux_antifones = this.specificHour.HasMultipleAntiphons;
-    const aux_ant1 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Antiphon) : '';
-    const aux_ant = !aux_antifones ? GlobalViewFunctions.rs(this.specificHour.UniqueAntiphon) : '';
-    const aux_titol1 = GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Title);
-    const aux_has_com1 = StringManagement.hasLiturgyContent(this.specificHour.FirstPsalm.Comment);
-    const aux_com1 = aux_has_com1 ? GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Comment) : '';
-    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.specificHour.FirstPsalm.Psalm));
-    const aux_ant2 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Antiphon) : '';
-    const aux_titol2 = GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Title);
-    const aux_has_com2 = StringManagement.hasLiturgyContent(this.specificHour.SecondPsalm.Comment);
-    const aux_com2 = aux_has_com2 ? GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Comment) : '';
-    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.specificHour.SecondPsalm.Psalm));
-    const aux_ant3 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Antiphon) : '';
-    const aux_titol3 = GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Title);
-    const aux_has_com3 = StringManagement.hasLiturgyContent(this.specificHour.ThirdPsalm.Comment);
-    const aux_com3 = aux_has_com3 ? GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Comment) : '';
-    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.specificHour.ThirdPsalm.Psalm));
+    const aux_antifones = this.specificHour.hasMultipleAntiphons;
+    const aux_ant1 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.firstPsalm.antiphon) : '';
+    const aux_ant = !aux_antifones ? GlobalViewFunctions.rs(this.specificHour.uniqueAntiphon) : '';
+    const aux_titol1 = GlobalViewFunctions.rs(this.specificHour.firstPsalm.title);
+    const aux_has_com1 = StringManagement.hasLiturgyContent(this.specificHour.firstPsalm.comment);
+    const aux_com1 = aux_has_com1 ? GlobalViewFunctions.rs(this.specificHour.firstPsalm.comment) : '';
+    const aux_salm1 = this.salm(GlobalViewFunctions.rs(this.specificHour.firstPsalm.psalm));
+    const aux_ant2 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.secondPsalm.antiphon) : '';
+    const aux_titol2 = GlobalViewFunctions.rs(this.specificHour.secondPsalm.title);
+    const aux_has_com2 = StringManagement.hasLiturgyContent(this.specificHour.secondPsalm.comment);
+    const aux_com2 = aux_has_com2 ? GlobalViewFunctions.rs(this.specificHour.secondPsalm.comment) : '';
+    const aux_salm2 = this.salm(GlobalViewFunctions.rs(this.specificHour.secondPsalm.psalm));
+    const aux_ant3 = aux_antifones ? GlobalViewFunctions.rs(this.specificHour.thirdPsalm.antiphon) : '';
+    const aux_titol3 = GlobalViewFunctions.rs(this.specificHour.thirdPsalm.title);
+    const aux_has_com3 = StringManagement.hasLiturgyContent(this.specificHour.thirdPsalm.comment);
+    const aux_com3 = aux_has_com3 ? GlobalViewFunctions.rs(this.specificHour.thirdPsalm.comment) : '';
+    const aux_salm3 = this.salm(GlobalViewFunctions.rs(this.specificHour.thirdPsalm.psalm));
 
     return (
       <View>
@@ -161,7 +161,7 @@ export default class HoursComponent extends Component {
           {aux_salm1}
         </Text>
         <Gap />
-        {this.specificHour.FirstPsalm.HasGloryPrayer ? (
+        {this.specificHour.firstPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -198,7 +198,7 @@ export default class HoursComponent extends Component {
           {aux_salm2}
         </Text>
         <Gap />
-        {this.specificHour.SecondPsalm.HasGloryPrayer ? (
+        {this.specificHour.secondPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -235,7 +235,7 @@ export default class HoursComponent extends Component {
           {aux_salm3}
         </Text>
         <Gap />
-        {this.specificHour.ThirdPsalm.HasGloryPrayer ? (
+        {this.specificHour.thirdPsalm.hasGloryPrayer ? (
           <Text selectable={true} style={this.styles.blackItalic}>
             {'Glòria.'}
           </Text>
@@ -259,10 +259,10 @@ export default class HoursComponent extends Component {
   }
 
   lecturaBreuResp() {
-    const aux_vers = GlobalViewFunctions.rs(this.specificHour.ShortReading.Quote);
-    const aux_lecturaBreu = GlobalViewFunctions.rs(this.specificHour.ShortReading.ShortReading);
-    const aux_respV = GlobalViewFunctions.rs(this.specificHour.Responsory.Versicle);
-    const aux_respR = GlobalViewFunctions.rs(this.specificHour.Responsory.Response);
+    const aux_vers = GlobalViewFunctions.rs(this.specificHour.shortReading.quote);
+    const aux_lecturaBreu = GlobalViewFunctions.rs(this.specificHour.shortReading.shortReading);
+    const aux_respV = GlobalViewFunctions.rs(this.specificHour.responsory.versicle);
+    const aux_respR = GlobalViewFunctions.rs(this.specificHour.responsory.response);
 
     return (
       <View>
@@ -281,7 +281,7 @@ export default class HoursComponent extends Component {
   }
 
   finalPrayer() {
-    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.specificHour.FinalPrayer), true);
+    const aux_oracio = GlobalViewFunctions.completeOracio(GlobalViewFunctions.rs(this.specificHour.finalPrayer), true);
     return (
       <Text selectable={true} style={this.styles.black}>
         {aux_oracio}

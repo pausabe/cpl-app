@@ -1,21 +1,21 @@
 import { Psalm, Responsory, ShortReading, ShortResponsory } from '../liturgy-masters/CommonParts';
 
 export default class NightPrayer {
-  Anthem: string;
-  HasMultiplePsalms: boolean;
-  UseOnlyFirstPsalmAntiphon: boolean;
-  FirstPsalm: Psalm = new Psalm();
-  SecondPsalm: Psalm = new Psalm();
-  ShortReading: ShortReading = new ShortReading();
-  ShortResponsory: ShortResponsory = new ShortResponsory();
-  Responsory: Responsory = new Responsory();
-  EvangelicalAntiphon: string;
-  EvangelicalChant: string;
-  FinalPrayer: string;
-  VirginMaryFinalAntiphonFirstOption: string;
-  VirginMaryFinalAntiphonSecondOption: string;
-  VirginMaryFinalAntiphonThirdOption: string;
-  VirginMaryFinalAntiphonFourthOption: string;
-  VirginMaryFinalAntiphonFifthOption: string;
-  PenitentialAct: string;
+  anthem: string;
+  hasMultiplePsalms: boolean;
+  useOnlyFirstPsalmAntiphon: boolean;
+  firstPsalm: Psalm = new Psalm();
+  secondPsalm: Psalm = new Psalm();
+  shortReading: ShortReading = new ShortReading();
+  shortResponsory: ShortResponsory = new ShortResponsory();
+  responsory: Responsory = new Responsory();
+  evangelicalAntiphon: string;
+  evangelicalChant: string;
+  finalPrayer: string;
+  virginMaryFinalAntiphonFirstOption: string;
+  virginMaryFinalAntiphonSecondOption: string;
+  virginMaryFinalAntiphonThirdOption: string;
+  virginMaryFinalAntiphonFourthOption: string;
+  virginMaryFinalAntiphonFifthOption: string;
+  penitentialAct: string;
 }

@@ -8,25 +8,25 @@ import { longDate, ofName, romanize, weekdayName } from './catalanText';
 // It only needs these fields, the ones of LiturgySpecificDayInformation, CelebrationInformation
 // and Settings that say it; whatever provides the day's data can fill them.
 export interface DayInput {
-  Date: Date;
-  CelebrationType: string;
-  LiturgyColor: string;
-  GenericLiturgyTime: string;
-  SpecificLiturgyTime: string;
-  Week: string;
-  WeekCycle: string;
-  YearType: string;
+  date: Date;
+  celebrationType: string;
+  liturgyColor: string;
+  genericLiturgyTime: string;
+  specificLiturgyTime: string;
+  week: string;
+  weekCycle: string;
+  yearType: string;
 }
 
 export interface CelebrationInput {
-  Title: string;
-  Description: string;
+  title: string;
+  description: string;
 }
 
 export interface PlaceAndOptionsInput {
-  DioceseName: string;
-  PrayingPlace: string;
-  OptionalFestivityEnabled: boolean;
+  dioceseName: string;
+  prayingPlace: string;
+  optionalFestivityEnabled: boolean;
 }
 
 export type ColorCode = 'R' | 'V' | 'M' | 'B';
@@ -81,10 +81,10 @@ export function seasonName(genericLiturgyTime: string): string {
 // "Dimarts de la setmana XXV"; in the days after Ash Wednesday, "Dijous després de Cendra".
 // What HomeScreen.Info_Liturgica wrote on its first line.
 export function weekText(day: DayInput): string | null {
-  const weekday = weekdayName(day.Date.getDay());
-  if (validNumber(day.Week)) return `${weekday} de la setmana ${romanize(day.Week)}`;
-  if (day.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
-    return day.Date.getDay() === 3 ? `${weekday} de Cendra` : `${weekday} després de Cendra`;
+  const weekday = weekdayName(day.date.getDay());
+  if (validNumber(day.week)) return `${weekday} de la setmana ${romanize(day.week)}`;
+  if (day.specificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
+    return day.date.getDay() === 3 ? `${weekday} de Cendra` : `${weekday} després de Cendra`;
   }
   return null;
 }
@@ -94,9 +94,9 @@ export function weekText(day: DayInput): string | null {
 // ("Dilluns de la setmana XXV · Any A · …") the line always took two. The days after Ash
 // Wednesday have no week: "Dijous després de Cendra".
 export function weekOfSeason(day: DayInput): string | null {
-  if (!validNumber(day.Week)) return weekText(day);
-  const week = `Setmana ${romanize(day.Week)}`;
-  const season = day.GenericLiturgyTime;
+  if (!validNumber(day.week)) return weekText(day);
+  const week = `Setmana ${romanize(day.week)}`;
+  const season = day.genericLiturgyTime;
   return !season || season === GenericLiturgyTimeType.Ordinary ? week : `${week} ${ofName(season)}`;
 }
 
@@ -122,15 +122,15 @@ export function optionalMemoryCaption(enabled: boolean): string {
 }
 
 export function buildDayCard(day: DayInput, celebration: CelebrationInput, settings: PlaceAndOptionsInput): DayCard {
-  const hasTitle = hasContent(celebration.Title);
-  const season = seasonName(day.GenericLiturgyTime);
+  const hasTitle = hasContent(celebration.title);
+  const season = seasonName(day.genericLiturgyTime);
   const week = weekText(day);
 
   let title: string;
   let first: string | null;
   if (hasTitle) {
-    title = celebration.Title;
-    first = week && WEEKDAY_CELEBRATIONS.includes(day.CelebrationType) ? weekOfSeason(day) : season;
+    title = celebration.title;
+    first = week && WEEKDAY_CELEBRATIONS.includes(day.celebrationType) ? weekOfSeason(day) : season;
   } else if (week) {
     title = week;
     first = season;
@@ -138,31 +138,31 @@ export function buildDayCard(day: DayInput, celebration: CelebrationInput, setti
     title = season;
     first = null;
   }
-  const cycle = validNumber(day.WeekCycle);
+  const cycle = validNumber(day.weekCycle);
   const meta = [
     first,
-    cycle && hasVisibleText(day.YearType) ? `Any ${day.YearType}` : null,
-    cycle ? `Setmana ${romanize(day.WeekCycle)} del salteri` : null,
+    cycle && hasVisibleText(day.yearType) ? `Any ${day.yearType}` : null,
+    cycle ? `Setmana ${romanize(day.weekCycle)} del salteri` : null,
   ]
     .filter(Boolean)
     .join(' · ');
 
-  const optional = hasTitle && isOptionalMemory(day.CelebrationType);
-  const code = colorCode(day.LiturgyColor);
+  const optional = hasTitle && isOptionalMemory(day.celebrationType);
+  const code = colorCode(day.liturgyColor);
   return {
-    place: `${settings.DioceseName} (${settings.PrayingPlace})`,
-    dateText: longDate(day.Date),
+    place: `${settings.dioceseName} (${settings.prayingPlace})`,
+    dateText: longDate(day.date),
     colorCode: code,
     colorName: COLOR_NAMES[code],
-    typeLabel: hasTitle ? celebrationTypeLabel(day.CelebrationType, day.GenericLiturgyTime) : null,
+    typeLabel: hasTitle ? celebrationTypeLabel(day.celebrationType, day.genericLiturgyTime) : null,
     title,
-    muted: optional && !settings.OptionalFestivityEnabled,
+    muted: optional && !settings.optionalFestivityEnabled,
     meta,
-    description: hasTitle && hasContent(celebration.Description) ? celebration.Description : null,
+    description: hasTitle && hasContent(celebration.description) ? celebration.description : null,
     optionalMemory: optional
       ? {
-          enabled: !!settings.OptionalFestivityEnabled,
-          caption: optionalMemoryCaption(!!settings.OptionalFestivityEnabled),
+          enabled: !!settings.optionalFestivityEnabled,
+          caption: optionalMemoryCaption(!!settings.optionalFestivityEnabled),
         }
       : null,
   };

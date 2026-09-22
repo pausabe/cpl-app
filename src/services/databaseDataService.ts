@@ -45,34 +45,34 @@ export async function obtainLiturgySpecificDayInformation(
   );
   const todayLiturgy = result[0];
   let liturgyDayInformation = new LiturgySpecificDayInformation();
-  liturgyDayInformation.Date = date;
-  liturgyDayInformation.PentecostDay = await obtainPentecostDay(liturgyDayInformation.Date);
-  liturgyDayInformation.CelebrationType = DatabaseHelper.getCelebrationTypeFromTodayLiurgyRow(
-    currentSettings.DioceseCode,
+  liturgyDayInformation.date = date;
+  liturgyDayInformation.pentecostDay = await obtainPentecostDay(liturgyDayInformation.date);
+  liturgyDayInformation.celebrationType = DatabaseHelper.getCelebrationTypeFromTodayLiurgyRow(
+    currentSettings.dioceseCode,
     todayLiturgy,
   );
 
   // Moved day is used to detect if today's celebrations is meant to be celebrated in another day
-  liturgyDayInformation.MovedDay.OriginDateShortDatabaseCode = todayLiturgy.diaMogut;
-  liturgyDayInformation.MovedDay.TodayIsMoved = await dateIsMoved(
-    liturgyDayInformation.Date,
-    currentSettings.DioceseCode2Letters,
+  liturgyDayInformation.movedDay.originDateShortDatabaseCode = todayLiturgy.diaMogut;
+  liturgyDayInformation.movedDay.todayIsMoved = await dateIsMoved(
+    liturgyDayInformation.date,
+    currentSettings.dioceseCode2Letters,
   );
-  liturgyDayInformation.MovedDay.OriginDate = DatabaseHelper.getDateFromShortDatabaseCode(
+  liturgyDayInformation.movedDay.originDate = DatabaseHelper.getDateFromShortDatabaseCode(
     todayLiturgy.diaMogut,
     date.getFullYear(),
   );
-  liturgyDayInformation.MovedDay.DioceseCode2Letters = todayLiturgy.diocesiMogut;
+  liturgyDayInformation.movedDay.dioceseCode2Letters = todayLiturgy.diocesiMogut;
 
-  liturgyDayInformation.LiturgyColor = todayLiturgy.Color;
-  liturgyDayInformation.GenericLiturgyTime = todayLiturgy.tempsespecific;
-  liturgyDayInformation.SpecificLiturgyTime = todayLiturgy.temps;
-  liturgyDayInformation.WeekCycle = todayLiturgy.cicle;
-  liturgyDayInformation.Week = todayLiturgy.NumSet;
-  liturgyDayInformation.YearType = todayLiturgy.anyABC;
-  liturgyDayInformation.YearIsEven = todayLiturgy.paroimpar === 'II';
-  liturgyDayInformation.DayOfTheWeek = date.getDay();
-  liturgyDayInformation.DayOfTheWeekNameShort = todayLiturgy.DiadelaSetmana;
+  liturgyDayInformation.liturgyColor = todayLiturgy.Color;
+  liturgyDayInformation.genericLiturgyTime = todayLiturgy.tempsespecific;
+  liturgyDayInformation.specificLiturgyTime = todayLiturgy.temps;
+  liturgyDayInformation.weekCycle = todayLiturgy.cicle;
+  liturgyDayInformation.week = todayLiturgy.NumSet;
+  liturgyDayInformation.yearType = todayLiturgy.anyABC;
+  liturgyDayInformation.yearIsEven = todayLiturgy.paroimpar === 'II';
+  liturgyDayInformation.dayOfTheWeek = date.getDay();
+  liturgyDayInformation.dayOfTheWeekNameShort = todayLiturgy.DiadelaSetmana;
   return liturgyDayInformation;
 }
 
@@ -84,8 +84,8 @@ export async function obtainPentecostDay(date: Date) {
 }
 
 export async function obtainMinimumAndMaximumSelectableDates(): Promise<{
-  MinimumSelectableDate: Date;
-  MaximumSelectableDate: Date;
+  minimumSelectableDate: Date;
+  maximumSelectableDate: Date;
 }> {
   // The first and the last day in anyliturgic, which keeps the dates as text. One pass over
   // the table each: the query this replaced, with correlated subqueries, took most of the
@@ -98,8 +98,8 @@ export async function obtainMinimumAndMaximumSelectableDates(): Promise<{
   const minDate = new Date(first.year, first.month - 1, first.day + marginDays);
   const maxDate = new Date(last.year, last.month - 1, last.day - marginDays);
   return {
-    MinimumSelectableDate: minDate,
-    MaximumSelectableDate: maxDate,
+    minimumSelectableDate: minDate,
+    maximumSelectableDate: maxDate,
   };
 }
 
@@ -172,13 +172,13 @@ export async function getHolyDaysMassWithIdentifier(holyDayMassIdentifier: numbe
 }
 
 export async function getNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpecificDayInformation) {
-  let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${liturgyDayInformation.GenericLiturgyTime}' AND DiadelaSetmana = '${liturgyDayInformation.DayOfTheWeekNameShort}' AND NumSet = '${liturgyDayInformation.Week}'`;
+  let query = `SELECT * FROM LDdiumenges WHERE tempsespecific = '${liturgyDayInformation.genericLiturgyTime}' AND DiadelaSetmana = '${liturgyDayInformation.dayOfTheWeekNameShort}' AND NumSet = '${liturgyDayInformation.week}'`;
   const result = await executeQueryAsync(query);
   let index = getNormalDaysMassLiturgyIndex(
     result,
-    liturgyDayInformation.YearType,
-    liturgyDayInformation.YearIsEven ? 'II' : 'I',
-    liturgyDayInformation.DayOfTheWeekNameShort,
+    liturgyDayInformation.yearType,
+    liturgyDayInformation.yearIsEven ? 'II' : 'I',
+    liturgyDayInformation.dayOfTheWeekNameShort,
   );
   return rowToMassLiturgy(result[index]);
 }
@@ -186,24 +186,24 @@ export async function getNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpe
 function rowToMassLiturgy(row): DayMassLiturgy {
   let dayMassLiturgy = new DayMassLiturgy();
   if (row !== undefined) {
-    dayMassLiturgy.HasGlory = row.Gloria === '1';
-    dayMassLiturgy.FirstReading.Quote = row.Lectura1;
-    dayMassLiturgy.FirstReading.Comment = row.Lectura1Cita;
-    dayMassLiturgy.FirstReading.Title = row.Lectura1Titol;
-    dayMassLiturgy.FirstReading.Reading = row.Lectura1Text;
-    dayMassLiturgy.Psalm.Quote = row.Salm;
-    dayMassLiturgy.Psalm.Psalm = row.SalmText;
-    dayMassLiturgy.SecondReading.Quote = row.Lectura2;
-    dayMassLiturgy.SecondReading.Comment = row.Lectura2Cita;
-    dayMassLiturgy.SecondReading.Title = row.Lectura2Titol;
-    dayMassLiturgy.SecondReading.Reading = row.Lectura2Text;
-    dayMassLiturgy.Hallelujah.Quote = row.Alleluia;
-    dayMassLiturgy.Hallelujah.Hallelujah = row.AlleluiaText;
-    dayMassLiturgy.Gospel.Quote = row.Evangeli;
-    dayMassLiturgy.Gospel.Comment = row.EvangeliCita;
-    dayMassLiturgy.Gospel.Title = row.EvangeliTitol;
-    dayMassLiturgy.Gospel.Gospel = row.EvangeliText;
-    dayMassLiturgy.HasCreed = row.credo === '1';
+    dayMassLiturgy.hasGlory = row.Gloria === '1';
+    dayMassLiturgy.firstReading.quote = row.Lectura1;
+    dayMassLiturgy.firstReading.comment = row.Lectura1Cita;
+    dayMassLiturgy.firstReading.title = row.Lectura1Titol;
+    dayMassLiturgy.firstReading.reading = row.Lectura1Text;
+    dayMassLiturgy.psalm.quote = row.Salm;
+    dayMassLiturgy.psalm.psalm = row.SalmText;
+    dayMassLiturgy.secondReading.quote = row.Lectura2;
+    dayMassLiturgy.secondReading.comment = row.Lectura2Cita;
+    dayMassLiturgy.secondReading.title = row.Lectura2Titol;
+    dayMassLiturgy.secondReading.reading = row.Lectura2Text;
+    dayMassLiturgy.hallelujah.quote = row.Alleluia;
+    dayMassLiturgy.hallelujah.hallelujah = row.AlleluiaText;
+    dayMassLiturgy.gospel.quote = row.Evangeli;
+    dayMassLiturgy.gospel.comment = row.EvangeliCita;
+    dayMassLiturgy.gospel.title = row.EvangeliTitol;
+    dayMassLiturgy.gospel.gospel = row.EvangeliText;
+    dayMassLiturgy.hasCreed = row.credo === '1';
     dayMassLiturgy.videoUrl = row.videoUrl || '';
   }
   return dayMassLiturgy;
@@ -214,15 +214,15 @@ async function getHolyDaysMassWithoutIdentifier(
   settings: Settings,
 ): Promise<DayMassLiturgy> {
   const dateString = DatabaseHelper.getDateShortDatabaseCode(
-    liturgySpecificDayInformation.Date,
-    settings.DioceseCode,
-    liturgySpecificDayInformation.MovedDay.OriginDateShortDatabaseCode,
-    liturgySpecificDayInformation.MovedDay.DioceseCode2Letters,
+    liturgySpecificDayInformation.date,
+    settings.dioceseCode,
+    liturgySpecificDayInformation.movedDay.originDateShortDatabaseCode,
+    liturgySpecificDayInformation.movedDay.dioceseCode2Letters,
   );
-  const customizedSpecificTime = liturgySpecificDayInformation.IsSpecialChristmas
+  const customizedSpecificTime = liturgySpecificDayInformation.isSpecialChristmas
     ? 'Especial'
-    : liturgySpecificDayInformation.GenericLiturgyTime;
-  const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgySpecificDayInformation.YearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${liturgySpecificDayInformation.DayOfTheWeekNameShort}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${liturgySpecificDayInformation.YearIsEven ? 'II' : 'I'}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE (LDSantoral.Categoria = '-' OR LDSantoral.Categoria = '${liturgySpecificDayInformation.CelebrationType}') AND LDSantoral.tempsespecific = '${customizedSpecificTime}'AND LDSantoral.dia = '${dateString}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.DioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
+    : liturgySpecificDayInformation.genericLiturgyTime;
+  const query = `SELECT subquery_two.* FROM (SELECT CASE WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 1 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 2 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 1 THEN 3 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 1 AND subquery_one.match_paroimpar = 0 THEN 4 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 5 WHEN subquery_one.match_cicle = 1 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 6 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 1 THEN 7 WHEN subquery_one.match_cicle = 0 AND subquery_one.match_diadelasetmana = 0 AND subquery_one.match_paroimpar = 0 THEN 8 END AS result_preference ,subquery_one.* FROM  (SELECT CASE WHEN LDSantoral.Cicle = '${liturgySpecificDayInformation.yearType}' THEN 1 WHEN LDSantoral.Cicle = '-' THEN 0 ELSE 2 END AS match_cicle ,CASE WHEN LDSantoral.DiadelaSetmana = '${liturgySpecificDayInformation.dayOfTheWeekNameShort}' THEN 1 WHEN LDSantoral.DiadelaSetmana = '-' THEN 0 ELSE 2 END AS match_diadelasetmana ,CASE WHEN LDSantoral.paroimpar = '${liturgySpecificDayInformation.yearIsEven ? 'II' : 'I'}' THEN 1 WHEN LDSantoral.paroimpar = '-' THEN  0 ELSE 2 END AS match_paroimpar ,LDSantoral.* FROM LDSantoral WHERE (LDSantoral.Categoria = '-' OR LDSantoral.Categoria = '${liturgySpecificDayInformation.celebrationType}') AND LDSantoral.tempsespecific = '${customizedSpecificTime}'AND LDSantoral.dia = '${dateString}') AS subquery_one WHERE subquery_one.match_cicle <> 2 AND subquery_one.match_diadelasetmana <> 2 AND subquery_one.match_paroimpar <> 2 ) AS subquery_two WHERE subquery_two.Diocesis = '${settings.dioceseCode}' OR subquery_two.Diocesis = '-' ORDER BY subquery_two.result_preference ASC, subquery_two.Diocesis DESC LIMIT 1;`;
   const result = await executeQueryAsync(query);
   return rowToMassLiturgy(result[0]);
 }

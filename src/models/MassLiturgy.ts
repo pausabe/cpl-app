@@ -1,55 +1,55 @@
 export default class MassLiturgy {
-  Today: DayMassLiturgy = new DayMassLiturgy();
-  HasVespers: boolean;
-  Vespers: DayMassLiturgy = new DayMassLiturgy();
+  today: DayMassLiturgy = new DayMassLiturgy();
+  hasVespers: boolean;
+  vespers: DayMassLiturgy = new DayMassLiturgy();
 }
 
 export class DayMassLiturgy {
-  Title: string;
-  HasGlory: boolean;
-  FirstReading: MassReading = new MassReading();
-  Psalm: MassPsalm = new MassPsalm();
-  SecondReading: MassReading = new MassReading();
-  Hallelujah: Hallelujah = new Hallelujah();
-  Gospel: MassGospel = new MassGospel();
-  HasCreed: boolean;
+  title: string;
+  hasGlory: boolean;
+  firstReading: MassReading = new MassReading();
+  psalm: MassPsalm = new MassPsalm();
+  secondReading: MassReading = new MassReading();
+  hallelujah: Hallelujah = new Hallelujah();
+  gospel: MassGospel = new MassGospel();
+  hasCreed: boolean;
   videoUrl: string = '';
 
   // Easter Eve
-  SecondPsalm: MassPsalm = new MassPsalm();
-  ThirdReading: MassReading = new MassReading();
-  ThirdPsalm: MassPsalm = new MassPsalm();
-  FourthReading: MassReading = new MassReading();
-  FourthPsalm: MassPsalm = new MassPsalm();
-  FifthReading: MassReading = new MassReading();
-  FifthPsalm: MassPsalm = new MassPsalm();
-  SixthReading: MassReading = new MassReading();
-  SixthPsalm: MassPsalm = new MassPsalm();
-  SeventhReading: MassReading = new MassReading();
-  SeventhPsalm: MassPsalm = new MassPsalm();
-  ApostleReading: MassReading = new MassReading();
+  secondPsalm: MassPsalm = new MassPsalm();
+  thirdReading: MassReading = new MassReading();
+  thirdPsalm: MassPsalm = new MassPsalm();
+  fourthReading: MassReading = new MassReading();
+  fourthPsalm: MassPsalm = new MassPsalm();
+  fifthReading: MassReading = new MassReading();
+  fifthPsalm: MassPsalm = new MassPsalm();
+  sixthReading: MassReading = new MassReading();
+  sixthPsalm: MassPsalm = new MassPsalm();
+  seventhReading: MassReading = new MassReading();
+  seventhPsalm: MassPsalm = new MassPsalm();
+  apostleReading: MassReading = new MassReading();
 }
 
 export class MassReading {
-  Quote: string;
-  Comment: string;
-  Title: string;
-  Reading: string;
+  quote: string;
+  comment: string;
+  title: string;
+  reading: string;
 }
 
 export class MassPsalm {
-  Quote: string;
-  Psalm: string;
+  quote: string;
+  psalm: string;
 }
 
 export class Hallelujah {
-  Quote: string;
-  Hallelujah: string;
+  quote: string;
+  hallelujah: string;
 }
 
 export class MassGospel {
-  Quote: string;
-  Comment: string;
-  Title: string;
-  Gospel: string;
+  quote: string;
+  comment: string;
+  title: string;
+  gospel: string;
 }

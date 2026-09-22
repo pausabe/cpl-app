@@ -58,74 +58,74 @@ export async function obtainLiturgyMasters(
   settings: Settings,
 ): Promise<LiturgyMasters> {
   const liturgyMasters = new LiturgyMasters();
-  liturgyMasters.OfficeCommonPsalter = await obtainOfficeCommonPsalter(currentLiturgyDayInformation);
-  liturgyMasters.InvitationCommonPsalter = await obtainInvitationCommonPsalter(currentLiturgyDayInformation);
-  liturgyMasters.OfficeOfOrdinaryTime = await obtainOfficeOfOrdinaryTime(currentLiturgyDayInformation);
-  liturgyMasters.PrayersOfOrdinaryTime = await obtainPrayersOfOrdinaryTime(currentLiturgyDayInformation);
-  liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers =
+  liturgyMasters.officeCommonPsalter = await obtainOfficeCommonPsalter(currentLiturgyDayInformation);
+  liturgyMasters.invitationCommonPsalter = await obtainInvitationCommonPsalter(currentLiturgyDayInformation);
+  liturgyMasters.officeOfOrdinaryTime = await obtainOfficeOfOrdinaryTime(currentLiturgyDayInformation);
+  liturgyMasters.prayersOfOrdinaryTime = await obtainPrayersOfOrdinaryTime(currentLiturgyDayInformation);
+  liturgyMasters.prayersOfOrdinaryTimeWhenFirstVespers =
     await obtainPrayersOfOrdinaryTimeWhenFirstVespers(currentLiturgyDayInformation);
-  liturgyMasters.CommonPartsUntilFifthWeekOfLentTime =
+  liturgyMasters.commonPartsUntilFifthWeekOfLentTime =
     await obtainCommonPartsUntilFifthWeekOfLentTime(currentLiturgyDayInformation);
-  liturgyMasters.PartsOfLentTime = await obtainPartsOfLentTime(currentLiturgyDayInformation);
-  liturgyMasters.PartsOfFiveWeeksOfLentTime = await obtainPartsOfFiveWeeksOfLentTime(currentLiturgyDayInformation);
-  liturgyMasters.CommonPartsOfHolyWeek = await obtainCommonPartsOfHolyWeek(currentLiturgyDayInformation);
-  liturgyMasters.PalmSundayParts = await obtainPalmSundayParts(currentLiturgyDayInformation);
-  liturgyMasters.PartsOfHolyWeek = await obtainPartsOfHolyWeek(currentLiturgyDayInformation);
-  liturgyMasters.PartsOfEasterTriduum = await obtainPartsOfEasterTriduum(currentLiturgyDayInformation);
-  liturgyMasters.PartsOfEasterBeforeAscension = await obtainPartsOfEasterBeforeAscension(currentLiturgyDayInformation);
-  liturgyMasters.PartsOfEasterOctave = await obtainPartsOfEasterOctave(currentLiturgyDayInformation);
-  liturgyMasters.PartsOfEasterAfterAscension = await obtainPartsOfEasterAfterAscension(currentLiturgyDayInformation);
-  liturgyMasters.EasterWeekParts = await obtainEasterWeekParts(currentLiturgyDayInformation);
-  liturgyMasters.CommonAdventAndChristmasParts =
+  liturgyMasters.partsOfLentTime = await obtainPartsOfLentTime(currentLiturgyDayInformation);
+  liturgyMasters.partsOfFiveWeeksOfLentTime = await obtainPartsOfFiveWeeksOfLentTime(currentLiturgyDayInformation);
+  liturgyMasters.commonPartsOfHolyWeek = await obtainCommonPartsOfHolyWeek(currentLiturgyDayInformation);
+  liturgyMasters.palmSundayParts = await obtainPalmSundayParts(currentLiturgyDayInformation);
+  liturgyMasters.partsOfHolyWeek = await obtainPartsOfHolyWeek(currentLiturgyDayInformation);
+  liturgyMasters.partsOfEasterTriduum = await obtainPartsOfEasterTriduum(currentLiturgyDayInformation);
+  liturgyMasters.partsOfEasterBeforeAscension = await obtainPartsOfEasterBeforeAscension(currentLiturgyDayInformation);
+  liturgyMasters.partsOfEasterOctave = await obtainPartsOfEasterOctave(currentLiturgyDayInformation);
+  liturgyMasters.partsOfEasterAfterAscension = await obtainPartsOfEasterAfterAscension(currentLiturgyDayInformation);
+  liturgyMasters.easterWeekParts = await obtainEasterWeekParts(currentLiturgyDayInformation);
+  liturgyMasters.commonAdventAndChristmasParts =
     await obtainCommonAdventAndChristmasParts(currentLiturgyDayInformation);
-  liturgyMasters.AdventWeekParts = await obtainAdventWeekParts(currentLiturgyDayInformation);
-  liturgyMasters.AdventSundayParts = await obtainAdventSundayParts(currentLiturgyDayInformation);
-  liturgyMasters.AdventFirstVespersOfSundayParts =
+  liturgyMasters.adventWeekParts = await obtainAdventWeekParts(currentLiturgyDayInformation);
+  liturgyMasters.adventSundayParts = await obtainAdventSundayParts(currentLiturgyDayInformation);
+  liturgyMasters.adventFirstVespersOfSundayParts =
     await obtainAdventFirstVespersOfSundayParts(currentLiturgyDayInformation);
-  liturgyMasters.AdventFairDaysParts = await obtainAdventFairDaysParts(currentLiturgyDayInformation);
-  liturgyMasters.AdventFairDaysAntiphons = await obtainAdventFairDaysAntiphons(currentLiturgyDayInformation);
-  liturgyMasters.ChristmasWhenOctaveParts = await obtainChristmasWhenOctaveParts(currentLiturgyDayInformation);
-  liturgyMasters.ChristmasBeforeEpiphanyParts = await obtainChristmasBeforeEpiphanyParts(currentLiturgyDayInformation);
-  liturgyMasters.SpecialCommonPartsOfEasterSundays =
+  liturgyMasters.adventFairDaysParts = await obtainAdventFairDaysParts(currentLiturgyDayInformation);
+  liturgyMasters.adventFairDaysAntiphons = await obtainAdventFairDaysAntiphons(currentLiturgyDayInformation);
+  liturgyMasters.christmasWhenOctaveParts = await obtainChristmasWhenOctaveParts(currentLiturgyDayInformation);
+  liturgyMasters.christmasBeforeEpiphanyParts = await obtainChristmasBeforeEpiphanyParts(currentLiturgyDayInformation);
+  liturgyMasters.specialCommonPartsOfEasterSundays =
     await obtainSpecialCommonPartsOfEasterSundays(currentLiturgyDayInformation);
-  liturgyMasters.LaudesCommonPsalter = await obtainLaudesCommonPsalter(currentLiturgyDayInformation);
-  liturgyMasters.CommonSpecialPartsOfEaster = await obtainCommonSpecialPartsOfEaster(currentLiturgyDayInformation);
-  liturgyMasters.EasterSundayParts = await obtainEasterSundayParts(currentLiturgyDayInformation);
-  liturgyMasters.EasterFirstVespersOfSundayParts =
+  liturgyMasters.laudesCommonPsalter = await obtainLaudesCommonPsalter(currentLiturgyDayInformation);
+  liturgyMasters.commonSpecialPartsOfEaster = await obtainCommonSpecialPartsOfEaster(currentLiturgyDayInformation);
+  liturgyMasters.easterSundayParts = await obtainEasterSundayParts(currentLiturgyDayInformation);
+  liturgyMasters.easterFirstVespersOfSundayParts =
     await obtainEasterFirstVespersOfSundayParts(currentLiturgyDayInformation);
-  liturgyMasters.EasterSunday = await obtainEasterSunday(currentLiturgyDayInformation);
-  liturgyMasters.FiveWeeksOfSundayLentParts = await obtainFiveWeeksOfSundayLentParts(currentLiturgyDayInformation);
-  liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts =
+  liturgyMasters.easterSunday = await obtainEasterSunday(currentLiturgyDayInformation);
+  liturgyMasters.fiveWeeksOfSundayLentParts = await obtainFiveWeeksOfSundayLentParts(currentLiturgyDayInformation);
+  liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts =
     await obtainFiveWeeksOfFirstsVespersOfSundayLentParts(currentLiturgyDayInformation);
-  liturgyMasters.VespersCommonPsalter = await obtainVespersCommonPsalter(currentLiturgyDayInformation);
-  liturgyMasters.SolemnityAndFestivityParts = await obtainSolemnityAndFestivityParts(currentLiturgyDayInformation);
-  liturgyMasters.SolemnityAndFestivityWhenFirstVespersParts =
+  liturgyMasters.vespersCommonPsalter = await obtainVespersCommonPsalter(currentLiturgyDayInformation);
+  liturgyMasters.solemnityAndFestivityParts = await obtainSolemnityAndFestivityParts(currentLiturgyDayInformation);
+  liturgyMasters.solemnityAndFestivityWhenFirstVespersParts =
     await obtainSolemnityAndFestivityWhenFirstVespersParts(currentLiturgyDayInformation);
-  liturgyMasters.CommonHourPsalter = await obtainCommonHourPsalter(currentLiturgyDayInformation);
-  liturgyMasters.CommonNightPrayerPsalter = await obtainCommonNightPrayerPsalter(currentLiturgyDayInformation);
-  liturgyMasters.CommonOfficeWhenStrongTimesPsalter =
+  liturgyMasters.commonHourPsalter = await obtainCommonHourPsalter(currentLiturgyDayInformation);
+  liturgyMasters.commonNightPrayerPsalter = await obtainCommonNightPrayerPsalter(currentLiturgyDayInformation);
+  liturgyMasters.commonOfficeWhenStrongTimesPsalter =
     await obtainCommonOfficeWhenStrongTimesPsalter(currentLiturgyDayInformation);
-  liturgyMasters.SaintsSolemnities = await obtainSaintsSolemnities(currentLiturgyDayInformation, settings);
-  liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts = await obtainSaintsSolemnitiesWhenFirstsVespersParts(
+  liturgyMasters.saintsSolemnities = await obtainSaintsSolemnities(currentLiturgyDayInformation, settings);
+  liturgyMasters.saintsSolemnitiesWhenFirstsVespersParts = await obtainSaintsSolemnitiesWhenFirstsVespersParts(
     currentLiturgyDayInformation,
     settings,
   );
-  liturgyMasters.SaintsMemories = await obtainSaintsMemories(currentLiturgyDayInformation, settings);
-  liturgyMasters.SpecialDaysParts = await obtainSpecialDaysParts(currentLiturgyDayInformation);
-  liturgyMasters.Various = await obtainVarious();
+  liturgyMasters.saintsMemories = await obtainSaintsMemories(currentLiturgyDayInformation, settings);
+  liturgyMasters.specialDaysParts = await obtainSpecialDaysParts(currentLiturgyDayInformation);
+  liturgyMasters.various = await obtainVarious();
   return liturgyMasters;
 }
 
 async function obtainOfficeCommonPsalter(liturgyDayInformation: LiturgyDayInformation): Promise<OfficeCommonPsalter> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave &&
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.ChristmasOctave
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave &&
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.ChristmasOctave
     ) {
       const id =
-        (parseInt(liturgyDayInformation.Today.WeekCycle) - 1) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(OfficeCommonPsalter.MasterName, id);
+        (parseInt(liturgyDayInformation.today.weekCycle) - 1) * 7 + (liturgyDayInformation.today.date.getDay() + 1);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(OfficeCommonPsalter.masterName, id);
       return new OfficeCommonPsalter(row);
     }
   }, new OfficeCommonPsalter());
@@ -135,10 +135,10 @@ async function obtainInvitationCommonPsalter(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<InvitationCommonPsalter> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
       const id =
-        (parseInt(liturgyDayInformation.Today.WeekCycle) - 1) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(InvitationCommonPsalter.MasterName, id);
+        (parseInt(liturgyDayInformation.today.weekCycle) - 1) * 7 + (liturgyDayInformation.today.date.getDay() + 1);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(InvitationCommonPsalter.masterName, id);
       return new InvitationCommonPsalter(row);
     }
   }, new InvitationCommonPsalter());
@@ -146,9 +146,9 @@ async function obtainInvitationCommonPsalter(
 
 async function obtainOfficeOfOrdinaryTime(liturgyDayInformation: LiturgyDayInformation): Promise<OfficeOfOrdinaryTime> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
-      const id = (parseInt(liturgyDayInformation.Today.Week) - 1) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(OfficeOfOrdinaryTime.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
+      const id = (parseInt(liturgyDayInformation.today.week) - 1) * 7 + (liturgyDayInformation.today.date.getDay() + 1);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(OfficeOfOrdinaryTime.masterName, id);
       return new OfficeOfOrdinaryTime(row);
     }
   }, new OfficeOfOrdinaryTime());
@@ -158,9 +158,9 @@ async function obtainPrayersOfOrdinaryTime(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<PrayersOfOrdinaryTime> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
-      const id = parseInt(liturgyDayInformation.Today.Week);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PrayersOfOrdinaryTime.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
+      const id = parseInt(liturgyDayInformation.today.week);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PrayersOfOrdinaryTime.masterName, id);
       return new PrayersOfOrdinaryTime(row);
     }
   }, new PrayersOfOrdinaryTime());
@@ -170,9 +170,9 @@ async function obtainPrayersOfOrdinaryTimeWhenFirstVespers(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<PrayersOfOrdinaryTime> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
-      const id = parseInt(liturgyDayInformation.Tomorrow.Week);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PrayersOfOrdinaryTime.MasterName, id);
+    if (liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
+      const id = parseInt(liturgyDayInformation.tomorrow.week);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PrayersOfOrdinaryTime.masterName, id);
       return new PrayersOfOrdinaryTime(row);
     }
   }, new PrayersOfOrdinaryTime());
@@ -183,12 +183,12 @@ async function obtainCommonPartsUntilFifthWeekOfLentTime(
 ): Promise<CommonPartsUntilFifthWeekOfLentTime> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentWeeks
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.LentAshes ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks
     ) {
       const id = 1;
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(
-        CommonPartsUntilFifthWeekOfLentTime.MasterName,
+        CommonPartsUntilFifthWeekOfLentTime.masterName,
         id,
       );
       return new CommonPartsUntilFifthWeekOfLentTime(row);
@@ -198,9 +198,9 @@ async function obtainCommonPartsUntilFifthWeekOfLentTime(
 
 async function obtainPartsOfLentTime(liturgyDayInformation: LiturgyDayInformation): Promise<PartsOfLentTime> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
-      const id = liturgyDayInformation.Today.Date.getDay() - 2;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfLentTime.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.LentAshes) {
+      const id = liturgyDayInformation.today.date.getDay() - 2;
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfLentTime.masterName, id);
       return new PartsOfLentTime(row);
     }
   }, new PartsOfLentTime());
@@ -210,9 +210,9 @@ async function obtainPartsOfFiveWeeksOfLentTime(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<PartsOfFiveWeeksOfLentTime> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentWeeks) {
-      const id = (parseInt(liturgyDayInformation.Today.Week) - 1) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfFiveWeeksOfLentTime.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks) {
+      const id = (parseInt(liturgyDayInformation.today.week) - 1) * 7 + (liturgyDayInformation.today.date.getDay() + 1);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfFiveWeeksOfLentTime.masterName, id);
       return new PartsOfFiveWeeksOfLentTime(row);
     }
   }, new PartsOfFiveWeeksOfLentTime());
@@ -223,12 +223,12 @@ async function obtainCommonPartsOfHolyWeek(
 ): Promise<CommonPartsOfHolyWeek> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ||
-      liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ||
+      liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.HolyWeek
     ) {
       const id = 1;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonPartsOfHolyWeek.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonPartsOfHolyWeek.masterName, id);
       return new CommonPartsOfHolyWeek(row);
     }
   }, new CommonPartsOfHolyWeek());
@@ -237,11 +237,11 @@ async function obtainCommonPartsOfHolyWeek(
 async function obtainPalmSundayParts(liturgyDayInformation: LiturgyDayInformation): Promise<PalmSundayParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ||
-      liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday ||
+      liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday
     ) {
       const id = 1;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PalmSundayParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PalmSundayParts.masterName, id);
       return new PalmSundayParts(row);
     }
   }, new PalmSundayParts());
@@ -250,11 +250,11 @@ async function obtainPalmSundayParts(liturgyDayInformation: LiturgyDayInformatio
 async function obtainPartsOfHolyWeek(liturgyDayInformation: LiturgyDayInformation): Promise<PartsOfHolyWeek> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
-      liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
+      liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.HolyWeek
     ) {
-      const id = liturgyDayInformation.Today.Date.getDay();
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfHolyWeek.MasterName, id);
+      const id = liturgyDayInformation.today.date.getDay();
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfHolyWeek.masterName, id);
       return new PartsOfHolyWeek(row);
     }
   }, new PartsOfHolyWeek());
@@ -263,12 +263,12 @@ async function obtainPartsOfHolyWeek(liturgyDayInformation: LiturgyDayInformatio
 async function obtainPartsOfEasterTriduum(liturgyDayInformation: LiturgyDayInformation): Promise<PartsOfEasterTriduum> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum ||
-      (liturgyDayInformation.Tomorrow.Date.getDay() === 5 &&
-        liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum)
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum ||
+      (liturgyDayInformation.tomorrow.date.getDay() === 5 &&
+        liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum)
     ) {
-      const id = liturgyDayInformation.Today.Date.getDay() - 3;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterTriduum.MasterName, id);
+      const id = liturgyDayInformation.today.date.getDay() - 3;
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterTriduum.masterName, id);
       return new PartsOfEasterTriduum(row);
     }
   }, new PartsOfEasterTriduum());
@@ -279,11 +279,11 @@ async function obtainPartsOfEasterBeforeAscension(
 ): Promise<PartsOfEasterBeforeAscension> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterOctave ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks
     ) {
       const id = 1;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterBeforeAscension.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterBeforeAscension.masterName, id);
       return new PartsOfEasterBeforeAscension(row);
     }
   }, new PartsOfEasterBeforeAscension());
@@ -291,9 +291,9 @@ async function obtainPartsOfEasterBeforeAscension(
 
 async function obtainPartsOfEasterOctave(liturgyDayInformation: LiturgyDayInformation): Promise<PartsOfEasterOctave> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
-      const id = liturgyDayInformation.Today.Date.getDay() === 0 ? 7 : liturgyDayInformation.Today.Date.getDay();
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterOctave.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
+      const id = liturgyDayInformation.today.date.getDay() === 0 ? 7 : liturgyDayInformation.today.date.getDay();
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterOctave.masterName, id);
       return new PartsOfEasterOctave(row);
     }
   }, new PartsOfEasterOctave());
@@ -303,9 +303,9 @@ async function obtainPartsOfEasterAfterAscension(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<PartsOfEasterAfterAscension> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
       const id = 1;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterAfterAscension.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(PartsOfEasterAfterAscension.masterName, id);
       return new PartsOfEasterAfterAscension(row);
     }
   }, new PartsOfEasterAfterAscension());
@@ -313,13 +313,13 @@ async function obtainPartsOfEasterAfterAscension(
 
 async function obtainEasterWeekParts(liturgyDayInformation: LiturgyDayInformation): Promise<EasterWeekParts> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
-      let id = (parseInt(liturgyDayInformation.Today.Week) - 2) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
+      let id = (parseInt(liturgyDayInformation.today.week) - 2) * 7 + (liturgyDayInformation.today.date.getDay() + 1);
       if (id === 43) {
         // Id 43 should be for Pentecost sunday, but it's inside another Master and not this one
         id = 1;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterWeekParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterWeekParts.masterName, id);
       return new EasterWeekParts(row);
     }
   }, new EasterWeekParts());
@@ -330,14 +330,14 @@ async function obtainCommonAdventAndChristmasParts(
 ): Promise<CommonAdventAndChristmasParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
       todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)
     ) {
       let id = 1;
-      switch (liturgyDayInformation.Today.SpecificLiturgyTime) {
+      switch (liturgyDayInformation.today.specificLiturgyTime) {
         case SpecificLiturgyTimeType.AdventWeeks:
           id = 1;
           break;
@@ -348,14 +348,14 @@ async function obtainCommonAdventAndChristmasParts(
           id = 3;
           break;
         case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
-          if (liturgyDayInformation.Today.Date.getDate() < 6) {
+          if (liturgyDayInformation.today.date.getDate() < 6) {
             id = 3;
           } else {
             id = 4;
           }
           break;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonAdventAndChristmasParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonAdventAndChristmasParts.masterName, id);
       return new CommonAdventAndChristmasParts(row);
     }
   }, new CommonAdventAndChristmasParts());
@@ -363,33 +363,33 @@ async function obtainCommonAdventAndChristmasParts(
 
 function todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation: LiturgyDayInformation): boolean {
   return (
-    liturgyDayInformation.Tomorrow.Date.getDay() === 0 &&
-    liturgyDayInformation.Tomorrow.Week === '1' &&
-    liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks
+    liturgyDayInformation.tomorrow.date.getDay() === 0 &&
+    liturgyDayInformation.tomorrow.week === '1' &&
+    liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks
   );
 }
 
 async function obtainAdventWeekParts(liturgyDayInformation: LiturgyDayInformation): Promise<AdventWeekParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
       todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)
     ) {
       //Week begins with saturday
-      let auxCicle = liturgyDayInformation.Today.WeekCycle;
+      let auxCicle = liturgyDayInformation.today.weekCycle;
       if (todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)) {
         auxCicle = '1';
       }
       let id;
       if (
-        liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
-        liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks
+        liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary &&
+        liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks
       ) {
         id = 1;
       } else {
-        id = (parseInt(auxCicle) - 1) * 7 + liturgyDayInformation.Today.Date.getDay() + 2;
+        id = (parseInt(auxCicle) - 1) * 7 + liturgyDayInformation.today.date.getDay() + 2;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventWeekParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventWeekParts.masterName, id);
       return new AdventWeekParts(row);
     }
   }, new AdventWeekParts());
@@ -398,11 +398,11 @@ async function obtainAdventWeekParts(liturgyDayInformation: LiturgyDayInformatio
 async function obtainAdventSundayParts(liturgyDayInformation: LiturgyDayInformation): Promise<AdventSundayParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs
     ) {
-      let id = parseInt(liturgyDayInformation.Today.WeekCycle);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventSundayParts.MasterName, id);
+      let id = parseInt(liturgyDayInformation.today.weekCycle);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventSundayParts.masterName, id);
       return new AdventSundayParts(row);
     }
   }, new AdventSundayParts());
@@ -413,15 +413,15 @@ async function obtainAdventFirstVespersOfSundayParts(
 ): Promise<AdventSundayParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs ||
       todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)
     ) {
-      let id = parseInt(liturgyDayInformation.Today.WeekCycle) + 1;
+      let id = parseInt(liturgyDayInformation.today.weekCycle) + 1;
       if (todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)) {
         id = 1;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventSundayParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventSundayParts.masterName, id);
       return new AdventSundayParts(row);
     }
   }, new AdventSundayParts());
@@ -429,9 +429,9 @@ async function obtainAdventFirstVespersOfSundayParts(
 
 async function obtainAdventFairDaysParts(liturgyDayInformation: LiturgyDayInformation): Promise<AdventFairDaysParts> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
-      let id = liturgyDayInformation.Today.Date.getDate() - 16;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventFairDaysParts.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
+      let id = liturgyDayInformation.today.date.getDate() - 16;
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventFairDaysParts.masterName, id);
       return new AdventFairDaysParts(row);
     }
   }, new AdventFairDaysParts());
@@ -441,9 +441,9 @@ async function obtainAdventFairDaysAntiphons(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<AdventFairDaysAntiphons> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
-      let id = liturgyDayInformation.Today.Date.getDay();
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventFairDaysAntiphons.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.AdventFairs) {
+      let id = liturgyDayInformation.today.date.getDay();
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(AdventFairDaysAntiphons.masterName, id);
       return new AdventFairDaysAntiphons(row);
     }
   }, new AdventFairDaysAntiphons());
@@ -454,11 +454,11 @@ async function obtainChristmasWhenOctaveParts(
 ): Promise<ChristmasWhenOctaveParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
-      !CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation.Today)
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave &&
+      !CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation.today)
     ) {
-      let id = liturgyDayInformation.Today.Date.getDate() === 1 ? 1 : liturgyDayInformation.Today.Date.getDate() - 25;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(ChristmasWhenOctaveParts.MasterName, id);
+      let id = liturgyDayInformation.today.date.getDate() === 1 ? 1 : liturgyDayInformation.today.date.getDate() - 25;
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(ChristmasWhenOctaveParts.masterName, id);
       return new ChristmasWhenOctaveParts(row);
     }
   }, new ChristmasWhenOctaveParts());
@@ -468,12 +468,12 @@ async function obtainChristmasBeforeEpiphanyParts(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<ChristmasBeforeEpiphanyParts> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary) {
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasBeforeOrdinary) {
       const id =
-        liturgyDayInformation.Today.Date.getDate() < 6
-          ? liturgyDayInformation.Today.Date.getDate() - 1
-          : liturgyDayInformation.Today.Date.getDate() - 2;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(ChristmasBeforeEpiphanyParts.MasterName, id);
+        liturgyDayInformation.today.date.getDate() < 6
+          ? liturgyDayInformation.today.date.getDate() - 1
+          : liturgyDayInformation.today.date.getDate() - 2;
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(ChristmasBeforeEpiphanyParts.masterName, id);
       return new ChristmasBeforeEpiphanyParts(row);
     }
   }, new ChristmasBeforeEpiphanyParts());
@@ -483,10 +483,10 @@ async function obtainSpecialCommonPartsOfEasterSundays(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<SpecialCommonPartsOfEasterSundays> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
       const id = 1;
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(
-        SpecialCommonPartsOfEasterSundays.MasterName,
+        SpecialCommonPartsOfEasterSundays.masterName,
         id,
       );
       return new SpecialCommonPartsOfEasterSundays(row);
@@ -497,34 +497,34 @@ async function obtainSpecialCommonPartsOfEasterSundays(
 async function obtainLaudesCommonPsalter(liturgyDayInformation: LiturgyDayInformation): Promise<LaudesCommonPsalter> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave
     ) {
-      let weekCycle = parseInt(liturgyDayInformation.Today.WeekCycle);
-      let dayNumber = liturgyDayInformation.Today.Date.getDay();
+      let weekCycle = parseInt(liturgyDayInformation.today.weekCycle);
+      let dayNumber = liturgyDayInformation.today.date.getDay();
 
       // Special conditions for Christmastime
       const christmasOctaveSpecialDays =
-        liturgyDayInformation.Today.Date.getMonth() === 11 &&
-        (liturgyDayInformation.Today.Date.getDate() === 29 ||
-          liturgyDayInformation.Today.Date.getDate() === 30 ||
-          liturgyDayInformation.Today.Date.getDate() === 31);
+        liturgyDayInformation.today.date.getMonth() === 11 &&
+        (liturgyDayInformation.today.date.getDate() === 29 ||
+          liturgyDayInformation.today.date.getDate() === 30 ||
+          liturgyDayInformation.today.date.getDate() === 31);
       if (
-        liturgyDayInformation.Today.CelebrationType === CelebrationType.Solemnity ||
-        liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity ||
+        liturgyDayInformation.today.celebrationType === CelebrationType.Solemnity ||
+        liturgyDayInformation.today.celebrationType === CelebrationType.Festivity ||
         christmasOctaveSpecialDays ||
-        CelebrationIdentifier.checkCelebration(Celebration.Epiphany, liturgyDayInformation.Today)
+        CelebrationIdentifier.checkCelebration(Celebration.Epiphany, liturgyDayInformation.today)
       ) {
         weekCycle = 1;
         dayNumber = 0;
       }
-      if (CelebrationIdentifier.checkCelebration(Celebration.SacredFamily, liturgyDayInformation.Today)) {
+      if (CelebrationIdentifier.checkCelebration(Celebration.SacredFamily, liturgyDayInformation.today)) {
         weekCycle = 2;
-        dayNumber = liturgyDayInformation.Today.Date.getDay();
+        dayNumber = liturgyDayInformation.today.date.getDay();
       }
 
       const id = (weekCycle - 1) * 7 + (dayNumber + 1);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(LaudesCommonPsalter.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(LaudesCommonPsalter.masterName, id);
       return new LaudesCommonPsalter(row);
     }
   }, new LaudesCommonPsalter());
@@ -534,9 +534,9 @@ async function obtainCommonSpecialPartsOfEaster(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<CommonSpecialPartsOfEaster> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
-      const id = (parseInt(liturgyDayInformation.Today.WeekCycle) - 1) * 6 + liturgyDayInformation.Today.Date.getDay();
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonSpecialPartsOfEaster.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
+      const id = (parseInt(liturgyDayInformation.today.weekCycle) - 1) * 6 + liturgyDayInformation.today.date.getDay();
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonSpecialPartsOfEaster.masterName, id);
       return new CommonSpecialPartsOfEaster(row);
     }
   }, new CommonSpecialPartsOfEaster());
@@ -544,12 +544,12 @@ async function obtainCommonSpecialPartsOfEaster(
 
 async function obtainEasterSundayParts(liturgyDayInformation: LiturgyDayInformation): Promise<EasterSundayParts> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
-      let id = parseInt(liturgyDayInformation.Today.Week) - 1;
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
+      let id = parseInt(liturgyDayInformation.today.week) - 1;
       if (id === 7) {
         id = 6;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterSundayParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterSundayParts.masterName, id);
       return new EasterSundayParts(row);
     }
   }, new EasterSundayParts());
@@ -559,12 +559,12 @@ async function obtainEasterFirstVespersOfSundayParts(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<EasterSundayParts> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
-      let id = parseInt(liturgyDayInformation.Today.Week);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterWeeks) {
+      let id = parseInt(liturgyDayInformation.today.week);
       if (id === 7 || id === 8) {
         id = 6;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterSundayParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterSundayParts.masterName, id);
       return new EasterSundayParts(row);
     }
   }, new EasterSundayParts());
@@ -573,11 +573,11 @@ async function obtainEasterFirstVespersOfSundayParts(
 async function obtainEasterSunday(liturgyDayInformation: LiturgyDayInformation): Promise<EasterSunday> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterOctave ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday
     ) {
       let id = 1;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterSunday.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(EasterSunday.masterName, id);
       return new EasterSunday(row);
     }
   }, new EasterSunday());
@@ -587,9 +587,9 @@ async function obtainFiveWeeksOfSundayLentParts(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<FiveWeeksOfSundayLentParts> {
   return await secureCall(async () => {
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentWeeks) {
-      let id = parseInt(liturgyDayInformation.Today.Week);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.MasterName, id);
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks) {
+      let id = parseInt(liturgyDayInformation.today.week);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.masterName, id);
       return new FiveWeeksOfSundayLentParts(row);
     }
   }, new FiveWeeksOfSundayLentParts());
@@ -600,14 +600,14 @@ async function obtainFiveWeeksOfFirstsVespersOfSundayLentParts(
 ): Promise<FiveWeeksOfSundayLentParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentWeeks ||
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.LentAshes
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks ||
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.LentAshes
     ) {
       let id = 1;
-      if (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.LentAshes) {
-        id = parseInt(liturgyDayInformation.Today.Week) + 1;
+      if (liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.LentAshes) {
+        id = parseInt(liturgyDayInformation.today.week) + 1;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(FiveWeeksOfSundayLentParts.masterName, id);
       return new FiveWeeksOfSundayLentParts(row);
     }
   }, new FiveWeeksOfSundayLentParts());
@@ -616,20 +616,20 @@ async function obtainFiveWeeksOfFirstsVespersOfSundayLentParts(
 async function obtainVespersCommonPsalter(liturgyDayInformation: LiturgyDayInformation): Promise<VespersCommonPsalter> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave
     ) {
       let weekDayNormalVespers =
-        liturgyDayInformation.Today.Date.getDay() === 6 ? 1 : liturgyDayInformation.Today.Date.getDay() + 2;
-      let cicle = parseInt(liturgyDayInformation.Today.WeekCycle);
-      if (liturgyDayInformation.Today.Date.getDay() === 6) {
+        liturgyDayInformation.today.date.getDay() === 6 ? 1 : liturgyDayInformation.today.date.getDay() + 2;
+      let cicle = parseInt(liturgyDayInformation.today.weekCycle);
+      if (liturgyDayInformation.today.date.getDay() === 6) {
         cicle = cicle === 4 ? 1 : cicle + 1;
       }
       if (todayVespersWillBeFromTomorrowAdventFirstOnes(liturgyDayInformation)) {
         cicle = 1;
       }
       const id = (cicle - 1) * 7 + weekDayNormalVespers;
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(VespersCommonPsalter.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(VespersCommonPsalter.masterName, id);
       return new VespersCommonPsalter(row);
     }
   }, new VespersCommonPsalter());
@@ -641,15 +641,15 @@ async function obtainSolemnityAndFestivityParts(
   return await secureCall(async () => {
     let id;
     if (
-      liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType ===
+      liturgyDayInformation.today.specialCelebration.specialCelebrationType ===
       SpecialCelebrationTypeEnum.SolemnityAndFestivity
     ) {
-      id = liturgyDayInformation.Today.SpecialCelebration.SolemnityAndFestivityMasterIdentifier;
-    } else if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
+      id = liturgyDayInformation.today.specialCelebration.SolemnityAndFestivityMasterIdentifier;
+    } else if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
       id = SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
     if (id) {
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(SolemnityAndFestivityParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(SolemnityAndFestivityParts.masterName, id);
       return new SolemnityAndFestivityParts(row);
     }
   }, new SolemnityAndFestivityParts());
@@ -661,15 +661,15 @@ async function obtainSolemnityAndFestivityWhenFirstVespersParts(
   return await secureCall(async () => {
     let id;
     if (
-      liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType ===
+      liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType ===
       SpecialCelebrationTypeEnum.SolemnityAndFestivity
     ) {
-      id = liturgyDayInformation.Tomorrow.SpecialCelebration.SolemnityAndFestivityMasterIdentifier;
-    } else if (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
+      id = liturgyDayInformation.tomorrow.specialCelebration.SolemnityAndFestivityMasterIdentifier;
+    } else if (liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
       id = SoulKeys.tempsSolemnitatsFestes_Nadal;
     }
     if (id) {
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(SolemnityAndFestivityParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(SolemnityAndFestivityParts.masterName, id);
       return new SolemnityAndFestivityParts(row);
     }
   }, new SolemnityAndFestivityParts());
@@ -678,12 +678,12 @@ async function obtainSolemnityAndFestivityWhenFirstVespersParts(
 async function obtainCommonHourPsalter(liturgyDayInformation: LiturgyDayInformation): Promise<CommonHourPsalter> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
-      liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum &&
+      liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.EasterOctave
     ) {
       const id =
-        (parseInt(liturgyDayInformation.Today.WeekCycle) - 1) * 7 + (liturgyDayInformation.Today.Date.getDay() + 1);
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonHourPsalter.MasterName, id);
+        (parseInt(liturgyDayInformation.today.weekCycle) - 1) * 7 + (liturgyDayInformation.today.date.getDay() + 1);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonHourPsalter.masterName, id);
       return new CommonHourPsalter(row);
     }
   }, new CommonHourPsalter());
@@ -693,42 +693,42 @@ async function obtainCommonNightPrayerPsalter(
   liturgyDayInformation: LiturgyDayInformation,
 ): Promise<CommonNightPrayerPsalter> {
   return await secureCall(async () => {
-    let id = liturgyDayInformation.Today.Date.getDay() === 6 ? 1 : liturgyDayInformation.Today.Date.getDay() + 2;
+    let id = liturgyDayInformation.today.date.getDay() === 6 ? 1 : liturgyDayInformation.today.date.getDay() + 2;
     if (
-      (liturgyDayInformation.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ||
-        liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType ===
+      (liturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ||
+        liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType ===
           SpecialCelebrationTypeEnum.SolemnityAndFestivity ||
-        liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity) &&
-      !(liturgyDayInformation.Today.Date.getDay() === 6 || liturgyDayInformation.Today.Date.getDay() === 0)
+        liturgyDayInformation.tomorrow.celebrationType === CelebrationType.Solemnity) &&
+      !(liturgyDayInformation.today.date.getDay() === 6 || liturgyDayInformation.today.date.getDay() === 0)
     ) {
       id = 8;
     }
     if (
-      (liturgyDayInformation.Today.CelebrationType === CelebrationType.Solemnity ||
-        liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType ===
+      (liturgyDayInformation.today.celebrationType === CelebrationType.Solemnity ||
+        liturgyDayInformation.today.specialCelebration.specialCelebrationType ===
           SpecialCelebrationTypeEnum.SolemnityAndFestivity) &&
-      !(liturgyDayInformation.Today.Date.getDay() === 6 || liturgyDayInformation.Today.Date.getDay() === 0)
+      !(liturgyDayInformation.today.date.getDay() === 6 || liturgyDayInformation.today.date.getDay() === 0)
     ) {
       id = 9;
     }
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterOctave) {
       id = 2;
     }
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.ChristmasOctave) {
       id = 9;
     }
     if (
-      liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek &&
-      (liturgyDayInformation.Today.Date.getDay() === 4 ||
-        liturgyDayInformation.Today.Date.getDay() === 5 ||
-        liturgyDayInformation.Today.Date.getDay() === 6)
+      liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.HolyWeek &&
+      (liturgyDayInformation.today.date.getDay() === 4 ||
+        liturgyDayInformation.today.date.getDay() === 5 ||
+        liturgyDayInformation.today.date.getDay() === 6)
     ) {
       id = 9;
     }
-    if (liturgyDayInformation.Today.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum) {
+    if (liturgyDayInformation.today.specificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum) {
       id = 9;
     }
-    const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonNightPrayerPsalter.MasterName, id);
+    const row = await DatabaseDataService.obtainMasterRowFromDatabase(CommonNightPrayerPsalter.masterName, id);
     return new CommonNightPrayerPsalter(row);
   }, new CommonNightPrayerPsalter());
 }
@@ -738,11 +738,11 @@ async function obtainCommonOfficeWhenStrongTimesPsalter(
 ): Promise<CommonOfficeWhenStrongTimesPsalter> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.StrongTime
+      liturgyDayInformation.today.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.StrongTime
     ) {
-      const id = liturgyDayInformation.Today.SpecialCelebration.StrongTimesMasterIdentifier;
+      const id = liturgyDayInformation.today.specialCelebration.StrongTimesMasterIdentifier;
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(
-        CommonOfficeWhenStrongTimesPsalter.MasterName,
+        CommonOfficeWhenStrongTimesPsalter.masterName,
         id,
       );
       return new CommonOfficeWhenStrongTimesPsalter(row);
@@ -756,44 +756,44 @@ async function obtainSaintsSolemnities(
 ): Promise<SaintsSolemnities> {
   return await secureCall(async () => {
     if (
-      (liturgyDayInformation.Today.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday &&
-        liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !==
+      (liturgyDayInformation.today.specificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday &&
+        liturgyDayInformation.today.specialCelebration.specialCelebrationType !==
           SpecialCelebrationTypeEnum.SolemnityAndFestivity &&
-        liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !==
+        liturgyDayInformation.today.specialCelebration.specialCelebrationType !==
           SpecialCelebrationTypeEnum.SpecialDay &&
-        (liturgyDayInformation.Today.CelebrationType === CelebrationType.Solemnity ||
-          liturgyDayInformation.Today.CelebrationType === CelebrationType.Festivity)) ||
-      StringManagement.hasLiturgyContent(liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode)
+        (liturgyDayInformation.today.celebrationType === CelebrationType.Solemnity ||
+          liturgyDayInformation.today.celebrationType === CelebrationType.Festivity)) ||
+      StringManagement.hasLiturgyContent(liturgyDayInformation.today.movedDay.originDateShortDatabaseCode)
     ) {
       let saintsMemoryOrSolemnityMasterIdentifier = obtainSaintsMemoriesOrSolemnitiesMasterIdentifier(
-        liturgyDayInformation.Today,
+        liturgyDayInformation.today,
         settings,
       );
       if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
         let day = DatabaseHelper.getDateShortDatabaseCode(
-          liturgyDayInformation.Today.Date,
-          settings.DioceseCode2Letters,
-          liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode,
-          liturgyDayInformation.Today.MovedDay.DioceseCode2Letters,
+          liturgyDayInformation.today.date,
+          settings.dioceseCode2Letters,
+          liturgyDayInformation.today.movedDay.originDateShortDatabaseCode,
+          liturgyDayInformation.today.movedDay.dioceseCode2Letters,
         );
         const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
-          SaintsSolemnities.MasterName,
+          SaintsSolemnities.masterName,
           day,
-          settings.DioceseCode,
-          settings.PrayingPlace,
-          settings.DioceseName,
-          liturgyDayInformation.Today.GenericLiturgyTime,
+          settings.dioceseCode,
+          settings.prayingPlace,
+          settings.dioceseName,
+          liturgyDayInformation.today.genericLiturgyTime,
         );
         const saintsSolemnitiesParts = new SaintsSolemnities(row);
-        saintsSolemnitiesParts.CommonOffices = await obtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
+        saintsSolemnitiesParts.commonOffices = await obtainCommonOffices(saintsSolemnitiesParts.celebration.category);
         return saintsSolemnitiesParts;
       } else {
         const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
-          SaintsSolemnities.MasterName,
+          SaintsSolemnities.masterName,
           saintsMemoryOrSolemnityMasterIdentifier,
         );
         const saintsSolemnitiesParts = new SaintsSolemnities(row);
-        saintsSolemnitiesParts.CommonOffices = await obtainCommonOffices(saintsSolemnitiesParts.Celebration.Category);
+        saintsSolemnitiesParts.commonOffices = await obtainCommonOffices(saintsSolemnitiesParts.celebration.category);
         return saintsSolemnitiesParts;
       }
     }
@@ -806,59 +806,59 @@ async function obtainSaintsSolemnitiesWhenFirstsVespersParts(
 ): Promise<SaintsSolemnities> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Tomorrow.SpecificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday &&
-      liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType !==
+      liturgyDayInformation.tomorrow.specificLiturgyTime !== SpecificLiturgyTimeType.EasterSunday &&
+      liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType !==
         SpecialCelebrationTypeEnum.SolemnityAndFestivity &&
-      liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType !==
+      liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType !==
         SpecialCelebrationTypeEnum.SpecialDay &&
-      (liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Solemnity ||
-        liturgyDayInformation.Tomorrow.CelebrationType === CelebrationType.Festivity)
+      (liturgyDayInformation.tomorrow.celebrationType === CelebrationType.Solemnity ||
+        liturgyDayInformation.tomorrow.celebrationType === CelebrationType.Festivity)
     ) {
       let saintsMemoryOrSolemnityMasterIdentifier = obtainSaintsMemoriesOrSolemnitiesMasterIdentifier(
-        liturgyDayInformation.Tomorrow,
+        liturgyDayInformation.tomorrow,
         settings,
       );
       if (saintsMemoryOrSolemnityMasterIdentifier !== -1) {
         const row = DatabaseDataService.obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
-          SaintsSolemnities.MasterName,
+          SaintsSolemnities.masterName,
           saintsMemoryOrSolemnityMasterIdentifier,
         );
         const saintsSolemnitiesParts = new SaintsSolemnities(row);
-        saintsSolemnitiesParts.CommonOfficesForFirstVespers = await obtainCommonOffices(
-          saintsSolemnitiesParts.Celebration.Category,
+        saintsSolemnitiesParts.commonOfficesForFirstVespers = await obtainCommonOffices(
+          saintsSolemnitiesParts.celebration.category,
         );
         return saintsSolemnitiesParts;
       } else {
         let day = '-';
         if (
-          liturgyDayInformation.Tomorrow.MovedDay.OriginDateShortDatabaseCode !== '-' &&
+          liturgyDayInformation.tomorrow.movedDay.originDateShortDatabaseCode !== '-' &&
           DatabaseHelper.isMovedDiocese(
-            settings.DioceseName,
-            liturgyDayInformation.Tomorrow.MovedDay.DioceseCode2Letters,
+            settings.dioceseName,
+            liturgyDayInformation.tomorrow.movedDay.dioceseCode2Letters,
           )
         ) {
-          day = liturgyDayInformation.Tomorrow.MovedDay.OriginDateShortDatabaseCode;
+          day = liturgyDayInformation.tomorrow.movedDay.originDateShortDatabaseCode;
         }
 
         if (day === '-') {
           day = DatabaseHelper.getDateShortDatabaseCode(
-            liturgyDayInformation.Tomorrow.Date,
-            settings.DioceseName,
+            liturgyDayInformation.tomorrow.date,
+            settings.dioceseName,
             '-',
             '-',
           );
         }
         const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
-          SaintsSolemnities.MasterName,
+          SaintsSolemnities.masterName,
           day,
-          settings.DioceseCode,
-          settings.PrayingPlace,
-          settings.DioceseName,
-          liturgyDayInformation.Today.GenericLiturgyTime,
+          settings.dioceseCode,
+          settings.prayingPlace,
+          settings.dioceseName,
+          liturgyDayInformation.today.genericLiturgyTime,
         );
         const saintsSolemnitiesParts = new SaintsSolemnities(row);
-        saintsSolemnitiesParts.CommonOfficesForFirstVespers = await obtainCommonOffices(
-          saintsSolemnitiesParts.Celebration.Category,
+        saintsSolemnitiesParts.commonOfficesForFirstVespers = await obtainCommonOffices(
+          saintsSolemnitiesParts.celebration.category,
         );
         return saintsSolemnitiesParts;
       }
@@ -872,51 +872,51 @@ async function obtainSaintsMemories(
 ): Promise<SaintsMemories> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType !==
+      liturgyDayInformation.today.specialCelebration.specialCelebrationType !==
         SpecialCelebrationTypeEnum.SolemnityAndFestivity &&
-      (liturgyDayInformation.Today.CelebrationType === CelebrationType.Memory ||
-        liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalMemory ||
-        liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory)
+      (liturgyDayInformation.today.celebrationType === CelebrationType.Memory ||
+        liturgyDayInformation.today.celebrationType === CelebrationType.OptionalMemory ||
+        liturgyDayInformation.today.celebrationType === CelebrationType.OptionalVirginMemory)
     ) {
       let masterIdentifierOfVariableDays = obtainSaintsMemoriesOrSolemnitiesMasterIdentifier(
-        liturgyDayInformation.Today,
+        liturgyDayInformation.today,
         settings,
       );
 
       if (
-        liturgyDayInformation.Today.CelebrationType === CelebrationType.OptionalVirginMemory &&
+        liturgyDayInformation.today.celebrationType === CelebrationType.OptionalVirginMemory &&
         masterIdentifierOfVariableDays === -1
       ) {
         const row = await DatabaseDataService.obtainFreeVirginMemoryAsync();
         const saintsMemories = new SaintsMemories(row);
-        saintsMemories.CommonOffices = await obtainCommonOffices(saintsMemories.Celebration.Category);
+        saintsMemories.commonOffices = await obtainCommonOffices(saintsMemories.celebration.category);
         return saintsMemories;
       } else {
         if (masterIdentifierOfVariableDays === -1) {
           const day = DatabaseHelper.getDateShortDatabaseCode(
-            liturgyDayInformation.Today.Date,
-            settings.DioceseName,
-            liturgyDayInformation.Today.MovedDay.OriginDateShortDatabaseCode,
-            liturgyDayInformation.Today.MovedDay.DioceseCode2Letters,
+            liturgyDayInformation.today.date,
+            settings.dioceseName,
+            liturgyDayInformation.today.movedDay.originDateShortDatabaseCode,
+            liturgyDayInformation.today.movedDay.dioceseCode2Letters,
           );
           const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
-            SaintsMemories.MasterName,
+            SaintsMemories.masterName,
             day,
-            settings.DioceseCode,
-            settings.PrayingPlace,
-            settings.DioceseName,
-            liturgyDayInformation.Today.GenericLiturgyTime,
+            settings.dioceseCode,
+            settings.prayingPlace,
+            settings.dioceseName,
+            liturgyDayInformation.today.genericLiturgyTime,
           );
           const saintsMemories = new SaintsMemories(row);
-          saintsMemories.CommonOffices = await obtainCommonOffices(saintsMemories.Celebration.Category);
+          saintsMemories.commonOffices = await obtainCommonOffices(saintsMemories.celebration.category);
           return saintsMemories;
         } else {
           const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
-            SaintsMemories.MasterName,
+            SaintsMemories.masterName,
             masterIdentifierOfVariableDays,
           );
           const saintsMemories = new SaintsMemories(row);
-          saintsMemories.CommonOffices = await obtainCommonOffices(saintsMemories.Celebration.Category);
+          saintsMemories.commonOffices = await obtainCommonOffices(saintsMemories.celebration.category);
           return saintsMemories;
         }
       }
@@ -927,17 +927,17 @@ async function obtainSaintsMemories(
 async function obtainSpecialDaysParts(liturgyDayInformation: LiturgyDayInformation): Promise<SpecialDaysParts> {
   return await secureCall(async () => {
     if (
-      liturgyDayInformation.Today.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay ||
-      liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay
+      liturgyDayInformation.today.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay ||
+      liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay
     ) {
-      let id = liturgyDayInformation.Today.SpecialCelebration.SpecialDaysMasterIdentifier;
+      let id = liturgyDayInformation.today.specialCelebration.SpecialDaysMasterIdentifier;
       if (
-        liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialCelebrationType ===
+        liturgyDayInformation.tomorrow.specialCelebration.specialCelebrationType ===
         SpecialCelebrationTypeEnum.SpecialDay
       ) {
-        id = liturgyDayInformation.Tomorrow.SpecialCelebration.SpecialDaysMasterIdentifier;
+        id = liturgyDayInformation.tomorrow.specialCelebration.SpecialDaysMasterIdentifier;
       }
-      const row = await DatabaseDataService.obtainMasterRowFromDatabase(SpecialDaysParts.MasterName, id);
+      const row = await DatabaseDataService.obtainMasterRowFromDatabase(SpecialDaysParts.masterName, id);
       return new SpecialDaysParts(row);
     }
   }, new SpecialDaysParts());
@@ -945,7 +945,7 @@ async function obtainSpecialDaysParts(liturgyDayInformation: LiturgyDayInformati
 
 async function obtainVarious(): Promise<Various> {
   return await secureCall(async () => {
-    const table = await DatabaseDataService.obtainMasterTableFromDatabase(Various.MasterName);
+    const table = await DatabaseDataService.obtainMasterTableFromDatabase(Various.masterName);
     return new Various(table);
   }, new Various());
 }
@@ -981,10 +981,10 @@ function obtainSaintsMemoriesOrSolemnitiesMasterIdentifier(
       settings,
     )
   ) {
-    if (liturgyDateInformation.CelebrationType === CelebrationType.Memory) {
+    if (liturgyDateInformation.celebrationType === CelebrationType.Memory) {
       return SoulKeys.santsMemories_MareDeuCinta;
     }
-    if (liturgyDateInformation.CelebrationType === CelebrationType.Solemnity) {
+    if (liturgyDateInformation.celebrationType === CelebrationType.Solemnity) {
       return SoulKeys.santsSolemnitats_MareDeuCinta;
     }
   }

@@ -15,20 +15,20 @@ export function obtainVespers(
   settings: Settings,
 ): Vespers {
   let vespers = new Vespers();
-  vespers.Anthem = getAnthem(liturgyMasters, liturgyDayInformation, settings);
+  vespers.anthem = getAnthem(liturgyMasters, liturgyDayInformation, settings);
   const psalmody = getPsalmody(liturgyMasters, liturgyDayInformation);
-  vespers.FirstPsalm = psalmody.FirstPsalm;
-  vespers.SecondPsalm = psalmody.SecondPsalm;
-  vespers.ThirdPsalm = psalmody.ThirdPsalm;
-  vespers.ShortReading = getShortReading(liturgyMasters, liturgyDayInformation);
-  vespers.ShortResponsory = getShortResponsory(liturgyMasters, liturgyDayInformation);
-  vespers.EvangelicalAntiphon = getEvangelicalAntiphon(liturgyMasters, liturgyDayInformation);
-  vespers.Prayers = getPrayers(liturgyMasters, liturgyDayInformation);
-  vespers.FinalPrayer = getFinalPrayer(liturgyMasters, liturgyDayInformation);
-  vespers.EvangelicalChant = liturgyMasters.Various.VespersEvangelicalChant;
-  vespers.Title =
-    liturgyDayInformation.DayOfTheWeek === 6 &&
-    liturgyDayInformation.SpecificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum
+  vespers.firstPsalm = psalmody.firstPsalm;
+  vespers.secondPsalm = psalmody.secondPsalm;
+  vespers.thirdPsalm = psalmody.thirdPsalm;
+  vespers.shortReading = getShortReading(liturgyMasters, liturgyDayInformation);
+  vespers.shortResponsory = getShortResponsory(liturgyMasters, liturgyDayInformation);
+  vespers.evangelicalAntiphon = getEvangelicalAntiphon(liturgyMasters, liturgyDayInformation);
+  vespers.prayers = getPrayers(liturgyMasters, liturgyDayInformation);
+  vespers.finalPrayer = getFinalPrayer(liturgyMasters, liturgyDayInformation);
+  vespers.evangelicalChant = liturgyMasters.various.vespersEvangelicalChant;
+  vespers.title =
+    liturgyDayInformation.dayOfTheWeek === 6 &&
+    liturgyDayInformation.specificLiturgyTime !== SpecificLiturgyTimeType.PaschalTriduum
       ? 'Primeres vespres de diumenge'
       : '';
   return vespers;
@@ -42,64 +42,64 @@ export function mergeVespersWithCelebration(
   withCelebrationVespers: Vespers,
 ): Vespers {
   let vespers = withoutCelebrationVespers;
-  if (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
+  if (liturgyDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     vespers = withCelebrationVespers;
   } else {
     let weUsedSomeCelebrationPart = false;
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.Anthem)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.anthem)) {
       weUsedSomeCelebrationPart = true;
-      vespers.Anthem = withCelebrationVespers.Anthem;
+      vespers.anthem = withCelebrationVespers.anthem;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.FirstPsalm.Antiphon)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.firstPsalm.antiphon)) {
       weUsedSomeCelebrationPart = true;
-      vespers.FirstPsalm.Antiphon = withCelebrationVespers.FirstPsalm.Antiphon;
+      vespers.firstPsalm.antiphon = withCelebrationVespers.firstPsalm.antiphon;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.FirstPsalm.Title)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.firstPsalm.title)) {
       weUsedSomeCelebrationPart = true;
-      vespers.FirstPsalm = withCelebrationVespers.FirstPsalm;
+      vespers.firstPsalm = withCelebrationVespers.firstPsalm;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.SecondPsalm.Antiphon)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.secondPsalm.antiphon)) {
       weUsedSomeCelebrationPart = true;
-      vespers.SecondPsalm.Antiphon = withCelebrationVespers.SecondPsalm.Antiphon;
+      vespers.secondPsalm.antiphon = withCelebrationVespers.secondPsalm.antiphon;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.SecondPsalm.Title)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.secondPsalm.title)) {
       weUsedSomeCelebrationPart = true;
-      vespers.SecondPsalm = withCelebrationVespers.SecondPsalm;
+      vespers.secondPsalm = withCelebrationVespers.secondPsalm;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.ThirdPsalm.Antiphon)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.thirdPsalm.antiphon)) {
       weUsedSomeCelebrationPart = true;
-      vespers.ThirdPsalm.Antiphon = withCelebrationVespers.ThirdPsalm.Antiphon;
+      vespers.thirdPsalm.antiphon = withCelebrationVespers.thirdPsalm.antiphon;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.ThirdPsalm.Title)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.thirdPsalm.title)) {
       weUsedSomeCelebrationPart = true;
-      vespers.ThirdPsalm = withCelebrationVespers.ThirdPsalm;
+      vespers.thirdPsalm = withCelebrationVespers.thirdPsalm;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.ShortReading.ShortReading)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.shortReading.shortReading)) {
       weUsedSomeCelebrationPart = true;
-      vespers.ShortReading = withCelebrationVespers.ShortReading;
+      vespers.shortReading = withCelebrationVespers.shortReading;
     }
     if (
-      StringManagement.hasLiturgyContent(withCelebrationVespers.ShortResponsory.FirstPart) ||
-      StringManagement.hasLiturgyContent(withCelebrationVespers.ShortResponsory.SpecialAntiphon)
+      StringManagement.hasLiturgyContent(withCelebrationVespers.shortResponsory.firstPart) ||
+      StringManagement.hasLiturgyContent(withCelebrationVespers.shortResponsory.specialAntiphon)
     ) {
       weUsedSomeCelebrationPart = true;
-      vespers.ShortResponsory = withCelebrationVespers.ShortResponsory;
+      vespers.shortResponsory = withCelebrationVespers.shortResponsory;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.EvangelicalAntiphon)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.evangelicalAntiphon)) {
       weUsedSomeCelebrationPart = true;
-      vespers.EvangelicalAntiphon = withCelebrationVespers.EvangelicalAntiphon;
+      vespers.evangelicalAntiphon = withCelebrationVespers.evangelicalAntiphon;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.Prayers)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.prayers)) {
       weUsedSomeCelebrationPart = true;
-      vespers.Prayers = withCelebrationVespers.Prayers;
+      vespers.prayers = withCelebrationVespers.prayers;
     }
-    if (StringManagement.hasLiturgyContent(withCelebrationVespers.FinalPrayer)) {
+    if (StringManagement.hasLiturgyContent(withCelebrationVespers.finalPrayer)) {
       weUsedSomeCelebrationPart = true;
-      vespers.FinalPrayer = withCelebrationVespers.FinalPrayer;
+      vespers.finalPrayer = withCelebrationVespers.finalPrayer;
     }
 
     if (weUsedSomeCelebrationPart) {
-      vespers.Title = withCelebrationVespers.Title;
+      vespers.title = withCelebrationVespers.title;
     }
   }
   return vespers;
@@ -110,67 +110,67 @@ function getAnthem(
   liturgyDayInformation: LiturgySpecificDayInformation,
   settings: Settings,
 ): string {
-  let anthem = settings.UseLatin
-    ? liturgyMasters.VespersCommonPsalter.LatinAnthem
-    : liturgyMasters.VespersCommonPsalter.CatalanAnthem;
-  switch (liturgyDayInformation.SpecificLiturgyTime) {
+  let anthem = settings.useLatin
+    ? liturgyMasters.vespersCommonPsalter.latinAnthem
+    : liturgyMasters.vespersCommonPsalter.catalanAnthem;
+  switch (liturgyDayInformation.specificLiturgyTime) {
     case SpecificLiturgyTimeType.LentAshes:
     case SpecificLiturgyTimeType.LentWeeks:
-      if (liturgyDayInformation.DayOfTheWeek === 0 || liturgyDayInformation.DayOfTheWeek === 6) {
-        if (settings.UseLatin) {
-          anthem = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.VespersSundaysLatinAnthem;
+      if (liturgyDayInformation.dayOfTheWeek === 0 || liturgyDayInformation.dayOfTheWeek === 6) {
+        if (settings.useLatin) {
+          anthem = liturgyMasters.commonPartsUntilFifthWeekOfLentTime.vespersSundaysLatinAnthem;
         } else {
-          anthem = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.VespersSundaysCatalanAnthem;
+          anthem = liturgyMasters.commonPartsUntilFifthWeekOfLentTime.vespersSundaysCatalanAnthem;
         }
       } else {
-        if (settings.UseLatin) {
-          anthem = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.VespersFairsLatinAnthem;
+        if (settings.useLatin) {
+          anthem = liturgyMasters.commonPartsUntilFifthWeekOfLentTime.vespersFairsLatinAnthem;
         } else {
-          anthem = liturgyMasters.CommonPartsUntilFifthWeekOfLentTime.VespersFairsCatalanAnthem;
+          anthem = liturgyMasters.commonPartsUntilFifthWeekOfLentTime.vespersFairsCatalanAnthem;
         }
       }
       break;
     case SpecificLiturgyTimeType.PalmSunday:
     case SpecificLiturgyTimeType.HolyWeek:
-      if (settings.UseLatin) {
-        anthem = liturgyMasters.CommonPartsOfHolyWeek.VespersLatinAnthem;
+      if (settings.useLatin) {
+        anthem = liturgyMasters.commonPartsOfHolyWeek.vespersLatinAnthem;
       } else {
-        anthem = liturgyMasters.CommonPartsOfHolyWeek.VespersCatalanAnthem;
+        anthem = liturgyMasters.commonPartsOfHolyWeek.vespersCatalanAnthem;
       }
       break;
     case SpecificLiturgyTimeType.PaschalTriduum:
-      if (settings.UseLatin) {
-        anthem = liturgyMasters.PartsOfEasterTriduum.VespersLatinAnthem;
+      if (settings.useLatin) {
+        anthem = liturgyMasters.partsOfEasterTriduum.vespersLatinAnthem;
       } else {
-        anthem = liturgyMasters.PartsOfEasterTriduum.VespersCatalanAnthem;
+        anthem = liturgyMasters.partsOfEasterTriduum.vespersCatalanAnthem;
       }
       break;
     case SpecificLiturgyTimeType.EasterOctave:
-      if (settings.UseLatin) {
-        anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWeekendLatinAnthem;
+      if (settings.useLatin) {
+        anthem = liturgyMasters.partsOfEasterBeforeAscension.vespersWeekendLatinAnthem;
       } else {
-        anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWeekendCatalanAnthem;
+        anthem = liturgyMasters.partsOfEasterBeforeAscension.vespersWeekendCatalanAnthem;
       }
       break;
     case SpecificLiturgyTimeType.EasterWeeks:
-      if (liturgyDayInformation.Week === '7') {
-        if (settings.UseLatin) {
-          anthem = liturgyMasters.PartsOfEasterAfterAscension.VespersLatinAnthem;
+      if (liturgyDayInformation.week === '7') {
+        if (settings.useLatin) {
+          anthem = liturgyMasters.partsOfEasterAfterAscension.vespersLatinAnthem;
         } else {
-          anthem = liturgyMasters.PartsOfEasterAfterAscension.VespersCatalanAnthem;
+          anthem = liturgyMasters.partsOfEasterAfterAscension.vespersCatalanAnthem;
         }
       } else {
-        if (liturgyDayInformation.DayOfTheWeek === 6 || liturgyDayInformation.DayOfTheWeek === 0) {
-          if (settings.UseLatin) {
-            anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWeekendLatinAnthem;
+        if (liturgyDayInformation.dayOfTheWeek === 6 || liturgyDayInformation.dayOfTheWeek === 0) {
+          if (settings.useLatin) {
+            anthem = liturgyMasters.partsOfEasterBeforeAscension.vespersWeekendLatinAnthem;
           } else {
-            anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWeekendCatalanAnthem;
+            anthem = liturgyMasters.partsOfEasterBeforeAscension.vespersWeekendCatalanAnthem;
           }
         } else {
-          if (settings.UseLatin) {
-            anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWorkdaysLatinAnthem;
+          if (settings.useLatin) {
+            anthem = liturgyMasters.partsOfEasterBeforeAscension.vespersWorkdaysLatinAnthem;
           } else {
-            anthem = liturgyMasters.PartsOfEasterBeforeAscension.VespersWorkdaysCatalanAnthem;
+            anthem = liturgyMasters.partsOfEasterBeforeAscension.vespersWorkdaysCatalanAnthem;
           }
         }
       }
@@ -179,23 +179,23 @@ function getAnthem(
     case SpecificLiturgyTimeType.AdventFairs:
     case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
       if (
-        liturgyDayInformation.SpecificLiturgyTime != SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
-        (liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-          liturgyDayInformation.Date.getMonth() == 0 &&
-          liturgyDayInformation.Date.getDate() != 13)
+        liturgyDayInformation.specificLiturgyTime != SpecificLiturgyTimeType.ChristmasBeforeOrdinary ||
+        (liturgyDayInformation.specificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+          liturgyDayInformation.date.getMonth() == 0 &&
+          liturgyDayInformation.date.getDate() != 13)
       ) {
-        if (settings.UseLatin) {
-          anthem = liturgyMasters.CommonAdventAndChristmasParts.VespersLatinAnthem;
+        if (settings.useLatin) {
+          anthem = liturgyMasters.commonAdventAndChristmasParts.vespersLatinAnthem;
         } else {
-          anthem = liturgyMasters.CommonAdventAndChristmasParts.VespersCatalanAnthem;
+          anthem = liturgyMasters.commonAdventAndChristmasParts.vespersCatalanAnthem;
         }
       }
       break;
     case SpecificLiturgyTimeType.ChristmasOctave:
-      if (settings.UseLatin) {
-        anthem = liturgyMasters.SolemnityAndFestivityParts.SecondVespersLatinAnthem;
+      if (settings.useLatin) {
+        anthem = liturgyMasters.solemnityAndFestivityParts.secondVespersLatinAnthem;
       } else {
-        anthem = liturgyMasters.SolemnityAndFestivityParts.SecondVespersCatalanAnthem;
+        anthem = liturgyMasters.solemnityAndFestivityParts.secondVespersCatalanAnthem;
       }
       break;
   }
@@ -205,118 +205,118 @@ function getAnthem(
 function getPsalmody(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
-): { FirstPsalm: Psalm; SecondPsalm: Psalm; ThirdPsalm: Psalm } {
+): { firstPsalm: Psalm; secondPsalm: Psalm; thirdPsalm: Psalm } {
   let psalmody = {
-    FirstPsalm: liturgyMasters.VespersCommonPsalter.FirstPsalm,
-    SecondPsalm: liturgyMasters.VespersCommonPsalter.SecondPsalm,
-    ThirdPsalm: liturgyMasters.VespersCommonPsalter.ThirdPsalm,
+    firstPsalm: liturgyMasters.vespersCommonPsalter.firstPsalm,
+    secondPsalm: liturgyMasters.vespersCommonPsalter.secondPsalm,
+    thirdPsalm: liturgyMasters.vespersCommonPsalter.thirdPsalm,
   };
-  switch (liturgyDayInformation.SpecificLiturgyTime) {
+  switch (liturgyDayInformation.specificLiturgyTime) {
     case SpecificLiturgyTimeType.AdventFairs:
-      if (liturgyDayInformation.DayOfTheWeek !== 0) {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.FirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.SecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFairDaysAntiphons.ThirdAntiphon;
+      if (liturgyDayInformation.dayOfTheWeek !== 0) {
+        psalmody.firstPsalm.antiphon = liturgyMasters.adventFairDaysAntiphons.firstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.adventFairDaysAntiphons.secondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.adventFairDaysAntiphons.thirdAntiphon;
       }
       break;
     case SpecificLiturgyTimeType.LentWeeks:
     case SpecificLiturgyTimeType.LentAshes:
-      if (liturgyDayInformation.DayOfTheWeek === 6) {
-        psalmody.FirstPsalm.Antiphon =
-          liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon =
-          liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon =
-          liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersThirdAntiphon;
-      } else if (liturgyDayInformation.DayOfTheWeek === 0) {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.FiveWeeksOfSundayLentParts.SecondVespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.FiveWeeksOfSundayLentParts.SecondVespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.FiveWeeksOfSundayLentParts.SecondVespersThirdAntiphon;
+      if (liturgyDayInformation.dayOfTheWeek === 6) {
+        psalmody.firstPsalm.antiphon =
+          liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts.firstVespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon =
+          liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts.firstVespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon =
+          liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts.firstVespersThirdAntiphon;
+      } else if (liturgyDayInformation.dayOfTheWeek === 0) {
+        psalmody.firstPsalm.antiphon = liturgyMasters.fiveWeeksOfSundayLentParts.secondVespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.fiveWeeksOfSundayLentParts.secondVespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.fiveWeeksOfSundayLentParts.secondVespersThirdAntiphon;
       }
       break;
     case SpecificLiturgyTimeType.PalmSunday:
-      if (liturgyDayInformation.DayOfTheWeek === 0) {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.PalmSundayParts.SecondVespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.PalmSundayParts.SecondVespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.PalmSundayParts.SecondVespersThirdAntiphon;
+      if (liturgyDayInformation.dayOfTheWeek === 0) {
+        psalmody.firstPsalm.antiphon = liturgyMasters.palmSundayParts.secondVespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.palmSundayParts.secondVespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.palmSundayParts.secondVespersThirdAntiphon;
       }
       break;
     case SpecificLiturgyTimeType.HolyWeek:
-      psalmody.FirstPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersFirstAntiphon;
-      psalmody.SecondPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersSecondAntiphon;
-      psalmody.ThirdPsalm.Antiphon = liturgyMasters.PartsOfHolyWeek.VespersThirdAntiphon;
+      psalmody.firstPsalm.antiphon = liturgyMasters.partsOfHolyWeek.vespersFirstAntiphon;
+      psalmody.secondPsalm.antiphon = liturgyMasters.partsOfHolyWeek.vespersSecondAntiphon;
+      psalmody.thirdPsalm.antiphon = liturgyMasters.partsOfHolyWeek.vespersThirdAntiphon;
       break;
     case SpecificLiturgyTimeType.PaschalTriduum:
-      psalmody.FirstPsalm = liturgyMasters.PartsOfEasterTriduum.VespersFirstPsalm;
-      psalmody.FirstPsalm.Comment = '-';
-      psalmody.SecondPsalm = liturgyMasters.PartsOfEasterTriduum.VespersSecondPsalm;
-      psalmody.SecondPsalm.Comment = '-';
-      psalmody.ThirdPsalm = liturgyMasters.PartsOfEasterTriduum.VespersThirdPsalm;
-      psalmody.ThirdPsalm.Comment = '-';
+      psalmody.firstPsalm = liturgyMasters.partsOfEasterTriduum.vespersFirstPsalm;
+      psalmody.firstPsalm.comment = '-';
+      psalmody.secondPsalm = liturgyMasters.partsOfEasterTriduum.vespersSecondPsalm;
+      psalmody.secondPsalm.comment = '-';
+      psalmody.thirdPsalm = liturgyMasters.partsOfEasterTriduum.vespersThirdPsalm;
+      psalmody.thirdPsalm.comment = '-';
       break;
     case SpecificLiturgyTimeType.EasterOctave:
-      psalmody.FirstPsalm = liturgyMasters.EasterSunday.VespersFirstPsalm;
-      psalmody.FirstPsalm.Comment = '-';
-      psalmody.SecondPsalm = liturgyMasters.EasterSunday.VespersSecondPsalm;
-      psalmody.SecondPsalm.Comment = '-';
-      psalmody.ThirdPsalm = liturgyMasters.EasterSunday.VespersThirdPsalm;
-      psalmody.ThirdPsalm.Comment = '-';
+      psalmody.firstPsalm = liturgyMasters.easterSunday.vespersFirstPsalm;
+      psalmody.firstPsalm.comment = '-';
+      psalmody.secondPsalm = liturgyMasters.easterSunday.vespersSecondPsalm;
+      psalmody.secondPsalm.comment = '-';
+      psalmody.thirdPsalm = liturgyMasters.easterSunday.vespersThirdPsalm;
+      psalmody.thirdPsalm.comment = '-';
       break;
     case SpecificLiturgyTimeType.EasterWeeks:
       if (
-        liturgyDayInformation.DayOfTheWeek === 6 &&
-        StringManagement.hasLiturgyContent(liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersFirstAntiphon)
+        liturgyDayInformation.dayOfTheWeek === 6 &&
+        StringManagement.hasLiturgyContent(liturgyMasters.easterFirstVespersOfSundayParts.firstVespersFirstAntiphon)
       ) {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersThirdAntiphon;
-      } else if (liturgyDayInformation.DayOfTheWeek === 0) {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.EasterSundayParts.SecondVespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.EasterSundayParts.SecondVespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.EasterSundayParts.SecondVespersThirdAntiphon;
+        psalmody.firstPsalm.antiphon = liturgyMasters.easterFirstVespersOfSundayParts.firstVespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.easterFirstVespersOfSundayParts.firstVespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.easterFirstVespersOfSundayParts.firstVespersThirdAntiphon;
+      } else if (liturgyDayInformation.dayOfTheWeek === 0) {
+        psalmody.firstPsalm.antiphon = liturgyMasters.easterSundayParts.secondVespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.easterSundayParts.secondVespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.easterSundayParts.secondVespersThirdAntiphon;
       } else {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.VespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.VespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.CommonSpecialPartsOfEaster.VespersThirdAntiphon;
+        psalmody.firstPsalm.antiphon = liturgyMasters.commonSpecialPartsOfEaster.vespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.commonSpecialPartsOfEaster.vespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.commonSpecialPartsOfEaster.vespersThirdAntiphon;
       }
       break;
     case SpecificLiturgyTimeType.AdventWeeks:
       if (
-        liturgyDayInformation.DayOfTheWeek === 6 &&
-        StringManagement.hasLiturgyContent(liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersFirstAntiphon)
+        liturgyDayInformation.dayOfTheWeek === 6 &&
+        StringManagement.hasLiturgyContent(liturgyMasters.adventFirstVespersOfSundayParts.firstVespersFirstAntiphon)
       ) {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersThirdAntiphon;
-      } else if (liturgyDayInformation.DayOfTheWeek === 0) {
-        psalmody.FirstPsalm.Antiphon = liturgyMasters.AdventSundayParts.SecondVespersFirstAntiphon;
-        psalmody.SecondPsalm.Antiphon = liturgyMasters.AdventSundayParts.SecondVespersSecondAntiphon;
-        psalmody.ThirdPsalm.Antiphon = liturgyMasters.AdventSundayParts.SecondVespersThirdAntiphon;
+        psalmody.firstPsalm.antiphon = liturgyMasters.adventFirstVespersOfSundayParts.firstVespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.adventFirstVespersOfSundayParts.firstVespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.adventFirstVespersOfSundayParts.firstVespersThirdAntiphon;
+      } else if (liturgyDayInformation.dayOfTheWeek === 0) {
+        psalmody.firstPsalm.antiphon = liturgyMasters.adventSundayParts.secondVespersFirstAntiphon;
+        psalmody.secondPsalm.antiphon = liturgyMasters.adventSundayParts.secondVespersSecondAntiphon;
+        psalmody.thirdPsalm.antiphon = liturgyMasters.adventSundayParts.secondVespersThirdAntiphon;
       }
       break;
     case SpecificLiturgyTimeType.ChristmasOctave:
-      psalmody.FirstPsalm = liturgyMasters.SolemnityAndFestivityParts.SecondVespersFirstPsalm;
-      psalmody.FirstPsalm.Comment = '-';
-      psalmody.FirstPsalm.HasGloryPrayer = true;
-      psalmody.SecondPsalm = liturgyMasters.SolemnityAndFestivityParts.SecondVespersSecondPsalm;
-      psalmody.SecondPsalm.Comment = '-';
-      psalmody.SecondPsalm.HasGloryPrayer = true;
-      psalmody.ThirdPsalm = liturgyMasters.SolemnityAndFestivityParts.SecondVespersThirdPsalm;
-      psalmody.ThirdPsalm.Comment = '-';
-      psalmody.ThirdPsalm.HasGloryPrayer = true;
+      psalmody.firstPsalm = liturgyMasters.solemnityAndFestivityParts.secondVespersFirstPsalm;
+      psalmody.firstPsalm.comment = '-';
+      psalmody.firstPsalm.hasGloryPrayer = true;
+      psalmody.secondPsalm = liturgyMasters.solemnityAndFestivityParts.secondVespersSecondPsalm;
+      psalmody.secondPsalm.comment = '-';
+      psalmody.secondPsalm.hasGloryPrayer = true;
+      psalmody.thirdPsalm = liturgyMasters.solemnityAndFestivityParts.secondVespersThirdPsalm;
+      psalmody.thirdPsalm.comment = '-';
+      psalmody.thirdPsalm.hasGloryPrayer = true;
       break;
   }
 
   if (
-    liturgyDayInformation.DayOfTheWeek === 0 &&
-    (liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
-      liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.LentWeeks ||
-      liturgyDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday)
+    liturgyDayInformation.dayOfTheWeek === 0 &&
+    (liturgyDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.HolyWeek ||
+      liturgyDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.LentWeeks ||
+      liturgyDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday)
   ) {
-    psalmody.ThirdPsalm.Title = 'Càntic 1Pe 2, 21-24\nLa passió voluntària del Crist, el servent de Déu';
-    psalmody.ThirdPsalm.Comment = '-';
-    psalmody.ThirdPsalm.Psalm = liturgyMasters.Various.SpecialVesperChant;
-    psalmody.ThirdPsalm.HasGloryPrayer = true;
+    psalmody.thirdPsalm.title = 'Càntic 1Pe 2, 21-24\nLa passió voluntària del Crist, el servent de Déu';
+    psalmody.thirdPsalm.comment = '-';
+    psalmody.thirdPsalm.psalm = liturgyMasters.various.specialVesperChant;
+    psalmody.thirdPsalm.hasGloryPrayer = true;
   }
   return psalmody;
 }
@@ -325,38 +325,38 @@ function getShortReading(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
 ): ShortReading {
-  let shortReading = liturgyMasters.VespersCommonPsalter.ShortReading;
-  switch (liturgyDayInformation.SpecificLiturgyTime) {
+  let shortReading = liturgyMasters.vespersCommonPsalter.shortReading;
+  switch (liturgyDayInformation.specificLiturgyTime) {
     case SpecificLiturgyTimeType.LentAshes:
-      return liturgyMasters.PartsOfLentTime.VespersShortReading;
+      return liturgyMasters.partsOfLentTime.vespersShortReading;
     case SpecificLiturgyTimeType.LentWeeks:
-      return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersShortReading;
+      return liturgyMasters.partsOfFiveWeeksOfLentTime.vespersShortReading;
     case SpecificLiturgyTimeType.PalmSunday:
-      return liturgyMasters.PalmSundayParts.SecondVespersShortReading;
+      return liturgyMasters.palmSundayParts.secondVespersShortReading;
     case SpecificLiturgyTimeType.HolyWeek:
-      return liturgyMasters.PartsOfHolyWeek.VespersShortReading;
+      return liturgyMasters.partsOfHolyWeek.vespersShortReading;
     case SpecificLiturgyTimeType.PaschalTriduum:
-      return liturgyMasters.PartsOfEasterTriduum.VespersShortReading;
+      return liturgyMasters.partsOfEasterTriduum.vespersShortReading;
     case SpecificLiturgyTimeType.EasterOctave:
-      return liturgyMasters.PartsOfEasterOctave.VespersShortReading;
+      return liturgyMasters.partsOfEasterOctave.vespersShortReading;
     case SpecificLiturgyTimeType.EasterWeeks:
-      return liturgyMasters.EasterWeekParts.VespersShortReading;
+      return liturgyMasters.easterWeekParts.vespersShortReading;
     case SpecificLiturgyTimeType.AdventWeeks:
-      return liturgyMasters.AdventWeekParts.VespersShortReading;
+      return liturgyMasters.adventWeekParts.vespersShortReading;
     case SpecificLiturgyTimeType.AdventFairs:
-      return liturgyMasters.AdventFairDaysParts.VespersShortReading;
+      return liturgyMasters.adventFairDaysParts.vespersShortReading;
     case SpecificLiturgyTimeType.ChristmasOctave:
       if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
-        return liturgyMasters.ChristmasWhenOctaveParts.VespersShortReading;
+        return liturgyMasters.christmasWhenOctaveParts.vespersShortReading;
       }
       break;
     case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
       if (
-        liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-        liturgyDayInformation.Date.getMonth() == 0 &&
-        liturgyDayInformation.Date.getDate() != 13
+        liturgyDayInformation.specificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+        liturgyDayInformation.date.getMonth() == 0 &&
+        liturgyDayInformation.date.getDate() != 13
       ) {
-        return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersShortReading;
+        return liturgyMasters.christmasBeforeEpiphanyParts.vespersShortReading;
       }
       break;
   }
@@ -367,41 +367,41 @@ function getShortResponsory(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
 ): ShortResponsory {
-  let shortResponsory = liturgyMasters.VespersCommonPsalter.ShortResponsory;
-  shortResponsory.HasSpecialAntiphon = false;
-  switch (liturgyDayInformation.SpecificLiturgyTime) {
+  let shortResponsory = liturgyMasters.vespersCommonPsalter.shortResponsory;
+  shortResponsory.hasSpecialAntiphon = false;
+  switch (liturgyDayInformation.specificLiturgyTime) {
     case SpecificLiturgyTimeType.LentAshes:
-      return liturgyMasters.PartsOfLentTime.VespersShortResponsory;
+      return liturgyMasters.partsOfLentTime.vespersShortResponsory;
     case SpecificLiturgyTimeType.LentWeeks:
-      return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersShortResponsory;
+      return liturgyMasters.partsOfFiveWeeksOfLentTime.vespersShortResponsory;
     case SpecificLiturgyTimeType.PalmSunday:
-      return liturgyMasters.PalmSundayParts.SecondVespresShortResponsory;
+      return liturgyMasters.palmSundayParts.secondVespresShortResponsory;
     case SpecificLiturgyTimeType.HolyWeek:
-      return liturgyMasters.PartsOfHolyWeek.VespersShortResponsory;
+      return liturgyMasters.partsOfHolyWeek.vespersShortResponsory;
     case SpecificLiturgyTimeType.EasterWeeks:
-      return liturgyMasters.EasterWeekParts.VespersShortResponsory;
+      return liturgyMasters.easterWeekParts.vespersShortResponsory;
     case SpecificLiturgyTimeType.AdventWeeks:
-      return liturgyMasters.AdventWeekParts.VespersShortResponsory;
+      return liturgyMasters.adventWeekParts.vespersShortResponsory;
     case SpecificLiturgyTimeType.AdventFairs:
-      return liturgyMasters.AdventFairDaysParts.VespersShortResponsory;
+      return liturgyMasters.adventFairDaysParts.vespersShortResponsory;
     case SpecificLiturgyTimeType.ChristmasOctave:
       if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
-        return liturgyMasters.ChristmasWhenOctaveParts.VespersShortResponsory;
+        return liturgyMasters.christmasWhenOctaveParts.vespersShortResponsory;
       }
       break;
     case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
       if (
-        liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-        liturgyDayInformation.Date.getMonth() == 0 &&
-        liturgyDayInformation.Date.getDate() != 13
+        liturgyDayInformation.specificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+        liturgyDayInformation.date.getMonth() == 0 &&
+        liturgyDayInformation.date.getDate() != 13
       ) {
-        return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersShortResponsory;
+        return liturgyMasters.christmasBeforeEpiphanyParts.vespersShortResponsory;
       }
       break;
     case SpecificLiturgyTimeType.PaschalTriduum:
-      return liturgyMasters.PartsOfEasterTriduum.VespersShortResponsory;
+      return liturgyMasters.partsOfEasterTriduum.vespersShortResponsory;
     case SpecificLiturgyTimeType.EasterOctave:
-      return liturgyMasters.PartsOfEasterOctave.VespersShortResponsory;
+      return liturgyMasters.partsOfEasterOctave.vespersShortResponsory;
   }
   return shortResponsory;
 }
@@ -411,208 +411,208 @@ function getEvangelicalAntiphon(
   liturgyDayInformation: LiturgySpecificDayInformation,
 ): string {
   let evangelicalAntiphon;
-  if (liturgyDayInformation.DayOfTheWeek !== 0 && liturgyDayInformation.DayOfTheWeek !== 6) {
-    evangelicalAntiphon = liturgyMasters.VespersCommonPsalter.EvangelicalAntiphon;
+  if (liturgyDayInformation.dayOfTheWeek !== 0 && liturgyDayInformation.dayOfTheWeek !== 6) {
+    evangelicalAntiphon = liturgyMasters.vespersCommonPsalter.evangelicalAntiphon;
   } else {
     if (
-      liturgyDayInformation.DayOfTheWeek === 6 &&
+      liturgyDayInformation.dayOfTheWeek === 6 &&
       StringManagement.hasLiturgyContent(
-        liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FirstVespersEvangelicalAntiphonYearA,
+        liturgyMasters.prayersOfOrdinaryTimeWhenFirstVespers.firstVespersEvangelicalAntiphonYearA,
       )
     ) {
-      switch (liturgyDayInformation.YearType) {
+      switch (liturgyDayInformation.yearType) {
         case YearType.A:
           evangelicalAntiphon =
-            liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FirstVespersEvangelicalAntiphonYearA;
+            liturgyMasters.prayersOfOrdinaryTimeWhenFirstVespers.firstVespersEvangelicalAntiphonYearA;
           break;
         case YearType.B:
           evangelicalAntiphon =
-            liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FirstVespersEvangelicalAntiphonYearB;
+            liturgyMasters.prayersOfOrdinaryTimeWhenFirstVespers.firstVespersEvangelicalAntiphonYearB;
           break;
         case YearType.C:
           evangelicalAntiphon =
-            liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FirstVespersEvangelicalAntiphonYearC;
+            liturgyMasters.prayersOfOrdinaryTimeWhenFirstVespers.firstVespersEvangelicalAntiphonYearC;
           break;
       }
     } else {
-      switch (liturgyDayInformation.YearType) {
+      switch (liturgyDayInformation.yearType) {
         case YearType.A:
-          evangelicalAntiphon = liturgyMasters.PrayersOfOrdinaryTime.SecondVespersEvangelicalAntiphonYearA;
+          evangelicalAntiphon = liturgyMasters.prayersOfOrdinaryTime.secondVespersEvangelicalAntiphonYearA;
           break;
         case YearType.B:
-          evangelicalAntiphon = liturgyMasters.PrayersOfOrdinaryTime.SecondVespersEvangelicalAntiphonYearB;
+          evangelicalAntiphon = liturgyMasters.prayersOfOrdinaryTime.secondVespersEvangelicalAntiphonYearB;
           break;
         case YearType.C:
-          evangelicalAntiphon = liturgyMasters.PrayersOfOrdinaryTime.SecondVespersEvangelicalAntiphonYearC;
+          evangelicalAntiphon = liturgyMasters.prayersOfOrdinaryTime.secondVespersEvangelicalAntiphonYearC;
           break;
       }
     }
   }
-  switch (liturgyDayInformation.SpecificLiturgyTime) {
+  switch (liturgyDayInformation.specificLiturgyTime) {
     case SpecificLiturgyTimeType.LentAshes:
-      switch (liturgyDayInformation.YearType) {
+      switch (liturgyDayInformation.yearType) {
         case YearType.A:
-          evangelicalAntiphon = liturgyMasters.PartsOfLentTime.VespersEvangelicalAntiphonYearA;
+          evangelicalAntiphon = liturgyMasters.partsOfLentTime.vespersEvangelicalAntiphonYearA;
           break;
         case YearType.B:
-          evangelicalAntiphon = liturgyMasters.PartsOfLentTime.VespersEvangelicalAntiphonYearB;
+          evangelicalAntiphon = liturgyMasters.partsOfLentTime.vespersEvangelicalAntiphonYearB;
           break;
         case YearType.C:
-          evangelicalAntiphon = liturgyMasters.PartsOfLentTime.VespersEvangelicalAntiphonYearC;
+          evangelicalAntiphon = liturgyMasters.partsOfLentTime.vespersEvangelicalAntiphonYearC;
           break;
       }
       if (evangelicalAntiphon === '-') {
-        evangelicalAntiphon = liturgyMasters.PartsOfLentTime.VespersEvangelicalAntiphon;
+        evangelicalAntiphon = liturgyMasters.partsOfLentTime.vespersEvangelicalAntiphon;
       }
       break;
     case SpecificLiturgyTimeType.LentWeeks:
-      if (liturgyDayInformation.DayOfTheWeek !== 0 && liturgyDayInformation.DayOfTheWeek !== 6) {
-        evangelicalAntiphon = liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersEvangelicalAntiphon;
+      if (liturgyDayInformation.dayOfTheWeek !== 0 && liturgyDayInformation.dayOfTheWeek !== 6) {
+        evangelicalAntiphon = liturgyMasters.partsOfFiveWeeksOfLentTime.vespersEvangelicalAntiphon;
       } else {
         if (
-          liturgyDayInformation.DayOfTheWeek === 6 &&
+          liturgyDayInformation.dayOfTheWeek === 6 &&
           StringManagement.hasLiturgyContent(
-            liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersEvangelicalAntiphonYearA,
+            liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts.firstVespersEvangelicalAntiphonYearA,
           )
         ) {
-          switch (liturgyDayInformation.YearType) {
+          switch (liturgyDayInformation.yearType) {
             case YearType.A:
               evangelicalAntiphon =
-                liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersEvangelicalAntiphonYearA;
+                liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts.firstVespersEvangelicalAntiphonYearA;
               break;
             case YearType.B:
               evangelicalAntiphon =
-                liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersEvangelicalAntiphonYearB;
+                liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts.firstVespersEvangelicalAntiphonYearB;
               break;
             case YearType.C:
               evangelicalAntiphon =
-                liturgyMasters.FiveWeeksOfFirstsVespersOfSundayLentParts.FirstVespersEvangelicalAntiphonYearC;
+                liturgyMasters.fiveWeeksOfFirstsVespersOfSundayLentParts.firstVespersEvangelicalAntiphonYearC;
               break;
           }
         } else {
-          switch (liturgyDayInformation.YearType) {
+          switch (liturgyDayInformation.yearType) {
             case YearType.A:
-              evangelicalAntiphon = liturgyMasters.FiveWeeksOfSundayLentParts.SecondVespersEvangelicalAntiphonYearA;
+              evangelicalAntiphon = liturgyMasters.fiveWeeksOfSundayLentParts.secondVespersEvangelicalAntiphonYearA;
               break;
             case YearType.B:
-              evangelicalAntiphon = liturgyMasters.FiveWeeksOfSundayLentParts.SecondVespersEvangelicalAntiphonYearB;
+              evangelicalAntiphon = liturgyMasters.fiveWeeksOfSundayLentParts.secondVespersEvangelicalAntiphonYearB;
               break;
             case YearType.C:
-              evangelicalAntiphon = liturgyMasters.FiveWeeksOfSundayLentParts.SecondVespersEvangelicalAntiphonYearC;
+              evangelicalAntiphon = liturgyMasters.fiveWeeksOfSundayLentParts.secondVespersEvangelicalAntiphonYearC;
               break;
           }
         }
       }
       break;
     case SpecificLiturgyTimeType.PalmSunday:
-      switch (liturgyDayInformation.YearType) {
+      switch (liturgyDayInformation.yearType) {
         case YearType.A:
-          evangelicalAntiphon = liturgyMasters.PalmSundayParts.SecondVespersEvangelicalAntiphonYearA;
+          evangelicalAntiphon = liturgyMasters.palmSundayParts.secondVespersEvangelicalAntiphonYearA;
           break;
         case YearType.B:
-          evangelicalAntiphon = liturgyMasters.PalmSundayParts.SecondVespersEvangelicalAntiphonYearB;
+          evangelicalAntiphon = liturgyMasters.palmSundayParts.secondVespersEvangelicalAntiphonYearB;
           break;
         case YearType.C:
-          evangelicalAntiphon = liturgyMasters.PalmSundayParts.SecondVespersEvangelicalAntiphonYearC;
+          evangelicalAntiphon = liturgyMasters.palmSundayParts.secondVespersEvangelicalAntiphonYearC;
           break;
       }
       break;
     case SpecificLiturgyTimeType.HolyWeek:
-      evangelicalAntiphon = liturgyMasters.PartsOfHolyWeek.VespersEvangelicalAntiphon;
+      evangelicalAntiphon = liturgyMasters.partsOfHolyWeek.vespersEvangelicalAntiphon;
       break;
     case SpecificLiturgyTimeType.PaschalTriduum:
-      evangelicalAntiphon = liturgyMasters.PartsOfEasterTriduum.VespersEvangelicalAntiphon;
+      evangelicalAntiphon = liturgyMasters.partsOfEasterTriduum.vespersEvangelicalAntiphon;
       break;
     case SpecificLiturgyTimeType.EasterOctave:
-      evangelicalAntiphon = liturgyMasters.PartsOfEasterOctave.VespersEvangelicalAntiphon;
+      evangelicalAntiphon = liturgyMasters.partsOfEasterOctave.vespersEvangelicalAntiphon;
       break;
     case SpecificLiturgyTimeType.EasterWeeks:
-      if (liturgyDayInformation.DayOfTheWeek !== 6 && liturgyDayInformation.DayOfTheWeek !== 0) {
-        evangelicalAntiphon = liturgyMasters.EasterWeekParts.VespersEvangelicalAntiphon;
+      if (liturgyDayInformation.dayOfTheWeek !== 6 && liturgyDayInformation.dayOfTheWeek !== 0) {
+        evangelicalAntiphon = liturgyMasters.easterWeekParts.vespersEvangelicalAntiphon;
       } else {
         if (
-          liturgyDayInformation.DayOfTheWeek === 6 &&
+          liturgyDayInformation.dayOfTheWeek === 6 &&
           StringManagement.hasLiturgyContent(
-            liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearA,
+            liturgyMasters.easterFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearA,
           )
         ) {
-          switch (liturgyDayInformation.YearType) {
+          switch (liturgyDayInformation.yearType) {
             case YearType.A:
-              evangelicalAntiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearA;
+              evangelicalAntiphon = liturgyMasters.easterFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearA;
               break;
             case YearType.B:
-              evangelicalAntiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearB;
+              evangelicalAntiphon = liturgyMasters.easterFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearB;
               break;
             case YearType.C:
-              evangelicalAntiphon = liturgyMasters.EasterFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearC;
+              evangelicalAntiphon = liturgyMasters.easterFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearC;
               break;
           }
         } else {
-          switch (liturgyDayInformation.YearType) {
+          switch (liturgyDayInformation.yearType) {
             case YearType.A:
-              evangelicalAntiphon = liturgyMasters.EasterSundayParts.SecondVespersEvangelicalAntiphonYearA;
+              evangelicalAntiphon = liturgyMasters.easterSundayParts.secondVespersEvangelicalAntiphonYearA;
               break;
             case YearType.B:
-              evangelicalAntiphon = liturgyMasters.EasterSundayParts.SecondVespersEvangelicalAntiphonYearB;
+              evangelicalAntiphon = liturgyMasters.easterSundayParts.secondVespersEvangelicalAntiphonYearB;
               break;
             case YearType.C:
-              evangelicalAntiphon = liturgyMasters.EasterSundayParts.SecondVespersEvangelicalAntiphonYearC;
+              evangelicalAntiphon = liturgyMasters.easterSundayParts.secondVespersEvangelicalAntiphonYearC;
               break;
           }
         }
       }
       break;
     case SpecificLiturgyTimeType.AdventWeeks:
-      if (liturgyDayInformation.DayOfTheWeek !== 6 && liturgyDayInformation.DayOfTheWeek !== 0) {
-        evangelicalAntiphon = liturgyMasters.AdventWeekParts.VespersEvangelicalAntiphon;
+      if (liturgyDayInformation.dayOfTheWeek !== 6 && liturgyDayInformation.dayOfTheWeek !== 0) {
+        evangelicalAntiphon = liturgyMasters.adventWeekParts.vespersEvangelicalAntiphon;
       } else {
         if (
-          liturgyDayInformation.DayOfTheWeek === 6 &&
+          liturgyDayInformation.dayOfTheWeek === 6 &&
           StringManagement.hasLiturgyContent(
-            liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearA,
+            liturgyMasters.adventFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearA,
           )
         ) {
-          switch (liturgyDayInformation.YearType) {
+          switch (liturgyDayInformation.yearType) {
             case YearType.A:
-              evangelicalAntiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearA;
+              evangelicalAntiphon = liturgyMasters.adventFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearA;
               break;
             case YearType.B:
-              evangelicalAntiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearB;
+              evangelicalAntiphon = liturgyMasters.adventFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearB;
               break;
             case YearType.C:
-              evangelicalAntiphon = liturgyMasters.AdventFirstVespersOfSundayParts.FirstVespersEvangelicalAntiphonYearC;
+              evangelicalAntiphon = liturgyMasters.adventFirstVespersOfSundayParts.firstVespersEvangelicalAntiphonYearC;
               break;
           }
         } else {
-          switch (liturgyDayInformation.YearType) {
+          switch (liturgyDayInformation.yearType) {
             case YearType.A:
-              evangelicalAntiphon = liturgyMasters.AdventSundayParts.SecondVespersEvangelicalAntiphonYearA;
+              evangelicalAntiphon = liturgyMasters.adventSundayParts.secondVespersEvangelicalAntiphonYearA;
               break;
             case YearType.B:
-              evangelicalAntiphon = liturgyMasters.AdventSundayParts.SecondVespersEvangelicalAntiphonYearB;
+              evangelicalAntiphon = liturgyMasters.adventSundayParts.secondVespersEvangelicalAntiphonYearB;
               break;
             case YearType.C:
-              evangelicalAntiphon = liturgyMasters.AdventSundayParts.SecondVespersEvangelicalAntiphonYearC;
+              evangelicalAntiphon = liturgyMasters.adventSundayParts.secondVespersEvangelicalAntiphonYearC;
               break;
           }
         }
       }
       break;
     case SpecificLiturgyTimeType.AdventFairs:
-      evangelicalAntiphon = liturgyMasters.AdventFairDaysParts.VespersEvangelicalAntiphon;
+      evangelicalAntiphon = liturgyMasters.adventFairDaysParts.vespersEvangelicalAntiphon;
       break;
     case SpecificLiturgyTimeType.ChristmasOctave:
       if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
-        evangelicalAntiphon = liturgyMasters.ChristmasWhenOctaveParts.VespersEvangelicalAntiphon;
+        evangelicalAntiphon = liturgyMasters.christmasWhenOctaveParts.vespersEvangelicalAntiphon;
       }
       break;
     case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
       if (
-        liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-        liturgyDayInformation.Date.getMonth() == 0 &&
-        liturgyDayInformation.Date.getDate() != 13
+        liturgyDayInformation.specificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+        liturgyDayInformation.date.getMonth() == 0 &&
+        liturgyDayInformation.date.getDate() != 13
       ) {
-        evangelicalAntiphon = liturgyMasters.ChristmasBeforeEpiphanyParts.VespersEvangelicalAntiphon;
+        evangelicalAntiphon = liturgyMasters.christmasBeforeEpiphanyParts.vespersEvangelicalAntiphon;
       }
       break;
   }
@@ -620,38 +620,38 @@ function getEvangelicalAntiphon(
 }
 
 function getPrayers(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgySpecificDayInformation): string {
-  let prayers = liturgyMasters.VespersCommonPsalter.Prayers;
-  switch (liturgyDayInformation.SpecificLiturgyTime) {
+  let prayers = liturgyMasters.vespersCommonPsalter.prayers;
+  switch (liturgyDayInformation.specificLiturgyTime) {
     case SpecificLiturgyTimeType.LentAshes:
-      return liturgyMasters.PartsOfLentTime.VespersPrayers;
+      return liturgyMasters.partsOfLentTime.vespersPrayers;
     case SpecificLiturgyTimeType.LentWeeks:
-      return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersPrayers;
+      return liturgyMasters.partsOfFiveWeeksOfLentTime.vespersPrayers;
     case SpecificLiturgyTimeType.PalmSunday:
-      return liturgyMasters.PalmSundayParts.SecondVespersPrayers;
+      return liturgyMasters.palmSundayParts.secondVespersPrayers;
     case SpecificLiturgyTimeType.HolyWeek:
-      return liturgyMasters.PartsOfHolyWeek.VespersPrayers;
+      return liturgyMasters.partsOfHolyWeek.vespersPrayers;
     case SpecificLiturgyTimeType.PaschalTriduum:
-      return liturgyMasters.PartsOfEasterTriduum.VespersPrayers;
+      return liturgyMasters.partsOfEasterTriduum.vespersPrayers;
     case SpecificLiturgyTimeType.EasterOctave:
-      return liturgyMasters.PartsOfEasterOctave.VespersPrayers;
+      return liturgyMasters.partsOfEasterOctave.vespersPrayers;
     case SpecificLiturgyTimeType.EasterWeeks:
-      return liturgyMasters.EasterWeekParts.VespersPrayers;
+      return liturgyMasters.easterWeekParts.vespersPrayers;
     case SpecificLiturgyTimeType.AdventWeeks:
-      return liturgyMasters.AdventWeekParts.VespersPrayers;
+      return liturgyMasters.adventWeekParts.vespersPrayers;
     case SpecificLiturgyTimeType.AdventFairs:
-      return liturgyMasters.AdventFairDaysParts.VespersPrayers;
+      return liturgyMasters.adventFairDaysParts.vespersPrayers;
     case SpecificLiturgyTimeType.ChristmasOctave:
       if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
-        return liturgyMasters.ChristmasWhenOctaveParts.VespersPrayers;
+        return liturgyMasters.christmasWhenOctaveParts.vespersPrayers;
       }
       break;
     case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
       if (
-        liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-        liturgyDayInformation.Date.getMonth() == 0 &&
-        liturgyDayInformation.Date.getDate() != 13
+        liturgyDayInformation.specificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+        liturgyDayInformation.date.getMonth() == 0 &&
+        liturgyDayInformation.date.getDate() != 13
       ) {
-        return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersPrayers;
+        return liturgyMasters.christmasBeforeEpiphanyParts.vespersPrayers;
       }
       break;
   }
@@ -659,46 +659,46 @@ function getPrayers(liturgyMasters: LiturgyMasters, liturgyDayInformation: Litur
 }
 
 function getFinalPrayer(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgySpecificDayInformation): string {
-  let finalPrayer = liturgyMasters.VespersCommonPsalter.FinalPrayer;
-  if (liturgyDayInformation.DayOfTheWeek === 0) {
-    finalPrayer = liturgyMasters.PrayersOfOrdinaryTime.FinalPrayer;
+  let finalPrayer = liturgyMasters.vespersCommonPsalter.finalPrayer;
+  if (liturgyDayInformation.dayOfTheWeek === 0) {
+    finalPrayer = liturgyMasters.prayersOfOrdinaryTime.finalPrayer;
   } else if (
-    liturgyDayInformation.DayOfTheWeek === 6 &&
-    StringManagement.hasLiturgyContent(liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FinalPrayer)
+    liturgyDayInformation.dayOfTheWeek === 6 &&
+    StringManagement.hasLiturgyContent(liturgyMasters.prayersOfOrdinaryTimeWhenFirstVespers.finalPrayer)
   ) {
-    finalPrayer = liturgyMasters.PrayersOfOrdinaryTimeWhenFirstVespers.FinalPrayer;
+    finalPrayer = liturgyMasters.prayersOfOrdinaryTimeWhenFirstVespers.finalPrayer;
   }
-  switch (liturgyDayInformation.SpecificLiturgyTime) {
+  switch (liturgyDayInformation.specificLiturgyTime) {
     case SpecificLiturgyTimeType.LentAshes:
-      return liturgyMasters.PartsOfLentTime.VespersFinalPrayer;
+      return liturgyMasters.partsOfLentTime.vespersFinalPrayer;
     case SpecificLiturgyTimeType.LentWeeks:
-      return liturgyMasters.PartsOfFiveWeeksOfLentTime.VespersFinalPrayer;
+      return liturgyMasters.partsOfFiveWeeksOfLentTime.vespersFinalPrayer;
     case SpecificLiturgyTimeType.PalmSunday:
-      return liturgyMasters.PalmSundayParts.SecondVespersFinalPrayer;
+      return liturgyMasters.palmSundayParts.secondVespersFinalPrayer;
     case SpecificLiturgyTimeType.HolyWeek:
-      return liturgyMasters.PartsOfHolyWeek.VespersFinalPrayer;
+      return liturgyMasters.partsOfHolyWeek.vespersFinalPrayer;
     case SpecificLiturgyTimeType.PaschalTriduum:
-      return liturgyMasters.PartsOfEasterTriduum.VespersFinalPrayer;
+      return liturgyMasters.partsOfEasterTriduum.vespersFinalPrayer;
     case SpecificLiturgyTimeType.EasterOctave:
-      return liturgyMasters.PartsOfEasterOctave.VespersFinalPrayer;
+      return liturgyMasters.partsOfEasterOctave.vespersFinalPrayer;
     case SpecificLiturgyTimeType.EasterWeeks:
-      return liturgyMasters.EasterWeekParts.VespersFinalPrayer;
+      return liturgyMasters.easterWeekParts.vespersFinalPrayer;
     case SpecificLiturgyTimeType.AdventWeeks:
-      return liturgyMasters.AdventWeekParts.VespersFinalPrayer;
+      return liturgyMasters.adventWeekParts.vespersFinalPrayer;
     case SpecificLiturgyTimeType.AdventFairs:
-      return liturgyMasters.AdventFairDaysParts.VespersFinalPrayer;
+      return liturgyMasters.adventFairDaysParts.vespersFinalPrayer;
     case SpecificLiturgyTimeType.ChristmasOctave:
       if (!CelebrationIdentifier.checkCelebration(Celebration.Christmas, liturgyDayInformation)) {
-        return liturgyMasters.ChristmasWhenOctaveParts.VespersFinalPrayer;
+        return liturgyMasters.christmasWhenOctaveParts.vespersFinalPrayer;
       }
       break;
     case SpecificLiturgyTimeType.ChristmasBeforeOrdinary:
       if (
-        liturgyDayInformation.SpecificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
-        liturgyDayInformation.Date.getMonth() == 0 &&
-        liturgyDayInformation.Date.getDate() != 13
+        liturgyDayInformation.specificLiturgyTime == SpecificLiturgyTimeType.ChristmasBeforeOrdinary &&
+        liturgyDayInformation.date.getMonth() == 0 &&
+        liturgyDayInformation.date.getDate() != 13
       ) {
-        return liturgyMasters.ChristmasBeforeEpiphanyParts.VespersFinalPrayer;
+        return liturgyMasters.christmasBeforeEpiphanyParts.vespersFinalPrayer;
       }
       break;
   }

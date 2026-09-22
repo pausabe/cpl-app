@@ -1,13 +1,13 @@
 export default class InvitationCommonPsalter {
-  static MasterName: string = 'salteriComuInvitatori';
+  static masterName: string = 'salteriComuInvitatori';
 
   constructor(databaseRow: any = undefined) {
     if (databaseRow) {
-      this.Id = databaseRow.id;
-      this.Antiphon = databaseRow.ant;
+      this.id = databaseRow.id;
+      this.antiphon = databaseRow.ant;
     }
   }
 
-  Id: number;
-  Antiphon: string;
+  id: number;
+  antiphon: string;
 }

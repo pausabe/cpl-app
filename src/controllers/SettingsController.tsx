@@ -67,10 +67,10 @@ export default function SettingsController() {
       places={PLACES}
       info={{
         appVersion: `${versionName()} (${ExpoApplication.nativeBuildVersion ?? ''})`,
-        databaseVersion: String(database.Version ?? ''),
+        databaseVersion: String(database.version ?? ''),
         technical: [
           `Esquema de color: ${Appearance.getColorScheme()}`,
-          `Precedència: avui (${hours.TodayCelebrationInformation?.Precedence}) demà (${hours.TomorrowCelebrationInformation?.Precedence})`,
+          `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
           `EAS-runtimeVersion: ${Updates.runtimeVersion}`,
           `EAS-channel: ${Updates.channel}`,
           `EAS-updateId: ${Updates.updateId}`,

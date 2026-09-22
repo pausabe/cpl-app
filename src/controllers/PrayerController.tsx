@@ -50,12 +50,12 @@ function useTextSettingsButton(navigation: any) {
 // always. The screens call these while they draw, so they only change the loaded settings in
 // place and save them: nothing else has to redraw.
 function chooseInvitationPsalm(psalm: string) {
-  updateSettings({ InvitationPsalmOption: psalm }, false);
+  updateSettings({ invitationPsalmOption: psalm }, false);
   SettingsService.setSettingNumSalmInv(psalm);
 }
 
 function chooseVirginAntiphon(antiphon: string) {
-  updateSettings({ VirginAntiphonOption: antiphon }, false);
+  updateSettings({ virginAntiphonOption: antiphon }, false);
   SettingsService.setSettingNumAntMare(antiphon);
 }
 
@@ -68,7 +68,7 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
         type={route.params.type}
         celebration={route.params.subtitle}
         hours={hours}
-        today={day.Today}
+        today={day.today}
         settings={settings}
         onInvitationPsalmChange={chooseInvitationPsalm}
         onVirginAntiphonChange={chooseVirginAntiphon}
@@ -96,7 +96,7 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
         needSecondReading={route.params.need_lectura2}
         useVespersTexts={route.params.useVespersTexts}
         mass={mass}
-        today={day.Today}
+        today={day.today}
         showVideos={showVideos}
       />
       {sheet}

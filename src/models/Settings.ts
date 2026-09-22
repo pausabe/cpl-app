@@ -1,12 +1,12 @@
 export class Settings {
-  PrayingPlace: string;
-  DioceseName: string;
-  DioceseCode: string;
-  UseLatin: boolean;
-  TextSize: number;
-  DarkModeEnabled: boolean;
-  InvitationPsalmOption: string;
-  VirginAntiphonOption: string;
-  OptionalFestivityEnabled: boolean;
-  DioceseCode2Letters: string;
+  prayingPlace: string;
+  dioceseName: string;
+  dioceseCode: string;
+  useLatin: boolean;
+  textSize: number;
+  darkModeEnabled: boolean;
+  invitationPsalmOption: string;
+  virginAntiphonOption: string;
+  optionalFestivityEnabled: boolean;
+  dioceseCode2Letters: string;
 }

@@ -1,8 +1,8 @@
 export default class CelebrationInformation {
-  Title: string;
-  Description: string;
-  SpecificClassification: string;
-  Diocese: string;
-  Category: string;
-  Precedence: number;
+  title: string;
+  description: string;
+  specificClassification: string;
+  diocese: string;
+  category: string;
+  precedence: number;
 }

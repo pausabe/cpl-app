@@ -27,15 +27,15 @@ export function obtainCelebrationHoursLiturgy(
   liturgyDayInformation: LiturgyDayInformation,
   settings: Settings,
 ): HoursLiturgy {
-  let hoursLiturgy: HoursLiturgy = buildHoursLiturgy(todayLiturgyMasters, liturgyDayInformation.Today, settings);
-  hoursLiturgy.TomorrowCelebrationInformation = buildHoursLiturgy(
+  let hoursLiturgy: HoursLiturgy = buildHoursLiturgy(todayLiturgyMasters, liturgyDayInformation.today, settings);
+  hoursLiturgy.tomorrowCelebrationInformation = buildHoursLiturgy(
     tomorrowLiturgyMasters,
-    liturgyDayInformation.Tomorrow,
+    liturgyDayInformation.tomorrow,
     settings,
-  ).TodayCelebrationInformation;
-  hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration = getFirstVespersWithCelebration(
+  ).todayCelebrationInformation;
+  hoursLiturgy.vespersOptions.tomorrowFirstVespersWithCelebration = getFirstVespersWithCelebration(
     todayLiturgyMasters,
-    liturgyDayInformation.Tomorrow,
+    liturgyDayInformation.tomorrow,
     settings,
   );
   return hoursLiturgy;
@@ -49,25 +49,25 @@ function buildHoursLiturgy(
   let hoursLiturgy: HoursLiturgy;
 
   if (
-    liturgySpecificDayInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay
+    liturgySpecificDayInformation.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay
   ) {
-    hoursLiturgy = getSpecialDayHoursLiturgy(liturgyMasters.SpecialDaysParts, settings);
+    hoursLiturgy = getSpecialDayHoursLiturgy(liturgyMasters.specialDaysParts, settings);
   } else if (
-    liturgySpecificDayInformation.SpecialCelebration.SpecialCelebrationType ===
+    liturgySpecificDayInformation.specialCelebration.specialCelebrationType ===
     SpecialCelebrationTypeEnum.SolemnityAndFestivity
   ) {
     hoursLiturgy = getSolemnityAndFestivityHoursLiturgy(
-      liturgyMasters.SolemnityAndFestivityParts,
+      liturgyMasters.solemnityAndFestivityParts,
       liturgySpecificDayInformation,
       settings,
     );
-  } else if (liturgySpecificDayInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
-    hoursLiturgy = getEasterSundayHoursLiturgy(liturgyMasters.EasterSunday, settings);
-    hoursLiturgy.Office.TeDeumInformation.Anthem = settings.UseLatin
-      ? liturgyMasters.Various.TeDeumLatinAnthem
-      : liturgyMasters.Various.TeDeumCatalanAnthem;
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalChant =
-      liturgyMasters.Various.VespersEvangelicalChant;
+  } else if (liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
+    hoursLiturgy = getEasterSundayHoursLiturgy(liturgyMasters.easterSunday, settings);
+    hoursLiturgy.office.teDeumInformation.anthem = settings.useLatin
+      ? liturgyMasters.various.teDeumLatinAnthem
+      : liturgyMasters.various.teDeumCatalanAnthem;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalChant =
+      liturgyMasters.various.vespersEvangelicalChant;
   } else {
     hoursLiturgy = getNormalCelebrationHoursLiturgy(liturgyMasters, liturgySpecificDayInformation, settings);
   }
@@ -81,33 +81,33 @@ function getNormalCelebrationHoursLiturgy(
   settings: Settings,
 ): HoursLiturgy {
   let hoursLiturgy = new HoursLiturgy();
-  switch (liturgyDayInformation.CelebrationType) {
+  switch (liturgyDayInformation.celebrationType) {
     case CelebrationType.Solemnity:
-      hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.SaintsSolemnities, settings);
+      hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.saintsSolemnities, settings);
       break;
     case CelebrationType.Festivity:
-      if (liturgyDayInformation.Date.getDay() !== 0) {
-        hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.SaintsSolemnities, settings);
+      if (liturgyDayInformation.date.getDay() !== 0) {
+        hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.saintsSolemnities, settings);
       }
       break;
     case CelebrationType.OptionalMemory:
     case CelebrationType.OptionalVirginMemory:
-      if (liturgyDayInformation.Date.getDay() !== 0) {
+      if (liturgyDayInformation.date.getDay() !== 0) {
         const saintsMemoriesHoursLiturgy = getSaintsMemoriesHoursLiturgy(
-          liturgyMasters.SaintsMemories,
+          liturgyMasters.saintsMemories,
           liturgyDayInformation,
           settings,
         );
-        if (settings.OptionalFestivityEnabled) {
+        if (settings.optionalFestivityEnabled) {
           hoursLiturgy = saintsMemoriesHoursLiturgy;
         } else {
-          hoursLiturgy.TodayCelebrationInformation = saintsMemoriesHoursLiturgy.TodayCelebrationInformation;
+          hoursLiturgy.todayCelebrationInformation = saintsMemoriesHoursLiturgy.todayCelebrationInformation;
         }
       }
       break;
     case CelebrationType.Memory:
-      if (liturgyDayInformation.Date.getDay() !== 0) {
-        hoursLiturgy = getSaintsMemoriesHoursLiturgy(liturgyMasters.SaintsMemories, liturgyDayInformation, settings);
+      if (liturgyDayInformation.date.getDay() !== 0) {
+        hoursLiturgy = getSaintsMemoriesHoursLiturgy(liturgyMasters.saintsMemories, liturgyDayInformation, settings);
       }
       break;
   }
@@ -120,51 +120,51 @@ function getFirstVespersWithCelebration(
   settings: Settings,
 ): Vespers {
   if (
-    tomorrowLiturgyInformation.SpecialCelebration.SpecialCelebrationType ===
+    tomorrowLiturgyInformation.specialCelebration.specialCelebrationType ===
     SpecialCelebrationTypeEnum.SolemnityAndFestivity
   ) {
     return getSolemnityAndFestivityFirstVespersOfTomorrow(
-      liturgyMasters.SolemnityAndFestivityWhenFirstVespersParts,
+      liturgyMasters.solemnityAndFestivityWhenFirstVespersParts,
       tomorrowLiturgyInformation,
       settings,
     );
   }
-  if (tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
+  if (tomorrowLiturgyInformation.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) {
     return getPalmSundayFistVespersOfTomorrow(
-      liturgyMasters.PalmSundayParts,
-      liturgyMasters.CommonPartsOfHolyWeek,
+      liturgyMasters.palmSundayParts,
+      liturgyMasters.commonPartsOfHolyWeek,
       tomorrowLiturgyInformation,
       settings,
     );
   }
   if (
-    tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum &&
-    tomorrowLiturgyInformation.Date.getDay() === 5
+    tomorrowLiturgyInformation.specificLiturgyTime === SpecificLiturgyTimeType.PaschalTriduum &&
+    tomorrowLiturgyInformation.date.getDay() === 5
   ) {
-    return getEasterTriduumFistVespersOfTomorrow(liturgyMasters.PartsOfEasterTriduum, settings);
+    return getEasterTriduumFistVespersOfTomorrow(liturgyMasters.partsOfEasterTriduum, settings);
   }
   if (
-    tomorrowLiturgyInformation.Date.getDay() === 0 &&
-    tomorrowLiturgyInformation.Week === '1' &&
-    tomorrowLiturgyInformation.SpecificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks
+    tomorrowLiturgyInformation.date.getDay() === 0 &&
+    tomorrowLiturgyInformation.week === '1' &&
+    tomorrowLiturgyInformation.specificLiturgyTime === SpecificLiturgyTimeType.AdventWeeks
   ) {
     return getAdventSundayFirstVespersOfTomorrow(
-      liturgyMasters.AdventFirstVespersOfSundayParts,
-      liturgyMasters.AdventWeekParts,
-      liturgyMasters.CommonAdventAndChristmasParts,
+      liturgyMasters.adventFirstVespersOfSundayParts,
+      liturgyMasters.adventWeekParts,
+      liturgyMasters.commonAdventAndChristmasParts,
       tomorrowLiturgyInformation,
       settings,
     );
   }
-  if (tomorrowLiturgyInformation.SpecialCelebration.SpecialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay) {
-    return getSpecialDaysFirstVespersOfTomorrow(liturgyMasters.SpecialDaysParts, tomorrowLiturgyInformation, settings);
+  if (tomorrowLiturgyInformation.specialCelebration.specialCelebrationType === SpecialCelebrationTypeEnum.SpecialDay) {
+    return getSpecialDaysFirstVespersOfTomorrow(liturgyMasters.specialDaysParts, tomorrowLiturgyInformation, settings);
   }
   if (
-    tomorrowLiturgyInformation.CelebrationType === CelebrationType.Solemnity ||
-    tomorrowLiturgyInformation.CelebrationType === CelebrationType.Festivity
+    tomorrowLiturgyInformation.celebrationType === CelebrationType.Solemnity ||
+    tomorrowLiturgyInformation.celebrationType === CelebrationType.Festivity
   ) {
     return getSaintsSolemnitiesFirstVespersOfTomorrow(
-      liturgyMasters.SaintsSolemnitiesWhenFirstsVespersParts,
+      liturgyMasters.saintsSolemnitiesWhenFirstsVespersParts,
       tomorrowLiturgyInformation,
       settings,
     );
@@ -175,89 +175,89 @@ function getFirstVespersWithCelebration(
 function getEasterSundayHoursLiturgy(easterSunday: EasterSunday, settings: Settings): HoursLiturgy {
   let hoursLiturgy = new HoursLiturgy();
 
-  hoursLiturgy.TodayCelebrationInformation.Title = 'Diumenge de Pasqua';
+  hoursLiturgy.todayCelebrationInformation.title = 'Diumenge de Pasqua';
 
-  hoursLiturgy.Invitation.InvitationAntiphon = easterSunday.InvitationAntiphon;
+  hoursLiturgy.invitation.invitationAntiphon = easterSunday.invitationAntiphon;
 
-  hoursLiturgy.Office.FirstReading = easterSunday.OfficeFirstReading;
-  hoursLiturgy.Office.FirstPsalm.Antiphon = easterSunday.OfficeFirstPsalm.Antiphon;
-  hoursLiturgy.Office.FirstPsalm.Title = easterSunday.OfficeFirstPsalm.Title;
-  hoursLiturgy.Office.FirstPsalm.Psalm = easterSunday.OfficeFirstPsalm.Psalm;
-  hoursLiturgy.Office.FirstPsalm.Prayer = easterSunday.OfficeFirstPsalm.Prayer;
-  hoursLiturgy.Office.SecondReading = easterSunday.OfficeSecondReading;
-  hoursLiturgy.Office.SecondPsalm.Antiphon = easterSunday.OfficeSecondPsalm.Antiphon;
-  hoursLiturgy.Office.SecondPsalm.Title = easterSunday.OfficeSecondPsalm.Title;
-  hoursLiturgy.Office.SecondPsalm.Psalm = easterSunday.OfficeSecondPsalm.Psalm;
-  hoursLiturgy.Office.SecondPsalm.Prayer = easterSunday.OfficeSecondPsalm.Prayer;
-  hoursLiturgy.Office.ThirdReading = easterSunday.OfficeThirdReading;
-  hoursLiturgy.Office.ThirdPsalm.Antiphon = easterSunday.OfficeThirdPsalm.Antiphon;
-  hoursLiturgy.Office.ThirdPsalm.Title = easterSunday.OfficeThirdPsalm.Title;
-  hoursLiturgy.Office.ThirdPsalm.Psalm = easterSunday.OfficeThirdPsalm.Psalm;
-  hoursLiturgy.Office.ThirdPsalm.Prayer = easterSunday.OfficeThirdPsalm.Prayer;
-  hoursLiturgy.Office.FourthReading = easterSunday.OfficeFourthReading;
-  hoursLiturgy.Office.FourthPsalm.Antiphon = easterSunday.OfficeFourthPsalm.Antiphon;
-  hoursLiturgy.Office.FourthPsalm.Title = easterSunday.OfficeFourthPsalm.Title;
-  hoursLiturgy.Office.FourthPsalm.Psalm = easterSunday.OfficeFourthPsalm.Psalm;
-  hoursLiturgy.Office.FourthPsalm.Prayer = easterSunday.OfficeFourthPsalm.Prayer;
-  hoursLiturgy.Office.TeDeumInformation.Enabled = true;
-  hoursLiturgy.Office.FinalPrayer = easterSunday.OfficeFinalPrayer;
+  hoursLiturgy.office.firstReading = easterSunday.officeFirstReading;
+  hoursLiturgy.office.firstPsalm.antiphon = easterSunday.officeFirstPsalm.antiphon;
+  hoursLiturgy.office.firstPsalm.title = easterSunday.officeFirstPsalm.title;
+  hoursLiturgy.office.firstPsalm.psalm = easterSunday.officeFirstPsalm.psalm;
+  hoursLiturgy.office.firstPsalm.prayer = easterSunday.officeFirstPsalm.prayer;
+  hoursLiturgy.office.secondReading = easterSunday.officeSecondReading;
+  hoursLiturgy.office.secondPsalm.antiphon = easterSunday.officeSecondPsalm.antiphon;
+  hoursLiturgy.office.secondPsalm.title = easterSunday.officeSecondPsalm.title;
+  hoursLiturgy.office.secondPsalm.psalm = easterSunday.officeSecondPsalm.psalm;
+  hoursLiturgy.office.secondPsalm.prayer = easterSunday.officeSecondPsalm.prayer;
+  hoursLiturgy.office.thirdReading = easterSunday.officeThirdReading;
+  hoursLiturgy.office.thirdPsalm.antiphon = easterSunday.officeThirdPsalm.antiphon;
+  hoursLiturgy.office.thirdPsalm.title = easterSunday.officeThirdPsalm.title;
+  hoursLiturgy.office.thirdPsalm.psalm = easterSunday.officeThirdPsalm.psalm;
+  hoursLiturgy.office.thirdPsalm.prayer = easterSunday.officeThirdPsalm.prayer;
+  hoursLiturgy.office.fourthReading = easterSunday.officeFourthReading;
+  hoursLiturgy.office.fourthPsalm.antiphon = easterSunday.officeFourthPsalm.antiphon;
+  hoursLiturgy.office.fourthPsalm.title = easterSunday.officeFourthPsalm.title;
+  hoursLiturgy.office.fourthPsalm.psalm = easterSunday.officeFourthPsalm.psalm;
+  hoursLiturgy.office.fourthPsalm.prayer = easterSunday.officeFourthPsalm.prayer;
+  hoursLiturgy.office.teDeumInformation.enabled = true;
+  hoursLiturgy.office.finalPrayer = easterSunday.officeFinalPrayer;
 
-  hoursLiturgy.Laudes.Anthem = settings.UseLatin ? easterSunday.LaudesLatinAnthem : easterSunday.LaudesCatalanAnthem;
-  hoursLiturgy.Laudes.FirstPsalm = easterSunday.LaudesFirstPsalm;
-  hoursLiturgy.Laudes.SecondPsalm = easterSunday.LaudesSecondPsalm;
-  hoursLiturgy.Laudes.ThirdPsalm = easterSunday.LaudesThirdPsalm;
-  hoursLiturgy.Laudes.ShortReading = easterSunday.LaudesShortReading;
-  hoursLiturgy.Laudes.ShortResponsory = easterSunday.LaudesShortResponsory;
-  hoursLiturgy.Laudes.EvangelicalAntiphon = easterSunday.LaudesEvangelicalAntiphon;
-  hoursLiturgy.Laudes.Prayers = easterSunday.LaudesPrayers;
-  hoursLiturgy.Laudes.FinalPrayer = easterSunday.LaudesFinalPrayer;
+  hoursLiturgy.laudes.anthem = settings.useLatin ? easterSunday.laudesLatinAnthem : easterSunday.laudesCatalanAnthem;
+  hoursLiturgy.laudes.firstPsalm = easterSunday.laudesFirstPsalm;
+  hoursLiturgy.laudes.secondPsalm = easterSunday.laudesSecondPsalm;
+  hoursLiturgy.laudes.thirdPsalm = easterSunday.laudesThirdPsalm;
+  hoursLiturgy.laudes.shortReading = easterSunday.laudesShortReading;
+  hoursLiturgy.laudes.shortResponsory = easterSunday.laudesShortResponsory;
+  hoursLiturgy.laudes.evangelicalAntiphon = easterSunday.laudesEvangelicalAntiphon;
+  hoursLiturgy.laudes.prayers = easterSunday.laudesPrayers;
+  hoursLiturgy.laudes.finalPrayer = easterSunday.laudesFinalPrayer;
 
-  hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin
-    ? easterSunday.ThirdHourParts.LatinAnthem
-    : easterSunday.ThirdHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = easterSunday.ThirdHourParts.Antiphon;
-  hoursLiturgy.Hours.ThirdHour.FirstPsalm = easterSunday.HourPrayerFirstPsalm;
-  hoursLiturgy.Hours.ThirdHour.SecondPsalm = easterSunday.HourPrayerSecondPsalm;
-  hoursLiturgy.Hours.ThirdHour.ThirdPsalm = easterSunday.HourPrayerThirdPsalm;
-  hoursLiturgy.Hours.ThirdHour.ShortReading = easterSunday.ThirdHourParts.ShortReading;
-  hoursLiturgy.Hours.ThirdHour.Responsory = easterSunday.ThirdHourParts.Responsory;
-  hoursLiturgy.Hours.ThirdHour.FinalPrayer = easterSunday.ThirdHourParts.FinalPrayer;
-  hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin
-    ? easterSunday.SixthHourParts.LatinAnthem
-    : easterSunday.SixthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.SixthHour.UniqueAntiphon = easterSunday.SixthHourParts.Antiphon;
-  hoursLiturgy.Hours.SixthHour.FirstPsalm = easterSunday.HourPrayerFirstPsalm;
-  hoursLiturgy.Hours.SixthHour.SecondPsalm = easterSunday.HourPrayerSecondPsalm;
-  hoursLiturgy.Hours.SixthHour.ThirdPsalm = easterSunday.HourPrayerThirdPsalm;
-  hoursLiturgy.Hours.SixthHour.ShortReading = easterSunday.SixthHourParts.ShortReading;
-  hoursLiturgy.Hours.SixthHour.Responsory = easterSunday.SixthHourParts.Responsory;
-  hoursLiturgy.Hours.SixthHour.FinalPrayer = easterSunday.SixthHourParts.FinalPrayer;
-  hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin
-    ? easterSunday.NinthHourParts.LatinAnthem
-    : easterSunday.NinthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.NinthHour.UniqueAntiphon = easterSunday.NinthHourParts.Antiphon;
-  hoursLiturgy.Hours.NinthHour.FirstPsalm = easterSunday.HourPrayerFirstPsalm;
-  hoursLiturgy.Hours.NinthHour.SecondPsalm = easterSunday.HourPrayerSecondPsalm;
-  hoursLiturgy.Hours.NinthHour.ThirdPsalm = easterSunday.HourPrayerThirdPsalm;
-  hoursLiturgy.Hours.NinthHour.ShortReading = easterSunday.NinthHourParts.ShortReading;
-  hoursLiturgy.Hours.NinthHour.Responsory = easterSunday.NinthHourParts.Responsory;
-  hoursLiturgy.Hours.NinthHour.FinalPrayer = easterSunday.NinthHourParts.FinalPrayer;
+  hoursLiturgy.hours.thirdHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.thirdHour.anthem = settings.useLatin
+    ? easterSunday.thirdHourParts.latinAnthem
+    : easterSunday.thirdHourParts.catalanAnthem;
+  hoursLiturgy.hours.thirdHour.uniqueAntiphon = easterSunday.thirdHourParts.antiphon;
+  hoursLiturgy.hours.thirdHour.firstPsalm = easterSunday.hourPrayerFirstPsalm;
+  hoursLiturgy.hours.thirdHour.secondPsalm = easterSunday.hourPrayerSecondPsalm;
+  hoursLiturgy.hours.thirdHour.thirdPsalm = easterSunday.hourPrayerThirdPsalm;
+  hoursLiturgy.hours.thirdHour.shortReading = easterSunday.thirdHourParts.shortReading;
+  hoursLiturgy.hours.thirdHour.responsory = easterSunday.thirdHourParts.responsory;
+  hoursLiturgy.hours.thirdHour.finalPrayer = easterSunday.thirdHourParts.finalPrayer;
+  hoursLiturgy.hours.sixthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.sixthHour.anthem = settings.useLatin
+    ? easterSunday.sixthHourParts.latinAnthem
+    : easterSunday.sixthHourParts.catalanAnthem;
+  hoursLiturgy.hours.sixthHour.uniqueAntiphon = easterSunday.sixthHourParts.antiphon;
+  hoursLiturgy.hours.sixthHour.firstPsalm = easterSunday.hourPrayerFirstPsalm;
+  hoursLiturgy.hours.sixthHour.secondPsalm = easterSunday.hourPrayerSecondPsalm;
+  hoursLiturgy.hours.sixthHour.thirdPsalm = easterSunday.hourPrayerThirdPsalm;
+  hoursLiturgy.hours.sixthHour.shortReading = easterSunday.sixthHourParts.shortReading;
+  hoursLiturgy.hours.sixthHour.responsory = easterSunday.sixthHourParts.responsory;
+  hoursLiturgy.hours.sixthHour.finalPrayer = easterSunday.sixthHourParts.finalPrayer;
+  hoursLiturgy.hours.ninthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.ninthHour.anthem = settings.useLatin
+    ? easterSunday.ninthHourParts.latinAnthem
+    : easterSunday.ninthHourParts.catalanAnthem;
+  hoursLiturgy.hours.ninthHour.uniqueAntiphon = easterSunday.ninthHourParts.antiphon;
+  hoursLiturgy.hours.ninthHour.firstPsalm = easterSunday.hourPrayerFirstPsalm;
+  hoursLiturgy.hours.ninthHour.secondPsalm = easterSunday.hourPrayerSecondPsalm;
+  hoursLiturgy.hours.ninthHour.thirdPsalm = easterSunday.hourPrayerThirdPsalm;
+  hoursLiturgy.hours.ninthHour.shortReading = easterSunday.ninthHourParts.shortReading;
+  hoursLiturgy.hours.ninthHour.responsory = easterSunday.ninthHourParts.responsory;
+  hoursLiturgy.hours.ninthHour.finalPrayer = easterSunday.ninthHourParts.finalPrayer;
 
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin
-    ? easterSunday.VespersLatinAnthem
-    : easterSunday.VespersCatalanAnthem;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm = easterSunday.VespersFirstPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm = easterSunday.VespersSecondPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm = easterSunday.VespersThirdPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading = easterSunday.VespersShortReading;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory = easterSunday.VespersShortResponsory;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-    easterSunday.VespersEvangelicalAntiphon;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers = easterSunday.VespersPrayers;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer = easterSunday.VespersFinalPrayer;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem = settings.useLatin
+    ? easterSunday.vespersLatinAnthem
+    : easterSunday.vespersCatalanAnthem;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm = easterSunday.vespersFirstPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm = easterSunday.vespersSecondPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm = easterSunday.vespersThirdPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading = easterSunday.vespersShortReading;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory = easterSunday.vespersShortResponsory;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+    easterSunday.vespersEvangelicalAntiphon;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers = easterSunday.vespersPrayers;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer = easterSunday.vespersFinalPrayer;
 
   return hoursLiturgy;
 }
@@ -269,110 +269,110 @@ function getSolemnityAndFestivityHoursLiturgy(
 ): HoursLiturgy {
   let hoursLiturgy = new HoursLiturgy();
 
-  hoursLiturgy.TodayCelebrationInformation = solemnityAndFestivityParts.Celebration;
+  hoursLiturgy.todayCelebrationInformation = solemnityAndFestivityParts.celebration;
 
-  hoursLiturgy.Invitation.InvitationAntiphon = solemnityAndFestivityParts.InvitationAntiphon;
+  hoursLiturgy.invitation.invitationAntiphon = solemnityAndFestivityParts.invitationAntiphon;
 
-  hoursLiturgy.Office.Anthem = settings.UseLatin
-    ? solemnityAndFestivityParts.OfficeLatinAnthem
-    : solemnityAndFestivityParts.OfficeCatalanAnthem;
-  hoursLiturgy.Office.FirstPsalm = solemnityAndFestivityParts.OfficeFirstPsalm;
-  hoursLiturgy.Office.SecondPsalm = solemnityAndFestivityParts.OfficeSecondPsalm;
-  hoursLiturgy.Office.ThirdPsalm = solemnityAndFestivityParts.OfficeThirdPsalm;
-  hoursLiturgy.Office.Responsory = solemnityAndFestivityParts.OfficeResponsory;
-  hoursLiturgy.Office.FirstReading = solemnityAndFestivityParts.OfficeFirstReading;
-  hoursLiturgy.Office.SecondReading = solemnityAndFestivityParts.OfficeSecondReading;
-  hoursLiturgy.Office.TeDeumInformation.Enabled = true;
-  hoursLiturgy.Office.FinalPrayer = solemnityAndFestivityParts.OfficeFinalPrayer;
+  hoursLiturgy.office.anthem = settings.useLatin
+    ? solemnityAndFestivityParts.officeLatinAnthem
+    : solemnityAndFestivityParts.officeCatalanAnthem;
+  hoursLiturgy.office.firstPsalm = solemnityAndFestivityParts.officeFirstPsalm;
+  hoursLiturgy.office.secondPsalm = solemnityAndFestivityParts.officeSecondPsalm;
+  hoursLiturgy.office.thirdPsalm = solemnityAndFestivityParts.officeThirdPsalm;
+  hoursLiturgy.office.responsory = solemnityAndFestivityParts.officeResponsory;
+  hoursLiturgy.office.firstReading = solemnityAndFestivityParts.officeFirstReading;
+  hoursLiturgy.office.secondReading = solemnityAndFestivityParts.officeSecondReading;
+  hoursLiturgy.office.teDeumInformation.enabled = true;
+  hoursLiturgy.office.finalPrayer = solemnityAndFestivityParts.officeFinalPrayer;
 
-  hoursLiturgy.Laudes.Anthem = settings.UseLatin
-    ? solemnityAndFestivityParts.LaudesLatinAnthem
-    : solemnityAndFestivityParts.LaudesCatalanAnthem;
-  hoursLiturgy.Laudes.FirstPsalm.Antiphon = solemnityAndFestivityParts.LaudesFirstAntiphon;
-  hoursLiturgy.Laudes.SecondPsalm.Antiphon = solemnityAndFestivityParts.LaudesSecondAntiphon;
-  hoursLiturgy.Laudes.ThirdPsalm.Antiphon = solemnityAndFestivityParts.LaudesThirdAntiphon;
-  hoursLiturgy.Laudes.ShortReading = solemnityAndFestivityParts.LaudesShortReading;
-  hoursLiturgy.Laudes.ShortResponsory = solemnityAndFestivityParts.LaudesShortResponsory;
-  switch (liturgyDayInformation.YearType) {
+  hoursLiturgy.laudes.anthem = settings.useLatin
+    ? solemnityAndFestivityParts.laudesLatinAnthem
+    : solemnityAndFestivityParts.laudesCatalanAnthem;
+  hoursLiturgy.laudes.firstPsalm.antiphon = solemnityAndFestivityParts.laudesFirstAntiphon;
+  hoursLiturgy.laudes.secondPsalm.antiphon = solemnityAndFestivityParts.laudesSecondAntiphon;
+  hoursLiturgy.laudes.thirdPsalm.antiphon = solemnityAndFestivityParts.laudesThirdAntiphon;
+  hoursLiturgy.laudes.shortReading = solemnityAndFestivityParts.laudesShortReading;
+  hoursLiturgy.laudes.shortResponsory = solemnityAndFestivityParts.laudesShortResponsory;
+  switch (liturgyDayInformation.yearType) {
     case YearType.A:
-      hoursLiturgy.Laudes.EvangelicalAntiphon = solemnityAndFestivityParts.LaudesEvangelicalAntiphonYearA;
+      hoursLiturgy.laudes.evangelicalAntiphon = solemnityAndFestivityParts.laudesEvangelicalAntiphonYearA;
       break;
     case YearType.B:
-      hoursLiturgy.Laudes.EvangelicalAntiphon = solemnityAndFestivityParts.LaudesEvangelicalAntiphonYearB;
+      hoursLiturgy.laudes.evangelicalAntiphon = solemnityAndFestivityParts.laudesEvangelicalAntiphonYearB;
       break;
     case YearType.C:
-      hoursLiturgy.Laudes.EvangelicalAntiphon = solemnityAndFestivityParts.LaudesEvangelicalAntiphonYearC;
+      hoursLiturgy.laudes.evangelicalAntiphon = solemnityAndFestivityParts.laudesEvangelicalAntiphonYearC;
       break;
   }
 
-  hoursLiturgy.Laudes.Prayers = solemnityAndFestivityParts.LaudesPrayers;
-  hoursLiturgy.Laudes.FinalPrayer = solemnityAndFestivityParts.LaudesFinalPrayer;
+  hoursLiturgy.laudes.prayers = solemnityAndFestivityParts.laudesPrayers;
+  hoursLiturgy.laudes.finalPrayer = solemnityAndFestivityParts.laudesFinalPrayer;
 
-  hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin
-    ? solemnityAndFestivityParts.ThirdHourParts.LatinAnthem
-    : solemnityAndFestivityParts.ThirdHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = solemnityAndFestivityParts.ThirdHourParts.Antiphon;
-  hoursLiturgy.Hours.ThirdHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
-  hoursLiturgy.Hours.ThirdHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
-  hoursLiturgy.Hours.ThirdHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
-  hoursLiturgy.Hours.ThirdHour.ShortReading = solemnityAndFestivityParts.ThirdHourParts.ShortReading;
-  hoursLiturgy.Hours.ThirdHour.Responsory = solemnityAndFestivityParts.ThirdHourParts.Responsory;
-  hoursLiturgy.Hours.ThirdHour.FinalPrayer = solemnityAndFestivityParts.ThirdHourParts.FinalPrayer;
-  hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin
-    ? solemnityAndFestivityParts.SixthHourParts.LatinAnthem
-    : solemnityAndFestivityParts.SixthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.SixthHour.UniqueAntiphon = solemnityAndFestivityParts.SixthHourParts.Antiphon;
-  hoursLiturgy.Hours.SixthHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
-  hoursLiturgy.Hours.SixthHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
-  hoursLiturgy.Hours.SixthHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
-  hoursLiturgy.Hours.SixthHour.ShortReading = solemnityAndFestivityParts.SixthHourParts.ShortReading;
-  hoursLiturgy.Hours.SixthHour.Responsory = solemnityAndFestivityParts.SixthHourParts.Responsory;
-  hoursLiturgy.Hours.SixthHour.FinalPrayer = solemnityAndFestivityParts.SixthHourParts.FinalPrayer;
-  hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin
-    ? solemnityAndFestivityParts.NinthHourParts.LatinAnthem
-    : solemnityAndFestivityParts.NinthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.NinthHour.UniqueAntiphon = solemnityAndFestivityParts.NinthHourParts.Antiphon;
-  hoursLiturgy.Hours.NinthHour.FirstPsalm = solemnityAndFestivityParts.HoursFirstPsalm;
-  hoursLiturgy.Hours.NinthHour.SecondPsalm = solemnityAndFestivityParts.HoursSecondPsalm;
-  hoursLiturgy.Hours.NinthHour.ThirdPsalm = solemnityAndFestivityParts.HoursThirdPsalm;
-  hoursLiturgy.Hours.NinthHour.ShortReading = solemnityAndFestivityParts.NinthHourParts.ShortReading;
-  hoursLiturgy.Hours.NinthHour.Responsory = solemnityAndFestivityParts.NinthHourParts.Responsory;
-  hoursLiturgy.Hours.NinthHour.FinalPrayer = solemnityAndFestivityParts.NinthHourParts.FinalPrayer;
+  hoursLiturgy.hours.thirdHour.anthem = settings.useLatin
+    ? solemnityAndFestivityParts.thirdHourParts.latinAnthem
+    : solemnityAndFestivityParts.thirdHourParts.catalanAnthem;
+  hoursLiturgy.hours.thirdHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.thirdHour.uniqueAntiphon = solemnityAndFestivityParts.thirdHourParts.antiphon;
+  hoursLiturgy.hours.thirdHour.firstPsalm = solemnityAndFestivityParts.hoursFirstPsalm;
+  hoursLiturgy.hours.thirdHour.secondPsalm = solemnityAndFestivityParts.hoursSecondPsalm;
+  hoursLiturgy.hours.thirdHour.thirdPsalm = solemnityAndFestivityParts.hoursThirdPsalm;
+  hoursLiturgy.hours.thirdHour.shortReading = solemnityAndFestivityParts.thirdHourParts.shortReading;
+  hoursLiturgy.hours.thirdHour.responsory = solemnityAndFestivityParts.thirdHourParts.responsory;
+  hoursLiturgy.hours.thirdHour.finalPrayer = solemnityAndFestivityParts.thirdHourParts.finalPrayer;
+  hoursLiturgy.hours.sixthHour.anthem = settings.useLatin
+    ? solemnityAndFestivityParts.sixthHourParts.latinAnthem
+    : solemnityAndFestivityParts.sixthHourParts.catalanAnthem;
+  hoursLiturgy.hours.sixthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.sixthHour.uniqueAntiphon = solemnityAndFestivityParts.sixthHourParts.antiphon;
+  hoursLiturgy.hours.sixthHour.firstPsalm = solemnityAndFestivityParts.hoursFirstPsalm;
+  hoursLiturgy.hours.sixthHour.secondPsalm = solemnityAndFestivityParts.hoursSecondPsalm;
+  hoursLiturgy.hours.sixthHour.thirdPsalm = solemnityAndFestivityParts.hoursThirdPsalm;
+  hoursLiturgy.hours.sixthHour.shortReading = solemnityAndFestivityParts.sixthHourParts.shortReading;
+  hoursLiturgy.hours.sixthHour.responsory = solemnityAndFestivityParts.sixthHourParts.responsory;
+  hoursLiturgy.hours.sixthHour.finalPrayer = solemnityAndFestivityParts.sixthHourParts.finalPrayer;
+  hoursLiturgy.hours.ninthHour.anthem = settings.useLatin
+    ? solemnityAndFestivityParts.ninthHourParts.latinAnthem
+    : solemnityAndFestivityParts.ninthHourParts.catalanAnthem;
+  hoursLiturgy.hours.ninthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.ninthHour.uniqueAntiphon = solemnityAndFestivityParts.ninthHourParts.antiphon;
+  hoursLiturgy.hours.ninthHour.firstPsalm = solemnityAndFestivityParts.hoursFirstPsalm;
+  hoursLiturgy.hours.ninthHour.secondPsalm = solemnityAndFestivityParts.hoursSecondPsalm;
+  hoursLiturgy.hours.ninthHour.thirdPsalm = solemnityAndFestivityParts.hoursThirdPsalm;
+  hoursLiturgy.hours.ninthHour.shortReading = solemnityAndFestivityParts.ninthHourParts.shortReading;
+  hoursLiturgy.hours.ninthHour.responsory = solemnityAndFestivityParts.ninthHourParts.responsory;
+  hoursLiturgy.hours.ninthHour.finalPrayer = solemnityAndFestivityParts.ninthHourParts.finalPrayer;
 
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin
-    ? solemnityAndFestivityParts.SecondVespersLatinAnthem
-    : solemnityAndFestivityParts.SecondVespersCatalanAnthem;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm =
-    solemnityAndFestivityParts.SecondVespersFirstPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm =
-    solemnityAndFestivityParts.SecondVespersSecondPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm =
-    solemnityAndFestivityParts.SecondVespersThirdPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading =
-    solemnityAndFestivityParts.SecondVespersShortReading;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory =
-    solemnityAndFestivityParts.SecondVespersShortResponsory;
-  switch (liturgyDayInformation.YearType) {
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem = settings.useLatin
+    ? solemnityAndFestivityParts.secondVespersLatinAnthem
+    : solemnityAndFestivityParts.secondVespersCatalanAnthem;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm =
+    solemnityAndFestivityParts.secondVespersFirstPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm =
+    solemnityAndFestivityParts.secondVespersSecondPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm =
+    solemnityAndFestivityParts.secondVespersThirdPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading =
+    solemnityAndFestivityParts.secondVespersShortReading;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory =
+    solemnityAndFestivityParts.secondVespersShortResponsory;
+  switch (liturgyDayInformation.yearType) {
     case YearType.A:
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-        solemnityAndFestivityParts.SecondVespersEvangelicalAntiphonYearA;
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+        solemnityAndFestivityParts.secondVespersEvangelicalAntiphonYearA;
       break;
     case YearType.B:
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-        solemnityAndFestivityParts.SecondVespersEvangelicalAntiphonYearB;
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+        solemnityAndFestivityParts.secondVespersEvangelicalAntiphonYearB;
       break;
     case YearType.C:
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-        solemnityAndFestivityParts.SecondVespersEvangelicalAntiphonYearC;
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+        solemnityAndFestivityParts.secondVespersEvangelicalAntiphonYearC;
       break;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers =
-    solemnityAndFestivityParts.SecondVespersPrayers;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer =
-    solemnityAndFestivityParts.SecondVespersFinalPrayer;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers =
+    solemnityAndFestivityParts.secondVespersPrayers;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer =
+    solemnityAndFestivityParts.secondVespersFinalPrayer;
 
   return hoursLiturgy;
 }
@@ -380,82 +380,82 @@ function getSolemnityAndFestivityHoursLiturgy(
 function getSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings: Settings): HoursLiturgy {
   let hoursLiturgy = new HoursLiturgy();
 
-  hoursLiturgy.TodayCelebrationInformation = specialDaysParts.Celebration;
+  hoursLiturgy.todayCelebrationInformation = specialDaysParts.celebration;
 
-  hoursLiturgy.Invitation.InvitationAntiphon = specialDaysParts.InvitationAntiphon;
+  hoursLiturgy.invitation.invitationAntiphon = specialDaysParts.invitationAntiphon;
 
-  hoursLiturgy.Office.Anthem = settings.UseLatin
-    ? specialDaysParts.OfficeLatinAnthem
-    : specialDaysParts.OfficeCatalanAnthem;
-  hoursLiturgy.Office.FirstPsalm = specialDaysParts.OfficeFirstPsalm;
-  hoursLiturgy.Office.SecondPsalm = specialDaysParts.OfficeSecondPsalm;
-  hoursLiturgy.Office.ThirdPsalm = specialDaysParts.OfficeThirdPsalm;
-  hoursLiturgy.Office.Responsory = specialDaysParts.OfficeResponsory;
-  hoursLiturgy.Office.FirstReading = specialDaysParts.OfficeFirstReading;
-  hoursLiturgy.Office.SecondReading = specialDaysParts.OfficeSecondReading;
-  hoursLiturgy.Office.TeDeumInformation.Enabled = true;
-  hoursLiturgy.Office.FinalPrayer = specialDaysParts.OfficeFinalPrayer;
+  hoursLiturgy.office.anthem = settings.useLatin
+    ? specialDaysParts.officeLatinAnthem
+    : specialDaysParts.officeCatalanAnthem;
+  hoursLiturgy.office.firstPsalm = specialDaysParts.officeFirstPsalm;
+  hoursLiturgy.office.secondPsalm = specialDaysParts.officeSecondPsalm;
+  hoursLiturgy.office.thirdPsalm = specialDaysParts.officeThirdPsalm;
+  hoursLiturgy.office.responsory = specialDaysParts.officeResponsory;
+  hoursLiturgy.office.firstReading = specialDaysParts.officeFirstReading;
+  hoursLiturgy.office.secondReading = specialDaysParts.officeSecondReading;
+  hoursLiturgy.office.teDeumInformation.enabled = true;
+  hoursLiturgy.office.finalPrayer = specialDaysParts.officeFinalPrayer;
 
-  hoursLiturgy.Laudes.Anthem = settings.UseLatin
-    ? specialDaysParts.LaudesLatinAnthem
-    : specialDaysParts.LaudesCatalanAnthem;
-  hoursLiturgy.Laudes.FirstPsalm = specialDaysParts.LaudesFirstPsalm;
-  hoursLiturgy.Laudes.SecondPsalm = specialDaysParts.LaudesSecondPsalm;
-  hoursLiturgy.Laudes.ThirdPsalm = specialDaysParts.LaudesThirdPsalm;
-  hoursLiturgy.Laudes.ShortReading = specialDaysParts.LaudesShortReading;
-  hoursLiturgy.Laudes.ShortResponsory = specialDaysParts.LaudesShortResponsory;
-  hoursLiturgy.Laudes.EvangelicalAntiphon = specialDaysParts.LaudesEvangelicalAntiphon;
-  hoursLiturgy.Laudes.Prayers = specialDaysParts.LaudesPrayers;
-  hoursLiturgy.Laudes.FinalPrayer = specialDaysParts.LaudesFinalPrayer;
+  hoursLiturgy.laudes.anthem = settings.useLatin
+    ? specialDaysParts.laudesLatinAnthem
+    : specialDaysParts.laudesCatalanAnthem;
+  hoursLiturgy.laudes.firstPsalm = specialDaysParts.laudesFirstPsalm;
+  hoursLiturgy.laudes.secondPsalm = specialDaysParts.laudesSecondPsalm;
+  hoursLiturgy.laudes.thirdPsalm = specialDaysParts.laudesThirdPsalm;
+  hoursLiturgy.laudes.shortReading = specialDaysParts.laudesShortReading;
+  hoursLiturgy.laudes.shortResponsory = specialDaysParts.laudesShortResponsory;
+  hoursLiturgy.laudes.evangelicalAntiphon = specialDaysParts.laudesEvangelicalAntiphon;
+  hoursLiturgy.laudes.prayers = specialDaysParts.laudesPrayers;
+  hoursLiturgy.laudes.finalPrayer = specialDaysParts.laudesFinalPrayer;
 
-  hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin
-    ? specialDaysParts.ThirdHourParts.LatinAnthem
-    : specialDaysParts.ThirdHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = specialDaysParts.ThirdHourParts.Antiphon;
-  hoursLiturgy.Hours.ThirdHour.FirstPsalm = specialDaysParts.HoursFirstPsalm;
-  hoursLiturgy.Hours.ThirdHour.SecondPsalm = specialDaysParts.HoursSecondPsalm;
-  hoursLiturgy.Hours.ThirdHour.ThirdPsalm = specialDaysParts.HoursThirdPsalm;
-  hoursLiturgy.Hours.ThirdHour.ShortReading = specialDaysParts.ThirdHourParts.ShortReading;
-  hoursLiturgy.Hours.ThirdHour.Responsory = specialDaysParts.ThirdHourParts.Responsory;
-  hoursLiturgy.Hours.ThirdHour.FinalPrayer = specialDaysParts.ThirdHourParts.FinalPrayer;
-  hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin
-    ? specialDaysParts.SixthHourParts.LatinAnthem
-    : specialDaysParts.SixthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.SixthHour.UniqueAntiphon = specialDaysParts.SixthHourParts.Antiphon;
-  hoursLiturgy.Hours.SixthHour.FirstPsalm = specialDaysParts.HoursFirstPsalm;
-  hoursLiturgy.Hours.SixthHour.SecondPsalm = specialDaysParts.HoursSecondPsalm;
-  hoursLiturgy.Hours.SixthHour.ThirdPsalm = specialDaysParts.HoursThirdPsalm;
-  hoursLiturgy.Hours.SixthHour.ShortReading = specialDaysParts.SixthHourParts.ShortReading;
-  hoursLiturgy.Hours.SixthHour.Responsory = specialDaysParts.SixthHourParts.Responsory;
-  hoursLiturgy.Hours.SixthHour.FinalPrayer = specialDaysParts.SixthHourParts.FinalPrayer;
-  hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin
-    ? specialDaysParts.NinthHourParts.LatinAnthem
-    : specialDaysParts.NinthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.NinthHour.UniqueAntiphon = specialDaysParts.NinthHourParts.Antiphon;
-  hoursLiturgy.Hours.NinthHour.FirstPsalm = specialDaysParts.HoursFirstPsalm;
-  hoursLiturgy.Hours.NinthHour.SecondPsalm = specialDaysParts.HoursSecondPsalm;
-  hoursLiturgy.Hours.NinthHour.ThirdPsalm = specialDaysParts.HoursThirdPsalm;
-  hoursLiturgy.Hours.NinthHour.ShortReading = specialDaysParts.NinthHourParts.ShortReading;
-  hoursLiturgy.Hours.NinthHour.Responsory = specialDaysParts.NinthHourParts.Responsory;
-  hoursLiturgy.Hours.NinthHour.FinalPrayer = specialDaysParts.NinthHourParts.FinalPrayer;
+  hoursLiturgy.hours.thirdHour.anthem = settings.useLatin
+    ? specialDaysParts.thirdHourParts.latinAnthem
+    : specialDaysParts.thirdHourParts.catalanAnthem;
+  hoursLiturgy.hours.thirdHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.thirdHour.uniqueAntiphon = specialDaysParts.thirdHourParts.antiphon;
+  hoursLiturgy.hours.thirdHour.firstPsalm = specialDaysParts.hoursFirstPsalm;
+  hoursLiturgy.hours.thirdHour.secondPsalm = specialDaysParts.hoursSecondPsalm;
+  hoursLiturgy.hours.thirdHour.thirdPsalm = specialDaysParts.hoursThirdPsalm;
+  hoursLiturgy.hours.thirdHour.shortReading = specialDaysParts.thirdHourParts.shortReading;
+  hoursLiturgy.hours.thirdHour.responsory = specialDaysParts.thirdHourParts.responsory;
+  hoursLiturgy.hours.thirdHour.finalPrayer = specialDaysParts.thirdHourParts.finalPrayer;
+  hoursLiturgy.hours.sixthHour.anthem = settings.useLatin
+    ? specialDaysParts.sixthHourParts.latinAnthem
+    : specialDaysParts.sixthHourParts.catalanAnthem;
+  hoursLiturgy.hours.sixthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.sixthHour.uniqueAntiphon = specialDaysParts.sixthHourParts.antiphon;
+  hoursLiturgy.hours.sixthHour.firstPsalm = specialDaysParts.hoursFirstPsalm;
+  hoursLiturgy.hours.sixthHour.secondPsalm = specialDaysParts.hoursSecondPsalm;
+  hoursLiturgy.hours.sixthHour.thirdPsalm = specialDaysParts.hoursThirdPsalm;
+  hoursLiturgy.hours.sixthHour.shortReading = specialDaysParts.sixthHourParts.shortReading;
+  hoursLiturgy.hours.sixthHour.responsory = specialDaysParts.sixthHourParts.responsory;
+  hoursLiturgy.hours.sixthHour.finalPrayer = specialDaysParts.sixthHourParts.finalPrayer;
+  hoursLiturgy.hours.ninthHour.anthem = settings.useLatin
+    ? specialDaysParts.ninthHourParts.latinAnthem
+    : specialDaysParts.ninthHourParts.catalanAnthem;
+  hoursLiturgy.hours.ninthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.ninthHour.uniqueAntiphon = specialDaysParts.ninthHourParts.antiphon;
+  hoursLiturgy.hours.ninthHour.firstPsalm = specialDaysParts.hoursFirstPsalm;
+  hoursLiturgy.hours.ninthHour.secondPsalm = specialDaysParts.hoursSecondPsalm;
+  hoursLiturgy.hours.ninthHour.thirdPsalm = specialDaysParts.hoursThirdPsalm;
+  hoursLiturgy.hours.ninthHour.shortReading = specialDaysParts.ninthHourParts.shortReading;
+  hoursLiturgy.hours.ninthHour.responsory = specialDaysParts.ninthHourParts.responsory;
+  hoursLiturgy.hours.ninthHour.finalPrayer = specialDaysParts.ninthHourParts.finalPrayer;
 
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin
-    ? specialDaysParts.SecondVespersLatinAnthem
-    : specialDaysParts.SecondVespersCatalanAnthem;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm = specialDaysParts.SecondVespersFirstPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm = specialDaysParts.SecondVespersSecondPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm = specialDaysParts.SecondVespersThirdPsalm;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading =
-    specialDaysParts.SecondVespersShortReading;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory =
-    specialDaysParts.SecondVespersShortResponsory;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-    specialDaysParts.SecondVespersEvangelicalAntiphon;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers = specialDaysParts.SecondVespersPrayers;
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer = specialDaysParts.SecondVespersFinalPrayer;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem = settings.useLatin
+    ? specialDaysParts.secondVespersLatinAnthem
+    : specialDaysParts.secondVespersCatalanAnthem;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm = specialDaysParts.secondVespersFirstPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm = specialDaysParts.secondVespersSecondPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm = specialDaysParts.secondVespersThirdPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading =
+    specialDaysParts.secondVespersShortReading;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory =
+    specialDaysParts.secondVespersShortResponsory;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+    specialDaysParts.secondVespersEvangelicalAntiphon;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers = specialDaysParts.secondVespersPrayers;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer = specialDaysParts.secondVespersFinalPrayer;
 
   return hoursLiturgy;
 }
@@ -463,281 +463,281 @@ function getSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings:
 function getSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, settings: Settings): HoursLiturgy {
   let hoursLiturgy = new HoursLiturgy();
 
-  hoursLiturgy.TodayCelebrationInformation = saintsSolemnities.Celebration;
+  hoursLiturgy.todayCelebrationInformation = saintsSolemnities.celebration;
 
-  hoursLiturgy.Invitation.InvitationAntiphon = saintsSolemnities.InvitationAntiphon;
+  hoursLiturgy.invitation.invitationAntiphon = saintsSolemnities.invitationAntiphon;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Invitation.InvitationAntiphon) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.invitation.invitationAntiphon) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Invitation.InvitationAntiphon = saintsSolemnities.CommonOffices.InvitationAntiphon;
+    hoursLiturgy.invitation.invitationAntiphon = saintsSolemnities.commonOffices.invitationAntiphon;
   }
-  hoursLiturgy.Office.Anthem = settings.UseLatin
-    ? saintsSolemnities.OfficeLatinAnthem
-    : saintsSolemnities.OfficeCatalanAnthem;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.Anthem) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Office.Anthem = settings.UseLatin
-      ? saintsSolemnities.CommonOffices.OfficeLatinAnthem
-      : saintsSolemnities.CommonOffices.OfficeCatalanAnthem;
+  hoursLiturgy.office.anthem = settings.useLatin
+    ? saintsSolemnities.officeLatinAnthem
+    : saintsSolemnities.officeCatalanAnthem;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.anthem) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.office.anthem = settings.useLatin
+      ? saintsSolemnities.commonOffices.officeLatinAnthem
+      : saintsSolemnities.commonOffices.officeCatalanAnthem;
   }
-  hoursLiturgy.Office.FirstPsalm = saintsSolemnities.OfficeFirstPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.FirstPsalm.Psalm) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Office.FirstPsalm = saintsSolemnities.CommonOffices.OfficeFirstPsalm;
+  hoursLiturgy.office.firstPsalm = saintsSolemnities.officeFirstPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.firstPsalm.psalm) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.office.firstPsalm = saintsSolemnities.commonOffices.officeFirstPsalm;
   }
-  hoursLiturgy.Office.SecondPsalm = saintsSolemnities.OfficeSecondPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.SecondPsalm.Psalm) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Office.SecondPsalm = saintsSolemnities.CommonOffices.OfficeSecondPsalm;
+  hoursLiturgy.office.secondPsalm = saintsSolemnities.officeSecondPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.secondPsalm.psalm) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.office.secondPsalm = saintsSolemnities.commonOffices.officeSecondPsalm;
   }
-  hoursLiturgy.Office.ThirdPsalm = saintsSolemnities.OfficeThirdPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.ThirdPsalm.Psalm) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Office.ThirdPsalm = saintsSolemnities.CommonOffices.OfficeThirdPsalm;
+  hoursLiturgy.office.thirdPsalm = saintsSolemnities.officeThirdPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.thirdPsalm.psalm) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.office.thirdPsalm = saintsSolemnities.commonOffices.officeThirdPsalm;
   }
-  hoursLiturgy.Office.Responsory = saintsSolemnities.OfficeResponsory;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.Responsory.Versicle) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Office.Responsory = saintsSolemnities.CommonOffices.OfficeResponsory;
+  hoursLiturgy.office.responsory = saintsSolemnities.officeResponsory;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.responsory.versicle) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.office.responsory = saintsSolemnities.commonOffices.officeResponsory;
   }
-  hoursLiturgy.Office.FirstReading = saintsSolemnities.OfficeFirstReading;
+  hoursLiturgy.office.firstReading = saintsSolemnities.officeFirstReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Office.FirstReading.Reading) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.office.firstReading.reading) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Office.FirstReading = saintsSolemnities.CommonOffices.OfficeFirstReading;
+    hoursLiturgy.office.firstReading = saintsSolemnities.commonOffices.officeFirstReading;
   }
-  hoursLiturgy.Office.SecondReading = saintsSolemnities.OfficeSecondReading;
+  hoursLiturgy.office.secondReading = saintsSolemnities.officeSecondReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Office.SecondReading.Reading) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.office.secondReading.reading) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Office.SecondReading = saintsSolemnities.CommonOffices.OfficeSecondReading;
+    hoursLiturgy.office.secondReading = saintsSolemnities.commonOffices.officeSecondReading;
   }
-  hoursLiturgy.Office.TeDeumInformation.Enabled = true;
-  hoursLiturgy.Office.FinalPrayer = saintsSolemnities.OfficeFinalPrayer;
+  hoursLiturgy.office.teDeumInformation.enabled = true;
+  hoursLiturgy.office.finalPrayer = saintsSolemnities.officeFinalPrayer;
 
-  hoursLiturgy.Laudes.Anthem = settings.UseLatin
-    ? saintsSolemnities.LaudesLatinAnthem
-    : saintsSolemnities.LaudesCatalanAnthem;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.Anthem) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Laudes.Anthem = settings.UseLatin
-      ? saintsSolemnities.CommonOffices.LaudesLatinAnthem
-      : saintsSolemnities.CommonOffices.LaudesCatalanAnthem;
+  hoursLiturgy.laudes.anthem = settings.useLatin
+    ? saintsSolemnities.laudesLatinAnthem
+    : saintsSolemnities.laudesCatalanAnthem;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.anthem) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.laudes.anthem = settings.useLatin
+      ? saintsSolemnities.commonOffices.laudesLatinAnthem
+      : saintsSolemnities.commonOffices.laudesCatalanAnthem;
   }
-  if (saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Laudes.FirstPsalm = saintsSolemnities.CommonOffices.LaudesFirstPsalm;
-    hoursLiturgy.Laudes.SecondPsalm = saintsSolemnities.CommonOffices.LaudesSecondPsalm;
-    hoursLiturgy.Laudes.ThirdPsalm = saintsSolemnities.CommonOffices.LaudesThirdPsalm;
+  if (saintsSolemnities.commonOffices) {
+    hoursLiturgy.laudes.firstPsalm = saintsSolemnities.commonOffices.laudesFirstPsalm;
+    hoursLiturgy.laudes.secondPsalm = saintsSolemnities.commonOffices.laudesSecondPsalm;
+    hoursLiturgy.laudes.thirdPsalm = saintsSolemnities.commonOffices.laudesThirdPsalm;
   }
-  if (StringManagement.hasLiturgyContent(saintsSolemnities.LaudesFirstAntiphon)) {
-    hoursLiturgy.Laudes.FirstPsalm.Antiphon = saintsSolemnities.LaudesFirstAntiphon;
+  if (StringManagement.hasLiturgyContent(saintsSolemnities.laudesFirstAntiphon)) {
+    hoursLiturgy.laudes.firstPsalm.antiphon = saintsSolemnities.laudesFirstAntiphon;
   }
-  if (StringManagement.hasLiturgyContent(saintsSolemnities.LaudesSecondAntiphon)) {
-    hoursLiturgy.Laudes.SecondPsalm.Antiphon = saintsSolemnities.LaudesSecondAntiphon;
+  if (StringManagement.hasLiturgyContent(saintsSolemnities.laudesSecondAntiphon)) {
+    hoursLiturgy.laudes.secondPsalm.antiphon = saintsSolemnities.laudesSecondAntiphon;
   }
-  if (StringManagement.hasLiturgyContent(saintsSolemnities.LaudesThirdAntiphon)) {
-    hoursLiturgy.Laudes.ThirdPsalm.Antiphon = saintsSolemnities.LaudesThirdAntiphon;
+  if (StringManagement.hasLiturgyContent(saintsSolemnities.laudesThirdAntiphon)) {
+    hoursLiturgy.laudes.thirdPsalm.antiphon = saintsSolemnities.laudesThirdAntiphon;
   }
-  hoursLiturgy.Laudes.ShortReading = saintsSolemnities.LaudesShortReading;
+  hoursLiturgy.laudes.shortReading = saintsSolemnities.laudesShortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.ShortReading.ShortReading) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.laudes.shortReading.shortReading) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Laudes.ShortReading = saintsSolemnities.CommonOffices.LaudesShortReading;
+    hoursLiturgy.laudes.shortReading = saintsSolemnities.commonOffices.laudesShortReading;
   }
-  hoursLiturgy.Laudes.ShortResponsory = saintsSolemnities.LaudesShortResponsory;
+  hoursLiturgy.laudes.shortResponsory = saintsSolemnities.laudesShortResponsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.ShortResponsory.FirstPart) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.laudes.shortResponsory.firstPart) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Laudes.ShortResponsory = saintsSolemnities.CommonOffices.LaudesShortResponsory;
+    hoursLiturgy.laudes.shortResponsory = saintsSolemnities.commonOffices.laudesShortResponsory;
   }
-  hoursLiturgy.Laudes.EvangelicalAntiphon = saintsSolemnities.LaudesEvangelicalAntiphon;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.EvangelicalAntiphon) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Laudes.EvangelicalAntiphon = saintsSolemnities.CommonOffices.LaudesEvangelicalAntiphon;
+  hoursLiturgy.laudes.evangelicalAntiphon = saintsSolemnities.laudesEvangelicalAntiphon;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.evangelicalAntiphon) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.laudes.evangelicalAntiphon = saintsSolemnities.commonOffices.laudesEvangelicalAntiphon;
   }
-  hoursLiturgy.Laudes.Prayers = saintsSolemnities.LaudesPrayers;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.Prayers) && saintsSolemnities.CommonOffices) {
-    hoursLiturgy.Laudes.Prayers = saintsSolemnities.CommonOffices.LaudesPrayers;
+  hoursLiturgy.laudes.prayers = saintsSolemnities.laudesPrayers;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.prayers) && saintsSolemnities.commonOffices) {
+    hoursLiturgy.laudes.prayers = saintsSolemnities.commonOffices.laudesPrayers;
   }
-  hoursLiturgy.Laudes.FinalPrayer = saintsSolemnities.LaudesFinalPrayer;
+  hoursLiturgy.laudes.finalPrayer = saintsSolemnities.laudesFinalPrayer;
 
-  hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin
-    ? saintsSolemnities.ThirdHourParts.LatinAnthem
-    : saintsSolemnities.ThirdHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = saintsSolemnities.ThirdHourParts.Antiphon;
+  hoursLiturgy.hours.thirdHour.anthem = settings.useLatin
+    ? saintsSolemnities.thirdHourParts.latinAnthem
+    : saintsSolemnities.thirdHourParts.catalanAnthem;
+  hoursLiturgy.hours.thirdHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.thirdHour.uniqueAntiphon = saintsSolemnities.thirdHourParts.antiphon;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.ThirdHour.UniqueAntiphon) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.thirdHour.uniqueAntiphon) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = saintsSolemnities.CommonOffices.ThirdHourParts.Antiphon;
+    hoursLiturgy.hours.thirdHour.uniqueAntiphon = saintsSolemnities.commonOffices.thirdHourParts.antiphon;
   }
-  hoursLiturgy.Hours.ThirdHour.FirstPsalm = saintsSolemnities.HoursFirstPsalm;
-  hoursLiturgy.Hours.ThirdHour.SecondPsalm = saintsSolemnities.HoursSecondPsalm;
-  hoursLiturgy.Hours.ThirdHour.ThirdPsalm = saintsSolemnities.HoursThirdPsalm;
-  hoursLiturgy.Hours.ThirdHour.ShortReading = saintsSolemnities.ThirdHourParts.ShortReading;
+  hoursLiturgy.hours.thirdHour.firstPsalm = saintsSolemnities.hoursFirstPsalm;
+  hoursLiturgy.hours.thirdHour.secondPsalm = saintsSolemnities.hoursSecondPsalm;
+  hoursLiturgy.hours.thirdHour.thirdPsalm = saintsSolemnities.hoursThirdPsalm;
+  hoursLiturgy.hours.thirdHour.shortReading = saintsSolemnities.thirdHourParts.shortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.ThirdHour.ShortReading.ShortReading) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.thirdHour.shortReading.shortReading) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.ThirdHour.ShortReading = saintsSolemnities.CommonOffices.ThirdHourParts.ShortReading;
+    hoursLiturgy.hours.thirdHour.shortReading = saintsSolemnities.commonOffices.thirdHourParts.shortReading;
   }
-  hoursLiturgy.Hours.ThirdHour.Responsory = saintsSolemnities.ThirdHourParts.Responsory;
+  hoursLiturgy.hours.thirdHour.responsory = saintsSolemnities.thirdHourParts.responsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.ThirdHour.Responsory.Response) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.thirdHour.responsory.response) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.ThirdHour.Responsory = saintsSolemnities.CommonOffices.ThirdHourParts.Responsory;
+    hoursLiturgy.hours.thirdHour.responsory = saintsSolemnities.commonOffices.thirdHourParts.responsory;
   }
-  hoursLiturgy.Hours.ThirdHour.FinalPrayer = saintsSolemnities.ThirdHourParts.FinalPrayer;
-  hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin
-    ? saintsSolemnities.SixthHourParts.LatinAnthem
-    : saintsSolemnities.SixthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.SixthHour.UniqueAntiphon = saintsSolemnities.SixthHourParts.Antiphon;
+  hoursLiturgy.hours.thirdHour.finalPrayer = saintsSolemnities.thirdHourParts.finalPrayer;
+  hoursLiturgy.hours.sixthHour.anthem = settings.useLatin
+    ? saintsSolemnities.sixthHourParts.latinAnthem
+    : saintsSolemnities.sixthHourParts.catalanAnthem;
+  hoursLiturgy.hours.sixthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.sixthHour.uniqueAntiphon = saintsSolemnities.sixthHourParts.antiphon;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.SixthHour.UniqueAntiphon) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.sixthHour.uniqueAntiphon) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.SixthHour.UniqueAntiphon = saintsSolemnities.CommonOffices.SixthHourParts.Antiphon;
+    hoursLiturgy.hours.sixthHour.uniqueAntiphon = saintsSolemnities.commonOffices.sixthHourParts.antiphon;
   }
-  hoursLiturgy.Hours.SixthHour.FirstPsalm = saintsSolemnities.HoursFirstPsalm;
-  hoursLiturgy.Hours.SixthHour.SecondPsalm = saintsSolemnities.HoursSecondPsalm;
-  hoursLiturgy.Hours.SixthHour.ThirdPsalm = saintsSolemnities.HoursThirdPsalm;
-  hoursLiturgy.Hours.SixthHour.ShortReading = saintsSolemnities.SixthHourParts.ShortReading;
+  hoursLiturgy.hours.sixthHour.firstPsalm = saintsSolemnities.hoursFirstPsalm;
+  hoursLiturgy.hours.sixthHour.secondPsalm = saintsSolemnities.hoursSecondPsalm;
+  hoursLiturgy.hours.sixthHour.thirdPsalm = saintsSolemnities.hoursThirdPsalm;
+  hoursLiturgy.hours.sixthHour.shortReading = saintsSolemnities.sixthHourParts.shortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.SixthHour.ShortReading.ShortReading) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.sixthHour.shortReading.shortReading) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.SixthHour.ShortReading = saintsSolemnities.CommonOffices.SixthHourParts.ShortReading;
+    hoursLiturgy.hours.sixthHour.shortReading = saintsSolemnities.commonOffices.sixthHourParts.shortReading;
   }
-  hoursLiturgy.Hours.SixthHour.Responsory = saintsSolemnities.SixthHourParts.Responsory;
+  hoursLiturgy.hours.sixthHour.responsory = saintsSolemnities.sixthHourParts.responsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.SixthHour.Responsory.Response) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.sixthHour.responsory.response) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.SixthHour.Responsory = saintsSolemnities.CommonOffices.SixthHourParts.Responsory;
+    hoursLiturgy.hours.sixthHour.responsory = saintsSolemnities.commonOffices.sixthHourParts.responsory;
   }
-  hoursLiturgy.Hours.SixthHour.FinalPrayer = saintsSolemnities.SixthHourParts.FinalPrayer;
-  hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin
-    ? saintsSolemnities.NinthHourParts.LatinAnthem
-    : saintsSolemnities.NinthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.NinthHour.UniqueAntiphon = saintsSolemnities.NinthHourParts.Antiphon;
+  hoursLiturgy.hours.sixthHour.finalPrayer = saintsSolemnities.sixthHourParts.finalPrayer;
+  hoursLiturgy.hours.ninthHour.anthem = settings.useLatin
+    ? saintsSolemnities.ninthHourParts.latinAnthem
+    : saintsSolemnities.ninthHourParts.catalanAnthem;
+  hoursLiturgy.hours.ninthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.ninthHour.uniqueAntiphon = saintsSolemnities.ninthHourParts.antiphon;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.NinthHour.UniqueAntiphon) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.ninthHour.uniqueAntiphon) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.NinthHour.UniqueAntiphon = saintsSolemnities.CommonOffices.NinthHourParts.Antiphon;
+    hoursLiturgy.hours.ninthHour.uniqueAntiphon = saintsSolemnities.commonOffices.ninthHourParts.antiphon;
   }
-  hoursLiturgy.Hours.NinthHour.FirstPsalm = saintsSolemnities.HoursFirstPsalm;
-  hoursLiturgy.Hours.NinthHour.SecondPsalm = saintsSolemnities.HoursSecondPsalm;
-  hoursLiturgy.Hours.NinthHour.ThirdPsalm = saintsSolemnities.HoursThirdPsalm;
-  hoursLiturgy.Hours.NinthHour.ShortReading = saintsSolemnities.NinthHourParts.ShortReading;
+  hoursLiturgy.hours.ninthHour.firstPsalm = saintsSolemnities.hoursFirstPsalm;
+  hoursLiturgy.hours.ninthHour.secondPsalm = saintsSolemnities.hoursSecondPsalm;
+  hoursLiturgy.hours.ninthHour.thirdPsalm = saintsSolemnities.hoursThirdPsalm;
+  hoursLiturgy.hours.ninthHour.shortReading = saintsSolemnities.ninthHourParts.shortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.NinthHour.ShortReading.ShortReading) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.ninthHour.shortReading.shortReading) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.NinthHour.ShortReading = saintsSolemnities.CommonOffices.NinthHourParts.ShortReading;
+    hoursLiturgy.hours.ninthHour.shortReading = saintsSolemnities.commonOffices.ninthHourParts.shortReading;
   }
-  hoursLiturgy.Hours.NinthHour.Responsory = saintsSolemnities.NinthHourParts.Responsory;
+  hoursLiturgy.hours.ninthHour.responsory = saintsSolemnities.ninthHourParts.responsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.NinthHour.Responsory.Response) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.ninthHour.responsory.response) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.Hours.NinthHour.Responsory = saintsSolemnities.CommonOffices.NinthHourParts.Responsory;
+    hoursLiturgy.hours.ninthHour.responsory = saintsSolemnities.commonOffices.ninthHourParts.responsory;
   }
-  hoursLiturgy.Hours.NinthHour.FinalPrayer = saintsSolemnities.NinthHourParts.FinalPrayer;
+  hoursLiturgy.hours.ninthHour.finalPrayer = saintsSolemnities.ninthHourParts.finalPrayer;
 
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin
-    ? saintsSolemnities.SecondVespersLatinAnthem
-    : saintsSolemnities.SecondVespersCatalanAnthem;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem = settings.useLatin
+    ? saintsSolemnities.secondVespersLatinAnthem
+    : saintsSolemnities.secondVespersCatalanAnthem;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin
-      ? saintsSolemnities.CommonOffices.SecondVespersLatinAnthem
-      : saintsSolemnities.CommonOffices.SecondVespersCatalanAnthem;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem = settings.useLatin
+      ? saintsSolemnities.commonOffices.secondVespersLatinAnthem
+      : saintsSolemnities.commonOffices.secondVespersCatalanAnthem;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm = saintsSolemnities.SecondVespersFirstPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm = saintsSolemnities.secondVespersFirstPsalm;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm.Psalm,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm.psalm,
     ) &&
-    saintsSolemnities.CommonOffices
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm =
-      saintsSolemnities.CommonOffices.SecondVespersFirstPsalm;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm =
+      saintsSolemnities.commonOffices.secondVespersFirstPsalm;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm =
-    saintsSolemnities.SecondVespersSecondPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm =
+    saintsSolemnities.secondVespersSecondPsalm;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm.Psalm,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm.psalm,
     ) &&
-    saintsSolemnities.CommonOffices
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm =
-      saintsSolemnities.CommonOffices.SecondVespersSecondPsalm;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm =
+      saintsSolemnities.commonOffices.secondVespersSecondPsalm;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm = saintsSolemnities.SecondVespersThirdPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm = saintsSolemnities.secondVespersThirdPsalm;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm.Psalm,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm.psalm,
     ) &&
-    saintsSolemnities.CommonOffices
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm =
-      saintsSolemnities.CommonOffices.SecondVespersThirdPsalm;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm =
+      saintsSolemnities.commonOffices.secondVespersThirdPsalm;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading =
-    saintsSolemnities.SecondVespersShortReading;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading =
+    saintsSolemnities.secondVespersShortReading;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading.ShortReading,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading.shortReading,
     ) &&
-    saintsSolemnities.CommonOffices
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading =
-      saintsSolemnities.CommonOffices.SecondVespersShortReading;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading =
+      saintsSolemnities.commonOffices.secondVespersShortReading;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory =
-    saintsSolemnities.SecondVespersShortResponsory;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory =
+    saintsSolemnities.secondVespersShortResponsory;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory.FirstPart,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory.firstPart,
     ) &&
-    saintsSolemnities.CommonOffices
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory =
-      saintsSolemnities.CommonOffices.SecondVespersShortResponsory;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory =
+      saintsSolemnities.commonOffices.secondVespersShortResponsory;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-    saintsSolemnities.SecondVespersEvangelicalAntiphon;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+    saintsSolemnities.secondVespersEvangelicalAntiphon;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon,
     ) &&
-    saintsSolemnities.CommonOffices
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-      saintsSolemnities.CommonOffices.SecondVespersEvangelicalAntiphon;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+      saintsSolemnities.commonOffices.secondVespersEvangelicalAntiphon;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers = saintsSolemnities.SecondVespersPrayers;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers = saintsSolemnities.secondVespersPrayers;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers =
-      saintsSolemnities.CommonOffices.SecondVespersPrayers;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers =
+      saintsSolemnities.commonOffices.secondVespersPrayers;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer =
-    saintsSolemnities.SecondVespersFinalPrayer;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer =
+    saintsSolemnities.secondVespersFinalPrayer;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer) &&
-    saintsSolemnities.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer) &&
+    saintsSolemnities.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer =
-      saintsSolemnities.CommonOffices.SecondVespersFinalPrayer;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer =
+      saintsSolemnities.commonOffices.secondVespersFinalPrayer;
   }
 
   return hoursLiturgy;
@@ -750,267 +750,267 @@ function getSaintsMemoriesHoursLiturgy(
 ): HoursLiturgy {
   let hoursLiturgy = new HoursLiturgy();
 
-  hoursLiturgy.TodayCelebrationInformation = saintsMemories.Celebration;
+  hoursLiturgy.todayCelebrationInformation = saintsMemories.celebration;
 
-  hoursLiturgy.Invitation.InvitationAntiphon = saintsMemories.InvitationAntiphon;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Invitation.InvitationAntiphon) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Invitation.InvitationAntiphon = saintsMemories.CommonOffices.InvitationAntiphon;
+  hoursLiturgy.invitation.invitationAntiphon = saintsMemories.invitationAntiphon;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.invitation.invitationAntiphon) && saintsMemories.commonOffices) {
+    hoursLiturgy.invitation.invitationAntiphon = saintsMemories.commonOffices.invitationAntiphon;
   }
 
-  hoursLiturgy.Office.Anthem = settings.UseLatin
-    ? saintsMemories.OfficeLatinAnthem
-    : saintsMemories.OfficeCatalanAnthem;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.Anthem) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Office.Anthem = settings.UseLatin
-      ? saintsMemories.CommonOffices.OfficeLatinAnthem
-      : saintsMemories.CommonOffices.OfficeCatalanAnthem;
+  hoursLiturgy.office.anthem = settings.useLatin
+    ? saintsMemories.officeLatinAnthem
+    : saintsMemories.officeCatalanAnthem;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.anthem) && saintsMemories.commonOffices) {
+    hoursLiturgy.office.anthem = settings.useLatin
+      ? saintsMemories.commonOffices.officeLatinAnthem
+      : saintsMemories.commonOffices.officeCatalanAnthem;
   }
-  hoursLiturgy.Office.FirstPsalm = saintsMemories.OfficeFirstPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.FirstPsalm.Psalm) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Office.FirstPsalm = saintsMemories.CommonOffices.OfficeFirstPsalm;
+  hoursLiturgy.office.firstPsalm = saintsMemories.officeFirstPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.firstPsalm.psalm) && saintsMemories.commonOffices) {
+    hoursLiturgy.office.firstPsalm = saintsMemories.commonOffices.officeFirstPsalm;
   }
-  hoursLiturgy.Office.SecondPsalm = saintsMemories.OfficeSecondPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.SecondPsalm.Psalm) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Office.SecondPsalm = saintsMemories.CommonOffices.OfficeSecondPsalm;
+  hoursLiturgy.office.secondPsalm = saintsMemories.officeSecondPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.secondPsalm.psalm) && saintsMemories.commonOffices) {
+    hoursLiturgy.office.secondPsalm = saintsMemories.commonOffices.officeSecondPsalm;
   }
-  hoursLiturgy.Office.ThirdPsalm = saintsMemories.OfficeThirdPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.ThirdPsalm.Psalm) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Office.ThirdPsalm = saintsMemories.CommonOffices.OfficeThirdPsalm;
+  hoursLiturgy.office.thirdPsalm = saintsMemories.officeThirdPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.thirdPsalm.psalm) && saintsMemories.commonOffices) {
+    hoursLiturgy.office.thirdPsalm = saintsMemories.commonOffices.officeThirdPsalm;
   }
-  hoursLiturgy.Office.Responsory = saintsMemories.OfficeResponsory;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.FirstPsalm.Psalm) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Office.FirstPsalm = saintsMemories.CommonOffices.OfficeFirstPsalm;
+  hoursLiturgy.office.responsory = saintsMemories.officeResponsory;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.firstPsalm.psalm) && saintsMemories.commonOffices) {
+    hoursLiturgy.office.firstPsalm = saintsMemories.commonOffices.officeFirstPsalm;
   }
-  hoursLiturgy.Office.FirstReading = saintsMemories.OfficeFirstReading;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.FirstReading.Reading) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Office.FirstReading = saintsMemories.CommonOffices.OfficeFirstReading;
+  hoursLiturgy.office.firstReading = saintsMemories.officeFirstReading;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.firstReading.reading) && saintsMemories.commonOffices) {
+    hoursLiturgy.office.firstReading = saintsMemories.commonOffices.officeFirstReading;
   }
-  hoursLiturgy.Office.SecondReading = saintsMemories.OfficeSecondReading;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Office.SecondReading.Reading) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Office.SecondReading = saintsMemories.CommonOffices.OfficeSecondReading;
+  hoursLiturgy.office.secondReading = saintsMemories.officeSecondReading;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.office.secondReading.reading) && saintsMemories.commonOffices) {
+    hoursLiturgy.office.secondReading = saintsMemories.commonOffices.officeSecondReading;
   }
-  hoursLiturgy.Office.TeDeumInformation.Enabled = false;
-  hoursLiturgy.Office.FinalPrayer = saintsMemories.OfficeFinalPrayer;
+  hoursLiturgy.office.teDeumInformation.enabled = false;
+  hoursLiturgy.office.finalPrayer = saintsMemories.officeFinalPrayer;
 
-  hoursLiturgy.Laudes.Anthem = settings.UseLatin
-    ? saintsMemories.LaudesLatinAnthem
-    : saintsMemories.LaudesCatalanAnthem;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.Anthem) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Laudes.Anthem = settings.UseLatin
-      ? saintsMemories.CommonOffices.LaudesLatinAnthem
-      : saintsMemories.CommonOffices.LaudesCatalanAnthem;
+  hoursLiturgy.laudes.anthem = settings.useLatin
+    ? saintsMemories.laudesLatinAnthem
+    : saintsMemories.laudesCatalanAnthem;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.anthem) && saintsMemories.commonOffices) {
+    hoursLiturgy.laudes.anthem = settings.useLatin
+      ? saintsMemories.commonOffices.laudesLatinAnthem
+      : saintsMemories.commonOffices.laudesCatalanAnthem;
   }
-  hoursLiturgy.Laudes.FirstPsalm = saintsMemories.LaudesFirstPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.FirstPsalm.Psalm) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Laudes.FirstPsalm = saintsMemories.CommonOffices.LaudesFirstPsalm;
+  hoursLiturgy.laudes.firstPsalm = saintsMemories.laudesFirstPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.firstPsalm.psalm) && saintsMemories.commonOffices) {
+    hoursLiturgy.laudes.firstPsalm = saintsMemories.commonOffices.laudesFirstPsalm;
   }
-  hoursLiturgy.Laudes.SecondPsalm = saintsMemories.LaudesSecondPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.SecondPsalm.Psalm) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Laudes.SecondPsalm = saintsMemories.CommonOffices.LaudesSecondPsalm;
+  hoursLiturgy.laudes.secondPsalm = saintsMemories.laudesSecondPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.secondPsalm.psalm) && saintsMemories.commonOffices) {
+    hoursLiturgy.laudes.secondPsalm = saintsMemories.commonOffices.laudesSecondPsalm;
   }
-  hoursLiturgy.Laudes.ThirdPsalm = saintsMemories.LaudesThirdPsalm;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.ThirdPsalm.Psalm) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Laudes.ThirdPsalm = saintsMemories.CommonOffices.LaudesThirdPsalm;
+  hoursLiturgy.laudes.thirdPsalm = saintsMemories.laudesThirdPsalm;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.thirdPsalm.psalm) && saintsMemories.commonOffices) {
+    hoursLiturgy.laudes.thirdPsalm = saintsMemories.commonOffices.laudesThirdPsalm;
   }
-  hoursLiturgy.Laudes.ShortReading = saintsMemories.LaudesShortReading;
+  hoursLiturgy.laudes.shortReading = saintsMemories.laudesShortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.ShortReading.ShortReading) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.laudes.shortReading.shortReading) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Laudes.ShortReading = saintsMemories.CommonOffices.LaudesShortReading;
+    hoursLiturgy.laudes.shortReading = saintsMemories.commonOffices.laudesShortReading;
   }
-  hoursLiturgy.Laudes.ShortResponsory = saintsMemories.LaudesShortResponsory;
+  hoursLiturgy.laudes.shortResponsory = saintsMemories.laudesShortResponsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.ShortResponsory.FirstPart) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.laudes.shortResponsory.firstPart) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Laudes.ShortResponsory = saintsMemories.CommonOffices.LaudesShortResponsory;
+    hoursLiturgy.laudes.shortResponsory = saintsMemories.commonOffices.laudesShortResponsory;
   }
-  hoursLiturgy.Laudes.EvangelicalAntiphon = saintsMemories.LaudesEvangelicalAntiphon;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.EvangelicalAntiphon) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Laudes.EvangelicalAntiphon = saintsMemories.CommonOffices.LaudesEvangelicalAntiphon;
+  hoursLiturgy.laudes.evangelicalAntiphon = saintsMemories.laudesEvangelicalAntiphon;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.evangelicalAntiphon) && saintsMemories.commonOffices) {
+    hoursLiturgy.laudes.evangelicalAntiphon = saintsMemories.commonOffices.laudesEvangelicalAntiphon;
   }
-  hoursLiturgy.Laudes.Prayers = saintsMemories.LaudesPrayers;
-  if (!StringManagement.hasLiturgyContent(hoursLiturgy.Laudes.Prayers) && saintsMemories.CommonOffices) {
-    hoursLiturgy.Laudes.Prayers = saintsMemories.CommonOffices.LaudesPrayers;
+  hoursLiturgy.laudes.prayers = saintsMemories.laudesPrayers;
+  if (!StringManagement.hasLiturgyContent(hoursLiturgy.laudes.prayers) && saintsMemories.commonOffices) {
+    hoursLiturgy.laudes.prayers = saintsMemories.commonOffices.laudesPrayers;
   }
-  hoursLiturgy.Laudes.FinalPrayer = saintsMemories.LaudesFinalPrayer;
+  hoursLiturgy.laudes.finalPrayer = saintsMemories.laudesFinalPrayer;
 
-  hoursLiturgy.Hours.ThirdHour.Anthem = settings.UseLatin
-    ? saintsMemories.ThirdHourParts.LatinAnthem
-    : saintsMemories.ThirdHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.ThirdHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = saintsMemories.ThirdHourParts.Antiphon;
+  hoursLiturgy.hours.thirdHour.anthem = settings.useLatin
+    ? saintsMemories.thirdHourParts.latinAnthem
+    : saintsMemories.thirdHourParts.catalanAnthem;
+  hoursLiturgy.hours.thirdHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.thirdHour.uniqueAntiphon = saintsMemories.thirdHourParts.antiphon;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.ThirdHour.UniqueAntiphon) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.thirdHour.uniqueAntiphon) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.ThirdHour.UniqueAntiphon = saintsMemories.CommonOffices.ThirdHourParts.Antiphon;
+    hoursLiturgy.hours.thirdHour.uniqueAntiphon = saintsMemories.commonOffices.thirdHourParts.antiphon;
   }
-  hoursLiturgy.Hours.ThirdHour.FirstPsalm = saintsMemories.HoursFirstPsalm;
-  hoursLiturgy.Hours.ThirdHour.SecondPsalm = saintsMemories.HoursSecondPsalm;
-  hoursLiturgy.Hours.ThirdHour.ThirdPsalm = saintsMemories.HoursThirdPsalm;
-  hoursLiturgy.Hours.ThirdHour.ShortReading = saintsMemories.ThirdHourParts.ShortReading;
+  hoursLiturgy.hours.thirdHour.firstPsalm = saintsMemories.hoursFirstPsalm;
+  hoursLiturgy.hours.thirdHour.secondPsalm = saintsMemories.hoursSecondPsalm;
+  hoursLiturgy.hours.thirdHour.thirdPsalm = saintsMemories.hoursThirdPsalm;
+  hoursLiturgy.hours.thirdHour.shortReading = saintsMemories.thirdHourParts.shortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.ThirdHour.ShortReading.ShortReading) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.thirdHour.shortReading.shortReading) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.ThirdHour.ShortReading = saintsMemories.CommonOffices.ThirdHourParts.ShortReading;
+    hoursLiturgy.hours.thirdHour.shortReading = saintsMemories.commonOffices.thirdHourParts.shortReading;
   }
-  hoursLiturgy.Hours.ThirdHour.Responsory = saintsMemories.ThirdHourParts.Responsory;
+  hoursLiturgy.hours.thirdHour.responsory = saintsMemories.thirdHourParts.responsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.ThirdHour.Responsory.Response) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.thirdHour.responsory.response) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.ThirdHour.Responsory = saintsMemories.CommonOffices.ThirdHourParts.Responsory;
+    hoursLiturgy.hours.thirdHour.responsory = saintsMemories.commonOffices.thirdHourParts.responsory;
   }
-  hoursLiturgy.Hours.ThirdHour.FinalPrayer = saintsMemories.ThirdHourParts.FinalPrayer;
-  hoursLiturgy.Hours.SixthHour.Anthem = settings.UseLatin
-    ? saintsMemories.SixthHourParts.LatinAnthem
-    : saintsMemories.SixthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.SixthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.SixthHour.UniqueAntiphon = saintsMemories.SixthHourParts.Antiphon;
+  hoursLiturgy.hours.thirdHour.finalPrayer = saintsMemories.thirdHourParts.finalPrayer;
+  hoursLiturgy.hours.sixthHour.anthem = settings.useLatin
+    ? saintsMemories.sixthHourParts.latinAnthem
+    : saintsMemories.sixthHourParts.catalanAnthem;
+  hoursLiturgy.hours.sixthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.sixthHour.uniqueAntiphon = saintsMemories.sixthHourParts.antiphon;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.SixthHour.UniqueAntiphon) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.sixthHour.uniqueAntiphon) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.SixthHour.UniqueAntiphon = saintsMemories.CommonOffices.SixthHourParts.Antiphon;
+    hoursLiturgy.hours.sixthHour.uniqueAntiphon = saintsMemories.commonOffices.sixthHourParts.antiphon;
   }
-  hoursLiturgy.Hours.SixthHour.FirstPsalm = saintsMemories.HoursFirstPsalm;
-  hoursLiturgy.Hours.SixthHour.SecondPsalm = saintsMemories.HoursSecondPsalm;
-  hoursLiturgy.Hours.SixthHour.ThirdPsalm = saintsMemories.HoursThirdPsalm;
-  hoursLiturgy.Hours.SixthHour.ShortReading = saintsMemories.SixthHourParts.ShortReading;
+  hoursLiturgy.hours.sixthHour.firstPsalm = saintsMemories.hoursFirstPsalm;
+  hoursLiturgy.hours.sixthHour.secondPsalm = saintsMemories.hoursSecondPsalm;
+  hoursLiturgy.hours.sixthHour.thirdPsalm = saintsMemories.hoursThirdPsalm;
+  hoursLiturgy.hours.sixthHour.shortReading = saintsMemories.sixthHourParts.shortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.SixthHour.ShortReading.ShortReading) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.sixthHour.shortReading.shortReading) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.SixthHour.ShortReading = saintsMemories.CommonOffices.SixthHourParts.ShortReading;
+    hoursLiturgy.hours.sixthHour.shortReading = saintsMemories.commonOffices.sixthHourParts.shortReading;
   }
-  hoursLiturgy.Hours.SixthHour.Responsory = saintsMemories.SixthHourParts.Responsory;
+  hoursLiturgy.hours.sixthHour.responsory = saintsMemories.sixthHourParts.responsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.SixthHour.Responsory.Response) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.sixthHour.responsory.response) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.SixthHour.Responsory = saintsMemories.CommonOffices.SixthHourParts.Responsory;
+    hoursLiturgy.hours.sixthHour.responsory = saintsMemories.commonOffices.sixthHourParts.responsory;
   }
-  hoursLiturgy.Hours.SixthHour.FinalPrayer = saintsMemories.SixthHourParts.FinalPrayer;
-  hoursLiturgy.Hours.NinthHour.Anthem = settings.UseLatin
-    ? saintsMemories.NinthHourParts.LatinAnthem
-    : saintsMemories.NinthHourParts.CatalanAnthem;
-  hoursLiturgy.Hours.NinthHour.HasMultipleAntiphons = false;
-  hoursLiturgy.Hours.NinthHour.UniqueAntiphon = saintsMemories.NinthHourParts.Antiphon;
+  hoursLiturgy.hours.sixthHour.finalPrayer = saintsMemories.sixthHourParts.finalPrayer;
+  hoursLiturgy.hours.ninthHour.anthem = settings.useLatin
+    ? saintsMemories.ninthHourParts.latinAnthem
+    : saintsMemories.ninthHourParts.catalanAnthem;
+  hoursLiturgy.hours.ninthHour.hasMultipleAntiphons = false;
+  hoursLiturgy.hours.ninthHour.uniqueAntiphon = saintsMemories.ninthHourParts.antiphon;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.NinthHour.UniqueAntiphon) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.ninthHour.uniqueAntiphon) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.NinthHour.UniqueAntiphon = saintsMemories.CommonOffices.NinthHourParts.Antiphon;
+    hoursLiturgy.hours.ninthHour.uniqueAntiphon = saintsMemories.commonOffices.ninthHourParts.antiphon;
   }
-  hoursLiturgy.Hours.NinthHour.FirstPsalm = saintsMemories.HoursFirstPsalm;
-  hoursLiturgy.Hours.NinthHour.SecondPsalm = saintsMemories.HoursSecondPsalm;
-  hoursLiturgy.Hours.NinthHour.ThirdPsalm = saintsMemories.HoursThirdPsalm;
-  hoursLiturgy.Hours.NinthHour.ShortReading = saintsMemories.NinthHourParts.ShortReading;
+  hoursLiturgy.hours.ninthHour.firstPsalm = saintsMemories.hoursFirstPsalm;
+  hoursLiturgy.hours.ninthHour.secondPsalm = saintsMemories.hoursSecondPsalm;
+  hoursLiturgy.hours.ninthHour.thirdPsalm = saintsMemories.hoursThirdPsalm;
+  hoursLiturgy.hours.ninthHour.shortReading = saintsMemories.ninthHourParts.shortReading;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.NinthHour.ShortReading.ShortReading) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.ninthHour.shortReading.shortReading) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.NinthHour.ShortReading = saintsMemories.CommonOffices.NinthHourParts.ShortReading;
+    hoursLiturgy.hours.ninthHour.shortReading = saintsMemories.commonOffices.ninthHourParts.shortReading;
   }
-  hoursLiturgy.Hours.NinthHour.Responsory = saintsMemories.NinthHourParts.Responsory;
+  hoursLiturgy.hours.ninthHour.responsory = saintsMemories.ninthHourParts.responsory;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.Hours.NinthHour.Responsory.Response) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.hours.ninthHour.responsory.response) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.Hours.NinthHour.Responsory = saintsMemories.CommonOffices.NinthHourParts.Responsory;
+    hoursLiturgy.hours.ninthHour.responsory = saintsMemories.commonOffices.ninthHourParts.responsory;
   }
-  hoursLiturgy.Hours.NinthHour.FinalPrayer = saintsMemories.NinthHourParts.FinalPrayer;
+  hoursLiturgy.hours.ninthHour.finalPrayer = saintsMemories.ninthHourParts.finalPrayer;
 
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin
-    ? saintsMemories.VespersLatinAnthem
-    : saintsMemories.VespersCatalanAnthem;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem = settings.useLatin
+    ? saintsMemories.vespersLatinAnthem
+    : saintsMemories.vespersCatalanAnthem;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Anthem = settings.UseLatin
-      ? saintsMemories.CommonOffices.SecondVespersLatinAnthem
-      : saintsMemories.CommonOffices.SecondVespersCatalanAnthem;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.anthem = settings.useLatin
+      ? saintsMemories.commonOffices.secondVespersLatinAnthem
+      : saintsMemories.commonOffices.secondVespersCatalanAnthem;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm = saintsMemories.VespersFirstPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm = saintsMemories.vespersFirstPsalm;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm.Psalm,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm.psalm,
     ) &&
-    saintsMemories.CommonOffices
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FirstPsalm =
-      saintsMemories.CommonOffices.SecondVespersFirstPsalm;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.firstPsalm =
+      saintsMemories.commonOffices.secondVespersFirstPsalm;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm = saintsMemories.VespersSecondPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm = saintsMemories.vespersSecondPsalm;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm.Psalm,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm.psalm,
     ) &&
-    saintsMemories.CommonOffices
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.SecondPsalm =
-      saintsMemories.CommonOffices.SecondVespersSecondPsalm;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.secondPsalm =
+      saintsMemories.commonOffices.secondVespersSecondPsalm;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm = saintsMemories.VespersThirdPsalm;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm = saintsMemories.vespersThirdPsalm;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm.Psalm,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm.psalm,
     ) &&
-    saintsMemories.CommonOffices
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ThirdPsalm =
-      saintsMemories.CommonOffices.SecondVespersThirdPsalm;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.thirdPsalm =
+      saintsMemories.commonOffices.secondVespersThirdPsalm;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading = saintsMemories.VespersShortReading;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading = saintsMemories.vespersShortReading;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading.ShortReading,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading.shortReading,
     ) &&
-    saintsMemories.CommonOffices
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortReading =
-      saintsMemories.CommonOffices.SecondVespersShortReading;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortReading =
+      saintsMemories.commonOffices.secondVespersShortReading;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory = saintsMemories.VespersShortResponsory;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory = saintsMemories.vespersShortResponsory;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory.FirstPart,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory.firstPart,
     ) &&
-    saintsMemories.CommonOffices
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.ShortResponsory =
-      saintsMemories.CommonOffices.SecondVespersShortResponsory;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.shortResponsory =
+      saintsMemories.commonOffices.secondVespersShortResponsory;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-    saintsMemories.VespersEvangelicalAntiphon;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+    saintsMemories.vespersEvangelicalAntiphon;
   if (
     !StringManagement.hasLiturgyContent(
-      hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon,
+      hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon,
     ) &&
-    saintsMemories.CommonOffices
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.EvangelicalAntiphon =
-      saintsMemories.CommonOffices.SecondVespersEvangelicalAntiphon;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.evangelicalAntiphon =
+      saintsMemories.commonOffices.secondVespersEvangelicalAntiphon;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers = saintsMemories.VespersPrayers;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers = saintsMemories.vespersPrayers;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.Prayers =
-      saintsMemories.CommonOffices.SecondVespersPrayers;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.prayers =
+      saintsMemories.commonOffices.secondVespersPrayers;
   }
-  hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer = saintsMemories.VespersFinalPrayer;
+  hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer = saintsMemories.vespersFinalPrayer;
   if (
-    !StringManagement.hasLiturgyContent(hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer) &&
-    saintsMemories.CommonOffices
+    !StringManagement.hasLiturgyContent(hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer) &&
+    saintsMemories.commonOffices
   ) {
-    hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration.FinalPrayer =
-      saintsMemories.CommonOffices.SecondVespersFinalPrayer;
+    hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration.finalPrayer =
+      saintsMemories.commonOffices.secondVespersFinalPrayer;
   }
 
   return hoursLiturgy;
@@ -1022,28 +1022,28 @@ function getSolemnityAndFestivityFirstVespersOfTomorrow(
   settings: Settings,
 ): Vespers {
   let vespers = new Vespers();
-  vespers.Title = solemnityAndFestivityParts.Celebration.Title;
-  vespers.Anthem = settings.UseLatin
-    ? solemnityAndFestivityParts.FirstVespersLatinAnthem
-    : solemnityAndFestivityParts.FirstVespersCatalanAnthem;
-  vespers.FirstPsalm = solemnityAndFestivityParts.FirstVespersFirstPsalm;
-  vespers.SecondPsalm = solemnityAndFestivityParts.FirstVespersSecondPsalm;
-  vespers.ThirdPsalm = solemnityAndFestivityParts.FirstVespersThirdPsalm;
-  vespers.ShortReading = solemnityAndFestivityParts.FirstVespersShortReading;
-  vespers.ShortResponsory = solemnityAndFestivityParts.FirstVespersShortResponsory;
-  switch (liturgyDayInformation.YearType) {
+  vespers.title = solemnityAndFestivityParts.celebration.title;
+  vespers.anthem = settings.useLatin
+    ? solemnityAndFestivityParts.firstVespersLatinAnthem
+    : solemnityAndFestivityParts.firstVespersCatalanAnthem;
+  vespers.firstPsalm = solemnityAndFestivityParts.firstVespersFirstPsalm;
+  vespers.secondPsalm = solemnityAndFestivityParts.firstVespersSecondPsalm;
+  vespers.thirdPsalm = solemnityAndFestivityParts.firstVespersThirdPsalm;
+  vespers.shortReading = solemnityAndFestivityParts.firstVespersShortReading;
+  vespers.shortResponsory = solemnityAndFestivityParts.firstVespersShortResponsory;
+  switch (liturgyDayInformation.yearType) {
     case YearType.A:
-      vespers.EvangelicalAntiphon = solemnityAndFestivityParts.FirstVespersEvangelicalAntiphonYearA;
+      vespers.evangelicalAntiphon = solemnityAndFestivityParts.firstVespersEvangelicalAntiphonYearA;
       break;
     case YearType.B:
-      vespers.EvangelicalAntiphon = solemnityAndFestivityParts.FirstVespersEvangelicalAntiphonYearB;
+      vespers.evangelicalAntiphon = solemnityAndFestivityParts.firstVespersEvangelicalAntiphonYearB;
       break;
     case YearType.C:
-      vespers.EvangelicalAntiphon = solemnityAndFestivityParts.FirstVespersEvangelicalAntiphonYearC;
+      vespers.evangelicalAntiphon = solemnityAndFestivityParts.firstVespersEvangelicalAntiphonYearC;
       break;
   }
-  vespers.Prayers = solemnityAndFestivityParts.FirstVespersPrayers;
-  vespers.FinalPrayer = solemnityAndFestivityParts.FirstVespersFinalPrayer;
+  vespers.prayers = solemnityAndFestivityParts.firstVespersPrayers;
+  vespers.finalPrayer = solemnityAndFestivityParts.firstVespersFinalPrayer;
   return vespers;
 }
 
@@ -1053,28 +1053,28 @@ function getSpecialDaysFirstVespersOfTomorrow(
   settings: Settings,
 ): Vespers {
   let vespers = new Vespers();
-  vespers.Title = specialDaysParts.Celebration.Title;
-  vespers.Anthem = settings.UseLatin
-    ? specialDaysParts.FirstVespersLatinAnthem
-    : specialDaysParts.FirstVespersCatalanAnthem;
-  vespers.FirstPsalm = specialDaysParts.FirstVespersFirstPsalm;
-  vespers.SecondPsalm = specialDaysParts.FirstVespersSecondPsalm;
-  vespers.ThirdPsalm = specialDaysParts.FirstVespersThirdPsalm;
-  vespers.ShortReading = specialDaysParts.FirstVespersShortReading;
-  vespers.ShortResponsory = specialDaysParts.FirstVespersShortResponsory;
-  switch (liturgyDayInformation.YearType) {
+  vespers.title = specialDaysParts.celebration.title;
+  vespers.anthem = settings.useLatin
+    ? specialDaysParts.firstVespersLatinAnthem
+    : specialDaysParts.firstVespersCatalanAnthem;
+  vespers.firstPsalm = specialDaysParts.firstVespersFirstPsalm;
+  vespers.secondPsalm = specialDaysParts.firstVespersSecondPsalm;
+  vespers.thirdPsalm = specialDaysParts.firstVespersThirdPsalm;
+  vespers.shortReading = specialDaysParts.firstVespersShortReading;
+  vespers.shortResponsory = specialDaysParts.firstVespersShortResponsory;
+  switch (liturgyDayInformation.yearType) {
     case YearType.A:
-      vespers.EvangelicalAntiphon = specialDaysParts.FirstVespersEvangelicalAntiphonYearA;
+      vespers.evangelicalAntiphon = specialDaysParts.firstVespersEvangelicalAntiphonYearA;
       break;
     case YearType.B:
-      vespers.EvangelicalAntiphon = specialDaysParts.FirstVespersEvangelicalAntiphonYearB;
+      vespers.evangelicalAntiphon = specialDaysParts.firstVespersEvangelicalAntiphonYearB;
       break;
     case YearType.C:
-      vespers.EvangelicalAntiphon = specialDaysParts.FirstVespersEvangelicalAntiphonYearC;
+      vespers.evangelicalAntiphon = specialDaysParts.firstVespersEvangelicalAntiphonYearC;
       break;
   }
-  vespers.Prayers = specialDaysParts.FirstVespersPrayers;
-  vespers.FinalPrayer = specialDaysParts.FirstVespersFinalPrayer;
+  vespers.prayers = specialDaysParts.firstVespersPrayers;
+  vespers.finalPrayer = specialDaysParts.firstVespersFinalPrayer;
   return vespers;
 }
 
@@ -1084,44 +1084,44 @@ function getSaintsSolemnitiesFirstVespersOfTomorrow(
   settings: Settings,
 ): Vespers {
   let vespers = new Vespers();
-  vespers.Title = saintsSolemnities.Celebration.Title;
-  vespers.Anthem = settings.UseLatin
-    ? saintsSolemnities.FirstVespersLatinAnthem
-    : saintsSolemnities.FirstVespersCatalanAnthem;
-  if (!StringManagement.hasLiturgyContent(vespers.Anthem) && saintsSolemnities.CommonOffices) {
-    vespers.Anthem = settings.UseLatin
-      ? saintsSolemnities.CommonOffices.FirstVespersLatinAnthem
-      : saintsSolemnities.CommonOffices.FirstVespersCatalanAnthem;
+  vespers.title = saintsSolemnities.celebration.title;
+  vespers.anthem = settings.useLatin
+    ? saintsSolemnities.firstVespersLatinAnthem
+    : saintsSolemnities.firstVespersCatalanAnthem;
+  if (!StringManagement.hasLiturgyContent(vespers.anthem) && saintsSolemnities.commonOffices) {
+    vespers.anthem = settings.useLatin
+      ? saintsSolemnities.commonOffices.firstVespersLatinAnthem
+      : saintsSolemnities.commonOffices.firstVespersCatalanAnthem;
   }
-  vespers.FirstPsalm = saintsSolemnities.FirstVespersFirstPsalm;
-  if (!StringManagement.hasLiturgyContent(vespers.FirstPsalm.Psalm) && saintsSolemnities.CommonOffices) {
-    vespers.FirstPsalm = saintsSolemnities.CommonOffices.FirstVespersFirstPsalm;
+  vespers.firstPsalm = saintsSolemnities.firstVespersFirstPsalm;
+  if (!StringManagement.hasLiturgyContent(vespers.firstPsalm.psalm) && saintsSolemnities.commonOffices) {
+    vespers.firstPsalm = saintsSolemnities.commonOffices.firstVespersFirstPsalm;
   }
-  vespers.SecondPsalm = saintsSolemnities.FirstVespersSecondPsalm;
-  if (!StringManagement.hasLiturgyContent(vespers.SecondPsalm.Psalm) && saintsSolemnities.CommonOffices) {
-    vespers.SecondPsalm = saintsSolemnities.CommonOffices.FirstVespersSecondPsalm;
+  vespers.secondPsalm = saintsSolemnities.firstVespersSecondPsalm;
+  if (!StringManagement.hasLiturgyContent(vespers.secondPsalm.psalm) && saintsSolemnities.commonOffices) {
+    vespers.secondPsalm = saintsSolemnities.commonOffices.firstVespersSecondPsalm;
   }
-  vespers.ThirdPsalm = saintsSolemnities.FirstVespersThirdPsalm;
-  if (!StringManagement.hasLiturgyContent(vespers.ThirdPsalm.Psalm) && saintsSolemnities.CommonOffices) {
-    vespers.ThirdPsalm = saintsSolemnities.CommonOffices.FirstVespersThirdPsalm;
+  vespers.thirdPsalm = saintsSolemnities.firstVespersThirdPsalm;
+  if (!StringManagement.hasLiturgyContent(vespers.thirdPsalm.psalm) && saintsSolemnities.commonOffices) {
+    vespers.thirdPsalm = saintsSolemnities.commonOffices.firstVespersThirdPsalm;
   }
-  vespers.ShortReading = saintsSolemnities.FirstVespersShortReading;
-  if (!StringManagement.hasLiturgyContent(vespers.ShortReading.ShortReading) && saintsSolemnities.CommonOffices) {
-    vespers.ShortReading = saintsSolemnities.CommonOffices.FirstVespersShortReading;
+  vespers.shortReading = saintsSolemnities.firstVespersShortReading;
+  if (!StringManagement.hasLiturgyContent(vespers.shortReading.shortReading) && saintsSolemnities.commonOffices) {
+    vespers.shortReading = saintsSolemnities.commonOffices.firstVespersShortReading;
   }
-  vespers.ShortResponsory = saintsSolemnities.FirstVespersShortResponsory;
-  if (!StringManagement.hasLiturgyContent(vespers.ShortResponsory.FirstPart) && saintsSolemnities.CommonOffices) {
-    vespers.ShortResponsory = saintsSolemnities.CommonOffices.FirstVespersShortResponsory;
+  vespers.shortResponsory = saintsSolemnities.firstVespersShortResponsory;
+  if (!StringManagement.hasLiturgyContent(vespers.shortResponsory.firstPart) && saintsSolemnities.commonOffices) {
+    vespers.shortResponsory = saintsSolemnities.commonOffices.firstVespersShortResponsory;
   }
-  vespers.EvangelicalAntiphon = saintsSolemnities.FirstVespersEvangelicalAntiphon;
-  if (!StringManagement.hasLiturgyContent(vespers.EvangelicalAntiphon) && saintsSolemnities.CommonOffices) {
-    vespers.EvangelicalAntiphon = saintsSolemnities.CommonOffices.FirstVespersEvangelicalAntiphon;
+  vespers.evangelicalAntiphon = saintsSolemnities.firstVespersEvangelicalAntiphon;
+  if (!StringManagement.hasLiturgyContent(vespers.evangelicalAntiphon) && saintsSolemnities.commonOffices) {
+    vespers.evangelicalAntiphon = saintsSolemnities.commonOffices.firstVespersEvangelicalAntiphon;
   }
-  vespers.Prayers = saintsSolemnities.FirstVespersPrayers;
-  if (!StringManagement.hasLiturgyContent(vespers.Prayers) && saintsSolemnities.CommonOffices) {
-    vespers.Prayers = saintsSolemnities.CommonOffices.FirstVespersPrayers;
+  vespers.prayers = saintsSolemnities.firstVespersPrayers;
+  if (!StringManagement.hasLiturgyContent(vespers.prayers) && saintsSolemnities.commonOffices) {
+    vespers.prayers = saintsSolemnities.commonOffices.firstVespersPrayers;
   }
-  vespers.FinalPrayer = saintsSolemnities.FirstVespersFinalPrayer;
+  vespers.finalPrayer = saintsSolemnities.firstVespersFinalPrayer;
   return vespers;
 }
 
@@ -1132,28 +1132,28 @@ function getPalmSundayFistVespersOfTomorrow(
   settings: Settings,
 ): Vespers {
   let vespers = new Vespers();
-  vespers.Title = 'Diumenge de Rams';
-  vespers.Anthem = settings.UseLatin
-    ? commonPartsOfHolyWeek.VespersLatinAnthem
-    : commonPartsOfHolyWeek.VespersCatalanAnthem;
-  vespers.FirstPsalm.Antiphon = palmSundayParts.FirstVespersFirstAntiphon;
-  vespers.SecondPsalm.Antiphon = palmSundayParts.FirstVespersSecondAntiphon;
-  vespers.ThirdPsalm.Antiphon = palmSundayParts.FirstVespersThirdAntiphon;
-  vespers.ShortReading = palmSundayParts.FirstVespersShortReading;
-  vespers.ShortResponsory = palmSundayParts.FirstVespersShortResponsory;
-  switch (liturgyDayInformation.YearType) {
+  vespers.title = 'Diumenge de Rams';
+  vespers.anthem = settings.useLatin
+    ? commonPartsOfHolyWeek.vespersLatinAnthem
+    : commonPartsOfHolyWeek.vespersCatalanAnthem;
+  vespers.firstPsalm.antiphon = palmSundayParts.firstVespersFirstAntiphon;
+  vespers.secondPsalm.antiphon = palmSundayParts.firstVespersSecondAntiphon;
+  vespers.thirdPsalm.antiphon = palmSundayParts.firstVespersThirdAntiphon;
+  vespers.shortReading = palmSundayParts.firstVespersShortReading;
+  vespers.shortResponsory = palmSundayParts.firstVespersShortResponsory;
+  switch (liturgyDayInformation.yearType) {
     case YearType.A:
-      vespers.EvangelicalAntiphon = palmSundayParts.FirstVespersEvangelicalAntiphonYearA;
+      vespers.evangelicalAntiphon = palmSundayParts.firstVespersEvangelicalAntiphonYearA;
       break;
     case YearType.B:
-      vespers.EvangelicalAntiphon = palmSundayParts.FirstVespersEvangelicalAntiphonYearB;
+      vespers.evangelicalAntiphon = palmSundayParts.firstVespersEvangelicalAntiphonYearB;
       break;
     case YearType.C:
-      vespers.EvangelicalAntiphon = palmSundayParts.FirstVespersEvangelicalAntiphonYearC;
+      vespers.evangelicalAntiphon = palmSundayParts.firstVespersEvangelicalAntiphonYearC;
       break;
   }
-  vespers.Prayers = palmSundayParts.FirstVespersPrayers;
-  vespers.FinalPrayer = palmSundayParts.FirstVespersFinalPrayer;
+  vespers.prayers = palmSundayParts.firstVespersPrayers;
+  vespers.finalPrayer = palmSundayParts.firstVespersFinalPrayer;
   return vespers;
 }
 
@@ -1162,18 +1162,18 @@ function getEasterTriduumFistVespersOfTomorrow(
   settings: Settings,
 ): Vespers {
   let vespers = new Vespers();
-  vespers.Title = 'Tridu Pasqual';
-  vespers.Anthem = settings.UseLatin
-    ? partsOfEasterTriduum.VespersLatinAnthem
-    : partsOfEasterTriduum.VespersCatalanAnthem;
-  vespers.FirstPsalm = partsOfEasterTriduum.VespersFirstPsalm;
-  vespers.SecondPsalm = partsOfEasterTriduum.VespersSecondPsalm;
-  vespers.ThirdPsalm = partsOfEasterTriduum.VespersThirdPsalm;
-  vespers.ShortReading = partsOfEasterTriduum.VespersShortReading;
-  vespers.ShortResponsory = partsOfEasterTriduum.VespersShortResponsory;
-  vespers.EvangelicalAntiphon = partsOfEasterTriduum.VespersEvangelicalAntiphon;
-  vespers.Prayers = partsOfEasterTriduum.VespersPrayers;
-  vespers.FinalPrayer = partsOfEasterTriduum.VespersFinalPrayer;
+  vespers.title = 'Tridu Pasqual';
+  vespers.anthem = settings.useLatin
+    ? partsOfEasterTriduum.vespersLatinAnthem
+    : partsOfEasterTriduum.vespersCatalanAnthem;
+  vespers.firstPsalm = partsOfEasterTriduum.vespersFirstPsalm;
+  vespers.secondPsalm = partsOfEasterTriduum.vespersSecondPsalm;
+  vespers.thirdPsalm = partsOfEasterTriduum.vespersThirdPsalm;
+  vespers.shortReading = partsOfEasterTriduum.vespersShortReading;
+  vespers.shortResponsory = partsOfEasterTriduum.vespersShortResponsory;
+  vespers.evangelicalAntiphon = partsOfEasterTriduum.vespersEvangelicalAntiphon;
+  vespers.prayers = partsOfEasterTriduum.vespersPrayers;
+  vespers.finalPrayer = partsOfEasterTriduum.vespersFinalPrayer;
   return vespers;
 }
 
@@ -1185,27 +1185,27 @@ function getAdventSundayFirstVespersOfTomorrow(
   settings: Settings,
 ): Vespers {
   let vespers = new Vespers();
-  vespers.Title = "Diumenge d'advent";
-  vespers.Anthem = settings.UseLatin
-    ? commonAdventAndChristmasParts.VespersLatinAnthem
-    : commonAdventAndChristmasParts.VespersCatalanAnthem;
-  vespers.FirstPsalm.Antiphon = adventSundayParts.FirstVespersFirstAntiphon;
-  vespers.SecondPsalm.Antiphon = adventSundayParts.FirstVespersSecondAntiphon;
-  vespers.ThirdPsalm.Antiphon = adventSundayParts.FirstVespersThirdAntiphon;
-  vespers.ShortReading = adventWeekParts.VespersShortReading;
-  vespers.ShortResponsory = adventWeekParts.VespersShortResponsory;
-  switch (liturgyDayInformation.YearType) {
+  vespers.title = "Diumenge d'advent";
+  vespers.anthem = settings.useLatin
+    ? commonAdventAndChristmasParts.vespersLatinAnthem
+    : commonAdventAndChristmasParts.vespersCatalanAnthem;
+  vespers.firstPsalm.antiphon = adventSundayParts.firstVespersFirstAntiphon;
+  vespers.secondPsalm.antiphon = adventSundayParts.firstVespersSecondAntiphon;
+  vespers.thirdPsalm.antiphon = adventSundayParts.firstVespersThirdAntiphon;
+  vespers.shortReading = adventWeekParts.vespersShortReading;
+  vespers.shortResponsory = adventWeekParts.vespersShortResponsory;
+  switch (liturgyDayInformation.yearType) {
     case YearType.A:
-      vespers.EvangelicalAntiphon = adventSundayParts.FirstVespersEvangelicalAntiphonYearA;
+      vespers.evangelicalAntiphon = adventSundayParts.firstVespersEvangelicalAntiphonYearA;
       break;
     case YearType.B:
-      vespers.EvangelicalAntiphon = adventSundayParts.FirstVespersEvangelicalAntiphonYearB;
+      vespers.evangelicalAntiphon = adventSundayParts.firstVespersEvangelicalAntiphonYearB;
       break;
     case YearType.C:
-      vespers.EvangelicalAntiphon = adventSundayParts.FirstVespersEvangelicalAntiphonYearC;
+      vespers.evangelicalAntiphon = adventSundayParts.firstVespersEvangelicalAntiphonYearC;
       break;
   }
-  vespers.Prayers = adventWeekParts.VespersPrayers;
-  vespers.FinalPrayer = adventWeekParts.VespersFinalPrayer;
+  vespers.prayers = adventWeekParts.vespersPrayers;
+  vespers.finalPrayer = adventWeekParts.vespersFinalPrayer;
   return vespers;
 }

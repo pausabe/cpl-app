@@ -181,7 +181,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     });
   }, [navigation]);
 
-  const today: Date | undefined = snapshot.day.Today.Date;
+  const today: Date | undefined = snapshot.day.today.date;
   const todayKey = today ? DateManagement.getDateKeyToBeStored(today) : '';
 
   // --- Avui | Vespertina: the choice of the day, kept for the day ---------------------------
@@ -189,8 +189,8 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     status === 'ready' && loadedHere && today
       ? {
           todayKey,
-          hasVespers: !!snapshot.mass.HasVespers,
-          tomorrowIsEasterSunday: snapshot.day.Tomorrow.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday,
+          hasVespers: !!snapshot.mass.hasVespers,
+          tomorrowIsEasterSunday: snapshot.day.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday,
           hour: today.getHours(),
           afternoonHour: GlobalKeys.afternoon_hour,
         }
@@ -231,13 +231,13 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     if (status !== 'ready' || !today) return null;
     const { day, celebration, settings, hours, mass } = snapshot;
     return {
-      day: buildDayCard(day.Today, celebration, settings),
+      day: buildDayCard(day.today, celebration, settings),
       hours: buildHours({
-        vespersTitle: hours.Vespers?.Title,
-        specificLiturgyTime: day.Today.SpecificLiturgyTime,
+        vespersTitle: hours.vespers?.title,
+        specificLiturgyTime: day.today.specificLiturgyTime,
         hour,
       }),
-      mass: buildMass({ today: day.Today, tomorrow: day.Tomorrow, mass, choice }),
+      mass: buildMass({ today: day.today, tomorrow: day.tomorrow, mass, choice }),
     };
   }, [snapshot, status, hour, choice]);
 
@@ -255,7 +255,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       StorageKeys.OptionalFestivity,
       enabled ? DateManagement.getDateKeyToBeStored(today) : 'none',
     );
-    LiturgyStore.updateSettings({ OptionalFestivityEnabled: enabled });
+    LiturgyStore.updateSettings({ optionalFestivityEnabled: enabled });
     await load(today);
   };
 
@@ -323,8 +323,8 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       <CalendarDialog
         visible={calendarVisible}
         value={today}
-        minimumDate={snapshot.database.MinimumSelectableDate}
-        maximumDate={snapshot.database.MaximumSelectableDate}
+        minimumDate={snapshot.database.minimumSelectableDate}
+        maximumDate={snapshot.database.maximumSelectableDate}
         onCancel={() => setCalendarVisible(false)}
         onToday={() => showDate(new Date())}
         onChange={showDate}

@@ -89,184 +89,184 @@ export default class MassLiturgyPrayerScreen extends Component {
       <View style={{ flex: 1 }}>
         <Text selectable={true} style={this.styles.red}>
           {'Lectura primera '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.firstReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.firstReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.firstReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.firstReading.reading)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Salm responsorial '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.Psalm.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.psalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.Psalm.Psalm)}
+          {GlobalViewFunctions.trim(this.props.mass.today.psalm.psalm)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Lectura segona '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.secondReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.secondReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.secondReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.secondReading.reading)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Salm responsorial '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.SecondPsalm.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.secondPsalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SecondPsalm.Psalm)}
+          {GlobalViewFunctions.trim(this.props.mass.today.secondPsalm.psalm)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Lectura tercera '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.ThirdReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.thirdReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.ThirdReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.thirdReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.ThirdReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.thirdReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.ThirdReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.thirdReading.reading)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Salm responsorial '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.ThirdPsalm.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.thirdPsalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.ThirdPsalm.Psalm)}
+          {GlobalViewFunctions.trim(this.props.mass.today.thirdPsalm.psalm)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Lectura quarta '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.FourthReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fourthReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FourthReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fourthReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FourthReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fourthReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FourthReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fourthReading.reading)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Salm responsorial '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.FourthPsalm.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fourthPsalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FourthPsalm.Psalm)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fourthPsalm.psalm)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Lectura cinquena '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.FifthReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fifthReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FifthReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fifthReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FifthReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fifthReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FifthReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fifthReading.reading)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Salm responsorial '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.FifthPsalm.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fifthPsalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.FifthPsalm.Psalm)}
+          {GlobalViewFunctions.trim(this.props.mass.today.fifthPsalm.psalm)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Lectura sisena '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.SixthReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.sixthReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SixthReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.sixthReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SixthReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.sixthReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SixthReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.sixthReading.reading)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Salm responsorial '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.SixthPsalm.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.sixthPsalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SixthPsalm.Psalm)}
+          {GlobalViewFunctions.trim(this.props.mass.today.sixthPsalm.psalm)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Lectura setena '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.SeventhReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.seventhReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SeventhReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.seventhReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SeventhReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.seventhReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SeventhReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.seventhReading.reading)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.red}>
           {'Salm responsorial '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.SeventhPsalm.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.seventhPsalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.SeventhPsalm.Psalm)}
+          {GlobalViewFunctions.trim(this.props.mass.today.seventhPsalm.psalm)}
         </Text>
         <Gap />
 
@@ -276,19 +276,19 @@ export default class MassLiturgyPrayerScreen extends Component {
 
         <Text selectable={true} style={this.styles.red}>
           {"Lectura de l'apòstol "}
-          {GlobalViewFunctions.trim(this.props.mass.Today.ApostleReading.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.apostleReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.ApostleReading.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.apostleReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.ApostleReading.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.apostleReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.ApostleReading.Reading)}
+          {GlobalViewFunctions.trim(this.props.mass.today.apostleReading.reading)}
         </Text>
         <Gap />
 
@@ -314,27 +314,27 @@ export default class MassLiturgyPrayerScreen extends Component {
         <SectionTitle>{'Evangeli'}</SectionTitle>
         <Text selectable={true} style={this.styles.red}>
           {'Al·leluia. '}
-          {GlobalViewFunctions.trim(this.props.mass.Today.Hallelujah.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.hallelujah.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.Hallelujah.Hallelujah)}
+          {GlobalViewFunctions.trim(this.props.mass.today.hallelujah.hallelujah)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.reference}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Quote)}
+          {GlobalViewFunctions.trim(this.props.mass.today.gospel.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Comment)}
+          {GlobalViewFunctions.trim(this.props.mass.today.gospel.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Title)}
+          {GlobalViewFunctions.trim(this.props.mass.today.gospel.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
-          {GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Gospel)}
+          {GlobalViewFunctions.trim(this.props.mass.today.gospel.gospel)}
         </Text>
       </View>
     );
@@ -342,7 +342,7 @@ export default class MassLiturgyPrayerScreen extends Component {
 
   Render_Rams() {
     // The Gospel of the blessing of the palms, shared with the home (ViewModels/PalmSundayGospel)
-    const gospel = palmSundayGospel(this.props.today.YearType) || { reference: '', phrase: '', title: '', text: '' };
+    const gospel = palmSundayGospel(this.props.today.yearType) || { reference: '', phrase: '', title: '', text: '' };
     const evangeliRams = gospel.reference;
     const evangeliCitaRams = gospel.phrase;
     const evangeliTitolRams = gospel.title;
@@ -385,8 +385,8 @@ export default class MassLiturgyPrayerScreen extends Component {
 
   Render_1Lect() {
     const displayGloria =
-      (this.state.DisplayVespers && this.props.mass.Vespers.HasGlory) ||
-      (!this.state.DisplayVespers && this.props.mass.Today.HasGlory);
+      (this.state.DisplayVespers && this.props.mass.vespers.hasGlory) ||
+      (!this.state.DisplayVespers && this.props.mass.today.hasGlory);
 
     return (
       <View style={{ flex: 1 }}>
@@ -402,26 +402,26 @@ export default class MassLiturgyPrayerScreen extends Component {
         <SectionTitle>{'Lectura primera'}</SectionTitle>
         <Text selectable={true} style={this.styles.reference}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.FirstReading.Quote)
-            : GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Quote)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.quote)
+            : GlobalViewFunctions.trim(this.props.mass.today.firstReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.FirstReading.Comment)
-            : GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Comment)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.comment)
+            : GlobalViewFunctions.trim(this.props.mass.today.firstReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.FirstReading.Title)
-            : GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Title)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.title)
+            : GlobalViewFunctions.trim(this.props.mass.today.firstReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.FirstReading.Reading)
-            : GlobalViewFunctions.trim(this.props.mass.Today.FirstReading.Reading)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.firstReading.reading)
+            : GlobalViewFunctions.trim(this.props.mass.today.firstReading.reading)}
         </Text>
         <Gap />
         {this.state.Salm ? (
@@ -452,14 +452,14 @@ export default class MassLiturgyPrayerScreen extends Component {
         <SectionTitle>{'Salm responsorial'}</SectionTitle>
         <Text selectable={true} style={this.styles.reference}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.Psalm.Quote)
-            : GlobalViewFunctions.trim(this.props.mass.Today.Psalm.Quote)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.psalm.quote)
+            : GlobalViewFunctions.trim(this.props.mass.today.psalm.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.Psalm.Psalm)
-            : GlobalViewFunctions.trim(this.props.mass.Today.Psalm.Psalm)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.psalm.psalm)
+            : GlobalViewFunctions.trim(this.props.mass.today.psalm.psalm)}
         </Text>
         <Gap />
         {(need_lect2 && this.state.Lect2) || (!need_lect2 && this.state.Evangeli) ? (
@@ -491,26 +491,26 @@ export default class MassLiturgyPrayerScreen extends Component {
         <SectionTitle>{'Lectura segona'}</SectionTitle>
         <Text selectable={true} style={this.styles.reference}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.SecondReading.Quote)
-            : GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Quote)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.quote)
+            : GlobalViewFunctions.trim(this.props.mass.today.secondReading.quote)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.comment}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.SecondReading.Comment)
-            : GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Comment)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.comment)
+            : GlobalViewFunctions.trim(this.props.mass.today.secondReading.comment)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.black}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.SecondReading.Title)
-            : GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Title)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.title)
+            : GlobalViewFunctions.trim(this.props.mass.today.secondReading.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.SecondReading.Reading)
-            : GlobalViewFunctions.trim(this.props.mass.Today.SecondReading.Reading)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.secondReading.reading)
+            : GlobalViewFunctions.trim(this.props.mass.today.secondReading.reading)}
         </Text>
         <Gap />
         {this.state.Evangeli ? (
@@ -531,16 +531,16 @@ export default class MassLiturgyPrayerScreen extends Component {
 
   Render_Evangeli() {
     let displayCredo =
-      (this.state.DisplayVespers && this.props.mass.Vespers.HasCreed) ||
-      (!this.state.DisplayVespers && this.props.mass.Today.HasCreed);
+      (this.state.DisplayVespers && this.props.mass.vespers.hasCreed) ||
+      (!this.state.DisplayVespers && this.props.mass.today.hasCreed);
     let aleluia_quote = this.state.DisplayVespers
-      ? this.props.mass.Vespers.Hallelujah.Quote !== '-'
-        ? this.props.mass.Vespers.Hallelujah.Quote
+      ? this.props.mass.vespers.hallelujah.quote !== '-'
+        ? this.props.mass.vespers.hallelujah.quote
         : ''
-      : this.props.mass.Today.Hallelujah.Quote !== '-'
-        ? this.props.mass.Today.Hallelujah.Quote
+      : this.props.mass.today.hallelujah.quote !== '-'
+        ? this.props.mass.today.hallelujah.quote
         : '';
-    const videoUrl = this.state.DisplayVespers ? this.props.mass.Vespers.videoUrl : this.props.mass.Today.videoUrl;
+    const videoUrl = this.state.DisplayVespers ? this.props.mass.vespers.videoUrl : this.props.mass.today.videoUrl;
 
     return (
       <View>
@@ -553,8 +553,8 @@ export default class MassLiturgyPrayerScreen extends Component {
           </View>
         ) : null}
 
-        {this.props.today.GenericLiturgyTime !== GenericLiturgyTimeType.Lent &&
-        this.props.today.GenericLiturgyTime !== GenericLiturgyTimeType.PaschalTriduum ? (
+        {this.props.today.genericLiturgyTime !== GenericLiturgyTimeType.Lent &&
+        this.props.today.genericLiturgyTime !== GenericLiturgyTimeType.PaschalTriduum ? (
           <Text selectable={true} style={this.styles.red}>
             {'Al·leluia. '}
             {aleluia_quote}
@@ -566,12 +566,12 @@ export default class MassLiturgyPrayerScreen extends Component {
         )}
         <Text selectable={true} style={this.styles.black}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.Hallelujah.Hallelujah)
-            : GlobalViewFunctions.trim(this.props.mass.Today.Hallelujah.Hallelujah)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.hallelujah.hallelujah)
+            : GlobalViewFunctions.trim(this.props.mass.today.hallelujah.hallelujah)}
         </Text>
         <Gap />
 
-        {this.props.today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ? (
+        {this.props.today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday ? (
           <ChoiceChips
             accessibilityLabel="Evangeli"
             options={EASTER_GOSPELS}
@@ -600,14 +600,14 @@ export default class MassLiturgyPrayerScreen extends Component {
 
   NormalEvangeli() {
     const cita = this.state.DisplayVespers
-      ? GlobalViewFunctions.trim(this.props.mass.Vespers.Gospel.Comment)
-      : GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Comment);
+      ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.comment)
+      : GlobalViewFunctions.trim(this.props.mass.today.gospel.comment);
     return (
       <View style={{ flex: 1 }}>
         <Text selectable={true} style={this.styles.reference}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.Gospel.Quote)
-            : GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Quote)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.quote)
+            : GlobalViewFunctions.trim(this.props.mass.today.gospel.quote)}
         </Text>
         <Gap />
         {cita === undefined || cita === '-' ? null : (
@@ -620,14 +620,14 @@ export default class MassLiturgyPrayerScreen extends Component {
         )}
         <Text selectable={true} style={this.styles.black}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.Gospel.Title)
-            : GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Title)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.title)
+            : GlobalViewFunctions.trim(this.props.mass.today.gospel.title)}
         </Text>
         <Gap />
         <Text selectable={true} style={this.styles.blackJustified}>
           {this.state.DisplayVespers
-            ? GlobalViewFunctions.trim(this.props.mass.Vespers.Gospel.Gospel)
-            : GlobalViewFunctions.trim(this.props.mass.Today.Gospel.Gospel)}
+            ? GlobalViewFunctions.trim(this.props.mass.vespers.gospel.gospel)
+            : GlobalViewFunctions.trim(this.props.mass.today.gospel.gospel)}
         </Text>
       </View>
     );

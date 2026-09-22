@@ -9,18 +9,18 @@ import {
 } from '../../src/view-models/dayCard';
 
 const day = (overrides: Partial<DayInput> = {}): DayInput => ({
-  Date: new Date(2026, 8, 22),
-  CelebrationType: '-',
-  LiturgyColor: 'V',
-  GenericLiturgyTime: 'Ordinari',
-  SpecificLiturgyTime: 'O_ORDINAR',
-  Week: '25',
-  WeekCycle: '1',
-  YearType: 'A',
+  date: new Date(2026, 8, 22),
+  celebrationType: '-',
+  liturgyColor: 'V',
+  genericLiturgyTime: 'Ordinari',
+  specificLiturgyTime: 'O_ORDINAR',
+  week: '25',
+  weekCycle: '1',
+  yearType: 'A',
   ...overrides,
 });
-const barcelona = { DioceseName: 'Barcelona', PrayingPlace: 'Diòcesi', OptionalFestivityEnabled: false };
-const noCelebration = { Title: '', Description: '-' };
+const barcelona = { dioceseName: 'Barcelona', prayingPlace: 'Diòcesi', optionalFestivityEnabled: false };
+const noCelebration = { title: '', description: '-' };
 
 describe('targeta del dia', () => {
   test('una fèria: el dia de la setmana fa de títol i el temps va a la línia de sota', () => {
@@ -41,8 +41,8 @@ describe('targeta del dia', () => {
 
   test('una festa: tipus, títol del sant i la setmana a la línia de sota', () => {
     const card = buildDayCard(
-      day({ Date: new Date(2026, 8, 21), CelebrationType: 'F', LiturgyColor: 'R' }),
-      { Title: 'Sant Mateu, apòstol i evangelista', Description: 'Era cobrador d’impostos…' },
+      day({ date: new Date(2026, 8, 21), celebrationType: 'F', liturgyColor: 'R' }),
+      { title: 'Sant Mateu, apòstol i evangelista', description: 'Era cobrador d’impostos…' },
       barcelona,
     );
     expect(card.typeLabel).toBe('Festa');
@@ -56,14 +56,14 @@ describe('targeta del dia', () => {
   test('una solemnitat del temps diu el temps, no la setmana', () => {
     const card = buildDayCard(
       day({
-        Date: new Date(2026, 3, 5),
-        CelebrationType: 'S',
-        LiturgyColor: 'B',
-        GenericLiturgyTime: 'Pasqua',
-        SpecificLiturgyTime: 'Q_DIUM_PASQUA',
-        Week: '1',
+        date: new Date(2026, 3, 5),
+        celebrationType: 'S',
+        liturgyColor: 'B',
+        genericLiturgyTime: 'Pasqua',
+        specificLiturgyTime: 'Q_DIUM_PASQUA',
+        week: '1',
       }),
-      { Title: 'Diumenge de Pasqua', Description: '' },
+      { title: 'Diumenge de Pasqua', description: '' },
       barcelona,
     );
     expect(card.typeLabel).toBe('Solemnitat');
@@ -74,14 +74,14 @@ describe('targeta del dia', () => {
   test('un dia propi del temps amb títol (Rams) no porta tipus i diu el temps', () => {
     const card = buildDayCard(
       day({
-        Date: new Date(2026, 2, 29),
-        LiturgyColor: 'R',
-        GenericLiturgyTime: 'Quaresma',
-        SpecificLiturgyTime: 'Q_DIUM_RAMS',
-        Week: '6',
-        WeekCycle: '2',
+        date: new Date(2026, 2, 29),
+        liturgyColor: 'R',
+        genericLiturgyTime: 'Quaresma',
+        specificLiturgyTime: 'Q_DIUM_RAMS',
+        week: '6',
+        weekCycle: '2',
       }),
-      { Title: 'Diumenge de Rams', Description: '-' },
+      { title: 'Diumenge de Rams', description: '-' },
       barcelona,
     );
     expect(card.typeLabel).toBeNull();
@@ -91,8 +91,8 @@ describe('targeta del dia', () => {
 
   test('memòria lliure sense celebrar: en gris, amb l’interruptor apagat', () => {
     const card = buildDayCard(
-      day({ Date: new Date(2026, 8, 26), CelebrationType: 'L' }),
-      { Title: 'Sants Cosme i Damià, màrtirs', Description: 'Per memòries…' },
+      day({ date: new Date(2026, 8, 26), celebrationType: 'L' }),
+      { title: 'Sants Cosme i Damià, màrtirs', description: 'Per memòries…' },
       barcelona,
     );
     expect(card.typeLabel).toBe('Memòria lliure');
@@ -103,9 +103,9 @@ describe('targeta del dia', () => {
 
   test('memòria lliure celebrada', () => {
     const card = buildDayCard(
-      day({ CelebrationType: 'V' }),
-      { Title: 'Memòria de Santa Maria en dissabte', Description: '-' },
-      { ...barcelona, OptionalFestivityEnabled: true },
+      day({ celebrationType: 'V' }),
+      { title: 'Memòria de Santa Maria en dissabte', description: '-' },
+      { ...barcelona, optionalFestivityEnabled: true },
     );
     expect(card.muted).toBe(false);
     expect(card.optionalMemory).toEqual({ enabled: true, caption: 'Avui es resa la memòria.' });
@@ -121,53 +121,53 @@ describe('targeta del dia', () => {
   test('sense setmana (Tridu), el títol és el del dia i la línia diu el temps', () => {
     const card = buildDayCard(
       day({
-        Date: new Date(2026, 3, 4),
-        LiturgyColor: 'M',
-        GenericLiturgyTime: 'Tridu Pasqual',
-        SpecificLiturgyTime: 'Q_TRIDU',
-        Week: '0',
-        WeekCycle: '2',
+        date: new Date(2026, 3, 4),
+        liturgyColor: 'M',
+        genericLiturgyTime: 'Tridu Pasqual',
+        specificLiturgyTime: 'Q_TRIDU',
+        week: '0',
+        weekCycle: '2',
       }),
-      { Title: 'Dissabte Sant', Description: '-' },
+      { title: 'Dissabte Sant', description: '-' },
       barcelona,
     );
     expect(card.meta).toBe('Tridu Pasqual · Any A · Setmana II del salteri');
   });
 
   test('la setmana d’una celebració: sola durant l’any, amb el temps a la resta', () => {
-    expect(weekOfSeason(day({ Week: '25' }))).toBe('Setmana XXV');
-    expect(weekOfSeason(day({ Week: '3', GenericLiturgyTime: 'Quaresma' }))).toBe('Setmana III de Quaresma');
-    expect(weekOfSeason(day({ Week: '1', GenericLiturgyTime: 'Advent' }))).toBe('Setmana I d’Advent');
-    expect(weekOfSeason(day({ Week: '2', GenericLiturgyTime: 'Pasqua' }))).toBe('Setmana II de Pasqua');
-    expect(weekOfSeason(day({ Date: new Date(2026, 1, 19), SpecificLiturgyTime: 'Q_CENDRA', Week: '0' }))).toBe(
+    expect(weekOfSeason(day({ week: '25' }))).toBe('Setmana XXV');
+    expect(weekOfSeason(day({ week: '3', genericLiturgyTime: 'Quaresma' }))).toBe('Setmana III de Quaresma');
+    expect(weekOfSeason(day({ week: '1', genericLiturgyTime: 'Advent' }))).toBe('Setmana I d’Advent');
+    expect(weekOfSeason(day({ week: '2', genericLiturgyTime: 'Pasqua' }))).toBe('Setmana II de Pasqua');
+    expect(weekOfSeason(day({ date: new Date(2026, 1, 19), specificLiturgyTime: 'Q_CENDRA', week: '0' }))).toBe(
       'Dijous després de Cendra',
     );
     const lent = buildDayCard(
       day({
-        Date: new Date(2026, 2, 7),
-        CelebrationType: 'M',
-        GenericLiturgyTime: 'Quaresma',
-        Week: '2',
-        WeekCycle: '2',
+        date: new Date(2026, 2, 7),
+        celebrationType: 'M',
+        genericLiturgyTime: 'Quaresma',
+        week: '2',
+        weekCycle: '2',
       }),
-      { Title: 'Santes Perpètua i Felicitat, màrtirs', Description: '-' },
+      { title: 'Santes Perpètua i Felicitat, màrtirs', description: '-' },
       barcelona,
     );
     expect(lent.meta).toBe('Setmana II de Quaresma · Any A · Setmana II del salteri');
   });
 
   test('els dies després de Cendra', () => {
-    expect(weekText(day({ Date: new Date(2026, 1, 18), SpecificLiturgyTime: 'Q_CENDRA', Week: '0' }))).toBe(
+    expect(weekText(day({ date: new Date(2026, 1, 18), specificLiturgyTime: 'Q_CENDRA', week: '0' }))).toBe(
       'Dimecres de Cendra',
     );
-    expect(weekText(day({ Date: new Date(2026, 1, 20), SpecificLiturgyTime: 'Q_CENDRA', Week: '0' }))).toBe(
+    expect(weekText(day({ date: new Date(2026, 1, 20), specificLiturgyTime: 'Q_CENDRA', week: '0' }))).toBe(
       'Divendres després de Cendra',
     );
-    expect(weekText(day({ Week: '.', SpecificLiturgyTime: 'O_ORDINAR' }))).toBeNull();
+    expect(weekText(day({ week: '.', specificLiturgyTime: 'O_ORDINAR' }))).toBeNull();
   });
 
   test('sense setmana ni títol, el títol és el temps', () => {
-    const card = buildDayCard(day({ Week: '0', WeekCycle: '0' }), noCelebration, barcelona);
+    const card = buildDayCard(day({ week: '0', weekCycle: '0' }), noCelebration, barcelona);
     expect(card.title).toBe("Durant l'any");
     expect(card.meta).toBe('');
   });
