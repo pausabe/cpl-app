@@ -87,11 +87,16 @@ export async function ObtainMinimumAndMaximumSelectableDates(): Promise<{
   MinimumSelectableDate: Date;
   MaximumSelectableDate: Date;
 }> {
-  const query = `SELECT MIN(CAST(any As INTEGER)) as minAny, (SELECT MIN(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT)) as minMes, (SELECT MIN(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MIN(CAST(anyliturgic2.mes As INTEGER)) as TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MIN(CAST(anyliturgic.any As INTEGER)) as TEXT))) as minDia, MAX(any) as maxAny, (SELECT MAX(CAST(anyliturgic2.mes As INTEGER)) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any as INTEGER)) As TEXT)) as maxMes, (SELECT MAX(CAST(anyliturgic3.dia As INTEGER)) FROM anyliturgic anyliturgic3 WHERE anyliturgic3.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT) AND anyliturgic3.mes = (SELECT CAST(MAX(CAST(anyliturgic2.mes as INTEGER)) As TEXT) FROM anyliturgic anyliturgic2 WHERE anyliturgic2.any = CAST(MAX(CAST(anyliturgic.any As INTEGER)) As TEXT))) as maxDia FROM anyliturgic`;
-  const result = await executeQueryAsync(query);
+  // The first and the last day in anyliturgic, which keeps the dates as text. One pass over
+  // the table each: the query this replaced, with correlated subqueries, took most of the
+  // time of every reload.
+  const dayQuery = (order: string) =>
+    `SELECT CAST(any AS INTEGER) AS year, CAST(mes AS INTEGER) AS month, CAST(dia AS INTEGER) AS day FROM anyliturgic ORDER BY year ${order}, month ${order}, day ${order} LIMIT 1`;
+  const [first] = await executeQueryAsync(dayQuery('ASC'));
+  const [last] = await executeQueryAsync(dayQuery('DESC'));
   const marginDays = 2;
-  const minDate = new Date(result[0].minAny, result[0].minMes - 1, result[0].minDia + marginDays);
-  const maxDate = new Date(result[0].maxAny, result[0].maxMes - 1, result[0].maxDia - marginDays);
+  const minDate = new Date(first.year, first.month - 1, first.day + marginDays);
+  const maxDate = new Date(last.year, last.month - 1, last.day - marginDays);
   return {
     MinimumSelectableDate: minDate,
     MaximumSelectableDate: maxDate,
