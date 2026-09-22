@@ -59,7 +59,13 @@ test('el mateix tema dona els mateixos estils (no es recalculen a cada render)',
 
 test('React Navigation pren els colors del tema', () => {
   const nav = navigationTheme(createTheme({dark: true}));
-  expect(nav.dark).toBe(true);
   expect(nav.colors).toMatchObject({primary: '#1F7F7B', background: '#0E1413', card: '#006064', text: '#E6ECEB'});
-  expect(navigationTheme(createTheme()).dark).toBe(false);
+  expect(navigationTheme(createTheme()).colors).toMatchObject({primary: '#007B80', background: '#E7F2F1', card: '#006064'});
+});
+
+test('per a React Navigation el tema és fosc als dos modes: la barra de dalt és verd fosc', () => {
+  // The native stack draws the top bar of iOS with it: in light mode, iOS 26 made the glass
+  // of its buttons whitish and the back arrow black
+  expect(navigationTheme(createTheme()).dark).toBe(true);
+  expect(navigationTheme(createTheme({dark: true})).dark).toBe(true);
 });

@@ -45,7 +45,7 @@ export default function HomeScreen(props: HomeScreenProps) {
     return (
         <View testID="home" style={[styles.screen, {backgroundColor: theme.colors.homeBackground}]}>
             <ScrollView contentContainerStyle={[styles.scroll, {paddingBottom: footerHeight}]} automaticallyAdjustContentInsets={false}>
-                <View style={[styles.column, {maxWidth: theme.layout.homeMaxWidth}]}>
+                <View testID="home-column" style={[styles.column, {maxWidth: theme.layout.homeMaxWidth}]}>
                     <DayCard
                         day={props.day}
                         onOptionalMemoryChange={props.onOptionalMemoryChange}
@@ -72,6 +72,9 @@ export default function HomeScreen(props: HomeScreenProps) {
 const FADE_HEIGHT = 28;
 // Between the card of the day, the hours and the Mass: more than inside each of them
 const SECTION_GAP = 30;
+// Between the top bar and the card of the day: more than at the sides, less than between them
+const TOP_GAP = 24;
+const SIDE_GAP = 16;
 
 const styles = StyleSheet.create({
     screen: {
@@ -84,8 +87,8 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         width: '100%',
         alignSelf: 'center',
-        paddingTop: 14,
-        paddingHorizontal: 16,
+        paddingTop: TOP_GAP,
+        paddingHorizontal: SIDE_GAP,
         gap: SECTION_GAP,
     },
     spacer: {

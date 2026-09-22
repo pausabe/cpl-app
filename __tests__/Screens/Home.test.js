@@ -224,6 +224,22 @@ test('amb el mode fosc activat, l’inici també és fosc', async () => {
   expect(styleOf(screen.getByTestId('home')).backgroundColor).toBe('#0E1413');
 });
 
+test('entre la barra de dalt i la targeta del dia hi ha aire: més que als costats, menys que entre seccions', async () => {
+  await openAt(new Date(2026, 8, 21, 10, 0));
+  const column = styleOf(screen.getByTestId('home-column'));
+  expect(column.paddingTop).toBeGreaterThan(column.paddingHorizontal);
+  expect(column.paddingTop).toBeLessThan(column.gap);
+});
+
+// The top bar is dark teal in both modes: on iOS it is drawn dark. Drawn light, iOS 26 made the
+// capsules of glass of its buttons whitish and the back arrow black.
+test.each([['clar', 'Desactivat'], ['fosc', 'Activat']])('en mode %s, la barra de dalt es dibuixa fosca', async (_, darkMode) => {
+  await openAt(new Date(2026, 8, 21, 10, 0), { darkMode });
+  const bars = screen.root.findAll((node) => node.props.userInterfaceStyle !== undefined, { deep: true });
+  expect(bars.length).toBeGreaterThan(0);
+  for (const bar of bars) expect(bar.props.userInterfaceStyle).toBe('dark');
+});
+
 test('qui ve de la versió anterior veu l’avís de novetats, i només la primera vegada', async () => {
   jest.setSystemTime(new Date(2026, 8, 21, 10, 0));
   await AsyncStorage.clear();
