@@ -46,3 +46,15 @@ export const uiText = {
 // Labels on buttons and tiles grow with the system font only up to here, so that the grid of
 // the hours does not fall apart. The prayer text has no limit.
 export const MAX_FONT_SCALE_FOR_LABELS = 1.5;
+
+// Props for a label in a box of fixed width (an hour, a segment, a reading, a dialog button):
+// it gets a little smaller before it breaks a word in two. On a phone 320 px wide "Laudes" came
+// out as "Lau / des" and "Automàtic" as "Automàti / c". A word takes one line; "Primera lectura"
+// can take two.
+export function fitLabel(label: string) {
+    return {
+        numberOfLines: label.includes(' ') ? 2 : 1,
+        adjustsFontSizeToFit: true,
+        minimumFontScale: 0.7,
+    } as const;
+}

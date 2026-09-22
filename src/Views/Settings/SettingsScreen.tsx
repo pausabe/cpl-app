@@ -87,92 +87,94 @@ export default function SettingsScreen(props: SettingsScreenProps) {
 
     return (
         <SafeAreaView edges={['bottom']} style={[styles.screen, {backgroundColor: colors.settingsBackground}]}>
-            <ScrollView contentContainerStyle={styles.content}>
-                {values ? (
-                    <View style={styles.groups}>
-                        {groupLabel('Lectura', true)}
-                        <Card radius={theme.radius.tile}>
-                            <View style={styles.block}>
-                                <Text style={[styles.rowLabel, {color: colors.text}]}>Mida del text</Text>
-                                <View style={styles.sliderRow}>
-                                    <Text style={[styles.sliderA, {color: colors.text2}]}>A</Text>
-                                    <Slider
-                                        testID="text-size-slider"
-                                        accessibilityLabel="Mida del text"
-                                        accessibilityValue={{text: `Mida ${step} de ${MAX_TEXT_SIZE_SETTING}`}}
-                                        style={styles.slider}
-                                        minimumValue={MIN_TEXT_SIZE_SETTING}
-                                        maximumValue={MAX_TEXT_SIZE_SETTING}
-                                        step={1}
-                                        value={values.textSizeStep}
-                                        minimumTrackTintColor={colors.accentFill}
-                                        maximumTrackTintColor={colors.track}
-                                        thumbTintColor={colors.accentFill}
-                                        onValueChange={(value) => setPreviewStep(Math.round(value))}
-                                        onSlidingComplete={(value) => props.onTextSizeChange(Math.round(value))}/>
-                                    <Text style={[styles.sliderABig, {color: colors.text2}]}>A</Text>
+            <ScrollView>
+                <View testID="settings-column" style={[styles.content, {maxWidth: theme.layout.homeMaxWidth}]}>
+                    {values ? (
+                        <View style={styles.groups}>
+                            {groupLabel('Lectura', true)}
+                            <Card radius={theme.radius.tile}>
+                                <View style={styles.block}>
+                                    <Text style={[styles.rowLabel, {color: colors.text}]}>Mida del text</Text>
+                                    <View style={styles.sliderRow}>
+                                        <Text style={[styles.sliderA, {color: colors.text2}]}>A</Text>
+                                        <Slider
+                                            testID="text-size-slider"
+                                            accessibilityLabel="Mida del text"
+                                            accessibilityValue={{text: `Mida ${step} de ${MAX_TEXT_SIZE_SETTING}`}}
+                                            style={styles.slider}
+                                            minimumValue={MIN_TEXT_SIZE_SETTING}
+                                            maximumValue={MAX_TEXT_SIZE_SETTING}
+                                            step={1}
+                                            value={values.textSizeStep}
+                                            minimumTrackTintColor={colors.accentFill}
+                                            maximumTrackTintColor={colors.track}
+                                            thumbTintColor={colors.accentFill}
+                                            onValueChange={(value) => setPreviewStep(Math.round(value))}
+                                            onSlidingComplete={(value) => props.onTextSizeChange(Math.round(value))}/>
+                                        <Text style={[styles.sliderABig, {color: colors.text2}]}>A</Text>
+                                    </View>
+                                    <View style={[styles.preview, {backgroundColor: colors.preview}]}>
+                                        <Text
+                                            testID="text-size-preview"
+                                            style={{fontSize: convertTextSize(step), lineHeight: Math.round(convertTextSize(step) * 1.35), color: colors.text}}>
+                                            <Text style={{color: colors.rubric}}>V.</Text>
+                                            {' Obriu-me els llavis, Senyor.'}
+                                        </Text>
+                                    </View>
                                 </View>
-                                <View style={[styles.preview, {backgroundColor: colors.preview}]}>
-                                    <Text
-                                        testID="text-size-preview"
-                                        style={{fontSize: convertTextSize(step), lineHeight: Math.round(convertTextSize(step) * 1.35), color: colors.text}}>
-                                        <Text style={{color: colors.rubric}}>V.</Text>
-                                        {' Obriu-me els llavis, Senyor.'}
-                                    </Text>
+                                {divider}
+                                <View style={styles.block}>
+                                    <Text style={[styles.rowLabel, {color: colors.text}]}>Mode fosc</Text>
+                                    <SegmentedControl
+                                        accessibilityLabel="Mode fosc"
+                                        segments={DARK_MODE_SEGMENTS}
+                                        value={values.darkMode}
+                                        onChange={props.onDarkModeChange}/>
                                 </View>
-                            </View>
-                            {divider}
-                            <View style={styles.block}>
-                                <Text style={[styles.rowLabel, {color: colors.text}]}>Mode fosc</Text>
-                                <SegmentedControl
-                                    accessibilityLabel="Mode fosc"
-                                    segments={DARK_MODE_SEGMENTS}
-                                    value={values.darkMode}
-                                    onChange={props.onDarkModeChange}/>
-                            </View>
-                            {divider}
-                            <SwitchRow
-                                label="Himnes en llatí"
-                                labelSize={17}
-                                value={values.useLatin}
-                                onValueChange={props.onLatinChange}
-                                style={styles.switchRow}/>
-                        </Card>
+                                {divider}
+                                <SwitchRow
+                                    label="Himnes en llatí"
+                                    labelSize={17}
+                                    value={values.useLatin}
+                                    onValueChange={props.onLatinChange}
+                                    style={styles.switchRow}/>
+                            </Card>
 
-                        {groupLabel('Calendari')}
-                        <Card radius={theme.radius.tile}>
-                            {pickerRow('Diòcesi', values.diocese, () => setSheet('diocese'))}
-                            {divider}
-                            {pickerRow('Lloc', values.place, () => setSheet('place'),
-                                'Algunes celebracions canvien segons on reses, com la dedicació de la catedral.')}
-                        </Card>
+                            {groupLabel('Calendari')}
+                            <Card radius={theme.radius.tile}>
+                                {pickerRow('Diòcesi', values.diocese, () => setSheet('diocese'))}
+                                {divider}
+                                {pickerRow('Lloc', values.place, () => setSheet('place'),
+                                    'Algunes celebracions canvien segons on reses, com la dedicació de la catedral.')}
+                            </Card>
 
-                        {groupLabel('Missa')}
-                        <Card radius={theme.radius.tile}>
-                            <SwitchRow
-                                label="Vídeo de llengua de signes a l’Evangeli"
-                                labelSize={17}
-                                value={values.showVideos}
-                                onValueChange={props.onShowVideosChange}
-                                style={[styles.switchRow, styles.tallSwitchRow]}/>
-                        </Card>
-                    </View>
-                ) : null}
-
-                <View style={styles.footer}>
-                    <Text onPress={() => setTouches(touches + 1)} style={[styles.footerText, {color: colors.text3}]}>{APPROVAL}</Text>
-                    <Text style={[styles.footerText, {color: colors.text3}]}>
-                        {`Versió de l'aplicació: ${info.appVersion}\nVersió de la base de dades: ${info.databaseVersion}`}
-                    </Text>
-                    <UpdateStatus/>
-                    {technicalVisible ? (
-                        <View testID="technical-data">
-                            {info.technical.map((line) => (
-                                <Text key={line} selectable={true} style={[styles.footerText, {color: colors.text3}]}>{line}</Text>
-                            ))}
-                            <Text selectable={true} style={[styles.logs, {color: colors.text3}]}>{'Logs: \n'}{info.logs}</Text>
+                            {groupLabel('Missa')}
+                            <Card radius={theme.radius.tile}>
+                                <SwitchRow
+                                    label="Vídeo de llengua de signes a l’Evangeli"
+                                    labelSize={17}
+                                    value={values.showVideos}
+                                    onValueChange={props.onShowVideosChange}
+                                    style={[styles.switchRow, styles.tallSwitchRow]}/>
+                            </Card>
                         </View>
                     ) : null}
+
+                    <View style={styles.footer}>
+                        <Text onPress={() => setTouches(touches + 1)} style={[styles.footerText, {color: colors.text3}]}>{APPROVAL}</Text>
+                        <Text style={[styles.footerText, {color: colors.text3}]}>
+                            {`Versió de l'aplicació: ${info.appVersion}\nVersió de la base de dades: ${info.databaseVersion}`}
+                        </Text>
+                        <UpdateStatus/>
+                        {technicalVisible ? (
+                            <View testID="technical-data">
+                                {info.technical.map((line) => (
+                                    <Text key={line} selectable={true} style={[styles.footerText, {color: colors.text3}]}>{line}</Text>
+                                ))}
+                                <Text selectable={true} style={[styles.logs, {color: colors.text3}]}>{'Logs: \n'}{info.logs}</Text>
+                            </View>
+                        ) : null}
+                    </View>
                 </View>
             </ScrollView>
 
@@ -208,7 +210,10 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
     },
+    // As wide as the home at most, so that on a tablet the two screens line up
     content: {
+        width: '100%',
+        alignSelf: 'center',
         paddingTop: 14,
         paddingHorizontal: 16,
         paddingBottom: 24,

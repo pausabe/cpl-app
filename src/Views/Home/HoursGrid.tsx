@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {useTheme} from '../../Theme';
+import {fitLabel, useTheme} from '../../Theme';
 import HourIcon from '../../Components/HourIcon';
 import {HourTile} from '../../ViewModels/Hours';
 import SectionLabel from './SectionLabel';
@@ -60,13 +60,21 @@ function Tile({tile, compact, onOpen}: {tile: HourTile; compact: boolean; onOpen
                 },
             ]}>
             <HourIcon hour={tile.key} color={now ? colors.onAccent : colors.accentText}/>
-            <View style={compact ? null : styles.labels}>
-                <Text
-                    maxFontSizeMultiplier={scale}
-                    numberOfLines={2}
-                    style={[styles.label, {color: foreground, fontWeight: now ? '700' : '500'}]}>
-                    {tile.label}
-                </Text>
+            <View style={compact ? styles.compactLabels : styles.labels}>
+                {/* The badge goes under the name when both don't fit on one line */}
+                <View testID={`hour-${tile.key}-title`} style={styles.titleLine}>
+                    <Text
+                        maxFontSizeMultiplier={scale}
+                        {...fitLabel(tile.label)}
+                        style={[styles.label, {color: foreground, fontWeight: now ? '700' : '500'}]}>
+                        {tile.label}
+                    </Text>
+                    {now && !compact ? (
+                        <View testID="hour-now-badge" style={styles.badge}>
+                            <Text maxFontSizeMultiplier={scale} style={[styles.badgeText, {color: colors.accentFill}]}>Ara</Text>
+                        </View>
+                    ) : null}
+                </View>
                 {tile.subtitle ? (
                     <Text
                         maxFontSizeMultiplier={scale}
@@ -76,11 +84,6 @@ function Tile({tile, compact, onOpen}: {tile: HourTile; compact: boolean; onOpen
                     </Text>
                 ) : null}
             </View>
-            {now && !compact ? (
-                <View style={styles.badge}>
-                    <Text maxFontSizeMultiplier={scale} style={[styles.badgeText, {color: colors.accentFill}]}>Ara</Text>
-                </View>
-            ) : null}
         </Pressable>
     );
 }
@@ -122,6 +125,18 @@ const styles = StyleSheet.create({
     labels: {
         flex: 1,
         minWidth: 0,
+    },
+    compactLabels: {
+        flexShrink: 1,
+        minWidth: 0,
+    },
+    titleLine: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        columnGap: 8,
+        rowGap: 3,
     },
     label: {
         fontSize: 16.5,

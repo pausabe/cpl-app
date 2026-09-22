@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {useTheme} from '../../Theme';
+import {fitLabel, useTheme} from '../../Theme';
 import Dialog from '../../Components/Dialog';
 import Icon from '../../Components/Icon';
 import {calendarMonth, CalendarDay, shiftMonth, WEEKDAY_INITIALS} from '../../ViewModels/Calendar';
@@ -80,7 +80,10 @@ export default function CalendarDialog({visible, value, minimumDate, maximumDate
             accessibilityRole="button"
             onPress={onPress}
             style={({pressed}) => [styles.action, {opacity: pressed ? 0.6 : 1}]}>
-            <Text maxFontSizeMultiplier={scale} style={[styles.actionText, {color: colors.accentText, fontWeight: bold ? '700' : '400'}]}>
+            <Text
+                maxFontSizeMultiplier={scale}
+                {...fitLabel(label)}
+                style={[styles.actionText, {color: colors.accentText, fontWeight: bold ? '700' : '400'}]}>
                 {label}
             </Text>
         </Pressable>

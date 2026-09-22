@@ -83,11 +83,13 @@ test('una fèria: el dia de la setmana fa de títol, sense «Llegeix-ne més»',
   expect(tile('Tèrcia').props.accessibilityValue).toEqual({ text: 'Ara' });
 });
 
-test('diumenge: quatre lectures', async () => {
+test('diumenge: quatre lectures, que en un mòbil estret es fan petites abans de partir una paraula', async () => {
   await openAt(new Date(2026, 8, 27, 12, 0));
   for (const reading of ['Primera lectura', 'Salm', 'Segona lectura', 'Evangeli']) {
     expect(screen.getByRole('button', { name: reading })).toBeTruthy();
   }
+  expect(screen.getByText('Primera lectura').props).toMatchObject({ numberOfLines: 2, adjustsFontSizeToFit: true });
+  expect(screen.getByText('Evangeli').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
 });
 
 test('memòria lliure: l’interruptor la fa celebrar, i es recorda per al dia', async () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {useTheme} from '../Theme';
+import {fitLabel, useTheme} from '../Theme';
 
 // Two or three options side by side, one of them chosen: "Avui | Vespertina", the dark mode.
 export interface Segment<T extends string> {
@@ -44,7 +44,10 @@ export default function SegmentedControl<T extends string>({segments, value, onC
                             index > 0 ? {borderLeftWidth: 1, borderLeftColor: colors.border} : null,
                             selected ? {backgroundColor: colors.accentFill} : null,
                         ]}>
-                        <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.label, {color}]}>{segment.label}</Text>
+                        <Text
+                            maxFontSizeMultiplier={theme.maxFontScaleForLabels}
+                            {...fitLabel(segment.label)}
+                            style={[styles.label, {color}]}>{segment.label}</Text>
                         {segment.sublabel ? (
                             <Text
                                 maxFontSizeMultiplier={theme.maxFontScaleForLabels}

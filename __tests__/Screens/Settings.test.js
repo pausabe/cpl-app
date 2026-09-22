@@ -41,6 +41,11 @@ test('tres grups amb les sis opcions de sempre, i els valors guardats', async ()
   await waitFor(() => expect(screen.getByRole('radio', { name: 'Automàtic' }).props.accessibilityState.checked).toBe(true));
 });
 
+test('en una tauleta, una columna al mig tan ampla com la de l’inici', async () => {
+  await open();
+  expect(styleOf(screen.getByTestId('settings-column'))).toMatchObject({ width: '100%', maxWidth: 560, alignSelf: 'center' });
+});
+
 test('la diòcesi es tria en un full; es desa i la litúrgia es recarrega amb ella', async () => {
   await open();
   fireEvent.press(screen.getByRole('button', { name: 'Diòcesi: Barcelona' }));
