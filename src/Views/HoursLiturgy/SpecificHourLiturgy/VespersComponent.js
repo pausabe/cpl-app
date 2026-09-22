@@ -280,19 +280,20 @@ export default class VespersComponent extends Component {
             return (<Text selectable={true} style={this.styles.black}>{"-"}</Text>);
 
         allPregs = this.convertN(allPregs, this.hours.ConcreteNamesInPrayers.Pope, this.hours.ConcreteNamesInPrayers.Bishop);
+        let numGuio, numEnter, introPregs, pregsNoIntro, respPregs, pregaries, pregsFinalPart;
 
-        if(allPregs.match(/—/g, "")) var numGuio = allPregs.match(/—/g, "").length;
+        if(allPregs.match(/—/g, "")) numGuio = allPregs.match(/—/g, "").length;
         else return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
-        if(allPregs.match(/\n/g, "")) var numEnter = allPregs.match(/\n/g, "").length;
+        if(allPregs.match(/\n/g, "")) numEnter = allPregs.match(/\n/g, "").length;
         else return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
 
         if(numEnter !== numGuio*3+3){//every prayer have 3 spaces and intro have 3 more
             return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
         }
         else{
-            var introPregs = allPregs.split(":")[0];
+            introPregs = allPregs.split(":")[0];
             if(allPregs.search(introPregs+':') !== -1){
-                var pregsNoIntro = allPregs.replace(introPregs+':','');
+                pregsNoIntro = allPregs.replace(introPregs+':','');
                 if(pregsNoIntro !== ''){
                     while(pregsNoIntro.charAt(0) === '\n' || pregsNoIntro.charAt(0) === ' '){
                         pregsNoIntro = pregsNoIntro.substring(1,pregsNoIntro.length);
@@ -304,9 +305,9 @@ export default class VespersComponent extends Component {
                 return(<Text selectable={true} style={this.styles.black}>{allPregs}</Text>);
             }
 
-            var respPregs = pregsNoIntro.split("\n")[0];
+            respPregs = pregsNoIntro.split("\n")[0];
             if(pregsNoIntro.search(respPregs+'\n\n') !== -1){
-                var pregaries = pregsNoIntro.replace(respPregs+'\n\n','');
+                pregaries = pregsNoIntro.replace(respPregs+'\n\n','');
             }
             else{
                 Logger.Log(Logger.LogKeys.Screens, "pregaries", "InfoLog. something incorrect. Pregaries 2");
@@ -326,7 +327,7 @@ export default class VespersComponent extends Component {
                 }
             }
 
-            var pregsFinalPart = (pregaries.split("—")[numGuio-1]).split(".\n\n")[1]+'—'+pregaries.split("—")[numGuio];
+            pregsFinalPart = (pregaries.split("—")[numGuio-1]).split(".\n\n")[1]+'—'+pregaries.split("—")[numGuio];
             if(pregaries.search('\n\n'+pregsFinalPart) !== -1){
                 pregaries = pregaries.replace('\n\n'+pregsFinalPart,'');
             }

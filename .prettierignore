@@ -1,0 +1,5 @@
+# Prettier només formata el codi (JS i TS): els textos, els fluxos de Maestro i les dades, no
+*.md
+*.yaml
+*.json
+migration-to-saints/

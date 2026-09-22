@@ -353,10 +353,10 @@ export default class MassLiturgyPrayerScreen extends Component {
     }
 
     Render_Evangeli() {
-        var displayCredo = (this.state.DisplayVespers &&
+        let displayCredo = (this.state.DisplayVespers &&
             this.props.mass.Vespers.HasCreed ||
             (!this.state.DisplayVespers && this.props.mass.Today.HasCreed));
-        var aleluia_quote = (this.state.DisplayVespers ? this.props.mass.Vespers.Hallelujah.Quote !== '-'? this.props.mass.Vespers.Hallelujah.Quote : "" : this.props.mass.Today.Hallelujah.Quote !== '-'? this.props.mass.Today.Hallelujah.Quote : "")
+        let aleluia_quote = (this.state.DisplayVespers ? this.props.mass.Vespers.Hallelujah.Quote !== '-'? this.props.mass.Vespers.Hallelujah.Quote : "" : this.props.mass.Today.Hallelujah.Quote !== '-'? this.props.mass.Today.Hallelujah.Quote : "")
         const videoUrl = this.state.DisplayVespers ? this.props.mass.Vespers.videoUrl : this.props.mass.Today.videoUrl;
         
         return (

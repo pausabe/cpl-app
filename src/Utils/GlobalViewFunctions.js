@@ -9,19 +9,19 @@ let GlobalViewFunctions = {
   completeOracio(oracio, horaMenor){
     if(!oracio) return "";
 
-    var form1 = "Per nostre Senyor Jesucrist";
-    var form7 = "Que amb vós viu i regna";
-    var bigf1 = "Per nostre Senyor Jesucrist, el vostre Fill, que amb vós viu i regna en la unitat de l'Esperit Sant, Déu, pels segles dels segles";
-    var HMf1 = "Per Crist Senyor nostre";
-    var form6 = "Vós, que viviu i regneu";
-    var form2 = "Vós, que viviu i regneu pels segles dels segles";
-    var bigf2 = "Vós, que viviu i regneu amb Déu Pare en la unitat de l'Esperit Sant, Déu, pels segles dels segles";
-    var HMf2 = "Vós, que viviu i regneu pels segles dels segles";
-    var form3 = "Que viu i regna pels segles dels segles";
-    var form4 = "Ell, que viu i regna pels segles dels segles";
-    var form5 = "Ell, que amb vós viu i regna";
-    var bigf4 = "Ell, que amb vós viu i regna en la unitat de l'Esperit Sant, Déu, pels segles dels segles";
-    var HMf4 = "Ell, que viu i regna pels segles dels segles";
+    let form1 = "Per nostre Senyor Jesucrist";
+    let form7 = "Que amb vós viu i regna";
+    let bigf1 = "Per nostre Senyor Jesucrist, el vostre Fill, que amb vós viu i regna en la unitat de l'Esperit Sant, Déu, pels segles dels segles";
+    let HMf1 = "Per Crist Senyor nostre";
+    let form6 = "Vós, que viviu i regneu";
+    let form2 = "Vós, que viviu i regneu pels segles dels segles";
+    let bigf2 = "Vós, que viviu i regneu amb Déu Pare en la unitat de l'Esperit Sant, Déu, pels segles dels segles";
+    let HMf2 = "Vós, que viviu i regneu pels segles dels segles";
+    let form3 = "Que viu i regna pels segles dels segles";
+    let form4 = "Ell, que viu i regna pels segles dels segles";
+    let form5 = "Ell, que amb vós viu i regna";
+    let bigf4 = "Ell, que amb vós viu i regna en la unitat de l'Esperit Sant, Déu, pels segles dels segles";
+    let HMf4 = "Ell, que viu i regna pels segles dels segles";
 
     let oAux = oracio;
 
@@ -99,8 +99,8 @@ let GlobalViewFunctions = {
 
   rs(text){
     if(text){
-      var length = text.length;
-      var lastChar = text.charAt(length-1);
+      let length = text.length;
+      let lastChar = text.charAt(length-1);
       if(lastChar === ' ' || lastChar === '\n') return text.slice(0,length-1);
     }
     return text;
@@ -114,8 +114,8 @@ let GlobalViewFunctions = {
 
     try {
 
-      var length = text.length;
-      var lastChar = text.charAt(length-1);
+      let length = text.length;
+      let lastChar = text.charAt(length-1);
       if(lastChar === ' ' || lastChar === '\n') return text.slice(0,length-1);
       return text;
 
@@ -131,8 +131,8 @@ let GlobalViewFunctions = {
 
     if(r1 && r2){
       result = r1 + ' ' + r2
-      var lastCharacter = r1.charAt(r1.length-1);
-      var firstWord = r2.split(" ")[0];
+      let lastCharacter = r1.charAt(r1.length-1);
+      let firstWord = r2.split(" ")[0];
       firstWord=firstWord.replace(",", '');
       firstWord=firstWord.replace(".", '');
       firstWord=firstWord.replace(":", '');

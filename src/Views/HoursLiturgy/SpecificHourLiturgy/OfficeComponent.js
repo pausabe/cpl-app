@@ -58,9 +58,9 @@ export default class OfficeComponent extends Component {
     render() {
         try {
             if (this.today.SpecificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
-                var aux_vetlla = "La Vetlla pasqual substitueix avui l'Ofici de lectura.";
-                var aux_participen = "Els qui no participen en la solemne Vetlla pasqual n'escolliran almenys quatre lectures, amb els corresponents salms responsorials i oracions. Les lectures més adients són les que segueixen."
-                var aux_comença = "L'Ofici comença directament per les lectures.";
+                let aux_vetlla = "La Vetlla pasqual substitueix avui l'Ofici de lectura.";
+                let aux_participen = "Els qui no participen en la solemne Vetlla pasqual n'escolliran almenys quatre lectures, amb els corresponents salms responsorials i oracions. Les lectures més adients són les que segueixen."
+                let aux_comença = "L'Ofici comença directament per les lectures.";
 
                 return (
                     <View>

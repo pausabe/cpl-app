@@ -11,7 +11,7 @@ IOS_APP := ios/build/Build/Products/Release-iphonesimulator/CPL.app
 ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
 IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
 
-.PHONY: help start run-android run-ios run-web tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
+.PHONY: help start run-android run-ios run-web checks lint format tests tests-fast golden android-app ios-app ui-tests ui-tests-android ui-tests-ios
 
 help:
 	@echo "make run-android       Obre l'app en mode desenvolupament a l'emulador o mòbil Android"
@@ -19,7 +19,11 @@ help:
 	@echo "make run-web           Obre l'app en mode desenvolupament al navegador, sense emulador"
 	@echo "make start             Només el servidor de desenvolupament (Metro), si l'app ja hi és instal·lada"
 	@echo ""
-	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~1,5 min)"
+	@echo "make checks            Lint i tots els tests de Jest: el que passa el hook abans de cada push (~3 min)"
+	@echo "make lint              ESLint (la configuració d'Expo): només els errors aturen, els avisos no"
+	@echo "make format            Formata el codi (JS i TS) amb Prettier"
+	@echo ""
+	@echo "make tests             Tots els tests de Jest: litúrgia, app i serveis (~3 min)"
 	@echo "make tests-fast        Els mateixos sense els recorreguts llargs (litúrgia i text de les pantalles)"
 	@echo "make golden            Refà els goldens (litúrgia i text de les pantalles) amb aquesta versió (només si l'has revisat)"
 	@echo ""
@@ -47,6 +51,20 @@ run-ios:
 # selector de data del calendari ni el vídeo de YouTube de la Missa.
 run-web:
 	npx expo start --web
+
+# --- Comprovacions ---------------------------------------------------------------------------
+# make checks és el que corre el hook .githooks/pre-push abans de cada push. Els tests, amb
+# --ci i sense UPDATE_GOLDEN: així comparen amb els goldens en lloc de reescriure'ls.
+
+checks: lint
+	env -u UPDATE_GOLDEN npx jest --ci
+
+lint:
+	npx eslint .
+
+# Els textos, els fluxos de Maestro i les dades no hi entren (.prettierignore)
+format:
+	npx prettier . --write
 
 # --- Jest ------------------------------------------------------------------------------------
 
