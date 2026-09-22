@@ -34,6 +34,7 @@ export default function SwitchRow({label, caption, value, onValueChange, style, 
             <Switch
                 value={value}
                 onValueChange={onValueChange}
+                style={styles.switch}
                 trackColor={{true: colors.accentFill, false: colors.switchOff}}
                 thumbColor="#FFFFFF"
                 ios_backgroundColor={colors.switchOff}
@@ -58,5 +59,10 @@ const styles = StyleSheet.create({
     },
     caption: {
         fontSize: 13,
+    },
+    // React Native puts alignSelf: 'flex-start' on the iOS switch, which then sat at the top of
+    // the row instead of in the middle (Android does not do it)
+    switch: {
+        alignSelf: 'center',
     },
 });

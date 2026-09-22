@@ -154,6 +154,13 @@ describe('SwitchRow', () => {
     fireEvent.press(row);
     expect(onChange).toHaveBeenCalledWith(true);
   });
+
+  test('l’interruptor va al mig de la fila també a iOS, on React Native el posa a dalt', () => {
+    renderWithTheme(<SwitchRow label="Himnes en llatí" value={false} onValueChange={() => {}}/>);
+    const { Switch } = require('react-native');
+    const flat = styleOf(screen.UNSAFE_getByType(Switch).children[0]);
+    expect(flat.alignSelf).toBe('center');
+  });
 });
 
 test('Card: superfície amb vora', () => {
