@@ -1,9 +1,9 @@
 appId: cpl.cpl
-name: "Es pot canviar de dia amb el calendari"
+name: "The day can be changed with the calendar"
 ---
 - runFlow: subflows/obrir.yaml
 - tapOn: "Calendari"
-# El títol del mes obre la llista d'anys: l'any passat, al mateix mes
+# The title of the month opens the list of years: last year, in the same month
 - tapOn:
     id: "calendar-title"
 - assertVisible:
@@ -11,17 +11,17 @@ name: "Es pot canviar de dia amb el calendari"
 - tapOn:
     id: "calendar-year-${new Date().getFullYear() - 1}"
 - assertVisible: ".* de ${new Date().getFullYear() - 1}"
-# El calendari de l'app, igual a Android i a iOS: el dia 15 del mes que mostra, i «Canvia».
-# Cada dia és un botó «dimarts, 15 de setembre» amb el número a dins: a Android es toca el
-# número; a iOS, el botó.
+# The app's calendar, the same on Android and iOS: day 15 of the month it shows, and «Canvia».
+# Each day is a button «dimarts, 15 de setembre» with the number inside: on Android the number
+# is tapped; on iOS, the button.
 - tapOn: "15|[^ ]+, 15 d.+"
 - tapOn: "Canvia"
-# La data, en paraules a la targeta del dia
+# The date, in words on the day's card
 - extendedWaitUntil:
     visible: "Di[a-z]+, 15 d.+"
     timeout: 15000
 - takeScreenshot: 05-dia-15
-# I les hores d'aquell dia s'obren
+# And the hours of that day open
 - runFlow:
     file: subflows/hora.yaml
     env: { HORA: "Laudes", FINAL: "ORACIÓ" }

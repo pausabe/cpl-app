@@ -32,7 +32,7 @@
 
 - EAS Updates (NOT include Expo SDK changes)
     1. Make the code and/or database changes
-    2. Make sure that we have the correct database under /cpl-app/src/Assets/db/ (it must be the one used to publish the
+    2. Make sure that we have the correct database under /cpl-app/src/assets/db/ (it must be the one used to publish the
        current version)
     3. Change the version number X.X.(X+1) in app.json
     4. Add the changes in the changelog
@@ -44,7 +44,7 @@
 - Store Updates (include Expo SDK changes)
     1. Download the latest database from Deploy website (make sure _tables_log registers amount is equal to current
       published database version. Could not be when I rerun the Deploy website)
-    2. Copy the database into src/Assets/db/
+    2. Copy the database into src/assets/db/
     3. Update the version name and build number from app.json (ending in 0, X.X.0)
     4. Change the channel name in eas.json with the build number
     5. Create the channel (eas channel:create)

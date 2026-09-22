@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCustomUpdater } from './src/Services/UpdaterService';
-import NavigationController from './src/Controllers/NavigationController';
-import { useAppFonts } from './src/Theme/fonts';
+import { useCustomUpdater } from './src/services/updaterService';
+import NavigationController from './src/controllers/NavigationController';
+import { useAppFonts } from './src/theme/fonts';
 
 // The splash stays until the home has the day drawn: HomeScreenController hides it. Without this
 // it went away at once, and for a moment the home showed empty and light, even in dark mode.

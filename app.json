@@ -5,7 +5,7 @@
     "slug": "CPLApp",
     "version": "9.0.0",
     "orientation": "portrait",
-    "icon": "./src/Assets/icon/icon.png",
+    "icon": "./src/assets/icon/icon.png",
     "githubUrl": "https://github.com/pausabe/cpl-app",
     "primaryColor": "#ffffff",
     "backgroundColor": "#000000",
@@ -30,10 +30,10 @@
       "package": "cpl.cpl",
       "versionCode": 90,
       "userInterfaceStyle": "automatic",
-      "icon": "./src/Assets/icon/icon.png",
+      "icon": "./src/assets/icon/icon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./src/Assets/icon/androidForeground.png",
-        "backgroundImage": "./src/Assets/icon/androidBackground.png"
+        "foregroundImage": "./src/assets/icon/androidForeground.png",
+        "backgroundImage": "./src/assets/icon/androidBackground.png"
       },
       "permissions": []
     },
@@ -49,12 +49,12 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/Assets/splash.png",
+          "image": "./src/assets/splash.png",
           "resizeMode": "contain",
           "backgroundColor": "#E7F2F1",
           "imageWidth": 184,
           "dark": {
-            "image": "./src/Assets/splashDark.png",
+            "image": "./src/assets/splashDark.png",
             "backgroundColor": "#0E1413"
           },
           "android": {

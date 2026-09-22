@@ -28,7 +28,7 @@ i després d'un `clearState` l'app és nova). Les comprovacions són sobre texto
 que no depenen del dia (els noms de les hores, els encapçalaments HIMNE, SALMÒDIA, ORACIÓ…),
 així que es poden executar qualsevol dia. El que només passa alguns dies (la vida del sant, la
 memòria lliure, la missa vespertina) es comprova quan hi és; els casos de cada dia concret els
-proven els tests de Jest (`__tests__/Screens/Home.test.js`), amb el rellotge fixat. Les captures
+proven els tests de Jest (`__tests__/screens/home.test.js`), amb el rellotge fixat. Les captures
 queden a `~/.maestro/tests/<data>/`.
 
 | Flux | Què comprova |

@@ -5,14 +5,14 @@ const prettierConfig = require('eslint-config-prettier/flat');
 
 module.exports = defineConfig([
   expoConfig,
-  // El format és cosa de Prettier: fora les regles d'estil que s'hi barallarien
+  // Formatting is Prettier's job: drop the style rules that would fight with it
   prettierConfig,
   {
     ignores: ['android/', 'ios/', 'dist/', '.expo/', 'migration-to-saints/'],
   },
   {
-    // Les regles del React Compiler (eslint-plugin-react-hooks 7), com a avís: l'app no el fa
-    // servir, i el codi d'abans no hi estava pensat
+    // The React Compiler rules (eslint-plugin-react-hooks 7), as warnings: the app does not use
+    // it, and the older code was not written with it in mind
     rules: {
       'react-hooks/refs': 'warn',
       'react-hooks/set-state-in-effect': 'warn',
@@ -36,7 +36,7 @@ module.exports = defineConfig([
       },
     },
     rules: {
-      // Els tests canvien els mòduls simulats (jest.mock) des de fora
+      // The tests reach into the modules they mock (jest.mock) from outside
       'import/namespace': 'off',
       'react/display-name': 'off',
     },

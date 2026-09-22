@@ -1,5 +1,5 @@
-# Commits només de format: el git blame els salta. El GitHub ho fa sol; en local,
-# git blame --ignore-revs-file .git-blame-ignore-revs <fitxer>
+# Commits that are only formatting: git blame skips them. GitHub does it by itself; locally,
+# git blame --ignore-revs-file .git-blame-ignore-revs <file>
 
 # style: Prettier a tot el codi
 3e66188308d65425cd39c2409450a182003b0bf5

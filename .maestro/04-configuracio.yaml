@@ -1,15 +1,15 @@
 appId: cpl.cpl
-name: "La configuració es desa i canvia la litúrgia"
+name: "The settings are saved and change the liturgy"
 ---
 - runFlow: subflows/obrir.yaml
 - tapOn: "Configuració"
 - assertVisible: "Mida del text"
 - takeScreenshot: 04-configuracio
-# Diòcesi: Barcelona → Andorra, en el full amb la llista. A Android es toca el text del valor;
-# a iOS la fila és un sol botó, «Diòcesi: Barcelona».
+# Diocese: Barcelona → Andorra, in the sheet with the list. On Android the value's text is
+# tapped; on iOS the row is a single button, «Diòcesi: Barcelona».
 - tapOn: "(Diòcesi: )?Barcelona"
 - tapOn: "Andorra"
-# Tema: Automàtic → Fosc, amb els tres botons
+# Theme: Automàtic → Fosc, with the three buttons
 - tapOn: "Fosc"
 - scrollUntilVisible:
     element: "(?s).*Versió de la base de dades: .*"
@@ -18,7 +18,7 @@ name: "La configuració es desa i canvia la litúrgia"
 - extendedWaitUntil:
     visible: "Andorra \\(Diòcesi\\).*"
     timeout: 15000
-# Amb el tema fosc, també l'inici és fosc
+# With the dark theme, the home screen is dark too
 - takeScreenshot: 04-andorra-mode-fosc
 - tapOn: "Laudes"
 - extendedWaitUntil:
@@ -26,10 +26,10 @@ name: "La configuració es desa i canvia la litúrgia"
     timeout: 15000
 - takeScreenshot: 04-laudes-mode-fosc
 - runFlow: subflows/enrere.yaml
-# Es manté després de tancar i tornar a obrir l'app
+# It is kept after closing and opening the app again
 - stopApp
 - launchApp
-# L'inici, o l'avís de mitjanit a sobre (de 0 a 3 h), que el tapa
+# The home screen, or the midnight notice on top of it (from 0 to 3 h), covering it
 - extendedWaitUntil:
     visible: "Andorra \\(Diòcesi\\).*|No, la d.avui"
     timeout: 60000

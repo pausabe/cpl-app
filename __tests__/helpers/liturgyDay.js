@@ -1,9 +1,9 @@
 // Loads one day exactly as the app does when it opens: settings read from AsyncStorage, then
-// DataService.ReloadAllData. The caller must mock DatabaseManagerService with
+// DataService.reloadAllData. The caller must mock DatabaseManagerService with
 // ./mockDatabaseManager (jest.mock factories can't be shared from here: they are hoisted).
 const AsyncStorage = require('@react-native-async-storage/async-storage');
-const DataService = require('../../src/Services/DataService');
-const StorageKeys = require('../../src/Services/Storage/StorageKeys').default;
+const DataService = require('../../src/services/dataService');
+const StorageKeys = require('../../src/services/storage/storageKeys').default;
 
 // Setting combinations a real user can pick in the Settings screen. Values are the strings
 // SettingsService stores. Between them they cover every option that changes the texts.
@@ -53,7 +53,7 @@ async function loadDay(isoDate, profileName = 'barcelona') {
   const [y, m, d] = isoDate.split('-').map(Number);
   const date = new Date(y, m - 1, d);
   await applyProfile(PROFILES[profileName], date);
-  await DataService.ReloadAllData(date, null);
+  await DataService.reloadAllData(date, null);
   return currentState();
 }
 

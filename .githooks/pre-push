@@ -1,38 +1,38 @@
 #!/bin/sh
-# Abans de cada push, a qualsevol branca, make checks: Prettier, el lint i tots els tests de Jest.
-# Si falla, no es puja res. Per saltar-ho en un cas concret: git push --no-verify.
+# Before each push, on any branch, make checks: Prettier, the lint, the types and every Jest
+# test. If it fails, nothing is pushed. To skip it in one particular case: git push --no-verify.
 #
-# L'activa el "prepare" del package.json (git config core.hooksPath .githooks), que corre amb
-# cada npm install / yarn install.
+# The "prepare" script in package.json turns it on (git config core.hooksPath .githooks), and it
+# runs with every npm install / yarn install.
 
-cal_provar=
+to_check=
 while read -r local_ref local_sha remote_ref remote_sha; do
-  # Només les branques: una etiqueta assenyala un commit que ja es va pujar
+  # Branches only: a tag points at a commit that was pushed already
   case "$remote_ref" in
     refs/heads/*) ;;
     *) continue ;;
   esac
-  # Tot zeros: s'esborra la branca remota, no es puja codi
+  # All zeros: the remote branch is being deleted, no code is pushed
   case "$local_sha" in
     *[!0]*) ;;
     *) continue ;;
   esac
-  # Els tests corren sobre el que hi ha al directori: han de ser els mateixos commits que es pugen
+  # The checks run on the working tree: it has to hold the same commits that are being pushed
   if [ "$local_sha" != "$(git rev-parse HEAD)" ]; then
-    echo "pre-push: puges $local_ref a ${remote_ref#refs/heads/}, però el directori és a $(git rev-parse --abbrev-ref HEAD)."
-    echo "pre-push: els tests provarien un altre codi. Fes checkout de ${local_ref#refs/heads/} i torna a fer push."
+    echo "pre-push: pushing $local_ref to ${remote_ref#refs/heads/}, but the working tree is on $(git rev-parse --abbrev-ref HEAD)."
+    echo "pre-push: the checks would run on other code. Check out ${local_ref#refs/heads/} and push again."
     exit 1
   fi
-  cal_provar=1
+  to_check=1
 done
-[ -n "$cal_provar" ] || exit 0
+[ -n "$to_check" ] || exit 0
 
 if [ -n "$(git status --porcelain)" ]; then
-  echo "pre-push: atenció, hi ha canvis sense commit: els tests els inclouen, però no es pugen."
+  echo "pre-push: careful, there are uncommitted changes: the checks include them, but they are not pushed."
 fi
 
-echo "pre-push: make checks abans de pujar (~4 min)…"
+echo "pre-push: make checks before pushing (~4 min)…"
 if ! make checks; then
-  echo "pre-push: make checks falla; no s'ha pujat res."
+  echo "pre-push: make checks failed; nothing was pushed."
   exit 1
 fi

@@ -1,4 +1,4 @@
-# Prettier només formata el codi (JS i TS): els textos, els fluxos de Maestro i les dades, no
+# Prettier formats the code only (JS and TS): not the texts, not the Maestro flows, not the data
 *.md
 *.yaml
 *.json

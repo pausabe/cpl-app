@@ -1,8 +1,8 @@
 appId: cpl.cpl
-name: "S'obren les set hores i es llegeixen fins a l'oració"
+name: "The seven hours open and are read down to the prayer"
 ---
 - runFlow: subflows/obrir.yaml
-# Les hores són a l'inici: cada fitxa porta el nom de l'hora
+# The hours are on the home screen: each card carries the name of the hour
 - runFlow:
     file: subflows/hora.yaml
     env: { HORA: "Ofici de lectura", FINAL: "ORACIÓ" }

@@ -1,15 +1,15 @@
 appId: cpl.cpl
-name: "S'obren les lectures de la missa"
+name: "The Mass readings open"
 ---
 - runFlow: subflows/obrir.yaml
-# Els botons de les lectures són a l'inici
+# The buttons for the readings are on the home screen
 - tapOn: "Evangeli"
 - extendedWaitUntil:
     visible: "Lectura de l.evangeli.*"
     timeout: 15000
 - takeScreenshot: 03-evangeli
 - runFlow: subflows/enrere.yaml
-# La primera lectura (a la Vetlla Pasqual no n'hi ha), i «Continua amb el Salm» mostra el salm
+# The first reading (none at the Easter Vigil), and «Continua amb el Salm» shows the psalm
 - runFlow:
     when:
       visible: "Primera lectura"
