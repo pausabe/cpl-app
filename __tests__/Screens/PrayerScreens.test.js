@@ -4,7 +4,7 @@
 jest.mock('../../src/Services/DatabaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('react-native-youtube-iframe', () => {
   const { View } = require('react-native');
-  return (props) => <View testID="youtube" {...props}/>;
+  return (props) => <View testID="youtube" {...props} />;
 });
 
 import React from 'react';
@@ -19,15 +19,21 @@ import { loadDay } from '../helpers/liturgyDay';
 import { METRICS, styleOf } from '../helpers/renderWithTheme';
 
 function withApp(ui) {
-  return <SafeAreaProvider initialMetrics={METRICS}><AppThemeProvider>{ui}</AppThemeProvider></SafeAreaProvider>;
+  return (
+    <SafeAreaProvider initialMetrics={METRICS}>
+      <AppThemeProvider>{ui}</AppThemeProvider>
+    </SafeAreaProvider>
+  );
 }
 
 // Mounts a controller as the stack navigator would, and draws the header button it asks for
 async function open(Controller, params) {
   const navigation = { setOptions: jest.fn(), addListener: () => () => {} };
   LiturgyStore.publish();
-  const view = render(withApp(<Controller route={{ params }} navigation={navigation}/>));
-  await act(async () => { await Promise.resolve(); });
+  const view = render(withApp(<Controller route={{ params }} navigation={navigation} />));
+  await act(async () => {
+    await Promise.resolve();
+  });
   const options = navigation.setOptions.mock.calls[navigation.setOptions.mock.calls.length - 1][0];
   return { view, headerRight: options.headerRight };
 }
@@ -37,7 +43,9 @@ async function pressHeaderButton(headerRight) {
   const button = headerRight();
   expect(button.props.accessibilityLabel).toBe('Mida del text i tema');
   expect(button.props.text).toBe('Aa');
-  await act(async () => { button.props.onPress(); });
+  await act(async () => {
+    button.props.onPress();
+  });
 }
 
 beforeEach(async () => {
@@ -50,7 +58,9 @@ test('el botó Aa obre el full; A+ fa el text més gran a l’instant i ho desa'
 
   await pressHeaderButton(headerRight);
   expect(view.getByText('Mida 3 de 10')).toBeTruthy();
-  await act(async () => { fireEvent.press(view.getByRole('button', { name: 'Text més gran' })); });
+  await act(async () => {
+    fireEvent.press(view.getByRole('button', { name: 'Text més gran' }));
+  });
 
   expect(styleOf(view.getByText('Sigueu amb nosaltres, Déu nostre.')).fontSize).toBe(24);
   expect(view.getByText('Mida 4 de 10')).toBeTruthy();
@@ -64,7 +74,9 @@ test('el botó Aa obre el full; A+ fa el text més gran a l’instant i ho desa'
 test('el tema fosc es tria al mateix full i la pregària es torna fosca', async () => {
   const { view, headerRight } = await open(HoursPrayerController, { type: 'Vespres', title: 'Vespres' });
   await pressHeaderButton(headerRight);
-  await act(async () => { fireEvent.press(view.getByRole('radio', { name: 'Fosc' })); });
+  await act(async () => {
+    fireEvent.press(view.getByRole('radio', { name: 'Fosc' }));
+  });
   expect(DataService.CurrentSettings.DarkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
   expect(styleOf(view.getByText('HIMNE')).color).toBe('#F28B82');
@@ -78,7 +90,9 @@ test('el salm invitatori triat es recorda', async () => {
   expect(screen.getByRole('radio', { name: 'Salm 99' }).props.accessibilityState.checked).toBe(true);
   expect(screen.getByText(/Invitació a lloar Déu en el seu temple/)).toBeTruthy();
   expect(DataService.CurrentSettings.InvitationPsalmOption).toBe('99');
-  await act(async () => { await Promise.resolve(); });
+  await act(async () => {
+    await Promise.resolve();
+  });
   expect(await AsyncStorage.getItem('salmInvitatori')).toBe('99');
   expect(screen.getByRole('button', { name: "Amagar l'invitatori" })).toBeTruthy();
 });
@@ -89,7 +103,9 @@ test('l’antífona de la Mare de Déu triada es recorda', async () => {
   fireEvent.press(screen.getByRole('radio', { name: 'Ant. 3' }));
   expect(screen.getByRole('radio', { name: 'Ant. 3' }).props.accessibilityState.checked).toBe(true);
   expect(DataService.CurrentSettings.VirginAntiphonOption).toBe('3');
-  await act(async () => { await Promise.resolve(); });
+  await act(async () => {
+    await Promise.resolve();
+  });
   expect(await AsyncStorage.getItem('antMare')).toBe('3');
 });
 

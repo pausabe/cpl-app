@@ -15,11 +15,22 @@ jest.mock('expo-updates', () => ({
   fetchUpdateAsync: jest.fn(),
   reloadAsync: jest.fn(),
   isEnabled: true,
-  useUpdates: () => ({ currentlyRunning: { isEmbeddedLaunch: true }, isChecking: false, isDownloading: false, isUpdatePending: false }),
-  runtimeVersion: 'test', channel: 'test', updateId: 'test',
+  useUpdates: () => ({
+    currentlyRunning: { isEmbeddedLaunch: true },
+    isChecking: false,
+    isDownloading: false,
+    isUpdatePending: false,
+  }),
+  runtimeVersion: 'test',
+  channel: 'test',
+  updateId: 'test',
 }));
 jest.mock('../../src/Controllers/FirstRun', () => ({ wasOpenedBefore: jest.fn(async () => true) }));
-jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}), setOptions: jest.fn() }));
+jest.mock('expo-splash-screen', () => ({
+  hideAsync: jest.fn(async () => {}),
+  preventAutoHideAsync: jest.fn(async () => {}),
+  setOptions: jest.fn(),
+}));
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
   const WebView = (props) => <View testID="webview" {...props} />;
@@ -50,7 +61,9 @@ const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 async function goBack(textOnTheScreen) {
   act(() => navigationRef.goBack());
   await waitFor(() => expect(screen.queryAllByText(textOnTheScreen)).toHaveLength(0), { timeout: 15000 });
-  await act(async () => { jest.advanceTimersByTime(2000); });
+  await act(async () => {
+    jest.advanceTimersByTime(2000);
+  });
 }
 
 test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
@@ -79,7 +92,9 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
       Vespres: hours.Vespers.FinalPrayer,
       Completes: hours.NightPrayer.FinalPrayer,
     }[hour];
-    await waitFor(() => expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0));
+    await waitFor(() =>
+      expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0),
+    );
     // The title of the (native) top bar
     expect(navigationRef.getCurrentOptions().title).toBe(hour);
     expect(screen.getByRole('button', { name: 'Mida del text i tema' })).toBeTruthy();
@@ -100,7 +115,9 @@ test("s'obre al dia d'avui i es pot recórrer tota l'app", async () => {
   expect(within(sheet).getByTestId('webview').props.source).toEqual({ uri: 'https://www.cpl.es/contacto/' });
   fireEvent.press(within(sheet).getByRole('button', { name: 'Tanca' }));
   await waitFor(() => expect(screen.queryByTestId('webview')).toBeNull(), { timeout: 15000 });
-  await act(async () => { jest.advanceTimersByTime(2000); });
+  await act(async () => {
+    jest.advanceTimersByTime(2000);
+  });
   const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
   fireEvent.press(await findText('Donatiu lliure'));
   expect(openURL).toHaveBeenCalledWith(expect.stringContaining('stripe.com'));

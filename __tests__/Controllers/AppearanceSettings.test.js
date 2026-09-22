@@ -15,7 +15,13 @@ import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as DataService from '../../src/Services/DataService';
 import * as LiturgyStore from '../../src/Controllers/LiturgyStore';
-import { darkModeEnabledFor, followSystemAppearance, loadDarkMode, setDarkMode, setTextSize } from '../../src/Controllers/AppearanceSettings';
+import {
+  darkModeEnabledFor,
+  followSystemAppearance,
+  loadDarkMode,
+  setDarkMode,
+  setTextSize,
+} from '../../src/Controllers/AppearanceSettings';
 
 beforeEach(async () => {
   await AsyncStorage.clear();

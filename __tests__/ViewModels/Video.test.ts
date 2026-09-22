@@ -1,4 +1,4 @@
-import {youtubeVideoId} from '../../src/ViewModels/Video';
+import { youtubeVideoId } from '../../src/ViewModels/Video';
 
 test('l’id del vídeo, de qualsevol forma de l’enllaç', () => {
   // The one of the database

@@ -95,7 +95,7 @@ test('useAppearance dona el mode fosc i la mida, i es posa al dia', () => {
     return <Text>{`${dark ? 'fosc' : 'clar'} ${textSize}`}</Text>;
   }
   LiturgyStore.updateSettings({ TextSize: '3', DarkModeEnabled: false });
-  render(<Probe/>);
+  render(<Probe />);
   expect(screen.getByText('clar 3')).toBeTruthy();
   act(() => LiturgyStore.updateSettings({ TextSize: '7', DarkModeEnabled: true }));
   expect(screen.getByText('fosc 7')).toBeTruthy();

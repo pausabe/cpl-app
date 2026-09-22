@@ -10,8 +10,7 @@ let GlobalKeys = {
   // From 18 h, the evening Mass of tomorrow's celebration is chosen
   afternoon_hour: 18,
 
-  server_url: 'https://serveditorial.cpl.es/api/emp/read/'
-
-}
+  server_url: 'https://serveditorial.cpl.es/api/emp/read/',
+};
 
 export default GlobalKeys;

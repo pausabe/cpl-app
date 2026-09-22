@@ -4,7 +4,9 @@ jest.mock('../../src/Services/DatabaseManagerService', () => require('../helpers
 jest.mock('expo-updates', () => ({
   isEnabled: false,
   useUpdates: () => ({}),
-  runtimeVersion: '9.0.0', channel: 'production_90', updateId: 'abc',
+  runtimeVersion: '9.0.0',
+  channel: 'production_90',
+  updateId: 'abc',
 }));
 jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0', nativeBuildVersion: '90' }));
 
@@ -21,7 +23,13 @@ import { METRICS, styleOf } from '../helpers/renderWithTheme';
 
 async function open() {
   LiturgyStore.publish();
-  render(<SafeAreaProvider initialMetrics={METRICS}><AppThemeProvider><SettingsController/></AppThemeProvider></SafeAreaProvider>);
+  render(
+    <SafeAreaProvider initialMetrics={METRICS}>
+      <AppThemeProvider>
+        <SettingsController />
+      </AppThemeProvider>
+    </SafeAreaProvider>,
+  );
   await screen.findByText('Himnes en llatí');
 }
 
@@ -31,26 +39,39 @@ beforeEach(async () => {
 
 test('tres grups amb les sis opcions de sempre, i els valors guardats', async () => {
   await open();
-  for (const group of ['Lectura', 'Calendari', 'Missa']) expect(screen.getByRole('header', { name: group })).toBeTruthy();
+  for (const group of ['Lectura', 'Calendari', 'Missa'])
+    expect(screen.getByRole('header', { name: group })).toBeTruthy();
   expect(screen.getByRole('button', { name: 'Diòcesi: Barcelona' })).toBeTruthy();
   expect(screen.getByRole('button', { name: 'Lloc: Diòcesi' })).toBeTruthy();
-  expect(screen.getByText('Algunes celebracions canvien segons on reses, com la dedicació de la catedral.')).toBeTruthy();
+  expect(
+    screen.getByText('Algunes celebracions canvien segons on reses, com la dedicació de la catedral.'),
+  ).toBeTruthy();
   expect(screen.getByRole('switch', { name: 'Himnes en llatí' }).props.accessibilityState.checked).toBe(false);
-  expect(screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' }).props.accessibilityState.checked).toBe(false);
+  expect(
+    screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' }).props.accessibilityState.checked,
+  ).toBe(false);
   expect(styleOf(screen.getByTestId('text-size-preview')).fontSize).toBe(21);
-  await waitFor(() => expect(screen.getByRole('radio', { name: 'Automàtic' }).props.accessibilityState.checked).toBe(true));
+  await waitFor(() =>
+    expect(screen.getByRole('radio', { name: 'Automàtic' }).props.accessibilityState.checked).toBe(true),
+  );
 });
 
 test('en una tauleta, una columna al mig tan ampla com la de l’inici', async () => {
   await open();
-  expect(styleOf(screen.getByTestId('settings-column'))).toMatchObject({ width: '100%', maxWidth: 560, alignSelf: 'center' });
+  expect(styleOf(screen.getByTestId('settings-column'))).toMatchObject({
+    width: '100%',
+    maxWidth: 560,
+    alignSelf: 'center',
+  });
 });
 
 test('la diòcesi es tria en un full; es desa i la litúrgia es recarrega amb ella', async () => {
   await open();
   fireEvent.press(screen.getByRole('button', { name: 'Diòcesi: Barcelona' }));
   expect(await screen.findByTestId('option-sheet')).toBeTruthy();
-  await act(async () => { fireEvent.press(screen.getByRole('radio', { name: 'Andorra' })); });
+  await act(async () => {
+    fireEvent.press(screen.getByRole('radio', { name: 'Andorra' }));
+  });
   await waitFor(() => expect(DataService.CurrentSettings.DioceseName).toBe('Andorra'));
   expect(await AsyncStorage.getItem('diocesis')).toBe('Andorra');
   expect(screen.getByRole('button', { name: 'Diòcesi: Andorra' })).toBeTruthy();
@@ -59,27 +80,35 @@ test('la diòcesi es tria en un full; es desa i la litúrgia es recarrega amb el
 test('el lloc, també', async () => {
   await open();
   fireEvent.press(screen.getByRole('button', { name: 'Lloc: Diòcesi' }));
-  await act(async () => { fireEvent.press(screen.getByRole('radio', { name: 'Catedral' })); });
+  await act(async () => {
+    fireEvent.press(screen.getByRole('radio', { name: 'Catedral' }));
+  });
   await waitFor(() => expect(DataService.CurrentSettings.PrayingPlace).toBe('Catedral'));
   expect(await AsyncStorage.getItem('lloc')).toBe('Catedral');
 });
 
 test('els himnes en llatí es desen i recarreguen la litúrgia', async () => {
   await open();
-  await act(async () => { fireEvent.press(screen.getByRole('switch', { name: 'Himnes en llatí' })); });
+  await act(async () => {
+    fireEvent.press(screen.getByRole('switch', { name: 'Himnes en llatí' }));
+  });
   await waitFor(() => expect(DataService.CurrentSettings.UseLatin).toBe(true));
   expect(await AsyncStorage.getItem('useLatin')).toBe('true');
 });
 
 test('el vídeo de llengua de signes es desa', async () => {
   await open();
-  await act(async () => { fireEvent.press(screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' })); });
+  await act(async () => {
+    fireEvent.press(screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' }));
+  });
   expect(await AsyncStorage.getItem('showVideos')).toBe('true');
 });
 
 test('el tema, Automàtic, Clar o Fosc, s’aplica a l’instant i es desa com sempre', async () => {
   await open();
-  await act(async () => { fireEvent.press(screen.getByRole('radio', { name: 'Fosc' })); });
+  await act(async () => {
+    fireEvent.press(screen.getByRole('radio', { name: 'Fosc' }));
+  });
   expect(DataService.CurrentSettings.DarkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
 });
@@ -91,7 +120,9 @@ test('la mida del text es veu en una frase de mostra i es desa en deixar anar', 
   expect(slider.props.accessibilityLabel).toBe('Mida del text');
   act(() => slider.props.onValueChange(6));
   expect(styleOf(screen.getByTestId('text-size-preview')).fontSize).toBe(30);
-  await act(async () => { slider.props.onSlidingComplete(6); });
+  await act(async () => {
+    slider.props.onSlidingComplete(6);
+  });
   expect(DataService.CurrentSettings.TextSize).toBe('6');
   expect(await AsyncStorage.getItem('textSize')).toBe('6');
 });

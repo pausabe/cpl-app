@@ -1,5 +1,5 @@
-export default class DatabaseInformation{
-    Version: number;
-    MinimumSelectableDate: Date;
-    MaximumSelectableDate: Date;
+export default class DatabaseInformation {
+  Version: number;
+  MinimumSelectableDate: Date;
+  MaximumSelectableDate: Date;
 }

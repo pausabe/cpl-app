@@ -1,9 +1,9 @@
-import CommonStructure from "./CommonStructure";
+import CommonStructure from './CommonStructure';
 
-export default class PartsOfFiveWeeksOfLentTime extends CommonStructure{
-    static MasterName: string = "tempsQuaresmaVSetmanes";
+export default class PartsOfFiveWeeksOfLentTime extends CommonStructure {
+  static MasterName: string = 'tempsQuaresmaVSetmanes';
 
-    constructor(databaseRow: any = undefined) {
-        super(databaseRow);
-    }
+  constructor(databaseRow: any = undefined) {
+    super(databaseRow);
+  }
 }

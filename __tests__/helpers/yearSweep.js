@@ -51,7 +51,10 @@ function describeYearSweep(year) {
       for (const [day, result] of Object.entries(results)) {
         if (Number(day.slice(5, 7)) !== month + 1) continue;
         const before = golden[day];
-        if (!before) { changed.push(`${day}: no és al golden`); continue; }
+        if (!before) {
+          changed.push(`${day}: no és al golden`);
+          continue;
+        }
         if (before.error !== result.error) {
           changed.push(`${day} (${result.profile}): error «${before.error ?? 'cap'}» → «${result.error ?? 'cap'}»`);
           continue;

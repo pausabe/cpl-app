@@ -6,7 +6,7 @@ import TextSettingsSheet from '../../src/Components/TextSettingsSheet';
 
 function open(props = {}) {
   const handlers = { onClose: jest.fn(), onTextSizeChange: jest.fn(), onDarkModeChange: jest.fn() };
-  renderWithTheme(<TextSettingsSheet visible={true} textSizeStep={3} darkMode="Automàtic" {...handlers} {...props}/>);
+  renderWithTheme(<TextSettingsSheet visible={true} textSizeStep={3} darkMode="Automàtic" {...handlers} {...props} />);
   return handlers;
 }
 

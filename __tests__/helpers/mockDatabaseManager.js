@@ -14,7 +14,9 @@ function database() {
 
 module.exports = {
   DB_PATH,
-  OpenDatabase: async () => { database(); },
+  OpenDatabase: async () => {
+    database();
+  },
   executeQueryAsync: (query) => {
     try {
       return Promise.resolve(database().prepare(query).all());

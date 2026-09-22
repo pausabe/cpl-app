@@ -10,10 +10,21 @@ jest.mock('expo-updates', () => ({
   fetchUpdateAsync: jest.fn(),
   reloadAsync: jest.fn(),
   isEnabled: true,
-  useUpdates: () => ({ currentlyRunning: { isEmbeddedLaunch: true }, isChecking: false, isDownloading: false, isUpdatePending: false }),
-  runtimeVersion: 'test', channel: 'test', updateId: 'test',
+  useUpdates: () => ({
+    currentlyRunning: { isEmbeddedLaunch: true },
+    isChecking: false,
+    isDownloading: false,
+    isUpdatePending: false,
+  }),
+  runtimeVersion: 'test',
+  channel: 'test',
+  updateId: 'test',
 }));
-jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}), setOptions: jest.fn() }));
+jest.mock('expo-splash-screen', () => ({
+  hideAsync: jest.fn(async () => {}),
+  preventAutoHideAsync: jest.fn(async () => {}),
+  setOptions: jest.fn(),
+}));
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
   const WebView = (props) => <View testID="webview" {...props} />;
@@ -31,13 +42,17 @@ async function openAt(date) {
   jest.setSystemTime(date);
   await AsyncStorage.clear();
   await AsyncStorage.setItem('WhatsNewSeen_9.0.0', 'true');
-  render(<App/>);
+  render(<App />);
 }
 
 // The app comes to the front: what AppState tells every listener
 async function comeBack() {
-  const listeners = AppState.addEventListener.mock.calls.filter(([type]) => type === 'change').map(([, listener]) => listener);
-  await act(async () => { for (const listener of listeners) await listener('active'); });
+  const listeners = AppState.addEventListener.mock.calls
+    .filter(([type]) => type === 'change')
+    .map(([, listener]) => listener);
+  await act(async () => {
+    for (const listener of listeners) await listener('active');
+  });
 }
 
 beforeAll(() => {
@@ -61,7 +76,9 @@ test('en punt, «Ara» passa a l’hora següent', async () => {
   await openAt(new Date(2026, 8, 21, 8, 59, 50));
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
   expect(screen.getByRole('button', { name: 'Laudes' }).props.accessibilityValue?.text).toBe('Ara');
-  await act(async () => { jest.advanceTimersByTime(20 * 1000); });
+  await act(async () => {
+    jest.advanceTimersByTime(20 * 1000);
+  });
   expect(screen.getByRole('button', { name: 'Tèrcia' }).props.accessibilityValue?.text).toBe('Ara');
   expect(screen.getByRole('button', { name: 'Laudes' }).props.accessibilityValue?.text).toBeUndefined();
 });

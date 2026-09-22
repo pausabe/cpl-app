@@ -3,11 +3,11 @@ import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
-import Ofici from './SpecificHourLiturgy/OfficeComponent'
-import Laudes from './SpecificHourLiturgy/LaudesComponent'
-import Vespres from './SpecificHourLiturgy/VespersComponent'
-import HoraMenor from './SpecificHourLiturgy/HoursComponent'
-import Completes from './SpecificHourLiturgy/NightPrayerComponent'
+import Ofici from './SpecificHourLiturgy/OfficeComponent';
+import Laudes from './SpecificHourLiturgy/LaudesComponent';
+import Vespres from './SpecificHourLiturgy/VespersComponent';
+import HoraMenor from './SpecificHourLiturgy/HoursComponent';
+import Completes from './SpecificHourLiturgy/NightPrayerComponent';
 import Gap from '../../Components/Gap';
 import { ThemeContext, prayerTextStyles } from '../../Theme';
 
@@ -33,29 +33,30 @@ export default class HoursLiturgyPrayerScreen extends Component {
   render() {
     const theme = this.context;
     return (
-      <SafeAreaView edges={["bottom"]} style={prayerTextStyles(theme).container}>
+      <SafeAreaView edges={['bottom']} style={prayerTextStyles(theme).container}>
         <ScrollView automaticallyAdjustContentInsets={false} contentContainerStyle={styles.content}>
           <View style={[styles.column, { maxWidth: theme.layout.readingMaxWidth }]}>
-            {this.props.celebration ?
+            {this.props.celebration ? (
               <Text
                 testID="hour-celebration"
                 selectable={true}
                 accessibilityRole="header"
-                style={prayerTextStyles(theme).centeredTitle}>
+                style={prayerTextStyles(theme).centeredTitle}
+              >
                 {this.props.celebration}
               </Text>
-              : null}
-            {this.props.celebration ? <Gap/> : null}
+            ) : null}
+            {this.props.celebration ? <Gap /> : null}
             {this.liturgyComponent(this.props.type)}
           </View>
         </ScrollView>
       </SafeAreaView>
-    )
+    );
   }
 
   // The titles of the psalms of the day: an invitatory psalm that is already one of them is not
   // offered (GlobalViewFunctions.salmInvExists)
-  getTitles(){
+  getTitles() {
     const hours = this.props.hours;
     const titles = [];
 
@@ -68,13 +69,13 @@ export default class HoursLiturgyPrayerScreen extends Component {
     titles.push(hours.Vespers.SecondPsalm.Title);
     titles.push(hours.NightPrayer.FirstPsalm.Title);
 
-    if(hours.NightPrayer.HasMultiplePsalms){
+    if (hours.NightPrayer.HasMultiplePsalms) {
       titles.push(hours.NightPrayer.SecondPsalm.Title);
     }
     return titles;
   }
 
-  liturgyComponent(type){
+  liturgyComponent(type) {
     const common = {
       hours: this.props.hours,
       today: this.props.today,
@@ -82,42 +83,32 @@ export default class HoursLiturgyPrayerScreen extends Component {
     };
     switch (type) {
       case 'Ofici':
-        return(
-          <Ofici
-            {...common}
-            titols={this.getTitles()}
-            onInvitationPsalmChange={this.props.onInvitationPsalmChange}/>
-        )
+        return (
+          <Ofici {...common} titols={this.getTitles()} onInvitationPsalmChange={this.props.onInvitationPsalmChange} />
+        );
 
       case 'Laudes':
-        return(
-          <Laudes
-            {...common}
-            titols={this.getTitles()}
-            onInvitationPsalmChange={this.props.onInvitationPsalmChange}/>
-        )
+        return (
+          <Laudes {...common} titols={this.getTitles()} onInvitationPsalmChange={this.props.onInvitationPsalmChange} />
+        );
 
       case 'Vespres':
-        return(<Vespres {...common}/>)
+        return <Vespres {...common} />;
 
       case 'Tèrcia':
-        return(<HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.ThirdHour}/>)
+        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.ThirdHour} />;
 
       case 'Sexta':
-        return(<HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.SixthHour}/>)
+        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.SixthHour} />;
 
       case 'Nona':
-        return(<HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.NinthHour}/>)
+        return <HoraMenor {...common} HM={type} HORA_MENOR={this.props.hours.Hours.NinthHour} />;
 
       case 'Completes':
-        return(
-          <Completes
-            {...common}
-            onVirginAntiphonChange={this.props.onVirginAntiphonChange}/>
-        )
+        return <Completes {...common} onVirginAntiphonChange={this.props.onVirginAntiphonChange} />;
 
       default:
-        return(<Text style={prayerTextStyles(this.context).black}>{type}</Text>)
+        return <Text style={prayerTextStyles(this.context).black}>{type}</Text>;
     }
   }
 }
@@ -132,4 +123,4 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
-})
+});

@@ -25,13 +25,20 @@ function mount(element) {
     current = undefined;
   }
   LiturgyStore.publish();
-  current = RNTL.render(React.createElement(SafeAreaProvider, { initialMetrics: METRICS },
-    React.createElement(AppThemeProvider, null, element)));
+  current = RNTL.render(
+    React.createElement(
+      SafeAreaProvider,
+      { initialMetrics: METRICS },
+      React.createElement(AppThemeProvider, null, element),
+    ),
+  );
   return current;
 }
 
 async function settle() {
-  await RNTL.act(async () => { await Promise.resolve(); });
+  await RNTL.act(async () => {
+    await Promise.resolve();
+  });
 }
 
 async function openHour(type) {

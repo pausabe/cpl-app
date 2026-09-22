@@ -1,4 +1,4 @@
-export default class ConcreteNamesInPrayers{
-    Pope: String;
-    Bishop: String;
+export default class ConcreteNamesInPrayers {
+  Pope: String;
+  Bishop: String;
 }

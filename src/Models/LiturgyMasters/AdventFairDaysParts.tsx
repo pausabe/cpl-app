@@ -1,9 +1,9 @@
-import CommonStructure from "./CommonStructure";
+import CommonStructure from './CommonStructure';
 
-export default class AdventFairDaysParts extends CommonStructure{
-    static MasterName: string = "tempsAdventFeries";
+export default class AdventFairDaysParts extends CommonStructure {
+  static MasterName: string = 'tempsAdventFeries';
 
-    constructor(databaseRow: any = undefined) {
-        super(databaseRow)
-    }
+  constructor(databaseRow: any = undefined) {
+    super(databaseRow);
+  }
 }

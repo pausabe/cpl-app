@@ -59,21 +59,30 @@ test('Theme només depèn de si mateix', () => {
 });
 
 test('Components només depenen del tema, d’altres components i dels tipus de ViewModels', () => {
-  expect(violations('Components', (t) =>
-    isPackage(t) || inside(t, 'Components', 'Theme', 'ViewModels'))).toEqual([]);
+  expect(violations('Components', (t) => isPackage(t) || inside(t, 'Components', 'Theme', 'ViewModels'))).toEqual([]);
 });
 
 test('ViewModels són funcions pures: ni React ni serveis', () => {
-  expect(violations('ViewModels', (t) =>
-    (isPackage(t) && !/^package:(react|react-native|expo)/.test(t)) ||
-    inside(t, 'ViewModels', ...DOMAIN_ENUMS, 'Utils/StringManagement'))).toEqual([]);
+  expect(
+    violations(
+      'ViewModels',
+      (t) =>
+        (isPackage(t) && !/^package:(react|react-native|expo)/.test(t)) ||
+        inside(t, 'ViewModels', ...DOMAIN_ENUMS, 'Utils/StringManagement'),
+    ),
+  ).toEqual([]);
 });
 
 test('Views només reben les dades per props: ni serveis ni controladors', () => {
-  expect(violations('Views', (t) =>
-    isPackage(t) ||
-    inside(t, 'Views', 'Components', 'Theme', 'ViewModels', 'Assets', ...DOMAIN_ENUMS) ||
-    inside(t, 'Utils/GlobalViewFunctions', 'Utils/Logger', 'Utils/StringManagement'))).toEqual([]);
+  expect(
+    violations(
+      'Views',
+      (t) =>
+        isPackage(t) ||
+        inside(t, 'Views', 'Components', 'Theme', 'ViewModels', 'Assets', ...DOMAIN_ENUMS) ||
+        inside(t, 'Utils/GlobalViewFunctions', 'Utils/Logger', 'Utils/StringManagement'),
+    ),
+  ).toEqual([]);
 });
 
 test('les dades del dia (DataService) només es llegeixen des del magatzem i des dels serveis', () => {
@@ -81,7 +90,8 @@ test('les dades del dia (DataService) només es llegeixen des del magatzem i des
   for (const layer of fs.readdirSync(SRC)) {
     if (!fs.statSync(path.join(SRC, layer)).isDirectory()) continue;
     for (const file of filesIn(path.join(SRC, layer))) {
-      if (importsOf(file).some(({ target }) => target === 'Services/DataService')) readers.push(path.relative(SRC, file));
+      if (importsOf(file).some(({ target }) => target === 'Services/DataService'))
+        readers.push(path.relative(SRC, file));
     }
   }
   expect(readers.filter((file) => !file.startsWith('Services/'))).toEqual(['Controllers/LiturgyStore.ts']);

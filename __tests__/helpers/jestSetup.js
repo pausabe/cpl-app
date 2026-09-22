@@ -1,6 +1,7 @@
 // AsyncStorage has no native side under Jest; the library ships an in-memory mock for this.
 jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock'));
+  require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
+);
 
 // The app's Logger prints every step to console.log; keep test output readable.
 jest.spyOn(console, 'log').mockImplementation(() => {});

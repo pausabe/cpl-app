@@ -17,8 +17,7 @@ function flatten(style) {
 
 function isInteractive(node) {
   const p = node.props || {};
-  return INTERACTIVE_ROLES.has(p.accessibilityRole) || INTERACTIVE_ROLES.has(p.role) ||
-    typeof p.onClick === 'function';
+  return INTERACTIVE_ROLES.has(p.accessibilityRole) || INTERACTIVE_ROLES.has(p.role) || typeof p.onClick === 'function';
 }
 
 function role(color) {

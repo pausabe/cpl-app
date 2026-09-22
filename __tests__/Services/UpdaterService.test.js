@@ -25,8 +25,12 @@ beforeEach(() => {
   });
   Updates.checkForUpdateAsync.mockResolvedValue({ isAvailable: false });
 });
-afterEach(() => { jest.useRealTimers(); });
-afterAll(() => { global.__DEV__ = realDev; });
+afterEach(() => {
+  jest.useRealTimers();
+});
+afterAll(() => {
+  global.__DEV__ = realDev;
+});
 
 function publishUpdate(id) {
   Updates.checkForUpdateAsync.mockResolvedValue({ isAvailable: true, manifest: { id } });
@@ -94,7 +98,7 @@ test("tornant a l'app el mateix dia, no la reinicia", async () => {
   expect(Updates.reloadAsync).not.toHaveBeenCalled();
 });
 
-test("un altre dia sense res baixat, no reinicia i torna a comprovar", async () => {
+test('un altre dia sense res baixat, no reinicia i torna a comprovar', async () => {
   await UpdaterService.doUpdateIfAvailable();
 
   await goToBackgroundAndBack(NEXT_MORNING);

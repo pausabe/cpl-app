@@ -1,8 +1,24 @@
-import {dayAndMonth, longDate, lowerFirst, monthName, ofMonth, romanize, singleLine, weekdayName} from '../../src/ViewModels/CatalanText';
+import {
+  dayAndMonth,
+  longDate,
+  lowerFirst,
+  monthName,
+  ofMonth,
+  romanize,
+  singleLine,
+  weekdayName,
+} from '../../src/ViewModels/CatalanText';
 
 test('els dies de la setmana, de diumenge a dissabte com Date.getDay()', () => {
-  expect([0, 1, 2, 3, 4, 5, 6].map(weekdayName)).toEqual(
-    ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte']);
+  expect([0, 1, 2, 3, 4, 5, 6].map(weekdayName)).toEqual([
+    'Diumenge',
+    'Dilluns',
+    'Dimarts',
+    'Dimecres',
+    'Dijous',
+    'Divendres',
+    'Dissabte',
+  ]);
   expect(weekdayName(7)).toBe('');
 });
 
@@ -21,15 +37,24 @@ test('la data en paraules, com a la targeta del dia', () => {
 });
 
 test('els números romans de les setmanes', () => {
-  expect(['1', '4', '9', '14', '25', '26', '30', '34'].map(romanize))
-    .toEqual(['I', 'IV', 'IX', 'XIV', 'XXV', 'XXVI', 'XXX', 'XXXIV']);
+  expect(['1', '4', '9', '14', '25', '26', '30', '34'].map(romanize)).toEqual([
+    'I',
+    'IV',
+    'IX',
+    'XIV',
+    'XXV',
+    'XXVI',
+    'XXX',
+    'XXXIV',
+  ]);
   expect(romanize('0')).toBe('');
   expect(romanize('.')).toBe('');
   expect(romanize(undefined)).toBe('');
 });
 
 test('una frase en una sola línia, sense tocar-ne les paraules', () => {
-  expect(singleLine('Alegreu-vos i feu festa,\nperquè la vostra recompensa és gran en el cel'))
-    .toBe('Alegreu-vos i feu festa, perquè la vostra recompensa és gran en el cel');
+  expect(singleLine('Alegreu-vos i feu festa,\nperquè la vostra recompensa és gran en el cel')).toBe(
+    'Alegreu-vos i feu festa, perquè la vostra recompensa és gran en el cel',
+  );
   expect(singleLine('  Vine amb mi.  ')).toBe('Vine amb mi.');
 });

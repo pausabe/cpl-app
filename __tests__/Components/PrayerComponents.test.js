@@ -13,16 +13,16 @@ import HR from '../../src/Components/HRComponent';
 
 describe('Gap', () => {
   test('el mateix espai entre paràgrafs, que creix amb la mida del text', () => {
-    renderWithTheme(<Gap testID="gap"/>, { textSize: '3' });
+    renderWithTheme(<Gap testID="gap" />, { textSize: '3' });
     expect(styleOf(screen.getByTestId('gap')).height).toBe(19);
-    renderWithTheme(<Gap testID="gap"/>, { textSize: '10' });
+    renderWithTheme(<Gap testID="gap" />, { textSize: '10' });
     expect(styleOf(screen.getByTestId('gap')).height).toBe(38);
   });
 
   test('mig espai, o un de concret', () => {
-    renderWithTheme(<Gap size="small" testID="gap"/>);
+    renderWithTheme(<Gap size="small" testID="gap" />);
     expect(styleOf(screen.getByTestId('gap')).height).toBe(10);
-    renderWithTheme(<Gap size={7} testID="gap"/>);
+    renderWithTheme(<Gap size={7} testID="gap" />);
     expect(styleOf(screen.getByTestId('gap')).height).toBe(7);
   });
 });
@@ -31,7 +31,12 @@ describe('SectionTitle', () => {
   test('vermell de rúbrica, més petit i en negreta, i els lectors de pantalla el tracten com a títol', () => {
     renderWithTheme(<SectionTitle>{'HIMNE'}</SectionTitle>);
     const title = screen.getByRole('header', { name: 'HIMNE' });
-    expect(styleOf(title)).toMatchObject({ color: '#B3261E', fontSize: 15, fontWeight: '700', textTransform: 'uppercase' });
+    expect(styleOf(title)).toMatchObject({
+      color: '#B3261E',
+      fontSize: 15,
+      fontWeight: '700',
+      textTransform: 'uppercase',
+    });
   });
 
   test('en mode fosc, el vermell clar', () => {
@@ -55,10 +60,16 @@ describe('Rubric', () => {
 });
 
 describe('ChoiceChips', () => {
-  const options = [{ value: '94', label: 'Salm 94' }, { value: '99', label: 'Salm 99' }, { value: '66', label: 'Salm 66' }];
+  const options = [
+    { value: '94', label: 'Salm 94' },
+    { value: '99', label: 'Salm 99' },
+    { value: '66', label: 'Salm 66' },
+  ];
 
   test('una pastilla per opció, amb la triada marcada', () => {
-    renderWithTheme(<ChoiceChips options={options} value="99" onChange={() => {}} accessibilityLabel="Salm invitatori"/>);
+    renderWithTheme(
+      <ChoiceChips options={options} value="99" onChange={() => {}} accessibilityLabel="Salm invitatori" />,
+    );
     const radios = screen.getAllByRole('radio');
     expect(radios).toHaveLength(3);
     expect(screen.getByRole('radio', { name: 'Salm 99' }).props.accessibilityState.checked).toBe(true);
@@ -69,13 +80,15 @@ describe('ChoiceChips', () => {
 
   test('tocar-ne una la tria', () => {
     const onChange = jest.fn();
-    renderWithTheme(<ChoiceChips options={options} value="94" onChange={onChange} accessibilityLabel="Salm invitatori"/>);
+    renderWithTheme(
+      <ChoiceChips options={options} value="94" onChange={onChange} accessibilityLabel="Salm invitatori" />,
+    );
     fireEvent.press(screen.getByText('Salm 66'));
     expect(onChange).toHaveBeenCalledWith('66');
   });
 
   test('fan com a mínim 44 d’alt', () => {
-    renderWithTheme(<ChoiceChips options={options} value="94" onChange={() => {}} accessibilityLabel="Salm"/>);
+    renderWithTheme(<ChoiceChips options={options} value="94" onChange={() => {}} accessibilityLabel="Salm" />);
     expect(styleOf(screen.getByRole('radio', { name: 'Salm 94' })).minHeight).toBeGreaterThanOrEqual(44);
   });
 });
@@ -83,7 +96,7 @@ describe('ChoiceChips', () => {
 describe('ContinueButton', () => {
   test('un botó amb el mateix text d’abans', () => {
     const onPress = jest.fn();
-    renderWithTheme(<ContinueButton label="Continua amb el Salm" showArrow onPress={onPress}/>);
+    renderWithTheme(<ContinueButton label="Continua amb el Salm" showArrow onPress={onPress} />);
     const button = screen.getByRole('button', { name: 'Continua amb el Salm' });
     expect(styleOf(button).minHeight).toBe(48);
     fireEvent.press(button);
@@ -91,14 +104,14 @@ describe('ContinueButton', () => {
   });
 
   test('sense fletxa, 44 d’alt', () => {
-    renderWithTheme(<ContinueButton label="Començar amb l'invitatori" onPress={() => {}}/>);
+    renderWithTheme(<ContinueButton label="Començar amb l'invitatori" onPress={() => {}} />);
     expect(styleOf(screen.getByRole('button')).minHeight).toBe(44);
   });
 });
 
 test('la línia entre parts pren el color del tema', () => {
-  renderWithTheme(<HR testID="hr"/>);
+  renderWithTheme(<HR testID="hr" />);
   expect(styleOf(screen.getByTestId('hr')).borderBottomColor).toBe('#DCE6E5');
-  renderWithTheme(<HR testID="hr" margin_horizontal={20}/>, { dark: true });
+  renderWithTheme(<HR testID="hr" margin_horizontal={20} />, { dark: true });
   expect(styleOf(screen.getByTestId('hr'))).toMatchObject({ borderBottomColor: '#26302F', marginHorizontal: 20 });
 });

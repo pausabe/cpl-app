@@ -11,10 +11,21 @@ jest.mock('expo-updates', () => ({
   fetchUpdateAsync: jest.fn(),
   reloadAsync: jest.fn(),
   isEnabled: true,
-  useUpdates: () => ({ currentlyRunning: { isEmbeddedLaunch: true }, isChecking: false, isDownloading: false, isUpdatePending: false }),
-  runtimeVersion: 'test', channel: 'test', updateId: 'test',
+  useUpdates: () => ({
+    currentlyRunning: { isEmbeddedLaunch: true },
+    isChecking: false,
+    isDownloading: false,
+    isUpdatePending: false,
+  }),
+  runtimeVersion: 'test',
+  channel: 'test',
+  updateId: 'test',
 }));
-jest.mock('expo-splash-screen', () => ({ hideAsync: jest.fn(async () => {}), preventAutoHideAsync: jest.fn(async () => {}), setOptions: jest.fn() }));
+jest.mock('expo-splash-screen', () => ({
+  hideAsync: jest.fn(async () => {}),
+  preventAutoHideAsync: jest.fn(async () => {}),
+  setOptions: jest.fn(),
+}));
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
   const WebView = (props) => <View testID="webview" {...props} />;
@@ -39,7 +50,7 @@ async function openAt(date, settings = {}) {
   await AsyncStorage.clear();
   await AsyncStorage.setItem('WhatsNewSeen_9.0.0', 'true');
   for (const [key, value] of Object.entries(settings)) await AsyncStorage.setItem(key, value);
-  render(<App/>);
+  render(<App />);
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
 }
 
@@ -141,7 +152,9 @@ test('en entrar a les vespres de la vigília de la Mercè, el títol que es veu 
 
 test('al matí, la missa del dia; la tria feta es manté tot el dia', async () => {
   await openAt(new Date(2026, 9, 31, 9, 0), { none: '31:9:2026_vespers' });
-  await waitFor(() => expect(screen.getByRole('radio', { name: 'Vespertina, Tots Sants' }).props.accessibilityState.checked).toBe(true));
+  await waitFor(() =>
+    expect(screen.getByRole('radio', { name: 'Vespertina, Tots Sants' }).props.accessibilityState.checked).toBe(true),
+  );
 });
 
 test('Diumenge de Rams: la frase i el botó de la benedicció, que obre l’evangeli dels rams', async () => {
@@ -233,7 +246,10 @@ test('entre la barra de dalt i la targeta del dia hi ha aire: més que als costa
 
 // The top bar is dark teal in both modes: on iOS it is drawn dark. Drawn light, iOS 26 made the
 // capsules of glass of its buttons whitish and the back arrow black.
-test.each([['clar', 'Desactivat'], ['fosc', 'Activat']])('en mode %s, la barra de dalt es dibuixa fosca', async (_, darkMode) => {
+test.each([
+  ['clar', 'Desactivat'],
+  ['fosc', 'Activat'],
+])('en mode %s, la barra de dalt es dibuixa fosca', async (_, darkMode) => {
   await openAt(new Date(2026, 8, 21, 10, 0), { darkMode });
   const bars = screen.root.findAll((node) => node.props.userInterfaceStyle !== undefined, { deep: true });
   expect(bars.length).toBeGreaterThan(0);
@@ -243,7 +259,7 @@ test.each([['clar', 'Desactivat'], ['fosc', 'Activat']])('en mode %s, la barra d
 test('qui ve de la versió anterior veu l’avís de novetats, i només la primera vegada', async () => {
   jest.setSystemTime(new Date(2026, 8, 21, 10, 0));
   await AsyncStorage.clear();
-  render(<App/>);
+  render(<App />);
   fireEvent.press(await findText('D’acord'));
   await waitFor(async () => expect(await AsyncStorage.getItem('WhatsNewSeen_9.0.0')).toBe('true'));
 });
@@ -252,7 +268,7 @@ test('qui instal·la l’app de nou no veu l’avís de novetats: no té res a c
   wasOpenedBefore.mockResolvedValueOnce(false);
   jest.setSystemTime(new Date(2026, 8, 21, 10, 0));
   await AsyncStorage.clear();
-  render(<App/>);
+  render(<App />);
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
   await waitFor(async () => expect(await AsyncStorage.getItem('WhatsNewSeen_9.0.0')).toBe('true'));
   expect(screen.queryByText('Ara ho tens tot a l’inici')).toBeNull();

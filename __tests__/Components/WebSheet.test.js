@@ -13,7 +13,16 @@ import WebSheet from '../../src/Components/WebSheet';
 
 function open(props = {}) {
   const onClose = jest.fn();
-  renderWithTheme(<WebSheet visible={true} title="Missatge" url="https://www.cpl.es/contacto/" onClose={onClose} testID="sheet" {...props}/>);
+  renderWithTheme(
+    <WebSheet
+      visible={true}
+      title="Missatge"
+      url="https://www.cpl.es/contacto/"
+      onClose={onClose}
+      testID="sheet"
+      {...props}
+    />,
+  );
   return onClose;
 }
 

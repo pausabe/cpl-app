@@ -21,7 +21,7 @@ function withState(state) {
     isUpdatePending: false,
     ...state,
   });
-  render(<UpdateStatus/>);
+  render(<UpdateStatus />);
 }
 
 test('mentre baixa, ho diu amb el percentatge', () => {

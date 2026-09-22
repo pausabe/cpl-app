@@ -8,8 +8,11 @@ const { ThemeProvider } = require('../../src/Theme');
 const METRICS = { frame: { x: 0, y: 0, width: 390, height: 844 }, insets: { top: 47, left: 0, right: 0, bottom: 34 } };
 
 function withTheme(ui, { dark = false, textSize = '3' } = {}) {
-  return React.createElement(SafeAreaProvider, { initialMetrics: METRICS },
-    React.createElement(ThemeProvider, { dark, textSize }, ui));
+  return React.createElement(
+    SafeAreaProvider,
+    { initialMetrics: METRICS },
+    React.createElement(ThemeProvider, { dark, textSize }, ui),
+  );
 }
 
 function renderWithTheme(ui, options) {
@@ -18,7 +21,7 @@ function renderWithTheme(ui, options) {
 
 // The style of a host element, flattened
 function styleOf(element) {
-  const flatten = (s) => (Array.isArray(s) ? Object.assign({}, ...s.map(flatten)) : (s || {}));
+  const flatten = (s) => (Array.isArray(s) ? Object.assign({}, ...s.map(flatten)) : s || {});
   return flatten(element.props.style);
 }
 

@@ -23,7 +23,7 @@ test('una paraula, una línia; un nom de més paraules, dues; i sempre es pot fe
 });
 
 test('les hores: el nom no es parteix, i «Ara» només hi va al costat si hi cap', () => {
-  renderWithTheme(<HoursGrid hours={hoursAt(7)} onOpen={jest.fn()}/>);
+  renderWithTheme(<HoursGrid hours={hoursAt(7)} onOpen={jest.fn()} />);
   expect(label('Laudes').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
   expect(label('Completes').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
   expect(label('Ofici de lectura').props).toMatchObject({ numberOfLines: 2, adjustsFontSizeToFit: true });
@@ -31,7 +31,8 @@ test('les hores: el nom no es parteix, i «Ara» només hi va al costat si hi ca
   // Until it knows the room there is, the tile does not show it
   const line = within(screen.getByTestId('hour-laudes')).getByTestId('hour-laudes-title');
   expect(screen.queryByTestId('hour-now-badge')).toBeNull();
-  const layout = (element, width) => fireEvent(element, 'layout', { nativeEvent: { layout: { x: 0, y: 0, width, height: 22 } } });
+  const layout = (element, width) =>
+    fireEvent(element, 'layout', { nativeEvent: { layout: { x: 0, y: 0, width, height: 22 } } });
   const measure = screen.getByTestId('hour-laudes-measure', { includeHiddenElements: true });
 
   // "Laudes" and "Ara" need 120 and the line has 200: side by side
@@ -46,7 +47,7 @@ test('les hores: el nom no es parteix, i «Ara» només hi va al costat si hi ca
 });
 
 test('les hores menors, tres per fila, no porten «Ara»: només el fons ple', () => {
-  renderWithTheme(<HoursGrid hours={hoursAt(10)} onOpen={jest.fn()}/>);
+  renderWithTheme(<HoursGrid hours={hoursAt(10)} onOpen={jest.fn()} />);
   expect(screen.getByRole('button', { name: 'Tèrcia' }).props.accessibilityValue).toEqual({ text: 'Ara' });
   expect(screen.queryByTestId('hour-now-badge')).toBeNull();
   expect(screen.queryByTestId('hour-tercia-measure', { includeHiddenElements: true })).toBeNull();
@@ -54,7 +55,9 @@ test('les hores menors, tres per fila, no porten «Ara»: només el fons ple', (
 });
 
 test('les opcions del tema no es parteixen', () => {
-  renderWithTheme(<SegmentedControl segments={THEME_SEGMENTS} value="Automàtic" onChange={jest.fn()} accessibilityLabel="Tema"/>);
+  renderWithTheme(
+    <SegmentedControl segments={THEME_SEGMENTS} value="Automàtic" onChange={jest.fn()} accessibilityLabel="Tema" />,
+  );
   for (const text of ['Automàtic', 'Clar', 'Fosc']) {
     expect(label(text).props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
   }
@@ -62,7 +65,14 @@ test('les opcions del tema no es parteixen', () => {
 
 test('els botons del calendari no es parteixen', () => {
   renderWithTheme(
-    <CalendarDialog visible={true} value={new Date(2026, 8, 21)} onCancel={jest.fn()} onToday={jest.fn()} onChange={jest.fn()}/>);
+    <CalendarDialog
+      visible={true}
+      value={new Date(2026, 8, 21)}
+      onCancel={jest.fn()}
+      onToday={jest.fn()}
+      onChange={jest.fn()}
+    />,
+  );
   for (const text of ['Cancel·la', 'Avui', 'Canvia']) {
     expect(label(text).props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
   }

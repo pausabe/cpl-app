@@ -13,7 +13,7 @@ export default class HRComponent extends Component {
         style={{
           borderBottomColor: this.context.colors.divider,
           borderBottomWidth: 1,
-          marginHorizontal: (this.props.margin_horizontal !== undefined ? this.props.margin_horizontal : 0),
+          marginHorizontal: this.props.margin_horizontal !== undefined ? this.props.margin_horizontal : 0,
         }}
       />
     );

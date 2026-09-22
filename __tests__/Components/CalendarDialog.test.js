@@ -16,7 +16,7 @@ afterAll(() => {
 
 function open(props = {}) {
   const handlers = { onCancel: jest.fn(), onToday: jest.fn(), onChange: jest.fn() };
-  renderWithTheme(<CalendarDialog visible={true} value={new Date(2026, 8, 21, 10, 0)} {...handlers} {...props}/>);
+  renderWithTheme(<CalendarDialog visible={true} value={new Date(2026, 8, 21, 10, 0)} {...handlers} {...props} />);
   return handlers;
 }
 
@@ -65,7 +65,16 @@ test('fora de la base de dades, els dies no es poden triar ni s’hi pot anar', 
 });
 
 test('en mode fosc, els colors fosc', () => {
-  renderWithTheme(<CalendarDialog visible={true} value={new Date(2026, 8, 21)} onCancel={() => {}} onToday={() => {}} onChange={() => {}}/>, { dark: true });
+  renderWithTheme(
+    <CalendarDialog
+      visible={true}
+      value={new Date(2026, 8, 21)}
+      onCancel={() => {}}
+      onToday={() => {}}
+      onChange={() => {}}
+    />,
+    { dark: true },
+  );
   expect(styleOf(screen.getByTestId('calendar-day-21')).backgroundColor).toBe('#1F7F7B');
 });
 
@@ -78,8 +87,11 @@ describe('la llista d’anys', () => {
     expect(title.props.accessibilityHint).toBe('Tria un altre any');
     fireEvent.press(title);
     const years = screen.getByTestId('calendar-years');
-    expect(within(years).getAllByRole('button').map((b) => b.props.accessibilityLabel))
-      .toEqual(['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026']);
+    expect(
+      within(years)
+        .getAllByRole('button')
+        .map((b) => b.props.accessibilityLabel),
+    ).toEqual(['2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026']);
     expect(screen.getByRole('button', { name: '2026' }).props.accessibilityState.selected).toBe(true);
     // While the years show, no month arrows and no days
     expect(screen.queryByRole('button', { name: 'Mes anterior' })).toBeNull();
