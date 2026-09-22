@@ -5,9 +5,10 @@ appId: cpl.cpl
 # surt la primera vegada.
 - launchApp:
     clearState: true
-# L'inici, o l'avís de mitjanit a sobre: és un modal, i mentre hi és l'inici no es veu
+# L'inici, o un dels avisos a sobre (el de mitjanit o el de novetats): són modals, i mentre
+# hi són l'inici no es veu
 - extendedWaitUntil:
-    visible: "Missatge|No, la d.avui"
+    visible: "Missatge|No, la d.avui|D.acord"
     timeout: 60000
 - tapOn:
     text: "No, la d.avui"
