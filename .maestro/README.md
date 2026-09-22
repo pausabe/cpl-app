@@ -2,7 +2,7 @@
 
 Obren l'app compilada en un emulador d'Android o un simulador d'iOS i la fan servir com un
 usuari. Són la comprovació que falta als tests de Jest: que els mòduls natius (base de
-dades, selectors, webviews, calendari) funcionen dins d'un binari de veritat.
+dades, webviews, gràfics, lletres, pantalla encesa) funcionen dins d'un binari de veritat.
 
     # una sola vegada
     curl -fsSL "https://get.maestro.mobile.dev" | bash
@@ -18,8 +18,8 @@ dades, selectors, webviews, calendari) funcionen dins d'un binari de veritat.
     make ui-tests           # totes dues
 
 Els mateixos fluxos serveixen per a totes dues plataformes. On l'app es comporta diferent
-hi ha una branca `when: platform:` —tornar enrere, el calendari (diàleg d'Android / calendari
-propi a iOS) i el donatiu (webview a Android / Safari a iOS).
+hi ha una branca `when: platform:` —tornar enrere i el donatiu (webview a Android / Safari a
+iOS). El calendari és el de l'app, igual a totes dues.
 
 Cada flux comença amb `subflows/obrir.yaml`: `clearState`, l'app com acabada d'instal·lar, la
 configuració per defecte i el dia d'avui, i tanca els avisos que surten en obrir-la (el de
@@ -39,7 +39,7 @@ queden a `~/.maestro/tests/<data>/`.
 | 05-calendari | Canviar de dia amb el calendari |
 | 06-webs | Missatge i Donatiu |
 | 07-inici | Una hora des de l'inici, el botó Aa i el full de la vida del sant |
-| 08-dissabte | Al proper dissabte: Avui / Vespertina i la memòria lliure (només Android) |
+| 08-dissabte | Al proper dissabte: Avui / Vespertina i la memòria lliure |
 
 Amb 16 GB de RAM, millor una plataforma cada vegada: l'emulador d'Android i el simulador
 d'iOS alhora, amb una compilació al darrere, fan que el Mac enviï memòria al disc i els

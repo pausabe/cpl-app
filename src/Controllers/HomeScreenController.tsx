@@ -15,7 +15,7 @@ import {useTheme} from '../Theme';
 import HeaderButton from '../Components/HeaderButton';
 import HomeScreen from '../Views/Home/HomeScreen';
 import LatePrayerDialog from '../Views/Home/LatePrayerDialog';
-import CalendarPicker from '../Views/Home/CalendarPicker';
+import CalendarDialog from '../Views/Home/CalendarDialog';
 import WhatsNewSheet from '../Views/Home/WhatsNewSheet';
 import LoadError from '../Views/Home/LoadError';
 import {buildDayCard} from '../ViewModels/DayCard';
@@ -256,7 +256,7 @@ export default function HomeScreenController({navigation}: {navigation: any}) {
                 onOptionalMemoryChange={onOptionalMemoryChange}
                 onMessage={() => navigation.navigate('Comment')}
                 onDonation={onDonation}/>
-            <CalendarPicker
+            <CalendarDialog
                 visible={calendarVisible}
                 value={today}
                 minimumDate={snapshot.database.MinimumSelectableDate}

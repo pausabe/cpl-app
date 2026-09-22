@@ -178,14 +178,31 @@ test('el calendari canvia de dia; «Cancel·la» el tanca sense canviar-lo', asy
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   expect(await screen.findByTestId('calendar')).toBeTruthy();
+  expect(screen.getByText('setembre de 2026')).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'dimarts, 15 de setembre' }));
   fireEvent.press(screen.getByRole('button', { name: 'Cancel·la' }));
   await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull());
+  expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
 
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
-  const picker = screen.UNSAFE_getByType(require('@react-native-community/datetimepicker').default);
-  act(() => picker.props.onChange({ type: 'set' }, new Date(2026, 8, 15, 10, 0)));
+  fireEvent.press(await screen.findByRole('button', { name: 'dimarts, 15 de setembre' }));
   fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
   await findText('Dimarts, 15 de setembre');
+});
+
+test('al calendari es passa de mes, i «Avui» torna a avui', async () => {
+  await openAt(new Date(2026, 8, 21, 10, 0));
+  fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
+  fireEvent.press(await screen.findByRole('button', { name: 'Mes següent' }));
+  expect(screen.getByText('octubre de 2026')).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'dissabte, 31 d’octubre' }));
+  fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+  await findText('Dissabte, 31 d’octubre');
+
+  fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
+  expect(await screen.findByText('octubre de 2026')).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'Avui' }));
+  await findText('Dilluns, 21 de setembre');
 });
 
 test('amb el mode fosc activat, l’inici també és fosc', async () => {

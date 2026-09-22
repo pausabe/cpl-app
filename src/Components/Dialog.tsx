@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, Pressable, StyleSheet, View} from 'react-native';
+import {Modal, Pressable, StyleProp, StyleSheet, View, ViewStyle} from 'react-native';
 import {useTheme} from '../Theme';
 
 // A card in the middle of the screen, over a dark veil: the midnight notice, the calendar.
@@ -10,10 +10,12 @@ interface DialogProps {
     accessibilityLabel: string;
     children?: React.ReactNode;
     maxWidth?: number;
+    // Padding and spacing of the card, when the content needs its own
+    style?: StyleProp<ViewStyle>;
     testID?: string;
 }
 
-export default function Dialog({visible, onDismiss, accessibilityLabel, children, maxWidth, testID}: DialogProps) {
+export default function Dialog({visible, onDismiss, accessibilityLabel, children, maxWidth, style, testID}: DialogProps) {
     const theme = useTheme();
     return (
         <Modal
@@ -36,7 +38,7 @@ export default function Dialog({visible, onDismiss, accessibilityLabel, children
                         maxWidth: maxWidth ?? theme.layout.dialogMaxWidth,
                         backgroundColor: theme.colors.sheet,
                         borderRadius: theme.radius.sheet,
-                    }]}>
+                    }, style]}>
                     {children}
                 </View>
             </View>

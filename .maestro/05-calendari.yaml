@@ -3,23 +3,11 @@ name: "Es pot canviar de dia amb el calendari"
 ---
 - runFlow: subflows/obrir.yaml
 - tapOn: "Calendari"
-# El dia 15 del mes que mostra, i acceptar. Android obre el seu diàleg de data; a iOS l'app
-# té un calendari propi amb els botons Cancel·la / Avui / Canvia.
-- runFlow:
-    when:
-      platform: Android
-    commands:
-      - tapOn:
-          text: "15"
-          index: 0
-      - tapOn: "OK|D'acord|Acceptar|Aceptar"
-- runFlow:
-    when:
-      platform: iOS
-    commands:
-      # Cada dia és un botó «dimarts, 15 de setembre»
-      - tapOn: "[^ ]+, ([^ ]+ 15|15 .+)"
-      - tapOn: "Canvia"
+# El calendari de l'app, igual a Android i a iOS: el dia 15 del mes que mostra, i «Canvia».
+# Cada dia és un botó «dimarts, 15 de setembre» amb el número a dins: a Android es toca el
+# número; a iOS, el botó.
+- tapOn: "15|[^ ]+, 15 d.+"
+- tapOn: "Canvia"
 # La data, en paraules a la targeta del dia
 - extendedWaitUntil:
     visible: "Di[a-z]+, 15 d.+"
