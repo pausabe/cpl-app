@@ -12,6 +12,7 @@ import SwitchRow from '../../src/Components/SwitchRow';
 import Card from '../../src/Components/Card';
 import HourIcon from '../../src/Components/HourIcon';
 import Icon from '../../src/Components/Icon';
+import EdgeToEdgeScrollView from '../../src/Components/EdgeToEdgeScrollView';
 
 describe('BottomSheet', () => {
   test('mostra el contingut quan és obert, i res quan és tancat', () => {
@@ -129,6 +130,33 @@ describe('BottomSheet', () => {
     expect(closesWhenReleased(30, 1.5)).toBe(true);
     expect(closesWhenReleased(120, 0)).toBe(true);
     expect(closesWhenReleased(40, 0.2)).toBe(false);
+  });
+});
+
+describe('EdgeToEdgeScrollView', () => {
+  // The test phone has the 34 points of the home indicator at the bottom (METRICS)
+  test('the content runs under the home indicator and ends with its height free', () => {
+    renderWithTheme(
+      <EdgeToEdgeScrollView testID="scroll" contentContainerStyle={{ paddingTop: 18, paddingBottom: 40 }}>
+        <Text>Laudes</Text>
+      </EdgeToEdgeScrollView>,
+    );
+    const scroll = screen.getByTestId('scroll');
+    expect(styleOf({ props: { style: scroll.props.contentContainerStyle } })).toMatchObject({
+      paddingTop: 18,
+      paddingBottom: 74,
+    });
+    expect(scroll.props.scrollIndicatorInsets).toEqual({ bottom: 34 });
+  });
+
+  test('without a padding of its own, it ends with just the height of the home indicator', () => {
+    renderWithTheme(
+      <EdgeToEdgeScrollView testID="scroll">
+        <Text>Configuració</Text>
+      </EdgeToEdgeScrollView>,
+    );
+    const scroll = screen.getByTestId('scroll');
+    expect(styleOf({ props: { style: scroll.props.contentContainerStyle } }).paddingBottom).toBe(34);
   });
 });
 

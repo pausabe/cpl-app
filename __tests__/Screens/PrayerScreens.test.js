@@ -8,6 +8,7 @@ jest.mock('react-native-youtube-iframe', () => {
 });
 
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { screen, fireEvent, act, render } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -164,4 +165,19 @@ test('les lectures s’alineen a l’esquerra i tenen una amplada màxima', asyn
   await open(MassPrayerController, { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false });
   const gospel = DataService.CurrentMassLiturgy.Today.Gospel.Gospel.replace(/\s+$/, '');
   expect(styleOf(screen.getByText(gospel)).textAlign).toBe('left');
+});
+
+// iOS has no bar at the bottom, only the home indicator (34 points on the test phone)
+test.each([
+  ['an hour', HoursPrayerController, { type: 'Laudes', title: 'Laudes' }],
+  [
+    'the readings',
+    MassPrayerController,
+    { type: 'Evangeli', title: 'Missa', need_lectura2: false, useVespersTexts: false },
+  ],
+])('the text of %s runs to the bottom edge, and ends above the home indicator', async (_, Controller, params) => {
+  await open(Controller, params);
+  const scroll = screen.getByTestId('prayer-scroll');
+  expect(StyleSheet.flatten(scroll.props.contentContainerStyle).paddingBottom).toBe(40 + 34);
+  expect(scroll.props.scrollIndicatorInsets).toEqual({ bottom: 34 });
 });

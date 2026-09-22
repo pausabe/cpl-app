@@ -11,6 +11,7 @@ jest.mock('expo-updates', () => ({
 jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0', nativeBuildVersion: '90' }));
 
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -125,6 +126,14 @@ test('la mida del text es veu en una frase de mostra i es desa en deixar anar', 
   });
   expect(DataService.CurrentSettings.TextSize).toBe('6');
   expect(await AsyncStorage.getItem('textSize')).toBe('6');
+});
+
+// iOS has no bar at the bottom, only the home indicator (34 points on the test phone)
+test('Configuració scrolls to the bottom edge, and ends above the home indicator', async () => {
+  await open();
+  const scroll = screen.getByTestId('settings-scroll');
+  expect(StyleSheet.flatten(scroll.props.contentContainerStyle).paddingBottom).toBe(34);
+  expect(scroll.props.scrollIndicatorInsets).toEqual({ bottom: 34 });
 });
 
 // On iOS the native slider drew its thumb at the start the first time Configuració opened

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import GlobalViewFunctions from '../../Utils/GlobalViewFunctions';
 import HR from '../../Components/HRComponent';
 import Gap from '../../Components/Gap';
+import EdgeToEdgeScrollView from '../../Components/EdgeToEdgeScrollView';
 import SectionTitle from '../../Components/SectionTitle';
 import ContinueButton from '../../Components/ContinueButton';
 import ChoiceChips from '../../Components/ChoiceChips';
@@ -56,8 +56,8 @@ export default class MassLiturgyPrayerScreen extends Component {
   render() {
     try {
       return (
-        <SafeAreaView edges={['bottom']} style={this.styles.container}>
-          <ScrollView automaticallyAdjustContentInsets={false} contentContainerStyle={styles.content}>
+        <View style={this.styles.container}>
+          <EdgeToEdgeScrollView testID="prayer-scroll" contentContainerStyle={styles.content}>
             <View style={[styles.column, { maxWidth: this.context.layout.readingMaxWidth }]}>
               {this.state.VetllaPasquaLecturesSalms ? (
                 <View>
@@ -75,8 +75,8 @@ export default class MassLiturgyPrayerScreen extends Component {
               {this.state.Lect2 ? this.Render_2Lect() : null}
               {this.state.Evangeli ? this.Render_Evangeli() : null}
             </View>
-          </ScrollView>
-        </SafeAreaView>
+          </EdgeToEdgeScrollView>
+        </View>
       );
     } catch (error) {
       Logger.LogError(Logger.LogKeys.Screens, 'render', error);

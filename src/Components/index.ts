@@ -7,6 +7,7 @@ export { default as ChoiceChips } from './ChoiceChips';
 export type { Choice } from './ChoiceChips';
 export { default as ContinueButton } from './ContinueButton';
 export { default as Dialog } from './Dialog';
+export { default as EdgeToEdgeScrollView } from './EdgeToEdgeScrollView';
 export { default as Gap } from './Gap';
 export { default as HeaderButton } from './HeaderButton';
 export { default as HourIcon } from './HourIcon';

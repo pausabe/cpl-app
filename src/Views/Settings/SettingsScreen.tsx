@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { LayoutChangeEvent, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { LayoutChangeEvent, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { convertTextSize, MAX_TEXT_SIZE_SETTING, MIN_TEXT_SIZE_SETTING, useTheme } from '../../Theme';
 import Card from '../../Components/Card';
+import EdgeToEdgeScrollView from '../../Components/EdgeToEdgeScrollView';
 import Icon from '../../Components/Icon';
 import OptionSheet from '../../Components/OptionSheet';
 import SegmentedControl from '../../Components/SegmentedControl';
@@ -99,8 +99,8 @@ export default function SettingsScreen(props: SettingsScreenProps) {
   );
 
   return (
-    <SafeAreaView edges={['bottom']} style={[styles.screen, { backgroundColor: colors.settingsBackground }]}>
-      <ScrollView>
+    <View style={[styles.screen, { backgroundColor: colors.settingsBackground }]}>
+      <EdgeToEdgeScrollView testID="settings-scroll">
         <View testID="settings-column" style={[styles.content, { maxWidth: theme.layout.homeMaxWidth }]}>
           {values ? (
             <View style={styles.groups}>
@@ -221,7 +221,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
             ) : null}
           </View>
         </View>
-      </ScrollView>
+      </EdgeToEdgeScrollView>
 
       {values ? (
         <>
@@ -249,7 +249,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
           />
         </>
       ) : null}
-    </SafeAreaView>
+    </View>
   );
 }
 

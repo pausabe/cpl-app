@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, StyleSheet } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 import Ofici from './SpecificHourLiturgy/OfficeComponent';
@@ -9,6 +8,7 @@ import Vespres from './SpecificHourLiturgy/VespersComponent';
 import HoraMenor from './SpecificHourLiturgy/HoursComponent';
 import Completes from './SpecificHourLiturgy/NightPrayerComponent';
 import Gap from '../../Components/Gap';
+import EdgeToEdgeScrollView from '../../Components/EdgeToEdgeScrollView';
 import { ThemeContext, prayerTextStyles } from '../../Theme';
 
 // While a prayer is open the screen does not go off
@@ -33,8 +33,8 @@ export default class HoursLiturgyPrayerScreen extends Component {
   render() {
     const theme = this.context;
     return (
-      <SafeAreaView edges={['bottom']} style={prayerTextStyles(theme).container}>
-        <ScrollView automaticallyAdjustContentInsets={false} contentContainerStyle={styles.content}>
+      <View style={prayerTextStyles(theme).container}>
+        <EdgeToEdgeScrollView testID="prayer-scroll" contentContainerStyle={styles.content}>
           <View style={[styles.column, { maxWidth: theme.layout.readingMaxWidth }]}>
             {this.props.celebration ? (
               <Text
@@ -49,8 +49,8 @@ export default class HoursLiturgyPrayerScreen extends Component {
             {this.props.celebration ? <Gap /> : null}
             {this.liturgyComponent(this.props.type)}
           </View>
-        </ScrollView>
-      </SafeAreaView>
+        </EdgeToEdgeScrollView>
+      </View>
     );
   }
 
