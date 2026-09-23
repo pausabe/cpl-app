@@ -3,18 +3,62 @@ import * as SQLite from 'expo-sqlite';
 import * as Logger from '../utils/logger';
 import { Asset } from 'expo-asset';
 import { FileSystemService } from './FileSystemService';
+import bundledDatabase from '../assets/db/cpl-app.db.json';
 
 let CPLDataBase = undefined;
 
+export const DATABASE_DIRECTORY = `${FileSystem.documentDirectory}SQLite/`;
+
+// Every database says what it is in its own name: cpl-<compatibility>-v<version>.db. The
+// compatibility key is the one the publishing website stamps inside it, so a database made for
+// another version of the app is never opened here. The phone keeps exactly one: on opening, the
+// newest one this app can read stays and the rest go.
+export function databaseFileName(compat: string, version: number): string {
+  return `cpl-${compat}-v${version}.db`;
+}
+
+function parseDatabaseFileName(fileName: string): { compat: string; version: number } | null {
+  const parts = /^cpl-(s\d+-[0-9a-f]+)-v(\d+)\.db$/.exec(fileName);
+  return parts ? { compat: parts[1], version: Number(parts[2]) } : null;
+}
+
+export function bundledDatabaseInformation(): { compat: string; version: number; md5: string } {
+  return bundledDatabase;
+}
+
+// The database the app would use right now, without opening it: the newest downloaded one it can
+// read, or the one that ships inside the app. The updater asks for it before downloading anything.
+export async function currentDatabaseVersion(): Promise<number> {
+  const downloaded = await usableDownloadedDatabases();
+  return Math.max(bundledDatabase.version, downloaded[0]?.version ?? 0);
+}
+
 export async function openDatabase(databaseAsset: Asset) {
   await createDirectory();
-  const databaseName = await updateDatabaseFile(databaseAsset);
+  const databaseName = await chooseDatabase(databaseAsset);
 
   if (!(await databaseExists(databaseName))) {
     throw 'There is no database to open';
   }
   Logger.log(Logger.LogKeys.DatabaseManagerService, 'openDatabase', `Opening database '${databaseName}'`);
-  CPLDataBase = await SQLite.openDatabaseAsync(databaseName);
+  try {
+    CPLDataBase = await SQLite.openDatabaseAsync(databaseName);
+  } catch (error) {
+    CPLDataBase = await openBundledAfterFailure(databaseAsset, databaseName, error);
+  }
+}
+
+// A downloaded database that does not open would leave the app with no liturgy at all, so it is
+// thrown away and the one inside the app takes over. The next check downloads it again.
+async function openBundledAfterFailure(databaseAsset: Asset, failedName: string, error: unknown) {
+  const bundledName = databaseFileName(bundledDatabase.compat, bundledDatabase.version);
+  if (failedName === bundledName) {
+    throw error;
+  }
+  Logger.logError(Logger.LogKeys.DatabaseManagerService, 'openDatabase', error as Error);
+  await FileSystem.deleteAsync(`${DATABASE_DIRECTORY}${failedName}`, { idempotent: true });
+  await placeBundledDatabase(databaseAsset, bundledName);
+  return SQLite.openDatabaseAsync(bundledName);
 }
 
 export function executeQueryAsync(query): Promise<any> {
@@ -41,55 +85,65 @@ async function executeQuery(query, callback, errorCallback) {
 }
 
 async function databaseExists(databaseName) {
-  return (
-    databaseName && (await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/' + databaseName)).exists
-  );
+  return databaseName && (await FileSystem.getInfoAsync(`${DATABASE_DIRECTORY}${databaseName}`)).exists;
 }
 
 async function createDirectory() {
-  if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite/')).exists) {
-    await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
+  if (!(await FileSystem.getInfoAsync(DATABASE_DIRECTORY)).exists) {
+    await FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}SQLite`);
   }
 }
 
-async function updateDatabaseFile(databaseCandidateToBeTheNewOneAsset: Asset) {
-  const currentDatabaseFileName = await getCurrentDatabaseFileName();
-  const candidateDatabaseFileName = databaseCandidateToBeTheNewOneAsset
-    ? databaseNameFromUri(databaseCandidateToBeTheNewOneAsset.localUri)
-    : '';
-  const isNecessaryToUpdateTheDatabase =
-    candidateDatabaseFileName !== '' && currentDatabaseFileName !== candidateDatabaseFileName;
+// Downloaded databases this app can read, newest first
+async function usableDownloadedDatabases(): Promise<{ name: string; version: number }[]> {
+  const fileUris = await FileSystemService.getFileUrisInDirectory(DATABASE_DIRECTORY, 'db');
+  return fileUris
+    .map((uri) => {
+      const name = databaseNameFromUri(uri);
+      return { name, parsed: parseDatabaseFileName(name) };
+    })
+    .filter(({ parsed }) => parsed !== null && parsed.compat === bundledDatabase.compat)
+    .map(({ name, parsed }) => ({ name, version: parsed.version }))
+    .sort((one, other) => other.version - one.version);
+}
+
+async function chooseDatabase(databaseAsset: Asset): Promise<string> {
+  const downloaded = await usableDownloadedDatabases();
+  const newest = downloaded[0];
+  const bundledName = databaseFileName(bundledDatabase.compat, bundledDatabase.version);
+
+  let chosenName = bundledName;
+  if (newest && newest.version > bundledDatabase.version) {
+    chosenName = newest.name;
+  } else {
+    await placeBundledDatabase(databaseAsset, bundledName);
+  }
 
   Logger.log(
     Logger.LogKeys.DatabaseManagerService,
-    'updateDatabaseFile',
-    `currentName = '${currentDatabaseFileName}' vs candidateName = '${candidateDatabaseFileName}' => ${isNecessaryToUpdateTheDatabase ? 'We need to update' : 'No necessary to update'}`,
+    'chooseDatabase',
+    `Using '${chosenName}' (inside the app: version ${bundledDatabase.version}, downloaded: ${downloaded.length})`,
   );
-
-  if (isNecessaryToUpdateTheDatabase) {
-    // We delete all possible files just in case. It should only be one database
-    await FileSystemService.deleteFilesInDirectory(`${FileSystem.documentDirectory}SQLite/`, 'db');
-    await FileSystemService.copyFile(
-      databaseCandidateToBeTheNewOneAsset.localUri,
-      `${FileSystem.documentDirectory}SQLite/${candidateDatabaseFileName}`,
-    );
-    return candidateDatabaseFileName;
-  }
-  return currentDatabaseFileName;
+  await deleteEveryDatabaseBut(chosenName);
+  return chosenName;
 }
 
-async function getCurrentDatabaseFileName() {
-  let currentDatabaseFileName = '';
-  const listOfDatabaseFiles = await FileSystemService.getFileUrisInDirectory(
-    `${FileSystem.documentDirectory}SQLite/`,
-    'db',
-  );
-  if (listOfDatabaseFiles.length > 0) {
-    // It should be just one database
-    const currentDatabaseUri = listOfDatabaseFiles[0];
-    currentDatabaseFileName = databaseNameFromUri(currentDatabaseUri);
+async function placeBundledDatabase(databaseAsset: Asset, bundledName: string) {
+  if (await databaseExists(bundledName)) {
+    return;
   }
-  return currentDatabaseFileName;
+  await FileSystemService.copyFile(databaseAsset?.localUri, `${DATABASE_DIRECTORY}${bundledName}`);
+}
+
+// Only the database in use is kept: each one takes 16 MB
+async function deleteEveryDatabaseBut(databaseName: string) {
+  const fileUris = await FileSystemService.getFileUrisInDirectory(DATABASE_DIRECTORY, 'db');
+  for (const fileUri of fileUris) {
+    if (databaseNameFromUri(fileUri) !== databaseName) {
+      Logger.log(Logger.LogKeys.DatabaseManagerService, 'deleteEveryDatabaseBut', `Deleting '${fileUri}'`);
+      await FileSystem.deleteAsync(fileUri, { idempotent: true });
+    }
+  }
 }
 
 function databaseNameFromUri(uri) {

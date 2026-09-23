@@ -8,7 +8,6 @@ import OptionSheet from '../../components/OptionSheet';
 import SegmentedControl from '../../components/SegmentedControl';
 import SwitchRow from '../../components/SwitchRow';
 import TextSizeControl from '../../components/TextSizeControl';
-import UpdateStatus from '../../components/UpdateStatusComponent';
 import { DarkModeChoice, THEME_SEGMENTS } from '../../components/TextSettingsSheet';
 
 // Configuració: the same six options as always, in three groups. Everything comes from its
@@ -155,7 +154,6 @@ export default function SettingsScreen(props: SettingsScreenProps) {
             <Text style={[styles.footerText, { color: colors.text3 }]}>
               {`Versió de l'aplicació: ${info.appVersion}\nVersió de la base de dades: ${info.databaseVersion}`}
             </Text>
-            <UpdateStatus />
             {technicalVisible ? (
               <View testID="technical-data">
                 {info.technical.map((line) => (

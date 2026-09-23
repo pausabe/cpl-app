@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Appearance } from 'react-native';
 import * as ExpoApplication from 'expo-application';
 import Constants from 'expo-constants';
-import * as Updates from 'expo-updates';
 import SettingsService, { DioceseName, PrayingPlace } from '../services/SettingsService';
 import { SessionLogs } from '../utils/logger';
 import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen';
 import * as LiturgyStore from './liturgyStore';
+import { bundledDatabaseInformation, currentDatabaseVersion } from '../services/databaseManagerService';
 import { useTextSettings } from './appearanceSettings';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
@@ -37,6 +37,14 @@ async function loadOtherValues(): Promise<OtherValues> {
 
 export default function SettingsController() {
   const { database, hours } = LiturgyStore.useLiturgy();
+  // Which published database the phone is praying with: the one inside the app until one is
+  // downloaded from the publishing website
+  const [publishedVersion, setPublishedVersion] = useState<number | null>(null);
+  useEffect(() => {
+    currentDatabaseVersion()
+      .then(setPublishedVersion)
+      .catch(() => setPublishedVersion(null));
+  }, []);
   const textSettings = useTextSettings();
   const [others, setOthers] = useState<OtherValues | null>(null);
 
@@ -71,9 +79,8 @@ export default function SettingsController() {
         technical: [
           `Esquema de color: ${Appearance.getColorScheme()}`,
           `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
-          `EAS-runtimeVersion: ${Updates.runtimeVersion}`,
-          `EAS-channel: ${Updates.channel}`,
-          `EAS-updateId: ${Updates.updateId}`,
+          `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
+          `Compatibilitat: ${bundledDatabaseInformation().compat}`,
         ],
         logs: SessionLogs,
       }}

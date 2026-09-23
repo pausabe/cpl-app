@@ -5,6 +5,7 @@ const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 
 const DB_PATH = path.resolve(__dirname, '../../src/assets/db/cpl-app.db');
+const bundled = require('../../src/assets/db/cpl-app.db.json');
 let db;
 
 function database() {
@@ -14,6 +15,10 @@ function database() {
 
 module.exports = {
   DB_PATH,
+  DATABASE_DIRECTORY: 'file:///docs/SQLite/',
+  databaseFileName: (compat, version) => `cpl-${compat}-v${version}.db`,
+  bundledDatabaseInformation: () => bundled,
+  currentDatabaseVersion: async () => bundled.version,
   openDatabase: async () => {
     database();
   },

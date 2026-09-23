@@ -19,6 +19,8 @@ package-lock.json
 .DS_Store
 
 # CPL
+# Clau de l'app per a cpl-cloud: s'injecta en compilar, no va mai al repo (que és públic)
+.env
 *.db
 *.lock
 dist

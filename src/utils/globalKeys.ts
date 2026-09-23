@@ -1,7 +1,7 @@
 // Colours, sizes and spacing of the screens are in src/Theme. What is left here is used
 // outside them.
 let GlobalKeys = {
-  // The screen that shows while an update is applied (UpdaterService)
+  // The bar of the screens
   barColor: '#006064',
   itemsBarColor: '#FFFFFF',
 

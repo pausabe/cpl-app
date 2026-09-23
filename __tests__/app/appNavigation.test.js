@@ -1,6 +1,6 @@
 // The whole app, from <App/> down, rendered in Node: it opens on a known day, and a user
 // goes through every screen. The liturgy comes from the real cpl-app.db and the real
-// services; only what needs a phone is replaced (the file system, OTA updates, web views).
+// services; only what needs a phone is replaced (the file system, the database download, web views).
 //
 // What it catches is a screen that no longer mounts or no longer shows its text — the
 // typical damage of a library upgrade — not the exact wording, which LiturgyGolden checks.
@@ -10,20 +10,10 @@ jest.mock('expo-asset', () => {
   const assets = [{ localUri: 'file:///bundle/cpl-app.db' }];
   return { ...jest.requireActual('expo-asset'), useAssets: () => [assets, undefined] };
 });
-jest.mock('expo-updates', () => ({
-  checkForUpdateAsync: jest.fn(async () => ({ isAvailable: false })),
-  fetchUpdateAsync: jest.fn(),
-  reloadAsync: jest.fn(),
-  isEnabled: true,
-  useUpdates: () => ({
-    currentlyRunning: { isEmbeddedLaunch: true },
-    isChecking: false,
-    isDownloading: false,
-    isUpdatePending: false,
-  }),
-  runtimeVersion: 'test',
-  channel: 'test',
-  updateId: 'test',
+// The app asks the publishing website for a new database when it opens; in a test there is none.
+jest.mock('../../src/services/databaseUpdateService', () => ({
+  useDatabaseUpdates: () => {},
+  checkForNewDatabase: jest.fn(async () => 'up-to-date'),
 }));
 jest.mock('../../src/controllers/firstRun', () => ({ wasOpenedBefore: jest.fn(async () => true) }));
 jest.mock('expo-splash-screen', () => ({

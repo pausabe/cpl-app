@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCustomUpdater } from './src/services/updaterService';
+import { useDatabaseUpdates } from './src/services/databaseUpdateService';
 import NavigationController from './src/controllers/NavigationController';
 import { useAppFonts } from './src/theme/fonts';
 
@@ -9,12 +9,9 @@ import { useAppFonts } from './src/theme/fonts';
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 SplashScreen.setOptions({ duration: 250, fade: true });
 
-function ConfigureUpdates() {
-  useCustomUpdater();
-}
-
 export default function App() {
-  ConfigureUpdates();
+  // The texts come from the publishing website; the code, from the stores
+  useDatabaseUpdates();
   // If something got stuck before the home, the splash goes anyway after 10 s
   useEffect(() => {
     const timer = setTimeout(() => SplashScreen.hideAsync().catch(() => undefined), 10000);

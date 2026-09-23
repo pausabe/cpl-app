@@ -9,11 +9,6 @@
     "githubUrl": "https://github.com/pausabe/cpl-app",
     "primaryColor": "#ffffff",
     "backgroundColor": "#000000",
-    "updates": {
-      "enabled": true,
-      "checkAutomatically": "ON_ERROR_RECOVERY",
-      "url": "https://u.expo.dev/7b28fd03-7a72-47f9-9760-12bbaaa74516"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -37,12 +32,6 @@
       },
       "permissions": []
     },
-    "extra": {
-      "eas": {
-        "projectId": "7b28fd03-7a72-47f9-9760-12bbaaa74516"
-      }
-    },
-    "runtimeVersion": "9.0.0",
     "plugins": [
       "expo-asset",
       "expo-font",

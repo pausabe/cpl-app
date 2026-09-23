@@ -1,13 +1,6 @@
 // Settings: the groups, the current values, and each change saved where it has always been
 // and applied. With the real liturgy, so that the changes that reload it are real too.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
-jest.mock('expo-updates', () => ({
-  isEnabled: false,
-  useUpdates: () => ({}),
-  runtimeVersion: '9.0.0',
-  channel: 'production_90',
-  updateId: 'abc',
-}));
 jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0', nativeBuildVersion: '90' }));
 
 import React from 'react';
@@ -157,6 +150,7 @@ test('in plain sight, the approval text and the versions; the technical data, be
   expect(screen.queryByTestId('technical-data')).toBeNull();
   fireEvent.press(approval);
   expect(screen.getByTestId('technical-data')).toBeTruthy();
-  expect(screen.getByText('EAS-channel: production_90')).toBeTruthy();
+  expect(screen.getByText(/^Publicació de la base de dades: \d+ \(dins l'app: \d+\)$/)).toBeTruthy();
+  expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
 });
