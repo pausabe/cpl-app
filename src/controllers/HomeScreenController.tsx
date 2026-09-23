@@ -17,13 +17,16 @@ import HomeScreen from '../views/home/HomeScreen';
 import LatePrayerDialog from '../views/home/LatePrayerDialog';
 import CalendarSheet from '../views/home/CalendarSheet';
 import WhatsNewSheet from '../views/home/WhatsNewSheet';
+import DioceseSheet from '../views/home/DioceseSheet';
 import WebSheet from '../components/WebSheet';
 import { wasOpenedBefore } from './firstRun';
 import LoadError from '../views/home/LoadError';
 import { buildDayCard } from '../view-models/dayCard';
 import { buildHours, HourTile } from '../view-models/hours';
 import { buildMass, massChoiceToStore, MassChoice, MassScreenType, resolveMassChoice } from '../view-models/mass';
-import { latePrayerTexts } from '../view-models/notices';
+import { DioceseOfferTexts, dioceseOfferTexts, latePrayerTexts, LocationStatus } from '../view-models/notices';
+import SettingsService from '../services/SettingsService';
+import { autoselectDiocese, shouldOfferAutoselection } from './dioceseAutoselection';
 
 // The home. It loads the day when the app opens and when the day changes, and keeps doing what
 // it always did: coming back to the app on another day loads today's liturgy, between midnight
@@ -39,6 +42,11 @@ const DONATION_URL = 'https://buy.stripe.com/6oE16v3LV6oa7VC4gg';
 // The notice "Ara ho tens tot a l'inici", once. Set to false to stop showing it.
 const SHOW_WHATS_NEW = true;
 const WHATS_NEW_SEEN_KEY = 'WhatsNewSeen_9.0.0';
+
+// The offer to find the diocese, once, and only to whoever has never chosen one. Set to false to
+// stop offering it.
+const SHOW_DIOCESE_OFFER = true;
+const DIOCESE_OFFER_SEEN_KEY = 'DioceseOfferSeen';
 
 type Status = 'loading' | 'ready' | 'error';
 
@@ -82,6 +90,9 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   const [latePrayerVisible, setLatePrayerVisible] = useState(false);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [whatsNewPending, setWhatsNewPending] = useState(false);
+  // The words of the offer to find the diocese, and null while there is nothing to offer
+  const [dioceseOffer, setDioceseOffer] = useState<DioceseOfferTexts | null>(null);
+  const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
   const [webPage, setWebPage] = useState<'message' | 'donation' | null>(null);
   const [massChoice, setMassChoice] = useState<{ day: string; choice: MassChoice } | null>(null);
   // Whether this home has loaded the day itself: until then the store may still hold a day
@@ -123,6 +134,16 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         // Only to whoever knew the old home
         if (openedBefore) setWhatsNewPending(true);
         else StorageService.storeData(WHATS_NEW_SEEN_KEY, 'true');
+      }
+      if (loaded && SHOW_DIOCESE_OFFER && !(await StorageService.getData(DIOCESE_OFFER_SEEN_KEY))) {
+        // Only to whoever has never chosen a diocese. Whoever did is left alone for good, so the
+        // question is put away for them too and never comes back.
+        if (await shouldOfferAutoselection()) {
+          const current = (await SettingsService.getSettingDiocese()) as string;
+          setDioceseOffer(dioceseOfferTexts(current, openedBefore));
+        } else {
+          StorageService.storeData(DIOCESE_OFFER_SEEN_KEY, 'true');
+        }
       }
       // The splash has covered everything until now (App.js): it goes once the day is
       // drawn, with the colours of the chosen theme. With the midnight notice on iOS the
@@ -286,6 +307,40 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     StorageService.storeData(WHATS_NEW_SEEN_KEY, 'true');
   };
 
+  // Asked once and never again, however it went: somebody who said no here still has the button
+  // in Configuració, and being asked at every opening is worse than not being asked at all.
+  const closeDioceseOffer = () => {
+    setDioceseOffer(null);
+    setLocationStatus('idle');
+    StorageService.storeData(DIOCESE_OFFER_SEEN_KEY, 'true');
+  };
+
+  const findMyDiocese = async () => {
+    setLocationStatus('locating');
+    const outcome = await autoselectDiocese();
+    if (outcome.kind === 'saved') {
+      closeDioceseOffer();
+      await load(LiturgyStore.currentDate());
+      return;
+    }
+    if (outcome.kind === 'unchanged') {
+      closeDioceseOffer();
+      return;
+    }
+    // Nothing was written: the sheet stays open saying why, with the other door still there
+    setLocationStatus(outcome.kind);
+  };
+
+  const openPhoneSettings = () => {
+    Linking.openSettings().catch(() => undefined);
+    setLocationStatus('idle');
+  };
+
+  const chooseDioceseMyself = () => {
+    closeDioceseOffer();
+    navigation.navigate('Settings');
+  };
+
   if (status === 'error') {
     return <LoadError message={LOAD_ERROR_MESSAGE} />;
   }
@@ -336,6 +391,17 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         onToday={() => setLatePrayerVisible(false)}
       />
       <WhatsNewSheet visible={whatsNewPending && !latePrayerVisible} onClose={closeWhatsNew} />
+      {dioceseOffer ? (
+        <DioceseSheet
+          visible={!latePrayerVisible && !whatsNewPending}
+          texts={dioceseOffer}
+          status={locationStatus}
+          onUseMyLocation={findMyDiocese}
+          onOpenPhoneSettings={openPhoneSettings}
+          onChooseMyself={chooseDioceseMyself}
+          onClose={closeDioceseOffer}
+        />
+      ) : null}
       <StatusBar style="light" />
     </View>
   );

@@ -19,21 +19,28 @@ jest.mock('react-native-webview', () => {
 jest.mock('react-native-youtube-iframe', () => () => null);
 // Whether the app had been opened before, by the old version: yes, unless a test says otherwise
 jest.mock('../../src/controllers/firstRun', () => ({ wasOpenedBefore: jest.fn(async () => true) }));
+// Where the phone is comes from the phone: here it is said outright
+jest.mock('../../src/services/deviceLocationService', () => ({ currentPosition: jest.fn() }));
 
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Linking } from 'react-native';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
 import App from '../../App';
 import * as DataService from '../../src/services/dataService';
 import { styleOf } from '../helpers/renderWithTheme';
 import { wasOpenedBefore } from '../../src/controllers/firstRun';
+import { currentPosition } from '../../src/services/deviceLocationService';
 
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 
-async function openAt(date, settings = {}) {
+async function openAt(date, settings = {}, { offerDiocese = false } = {}) {
   jest.setSystemTime(date);
   await AsyncStorage.clear();
   await AsyncStorage.setItem('WhatsNewSeen_9.0.0', 'true');
+  // Clearing the storage leaves nobody having chosen a diocese, which is exactly when the offer
+  // comes up: the tests that are not about it put it away first.
+  if (!offerDiocese) await AsyncStorage.setItem('DioceseOfferSeen', 'true');
   for (const [key, value] of Object.entries(settings)) await AsyncStorage.setItem(key, value);
   render(<App />);
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
@@ -257,4 +264,99 @@ test('whoever installs the app anew does not see the what’s new notice: there 
   await screen.findByTestId('day-card', {}, { timeout: 15000 });
   await waitFor(async () => expect(await AsyncStorage.getItem('WhatsNewSeen_9.0.0')).toBe('true'));
   expect(screen.queryByText('Ara ho tens tot a l’inici')).toBeNull();
+});
+
+// --- The offer to find the diocese ---------------------------------------------------------
+
+test('whoever opens the app for the first time is asked, without being told anything', async () => {
+  wasOpenedBefore.mockResolvedValueOnce(false);
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  expect(await screen.findByTestId('diocese-offer')).toBeTruthy();
+  expect(screen.getByRole('header', { name: 'De quina diòcesi ets?' })).toBeTruthy();
+});
+
+test('whoever comes from an older version is told which diocese they have been praying with', async () => {
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  expect(await screen.findByTestId('diocese-offer')).toBeTruthy();
+  expect(screen.getByRole('header', { name: 'Estàs resant amb la diòcesi de Barcelona' })).toBeTruthy();
+});
+
+test('whoever chose a diocese once is never asked, and is not asked again later', async () => {
+  await openAt(new Date(2026, 8, 21, 9, 0), { diocesis: 'Girona' }, { offerDiocese: true });
+  expect(screen.queryByTestId('diocese-offer')).toBeNull();
+  await waitFor(async () => expect(await AsyncStorage.getItem('DioceseOfferSeen')).toBe('true'));
+});
+
+test('the offer finds the diocese, saves it and the day is drawn again with it', async () => {
+  // Girona
+  currentPosition.mockResolvedValueOnce({ kind: 'position', latitude: 41.9794, longitude: 2.8214, accuracyMeters: 50 });
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+  expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
+
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('diocese-offer-locate'));
+  });
+
+  await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
+  expect(await findText('Girona (Diòcesi)')).toBeTruthy();
+});
+
+test('when it cannot say where they are, nothing is saved and the offer stays with the reason', async () => {
+  currentPosition.mockResolvedValueOnce({ kind: 'denied' });
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('diocese-offer-locate'));
+  });
+
+  expect(await findText(/No has donat permís d’ubicació/)).toBeTruthy();
+  expect(screen.getByTestId('diocese-offer')).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBeNull();
+});
+
+test('in the offer too, a refusal turns the button into the way to the phone settings', async () => {
+  const openSettings = jest.spyOn(Linking, 'openSettings').mockResolvedValue(undefined);
+  currentPosition.mockResolvedValue({ kind: 'denied' });
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('diocese-offer-locate'));
+  });
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('diocese-offer-locate'));
+  });
+
+  expect(openSettings).toHaveBeenCalled();
+  // The offer is still there, still with both doors, and still nothing written
+  expect(screen.getByTestId('diocese-offer')).toBeTruthy();
+  expect(screen.getByTestId('diocese-offer-choose')).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBeNull();
+  openSettings.mockRestore();
+});
+
+test('the offer closes without writing when they already had the diocese they are in', async () => {
+  currentPosition.mockResolvedValueOnce({ kind: 'position', latitude: 41.9794, longitude: 2.8214, accuracyMeters: 50 });
+  await openAt(new Date(2026, 8, 21, 9, 0), { diocesis: 'Girona' }, { offerDiocese: true });
+  // Having chosen it, they are not offered anything at all
+  expect(screen.queryByTestId('diocese-offer')).toBeNull();
+  expect(await findText('Girona (Diòcesi)')).toBeTruthy();
+});
+
+test('«La trio jo» puts the offer away and opens Configuració', async () => {
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+
+  await act(async () => {
+    fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+  });
+
+  await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
+  // Configuració is open: its own diocese picker is there, with what they still have
+  expect(await findText('Himnes en llatí')).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Diòcesi: Barcelona' })).toBeTruthy();
+  expect(await AsyncStorage.getItem('DioceseOfferSeen')).toBe('true');
 });

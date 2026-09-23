@@ -2,6 +2,8 @@
 // and applied. With the real liturgy, so that the changes that reload it are real too.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0', nativeBuildVersion: '90' }));
+// Where the phone is comes from the phone: here it is said outright.
+jest.mock('../../src/services/deviceLocationService', () => ({ currentPosition: jest.fn() }));
 jest.mock('react-native-webview', () => {
   const { View } = require('react-native');
   const WebView = (props) => <View testID="webview" {...props} />;
@@ -11,11 +13,13 @@ jest.mock('react-native-webview', () => {
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Linking } from 'react-native';
 import { render, screen, fireEvent, act, waitFor } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as DataService from '../../src/services/dataService';
 import * as LiturgyStore from '../../src/controllers/liturgyStore';
 import SettingsController from '../../src/controllers/SettingsController';
+import { currentPosition } from '../../src/services/deviceLocationService';
 import AppThemeProvider from '../../src/controllers/AppThemeProvider';
 import { loadDay } from '../helpers/liturgyDay';
 import { METRICS, styleOf } from '../helpers/renderWithTheme';
@@ -34,6 +38,7 @@ async function open() {
 
 beforeEach(async () => {
   await loadDay('2026-09-21');
+  currentPosition.mockReset();
 });
 
 test('three groups with the usual six options, and the saved values', async () => {
@@ -168,4 +173,86 @@ test('the privacy policy, at the bottom, opens inside the app', async () => {
   const sheet = await screen.findByTestId('privacy-sheet');
   expect(sheet).toBeTruthy();
   expect(screen.getByTestId('webview').props.source.uri).toBe('https://www.cpl.es/politica-de-privacidad/');
+});
+
+test('the button under the diocese finds the one where the phone is, saves it and reloads the liturgy', async () => {
+  // Girona
+  currentPosition.mockResolvedValueOnce({ kind: 'position', latitude: 41.9794, longitude: 2.8214, accuracyMeters: 50 });
+  await open();
+  expect(screen.getByRole('button', { name: 'Diòcesi: Barcelona' })).toBeTruthy();
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('button', { name: 'Fes servir la meva ubicació per triar la diòcesi' }));
+  });
+
+  await waitFor(() => expect(DataService.CurrentSettings.dioceseName).toBe('Girona'));
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
+  expect(screen.getByRole('button', { name: 'Diòcesi: Girona' })).toBeTruthy();
+});
+
+test('with no permission the diocese stays as it was, and it is said', async () => {
+  currentPosition.mockResolvedValueOnce({ kind: 'denied' });
+  await open();
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('button', { name: 'Fes servir la meva ubicació per triar la diòcesi' }));
+  });
+
+  expect(await screen.findByText(/No has donat permís d’ubicació/)).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Diòcesi: Barcelona' })).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Barcelona');
+});
+
+test('a position too vague to tell dioceses apart leaves the diocese alone', async () => {
+  // Girona, but with a margin of error that reaches well past the diocese
+  currentPosition.mockResolvedValueOnce({
+    kind: 'position',
+    latitude: 41.9794,
+    longitude: 2.8214,
+    accuracyMeters: 100000,
+  });
+  await open();
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('button', { name: 'Fes servir la meva ubicació per triar la diòcesi' }));
+  });
+
+  expect(await screen.findByText(/No s’ha pogut dir a quina diòcesi/)).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Barcelona');
+});
+
+test('after a refusal the button stops asking and becomes the way to the phone settings', async () => {
+  // iOS never asks twice: pressing the same button again would do nothing and look broken
+  const openSettings = jest.spyOn(Linking, 'openSettings').mockResolvedValue(undefined);
+  currentPosition.mockResolvedValue({ kind: 'denied' });
+  await open();
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('button', { name: 'Fes servir la meva ubicació per triar la diòcesi' }));
+  });
+  expect(await screen.findByText(/No has donat permís d’ubicació/)).toBeTruthy();
+
+  const wayOut = screen.getByRole('button', { name: 'Obre els Ajustos del telèfon' });
+  await act(async () => {
+    fireEvent.press(wayOut);
+  });
+  expect(openSettings).toHaveBeenCalled();
+  // Back from the phone settings it asks for the position again, not for the settings
+  expect(screen.getByRole('button', { name: 'Fes servir la meva ubicació per triar la diòcesi' })).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Barcelona');
+  openSettings.mockRestore();
+});
+
+test('finding the diocese they already had changes nothing and says so', async () => {
+  // Girona, with Girona already chosen
+  await AsyncStorage.setItem('diocesis', 'Girona');
+  currentPosition.mockResolvedValueOnce({ kind: 'position', latitude: 41.9794, longitude: 2.8214, accuracyMeters: 50 });
+  await open();
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('button', { name: 'Fes servir la meva ubicació per triar la diòcesi' }));
+  });
+
+  expect(await screen.findByText('Ja tenies la diòcesi d’on ets ara.')).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
 });

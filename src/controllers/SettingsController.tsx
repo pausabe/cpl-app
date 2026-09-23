@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Appearance } from 'react-native';
+import { Appearance, Linking } from 'react-native';
 import * as ExpoApplication from 'expo-application';
 import Constants from 'expo-constants';
 import SettingsService, { DioceseName, PrayingPlace } from '../services/SettingsService';
 import { SessionLogs } from '../utils/logger';
 import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen';
+import { LocationStatus } from '../view-models/notices';
 import WebSheet from '../components/WebSheet';
 import * as LiturgyStore from './liturgyStore';
 import { bundledDatabaseInformation, currentDatabaseVersion } from '../services/databaseManagerService';
 import { currentIdentifier } from '../services/usageService';
 import { useTextSettings } from './appearanceSettings';
+import { autoselectDiocese } from './dioceseAutoselection';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
 // (SettingsService). The Latin hymns, the diocese and the place change the liturgy: the day being
@@ -47,6 +49,8 @@ export default function SettingsController() {
   // The code this phone sends today so that it can be counted once, and nothing else about it
   const [usage, setUsage] = useState<{ device: string; madeOn: string } | null>(null);
   const [privacyVisible, setPrivacyVisible] = useState(false);
+  // How the last search for the diocese went, so that the screen can say so
+  const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
   useEffect(() => {
     currentDatabaseVersion()
       .then(setPublishedVersion)
@@ -70,6 +74,27 @@ export default function SettingsController() {
   const change = (changes: Partial<OtherValues>) =>
     setOthers((current) => (current ? { ...current, ...changes } : current));
 
+  // Once out to the phone's own settings, whatever they do there is theirs: the refusal is
+  // forgotten so that coming back and pressing again asks for the position, not for the settings.
+  const openPhoneSettings = () => {
+    Linking.openSettings().catch(() => undefined);
+    setLocationStatus('idle');
+  };
+
+  // Looking for the diocese where the phone is. When it finds one the row above changes, which
+  // says it better than any message; every other outcome leaves the setting alone and is told.
+  const useMyLocation = async () => {
+    setLocationStatus('locating');
+    const outcome = await autoselectDiocese();
+    if (outcome.kind !== 'saved') {
+      setLocationStatus(outcome.kind);
+      return;
+    }
+    change({ diocese: outcome.diocese });
+    setLocationStatus('idle');
+    await reloadLiturgy();
+  };
+
   const values: SettingsValues | null = others
     ? {
         ...others,
@@ -84,6 +109,9 @@ export default function SettingsController() {
         values={values}
         dioceses={DIOCESES}
         places={PLACES}
+        locationStatus={locationStatus}
+        onUseMyLocation={useMyLocation}
+        onOpenPhoneSettings={openPhoneSettings}
         info={{
           appVersion: `${versionName()} (${ExpoApplication.nativeBuildVersion ?? ''})`,
           databaseVersion: String(database.version ?? ''),
@@ -105,6 +133,7 @@ export default function SettingsController() {
         }}
         onDioceseChange={async (diocese) => {
           change({ diocese });
+          setLocationStatus('idle');
           await SettingsService.setSettingDiocese(diocese, undefined);
           await reloadLiturgy();
         }}

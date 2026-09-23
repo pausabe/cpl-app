@@ -9,6 +9,8 @@ interface ActionButtonProps {
   sublabel?: string;
   onPress: () => void;
   variant?: 'filled' | 'outlined';
+  // While it is waiting for something it cannot be pressed, and says so
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   accessibilityLabel?: string;
   testID?: string;
@@ -19,6 +21,7 @@ export default function ActionButton({
   sublabel,
   onPress,
   variant = 'filled',
+  disabled = false,
   style,
   accessibilityLabel,
   testID,
@@ -32,12 +35,14 @@ export default function ActionButton({
       testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? (sublabel ? `${label}. ${sublabel}` : label)}
+      accessibilityState={{ disabled }}
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,
         { minHeight: sublabel ? theme.touch.dialogButton : theme.touch.large, borderRadius: theme.radius.tile },
         filled ? { backgroundColor: colors.accentFill } : { borderWidth: 1.5, borderColor: colors.accentText },
-        pressed ? styles.pressed : null,
+        pressed || disabled ? styles.pressed : null,
         style,
       ]}
     >

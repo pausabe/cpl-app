@@ -9,6 +9,13 @@ import SegmentedControl from '../../components/SegmentedControl';
 import SwitchRow from '../../components/SwitchRow';
 import TextSizeControl from '../../components/TextSizeControl';
 import { DarkModeChoice, THEME_SEGMENTS } from '../../components/TextSettingsSheet';
+import {
+  LOCATION_NOTICES,
+  LocationStatus,
+  LOOKING_FOR_YOU,
+  OPEN_PHONE_SETTINGS,
+  USE_MY_LOCATION,
+} from '../../view-models/notices';
 
 // Configuració: the same six options as always, in three groups. Everything comes from its
 // controller (Controllers/SettingsController), which also saves the changes.
@@ -39,6 +46,9 @@ export interface SettingsScreenProps {
   onDarkModeChange: (choice: DarkModeChoice) => void;
   onLatinChange: (enabled: boolean) => void;
   onDioceseChange: (diocese: string) => void;
+  locationStatus: LocationStatus;
+  onUseMyLocation: () => void;
+  onOpenPhoneSettings: () => void;
   onPlaceChange: (place: string) => void;
   onShowVideosChange: (enabled: boolean) => void;
   onPrivacy: () => void;
@@ -86,6 +96,33 @@ export default function SettingsScreen(props: SettingsScreenProps) {
     </Pressable>
   );
 
+  const locationRow = () => {
+    const locating = props.locationStatus === 'locating';
+    const denied = props.locationStatus === 'denied';
+    const notice = LOCATION_NOTICES[props.locationStatus];
+    const label = locating ? LOOKING_FOR_YOU : denied ? OPEN_PHONE_SETTINGS : USE_MY_LOCATION;
+    return (
+      <View>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={denied ? OPEN_PHONE_SETTINGS : 'Fes servir la meva ubicació per triar la diòcesi'}
+          accessibilityState={{ disabled: locating, busy: locating }}
+          disabled={locating}
+          onPress={denied ? props.onOpenPhoneSettings : props.onUseMyLocation}
+          testID="use-my-location"
+          style={({ pressed }) => [
+            styles.locationRow,
+            { minHeight: theme.touch.min },
+            pressed ? { backgroundColor: colors.chipBackground } : null,
+          ]}
+        >
+          <Text style={[styles.locationLabel, { color: locating ? colors.text3 : colors.accentText }]}>{label}</Text>
+        </Pressable>
+        {notice ? <Text style={[styles.locationNotice, { color: colors.text3 }]}>{notice}</Text> : null}
+      </View>
+    );
+  };
+
   return (
     <View style={[styles.screen, { backgroundColor: colors.settingsBackground }]}>
       <EdgeToEdgeScrollView testID="settings-scroll">
@@ -126,6 +163,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               {groupLabel('Calendari')}
               <Card radius={theme.radius.tile}>
                 {pickerRow('Diòcesi', values.diocese, () => setSheet('diocese'))}
+                {locationRow()}
                 {divider}
                 {pickerRow(
                   'Lloc',
@@ -279,6 +317,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
     paddingRight: 28,
+  },
+  locationRow: {
+    justifyContent: 'center',
+    paddingBottom: 10,
+    paddingLeft: 16,
+    paddingRight: 12,
+  },
+  locationLabel: {
+    fontSize: 16,
+  },
+  locationNotice: {
+    fontSize: 14,
+    lineHeight: 19,
+    paddingLeft: 16,
+    paddingRight: 28,
+    paddingBottom: 12,
   },
   footer: {
     paddingTop: 18,
