@@ -11,18 +11,13 @@ import {
   currentDatabaseVersion,
   databaseFileName,
 } from './databaseManagerService';
+import { APP_KEY, callApi } from './cplApi';
+import { countOpen, reportUsage } from './usageService';
 
 // The texts come from the publishing website, not from the app stores: when the CPL corrects a
 // typo, the phone picks the new database up by itself. The app only accepts a database made for
 // the structure it knows (the compatibility key), and only if it is newer than the one it has.
-const API_URL = 'https://cpl-api.canmartorell.dev';
-// It travels inside the app, so it is not a real secret: it keeps the texts from being downloadable
-// by anyone who finds the address. It is set when building, never written in the repository.
-const APP_KEY = process.env.EXPO_PUBLIC_CPL_APP_KEY ?? '';
-const APP_KEY_HEADER = 'X-CPL-App-Key';
-
 const MILLISECONDS_BETWEEN_CHECKS = 6 * 60 * 60 * 1000;
-const REQUEST_TIMEOUT = 15000;
 // Downloaded outside the database folder: only a file that has passed every check gets in
 const DOWNLOAD_FILE = `${FileSystem.cacheDirectory}cpl-download.db`;
 
@@ -81,24 +76,15 @@ async function isTimeToCheck(): Promise<boolean> {
 // null when there is nothing for this app: the server answers 204
 async function askForNewDatabase(): Promise<DatabaseManifest | null> {
   const bundled = bundledDatabaseInformation();
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
-  try {
-    const response = await fetch(`${API_URL}/v1/db/latest?compat=${bundled.compat}`, {
-      headers: { [APP_KEY_HEADER]: APP_KEY },
-      signal: controller.signal,
-    });
-    if (response.status === 204) {
-      return null;
-    }
-    if (!response.ok) {
-      throw new Error(`The server answered ${response.status}`);
-    }
-    const manifest = (await response.json()) as DatabaseManifest;
-    return manifest.compat === bundled.compat ? manifest : null;
-  } finally {
-    clearTimeout(timeout);
+  const response = await callApi(`/v1/db/latest?compat=${bundled.compat}`);
+  if (response.status === 204) {
+    return null;
   }
+  if (!response.ok) {
+    throw new Error(`The server answered ${response.status}`);
+  }
+  const manifest = (await response.json()) as DatabaseManifest;
+  return manifest.compat === bundled.compat ? manifest : null;
 }
 
 // Downloads and checks it before letting it anywhere near the database folder. It is used the next
@@ -159,18 +145,27 @@ async function checkItIsTheRightDatabase(pendingName: string, manifest: Database
   }
 }
 
-// Checks when the app opens and when it comes back to the foreground, at most once every six hours.
+// Opening the app: one more opening for the count, and a look for a new database. Both are
+// throttled: the database is asked about at most once every six hours, and the count goes with it.
+async function onAppOpened() {
+  await countOpen();
+  const result = await checkForNewDatabase();
+  if (result !== 'too-soon' && result !== 'no-key') {
+    await reportUsage();
+  }
+}
+
 export function useDatabaseUpdates() {
   const appState = useRef(AppState.currentState);
 
   useEffect(() => {
-    checkForNewDatabase();
+    onAppOpened();
 
     const subscription = AppState.addEventListener('change', (nextState) => {
       const cameBack = appState.current !== 'active' && nextState === 'active';
       appState.current = nextState;
       if (cameBack) {
-        checkForNewDatabase();
+        onAppOpened();
       }
     });
     return () => subscription.remove();

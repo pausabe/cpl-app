@@ -13,6 +13,7 @@ export const LogKeys = {
   Screens: { name: 'Screens', enabled: true },
   DataService: { name: 'DataService', enabled: true },
   StorageService: { name: 'StorageService', enabled: true },
+  UsageService: { name: 'UsageService', enabled: true },
   FileSystemService: { name: 'FileSystemService', enabled: true },
   SecureCall: { name: 'SecureCall', enabled: true },
   PrecedenceService: { name: 'PrecedenceService', enabled: true },
