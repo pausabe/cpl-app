@@ -161,17 +161,17 @@ test('in plain sight, the approval text and the versions; the technical data, be
   expect(screen.queryByTestId('technical-data')).toBeNull();
   fireEvent.press(approval);
   expect(screen.getByTestId('technical-data')).toBeTruthy();
-  expect(screen.getByText(/^Publicació de la base de dades: \d+ \(dins l'app: \d+\)$/)).toBeTruthy();
+  expect(screen.getByText(/^Publicació de la base de dades: \d+ \(l'app va arribar amb la \d+\)$/)).toBeTruthy();
   expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
   expect(screen.getByText(/^Identificador: (encara cap|[0-9a-f]{32})/)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
 });
 
 test('the publication line separates the one in use, the one waiting and the one inside the app', () => {
-  expect(publicationLine(3, 3, 1)).toBe("Publicació de la base de dades: 3 (dins l'app: 1)");
+  expect(publicationLine(3, 3, 1)).toBe("Publicació de la base de dades: 3 (l'app va arribar amb la 1)");
   // Downloaded while the app was open: it is on the phone, but it is not the one being prayed with
-  expect(publicationLine(3, 4, 1)).toBe("Publicació de la base de dades: 3, baixada la 4 (dins l'app: 1)");
-  expect(publicationLine(null, null, 1)).toBe("Publicació de la base de dades: ? (dins l'app: 1)");
+  expect(publicationLine(3, 4, 1)).toBe("Publicació de la base de dades: 3, baixada la 4 (l'app va arribar amb la 1)");
+  expect(publicationLine(null, null, 1)).toBe("Publicació de la base de dades: ? (l'app va arribar amb la 1)");
 });
 
 test('the approval text gives nothing away: touching it does not even light up', async () => {

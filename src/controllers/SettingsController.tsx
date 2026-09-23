@@ -52,7 +52,9 @@ async function loadOtherValues(): Promise<OtherValues> {
 // stays at whatever it was when the app was built.
 export function publicationLine(opened: number | null, ready: number | null, bundled: number): string {
   const waiting = ready !== null && opened !== null && ready > opened ? `, baixada la ${ready}` : '';
-  return `Publicació de la base de dades: ${opened ?? '?'}${waiting} (dins l'app: ${bundled})`;
+  // «Dins l'app» es llegia com la que fa servir ara: la que l'app porta enganxada des que es va
+  // compilar és amb la que va arribar de la botiga, i només canvia quan se n'instal·la una de nova
+  return `Publicació de la base de dades: ${opened ?? '?'}${waiting} (l'app va arribar amb la ${bundled})`;
 }
 
 export default function SettingsController() {
