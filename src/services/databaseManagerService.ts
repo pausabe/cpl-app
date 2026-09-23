@@ -130,10 +130,13 @@ async function chooseDatabase(databaseAsset: Asset): Promise<string> {
     await placeBundledDatabase(databaseAsset, bundledName);
   }
 
+  // Which versions were there to choose from, not how many: a count next to a version number
+  // reads as another version number, and then the line says something it does not mean
+  const found = downloaded.length > 0 ? downloaded.map(({ version }) => `v${version}`).join(', ') : 'none';
   Logger.log(
     Logger.LogKeys.DatabaseManagerService,
     'chooseDatabase',
-    `Using '${chosenName}' (inside the app: version ${bundledDatabase.version}, downloaded: ${downloaded.length})`,
+    `Using '${chosenName}' (inside the app: v${bundledDatabase.version}, downloaded: ${found})`,
   );
   await deleteEveryDatabaseBut(chosenName);
   return chosenName;
