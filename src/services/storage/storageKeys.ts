@@ -3,6 +3,7 @@ let StorageKeys = {
   OptionalFestivity: 'lliureDate',
   CurrentMassVespersSelector: 'none',
   LastDatabaseCheck: 'LastDatabaseCheck',
+  LastDatabaseCheckFailed: 'LastDatabaseCheckFailed',
   UsageDevice: 'UsageDevice',
   UsageOpens: 'UsageOpens',
   UsageReportedDay: 'UsageReportedDay',

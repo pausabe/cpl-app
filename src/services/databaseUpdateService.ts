@@ -18,6 +18,18 @@ import { countOpen, reportUsage } from './usageService';
 // typo, the phone picks the new database up by itself. The app only accepts a database made for
 // the structure it knows (the compatibility key), and only if it is newer than the one it has.
 const MILLISECONDS_BETWEEN_CHECKS = 6 * 60 * 60 * 1000;
+// A phone that could not reach the website at all is not made to wait the whole six hours: it may
+// be back on a wifi in a minute. Long enough, though, that opening and closing the app on a train
+// does not ask again every single time. A download that started and went wrong is not this case:
+// that one waits the six hours, because retrying sixteen megabytes is not free.
+const MILLISECONDS_AFTER_A_FAILED_CHECK = 15 * 60 * 1000;
+// The database is sixteen megabytes, so a slow connection can take a while, and that is fine. What
+// this guards against is the connection that never finishes: the phone gives up by itself when
+// nothing at all arrives for a minute (OkHttp on Android, URLSession on iOS), but a download that
+// trickles has nothing to stop it, and on iOS it runs on a session that would wait for days. Ten
+// minutes is about twenty-five kilobytes a second: slower than that and the app keeps the database
+// it has and asks again at the next check.
+const DOWNLOAD_TIMEOUT = 10 * 60 * 1000;
 // Downloaded outside the database folder: only a file that has passed every check gets in
 const DOWNLOAD_FILE = `${FileSystem.cacheDirectory}cpl-download.db`;
 
@@ -42,7 +54,7 @@ export async function checkForNewDatabase(force = false): Promise<DatabaseUpdate
 
   try {
     const manifest = await askForNewDatabase();
-    await StorageService.storeData(StorageKeys.LastDatabaseCheck, Date.now());
+    await rememberTheCheck(false);
     if (!manifest) {
       return 'up-to-date';
     }
@@ -61,16 +73,27 @@ export async function checkForNewDatabase(force = false): Promise<DatabaseUpdate
   } catch (error) {
     // No network, the server down, the plan's daily limit reached: the app keeps the database it
     // has and asks again later. Nothing is lost.
+    await rememberTheCheck(true);
     Logger.logError(Logger.LogKeys.DatabaseUpdaterService, 'checkForNewDatabase', error as Error);
     return 'unreachable';
   }
 }
 
+// When the last check was, and whether the website answered it. Both are written on every check
+// that got as far as asking, so that a phone with no network waits its quarter of an hour instead
+// of asking again every time the app comes back to the front.
+async function rememberTheCheck(failed: boolean): Promise<void> {
+  await StorageService.storeData(StorageKeys.LastDatabaseCheck, Date.now());
+  await StorageService.storeData(StorageKeys.LastDatabaseCheckFailed, failed ? 'true' : '');
+}
+
 async function isTimeToCheck(): Promise<boolean> {
   const lastCheck = Number(await StorageService.getData(StorageKeys.LastDatabaseCheck, '0'));
+  const failed = (await StorageService.getData(StorageKeys.LastDatabaseCheckFailed, '')) === 'true';
+  const wait = failed ? MILLISECONDS_AFTER_A_FAILED_CHECK : MILLISECONDS_BETWEEN_CHECKS;
   const elapsed = Date.now() - lastCheck;
   // A clock moved backwards would otherwise stop the checks for good
-  return !Number.isFinite(elapsed) || elapsed < 0 || elapsed > MILLISECONDS_BETWEEN_CHECKS;
+  return !Number.isFinite(elapsed) || elapsed < 0 || elapsed > wait;
 }
 
 // null when there is nothing for this app: the server answers 204
@@ -99,9 +122,11 @@ async function download(manifest: DatabaseManifest): Promise<boolean> {
   const pendingPath = `${DATABASE_DIRECTORY}${pendingName}`;
   try {
     await FileSystem.deleteAsync(DOWNLOAD_FILE, { idempotent: true });
-    const download = await FileSystem.downloadAsync(manifest.url, DOWNLOAD_FILE);
-    if (download.status !== 200) {
-      throw new Error(`The download answered ${download.status}`);
+    const download = await downloadGivingUpAfterTheTimeout(manifest.url);
+    // Nothing at all is a download that was called off, and the only thing that calls one off here
+    // is the timeout, which has thrown already
+    if (!download || download.status !== 200) {
+      throw new Error(`The download answered ${download ? download.status : 'nothing'}`);
     }
 
     const downloaded = await FileSystem.getInfoAsync(DOWNLOAD_FILE, { md5: true });
@@ -128,6 +153,27 @@ async function download(manifest: DatabaseManifest): Promise<boolean> {
     await FileSystem.deleteAsync(DOWNLOAD_FILE, { idempotent: true });
     await FileSystem.deleteAsync(pendingPath, { idempotent: true });
     return false;
+  }
+}
+
+// A plain downloadAsync cannot be called off once it has started, and a download that never ends
+// would hold the opening of the app for the rest of the session. A resumable one can, and that is
+// the only reason it is used here: nothing is ever resumed, what the timeout leaves behind is
+// thrown away with the rest by whoever asked for the download.
+async function downloadGivingUpAfterTheTimeout(url: string): Promise<FileSystem.FileSystemDownloadResult | undefined> {
+  const task = FileSystem.createDownloadResumable(url, DOWNLOAD_FILE);
+  let timer: ReturnType<typeof setTimeout>;
+  const giveUp = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => {
+      // It answers on its own time, and by then nobody is listening any more
+      task.cancelAsync().catch(() => undefined);
+      reject(new Error(`The download did not finish in ${DOWNLOAD_TIMEOUT / 60000} minutes`));
+    }, DOWNLOAD_TIMEOUT);
+  });
+  try {
+    return await Promise.race([task.downloadAsync(), giveUp]);
+  } finally {
+    clearTimeout(timer);
   }
 }
 

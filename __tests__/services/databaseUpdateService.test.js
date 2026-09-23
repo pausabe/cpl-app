@@ -4,7 +4,10 @@
 jest.mock('expo-file-system/legacy', () => ({
   documentDirectory: 'file:///docs/',
   cacheDirectory: 'file:///cache/',
-  downloadAsync: jest.fn(async () => ({ status: 200 })),
+  createDownloadResumable: jest.fn(() => ({
+    downloadAsync: async () => ({ status: 200 }),
+    cancelAsync: async () => {},
+  })),
   getInfoAsync: jest.fn(async () => ({ exists: true, md5: 'the-published-md5' })),
   moveAsync: jest.fn(async () => {}),
   deleteAsync: jest.fn(async () => {}),
@@ -60,10 +63,15 @@ function loadService({ appKey = 'the-app-key' } = {}) {
 }
 
 beforeEach(async () => {
+  jest.useRealTimers();
   await AsyncStorage.clear();
   jest.clearAllMocks();
   DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(1);
   answer(manifest());
+});
+
+afterEach(() => {
+  jest.useRealTimers();
 });
 
 test('asks the website with the app key and the structure it can read', async () => {
@@ -89,7 +97,7 @@ test('a newer database is downloaded, checked and left ready for the next openin
 
   await expect(service.checkForNewDatabase()).resolves.toBe('downloaded');
 
-  expect(FileSystem.downloadAsync).toHaveBeenCalledWith(manifest().url, DOWNLOAD_PATH);
+  expect(FileSystem.createDownloadResumable).toHaveBeenCalledWith(manifest().url, DOWNLOAD_PATH);
   // It gets into the database folder only to be opened, and with its own name once it is trusted
   expect(FileSystem.moveAsync).toHaveBeenNthCalledWith(1, { from: DOWNLOAD_PATH, to: PENDING_PATH });
   expect(FileSystem.moveAsync).toHaveBeenNthCalledWith(2, { from: PENDING_PATH, to: FINAL_PATH });
@@ -131,7 +139,7 @@ test('nothing to download when the website has nothing for this structure', asyn
   const service = loadService();
 
   await expect(service.checkForNewDatabase()).resolves.toBe('up-to-date');
-  expect(FileSystem.downloadAsync).not.toHaveBeenCalled();
+  expect(FileSystem.createDownloadResumable).not.toHaveBeenCalled();
 });
 
 test('nothing to download when the phone already has that version or a newer one', async () => {
@@ -139,7 +147,7 @@ test('nothing to download when the phone already has that version or a newer one
   const service = loadService();
 
   await expect(service.checkForNewDatabase()).resolves.toBe('up-to-date');
-  expect(FileSystem.downloadAsync).not.toHaveBeenCalled();
+  expect(FileSystem.createDownloadResumable).not.toHaveBeenCalled();
 });
 
 test('without network it keeps the database it has and says nothing', async () => {
@@ -149,7 +157,7 @@ test('without network it keeps the database it has and says nothing', async () =
   const service = loadService();
 
   await expect(service.checkForNewDatabase()).resolves.toBe('unreachable');
-  expect(FileSystem.downloadAsync).not.toHaveBeenCalled();
+  expect(FileSystem.createDownloadResumable).not.toHaveBeenCalled();
 });
 
 test('two openings at the same time count one opening and report once', async () => {
@@ -176,5 +184,82 @@ test('it asks again at most once every six hours', async () => {
   jest.spyOn(Date, 'now').mockReturnValue(Date.now() + 7 * 60 * 60 * 1000);
   await service.checkForNewDatabase();
   expect(global.fetch).toHaveBeenCalledTimes(2);
+  Date.now.mockRestore();
+});
+
+test('a download that never finishes is called off and the database in use is left alone', async () => {
+  jest.useFakeTimers();
+  const cancelAsync = jest.fn(async () => {});
+  let downloadStarted;
+  const started = new Promise((resolve) => {
+    downloadStarted = resolve;
+  });
+  FileSystem.createDownloadResumable.mockReturnValueOnce({
+    // A connection that takes the request and never answers
+    downloadAsync: () => {
+      downloadStarted();
+      return new Promise(() => {});
+    },
+    cancelAsync,
+  });
+  const service = loadService();
+
+  const checking = service.checkForNewDatabase();
+  await started;
+  // Ten minutes of it
+  await jest.advanceTimersByTimeAsync(10 * 60 * 1000);
+
+  await expect(checking).resolves.toBe('rejected');
+  expect(cancelAsync).toHaveBeenCalled();
+  expect(FileSystem.moveAsync).not.toHaveBeenCalled();
+  expect(FileSystem.deleteAsync).toHaveBeenCalledWith(DOWNLOAD_PATH, { idempotent: true });
+});
+
+test('a phone that could not reach the website asks again in a quarter of an hour, not in six', async () => {
+  global.fetch = jest.fn(async () => {
+    throw new Error('Network request failed');
+  });
+  const service = loadService();
+  const start = Date.now();
+
+  await expect(service.checkForNewDatabase()).resolves.toBe('unreachable');
+  // Coming back to the app right away does not ask again
+  await expect(service.checkForNewDatabase()).resolves.toBe('too-soon');
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+
+  // Twenty minutes later, with the network back
+  jest.spyOn(Date, 'now').mockReturnValue(start + 20 * 60 * 1000);
+  answer(manifest());
+  await expect(service.checkForNewDatabase()).resolves.toBe('downloaded');
+  Date.now.mockRestore();
+});
+
+test('once the website answers again it goes back to waiting the six hours', async () => {
+  global.fetch = jest.fn(async () => {
+    throw new Error('Network request failed');
+  });
+  const service = loadService();
+  const start = Date.now();
+  await service.checkForNewDatabase();
+
+  jest.spyOn(Date, 'now').mockReturnValue(start + 20 * 60 * 1000);
+  answer(null, 204);
+  await expect(service.checkForNewDatabase()).resolves.toBe('up-to-date');
+
+  // Twenty minutes after that one, which is no longer the short wait of a phone with no network
+  Date.now.mockReturnValue(start + 40 * 60 * 1000);
+  await expect(service.checkForNewDatabase()).resolves.toBe('too-soon');
+  Date.now.mockRestore();
+});
+
+test('a download that went wrong waits the whole six hours: sixteen megabytes are not asked for again lightly', async () => {
+  FileSystem.getInfoAsync.mockResolvedValueOnce({ exists: true, md5: 'something-else' });
+  const service = loadService();
+  const start = Date.now();
+
+  await expect(service.checkForNewDatabase()).resolves.toBe('rejected');
+
+  jest.spyOn(Date, 'now').mockReturnValue(start + 30 * 60 * 1000);
+  await expect(service.checkForNewDatabase()).resolves.toBe('too-soon');
   Date.now.mockRestore();
 });
