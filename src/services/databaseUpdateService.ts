@@ -147,7 +147,22 @@ async function checkItIsTheRightDatabase(pendingName: string, manifest: Database
 
 // Opening the app: one more opening for the count, and a look for a new database. Both are
 // throttled: the database is asked about at most once every six hours, and the count goes with it.
-async function onAppOpened() {
+//
+// It can be called twice at once, as the phone says the app became active right after it started.
+// Only the first one does the work: otherwise the same opening was counted twice and two reports
+// of use left at the same time.
+let opening: Promise<void> | null = null;
+
+export function onAppOpened(): Promise<void> {
+  if (!opening) {
+    opening = lookAfterOpening().finally(() => {
+      opening = null;
+    });
+  }
+  return opening;
+}
+
+async function lookAfterOpening() {
   await countOpen();
   const result = await checkForNewDatabase();
   if (result !== 'too-soon' && result !== 'no-key') {

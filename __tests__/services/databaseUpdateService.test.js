@@ -152,6 +152,19 @@ test('without network it keeps the database it has and says nothing', async () =
   expect(FileSystem.downloadAsync).not.toHaveBeenCalled();
 });
 
+test('two openings at the same time count one opening and report once', async () => {
+  answer(null, 204);
+  const service = loadService();
+
+  await Promise.all([service.onAppOpened(), service.onAppOpened()]);
+
+  const asked = global.fetch.mock.calls.map(([url]) => url);
+  expect(asked.filter((url) => url.endsWith('/v1/usage'))).toHaveLength(1);
+  expect(asked.filter((url) => url.includes('/v1/db/latest'))).toHaveLength(1);
+  const [, sent] = global.fetch.mock.calls.find(([url]) => url.endsWith('/v1/usage'));
+  expect(JSON.parse(sent.body).opens).toBe(1);
+});
+
 test('it asks again at most once every six hours', async () => {
   const service = loadService();
 
