@@ -4,6 +4,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { screen, fireEvent } from '@testing-library/react-native';
 import { renderWithTheme, styleOf } from '../helpers/renderWithTheme';
+import { getPrayerText } from '../helpers/prayerText';
 import Gap from '../../src/components/Gap';
 import SectionTitle from '../../src/components/SectionTitle';
 import Rubric from '../../src/components/Rubric';
@@ -48,14 +49,14 @@ describe('SectionTitle', () => {
 describe('Rubric', () => {
   test('the label in red and the text in black, just as they are written', () => {
     renderWithTheme(<Rubric label={'V. '}>{'Sigueu amb nosaltres, Déu nostre.'}</Rubric>);
-    const line = screen.getByText('V. Sigueu amb nosaltres, Déu nostre.');
+    const line = getPrayerText('V. Sigueu amb nosaltres, Déu nostre.');
     expect(styleOf(line).color).toBe('#B3261E');
     expect(styleOf(screen.getByText('Sigueu amb nosaltres, Déu nostre.')).color).toBe('#182322');
   });
 
   test('the spaces of the text are kept', () => {
     renderWithTheme(<Rubric label={'Ant. 1.'}> {'Lloeu el Senyor'}</Rubric>);
-    expect(screen.getByText('Ant. 1. Lloeu el Senyor')).toBeTruthy();
+    expect(getPrayerText('Ant. 1. Lloeu el Senyor')).toBeTruthy();
   });
 });
 

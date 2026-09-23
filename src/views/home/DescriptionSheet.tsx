@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
+import PrayerText from '../../components/PrayerText';
 import { useTheme } from '../../theme';
 import BottomSheet from '../../components/BottomSheet';
 import ActionButton from '../../components/ActionButton';
@@ -27,9 +28,9 @@ export default function DescriptionSheet({ day, visible, onClose }: DescriptionS
         {day.title}
       </Text>
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-        <Text selectable={true} style={[styles.description, { color: colors.text }]}>
+        <PrayerText selectable={true} style={[styles.description, { color: colors.text }]}>
           {day.description}
-        </Text>
+        </PrayerText>
       </ScrollView>
       <ActionButton label="Tanca" onPress={onClose} style={styles.close} />
     </BottomSheet>

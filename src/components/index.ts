@@ -13,6 +13,8 @@ export { default as HeaderButton } from './HeaderButton';
 export { default as HourIcon } from './HourIcon';
 export { default as HR } from './HRComponent';
 export { default as Icon } from './Icon';
+export { default as PrayerFlow } from './PrayerFlow';
+export { default as PrayerText } from './PrayerText';
 export { default as Rubric } from './Rubric';
 export { default as SectionTitle } from './SectionTitle';
 export { default as SegmentedControl } from './SegmentedControl';

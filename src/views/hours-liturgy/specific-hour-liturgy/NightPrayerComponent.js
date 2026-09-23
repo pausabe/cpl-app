@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import PrayerFlow from '../../../components/PrayerFlow';
+// A Text that on iOS can be selected by the piece, and a plain Text where it is not selectable
+import Text from '../../../components/PrayerText';
 import HR from '../../../components/HRComponent';
 import Gap from '../../../components/Gap';
 import Rubric from '../../../components/Rubric';
@@ -99,7 +102,13 @@ export default class NightPrayerComponent extends Component {
     );
   }
 
+  // Everything the hour shows goes through the flow, which sews the paragraphs that follow one
+  // another into a single text: that way a selection can go from one to the next
   render() {
+    return <PrayerFlow>{this.content()}</PrayerFlow>;
+  }
+
+  content() {
     try {
       if (this.nightPrayer !== null) {
         const gloriaStringIntro =
@@ -221,15 +230,12 @@ export default class NightPrayerComponent extends Component {
                 </Text>
                 <Gap />
                 {hasFirstComment ? (
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flex: 1 }} />
-                    <View style={{ flex: 2 }}>
-                      <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                        {firstComment}
-                      </Text>
-                      <Gap />
-                    </View>
-                  </View>
+                  <>
+                    <Text selectable={true} style={this.styles.blackSmallItalicRight}>
+                      {firstComment}
+                    </Text>
+                    <Gap />
+                  </>
                 ) : null}
                 <Text selectable={true} style={this.styles.black}>
                   {firstPsalm}
@@ -258,15 +264,12 @@ export default class NightPrayerComponent extends Component {
                 </Text>
                 <Gap />
                 {hasSecondComment !== '-' ? (
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flex: 1 }} />
-                    <View style={{ flex: 2 }}>
-                      <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                        {secondComment}
-                      </Text>
-                      <Gap />
-                    </View>
-                  </View>
+                  <>
+                    <Text selectable={true} style={this.styles.blackSmallItalicRight}>
+                      {secondComment}
+                    </Text>
+                    <Gap />
+                  </>
                 ) : null}
                 <Text selectable={true} style={this.styles.black}>
                   {secondPsalm}
@@ -301,15 +304,12 @@ export default class NightPrayerComponent extends Component {
                 </Text>
                 <Gap />
                 {hasFirstComment ? (
-                  <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flex: 1 }} />
-                    <View style={{ flex: 2 }}>
-                      <Text selectable={true} style={this.styles.blackSmallItalicRight}>
-                        {firstComment}
-                      </Text>
-                      <Gap />
-                    </View>
-                  </View>
+                  <>
+                    <Text selectable={true} style={this.styles.blackSmallItalicRight}>
+                      {firstComment}
+                    </Text>
+                    <Gap />
+                  </>
                 ) : null}
                 <Text selectable={true} style={this.styles.black}>
                   {firstPsalm}

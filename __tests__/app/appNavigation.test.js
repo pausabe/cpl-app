@@ -33,6 +33,7 @@ import { render, screen, fireEvent, waitFor, act, within } from '@testing-librar
 import App from '../../App';
 import { navigationRef } from '../../src/controllers/NavigationController';
 import * as DataService from '../../src/services/dataService';
+import { queryAllPrayerText } from '../helpers/prayerText';
 
 // Easter Sunday 2026, mid-morning.
 const NOW = new Date(2026, 3, 5, 10, 0, 0);
@@ -50,7 +51,7 @@ const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 // The back arrow is the system's own (native stack): back through the navigator, as it does
 async function goBack(textOnTheScreen) {
   act(() => navigationRef.goBack());
-  await waitFor(() => expect(screen.queryAllByText(textOnTheScreen)).toHaveLength(0), { timeout: 15000 });
+  await waitFor(() => expect(queryAllPrayerText(textOnTheScreen)).toHaveLength(0), { timeout: 15000 });
   await act(async () => {
     jest.advanceTimersByTime(2000);
   });
@@ -82,9 +83,7 @@ test('it opens on today and the whole app can be walked through', async () => {
       Vespres: hours.vespers.finalPrayer,
       Completes: hours.nightPrayer.finalPrayer,
     }[hour];
-    await waitFor(() =>
-      expect(screen.getAllByText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0),
-    );
+    await waitFor(() => expect(queryAllPrayerText(new RegExp(escape(firstWords(expected)))).length).toBeGreaterThan(0));
     // The title of the (native) top bar
     expect(navigationRef.getCurrentOptions().title).toBe(hour);
     expect(screen.getByRole('button', { name: 'Mida del text i tema' })).toBeTruthy();
@@ -95,7 +94,7 @@ test('it opens on today and the whole app can be walked through', async () => {
   expect(screen.getByText(DataService.CurrentMassLiturgy.today.gospel.comment)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Evangeli' }));
   const gospel = new RegExp(escape(firstWords(DataService.CurrentMassLiturgy.today.gospel.gospel)));
-  await waitFor(() => expect(screen.getAllByText(gospel).length).toBeGreaterThan(0));
+  await waitFor(() => expect(queryAllPrayerText(gospel).length).toBeGreaterThan(0));
   await goBack(gospel);
 
   // Home: the contact page opens in a sheet with the web, and "Tanca" closes it; the donation

@@ -31,6 +31,7 @@ import * as DataService from '../../src/services/dataService';
 import { styleOf } from '../helpers/renderWithTheme';
 import { wasOpenedBefore } from '../../src/controllers/firstRun';
 import { currentPosition } from '../../src/services/deviceLocationService';
+import { getPrayerText, findPrayerText } from '../helpers/prayerText';
 
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 
@@ -75,7 +76,7 @@ test('«Llegeix-ne més» opens the sheet with the life of the saint, and «Tanc
   expect(screen.queryByTestId('description-sheet')).toBeNull();
   fireEvent.press(screen.getByRole('button', { name: 'Llegeix-ne més' }));
   expect(await screen.findByTestId('description-sheet')).toBeTruthy();
-  expect(screen.getByText(DataService.CurrentCelebrationInformation.description)).toBeTruthy();
+  expect(getPrayerText(DataService.CurrentCelebrationInformation.description)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Tanca' }));
   await waitFor(() => expect(screen.queryByTestId('description-sheet')).toBeNull());
 });
@@ -155,7 +156,7 @@ test('Palm Sunday: the phrase and the button of the blessing, which opens the Go
   expect(screen.getByText('Benedicció dels Rams · Mt 21,1-11')).toBeTruthy();
   expect(screen.getByText('Beneït el qui ve en nom del Senyor')).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Benedicció dels Rams' }));
-  await findText(/Quan eren prop de Jerusalem, arribaren a Betfagé/);
+  await findPrayerText(/Quan eren prop de Jerusalem, arribaren a Betfagé/);
 });
 
 test('Holy Saturday: the Easter Vigil, with «Lectures i salms» and «Evangeli»', async () => {
@@ -166,7 +167,7 @@ test('Holy Saturday: the Easter Vigil, with «Lectures i salms» and «Evangeli�
   expect(screen.getByRole('button', { name: 'Lectures i salms' })).toBeTruthy();
   expect(screen.queryByRole('button', { name: 'Primera lectura' })).toBeNull();
   fireEvent.press(screen.getByRole('button', { name: 'Lectures i salms' }));
-  await findText('Lectures de la Vetlla Pasqual');
+  await findPrayerText('Lectures de la Vetlla Pasqual');
 });
 
 test('Easter Sunday: white and a solemnity', async () => {

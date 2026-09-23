@@ -18,6 +18,7 @@ import { HoursPrayerController, MassPrayerController } from '../../src/controlle
 import AppThemeProvider from '../../src/controllers/AppThemeProvider';
 import { loadDay } from '../helpers/liturgyDay';
 import { METRICS, styleOf } from '../helpers/renderWithTheme';
+import { getPrayerText } from '../helpers/prayerText';
 
 function withApp(ui) {
   return (
@@ -89,7 +90,7 @@ test('the invitatory psalm chosen is remembered', async () => {
   expect(screen.getByRole('radio', { name: 'Salm 94' }).props.accessibilityState.checked).toBe(true);
   fireEvent.press(screen.getByRole('radio', { name: 'Salm 99' }));
   expect(screen.getByRole('radio', { name: 'Salm 99' }).props.accessibilityState.checked).toBe(true);
-  expect(screen.getByText(/Invitació a lloar Déu en el seu temple/)).toBeTruthy();
+  expect(getPrayerText(/Invitació a lloar Déu en el seu temple/)).toBeTruthy();
   expect(DataService.CurrentSettings.invitationPsalmOption).toBe('99');
   await act(async () => {
     await Promise.resolve();
@@ -179,7 +180,7 @@ test('the readings are aligned to the left and have a maximum width', async () =
     useVespersTexts: false,
   });
   const gospel = DataService.CurrentMassLiturgy.today.gospel.gospel.replace(/\s+$/, '');
-  expect(styleOf(screen.getByText(gospel)).textAlign).toBe('left');
+  expect(styleOf(getPrayerText(gospel)).textAlign).toBe('left');
 });
 
 // iOS has no bar at the bottom, only the home indicator (34 points on the test phone)

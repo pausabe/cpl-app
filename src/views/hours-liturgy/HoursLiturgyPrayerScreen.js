@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 import OfficeComponent from './specific-hour-liturgy/OfficeComponent';
@@ -8,6 +8,8 @@ import VespersComponent from './specific-hour-liturgy/VespersComponent';
 import HoursComponent from './specific-hour-liturgy/HoursComponent';
 import NightPrayerComponent from './specific-hour-liturgy/NightPrayerComponent';
 import Gap from '../../components/Gap';
+// A Text that on iOS can be selected by the piece, and a plain Text where it is not selectable
+import Text from '../../components/PrayerText';
 import EdgeToEdgeScrollView from '../../components/EdgeToEdgeScrollView';
 import { ThemeContext, prayerTextStyles } from '../../theme';
 

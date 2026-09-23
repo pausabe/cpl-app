@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import GlobalViewFunctions from '../../utils/globalViewFunctions';
 import HR from '../../components/HRComponent';
 import Gap from '../../components/Gap';
+import PrayerFlow from '../../components/PrayerFlow';
+// A Text that on iOS can be selected by the piece, and a plain Text where it is not selectable
+import Text from '../../components/PrayerText';
 import EdgeToEdgeScrollView from '../../components/EdgeToEdgeScrollView';
 import SectionTitle from '../../components/SectionTitle';
 import ContinueButton from '../../components/ContinueButton';
@@ -58,7 +61,7 @@ export default class MassLiturgyPrayerScreen extends Component {
       return (
         <View style={this.styles.container}>
           <EdgeToEdgeScrollView testID="prayer-scroll" contentContainerStyle={styles.content}>
-            <View style={[styles.column, { maxWidth: this.context.layout.readingMaxWidth }]}>
+            <PrayerFlow style={[styles.column, { maxWidth: this.context.layout.readingMaxWidth }]}>
               {this.state.showEasterVigilReadingsAndPsalms ? (
                 <View>
                   <Text selectable={true} style={this.styles.redCenter}>
@@ -74,7 +77,7 @@ export default class MassLiturgyPrayerScreen extends Component {
               {this.state.showPsalm ? this.renderPsalm(this.state.needSecondReading) : null}
               {this.state.showSecondReading ? this.renderSecondReading() : null}
               {this.state.showGospel ? this.renderGospel() : null}
-            </View>
+            </PrayerFlow>
           </EdgeToEdgeScrollView>
         </View>
       );

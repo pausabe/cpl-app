@@ -20,6 +20,18 @@ function isInteractive(node) {
   return INTERACTIVE_ROLES.has(p.accessibilityRole) || INTERACTIVE_ROLES.has(p.role) || typeof p.onClick === 'function';
 }
 
+// The prayer text that can be selected by the piece is a read-only TextInput on iOS
+// (PrayerText); for the golden it carries text just like a Text.
+function isText(node) {
+  return node.type === 'Text' || node.type === 'TextInput';
+}
+
+// The empty lines that hold apart the paragraphs sewn into one text (PrayerFlow) are the space
+// that used to be a Gap between two texts: space, not text, so the golden walks past them.
+function isSpacing(node) {
+  return (node.props || {}).testID === 'prayer-gap';
+}
+
 function role(color) {
   if (RUBRIC.has(color)) return 'R';
   if (TEXT.has(color) || color === undefined) return 'T';
@@ -43,9 +55,9 @@ function textRuns(json) {
       if (inherited) push(node, inherited);
       return;
     }
-    if (isInteractive(node)) return;
-    const style = node.type === 'Text' ? { ...(inherited || {}), ...flatten(node.props.style) } : inherited;
-    (node.children || []).forEach((child) => walk(child, node.type === 'Text' ? style : undefined));
+    if (isInteractive(node) || isSpacing(node)) return;
+    const style = isText(node) ? { ...(inherited || {}), ...flatten(node.props.style) } : inherited;
+    (node.children || []).forEach((child) => walk(child, isText(node) ? style : undefined));
   };
   walk(json, undefined);
   // A paragraph break is a run boundary: runs that only differ in the whitespace between
