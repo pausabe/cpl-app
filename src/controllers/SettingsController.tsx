@@ -8,7 +8,11 @@ import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen
 import { LocationStatus } from '../view-models/notices';
 import WebSheet from '../components/WebSheet';
 import * as LiturgyStore from './liturgyStore';
-import { bundledDatabaseInformation, currentDatabaseVersion } from '../services/databaseManagerService';
+import {
+  bundledDatabaseInformation,
+  currentDatabaseVersion,
+  openedDatabaseVersion,
+} from '../services/databaseManagerService';
 import { currentIdentifier } from '../services/usageService';
 import { askAgainOnTheNextOpening } from '../services/databaseUpdateService';
 import { useTextSettings } from './appearanceSettings';
@@ -42,11 +46,20 @@ async function loadOtherValues(): Promise<OtherValues> {
   };
 }
 
+// Which publication is being prayed with, which one is waiting and which one the app carries
+// inside. They are three different things and saying only one of them misleads: a database
+// downloaded a minute ago is on the phone but is not the one open, and the one inside the app
+// stays at whatever it was when the app was built.
+export function publicationLine(opened: number | null, ready: number | null, bundled: number): string {
+  const waiting = ready !== null && opened !== null && ready > opened ? `, baixada la ${ready}` : '';
+  return `Publicació de la base de dades: ${opened ?? '?'}${waiting} (dins l'app: ${bundled})`;
+}
+
 export default function SettingsController() {
   const { database, hours } = LiturgyStore.useLiturgy();
-  // Which published database the phone is praying with: the one inside the app until one is
-  // downloaded from the publishing website
-  const [publishedVersion, setPublishedVersion] = useState<number | null>(null);
+  // The newest published database the phone has, which is the one it will open next time: a
+  // database downloaded while the app is open is not the one being prayed with yet
+  const [readyVersion, setReadyVersion] = useState<number | null>(null);
   // The code this phone sends today so that it can be counted once, and nothing else about it
   const [usage, setUsage] = useState<{ device: string; madeOn: string } | null>(null);
   const [privacyVisible, setPrivacyVisible] = useState(false);
@@ -54,8 +67,8 @@ export default function SettingsController() {
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
   useEffect(() => {
     currentDatabaseVersion()
-      .then(setPublishedVersion)
-      .catch(() => setPublishedVersion(null));
+      .then(setReadyVersion)
+      .catch(() => setReadyVersion(null));
     currentIdentifier()
       .then(setUsage)
       .catch(() => setUsage(null));
@@ -111,7 +124,7 @@ export default function SettingsController() {
     technical: [
       `Esquema de color: ${Appearance.getColorScheme()}`,
       `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
-      `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
+      publicationLine(openedDatabaseVersion(), readyVersion, bundledDatabaseInformation().version),
       `Compatibilitat: ${bundledDatabaseInformation().compat}`,
       `Identificador: ${usage?.device ?? 'encara cap'}${usage ? ` (fet el ${usage.madeOn})` : ''}`,
     ],

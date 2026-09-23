@@ -22,6 +22,15 @@ function parseDatabaseFileName(fileName: string): { compat: string; version: num
   return parts ? { compat: parts[1], version: Number(parts[2]) } : null;
 }
 
+// Which publication the app is really praying with: the one it has opened. It is not always the
+// newest one the phone has, because a database downloaded today is not opened until the app opens
+// again, and that is what the technical data of Configuració has to say.
+let openedVersion: number | null = null;
+
+export function openedDatabaseVersion(): number | null {
+  return openedVersion;
+}
+
 export function bundledDatabaseInformation(): { compat: string; version: number; md5: string } {
   return bundledDatabase;
 }
@@ -43,8 +52,10 @@ export async function openDatabase(databaseAsset: Asset) {
   Logger.log(Logger.LogKeys.DatabaseManagerService, 'openDatabase', `Opening database '${databaseName}'`);
   try {
     CPLDataBase = await SQLite.openDatabaseAsync(databaseName);
+    openedVersion = parseDatabaseFileName(databaseName)?.version ?? null;
   } catch (error) {
     CPLDataBase = await openBundledAfterFailure(databaseAsset, databaseName, error);
+    openedVersion = bundledDatabase.version;
   }
 }
 

@@ -19,6 +19,8 @@ module.exports = {
   databaseFileName: (compat, version) => `cpl-${compat}-v${version}.db`,
   bundledDatabaseInformation: () => bundled,
   currentDatabaseVersion: async () => bundled.version,
+  // In tests the app always opens the database it carries inside
+  openedDatabaseVersion: () => bundled.version,
   openDatabase: async () => {
     database();
   },
