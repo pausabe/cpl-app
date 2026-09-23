@@ -36,6 +36,12 @@
       "expo-asset",
       "expo-font",
       [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Per saber de quina diòcesi ets i triar-la automàticament. La ubicació no surt del telèfon."
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "image": "./src/assets/splash.png",

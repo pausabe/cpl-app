@@ -19,6 +19,7 @@ export const LogKeys = {
   PrecedenceService: { name: 'PrecedenceService', enabled: true },
   App: { name: 'App', enabled: true },
   NavigationController: { name: 'NavigationController', enabled: true },
+  DeviceLocationService: { name: 'DeviceLocationService', enabled: true },
 };
 
 export function debug(message, param) {

@@ -118,6 +118,16 @@ export default class SettingsService {
     return SettingsService._getStorageValue('diocesis', callback, defaultSettings.diocesis);
   }
 
+  /**
+   * Whether a diocese has ever been chosen on this phone. It is only written from the picker in
+   * Configuració, and only when the value really changes, so nothing stored means nobody has ever
+   * touched it and what the app prays with is the default above.
+   */
+  static async dioceseWasEverChosen(): Promise<boolean> {
+    const stored = await StorageService.getData('diocesis');
+    return stored !== undefined && stored !== null && stored !== '';
+  }
+
   static getSettingPrayingPlace(callback?) {
     return SettingsService._getStorageValue('lloc', callback, defaultSettings.lloc);
   }
