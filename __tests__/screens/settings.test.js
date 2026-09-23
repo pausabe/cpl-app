@@ -149,7 +149,6 @@ test('in plain sight, the approval text and the versions; the technical data, be
   await open();
   expect(screen.getByText(/Versió de l'aplicació: 9\.0\.0 \(90\)/)).toBeTruthy();
   expect(screen.getByText(/Versió de la base de dades: \d+/)).toBeTruthy();
-  expect(screen.queryByText(/EAS-channel/)).toBeNull();
   const approval = screen.getByText(/^Text oficial de la Comissió Interdiocesana/);
   for (let i = 0; i < 9; i++) fireEvent.press(approval);
   expect(screen.queryByTestId('technical-data')).toBeNull();

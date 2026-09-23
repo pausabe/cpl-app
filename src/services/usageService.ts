@@ -58,12 +58,12 @@ export async function reportUsage(): Promise<UsageReportResult> {
   if (!APP_KEY) {
     return 'no-key';
   }
-  const opens = Number(await StorageService.getData(StorageKeys.UsageOpens, '0')) || 0;
-  const reportedDay = await StorageService.getData(StorageKeys.UsageReportedDay, '');
-  // Already counted today and nothing new to add
-  if (opens === 0 && reportedDay === today()) {
+  // Once a day is enough, and it is half the requests: the openings add up and the ones that
+  // happen after today's report go with tomorrow's
+  if ((await StorageService.getData(StorageKeys.UsageReportedDay, '')) === today()) {
     return 'nothing-to-say';
   }
+  const opens = Number(await StorageService.getData(StorageKeys.UsageOpens, '0')) || 0;
 
   try {
     const response = await callApi('/v1/usage', {

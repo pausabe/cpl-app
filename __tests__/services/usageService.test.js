@@ -46,13 +46,17 @@ test('after reporting, the count starts again and the day is remembered', async 
   expect(await AsyncStorage.getItem(StorageKeys.UsageReportedDay)).toBe(today());
 });
 
-test('it does not say anything twice when there is nothing new', async () => {
+test('it reports once a day, however many times the app is opened', async () => {
   const service = loadService();
   await service.countOpen();
   await service.reportUsage();
 
+  await service.countOpen();
   await expect(service.reportUsage()).resolves.toBe('nothing-to-say');
   expect(global.fetch).toHaveBeenCalledTimes(1);
+
+  // What was opened afterwards is not lost: it goes with tomorrow's report
+  expect(await AsyncStorage.getItem(StorageKeys.UsageOpens)).toBe('1');
 });
 
 test('the same code all day, a different one the next day', async () => {
@@ -60,16 +64,14 @@ test('the same code all day, a different one the next day', async () => {
   await service.countOpen();
   await service.reportUsage();
   const firstCode = sent().code;
+  expect(await service.todaysCode()).toBe(firstCode);
 
-  await service.countOpen();
-  await service.reportUsage();
-  expect(JSON.parse(global.fetch.mock.calls[1][1].body).code).toBe(firstCode);
-
-  // The next day: the code of today is not kept
+  // The next day: yesterday's code is not this day's, and the one that goes is another
   jest.spyOn(Date.prototype, 'toISOString').mockReturnValue('2030-01-01T00:00:00.000Z');
+  expect(await service.todaysCode()).toBeNull();
   await service.countOpen();
   await service.reportUsage();
-  expect(JSON.parse(global.fetch.mock.calls[2][1].body).code).not.toBe(firstCode);
+  expect(JSON.parse(global.fetch.mock.calls[1][1].body).code).not.toBe(firstCode);
   Date.prototype.toISOString.mockRestore();
 });
 
