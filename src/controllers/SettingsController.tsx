@@ -7,6 +7,7 @@ import { SessionLogs } from '../utils/logger';
 import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen';
 import * as LiturgyStore from './liturgyStore';
 import { bundledDatabaseInformation, currentDatabaseVersion } from '../services/databaseManagerService';
+import { todaysCode } from '../services/usageService';
 import { useTextSettings } from './appearanceSettings';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
@@ -40,10 +41,15 @@ export default function SettingsController() {
   // Which published database the phone is praying with: the one inside the app until one is
   // downloaded from the publishing website
   const [publishedVersion, setPublishedVersion] = useState<number | null>(null);
+  // The code this phone sends today so that it can be counted once, and nothing else about it
+  const [usageCode, setUsageCode] = useState<string | null>(null);
   useEffect(() => {
     currentDatabaseVersion()
       .then(setPublishedVersion)
       .catch(() => setPublishedVersion(null));
+    todaysCode()
+      .then(setUsageCode)
+      .catch(() => setUsageCode(null));
   }, []);
   const textSettings = useTextSettings();
   const [others, setOthers] = useState<OtherValues | null>(null);
@@ -81,6 +87,7 @@ export default function SettingsController() {
           `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
           `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
           `Compatibilitat: ${bundledDatabaseInformation().compat}`,
+          `Codi d'avui: ${usageCode ?? 'encara cap'} (es fa a l'atzar cada dia i no diu qui ets)`,
         ],
         logs: SessionLogs,
       }}

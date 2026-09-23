@@ -38,6 +38,14 @@ async function codeForToday(): Promise<string> {
   return code;
 }
 
+// Today's code, if there is one yet. Only to show it in the Settings screen: the phone should be
+// able to see the one thing it sends about itself.
+export async function todaysCode(): Promise<string | null> {
+  const stored = await StorageService.getData(StorageKeys.UsageCode, '');
+  const [day, code] = String(stored).split(':');
+  return day === today() && code ? code : null;
+}
+
 // One more opening. It is sent with the next report and counted then.
 export async function countOpen(): Promise<void> {
   const opens = Number(await StorageService.getData(StorageKeys.UsageOpens, '0')) || 0;

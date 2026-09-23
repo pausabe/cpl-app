@@ -152,5 +152,6 @@ test('in plain sight, the approval text and the versions; the technical data, be
   expect(screen.getByTestId('technical-data')).toBeTruthy();
   expect(screen.getByText(/^Publicació de la base de dades: \d+ \(dins l'app: \d+\)$/)).toBeTruthy();
   expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
+  expect(screen.getByText(/^Codi d'avui: (encara cap|[0-9a-f]{32}) /)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
 });
