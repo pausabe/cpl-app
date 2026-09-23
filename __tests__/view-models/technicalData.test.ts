@@ -10,13 +10,13 @@ const DATA = {
 };
 
 test('the two versions, as the screen says them', () => {
-  expect(versionLines(DATA)).toBe("Versió de l'aplicació: 9.0.0 (90)\nVersió de la base de dades: 312");
+  expect(versionLines(DATA)).toBe("Versió de l'aplicació: 9.0.0 (90)\nRevisió dels textos: 312");
 });
 
 test('copying it all gives the versions, every line and the logs, in the order they are read', () => {
   expect(technicalReport(DATA)).toBe(
     "Versió de l'aplicació: 9.0.0 (90)\n" +
-      'Versió de la base de dades: 312\n' +
+      'Revisió dels textos: 312\n' +
       'Esquema de color: dark\n' +
       'Compatibilitat: s3-a1b2c3\n' +
       'Identificador: encara cap\n' +
@@ -27,6 +27,6 @@ test('copying it all gives the versions, every line and the logs, in the order t
 
 test('with no logs and nothing technical yet, it is still the two versions', () => {
   expect(technicalReport({ ...DATA, technical: [], logs: '' })).toBe(
-    "Versió de l'aplicació: 9.0.0 (90)\nVersió de la base de dades: 312\nLogs: \n",
+    "Versió de l'aplicació: 9.0.0 (90)\nRevisió dels textos: 312\nLogs: \n",
   );
 });

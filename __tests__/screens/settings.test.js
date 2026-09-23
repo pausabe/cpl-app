@@ -155,23 +155,23 @@ test('at the biggest size, A+ can no longer be pressed', async () => {
 test('in plain sight, the approval text and the versions; the technical data, behind ten taps', async () => {
   await open();
   expect(screen.getByText(/Versió de l'aplicació: 9\.0\.0 \(90\)/)).toBeTruthy();
-  expect(screen.getByText(/Versió de la base de dades: \d+/)).toBeTruthy();
+  expect(screen.getByText(/Revisió dels textos: \d+/)).toBeTruthy();
   const approval = screen.getByText(/^Text oficial de la Comissió Interdiocesana/);
   for (let i = 0; i < 9; i++) fireEvent.press(approval);
   expect(screen.queryByTestId('technical-data')).toBeNull();
   fireEvent.press(approval);
   expect(screen.getByTestId('technical-data')).toBeTruthy();
-  expect(screen.getByText(/^Publicació de la base de dades: \d+ \(l'app va arribar amb la \d+\)$/)).toBeTruthy();
+  expect(screen.getByText(/^Publicació en ús: \d+ \(l'app va arribar amb la \d+\)$/)).toBeTruthy();
   expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
   expect(screen.getByText(/^Identificador: (encara cap|[0-9a-f]{32})/)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
 });
 
 test('the publication line separates the one in use, the one waiting and the one inside the app', () => {
-  expect(publicationLine(3, 3, 1)).toBe("Publicació de la base de dades: 3 (l'app va arribar amb la 1)");
+  expect(publicationLine(3, 3, 1)).toBe("Publicació en ús: 3 (l'app va arribar amb la 1)");
   // Downloaded while the app was open: it is on the phone, but it is not the one being prayed with
-  expect(publicationLine(3, 4, 1)).toBe("Publicació de la base de dades: 3, baixada la 4 (l'app va arribar amb la 1)");
-  expect(publicationLine(null, null, 1)).toBe("Publicació de la base de dades: ? (l'app va arribar amb la 1)");
+  expect(publicationLine(3, 4, 1)).toBe("Publicació en ús: 3, baixada la 4 (l'app va arribar amb la 1)");
+  expect(publicationLine(null, null, 1)).toBe("Publicació en ús: ? (l'app va arribar amb la 1)");
 });
 
 test('the approval text gives nothing away: touching it does not even light up', async () => {
@@ -186,7 +186,7 @@ test('«Copia-ho tot» takes every technical datum to the clipboard, and says it
 
   fireEvent.press(screen.getByRole('button', { name: 'Copia-ho tot' }));
   const copied = Clipboard.setStringAsync.mock.calls[0][0];
-  expect(copied).toMatch(/^Versió de l'aplicació: 9\.0\.0 \(90\)\nVersió de la base de dades: \d+\n/);
+  expect(copied).toMatch(/^Versió de l'aplicació: 9\.0\.0 \(90\)\nRevisió dels textos: \d+\n/);
   expect(copied).toMatch(/\nCompatibilitat: s\d+-[0-9a-f]+\n/);
   expect(copied).toMatch(/\nIdentificador: (encara cap|[0-9a-f]{32})/);
   expect(copied).toContain('\nLogs: \n');
