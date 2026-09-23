@@ -23,13 +23,13 @@ phones without a new version in the stores.
 
 The code, on the other hand, only travels through the stores: there are no over-the-air updates.
 
-To work on the app you need those two files and a key:
+To work on the app you need that database and the key that asks for it:
 
-1. From the publishing website, download a published database and its `.json`, and put both in
-   `src/assets/db/`.
-2. Create a `.env` file (it is ignored by git; this repository is public) with the key the app
+1. Create a `.env` file (it is ignored by git; this repository is public) with the key the app
    carries: `EXPO_PUBLIC_CPL_APP_KEY=…`. Without it the app works, but it never asks for a new
    database.
+2. `make db`, which brings down the published database and writes its `.json` next to it. The
+   publishing workflow does the same thing before every build.
 
 ## Working on it
 
@@ -46,14 +46,18 @@ database changes, check the app by hand and run `make golden`.
 
 ## Releasing
 
-Everything goes through the stores, so each release is a build:
+Everything goes through the stores, so each release is a build. Before publishing:
 
-1. Put the published database and its `.json` in `src/assets/db/` (the ones the release will carry).
-2. Bump `version`, `ios.buildNumber` and `android.versionCode` in `app.json`.
-3. Write what changed in `changelog.md`.
-4. `make android-app` and `make ios-device`, and try it on a real phone; `make ui-tests` for the
+1. Bump `version` in `app.json` if the number people read has to change.
+2. Write what changed in `changelog.md`.
+3. `make android-app` and `make ios-device`, and try it on a real phone; `make ui-tests` for the
    Maestro flows.
-5. Build for the stores and upload it.
+
+Then, on the publishing website, the «Publica l'app» button builds `master` and leaves it in the
+internal track of Google Play and in TestFlight. It can also be started by hand from the Actions
+tab of this repository. What it does, and what it needs to be able to do it, is in
+[docs/publishing.md](docs/publishing.md).
 
 Version numbers are `major.minor.patch`: the first for a redesign or a change of how it works, the
-second for new things, the third for fixes.
+second for new things, the third for fixes. The build number the stores order the builds by is not
+in the repository: the workflow makes it, and it only ever grows.

@@ -14,7 +14,7 @@ IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0
 # The first iPhone connected (by cable, or over the network with Xcode open)
 IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
 
-.PHONY: help start run-android run-ios run-web checks lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios
+.PHONY: help start run-android run-ios run-web db checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -22,7 +22,10 @@ help:
 	@echo "make run-web           Open the development app in the browser, with no emulator"
 	@echo "make start             Only the development server (Metro), if the app is already installed"
 	@echo ""
+	@echo "make db                Bring the published database the app carries: it is not in the repository (16 MB)"
+	@echo ""
 	@echo "make checks            Prettier, lint, types and every Jest test: what the hook runs before each push (~4 min)"
+	@echo "make checks-ci         What the publishing workflow runs: make checks without the sweeps against the goldens"
 	@echo "make lint              ESLint (the Expo config): only errors stop a push, warnings do not"
 	@echo "make types             TypeScript, without emitting anything (tsc --noEmit)"
 	@echo "make format            Format the code (JS and TS) with Prettier: fixes what make checks reports"
@@ -57,6 +60,13 @@ run-ios:
 run-web:
 	npx expo start --web
 
+# --- The database -----------------------------------------------------------------------------
+# The texts are not in the repository: they come from the publishing website (cpl-cloud), the same
+# one the phones ask. Needed to run the tests and to build the app. The key is in .env.
+
+db:
+	node scripts/fetchDatabase.mjs
+
 # --- Checks ----------------------------------------------------------------------------------
 # make checks is what the .githooks/pre-push hook runs before each push. The tests run with --ci
 # and without UPDATE_GOLDEN, so they compare against the goldens instead of rewriting them.
@@ -66,6 +76,15 @@ checks:
 	npx eslint .
 	npx tsc --noEmit
 	env -u UPDATE_GOLDEN npx jest --ci
+
+# Without the two sweeps against the goldens: the goldens are not in the repository, and when
+# they are missing they write themselves from the build being checked and pass without comparing
+# anything. Everything else is checked.
+checks-ci:
+	npx prettier . --check
+	npx eslint .
+	npx tsc --noEmit
+	env -u UPDATE_GOLDEN $(MAKE) tests-fast
 
 lint:
 	npx eslint .

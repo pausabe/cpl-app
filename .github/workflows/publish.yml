@@ -1,0 +1,448 @@
+# Builds this repository and leaves it in the two stores for testing: the internal track of Google
+# Play and TestFlight. Nobody downloads it yet; from there Pau sends it to whoever has to try it.
+#
+# Publishing is always a decision, so there is no trigger on push: this is started by the button of
+# the publishing website (cpl-cloud), or by hand from the Actions tab.
+#
+# The texts do not come from here. The database is downloaded from the publishing website while
+# building, so an app built today carries the corrections published today; the code is what this
+# repository says.
+
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      platforms:
+        description: Where to publish
+        type: choice
+        options:
+          - both
+          - android
+          - ios
+        default: both
+      notes:
+        description: What changed, for whoever tries it (in Catalan, it is read by people)
+        type: string
+        default: ''
+      version:
+        description: 'Version people read: empty keeps the one in app.json'
+        type: string
+        default: ''
+
+# Two of these at once would take the same build number, and a store refuses a repeated one
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+  JAVA_VERSION: '17'
+  # The stores only ask that this number never goes back. It is the run number of this workflow,
+  # far above the 90 the app had when it was published from a laptop.
+  BUILD_NUMBER_BASE: 1000
+  BUNDLE_IDENTIFIER: cpl.cpl
+  # The language of the Play listing the notes are written for: it has to exist in the listing
+  PLAY_LOCALE: ca
+  # A release with no notes says nothing to whoever has to try it, but stopping the publication
+  # over it would be worse
+  DEFAULT_NOTES: Correccions i millores.
+
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    env:
+      EXPO_PUBLIC_CPL_APP_KEY: ${{ secrets.CPL_APP_KEY }}
+    outputs:
+      build: ${{ steps.numbers.outputs.build }}
+      version: ${{ steps.numbers.outputs.version }}
+      notes: ${{ steps.numbers.outputs.notes }}
+      database: ${{ steps.numbers.outputs.database }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Bring the published database
+        run: node scripts/fetchDatabase.mjs
+
+      # Like make checks, without the two sweeps against the golden files: those are not in the
+      # repository (they are made of the texts of a database checked by hand), and without them
+      # they would write themselves from this build and pass without comparing anything.
+      - run: make checks-ci
+
+      - name: Numbers and text of this publication
+        id: numbers
+        env:
+          NOTES: ${{ inputs.notes }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          echo "build=$(( ${{ env.BUILD_NUMBER_BASE }} + GITHUB_RUN_NUMBER ))" >> "$GITHUB_OUTPUT"
+          echo "version=${VERSION:-$(node -p "require('./app.json').expo.version")}" >> "$GITHUB_OUTPUT"
+          echo "database=$(node -p "require('./src/assets/db/cpl-app.db.json').version")" >> "$GITHUB_OUTPUT"
+          {
+            echo 'notes<<CPL_NOTES'
+            if [ -z "${NOTES//[[:space:]]/}" ]; then echo "${{ env.DEFAULT_NOTES }}"; else echo "$NOTES"; fi
+            echo CPL_NOTES
+          } >> "$GITHUB_OUTPUT"
+
+  android:
+    name: Android, internal track
+    if: ${{ inputs.platforms != 'ios' }}
+    needs: checks
+    runs-on: ubuntu-latest
+    env:
+      EXPO_PUBLIC_CPL_APP_KEY: ${{ secrets.CPL_APP_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - run: npm ci
+
+      - name: Bring the published database
+        run: node scripts/fetchDatabase.mjs
+
+      # Before prebuild: the native project is made from app.json
+      - name: Write the numbers of this build
+        env:
+          BUILD: ${{ needs.checks.outputs.build }}
+          VERSION: ${{ needs.checks.outputs.version }}
+        run: node scripts/setBuildVersion.mjs "$BUILD" "$VERSION"
+
+      - name: Make the Android project
+        run: npx expo prebuild -p android --clean --no-install
+
+      - name: Put in the upload key
+        env:
+          ANDROID_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE }}
+        run: |
+          set -euo pipefail
+          echo "$ANDROID_KEYSTORE" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          node scripts/patchAndroidSigning.mjs
+
+      - name: Build the bundle
+        working-directory: android
+        env:
+          CPL_KEYSTORE_FILE: ${{ runner.temp }}/upload.jks
+          CPL_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          CPL_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          CPL_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: ./gradlew bundleRelease --no-daemon
+
+      - name: Check it is not signed with the debug key
+        run: |
+          set -euo pipefail
+          BUNDLE=android/app/build/outputs/bundle/release/app-release.aab
+          SIGNER=$(keytool -printcert -jarfile "$BUNDLE" | grep -m1 Owner: || true)
+          echo "Signed by: $SIGNER"
+          if echo "$SIGNER" | grep -q "Android Debug"; then
+            echo "The bundle is signed with the debug key: Google Play would refuse it."
+            exit 1
+          fi
+
+      - name: Write the notes for Play
+        id: whatsnew
+        env:
+          NOTES: ${{ needs.checks.outputs.notes }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/whatsnew"
+          # Play refuses the whole release if any language goes over 500 characters
+          printf '%s' "$NOTES" | cut -c1-500 > "$RUNNER_TEMP/whatsnew/whatsnew-${{ env.PLAY_LOCALE }}"
+          cat "$RUNNER_TEMP/whatsnew/whatsnew-${{ env.PLAY_LOCALE }}"
+
+      - name: Leave it in the internal track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}
+          packageName: ${{ env.BUNDLE_IDENTIFIER }}
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed
+          whatsNewDirectory: ${{ runner.temp }}/whatsnew
+
+  ios:
+    name: iOS, TestFlight
+    if: ${{ inputs.platforms != 'android' }}
+    needs: checks
+    runs-on: macos-26
+    env:
+      EXPO_PUBLIC_CPL_APP_KEY: ${{ secrets.CPL_APP_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      # Expo 57 carries Swift 6.3 code (expo-modules-jsi): an older Xcode does not compile it, and
+      # it fails deep inside the build with an error that says nothing about the version.
+      - name: An Xcode that can compile Expo 57
+        run: |
+          set -euo pipefail
+          NEEDED=26.4
+          CHOSEN=""
+          for APP in /Applications/Xcode*.app; do
+            VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Contents/Info.plist" 2>/dev/null || echo 0)
+            if [ "$(printf '%s\n%s\n' "$NEEDED" "$VERSION" | sort -V | head -1)" = "$NEEDED" ]; then
+              CHOSEN="$APP"
+            fi
+            echo "$APP: $VERSION"
+          done
+          if [ -z "$CHOSEN" ]; then
+            echo "This machine has no Xcode $NEEDED or newer, which Expo 57 needs (Swift 6.3)."
+            exit 1
+          fi
+          sudo xcode-select -s "$CHOSEN"
+          xcodebuild -version
+
+      - run: npm ci
+
+      - name: Bring the published database
+        run: node scripts/fetchDatabase.mjs
+
+      - name: Write the numbers of this build
+        env:
+          BUILD: ${{ needs.checks.outputs.build }}
+          VERSION: ${{ needs.checks.outputs.version }}
+        run: node scripts/setBuildVersion.mjs "$BUILD" "$VERSION"
+
+      # The pods are installed apart because prebuild, told not to install, skips them too, and
+      # without them there is no workspace to build and expo-modules-jsi is left half generated.
+      - name: Make the iOS project
+        run: |
+          npx expo prebuild -p ios --clean --no-install
+          npx pod-install
+
+      # The certificate goes into a keychain of its own, made for this build and thrown away with
+      # the machine: nothing is left in the one the runner comes with.
+      - name: Put in the certificate and the profile
+        id: signing
+        env:
+          IOS_CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+        run: |
+          set -euo pipefail
+          KEYCHAIN="$RUNNER_TEMP/signing.keychain-db"
+          PASSWORD=$(openssl rand -base64 24)
+          CERTIFICATE="$RUNNER_TEMP/certificate.p12"
+          PROFILE="$RUNNER_TEMP/profile.mobileprovision"
+
+          echo "$IOS_CERTIFICATE" | base64 -d > "$CERTIFICATE"
+          echo "$IOS_PROVISIONING_PROFILE" | base64 -d > "$PROFILE"
+
+          security create-keychain -p "$PASSWORD" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "$PASSWORD" "$KEYCHAIN"
+          security import "$CERTIFICATE" -P "$IOS_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$PASSWORD" "$KEYCHAIN" > /dev/null
+          security list-keychains -d user -s "$KEYCHAIN" login.keychain-db
+          security default-keychain -s "$KEYCHAIN"
+          security find-identity -v -p codesigning "$KEYCHAIN"
+
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          UUID=$(security cms -D -i "$PROFILE" | plutil -extract UUID raw -)
+          NAME=$(security cms -D -i "$PROFILE" | plutil -extract Name raw -)
+          cp "$PROFILE" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+
+          echo "keychain=$KEYCHAIN" >> "$GITHUB_OUTPUT"
+          echo "uuid=$UUID" >> "$GITHUB_OUTPUT"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+          echo "Profile «$NAME»"
+
+      - name: Tell the project what to sign with
+        env:
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+          IOS_PROFILE_NAME: ${{ steps.signing.outputs.name }}
+          IOS_PROFILE_UUID: ${{ steps.signing.outputs.uuid }}
+          IOS_BUNDLE_IDENTIFIER: ${{ env.BUNDLE_IDENTIFIER }}
+        run: node scripts/patchIosSigning.mjs
+
+      - name: Build the archive
+        run: |
+          set -euo pipefail
+          xcodebuild archive \
+            -workspace ios/CPL.xcworkspace \
+            -scheme CPL \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/CPL.xcarchive" \
+            OTHER_CODE_SIGN_FLAGS="--keychain ${{ steps.signing.outputs.keychain }}" \
+            -quiet
+
+      - name: Make the file the store takes
+        env:
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>teamID</key><string>$IOS_TEAM_ID</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>${{ env.BUNDLE_IDENTIFIER }}</key><string>${{ steps.signing.outputs.name }}</string>
+            </dict>
+            <key>uploadSymbols</key><true/>
+          </dict>
+          </plist>
+          PLIST
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/CPL.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+          ls -la "$RUNNER_TEMP/export"
+
+      - name: Leave it in TestFlight
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY: ${{ secrets.APP_STORE_CONNECT_KEY }}
+        run: |
+          set -euo pipefail
+          KEYS="$HOME/.appstoreconnect/private_keys"
+          mkdir -p "$KEYS"
+          echo "$APP_STORE_CONNECT_KEY" | base64 -d > "$KEYS/AuthKey_$APP_STORE_CONNECT_KEY_ID.p8"
+          chmod 600 "$KEYS/AuthKey_$APP_STORE_CONNECT_KEY_ID.p8"
+          xcrun altool --upload-app --type ios \
+            --file "$(ls "$RUNNER_TEMP"/export/*.ipa | head -1)" \
+            --apiKey "$APP_STORE_CONNECT_KEY_ID" \
+            --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID"
+
+  # Apple takes its time to process a build, and until it is through there is nowhere to write
+  # this. It waits here and not on the Mac, which costs ten times as much per minute.
+  notes:
+    name: What to try, in TestFlight
+    if: ${{ inputs.platforms != 'android' }}
+    needs: [checks, ios]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY: ${{ secrets.APP_STORE_CONNECT_KEY }}
+          IOS_BUNDLE_IDENTIFIER: ${{ env.BUNDLE_IDENTIFIER }}
+          BUILD_NUMBER: ${{ needs.checks.outputs.build }}
+          NOTES: ${{ needs.checks.outputs.notes }}
+        run: node scripts/setTestFlightNotes.mjs
+
+  # Una publicació dura tres quarts d'hora: ningú no s'ha de quedar mirant la pàgina. Diu com ha
+  # anat encara que alguna cosa hagi fallat, que és quan més fa falta saber-ho. Sense el bot
+  # configurat no fa res: la publicació no depèn d'això.
+  telegram:
+    name: Say how it went
+    if: ${{ !cancelled() }}
+    needs: [checks, android, ios, notes]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say it on Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          CHECKS: ${{ needs.checks.result }}
+          ANDROID: ${{ needs.android.result }}
+          IOS: ${{ needs.ios.result }}
+          WHATS_TO_TEST: ${{ needs.notes.result }}
+          VERSION: ${{ needs.checks.outputs.version }}
+          BUILD: ${{ needs.checks.outputs.build }}
+          DATABASE: ${{ needs.checks.outputs.database }}
+          NOTES: ${{ needs.checks.outputs.notes }}
+          WHERE: ${{ inputs.platforms }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] || [ -z "${TELEGRAM_CHAT_ID:-}" ]; then
+            echo "No Telegram bot configured: nothing to say."
+            exit 0
+          fi
+
+          said() {
+            case "$1" in
+              success) echo "fet" ;;
+              failure) echo "HA FALLAT" ;;
+              *) echo "no s'ha fet" ;;
+            esac
+          }
+          escaped() {
+            printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g'
+          }
+
+          NL=$'\n'
+          if [ -n "${VERSION:-}" ]; then NAME="CPL $VERSION ($BUILD)"; else NAME="la publicació"; fi
+
+          # Quantes de les botigues demanades han anat bé i quantes no
+          DONE=0
+          FAILED=0
+          if [ "$WHERE" != "ios" ]; then
+            if [ "$ANDROID" = "success" ]; then DONE=$((DONE + 1)); else FAILED=$((FAILED + 1)); fi
+          fi
+          if [ "$WHERE" != "android" ]; then
+            if [ "$IOS" = "success" ]; then DONE=$((DONE + 1)); else FAILED=$((FAILED + 1)); fi
+          fi
+
+          if [ "$CHECKS" != "success" ]; then
+            TEXT="❌ <b>No s'ha publicat res</b>${NL}Les comprovacions de $NAME no passen."
+          elif [ "$DONE" -eq 0 ]; then
+            TEXT="❌ <b>$NAME no s'ha pogut publicar</b>"
+          elif [ "$FAILED" -gt 0 ]; then
+            TEXT="⚠️ <b>$NAME, a mitges</b>"
+          else
+            TEXT="🚀 <b>$NAME ja és a les botigues</b>"
+          fi
+
+          if [ "$CHECKS" = "success" ]; then
+            if [ "$WHERE" != "ios" ]; then
+              TEXT="$TEXT${NL}• Android, prova interna: $(said "$ANDROID")"
+            fi
+            if [ "$WHERE" != "android" ]; then
+              TEXT="$TEXT${NL}• iOS, TestFlight: $(said "$IOS")"
+            fi
+            TEXT="$TEXT${NL}• Textos: base de dades versió ${DATABASE:-?}"
+            if [ "${WHATS_TO_TEST:-}" = "failure" ]; then
+              TEXT="$TEXT${NL}• El text del que s'ha de provar s'ha d'escriure a mà a TestFlight"
+            fi
+            if [ -n "${NOTES//[[:space:]]/}" ]; then
+              TEXT="$TEXT${NL}${NL}<i>$(escaped "$NOTES")</i>"
+            fi
+          fi
+          TEXT="$TEXT${NL}${NL}<a href=\"$RUN\">Com ha anat, pas per pas</a>"
+
+          curl -sS -X POST "https://api.telegram.org/bot$TELEGRAM_BOT_TOKEN/sendMessage" \
+            --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+            --data-urlencode "parse_mode=HTML" \
+            --data-urlencode "disable_web_page_preview=true" \
+            --data-urlencode "text=$TEXT" \
+            --fail-with-body --output /dev/null
+          echo "Said on Telegram."
