@@ -13,7 +13,11 @@ from the Actions tab. There is no trigger on push: publishing is always a decisi
    red, nothing is built.
 2. **The database.** `scripts/fetchDatabase.mjs` brings down the newest publication for the
    structure this code reads, and writes `cpl-app.db` and its `.json`. So an app built today
-   carries the texts published today.
+   carries the texts published today. Android and iOS are built at the same time and each one
+   brings it down on its own, so they are told which publication the checks settled on
+   (`CPL_DATABASE_VERSION`): if the CPL publishes a correction while the app is being built, the
+   run stops instead of leaving in the stores a database nobody was told about. Starting it again
+   picks the new one up.
 3. **The numbers.** `scripts/setBuildVersion.mjs` writes them into `app.json` before
    `expo prebuild`, which is what makes the native projects:
    - the version people read is the one in `app.json`, unless another one is typed in the form;

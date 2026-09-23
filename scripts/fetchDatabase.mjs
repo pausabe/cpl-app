@@ -6,6 +6,11 @@
 // key in cpl-app.db.json), and never one older than the version written there: a build must not
 // ship texts the phones have already replaced. The two files are rewritten together, so the app
 // always knows which version it carries.
+//
+// CPL_DATABASE_VERSION asks for one exact publication instead of the newest one. The workflow
+// builds Android and iOS in parallel, each bringing the database down on its own, so it says here
+// which publication the build was checked with: if the CPL publishes a correction in the middle,
+// nothing is built with texts that were never announced.
 
 import { Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
@@ -84,6 +89,12 @@ async function main() {
   }
   if (manifest.version < bundled.version) {
     throw new Error(`Publication ${manifest.version} is older than the ${bundled.version} this code was made with`);
+  }
+  const asked = process.env.CPL_DATABASE_VERSION?.trim();
+  if (asked && manifest.version !== Number(asked)) {
+    throw new Error(
+      `The website already publishes ${manifest.version} and this build started with ${asked}: publish again to carry it`,
+    );
   }
 
   if (existsSync(DATABASE_FILE) && md5(DATABASE_FILE) === manifest.md5) {

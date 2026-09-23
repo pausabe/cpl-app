@@ -119,6 +119,8 @@ jobs:
       - run: npm ci
 
       - name: Bring the published database
+        env:
+          CPL_DATABASE_VERSION: ${{ needs.checks.outputs.database }}
         run: node scripts/fetchDatabase.mjs
 
       # Before prebuild: the native project is made from app.json
@@ -219,6 +221,8 @@ jobs:
       - run: npm ci
 
       - name: Bring the published database
+        env:
+          CPL_DATABASE_VERSION: ${{ needs.checks.outputs.database }}
         run: node scripts/fetchDatabase.mjs
 
       - name: Write the numbers of this build
