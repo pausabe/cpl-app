@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import SettingsService, { DioceseName, PrayingPlace } from '../services/SettingsService';
 import { SessionLogs } from '../utils/logger';
 import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen';
+import WebSheet from '../components/WebSheet';
 import * as LiturgyStore from './liturgyStore';
 import { bundledDatabaseInformation, currentDatabaseVersion } from '../services/databaseManagerService';
 import { todaysCode } from '../services/usageService';
@@ -13,6 +14,8 @@ import { useTextSettings } from './appearanceSettings';
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
 // (SettingsService). The Latin hymns, the diocese and the place change the liturgy: the day being
 // shown is loaded again with them. The text size and the dark mode apply at once.
+
+const PRIVACY_URL = 'https://www.cpl.es/politica-de-privacidad/';
 
 const DIOCESES = Object.values(DioceseName) as string[];
 const PLACES = Object.values(PrayingPlace) as string[];
@@ -43,6 +46,7 @@ export default function SettingsController() {
   const [publishedVersion, setPublishedVersion] = useState<number | null>(null);
   // The code this phone sends today so that it can be counted once, and nothing else about it
   const [usageCode, setUsageCode] = useState<string | null>(null);
+  const [privacyVisible, setPrivacyVisible] = useState(false);
   useEffect(() => {
     currentDatabaseVersion()
       .then(setPublishedVersion)
@@ -75,43 +79,53 @@ export default function SettingsController() {
     : null;
 
   return (
-    <SettingsScreen
-      values={values}
-      dioceses={DIOCESES}
-      places={PLACES}
-      info={{
-        appVersion: `${versionName()} (${ExpoApplication.nativeBuildVersion ?? ''})`,
-        databaseVersion: String(database.version ?? ''),
-        technical: [
-          `Esquema de color: ${Appearance.getColorScheme()}`,
-          `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
-          `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
-          `Compatibilitat: ${bundledDatabaseInformation().compat}`,
-          `Codi d'avui: ${usageCode ?? 'encara cap'} (es fa a l'atzar cada dia i no diu qui ets)`,
-        ],
-        logs: SessionLogs,
-      }}
-      onTextSizeChange={textSettings.onTextSizeChange}
-      onDarkModeChange={textSettings.onDarkModeChange}
-      onLatinChange={async (enabled) => {
-        change({ useLatin: enabled });
-        await SettingsService.setSettingUseLatin(enabled ? 'true' : 'false', undefined);
-        await reloadLiturgy();
-      }}
-      onDioceseChange={async (diocese) => {
-        change({ diocese });
-        await SettingsService.setSettingDiocese(diocese, undefined);
-        await reloadLiturgy();
-      }}
-      onPlaceChange={async (place) => {
-        change({ place });
-        await SettingsService.setSettingPrayingPlace(place, undefined);
-        await reloadLiturgy();
-      }}
-      onShowVideosChange={async (enabled) => {
-        change({ showVideos: enabled });
-        await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false', undefined);
-      }}
-    />
+    <>
+      <SettingsScreen
+        values={values}
+        dioceses={DIOCESES}
+        places={PLACES}
+        info={{
+          appVersion: `${versionName()} (${ExpoApplication.nativeBuildVersion ?? ''})`,
+          databaseVersion: String(database.version ?? ''),
+          technical: [
+            `Esquema de color: ${Appearance.getColorScheme()}`,
+            `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
+            `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
+            `Compatibilitat: ${bundledDatabaseInformation().compat}`,
+            `Codi d'avui: ${usageCode ?? 'encara cap'} (es fa a l'atzar cada dia i no diu qui ets)`,
+          ],
+          logs: SessionLogs,
+        }}
+        onTextSizeChange={textSettings.onTextSizeChange}
+        onDarkModeChange={textSettings.onDarkModeChange}
+        onLatinChange={async (enabled) => {
+          change({ useLatin: enabled });
+          await SettingsService.setSettingUseLatin(enabled ? 'true' : 'false', undefined);
+          await reloadLiturgy();
+        }}
+        onDioceseChange={async (diocese) => {
+          change({ diocese });
+          await SettingsService.setSettingDiocese(diocese, undefined);
+          await reloadLiturgy();
+        }}
+        onPlaceChange={async (place) => {
+          change({ place });
+          await SettingsService.setSettingPrayingPlace(place, undefined);
+          await reloadLiturgy();
+        }}
+        onShowVideosChange={async (enabled) => {
+          change({ showVideos: enabled });
+          await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false', undefined);
+        }}
+        onPrivacy={() => setPrivacyVisible(true)}
+      />
+      <WebSheet
+        visible={privacyVisible}
+        title="Política de privacitat"
+        url={PRIVACY_URL}
+        onClose={() => setPrivacyVisible(false)}
+        testID="privacy-sheet"
+      />
+    </>
   );
 }

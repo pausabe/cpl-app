@@ -41,6 +41,7 @@ export interface SettingsScreenProps {
   onDioceseChange: (diocese: string) => void;
   onPlaceChange: (place: string) => void;
   onShowVideosChange: (enabled: boolean) => void;
+  onPrivacy: () => void;
 }
 
 const APPROVAL =
@@ -150,6 +151,13 @@ export default function SettingsScreen(props: SettingsScreenProps) {
           <View style={styles.footer}>
             <Text onPress={() => setTouches(touches + 1)} style={[styles.footerText, { color: colors.text3 }]}>
               {APPROVAL}
+            </Text>
+            <Text
+              accessibilityRole="link"
+              onPress={props.onPrivacy}
+              style={[styles.footerText, styles.link, { color: colors.text2 }]}
+            >
+              Política de privacitat
             </Text>
             <Text style={[styles.footerText, { color: colors.text3 }]}>
               {`Versió de l'aplicació: ${info.appVersion}\nVersió de la base de dades: ${info.databaseVersion}`}
@@ -282,6 +290,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 17,
     textAlign: 'center',
+  },
+  link: {
+    textDecorationLine: 'underline',
   },
   logs: {
     fontSize: 11,

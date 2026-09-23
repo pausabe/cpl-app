@@ -2,6 +2,11 @@
 // and applied. With the real liturgy, so that the changes that reload it are real too.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0', nativeBuildVersion: '90' }));
+jest.mock('react-native-webview', () => {
+  const { View } = require('react-native');
+  const WebView = (props) => <View testID="webview" {...props} />;
+  return { __esModule: true, default: WebView, WebView };
+});
 
 import React from 'react';
 import { StyleSheet } from 'react-native';
@@ -154,4 +159,14 @@ test('in plain sight, the approval text and the versions; the technical data, be
   expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
   expect(screen.getByText(/^Codi d'avui: (encara cap|[0-9a-f]{32}) /)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
+});
+
+test('the privacy policy, at the bottom, opens inside the app', async () => {
+  await open();
+
+  fireEvent.press(screen.getByText('Política de privacitat'));
+
+  const sheet = await screen.findByTestId('privacy-sheet');
+  expect(sheet).toBeTruthy();
+  expect(screen.getByTestId('webview').props.source.uri).toBe('https://www.cpl.es/politica-de-privacidad/');
 });
