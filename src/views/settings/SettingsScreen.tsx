@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { MAX_TEXT_SIZE_SETTING, useTheme } from '../../theme';
 import Card from '../../components/Card';
+import CopyButton from '../../components/CopyButton';
 import EdgeToEdgeScrollView from '../../components/EdgeToEdgeScrollView';
 import Icon from '../../components/Icon';
 import OptionSheet from '../../components/OptionSheet';
@@ -16,6 +17,7 @@ import {
   OPEN_PHONE_SETTINGS,
   USE_MY_LOCATION,
 } from '../../view-models/notices';
+import { TechnicalData, technicalReport, versionLines } from '../../view-models/technicalData';
 
 // Configuració: the same six options as always, in three groups. Everything comes from its
 // controller (Controllers/SettingsController), which also saves the changes.
@@ -29,13 +31,9 @@ export interface SettingsValues {
   showVideos: boolean;
 }
 
-export interface SettingsInfo {
-  appVersion: string;
-  databaseVersion: string;
-  // Behind ten touches on the approval text, with the logs
-  technical: string[];
-  logs: string;
-}
+// The versions in plain sight, and behind ten touches on the approval text the technical lines
+// and the logs
+export type SettingsInfo = TechnicalData;
 
 export interface SettingsScreenProps {
   values: SettingsValues | null;
@@ -187,7 +185,13 @@ export default function SettingsScreen(props: SettingsScreenProps) {
           ) : null}
 
           <View style={styles.footer}>
-            <Text onPress={() => setTouches(touches + 1)} style={[styles.footerText, { color: colors.text3 }]}>
+            <Text
+              onPress={() => setTouches(touches + 1)}
+              // Nothing must look pressable here: without this, iOS greys the text on every
+              // touch and gives away that there is something behind it
+              suppressHighlighting={true}
+              style={[styles.footerText, { color: colors.text3 }]}
+            >
               {APPROVAL}
             </Text>
             <Text
@@ -197,9 +201,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
             >
               Política de privacitat
             </Text>
-            <Text style={[styles.footerText, { color: colors.text3 }]}>
-              {`Versió de l'aplicació: ${info.appVersion}\nVersió de la base de dades: ${info.databaseVersion}`}
-            </Text>
+            <Text style={[styles.footerText, { color: colors.text3 }]}>{versionLines(info)}</Text>
             {technicalVisible ? (
               <View testID="technical-data">
                 {info.technical.map((line) => (
@@ -207,6 +209,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                     {line}
                   </Text>
                 ))}
+                <CopyButton text={() => technicalReport(info)} style={styles.copy} testID="copy-technical-data" />
                 <Text selectable={true} style={[styles.logs, { color: colors.text3 }]}>
                   {'Logs: \n'}
                   {info.logs}
@@ -352,5 +355,8 @@ const styles = StyleSheet.create({
     fontSize: 11,
     textAlign: 'left',
     marginTop: 8,
+  },
+  copy: {
+    marginTop: 12,
   },
 });

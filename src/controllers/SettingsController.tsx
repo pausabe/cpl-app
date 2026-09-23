@@ -103,6 +103,20 @@ export default function SettingsController() {
       }
     : null;
 
+  // What the bottom of the screen shows, and what the «Copia-ho tot» button copies
+  const info = {
+    appVersion: `${versionName()} (${ExpoApplication.nativeBuildVersion ?? ''})`,
+    databaseVersion: String(database.version ?? ''),
+    technical: [
+      `Esquema de color: ${Appearance.getColorScheme()}`,
+      `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
+      `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
+      `Compatibilitat: ${bundledDatabaseInformation().compat}`,
+      `Identificador: ${usage?.device ?? 'encara cap'}${usage ? ` (fet el ${usage.madeOn})` : ''}`,
+    ],
+    logs: SessionLogs,
+  };
+
   return (
     <>
       <SettingsScreen
@@ -112,18 +126,7 @@ export default function SettingsController() {
         locationStatus={locationStatus}
         onUseMyLocation={useMyLocation}
         onOpenPhoneSettings={openPhoneSettings}
-        info={{
-          appVersion: `${versionName()} (${ExpoApplication.nativeBuildVersion ?? ''})`,
-          databaseVersion: String(database.version ?? ''),
-          technical: [
-            `Esquema de color: ${Appearance.getColorScheme()}`,
-            `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
-            `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
-            `Compatibilitat: ${bundledDatabaseInformation().compat}`,
-            `Identificador: ${usage?.device ?? 'encara cap'}${usage ? ` (fet el ${usage.madeOn})` : ''}`,
-          ],
-          logs: SessionLogs,
-        }}
+        info={info}
         onTextSizeChange={textSettings.onTextSizeChange}
         onDarkModeChange={textSettings.onDarkModeChange}
         onLatinChange={async (enabled) => {

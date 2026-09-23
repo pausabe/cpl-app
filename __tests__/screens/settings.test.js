@@ -2,6 +2,7 @@
 // and applied. With the real liturgy, so that the changes that reload it are real too.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0', nativeBuildVersion: '90' }));
+jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(() => Promise.resolve()) }));
 // Where the phone is comes from the phone: here it is said outright.
 jest.mock('../../src/services/deviceLocationService', () => ({ currentPosition: jest.fn() }));
 jest.mock('react-native-webview', () => {
@@ -20,6 +21,7 @@ import * as DataService from '../../src/services/dataService';
 import * as LiturgyStore from '../../src/controllers/liturgyStore';
 import SettingsController from '../../src/controllers/SettingsController';
 import { currentPosition } from '../../src/services/deviceLocationService';
+import * as Clipboard from 'expo-clipboard';
 import AppThemeProvider from '../../src/controllers/AppThemeProvider';
 import { loadDay } from '../helpers/liturgyDay';
 import { METRICS, styleOf } from '../helpers/renderWithTheme';
@@ -163,6 +165,26 @@ test('in plain sight, the approval text and the versions; the technical data, be
   expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
   expect(screen.getByText(/^Identificador: (encara cap|[0-9a-f]{32})/)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
+});
+
+test('the approval text gives nothing away: touching it does not even light up', async () => {
+  await open();
+  expect(screen.getByText(/^Text oficial de la Comissió Interdiocesana/).props.suppressHighlighting).toBe(true);
+});
+
+test('«Copia-ho tot» takes every technical datum to the clipboard, and says it has', async () => {
+  await open();
+  const approval = screen.getByText(/^Text oficial de la Comissió Interdiocesana/);
+  for (let i = 0; i < 10; i++) fireEvent.press(approval);
+
+  fireEvent.press(screen.getByRole('button', { name: 'Copia-ho tot' }));
+  const copied = Clipboard.setStringAsync.mock.calls[0][0];
+  expect(copied).toMatch(/^Versió de l'aplicació: 9\.0\.0 \(90\)\nVersió de la base de dades: \d+\n/);
+  expect(copied).toMatch(/\nCompatibilitat: s\d+-[0-9a-f]+\n/);
+  expect(copied).toMatch(/\nIdentificador: (encara cap|[0-9a-f]{32})/);
+  expect(copied).toContain('\nLogs: \n');
+  // And the button says so, without any notice on top of the screen
+  await screen.findByRole('button', { name: 'Copiat' });
 });
 
 test('the privacy policy, at the bottom, opens inside the app', async () => {
