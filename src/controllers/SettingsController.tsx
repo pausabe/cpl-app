@@ -8,7 +8,7 @@ import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen
 import WebSheet from '../components/WebSheet';
 import * as LiturgyStore from './liturgyStore';
 import { bundledDatabaseInformation, currentDatabaseVersion } from '../services/databaseManagerService';
-import { todaysCode } from '../services/usageService';
+import { currentIdentifier } from '../services/usageService';
 import { useTextSettings } from './appearanceSettings';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
@@ -45,15 +45,15 @@ export default function SettingsController() {
   // downloaded from the publishing website
   const [publishedVersion, setPublishedVersion] = useState<number | null>(null);
   // The code this phone sends today so that it can be counted once, and nothing else about it
-  const [usageCode, setUsageCode] = useState<string | null>(null);
+  const [usage, setUsage] = useState<{ device: string; madeOn: string } | null>(null);
   const [privacyVisible, setPrivacyVisible] = useState(false);
   useEffect(() => {
     currentDatabaseVersion()
       .then(setPublishedVersion)
       .catch(() => setPublishedVersion(null));
-    todaysCode()
-      .then(setUsageCode)
-      .catch(() => setUsageCode(null));
+    currentIdentifier()
+      .then(setUsage)
+      .catch(() => setUsage(null));
   }, []);
   const textSettings = useTextSettings();
   const [others, setOthers] = useState<OtherValues | null>(null);
@@ -92,7 +92,7 @@ export default function SettingsController() {
             `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
             `Publicació de la base de dades: ${publishedVersion ?? '?'} (dins l'app: ${bundledDatabaseInformation().version})`,
             `Compatibilitat: ${bundledDatabaseInformation().compat}`,
-            `Codi d'avui: ${usageCode ?? 'encara cap'} (es fa a l'atzar cada dia i no diu qui ets)`,
+            `Identificador: ${usage?.device ?? 'encara cap'}${usage ? ` (fet el ${usage.madeOn})` : ''}`,
           ],
           logs: SessionLogs,
         }}

@@ -3,47 +3,57 @@ import * as StorageService from './storage/storageService';
 import StorageKeys from './storage/storageKeys';
 import { APP_KEY, callApi } from './cplApi';
 
-// How many people use the app, without knowing anything about anyone.
+// How many people use the app.
 //
-// The phone makes itself a code at random each day and throws it away the next one: there is no
-// identifier that lasts, nothing that ties one day to another and nothing that says who anyone is.
-// Together with the code it sends how many times the app has been opened since the last report.
-// The server keeps two numbers a day and forgets the codes after two days.
+// The phone makes itself an identifier and sends it once a day, together with how many times the
+// app has been opened since the last report. The identifier is only good for not counting the same
+// phone twice: it says nothing about who anyone is, it is not shared with anyone and it is not used
+// for anything else. Following the AEPD's guidance on audience measurement, it lasts at most
+// thirteen months and is not renewed by using the app: at thirteen months the phone makes a new one
+// and the old one is forgotten. The CPL's privacy policy explains it.
+const MONTHS_OF_IDENTIFIER = 13;
 const MAX_OPENS = 500;
 
 function today(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-// Good enough for counting: the code is not a secret and nothing depends on it being unguessable
-function randomCode(): string {
-  let code = '';
-  while (code.length < 32) {
-    code += Math.floor(Math.random() * 0xffffffff)
+// Good enough for counting: the identifier is not a secret and nothing depends on it being
+// unguessable, only on two phones not making the same one
+function randomIdentifier(): string {
+  let identifier = '';
+  while (identifier.length < 32) {
+    identifier += Math.floor(Math.random() * 0xffffffff)
       .toString(16)
       .padStart(8, '0');
   }
-  return code.slice(0, 32);
+  return identifier.slice(0, 32);
 }
 
-async function codeForToday(): Promise<string> {
-  const day = today();
-  const stored = await StorageService.getData(StorageKeys.UsageCode, '');
-  const [storedDay, storedCode] = String(stored).split(':');
-  if (storedDay === day && storedCode) {
-    return storedCode;
+function isOlderThanThirteenMonths(madeOn: string): boolean {
+  const limit = new Date();
+  limit.setUTCMonth(limit.getUTCMonth() - MONTHS_OF_IDENTIFIER);
+  return madeOn < limit.toISOString().slice(0, 10);
+}
+
+// The identifier this phone sends, made if there is none or if the one there is has run its
+// thirteen months. What is stored is 'the day it was made:the identifier'.
+async function identifier(): Promise<string> {
+  const current = await currentIdentifier();
+  if (current && !isOlderThanThirteenMonths(current.madeOn)) {
+    return current.device;
   }
-  const code = randomCode();
-  await StorageService.storeData(StorageKeys.UsageCode, `${day}:${code}`);
-  return code;
+  const made = randomIdentifier();
+  await StorageService.storeData(StorageKeys.UsageDevice, `${today()}:${made}`);
+  return made;
 }
 
-// Today's code, if there is one yet. Only to show it in the Settings screen: the phone should be
-// able to see the one thing it sends about itself.
-export async function todaysCode(): Promise<string | null> {
-  const stored = await StorageService.getData(StorageKeys.UsageCode, '');
-  const [day, code] = String(stored).split(':');
-  return day === today() && code ? code : null;
+// To show it in the Settings screen. It does not make one: a phone that has never reported has
+// nothing to show.
+export async function currentIdentifier(): Promise<{ device: string; madeOn: string } | null> {
+  const stored = await StorageService.getData(StorageKeys.UsageDevice, '');
+  const [madeOn, device] = String(stored).split(':');
+  return device && madeOn ? { device, madeOn } : null;
 }
 
 // One more opening. It is sent with the next report and counted then.
@@ -69,7 +79,7 @@ export async function reportUsage(): Promise<UsageReportResult> {
     const response = await callApi('/v1/usage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: await codeForToday(), opens: Math.min(opens, MAX_OPENS) }),
+      body: JSON.stringify({ device: await identifier(), opens: Math.min(opens, MAX_OPENS) }),
     });
     if (!response.ok) {
       throw new Error(`The server answered ${response.status}`);

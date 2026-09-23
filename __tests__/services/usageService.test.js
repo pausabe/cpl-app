@@ -1,5 +1,6 @@
-// Counting how many people use the app without knowing anything about anyone: a code made at
-// random each day, thrown away the next one, and the number of openings since the last report.
+// Counting how many people use the app: an identifier the phone makes itself, which lasts at most
+// thirteen months, and the number of openings since the last report. It only serves not to count
+// the same phone twice.
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
 
@@ -16,7 +17,7 @@ const answer = (status = 204) => {
   global.fetch = jest.fn(async () => ({ ok: status >= 200 && status < 300, status }));
 };
 
-const sent = () => JSON.parse(global.fetch.mock.calls[0][1].body);
+const sent = (call = 0) => JSON.parse(global.fetch.mock.calls[call][1].body);
 const today = () => new Date().toISOString().slice(0, 10);
 
 beforeEach(async () => {
@@ -33,7 +34,7 @@ test('every opening is counted and sent with the next report', async () => {
   await expect(service.reportUsage()).resolves.toBe('reported');
 
   expect(sent().opens).toBe(2);
-  expect(sent().code).toMatch(/^[0-9a-f]{32}$/);
+  expect(sent().device).toMatch(/^[0-9a-f]{32}$/);
 });
 
 test('after reporting, the count starts again and the day is remembered', async () => {
@@ -59,20 +60,43 @@ test('it reports once a day, however many times the app is opened', async () => 
   expect(await AsyncStorage.getItem(StorageKeys.UsageOpens)).toBe('1');
 });
 
-test('the same code all day, a different one the next day', async () => {
+function travelTo(date) {
+  jest.useFakeTimers({ doNotFake: ['nextTick', 'setImmediate'] });
+  jest.setSystemTime(date);
+}
+
+test('the identifier lasts, so the same phone is the same phone tomorrow', async () => {
   const service = loadService();
   await service.countOpen();
   await service.reportUsage();
-  const firstCode = sent().code;
-  expect(await service.todaysCode()).toBe(firstCode);
+  const device = sent().device;
+  expect(await service.currentIdentifier()).toEqual({ device, madeOn: today() });
 
-  // The next day: yesterday's code is not this day's, and the one that goes is another
-  jest.spyOn(Date.prototype, 'toISOString').mockReturnValue('2030-01-01T00:00:00.000Z');
-  expect(await service.todaysCode()).toBeNull();
+  const tomorrow = new Date();
+  tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
+  travelTo(tomorrow);
   await service.countOpen();
   await service.reportUsage();
-  expect(JSON.parse(global.fetch.mock.calls[1][1].body).code).not.toBe(firstCode);
-  Date.prototype.toISOString.mockRestore();
+
+  expect(sent(1).device).toBe(device);
+  jest.useRealTimers();
+});
+
+test('at thirteen months the phone makes a new one and the old one is gone', async () => {
+  const service = loadService();
+  await service.countOpen();
+  await service.reportUsage();
+  const device = sent().device;
+
+  const later = new Date();
+  later.setUTCMonth(later.getUTCMonth() + 14);
+  travelTo(later);
+  await service.countOpen();
+  await service.reportUsage();
+
+  expect(sent(1).device).not.toBe(device);
+  expect((await service.currentIdentifier()).device).toBe(sent(1).device);
+  jest.useRealTimers();
 });
 
 test('nothing is lost when the report does not get through', async () => {
