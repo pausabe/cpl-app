@@ -10,6 +10,7 @@ import WebSheet from '../components/WebSheet';
 import * as LiturgyStore from './liturgyStore';
 import { bundledDatabaseInformation, currentDatabaseVersion } from '../services/databaseManagerService';
 import { currentIdentifier } from '../services/usageService';
+import { askAgainOnTheNextOpening } from '../services/databaseUpdateService';
 import { useTextSettings } from './appearanceSettings';
 import { autoselectDiocese } from './dioceseAutoselection';
 
@@ -148,6 +149,9 @@ export default function SettingsController() {
         onShowVideosChange={async (enabled) => {
           change({ showVideos: enabled });
           await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false', undefined);
+        }}
+        onAskAgainForTheDatabase={() => {
+          askAgainOnTheNextOpening().catch(() => undefined);
         }}
         onPrivacy={() => setPrivacyVisible(true)}
       />

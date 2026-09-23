@@ -187,6 +187,22 @@ test('«Copia-ho tot» takes every technical datum to the clipboard, and says it
   await screen.findByRole('button', { name: 'Copiat' });
 });
 
+test('the hidden button makes the app ask for a new database the next time it opens', async () => {
+  await open();
+  const approval = screen.getByText(/^Text oficial de la Comissió Interdiocesana/);
+  for (let i = 0; i < 10; i++) fireEvent.press(approval);
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('button', { name: "Torna a preguntar en obrir l'app" }));
+  });
+
+  // Six hours and a second back, which is what an app that has not looked since yesterday has
+  const lastCheck = Number(await AsyncStorage.getItem('LastDatabaseCheck'));
+  expect(Date.now() - lastCheck).toBeGreaterThan(6 * 60 * 60 * 1000);
+  // And it says so, because the next thing to do is to close the app
+  expect(screen.getByRole('button', { name: 'Fet' })).toBeTruthy();
+});
+
 test('the privacy policy, at the bottom, opens inside the app', async () => {
   await open();
 

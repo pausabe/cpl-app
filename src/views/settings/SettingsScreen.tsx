@@ -49,12 +49,17 @@ export interface SettingsScreenProps {
   onOpenPhoneSettings: () => void;
   onPlaceChange: (place: string) => void;
   onShowVideosChange: (enabled: boolean) => void;
+  onAskAgainForTheDatabase: () => void;
   onPrivacy: () => void;
 }
 
 const APPROVAL =
   "Text oficial de la Comissió Interdiocesana de Litúrgia de la Conferència Episcopal Tarraconense, aprovat pels bisbes de les diòcesis de parla catalana i confirmat per la Congregació per al Culte Diví i la Disciplina dels Sagraments: Prot. N. 312/15, 27 d'abril de 2016";
 const TOUCHES_FOR_TECHNICAL_DATA = 10;
+// Trying out a publication without waiting for the six hours between one look and the next. It
+// downloads nothing by itself: it only forgets when the app last asked, so that the next opening
+// asks again. The database that arrives is used the opening after that, as it always is.
+const ASK_AGAIN = "Torna a preguntar en obrir l'app";
 
 export default function SettingsScreen(props: SettingsScreenProps) {
   const theme = useTheme();
@@ -63,6 +68,9 @@ export default function SettingsScreen(props: SettingsScreenProps) {
   const [sheet, setSheet] = useState<'diocese' | 'place' | null>(null);
   const [touches, setTouches] = useState(0);
   const technicalVisible = touches >= TOUCHES_FOR_TECHNICAL_DATA;
+  // It stays saying «Fet»: whoever pressed it is on their way to closing the app, which is the
+  // whole point of the button
+  const [askedAgain, setAskedAgain] = useState(false);
 
   const divider = <View style={[styles.divider, { backgroundColor: colors.divider }]} />;
   const groupLabel = (label: string, first = false) => (
@@ -210,6 +218,21 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                   </Text>
                 ))}
                 <CopyButton text={() => technicalReport(info)} style={styles.copy} testID="copy-technical-data" />
+                <Pressable
+                  testID="ask-again-for-the-database"
+                  accessibilityRole="button"
+                  accessibilityLabel={askedAgain ? 'Fet' : ASK_AGAIN}
+                  hitSlop={{ top: 14, bottom: 14, left: 24, right: 24 }}
+                  style={styles.askAgain}
+                  onPress={() => {
+                    setAskedAgain(true);
+                    props.onAskAgainForTheDatabase();
+                  }}
+                >
+                  <Text style={[styles.askAgainLabel, { color: colors.accentText }]}>
+                    {askedAgain ? 'Fet' : ASK_AGAIN}
+                  </Text>
+                </Pressable>
                 <Text selectable={true} style={[styles.logs, { color: colors.text3 }]}>
                   {'Logs: \n'}
                   {info.logs}
@@ -358,5 +381,13 @@ const styles = StyleSheet.create({
   },
   copy: {
     marginTop: 12,
+  },
+  askAgain: {
+    alignSelf: 'center',
+    paddingVertical: 6,
+  },
+  askAgainLabel: {
+    fontSize: 13,
+    textDecorationLine: 'underline',
   },
 });

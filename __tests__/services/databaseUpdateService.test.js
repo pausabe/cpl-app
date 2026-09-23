@@ -263,3 +263,20 @@ test('a download that went wrong waits the whole six hours: sixteen megabytes ar
   await expect(service.checkForNewDatabase()).resolves.toBe('too-soon');
   Date.now.mockRestore();
 });
+
+// The button hidden in the technical data of Configuració, for seeing a publication on the phone
+// without waiting for the six hours to go by
+test('asking again makes the next opening look, and nothing else', async () => {
+  const service = loadService();
+
+  await service.checkForNewDatabase();
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+
+  await service.askAgainOnTheNextOpening();
+  // It downloads nothing by itself: it only moves the last look far enough back
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(FileSystem.createDownloadResumable).toHaveBeenCalledTimes(1);
+
+  await expect(service.checkForNewDatabase()).resolves.toBe('downloaded');
+  expect(global.fetch).toHaveBeenCalledTimes(2);
+});

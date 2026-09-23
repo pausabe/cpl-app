@@ -87,6 +87,13 @@ async function rememberTheCheck(failed: boolean): Promise<void> {
   await StorageService.storeData(StorageKeys.LastDatabaseCheckFailed, failed ? 'true' : '');
 }
 
+// For trying out a publication without waiting the six hours: it does not download anything, it
+// only moves the last check far enough back that the next opening asks again. Pressed from the
+// technical data of Configuració, it makes the phone behave exactly as it would tomorrow.
+export async function askAgainOnTheNextOpening(): Promise<void> {
+  await StorageService.storeData(StorageKeys.LastDatabaseCheck, Date.now() - MILLISECONDS_BETWEEN_CHECKS - 1000);
+}
+
 async function isTimeToCheck(): Promise<boolean> {
   const lastCheck = Number(await StorageService.getData(StorageKeys.LastDatabaseCheck, '0'));
   const failed = (await StorageService.getData(StorageKeys.LastDatabaseCheckFailed, '')) === 'true';
