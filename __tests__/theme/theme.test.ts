@@ -101,3 +101,10 @@ test('for React Navigation the theme is dark in both modes: the top bar is dark 
   expect(navigationTheme(createTheme()).dark).toBe(true);
   expect(navigationTheme(createTheme({ dark: true })).dark).toBe(true);
 });
+
+test('the scroll bar takes the mode of the app, not the one of the phone', () => {
+  // "default" would follow the phone: with the app in light mode on a phone in dark mode, the
+  // bar came out white over a light background and could not be seen
+  expect(createTheme().scrollIndicator).toBe('black');
+  expect(createTheme({ dark: true }).scrollIndicator).toBe('white');
+});

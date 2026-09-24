@@ -8,6 +8,9 @@ export interface Theme {
   scheme: ColorSchemeName;
   dark: boolean;
   colors: Palette;
+  // The colour of the scroll bar of iOS: the app chooses it, because the mode of the app is not
+  // always the mode of the phone, and "default" follows the phone.
+  scrollIndicator: 'white' | 'black';
   liturgical: (code: unknown) => LiturgicalColor;
   prayer: PrayerMetrics;
   fonts: typeof fontFamilies;
@@ -57,6 +60,7 @@ export function createTheme({ dark = false, textSize }: ThemeOptions = {}): Them
     scheme,
     dark,
     colors: palettes[scheme],
+    scrollIndicator: dark ? 'white' : 'black',
     liturgical: (code: unknown) => liturgicalColor(code, scheme),
     prayer: prayerMetrics(textSize),
     fonts: fontFamilies,

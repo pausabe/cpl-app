@@ -22,7 +22,7 @@ export default function OptionSheet({ visible, title, options, value, onChoose, 
       <Text accessibilityRole="header" style={[styles.title, { color: colors.text }]}>
         {title}
       </Text>
-      <ScrollView style={styles.list} accessibilityRole="radiogroup">
+      <ScrollView style={styles.list} indicatorStyle={theme.scrollIndicator} accessibilityRole="radiogroup">
         {options.map((option, index) => {
           const selected = option === value;
           return (

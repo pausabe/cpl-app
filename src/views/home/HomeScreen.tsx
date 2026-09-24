@@ -47,6 +47,7 @@ export default function HomeScreen(props: HomeScreenProps) {
       <ScrollView
         contentContainerStyle={[styles.scroll, { paddingBottom: footerHeight }]}
         automaticallyAdjustContentInsets={false}
+        indicatorStyle={theme.scrollIndicator}
       >
         <View testID="home-column" style={[styles.column, { maxWidth: theme.layout.homeMaxWidth }]}>
           <DayCard

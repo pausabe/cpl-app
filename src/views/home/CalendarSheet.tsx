@@ -175,7 +175,7 @@ export default function CalendarSheet({
           {pickingYear ? <View style={styles.arrow} /> : arrow('Mes següent', 'chevronRight', month.canGoForward, 1)}
         </View>
         {pickingYear ? (
-          <ScrollView style={styles.yearList}>
+          <ScrollView style={styles.yearList} indicatorStyle={theme.scrollIndicator}>
             <View testID="calendar-years" style={styles.years}>
               {selectableYears(shown.year, minimumDate, maximumDate).map(yearCell)}
             </View>

@@ -27,7 +27,11 @@ export default function DescriptionSheet({ day, visible, onClose }: DescriptionS
       >
         {day.title}
       </Text>
-      <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.scrollContent}
+        indicatorStyle={theme.scrollIndicator}
+      >
         <PrayerText selectable={true} style={[styles.description, { color: colors.text }]}>
           {day.description}
         </PrayerText>
