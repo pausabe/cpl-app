@@ -113,6 +113,24 @@ test('nothing is lost when the report does not get through', async () => {
   expect(sent().opens).toBe(2);
 });
 
+test('the report says which publication the app is praying with', async () => {
+  const service = loadService();
+  await service.countOpen();
+
+  await service.reportUsage(12);
+
+  expect(sent().version).toBe(12);
+});
+
+test('with no database open yet it reports without a version', async () => {
+  const service = loadService();
+  await service.countOpen();
+
+  await expect(service.reportUsage(null)).resolves.toBe('reported');
+
+  expect(sent()).not.toHaveProperty('version');
+});
+
 test('without the app key it does not report anything', async () => {
   const service = loadService({ appKey: '' });
   await service.countOpen();

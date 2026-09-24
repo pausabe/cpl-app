@@ -11,6 +11,11 @@ import { APP_KEY, callApi } from './cplApi';
 // for anything else. Following the AEPD's guidance on audience measurement, it lasts at most
 // thirteen months and is not renewed by using the app: at thirteen months the phone makes a new one
 // and the old one is forgotten. The CPL's privacy policy explains it.
+//
+// The report also says which publication of the database the app is praying with, so that the CPL
+// can see whether a correction has reached people. It is counted and nothing more: the version is
+// not kept next to the identifier, only added to that day's tally. A phone with no database open
+// yet sends no version and is counted all the same.
 const MONTHS_OF_IDENTIFIER = 13;
 const MAX_OPENS = 500;
 
@@ -64,7 +69,7 @@ export async function countOpen(): Promise<void> {
 
 export type UsageReportResult = 'reported' | 'nothing-to-say' | 'no-key' | 'failed';
 
-export async function reportUsage(): Promise<UsageReportResult> {
+export async function reportUsage(version: number | null = null): Promise<UsageReportResult> {
   if (!APP_KEY) {
     return 'no-key';
   }
@@ -79,7 +84,11 @@ export async function reportUsage(): Promise<UsageReportResult> {
     const response = await callApi('/v1/usage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ device: await identifier(), opens: Math.min(opens, MAX_OPENS) }),
+      body: JSON.stringify({
+        device: await identifier(),
+        opens: Math.min(opens, MAX_OPENS),
+        ...(version === null ? {} : { version }),
+      }),
     });
     if (!response.ok) {
       throw new Error(`The server answered ${response.status}`);

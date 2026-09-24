@@ -23,6 +23,7 @@ jest.mock('../../src/services/databaseManagerService', () => ({
   databaseFileName: (compat, version) => `cpl-${compat}-v${version}.db`,
   bundledDatabaseInformation: () => ({ version: 1, compat: 's0-abcdef0123456789', md5: 'whatever' }),
   currentDatabaseVersion: jest.fn(async () => 1),
+  openedDatabaseVersion: jest.fn(() => 1),
 }));
 
 const AsyncStorage = require('@react-native-async-storage/async-storage');
@@ -171,6 +172,16 @@ test('two openings at the same time count one opening and report once', async ()
   expect(asked.filter((url) => url.includes('/v1/db/latest'))).toHaveLength(1);
   const [, sent] = global.fetch.mock.calls.find(([url]) => url.endsWith('/v1/usage'));
   expect(JSON.parse(sent.body).opens).toBe(1);
+});
+
+test('the report says the publication it is praying with, not the one it has just downloaded', async () => {
+  const service = loadService();
+
+  // It downloads version 7, but it is still praying with the one it has open
+  await service.onAppOpened();
+
+  const [, sent] = global.fetch.mock.calls.find(([url]) => url.endsWith('/v1/usage'));
+  expect(JSON.parse(sent.body).version).toBe(1);
 });
 
 test('it asks again at most once every six hours', async () => {

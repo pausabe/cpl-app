@@ -10,6 +10,7 @@ import {
   bundledDatabaseInformation,
   currentDatabaseVersion,
   databaseFileName,
+  openedDatabaseVersion,
 } from './databaseManagerService';
 import { APP_KEY, callApi } from './cplApi';
 import { countOpen, reportUsage } from './usageService';
@@ -219,7 +220,9 @@ async function lookAfterOpening() {
   await countOpen();
   const result = await checkForNewDatabase();
   if (result !== 'too-soon' && result !== 'no-key') {
-    await reportUsage();
+    // The publication it is praying with, which is the one it has opened, not the newest one it
+    // may have downloaded a moment ago: that one only counts from the next opening onwards
+    await reportUsage(openedDatabaseVersion());
   }
 }
 
