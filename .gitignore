@@ -32,6 +32,9 @@ migration-to-saints/output/raw/litcal-days/
 # el git ja en guarda l'historial
 migration-to-saints/output/.ca-backup/
 
+# Les captures de les botigues: es refan des de l'app amb `make captures`
+/store/
+
 # Golden de la litúrgia resolta: es fa a partir de cpl-app.db, que tampoc és al git
 __tests__/golden/
 

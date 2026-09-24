@@ -42,6 +42,21 @@ queden a `~/.maestro/tests/<data>/`.
 | 07-inici | Una hora des de l'inici, el botó Aa i el full de la vida del sant |
 | 08-dissabte | Al proper dissabte: Avui / Vespertina i la memòria lliure |
 
+## Les captures de les botigues
+
+`captures/captures.yaml` no és un test: fa les sis captures que surten a l'App Store i a Google
+Play. Viu en una carpeta a part perquè `maestro test .maestro/` només agafa els fluxos de la
+carpeta que se li dona, i així `make ui-tests` no el troba.
+
+    make captures          totes les mides
+    make captures-ios      l'iPhone de 6,9" i l'iPad de 13"
+    make captures-android  el 1080x1920 de Google Play
+
+`scripts/captures.mjs` arrenca el simulador de cada mida, hi instal·la la release, executa el
+flux i munta cada captura sobre el llenç que demana la botiga, amb la frase a sobre. El resultat
+va a `store/<mida>/`, que no és al repositori. Les captures són del dia que es fan: les sis d'una
+mateixa execució van juntes.
+
 Amb 16 GB de RAM, millor una plataforma cada vegada: l'emulador d'Android i el simulador
 d'iOS alhora, amb una compilació al darrere, fan que el Mac enviï memòria al disc i els
 fluxos s'arrosseguen fins a fallar per temps.

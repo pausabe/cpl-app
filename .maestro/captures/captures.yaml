@@ -1,0 +1,60 @@
+appId: cpl.cpl
+name: "The six screenshots the stores show"
+---
+# The screenshots of the App Store and of Google Play, taken from the app itself. It is not a
+# test: nothing is asserted beyond what has to be on screen before pressing the shutter, and a
+# failure here means the shot is wrong, not the app.
+#
+# It is not run by `make ui-tests`: Maestro only picks up the flows of the folder it is given,
+# and this one lives in its own. It is run by `make captures`, which boots the device of each
+# size, installs the release and composes the shots. OUT is where the files land.
+#
+# The day is today's. To use another one, open the app first, pick the day in the calendar and
+# run this flow without `clearState` — the calendar is the one thing the flow does not touch.
+- runFlow: ../subflows/obrir.yaml
+
+# 1. The home screen: the whole day in one screen
+- takeScreenshot: ${OUT}/01-inici
+
+# 2. Laudes: the text, the same one as in the books
+- tapOn: "Laudes"
+- extendedWaitUntil:
+    visible: "HIMNE.*"
+    timeout: 15000
+- takeScreenshot: ${OUT}/02-laudes
+
+# 3. The Aa sheet, over the prayer it changes
+- tapOn: "Mida del text i tema"
+- assertVisible: "Mida 3 de 10"
+- takeScreenshot: ${OUT}/03-lletra
+- tapOn: "Fet"
+- runFlow: ../subflows/enrere.yaml
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 15000
+
+# 4. The Gospel of the day, from the home screen
+- tapOn: "Evangeli"
+- extendedWaitUntil:
+    visible: "EVANGELI.*"
+    timeout: 15000
+- takeScreenshot: ${OUT}/04-evangeli
+- runFlow: ../subflows/enrere.yaml
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 15000
+
+# 5 and 6. The same app at night. Compline is the hour that is prayed in the dark.
+- tapOn: "Configuració"
+- assertVisible: "Mida del text"
+- tapOn: "Fosc"
+- runFlow: ../subflows/enrere.yaml
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 15000
+- takeScreenshot: ${OUT}/06-inici-fosc
+- tapOn: "Completes"
+- extendedWaitUntil:
+    visible: "HIMNE.*"
+    timeout: 15000
+- takeScreenshot: ${OUT}/05-completes-fosc

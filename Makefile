@@ -14,7 +14,7 @@ IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0
 # The first iPhone connected (by cable, or over the network with Xcode open)
 IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
 
-.PHONY: help start run-android run-ios run-web db checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios
+.PHONY: help start run-android run-ios run-web db checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -40,6 +40,10 @@ help:
 	@echo "make ui-tests          Maestro flows on Android and on iOS"
 	@echo "make ui-tests-android  Android only"
 	@echo "make ui-tests-ios      iOS only"
+	@echo ""
+	@echo "make captures          The screenshots of the two stores, at the size each one asks for"
+	@echo "make captures-ios      The iPhone of 6,9\" and the iPad of 13\" (App Store)"
+	@echo "make captures-android  The 1080x1920 of Google Play"
 
 # --- Development -----------------------------------------------------------------------------
 # The first time these build and install the development app (expo-dev-client); after that, JS
@@ -126,11 +130,13 @@ android-app:
 	cd android && ./gradlew assembleRelease
 	$(ADB) -s $(ANDROID_DEVICE) install -r $(APK)
 
+IOS_SIMULATOR_BUILD = xcodebuild -workspace ios/CPL.xcworkspace -scheme CPL -configuration Release \
+		-sdk iphonesimulator -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO -quiet
+
 ios-app:
 	@test -n "$(IOS_DEVICE)" || (echo "No iOS simulator open (open -a Simulator)" && exit 1)
 	npx expo prebuild -p ios --clean
-	xcodebuild -workspace ios/CPL.xcworkspace -scheme CPL -configuration Release \
-		-sdk iphonesimulator -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO -quiet
+	$(IOS_SIMULATOR_BUILD)
 	xcrun simctl install $(IOS_DEVICE) $(IOS_APP)
 
 # On the iPhone, next to the CPL from the store: that one belongs to team JB7WHGG69R, which we do
@@ -159,3 +165,24 @@ ui-tests-android:
 ui-tests-ios:
 	@test -n "$(IOS_DEVICE)" || (echo "No iOS simulator open (open -a Simulator)" && exit 1)
 	$(MAESTRO) --device $(IOS_DEVICE) test .maestro/
+
+# --- The screenshots of the stores ------------------------------------------------------------
+# scripts/captures.mjs boots the device of each size, installs what was built here, runs the
+# Maestro flow of .maestro/captures and composes each shot onto the canvas the store asks for.
+# They carry EXPO_PUBLIC_CPL_TEST_BUILD like the rest of the local builds, so that taking the
+# screenshots does not count as one more person in the CPL's numbers.
+
+captures: captures-ios captures-android
+
+captures-ios: export EXPO_PUBLIC_CPL_TEST_BUILD = 1
+captures-ios:
+	npx expo prebuild -p ios --clean
+	$(IOS_SIMULATOR_BUILD)
+	node scripts/captures.mjs ios-phone ios-tablet
+
+captures-android: export EXPO_PUBLIC_CPL_TEST_BUILD = 1
+captures-android:
+	@test -n "$(ANDROID_DEVICE)" || (echo "No Android emulator or phone connected (adb devices)" && exit 1)
+	npx expo prebuild -p android --clean --no-install
+	cd android && ./gradlew assembleRelease
+	node scripts/captures.mjs android-phone
