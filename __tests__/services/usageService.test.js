@@ -4,10 +4,11 @@
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
 
-function loadService({ appKey = 'the-app-key' } = {}) {
+function loadService({ appKey = 'the-app-key', testBuild = false } = {}) {
   let service;
   jest.isolateModules(() => {
     process.env.EXPO_PUBLIC_CPL_APP_KEY = appKey;
+    process.env.EXPO_PUBLIC_CPL_TEST_BUILD = testBuild ? '1' : '';
     service = require('../../src/services/usageService');
   });
   return service;
@@ -137,6 +138,17 @@ test('without the app key it does not report anything', async () => {
 
   await expect(service.reportUsage()).resolves.toBe('no-key');
   expect(global.fetch).not.toHaveBeenCalled();
+});
+
+test('a copy built to be tried out leaves no trace in the count', async () => {
+  const service = loadService({ testBuild: true });
+  await service.countOpen();
+
+  await expect(service.reportUsage()).resolves.toBe('test-build');
+
+  expect(global.fetch).not.toHaveBeenCalled();
+  // Not even an identifier: nothing of these tests is left behind on the phone
+  await expect(service.currentIdentifier()).resolves.toBeNull();
 });
 
 test('the openings that are sent are capped, so no phone can count for a crowd', async () => {

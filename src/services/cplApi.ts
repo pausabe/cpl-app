@@ -8,6 +8,13 @@ export const API_URL = process.env.EXPO_PUBLIC_CPL_API_URL ?? 'https://cpl-api.c
 export const APP_KEY = process.env.EXPO_PUBLIC_CPL_APP_KEY ?? '';
 export const APP_KEY_HEADER = 'X-CPL-App-Key';
 
+// A copy built to be tried out, not to be prayed with: the ones that run on a simulator, on an
+// emulator or under the Maestro flows. It reports no use, because a phone that opens the app fifty
+// times in an afternoon of tests is not a person, and the count is there to say how many people
+// there are. Set when the app is built (EXPO_PUBLIC_CPL_TEST_BUILD), by the Makefile targets that
+// build those copies; what is installed on a real phone never carries it.
+export const IS_TEST_BUILD = process.env.EXPO_PUBLIC_CPL_TEST_BUILD === '1';
+
 const REQUEST_TIMEOUT = 15000;
 
 // Never waits forever: on a phone with no network the answer has to come back as a failure

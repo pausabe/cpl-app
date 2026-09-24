@@ -1,7 +1,7 @@
 import * as Logger from '../utils/logger';
 import * as StorageService from './storage/storageService';
 import StorageKeys from './storage/storageKeys';
-import { APP_KEY, callApi } from './cplApi';
+import { APP_KEY, IS_TEST_BUILD, callApi } from './cplApi';
 
 // How many people use the app.
 //
@@ -67,11 +67,16 @@ export async function countOpen(): Promise<void> {
   await StorageService.storeData(StorageKeys.UsageOpens, Math.min(opens + 1, MAX_OPENS));
 }
 
-export type UsageReportResult = 'reported' | 'nothing-to-say' | 'no-key' | 'failed';
+export type UsageReportResult = 'reported' | 'nothing-to-say' | 'no-key' | 'test-build' | 'failed';
 
 export async function reportUsage(version: number | null = null): Promise<UsageReportResult> {
   if (!APP_KEY) {
     return 'no-key';
+  }
+  // A copy built to be tried out says nothing: it does not even make itself an identifier, so the
+  // tests leave no trace in the count
+  if (IS_TEST_BUILD) {
+    return 'test-build';
   }
   // Once a day is enough, and it is half the requests: the openings add up and the ones that
   // happen after today's report go with tomorrow's

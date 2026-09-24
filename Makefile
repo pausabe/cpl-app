@@ -46,6 +46,11 @@ help:
 # changes show up right away. For a release like the ones in the stores, make android-app /
 # ios-app.
 
+# None of these report use: they carry EXPO_PUBLIC_CPL_TEST_BUILD, which Metro writes into the
+# bundle it builds here. Otherwise every simulator, every emulator and every Maestro run would
+# count as one more person in the CPL's numbers, and a fresh emulator as a new one every time.
+start run-android run-ios run-web android-app ios-app: export EXPO_PUBLIC_CPL_TEST_BUILD = 1
+
 start:
 	npx expo start
 
