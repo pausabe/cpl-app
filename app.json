@@ -28,7 +28,8 @@
       "icon": "./src/assets/icon/icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/icon/androidForeground.png",
-        "backgroundImage": "./src/assets/icon/androidBackground.png"
+        "monochromeImage": "./src/assets/icon/androidMonochrome.png",
+        "backgroundColor": "#005B79"
       },
       "permissions": []
     },
