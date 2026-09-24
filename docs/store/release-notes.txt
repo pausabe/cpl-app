@@ -1,0 +1,7 @@
+El redisseny de l'app.
+
+• Tot el dia en una sola pantalla: el dia litúrgic, les set hores i les lectures de la missa.
+• L'hora que toca ara surt marcada.
+• Mode fosc a tota l'app, i la mida de la lletra a mà des de la mateixa pregària.
+• La pantalla ja no s'apaga mentre reses.
+• El vermell de les rúbriques, més llegible.
