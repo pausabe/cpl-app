@@ -1,6 +1,5 @@
 import React, { ReactElement, ReactNode } from 'react';
 import { Platform, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
-import CopyButton from './CopyButton';
 import Gap, { GapSize } from './Gap';
 import PrayerText from './PrayerText';
 import Rubric, { RubricProps, rubricSpans } from './Rubric';
@@ -15,8 +14,7 @@ import { PrayerTextStyles, prayerTextStyles, useTheme } from '../theme';
 // with the space between them written inside it, and the selection runs through all of them.
 //
 // It cannot sew everything: a line that goes across (HR), a button, a chooser or a row with a
-// layout of its own breaks the text, and each of those starts a new one. For what no selection
-// can reach, the flow ends with a «Copia-ho tot» that takes the whole screen.
+// layout of its own breaks the text, and each of those starts a new one.
 interface PrayerFlowProps {
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
@@ -125,37 +123,6 @@ function runFrom(pieces: Piece[], start: number): number {
   return end;
 }
 
-// What the screen says, in reading order, for the «Copia-ho tot»: the prayer and the titles of
-// its parts, and nothing of what is only there to be pressed.
-function plainText(node: ReactNode): string {
-  if (node === null || node === undefined || typeof node === 'boolean') return '';
-  if (Array.isArray(node)) return node.map(plainText).join('');
-  if (typeof node === 'string' || typeof node === 'number') return String(node);
-  if (React.isValidElement(node)) {
-    const props = node.props as { children?: ReactNode; style?: unknown };
-    const said = plainText(props.children);
-    return flatten(props.style).textTransform === 'uppercase' ? said.toUpperCase() : said;
-  }
-  return '';
-}
-
-function wholeText(pieces: Piece[]): string {
-  let text = '';
-  let afterGap = false;
-  for (const piece of pieces) {
-    if (piece.kind === 'gap') {
-      afterGap = true;
-      continue;
-    }
-    const said = piece.kind === 'text' ? plainText(piece.spans) : '';
-    if (!said) continue;
-    if (text) text += afterGap ? '\n\n' : '\n';
-    text += said;
-    afterGap = false;
-  }
-  return text;
-}
-
 // Opening up the Views that only hold things together mixes children that were numbered apart:
 // each piece is given a key of its own so that React does not take one for another.
 function keyed(element: ReactNode, key: string): ReactNode {
@@ -188,20 +155,7 @@ export default function PrayerFlow({ children, style }: PrayerFlowProps) {
     i = end + 1;
   }
 
-  // What no selection can reach, because a button or a line across breaks it: everything the
-  // screen says, in one go
-  const whole = wholeText(pieces);
-  return (
-    <View style={style}>
-      {drawn}
-      {whole ? (
-        <>
-          <Gap />
-          <CopyButton text={() => wholeText(pieces)} testID="copy-prayer" />
-        </>
-      ) : null}
-    </View>
-  );
+  return <View style={style}>{drawn}</View>;
 }
 
 // One text with every paragraph of the run inside it, the spaces included

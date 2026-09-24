@@ -1,16 +1,12 @@
 // The prayer sewn into one text, so that a selection can go from one paragraph to the next: a
 // selection never leaves the view it started in, so the paragraphs that follow one another have
 // to be a single text. What breaks it (a line across, a button, a row of its own) starts a new
-// one, and what no selection can reach is taken by «Copia-ho tot».
-jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(() => Promise.resolve()) }));
-
+// one.
 import React from 'react';
 import { Platform, Text, TextInput, View } from 'react-native';
-import { fireEvent, screen } from '@testing-library/react-native';
-import * as Clipboard from 'expo-clipboard';
+import { screen } from '@testing-library/react-native';
 import { renderWithTheme, styleOf } from '../helpers/renderWithTheme';
 import { getPrayerText, shownText } from '../helpers/prayerText';
-import ContinueButton from '../../src/components/ContinueButton';
 import Gap from '../../src/components/Gap';
 import HR from '../../src/components/HRComponent';
 import PrayerFlow from '../../src/components/PrayerFlow';
@@ -180,25 +176,4 @@ test('what is not prayer text goes through untouched', () => {
   expect(texts()).toHaveLength(0);
   expect(screen.getByTestId('plain')).toBeTruthy();
   expect(screen.getByRole('header', { name: 'Sant Mateu' })).toBeTruthy();
-});
-
-test('«Copia-ho tot» takes everything the screen says, titles included and buttons left out', () => {
-  renderWithTheme(
-    <PrayerFlow>
-      <SectionTitle>{'LECTURA BREU'}</SectionTitle>
-      <PrayerText selectable={true}>{'Rm 13, 11'}</PrayerText>
-      <Gap />
-      <PrayerText selectable={true}>{'Germans, ja sabeu en quin moment vivim.'}</PrayerText>
-      <HR />
-      <SectionTitle uppercase={false}>{'Credo'}</SectionTitle>
-      <ContinueButton label="Continua amb el Càntic" onPress={() => {}} />
-      <Rubric label={'R. '}>{'Amén.'}</Rubric>
-    </PrayerFlow>,
-  );
-  fireEvent.press(screen.getByRole('button', { name: 'Copia-ho tot' }));
-  expect(Clipboard.setStringAsync).toHaveBeenCalledWith(
-    'LECTURA BREU\nRm 13, 11\n\nGermans, ja sabeu en quin moment vivim.\nCredo\nR. Amén.',
-  );
-  // And it says it has copied
-  expect(screen.getByRole('button', { name: 'Copiat' })).toBeTruthy();
 });
