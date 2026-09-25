@@ -14,7 +14,7 @@ IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0
 # The first iPhone connected (by cable, or over the network with Xcode open)
 IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
 
-.PHONY: help start run-android run-ios run-web db checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -23,6 +23,9 @@ help:
 	@echo "make start             Only the development server (Metro), if the app is already installed"
 	@echo ""
 	@echo "make db                Bring the published database the app carries: it is not in the repository (16 MB)"
+	@echo "make db-es             Put the Spanish database in its place instead, to look the texts over"
+	@echo "make db-ca             Bring the Catalan one back (the same as make db)"
+	@echo "make db-which          Say which language is sitting in src/assets/db right now"
 	@echo ""
 	@echo "make checks            Prettier, lint, types and every Jest test: what the hook runs before each push (~4 min)"
 	@echo "make checks-ci         What the publishing workflow runs: make checks without the sweeps against the goldens"
@@ -72,15 +75,62 @@ run-web:
 # --- The database -----------------------------------------------------------------------------
 # The texts are not in the repository: they come from the publishing website (cpl-cloud), the same
 # one the phones ask. Needed to run the tests and to build the app. The key is in .env.
+#
+# A build carries one language, the one whose database is sitting in src/assets/db when Metro runs.
+# make db-es puts the Spanish one there to be looked over; make db-ca brings the Catalan one back.
+# There is nothing to switch inside the app: what is in that folder is what it prays with.
 
-db:
-	node scripts/fetchDatabase.mjs
+DATABASE_DIR = src/assets/db
+DATABASE_DESCRIPTOR = $(DATABASE_DIR)/cpl-app.db.json
+# Where the Spanish database is generated. It is a project of its own, outside this repository.
+SPANISH_GENERATOR ?= ../cpl-db-es
+
+# Going to another language puts the Catalan one aside instead of throwing it away, so coming back
+# needs neither the network nor the key: sixteen megabytes on the disk are cheaper than a download you
+# cannot make on a train.
+DATABASE_KEPT = $(DATABASE_DIR)/cpl-app.ca.db
+
+db: db-ca
+
+db-ca:
+	@if [ -f $(DATABASE_KEPT) ]; then \
+		mv $(DATABASE_KEPT) $(DATABASE_DIR)/cpl-app.db; \
+		mv $(DATABASE_KEPT).json $(DATABASE_DESCRIPTOR); \
+		echo "Catalan database put back from $(DATABASE_KEPT)"; \
+	else \
+		git checkout -- $(DATABASE_DESCRIPTOR) 2>/dev/null || true; \
+		node scripts/fetchDatabase.mjs; \
+	fi
+	@$(MAKE) --no-print-directory db-which
+
+# Rebuilds the Spanish database from saints-app and puts it where Metro will find it. Not for a build
+# that goes to anybody: the interface stays Catalan, texts inside the code and all.
+db-es:
+	@test -d $(SPANISH_GENERATOR) || (echo "No generator at $(SPANISH_GENERATOR) (set SPANISH_GENERATOR=)" && exit 1)
+	$(MAKE) -C $(SPANISH_GENERATOR) db
+	@if [ -f $(DATABASE_DIR)/cpl-app.db ] && ! grep -q '"language"' $(DATABASE_DESCRIPTOR) 2>/dev/null; then \
+		mv $(DATABASE_DIR)/cpl-app.db $(DATABASE_KEPT); \
+		mv $(DATABASE_DESCRIPTOR) $(DATABASE_KEPT).json; \
+		echo "Catalan database kept at $(DATABASE_KEPT)"; \
+	fi
+	@cp $(SPANISH_GENERATOR)/out/cpl-app-es.db $(DATABASE_DIR)/cpl-app.db
+	@cp $(SPANISH_GENERATOR)/out/cpl-app-es.db.json $(DATABASE_DESCRIPTOR)
+	@$(MAKE) --no-print-directory db-which
+
+# Which language is in place, and whether the file and its descriptor still agree
+db-which:
+	@node scripts/whichDatabase.mjs
 
 # --- Checks ----------------------------------------------------------------------------------
 # make checks is what the .githooks/pre-push hook runs before each push. The tests run with --ci
 # and without UPDATE_GOLDEN, so they compare against the goldens instead of rewriting them.
 
-checks:
+# The goldens are Catalan, and so is the descriptor the repository carries: running the checks with
+# another language in place would fail by the hundred and say nothing about the code.
+db-is-catalan:
+	@node scripts/whichDatabase.mjs --require-catalan
+
+checks: db-is-catalan
 	npx prettier . --check
 	npx eslint .
 	npx tsc --noEmit

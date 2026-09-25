@@ -21,6 +21,8 @@ web-build/
 # Clau de l'app per a cpl-cloud: s'injecta en compilar, no va mai al repo (que és públic)
 .env
 *.db
+# The Catalan descriptor put aside by make db-es, waiting for make db-ca
+src/assets/db/cpl-app.ca.db.json
 *.lock
 dist
 
