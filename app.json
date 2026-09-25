@@ -58,6 +58,15 @@
             "imageWidth": 160
           }
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "extraProguardRules": "# Hermes carries the JS; what R8 renames here is the Java and Kotlin\n# underneath. Keeping the file and the line makes a native crash report\n# readable once Play has the mapping file of the build.\n-keepattributes SourceFile,LineNumberTable\n-renamesourcefileattribute SourceFile\n"
+          }
+        }
       ]
     ],
     "extra": {
