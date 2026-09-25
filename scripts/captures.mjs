@@ -216,17 +216,23 @@ function compose(target, raw, out) {
     const page = join(raw, `${shot.file}.html`);
     writeFileSync(page, frameHtml(shot, source, [width, height]));
     const destination = join(out, `${String(order).padStart(2, '0')}-${shot.file.replace(/^\d+-/, '')}.png`);
-    run(browser, [
-      '--headless',
-      '--disable-gpu',
-      '--hide-scrollbars',
-      '--force-device-scale-factor=1',
-      '--virtual-time-budget=4000',
-      '--allow-file-access-from-files',
-      `--window-size=${width},${height}`,
-      `--screenshot=${destination}`,
-      page,
-    ]);
+    // Chrome writes pages of warnings about displays it has not got, which make a run that went
+    // well look like a disaster
+    run(
+      browser,
+      [
+        '--headless',
+        '--disable-gpu',
+        '--hide-scrollbars',
+        '--force-device-scale-factor=1',
+        '--virtual-time-budget=4000',
+        '--allow-file-access-from-files',
+        `--window-size=${width},${height}`,
+        `--screenshot=${destination}`,
+        page,
+      ],
+      { stdio: 'ignore' },
+    );
     order += 1;
   }
 }
