@@ -14,7 +14,7 @@ IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0
 # The first iPhone connected (by cable, or over the network with Xcode open)
 IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
 
-.PHONY: help start run-android run-ios run-web db db-ca db-es db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -25,6 +25,7 @@ help:
 	@echo "make db                Bring the published database the app carries: it is not in the repository (16 MB)"
 	@echo "make db-es             Put the Spanish database in its place instead, to look the texts over"
 	@echo "make db-ca             Bring the Catalan one back (the same as make db)"
+	@echo "make db-latest         Ask the website for the newest publication, even if a Catalan one is put aside"
 	@echo "make db-which          Say which language is sitting in src/assets/db right now"
 	@echo ""
 	@echo "make checks            Prettier, lint, types and every Jest test: what the hook runs before each push (~4 min)"
@@ -115,6 +116,20 @@ db-es:
 	fi
 	@cp $(SPANISH_GENERATOR)/out/cpl-app-es.db $(DATABASE_DIR)/cpl-app.db
 	@cp $(SPANISH_GENERATOR)/out/cpl-app-es.db.json $(DATABASE_DESCRIPTOR)
+	@$(MAKE) --no-print-directory db-which
+
+# The website publishes again whenever the CPL corrects a text, and coming back from Spanish is
+# deliberately offline, so neither make db nor make db-ca notices a new publication while a Catalan
+# database is put aside: that is how you end up building with a version from months ago. This one
+# always asks. The database put aside goes, because it is the old one: keeping it would have the
+# next make db-ca bring it back.
+db-latest:
+	@if [ -f $(DATABASE_KEPT) ]; then \
+		rm -f $(DATABASE_KEPT) $(DATABASE_KEPT).json; \
+		echo "The Catalan database put aside was the old one, and is gone"; \
+	fi
+	@git checkout -- $(DATABASE_DESCRIPTOR) 2>/dev/null || true
+	@node scripts/fetchDatabase.mjs
 	@$(MAKE) --no-print-directory db-which
 
 # Which language is in place, and whether the file and its descriptor still agree
