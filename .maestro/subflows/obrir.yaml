@@ -1,14 +1,15 @@
 appId: cpl.cpl
 ---
 # The app as just installed, on today, with the home screen ready. It closes the notices that
-# can appear when opening it: the midnight one (from 0 to 3 h, «No, la d'avui») and the what's
-# new one, shown only to someone from the previous version (after clearState it should not).
+# can appear when opening it: the midnight one (from 0 to 3 h, «No, la d'avui»), the what's new
+# one, shown only to someone from the previous version (after clearState it should not), and the
+# diocese offer, which is shown to whoever has never chosen one — after a clearState, always.
 - launchApp:
     clearState: true
-# The home screen, or one of the notices on top of it (the midnight one or the what's new one):
-# they are modal, and while they are there the home screen is not visible
+# The home screen, or one of the notices on top of it: they are modal, and while they are there
+# the home screen is not visible
 - extendedWaitUntil:
-    visible: "Missatge|No, la d.avui|D.acord"
+    visible: "Missatge|No, la d.avui|D.acord|(De quina diòcesi|Estàs resant amb la diòcesi).*"
     timeout: 60000
 - tapOn:
     text: "No, la d.avui"
@@ -16,6 +17,26 @@ appId: cpl.cpl
 - tapOn:
     text: "D.acord"
     optional: true
+# The diocese offer sits under the other two, so it only shows once they are gone. Closing it is
+# what somebody who already knows which diocese they pray with would do, and the app remembers
+# it: the one it comes with (Barcelona) stays.
+#
+# The texts carry a «.*» because Maestro matches a whole text, not a part of it: without it,
+# «De quina diòcesi ets» does not match «De quina diòcesi ets?».
+- extendedWaitUntil:
+    visible: "Missatge|(De quina diòcesi|Estàs resant amb la diòcesi).*"
+    timeout: 20000
+- runFlow:
+    when:
+      visible: "(De quina diòcesi|Estàs resant amb la diòcesi).*"
+    commands:
+      # Pulled down by its handle, which is what a person does. Not tapped on the backdrop:
+      # the sheet is `accessibilityViewIsModal`, so on iOS everything behind it is out of the
+      # hierarchy, and on an iPad the backdrop does not even cover the whole screen.
+      - swipe:
+          from:
+            id: "diocese-offer-handle"
+          direction: DOWN
 - extendedWaitUntil:
     visible: "Missatge"
     timeout: 15000
