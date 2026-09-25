@@ -853,7 +853,7 @@ const FINDINGS = [
       ['La resta del salm quadra', 'Els altres 8 asteriscs i els 2 creuets de la fila 147 hi són', null],
     ],
     fix: {
-      where: 'src/Assets/db/cpl-app.db · santsSolemnitats',
+      where: 'src/assets/db/cpl-app.db · santsSolemnitats',
       summary:
         'Afegir «    *» al final de «És el Senyor, valent i poderós,» de salm1Ofici i de «El Senyor va '
         + 'escrivint al registre dels pobles:» de salm3Ofici, filtrant per l’estat incorrecte i no per id.',
@@ -989,6 +989,45 @@ const FINDINGS = [
     ],
     fix: null,
   },
+  {
+    id: 'F25',
+    verdict: 3,
+    days: ['2026-09-25'],
+    hours: ['Mass'],
+    headline: 'La taula de llibres bíblics no coneix «Ecles», i el mateix capítol surt com a llibre diferent',
+    detail:
+      'La primera lectura del divendres de la setmana 25: cpl-app diu <strong>Ecle 3,1-11</strong> i '
+      + 'eprex <strong>Ecles 3, 1-11</strong> — el mateix llibre, el mateix capítol i els mateixos '
+      + 'versets. La revisió ho marca com a <code>diffRef</code>, «llibre o capítol diferent».',
+    why:
+      '<code>lib/citation-key.js</code> té l’àlies <code>ecle</code> a <code>ECCL</code> però no '
+      + '<code>ecles</code>, la forma castellana, i la taula de prefixos de reserva tampoc no cobreix '
+      + 'l’Eclesiastès. El castellà cau a <code>ANON</code>: <code>ECCL|3</code> contra '
+      + '<code>ANON|3</code>. Comprovat cridant <code>fingerprint()</code> amb les dues cadenes.',
+    impact:
+      'No és només aquest dia. De les 2.933 cites castellanes, 631 no resolen el llibre; tret dels '
+      + 'incipits patrístics («San», «Benedicto»), unes 113 són Escriptura de debò: <code>Eclo</code> '
+      + '(29), <code>1 Sam</code> (20), <code>2 Sam</code> (15), <code>Si</code> (7), <code>Jon</code> '
+      + '(6), <code>Jc</code> (5), <code>Jos</code> (5), <code>Ecles</code> (4), <code>1/2 Cro</code> '
+      + '(6), <code>1/2 Mac</code> (6), <code>Ne</code>, <code>Esd</code>, <code>Rt</code>, '
+      + '<code>Ct</code>. En català en falten 21: <code>Jt</code>, <code>1M</code>, <code>2M</code>, '
+      + '<code>Esd</code>, <code>Rt</code>, <code>Ct</code>, <code>Ne</code>. I el forat va en els dos '
+      + 'sentits: quan totes dues bandes cauen a <code>ANON</code> amb el mateix número, la comparació '
+      + 'és cega — <code>Jt 2,11-19</code> contra <code>Jc 2, 11-19</code> (Jutges) compara igual per '
+      + 'accident, i són 21 caselles així.',
+    proof: [
+      ['Prova interna', 'fingerprint(\'Ecle 3,1-11\') = ECCL|3 · fingerprint(\'Ecles 3, 1-11\') = ANON|3', null],
+      ['Prova interna', 'BOOK_ALIASES.ECCL = [coh, ecle, eclesiastès, eclesiastés]; cap forma amb -s', null],
+    ],
+    fix: {
+      where: 'migration-to-saints/lib/citation-key.js · BOOK_ALIASES',
+      summary:
+        'Completar la taula amb els llibres que hi falten i les formes castellanes amb -s, i posar-hi '
+        + 'un test que falli mentre una cita d’Escriptura resolgui a ANON.',
+      note: 'MIGRA-015. Cap efecte sobre les dades: només sobre com la revisió les compara.',
+      promptable: true,
+    },
+  },
 ];
 
 const VERDICTS = {
@@ -1030,6 +1069,9 @@ const CLAIMS = {
     && /^(primer|segundo|tercer)_salmo_(cita|texto)$/.test(row.key),
   F24: (date, row) => date === '2026-09-14' && row.hour === 'Mass'
     && String(row.key).startsWith('FIRSTLECTURE'),
+  // Ecle vs Ecles: mateix llibre, un àlies que falta a la taula.
+  F25: (date, row) => date === '2026-09-25' && row.hour === 'Mass'
+    && row.key === 'FIRSTLECTURE_ref',
 };
 
 function claimFor(date, row) {

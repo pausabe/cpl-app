@@ -4,13 +4,13 @@ import * as DatabaseDataService from './databaseDataService';
 import * as DatabaseManagerService from './databaseManagerService';
 import { getDatabaseVersion } from './databaseDataService';
 import * as StorageService from './storage/storageService';
-import * as SpecialCelebrationService from './specialCelebrationService';
 import StorageKeys from './storage/storageKeys';
 import * as Logger from '../utils/logger';
 import { Settings } from '../models/Settings';
 import DatabaseInformation from '../models/DatabaseInformation';
-import LiturgyDayInformation, { LiturgySpecificDayInformation } from '../models/LiturgyDayInformation';
+import LiturgyDayInformation from '../models/LiturgyDayInformation';
 import { obtainHoursLiturgy } from './liturgy/hoursLiturgyService';
+import { obtainLiturgyDayInformation } from './liturgy/liturgyDayInformationService';
 import { obtainLiturgyMasters } from './liturgy/liturgyMastersService';
 import HoursLiturgy from '../models/hours-liturgy/HoursLiturgy';
 import MassLiturgy from '../models/MassLiturgy';
@@ -18,9 +18,6 @@ import CelebrationInformation from '../models/hours-liturgy/CelebrationInformati
 import { obtainMassLiturgy } from './liturgy/massLiturgyService';
 import { DateManagement } from '../utils/DateManagement';
 import { getDioceseCodeFromDioceseName } from './databaseDataHelper';
-import { SpecificLiturgyTimeType } from './celebrationTimeEnums';
-import * as CelebrationIdentifierService from './celebrationIdentifierService';
-import { Celebration } from './celebrationIdentifierService';
 import { Asset } from 'expo-asset';
 import { DioceseCode } from './databaseEnums';
 
@@ -40,8 +37,8 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
   await DatabaseManagerService.openDatabase(databaseAsset);
   CurrentSettings = await obtainCurrentSettings(date);
   CurrentDatabaseInformation = await obtainCurrentDatabaseInformation();
-  CurrentLiturgyDayInformation = await obtainCurrentLiturgyDayInformation(date, CurrentSettings);
-  const tomorrowLiturgyDayInformation = await obtainCurrentLiturgyDayInformation(
+  CurrentLiturgyDayInformation = await obtainLiturgyDayInformation(date, CurrentSettings);
+  const tomorrowLiturgyDayInformation = await obtainLiturgyDayInformation(
     CurrentLiturgyDayInformation.tomorrow.date,
     CurrentSettings,
   );
@@ -128,68 +125,6 @@ async function obtainCurrentDatabaseInformation(): Promise<DatabaseInformation> 
   databaseInformation.minimumSelectableDate = minimumAndMaximumSelectableDates.minimumSelectableDate;
   databaseInformation.maximumSelectableDate = minimumAndMaximumSelectableDates.maximumSelectableDate;
   return databaseInformation;
-}
-
-async function obtainCurrentLiturgyDayInformation(date: Date, settings: Settings): Promise<LiturgyDayInformation> {
-  let currentLiturgyDayInformation = new LiturgyDayInformation();
-  currentLiturgyDayInformation.today = await DatabaseDataService.obtainLiturgySpecificDayInformation(date, settings);
-  currentLiturgyDayInformation.today.specialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
-    currentLiturgyDayInformation.today,
-    settings,
-  );
-  currentLiturgyDayInformation.today.isSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.today);
-  const tomorrowDate = new Date(date);
-  tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-  currentLiturgyDayInformation.tomorrow = await DatabaseDataService.obtainLiturgySpecificDayInformation(
-    tomorrowDate,
-    settings,
-  );
-  currentLiturgyDayInformation.tomorrow.specialCelebration = SpecialCelebrationService.obtainSpecialCelebration(
-    currentLiturgyDayInformation.tomorrow,
-    settings,
-  );
-  currentLiturgyDayInformation.tomorrow.isSpecialChristmas = isSpecialChristmas(currentLiturgyDayInformation.tomorrow);
-  return currentLiturgyDayInformation;
-}
-
-function isSpecialChristmas(liturgySpecificDayInformation: LiturgySpecificDayInformation): boolean {
-  if (liturgySpecificDayInformation.specificLiturgyTime === SpecificLiturgyTimeType.Ordinary) {
-    return false;
-  }
-
-  if (CelebrationIdentifierService.checkCelebration(Celebration.SacredFamily, liturgySpecificDayInformation)) {
-    return false;
-  }
-
-  if (liturgySpecificDayInformation.date.getMonth() === 11) {
-    return (
-      liturgySpecificDayInformation.date.getDate() === 17 ||
-      liturgySpecificDayInformation.date.getDate() === 18 ||
-      liturgySpecificDayInformation.date.getDate() === 19 ||
-      liturgySpecificDayInformation.date.getDate() === 20 ||
-      liturgySpecificDayInformation.date.getDate() === 21 ||
-      liturgySpecificDayInformation.date.getDate() === 22 ||
-      liturgySpecificDayInformation.date.getDate() === 23 ||
-      liturgySpecificDayInformation.date.getDate() === 24 ||
-      liturgySpecificDayInformation.date.getDate() === 29 ||
-      liturgySpecificDayInformation.date.getDate() === 30 ||
-      liturgySpecificDayInformation.date.getDate() === 31
-    );
-  } else if (liturgySpecificDayInformation.date.getMonth() === 0) {
-    return (
-      liturgySpecificDayInformation.date.getDate() === 2 ||
-      liturgySpecificDayInformation.date.getDate() === 3 ||
-      liturgySpecificDayInformation.date.getDate() === 4 ||
-      liturgySpecificDayInformation.date.getDate() === 5 ||
-      liturgySpecificDayInformation.date.getDate() === 7 ||
-      liturgySpecificDayInformation.date.getDate() === 8 ||
-      liturgySpecificDayInformation.date.getDate() === 9 ||
-      liturgySpecificDayInformation.date.getDate() === 10 ||
-      liturgySpecificDayInformation.date.getDate() === 11 ||
-      liturgySpecificDayInformation.date.getDate() === 12
-    );
-  }
-  return false;
 }
 
 function obtainCurrentCelebrationInformation(hoursLiturgy: HoursLiturgy): CelebrationInformation {

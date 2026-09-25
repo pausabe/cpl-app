@@ -59,4 +59,54 @@ describe('fingerprint', () => {
       same('Salm 109', 'Salmo 109, 1-5. 7');
     });
   });
+
+  // MIGRA-015: the table only knew the books the days reviewed so far happened to use, and a
+  // book it does not know falls to ANON — which fails in BOTH directions. Forwards, the join
+  // of the Mass matches cpl-app's reading to the cell BY THE CITATION, so an unknown book
+  // leaves the cell unmigrated: "Ecle 3,1-11" against "Ecles 3, 1-11" cost the whole first
+  // reading of 25 September 2026, and 87 more citations across the calendar. Backwards, two
+  // unknown books with the same chapter number compare EQUAL, and Judges passed for Judith.
+  describe('knows every book the two editions name (MIGRA-015)', () => {
+    const PAIRS = [
+      ['Ecle 3,1-11', 'Ecles 3, 1-11', 'ECCL'],
+      ['Sir 44, 1.10-15', 'Eclo 44, 1.10-15', 'SIR'],
+      ['1S 3,1-10', '1 Sam 3, 1-10', '1SAM'],
+      ['2S 18,9-10', '2 Sam 18, 9-10', '2SAM'],
+      ['2M 7,1-2.9-14', '2 Mac 7, 1-2.9-14', '2MACC'],
+      ['1M 4,36-37', '1 Mac 4, 36-37', '1MACC'],
+      ['Jt 6,11-24a', 'Jc 6, 11-24', 'JUDG'],
+      ['Js 3,7-10a', 'Jos 3, 7-10a', 'JOSH'],
+      ['1Cr 15,3-4', '1 Cro 15, 3-4', '1CHR'],
+      ['2Cr 24,17-25', '2 Cro 24, 17-25', '2CHR'],
+      ['Esd 1,1-6', 'Esd 1, 1-6', 'EZRA'],
+      ['Ne 8,1-12', 'Ne 8, 1-12', 'NEH'],
+      ['Rt 2,1-3', 'Rt 2, 1-3', 'RUTH'],
+      ['Ct 3,1-4', 'Cnt 3, 1-4', 'SONG'],
+      ['Jon 3,1-10', 'Jon 3, 1-10', 'JON'],
+      ['Sa 3,1-9', 'Sab 3, 1-9', 'WIS'],
+      ['Lv 19,1-2', 'Lev 19, 1-2', 'LEV'],
+      ['Dn 13,1-9', 'Dan 13, 1-9', 'DAN'],
+      ['Na 2,1.3', 'Nah 2, 1. 3', 'NAH'],
+      ['Ha 3,2-4', 'Habacuc 3, 2-4', 'HAB'],
+      ['Jud 17.20b-25', 'Jds 17.20b-25', 'JUDE'],
+      ['He 10,12-14', 'Heb 10, 12-14', 'HEB'],
+    ];
+
+    it.each(PAIRS)('%s and %s are both %s', (ca, es, key) => {
+      expect(fingerprint(ca).key).toBe(key);
+      expect(fingerprint(es).key).toBe(key);
+      same(ca, es);
+    });
+
+    it('keeps Judges apart from Judith, which share a chapter and nothing else', () => {
+      // 21 cells compared equal on this before: both sides were "unknown book, chapter 2".
+      different('Jt 2,11-19', 'Jdt 2, 11-19');
+      expect(token('Jdt 2, 11-19')).toBe('JDT|2');
+    });
+
+    it('leaves a Spanish rubric alone, since "Si…" opens one and is not Sirach', () => {
+      expect(fingerprint('Si la fiesta cae en domingo, la Opción 2 se toma como segunda lectura.'))
+        .toBeNull();
+    });
+  });
 });

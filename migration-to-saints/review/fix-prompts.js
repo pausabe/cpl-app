@@ -15,7 +15,7 @@ const strip = (s) => String(s == null ? '' : s).replace(/<[^>]+>/g, '').replace(
 // Where the fix lands decides what "done" means, so each verdict gets its own closing ritual.
 const PROTOCOL = {
   1: `- Fix al codi de cpl-app, test de regressió a \`__tests__/Services/\`, i dossier a \`migration-to-saints/cpl-bugs/CPL-LIT-NNN.md\`.
-- Si el problema és de DADES i no de codi: **no toquis \`src/Assets/db/cpl-app.db\` a mà**. Escriu \`db-fixes/CPL-LIT-NNN.sql\` idempotent (que corregeixi per l'estat incorrecte, no per \`id\` de fila) i documenta-ho al dossier.
+- Si el problema és de DADES i no de codi: **no toquis \`src/assets/db/cpl-app.db\` a mà**. Escriu \`db-fixes/CPL-LIT-NNN.sql\` idempotent (que corregeixi per l'estat incorrecte, no per \`id\` de fila) i documenta-ho al dossier.
 - Commit amb el trailer \`Cpl-Bug: CPL-LIT-NNN\`.`,
   2: `- El contingut és d'eprex, **fora d'aquest repositori**. No hi facis canvis directament.
 - Deixa la proposta escrita a \`migration-to-saints/cpl-bugs/\` amb els ids concrets, perquè es pugui passar a qui manté saints-app.`,

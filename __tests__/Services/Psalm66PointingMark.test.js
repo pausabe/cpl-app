@@ -8,7 +8,7 @@
 // withheld the Catalan text from the 50 celebrations that share it.
 //
 // This is a DATA fix, not a code fix: the correction lives in db-fixes/CPL-LIT-003.sql and
-// is applied to src/Assets/db/cpl-app.db. That database is gitignored and comes from the
+// is applied to src/assets/db/cpl-app.db. That database is gitignored and comes from the
 // Deployment website, so a freshly downloaded copy will NOT have the fix. This test is what
 // tells you so — if it fails, run the .sql over the new database again.
 //
@@ -19,7 +19,7 @@ const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 const { textKey } = require('../../migration-to-saints/lib/text-key');
 
-const DB_PATH = path.resolve(__dirname, '../../src/Assets/db/cpl-app.db');
+const DB_PATH = path.resolve(__dirname, '../../src/assets/db/cpl-app.db');
 const OPENING = 'Que Déu s’apiadi de nosaltres i ens beneeixi';
 const VERSE = 'La terra ha donat el seu fruit,';
 
@@ -81,11 +81,7 @@ describe('Psalm 66 keeps its mediant mark in every pointed copy (CPL-LIT-003)', 
   // The point of the fix: the copies are the same text as far as the join is concerned, so
   // the shared eprex cell has one variant instead of two.
   it('the pointed copies of Vespers and Laudes share one textKey', () => {
-    const keys = new Set(
-      pointed
-        .filter((c) => c.table.startsWith('salteriComu'))
-        .map((c) => textKey(c.text))
-    );
+    const keys = new Set(pointed.filter((c) => c.table.startsWith('salteriComu')).map((c) => textKey(c.text)));
     expect(keys.size).toBe(1);
   });
 

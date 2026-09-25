@@ -69,7 +69,7 @@ const HOURS_CONFIG = {
   // Terce, Sext and None. Same field vocabulary as Laudes (15 of its 20 fields) and the
   // SAME commons tables — they add no table of their own — so nothing here needs a special
   // observer. Where they differ is in cpl-app's model, and that is handled once in
-  // lib/cpl-day-resolver.js: they hang off `hoursLiturgy.Hours`, their responsory is a
+  // lib/cpl-day-resolver.js: they hang off `hoursLiturgy.hours`, their responsory is a
   // versicle/response pair rather than six lines, and a celebration says ONE antiphon over
   // all three psalms instead of one each.
   // `dualOffice: false` because these three have no memorial/weekday selector: on a
@@ -130,7 +130,7 @@ const HOURS_CONFIG = {
   Invitation: {
     allXFile: 'all_invitatorios.json',
     observe: (entry, hourData, tag, observe) =>
-      observe('invitatorios', entry.val, hourData.InvitationAntiphon, tag),
+      observe('invitatorios', entry.val, hourData.invitationAntiphon, tag),
   },
   // Not an Hour: the celebration's own name, shown as the header of every Hour page.
   // Its index (all_celebrations.json) keys on the bare litcal id with no `__CYCLE`
@@ -152,7 +152,7 @@ const HOURS_CONFIG = {
       key === 'second_sunday_after_christmas',
     observe: (entry, data, tag, observe, key) => {
       if (HOURS_CONFIG.Celebration.isFerialKey(key)) return;
-      observe('celebration_names', entry.name, data.Title, tag);
+      observe('celebration_names', entry.name, data.title, tag);
     },
   },
 };
@@ -165,139 +165,28 @@ const HOURS_TO_RUN = (process.env.HOURS || 'Laudes,Vespers,Tercia,Sexta,Nona,Off
   .map((h) => h.trim())
   .filter((h) => HOURS_CONFIG[h]);
 
-// Fixed short-form doxology used mid-responsory (distinct from the full "...com era al
-// principi..." ending recited after psalms) — confirmed against cpl's own psalm texts,
-// which always open their doxology with this exact sentence.
-const GLORIA_PATRI_SHORT = 'Glòria al Pare, i al Fill, i a l’Esperit Sant.';
+jest.mock('../src/services/databaseManagerService', () => require('../__tests__/helpers/mockDatabaseManager'));
 
-jest.mock('../src/Services/SettingsService', () => {
-  const DioceseName = {
-    Andorra: 'Andorra', Barcelona: 'Barcelona', Girona: 'Girona', Lleida: 'Lleida',
-    Mallorca: 'Mallorca', Menorca: 'Menorca', SantFeliu: 'Sant Feliu de Llobregat',
-    Solsona: 'Solsona', Tarragona: 'Tarragona', Terrassa: 'Terrassa', Tortosa: 'Tortosa',
-    Urgell: 'Urgell', Vic: 'Vic',
-  };
-  const PrayingPlace = { Diocese: 'Diòcesi', City: 'Ciutat', Cathedral: 'Catedral' };
-  return { __esModule: true, DioceseName, PrayingPlace, default: {} };
-});
-
-jest.mock('../src/Services/DatabaseManagerService', () => {
-  const path = require('path');
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
-  return {
-    executeQueryAsync: (query) => {
-      try {
-        return Promise.resolve(db.prepare(query).all());
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  };
-});
-
-const DatabaseDataService = require('../src/Services/DatabaseDataService');
-const DatabaseDataHelper = require('../src/Services/DatabaseDataHelper');
-const SpecialCelebrationService = require('../src/Services/SpecialCelebrationService');
-const CelebrationIdentifierService = require('../src/Services/CelebrationIdentifierService');
-const { ObtainLiturgyMasters } = require('../src/Services/Liturgy/LiturgyMastersService');
-const { ObtainHoursLiturgy } = require('../src/Services/Liturgy/HoursLiturgyService');
-const LaudesService = require('../src/Services/Liturgy/LaudesService');
-const { ObtainHours } = require('../src/Services/Liturgy/HoursService');
-const { ObtainMassLiturgy } = require('../src/Services/Liturgy/MassLiturgyService');
-const Hours = require('../src/Models/HoursLiturgy/Hours').default;
-const VespersService = require('../src/Services/Liturgy/VespersService');
-const Laudes = require('../src/Models/HoursLiturgy/Laudes').default;
-const { Settings } = require('../src/Models/Settings');
-const LiturgyDayInformation = require('../src/Models/LiturgyDayInformation').default;
-const { DioceseCode } = require('../src/Services/DatabaseEnums');
-const { SpecificLiturgyTimeType } = require('../src/Services/CelebrationTimeEnums');
-
-function buildSettings({ dioceseName, prayingPlace, useLatin = false }) {
-  const settings = new Settings();
-  settings.PrayingPlace = prayingPlace;
-  settings.DioceseName = dioceseName;
-  settings.DioceseCode = DatabaseDataHelper.GetDioceseCodeFromDioceseName(dioceseName, prayingPlace);
-  settings.DioceseCode2Letters =
-    settings.DioceseCode === DioceseCode.Andorra ? settings.DioceseCode : settings.DioceseCode.substring(0, 2);
-  settings.UseLatin = useLatin;
-  settings.TextSize = 3;
-  settings.DarkModeEnabled = false;
-  settings.InvitationPsalmOption = '94';
-  settings.VirginAntiphonOption = '1';
-  settings.OptionalFestivityEnabled = false;
-  return settings;
-}
-
-function isSpecialChristmas(day) {
-  if (day.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) return false;
-  if (CelebrationIdentifierService.CheckCelebration(CelebrationIdentifierService.Celebration.SacredFamily, day)) {
-    return false;
-  }
-  const d = day.Date.getDate();
-  const m = day.Date.getMonth();
-  if (m === 11) return [17, 18, 19, 20, 21, 22, 23, 24, 29, 30, 31].includes(d);
-  if (m === 0) return [2, 3, 4, 5, 7, 8, 9, 10, 11, 12].includes(d);
-  return false;
-}
-
-async function obtainLiturgyDayInformation(date, settings) {
-  const ldi = new LiturgyDayInformation();
-  ldi.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, settings);
-  ldi.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(ldi.Today, settings);
-  ldi.Today.IsSpecialChristmas = isSpecialChristmas(ldi.Today);
-  const tomorrowDate = new Date(date);
-  tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-  ldi.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, settings);
-  ldi.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(ldi.Tomorrow, settings);
-  ldi.Tomorrow.IsSpecialChristmas = isSpecialChristmas(ldi.Tomorrow);
-  return ldi;
-}
+// cpl-app's own engine, through the one door the migration has (src/liturgy-export). It used to
+// be reached from here by hand, with a private copy of the settings, of `isSpecialChristmas` and
+// of the whole resolution — the same copy the comparator and the Lauds pilot each had.
+const { buildSettings, resolveDay } = require('./lib/cpl-day-resolver');
 
 async function resolveHoursLiturgy(date, settings) {
-  const ldi = await obtainLiturgyDayInformation(date, settings);
-  const tomorrowLdi = await obtainLiturgyDayInformation(ldi.Tomorrow.Date, settings);
-  const todayMasters = await ObtainLiturgyMasters(ldi, settings);
-  const tomorrowMasters = await ObtainLiturgyMasters(tomorrowLdi, settings);
-
-  // The same day with the celebration taken out, to tell a proper text from a weekday one
-  // field by field (lib/memorial-ferial.js). Taken BEFORE the merge runs and via a fresh
-  // call: hoursLiturgy.VespersOptions.VespersWithoutCelebration looks like the same thing
-  // but MergeVespersWithCelebration mutates that object in place (`let vespers =
-  // withoutCelebrationVespers`), so by the time it's read here it IS the rendered Vespers
-  // and ferialFields marks every field ferial — every switch-day's real content then gets
-  // filed under the "_Ferial" measured cell instead of its own (see PLAN, review paranys).
-  // Terce/Sext/None arrive as one object; asking for it with an empty celebration is the
-  // same call the app makes, so seasons and psalter weeks behave exactly as on screen.
-  const ferialHours = ObtainHours(todayMasters, ldi.Today, new Hours(), settings);
-  const ferial = {
-    Laudes: LaudesService.ObtainLaudes(todayMasters, ldi.Today, new Laudes(), settings),
-    Vespers: VespersService.ObtainVespers(todayMasters, ldi.Today, settings),
-    Tercia: ferialHours.ThirdHour,
-    Sexta: ferialHours.SixthHour,
-    Nona: ferialHours.NinthHour,
+  const { liturgyDayInformation, hoursLiturgy, ferial, mass } = await resolveDay(date, settings);
+  return {
+    hoursLiturgy,
+    ldi: liturgyDayInformation,
+    mass,
+    // Keyed by the Hour names of HOURS_CONFIG, which is how the observers below ask for them.
+    ferial: {
+      Laudes: ferial.laudes,
+      Vespers: ferial.vespers,
+      Tercia: ferial.tercia,
+      Sexta: ferial.sexta,
+      Nona: ferial.nona,
+    },
   };
-  const hoursLiturgy = await ObtainHoursLiturgy(todayMasters, tomorrowMasters, ldi, settings);
-
-  // The Mass, in the two halves saints-app keeps apart: what cpl-app renders, and the
-  // weekday's asked for separately. On a memorial the first is the celebration's Mass and the
-  // second the one the plain roles of the index hold. See HOURS_CONFIG.Mass and PLAN §18.
-  let mass = null;
-  try {
-    const massLiturgy = await ObtainMassLiturgy(
-      ldi, hoursLiturgy.TodayCelebrationInformation, hoursLiturgy.TomorrowCelebrationInformation, settings,
-    );
-    let massFerial = null;
-    try {
-      massFerial = await DatabaseDataService.GetNormalDaysMassLiturgy(ldi.Today);
-    } catch { massFerial = null; }
-    // `massLiturgy.Vespers` is the anticipated evening Mass of the following day. The index
-    // has one entry per day and no cell for it, so it is not carried (PLAN §18.5).
-    mass = { rendered: massLiturgy.Today, ferial: massFerial };
-  } catch {
-    mass = null;
-  }
-  return { hoursLiturgy, ferial, ldi, mass };
 }
 
 // Mirrors HoursLiturgyService.tsx's private TomorrowIsMoreImportant/HasLiturgyContent: the
@@ -312,12 +201,12 @@ function hasLiturgyContent(value) {
 }
 
 function vespersComeFromTomorrow(hoursLiturgy) {
-  const todayPrecedence = hoursLiturgy.TodayCelebrationInformation.Precedence;
-  const tomorrowPrecedence = hoursLiturgy.TomorrowCelebrationInformation.Precedence;
-  const todaySecond = hoursLiturgy.VespersOptions.TodaySecondVespersWithCelebration;
-  const tomorrowFirst = hoursLiturgy.VespersOptions.TomorrowFirstVespersWithCelebration;
+  const todayPrecedence = hoursLiturgy.todayCelebrationInformation.precedence;
+  const tomorrowPrecedence = hoursLiturgy.tomorrowCelebrationInformation.precedence;
+  const todaySecond = hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration;
+  const tomorrowFirst = hoursLiturgy.vespersOptions.tomorrowFirstVespersWithCelebration;
   if (todayPrecedence === tomorrowPrecedence) {
-    return hasLiturgyContent(tomorrowFirst.EvangelicalAntiphon) && !hasLiturgyContent(todaySecond.EvangelicalAntiphon);
+    return hasLiturgyContent(tomorrowFirst.evangelicalAntiphon) && !hasLiturgyContent(todaySecond.evangelicalAntiphon);
   }
   return tomorrowPrecedence < todayPrecedence;
 }
@@ -326,22 +215,6 @@ function vespersComeFromTomorrow(hoursLiturgy) {
 // shape, and the two must come apart identically or a Common petition and a rendered one
 // would never compare equal.
 const { parsePrayers } = commonOffice;
-
-function expandResponsory(r) {
-  if (!r) return null;
-  if (r.HasSpecialAntiphon) return { special: r.SpecialAntiphon };
-  const full = `${r.FirstPart || ''} ${r.SecondPart || ''}`.trim();
-  return {
-    parts: [
-      `℣. ${r.FirstPart || ''} * ${r.SecondPart || ''}`,
-      `℟. ${full}`,
-      `℣. ${r.ThirdPart || ''}`,
-      `℟. ${r.SecondPart || ''}`,
-      `℣. ${GLORIA_PATRI_SHORT}`,
-      `℟. ${full}`,
-    ],
-  };
-}
 
 const TABLES = [
   'himnos', 'salmos_citas', 'salmos_antifonas', 'salmos_textos',
@@ -387,7 +260,7 @@ for (const role of Object.keys(MASS_ROLES)) {
 
 describe('Content join: cpl-app -> saints-app commons/ca', () => {
   // cpl-app picks a DIFFERENT hymn for the Office of Readings when it is prayed before six
-  // in the morning (`OfficeService.IsDarkAnthem` — the only `new Date()` in the whole of
+  // in the morning (`officeService.isDarkAnthem` — the only `new Date()` in the whole of
   // `src/Services`). The shared index has ONE cell for the hymn, so which of the two gets
   // migrated must not depend on what time of day the join happens to be run at. Pinned to
   // midday: that is what the app shows for eighteen hours out of twenty-four. The nocturnal
@@ -510,7 +383,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // demana mai el Comú (`Categoria = '0000'`, vegeu decisions/D-001). En castellà aquella
     // pestanya SÍ que mostra el Comú, i el 3 de setembre de 2026 es va decidir que el català
     // hi faci igual. Això és el que l'omple.
-    const commonsDb = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
+    const commonsDb = new DatabaseSync(path.resolve(__dirname, '../src/assets/db/cpl-app.db'), { readOnly: true });
     const { commons: commonRows, byCategoria: commonsByCategoria } = commonOffice.loadCommons(commonsDb);
     const esTableCache = {};
     function esTable(table) {
@@ -629,25 +502,25 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     }
 
     function observeHour(entry, hourData, tag) {
-      observe('himnos', entry.himno, hourData.Anthem, tag);
+      observe('himnos', entry.himno, hourData.anthem, tag);
       // The antiphons come from lib/cpl-day-resolver, not from the psalms directly: on an
       // intermediate Hour of a celebration ONE antiphon covers all three, and the per-psalm
       // ones the model still carries are not what the screen shows.
       const antiphons = psalmAntiphons(hourData);
       const psalms = [
-        ['primer', hourData.FirstPsalm],
-        ['segundo', hourData.SecondPsalm],
-        ['tercer', hourData.ThirdPsalm],
+        ['primer', hourData.firstPsalm],
+        ['segundo', hourData.secondPsalm],
+        ['tercer', hourData.thirdPsalm],
       ];
       psalms.forEach(([prefix, psalm], i) => {
         if (!psalm) return;
-        observe('salmos_citas', entry[`${prefix}_salmo_cita`], psalm.Title, tag);
+        observe('salmos_citas', entry[`${prefix}_salmo_cita`], psalm.title, tag);
         observe('salmos_antifonas', entry[`${prefix}_salmo_antifona`], antiphons[i], tag);
-        observe('salmos_textos', entry[`${prefix}_salmo_texto`], psalm.Psalm, tag);
+        observe('salmos_textos', entry[`${prefix}_salmo_texto`], psalm.psalm, tag);
       });
-      if (hourData.ShortReading) {
-        observe('lectura_breve_citas', entry.lectura_biblica_cita, hourData.ShortReading.Quote, tag);
-        observe('lectura_breve_textos', entry.lectura_biblica, hourData.ShortReading.ShortReading, tag);
+      if (hourData.shortReading) {
+        observe('lectura_breve_citas', entry.lectura_biblica_cita, hourData.shortReading.quote, tag);
+        observe('lectura_breve_textos', entry.lectura_biblica, hourData.shortReading.shortReading, tag);
       }
       // Six lines for Laudes and Vespers, a versicle/response pair for the intermediate
       // Hours — same helper, so the two shapes can't be paired up wrongly here.
@@ -655,8 +528,8 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       if (respParts && Array.isArray(entry.responsorios)) {
         entry.responsorios.forEach((id, i) => observe('responsorios', id, respParts[i], tag));
       }
-      observe('cantico_evangelico_antifonas', entry.cantico_evangelico_antifona, hourData.EvangelicalAntiphon, tag);
-      const prayers = parsePrayers(hourData.Prayers);
+      observe('cantico_evangelico_antifonas', entry.cantico_evangelico_antifona, hourData.evangelicalAntiphon, tag);
+      const prayers = parsePrayers(hourData.prayers);
       if (prayers) {
         observe('preces_intro', entry.preces_intro, prayers.intro, tag);
         observe('preces_respuesta', entry.preces_respuesta, prayers.respuesta, tag);
@@ -667,7 +540,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           });
         }
       }
-      observe('oraciones_finales', entry.oracion_final, hourData.FinalPrayer, tag);
+      observe('oraciones_finales', entry.oracion_final, hourData.finalPrayer, tag);
     }
 
     // --- The Mass -------------------------------------------------------------------------
@@ -765,7 +638,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // makes cpl-app's own services throw on an empty row (e.g. ObtainPentecostDay reading
     // result[0].mes of nothing), which used to kill the whole run over a single edge day.
     // Skip those days and report them instead.
-    const rangeDb = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
+    const rangeDb = new DatabaseSync(path.resolve(__dirname, '../src/assets/db/cpl-app.db'), { readOnly: true });
     const coveredYears = new Set(
       rangeDb.prepare('SELECT DISTINCT any AS y FROM anyliturgic').all().map((r) => String(r.y))
     );
@@ -989,8 +862,8 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         if (observeFn) observeFn(entry, hourData, `${dateStr} (${hour})`, observe, key);
         else {
           const dayForCommon = {
-            title: hoursLiturgy.TodayCelebrationInformation && hoursLiturgy.TodayCelebrationInformation.Title,
-            suffix: commonOffice.seasonSuffix(dayInfo && dayInfo.Today && dayInfo.Today.SpecificLiturgyTime),
+            title: hoursLiturgy.todayCelebrationInformation && hoursLiturgy.todayCelebrationInformation.title,
+            suffix: commonOffice.seasonSuffix(dayInfo && dayInfo.today && dayInfo.today.specificLiturgyTime),
           };
           if (HOURS_CONFIG[hour].dualOffice === false) {
             // No second office and no Common to weigh against it: what cpl-app renders is

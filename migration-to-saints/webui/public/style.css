@@ -169,10 +169,12 @@ details.advanced .adv-hint { font-weight: 400; color: var(--muted); font-size: 0
 .cal-wd { text-align: center; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; padding-bottom: 0.2rem; }
 
 .cal-day {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2px; padding: 0.5rem 0.2rem; margin: 0; border-radius: 6px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 2px; padding: 0.45rem 0.35rem; margin: 0; border-radius: 6px; cursor: pointer;
   border: 1px solid var(--border); background: var(--mono-bg); color: var(--text);
-  min-height: 3.2rem;
+  /* Room for the number, the percentage and two clipped lines of cause. */
+  min-height: 4.6rem;
+  overflow: hidden;
 }
 .cal-day:hover { filter: brightness(1.08); border-color: var(--accent); }
 .cal-day.selected { outline: 2px solid var(--accent); outline-offset: 1px; }
@@ -490,3 +492,39 @@ details.advanced .adv-hint { font-weight: 400; color: var(--muted); font-size: 0
 .dc-imp-dates .dc-more { font-size: 0.75rem; }
 /* Where you were sent: strong enough to find after a scroll, quiet enough to read past. */
 .dcmp-row.focused { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 4px; }
+
+/* The month calendar: under the percentage, why the day is not at 100%. The cause is the
+   question every day of this migration starts with, so it is on the cell and not only in the
+   tooltip — clipped to two lines, because a cell is not a place to read a sentence. */
+.cal-why {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 2px;
+  font-size: 0.62rem;
+  line-height: 1.15;
+  text-align: center;
+  opacity: 0.72;
+}
+
+.cal-causes {
+  margin-top: 0.9rem;
+}
+
+.cal-cause-list {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.cal-cause-dates {
+  opacity: 0.6;
+}
+
+.cal-cause-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}

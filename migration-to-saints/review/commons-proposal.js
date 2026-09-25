@@ -22,7 +22,7 @@ const REPO = path.resolve(__dirname, '../..');
 const dayCheck = require(path.join(REPO, 'migration-to-saints/day-check'));
 const { fingerprint } = require(path.join(REPO, 'migration-to-saints/lib/citation-key'));
 const commonOffice = require(path.join(REPO, 'migration-to-saints/lib/common-office'));
-const DB_PATH = path.join(REPO, 'src/Assets/db/cpl-app.db');
+const DB_PATH = path.join(REPO, 'src/assets/db/cpl-app.db');
 const ES_DIR = '/Users/pau/projects/saints/saints-app/src/store/db/day_specific_texts/commons/es';
 
 const RUN = process.env.RUN_DIR || path.join(__dirname, 'run');

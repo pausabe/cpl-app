@@ -61,7 +61,7 @@ describe('which cell each mode names', () => {
 describe('which Common a day belongs to', () => {
   let commons; let byCategoria;
   beforeAll(() => {
-    const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
+    const db = new DatabaseSync(path.resolve(__dirname, '../src/assets/db/cpl-app.db'), { readOnly: true });
     ({ commons, byCategoria } = commonOffice.loadCommons(db));
   });
 
@@ -124,7 +124,7 @@ describe('which season of the Common', () => {
 describe('what the Common offers', () => {
   let byCategoria;
   beforeAll(() => {
-    const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
+    const db = new DatabaseSync(path.resolve(__dirname, '../src/assets/db/cpl-app.db'), { readOnly: true });
     ({ byCategoria } = commonOffice.loadCommons(db));
   });
 
@@ -198,7 +198,7 @@ describe('memòries sense pestanya ferial', () => {
 describe('qui es queda la casella quan només n’hi ha una', () => {
   let commons; let byCategoria;
   beforeAll(() => {
-    const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
+    const db = new DatabaseSync(path.resolve(__dirname, '../src/assets/db/cpl-app.db'), { readOnly: true });
     ({ commons, byCategoria } = commonOffice.loadCommons(db));
   });
 

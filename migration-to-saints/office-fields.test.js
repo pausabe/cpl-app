@@ -20,35 +20,9 @@
 
 const path = require('path');
 
-jest.mock('../src/Services/SettingsService', () => {
-  const DioceseName = {
-    Andorra: 'Andorra', Barcelona: 'Barcelona', Girona: 'Girona', Lleida: 'Lleida',
-    Mallorca: 'Mallorca', Menorca: 'Menorca', SantFeliu: 'Sant Feliu de Llobregat',
-    Solsona: 'Solsona', Tarragona: 'Tarragona', Terrassa: 'Terrassa', Tortosa: 'Tortosa',
-    Urgell: 'Urgell', Vic: 'Vic',
-  };
-  const PrayingPlace = { Diocese: 'Diòcesi', City: 'Ciutat', Cathedral: 'Catedral' };
-  return { __esModule: true, DioceseName, PrayingPlace, default: {} };
-});
+jest.mock('../src/services/databaseManagerService', () => require('../__tests__/helpers/mockDatabaseManager'));
 
-jest.mock('../src/Services/DatabaseManagerService', () => {
-  const path = require('path');
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
-  return {
-    executeQueryAsync: (query) => {
-      try {
-        return Promise.resolve(db.prepare(query).all());
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  };
-});
-
-const {
-  buildSettings, resolveDay, extractOfficeFields, officeCitation, readingResponsoryParts,
-} = require('./lib/cpl-day-resolver');
+const { resolveDayFields, officeCitation, readingResponsoryParts } = require('../src/liturgy-export');
 
 // A plain ordinary-time weekday with both readings and both responsories, and the one the
 // mapping was worked out against: `ordinary_time_19_wednesday`, whose Spanish cells
@@ -58,9 +32,13 @@ const DATE = '2026-08-12';
 let fields;
 
 beforeAll(async () => {
-  const [y, m, d] = DATE.split('-').map(Number);
-  const { hoursLiturgy } = await resolveDay(new Date(y, m - 1, d), buildSettings({ dioceseName: 'Barcelona' }));
-  fields = extractOfficeFields(hoursLiturgy.Office);
+  const day = await resolveDayFields(DATE, {
+    dioceseName: 'Barcelona',
+    hours: ['Office'],
+    ferial: false,
+    mass: false,
+  });
+  fields = day.hours.Office;
 }, 120000);
 
 test('the citation keeps the `$` the components split on', () => {
@@ -106,8 +84,8 @@ test('no `_i`/`_p` cell is ever produced', () => {
 });
 
 test('a reading with only one half of the citation is not given a phantom separator', () => {
-  expect(officeCitation({ Reference: 'Del llibre de Josuè', Quote: '' })).toBe('Del llibre de Josuè');
-  expect(officeCitation({ Reference: '', Quote: '24, 1-7' })).toBe('24, 1-7');
+  expect(officeCitation({ reference: 'Del llibre de Josuè', quote: '' })).toBe('Del llibre de Josuè');
+  expect(officeCitation({ reference: '', quote: '24, 1-7' })).toBe('24, 1-7');
   expect(officeCitation({})).toBeNull();
   expect(officeCitation(null)).toBeNull();
 });
@@ -115,7 +93,7 @@ test('a reading with only one half of the citation is not given a phantom separa
 test('a responsory with nothing in it produces no cells at all', () => {
   // The third and fourth readings are empty on every ordinary day; observing a `℟.  * `
   // for them would put three sigils with no text into three shared cells.
-  expect(readingResponsoryParts({ Responsory: {} })).toBeNull();
+  expect(readingResponsoryParts({ responsory: {} })).toBeNull();
   expect(readingResponsoryParts({})).toBeNull();
   expect(readingResponsoryParts(null)).toBeNull();
 });

@@ -45,6 +45,17 @@ ones in our own tooling go to `migration-to-saints/tooling-bugs/` and are not re
 
 ## Traps
 
-- **Do not use `migration-to-saints/cpl-day.test.js`**: its ferial control for Vespers is still
-  broken (see MIGRA-001) and invents divergences on every memorial. To resolve days, use
-  `migration-to-saints/review/resolve-cpl-days.test.js`.
+- **One door into cpl-app's engine: `src/liturgy-export`.** Nothing under `migration-to-saints/`
+  reaches into `src/services` or `src/models` by hand any more, and nothing should start again:
+  eslint ignores that folder and plain JS is invisible to `make types`, so a renamed field there
+  reads `undefined` instead of failing (MIGRA-012). Add to the typed module and come through the
+  door.
+- **A `CPL-LIT` fix of code is not safe just because it is in git.** The refactor on `master`
+  dropped the Ash Wednesday routing of CPL-LIT-001 and nobody noticed for two weeks
+  (CPL-LIT-001b). The three detectors —`AshWednesdayLaudesPsalmody`,
+  `ImmaculateConceptionTransfer`, `Psalm66PointingMark`— are the only net there is, so a red
+  `make tests` is never something to work around.
+- **A freshly downloaded database has no data fix in it.** `make db` and `make db-latest` bring
+  the published one; the two `db-fixes/*.sql` go back on top of it, in order. They are
+  idempotent, and the recipe is in
+  [REGISTRE-DE-CANVIS.md](REGISTRE-DE-CANVIS.md#el-que-sha-de-reaplicar-sobre-una-base-de-dades-acabada-de-baixar).

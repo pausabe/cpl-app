@@ -70,6 +70,13 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **proposat** | — pendent d'enviar | — |
 | [SA-15](#sa-15) | 2026-09-08 | saints-app | contingut | Es regenera | — |
 | [EINA-revisio-dia](#eina-revisio-dia) | 2026-09-14 | eines | codi | No — va al git | — |
+| [MIGRA-012](#migra-012) | 2026-09-25 | eines + cpl-app | codi | No — va al git | — |
+| [CPL-LIT-001b](#cpl-lit-001b) | 2026-09-25 | cpl-app | codi (**recaiguda**) | No — va al git | — |
+| [MIGRA-013](#migra-013) | 2026-09-25 | eines | codi | No — va al git | — |
+| [MIGRA-014](#migra-014) | 2026-09-25 | eines | **dades (BD)** | Ja és dins del `.sql` | — |
+| [EINA-mes](#eina-mes) | 2026-09-25 | eines | codi | No — va al git | — |
+| [EINA-anada-i-tornada](#eina-anada-i-tornada) | 2026-09-25 | eines | codi | No — va al git | — |
+| [MIGRA-015](#migra-015) | 2026-09-25 | eines | codi | No — va al git | — |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -85,17 +92,17 @@ git log --grep='^Cpl-Bug:' --format='%(trailers:key=Cpl-Bug,valueonly,separator=
 
 ## El que s'ha de reaplicar sobre una base de dades acabada de baixar
 
-`src/Assets/db/cpl-app.db` **està gitignorada** i ve del web de Deployment. Els fixos de dades
+`src/assets/db/cpl-app.db` **està gitignorada** i ve del web de Deployment. Els fixos de dades
 no hi són quan te la baixes de nou. Aquests dos fitxers `.sql` **són l'únic registre** del que
 s'hi va canviar:
 
 ```sh
 # 1. Còpia de seguretat: no hi ha desfer.
-cp src/Assets/db/cpl-app.db /tmp/cpl-app.db.backup
+cp src/assets/db/cpl-app.db /tmp/cpl-app.db.backup
 
 # 2. Els dos fixos, en ordre. Són idempotents: si CPL ja ho ha arreglat a origen, no fan res.
-sqlite3 src/Assets/db/cpl-app.db < db-fixes/CPL-LIT-002.sql
-sqlite3 src/Assets/db/cpl-app.db < db-fixes/CPL-LIT-003.sql
+sqlite3 src/assets/db/cpl-app.db < db-fixes/CPL-LIT-002.sql
+sqlite3 src/assets/db/cpl-app.db < db-fixes/CPL-LIT-003.sql
 
 # 3. Els detectors. Si fallen, a la base li falta el fix.
 npx jest __tests__/Services/ImmaculateConceptionTransfer.test.js
@@ -111,6 +118,27 @@ funcionen sobre qualsevol versió de la base i es poden executar dues vegades se
 Per saber sobre quina versió s'han aplicat, cada `.sql` porta a la capçalera el recompte de
 `_tables_log` i el sha256 d'abans i de després. **`_tables_log` no s'ha tocat mai**: el seu
 recompte és el que el wiki de CPL fa servir per comparar amb la versió publicada.
+
+### Última reaplicació: 25 de setembre de 2026, sobre la **v5**
+
+| | |
+|---|---|
+| Base | `src/assets/db/cpl-app.db`, v5, `compat s0-99bd7d6becceebc9`, 15.968.256 bytes |
+| sha256 abans | `7235a715d1d46f6864e0739bf4247fd5bb50090d012246b9a3d7c19005a8dab9` |
+| sha256 després | `9bec0208514b2602f550f15072f9953e675df4da8c8b19059197b5fbc9cc1c8e` |
+| `_tables_log` | **12.615 abans i 12.615 després** (últim registre: `santsMemories/529`, 2026-09-02 07:10:44) |
+| Detectors | `ImmaculateConceptionTransfer` i `Psalm66PointingMark`, tots dos en verd |
+
+**Els quatre goldens estan gravats contra la v5 SENSE els fixos** (`databaseSha256:
+7235a715…`), o sigui que ara mateix donen per bons el Dimecres de Cendra equivocat, la
+Immaculada del dia que no toca i el Salm 66 sense asterisc. Els quatre peten amb *«was made from
+another cpl-app.db»*, que és el guardià fent la seva feina i no cap regressió: **812 fallades,
+totes el mateix missatge**. Regravar-los demana repassar l'app a mà abans (`UPDATE_GOLDEN=1`), i
+això només ho pot fer en Pau.
+
+Els dos fixos hi faltaven: la base es va tornar a baixar el 25 de setembre i se'ls va endur, que
+és exactament el que aquesta secció existeix per a evitar. El CPL-LIT-003 **afegia dues files a
+`_tables_log`** en reaplicar-se i ara se les treu tot sol — vegeu [MIGRA-014](#migra-014).
 
 ---
 
@@ -167,11 +195,52 @@ setmana IV. Passava **tots els anys**, verificat als 10 que cobreix la base.
 |---|---|
 | Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-001.md](migration-to-saints/cpl-bugs/CPL-LIT-001.md) |
 | Commit | `cdc8c79` — [GitHub](https://github.com/pausabe/cpl-app/commit/cdc8c799942f25059e83cb7195ec76be6367314d) |
-| Fix | Codi: `src/Services/Liturgy/LiturgyMastersService.tsx`, `ObtainLaudesCommonPsalter` |
+| Fix | Codi: `src/services/liturgy/liturgyMastersService.ts`, `obtainLaudesCommonPsalter` |
 | Test | [`__tests__/Services/AshWednesdayLaudesPsalmody.test.js`](__tests__/Services/AshWednesdayLaudesPsalmody.test.js) |
 | Reaplicar | **No** — és codi, va al git |
 | Prova | Tres fonts en tres idiomes (anglès, castellà per data exacta, i la rúbrica explicada), més la contraverificació que les Vespres **no** canvien |
 | Efecte a la migració | 8 caselles desbloquejades, **1.034 observacions-dia** |
+
+> **Va tornar el 25 de setembre de 2026.** Vegeu [CPL-LIT-001b](#cpl-lit-001b).
+
+<a id="cpl-lit-001b"></a>
+## CPL-LIT-001b
+
+**El fix del Dimecres de Cendra es va perdre al refactor de `master`** · 25 de setembre de 2026
+
+El bloc de vint línies que el `cdc8c79` va posar a `ObtainLaudesCommonPsalter` **no és al codi
+refactoritzat**. El `refactor: the code, in English` i el `properties in camelCase` de `master`
+van reescriure `liturgyMastersService` i el bloc no va arribar a l'altra banda. Els 10 Dimecres
+de Cendra de la finestra tornaven a resar el Salm 107 a Laudes.
+
+Com s'ha vist —i val la pena, perquè no va ser el detector qui va avisar primer:
+
+1. El join va deixar d'escriure **9 caselles** que sí que escrivia el 8 de setembre:
+   `salmos_antifonas/71-73`, `salmos_citas/72-74` i `salmos_textos/73-75`, tota la salmòdia d'una
+   hora.
+2. A la cua hi eren les nou, amb **dues variants** cadascuna, i la minoritària feia **10
+   observacions** exactes, sempre les mateixes dates: 2017-03-01 … 2026-02-18. Deu Dimecres de
+   Cendra.
+3. La variant minoritària era «Salm 107 · Lloança del Senyor i petició de socors», que és
+   literalment el text del CPL-LIT-001.
+
+El detector `AshWednesdayLaudesPsalmody.test.js` **sí que ho veia** —10 dels seus 13 casos
+fallaven—, però estava caigut per les rutes velles (`src/Services/…`) des de la fusió, o sigui
+que ningú no el llegia. Doble lliçó: el detector va complir i el `make tests` en vermell el
+tapava.
+
+| | |
+|---|---|
+| Fix | El mateix bloc, amb els noms nous: `checkCelebration(Celebration.AshWednesday, …)` → `weekCycle = 3`, `dayNumber = 5` |
+| On | [`src/services/liturgy/liturgyMastersService.ts`](src/services/liturgy/liturgyMastersService.ts), `obtainLaudesCommonPsalter` |
+| Test | El mateix de sempre, ara en verd: 13/13 |
+| Reaplicar | **No** — és codi, va al git |
+| Efecte | Les 9 caselles tornen a resoldre's per unanimitat |
+
+**El que això vol dir per al futur**: un fix de codi de cpl-app no està segur només perquè sigui
+al git. Els dos detectors de dades (`ImmaculateConceptionTransfer`, `Psalm66PointingMark`) i
+aquest són l'única xarxa, i **han de córrer en verd sempre**, perquè una fusió gran és
+exactament quan un `CPL-LIT` es perd.
 
 ## CPL-LIT-002
 
@@ -902,6 +971,251 @@ fil.
   tot el que surti `SENSE INVESTIGAR` abans de respondre, i respon per causes (on som · per què
   no és al 100% · accions ordenades per caselles alliberades · decisions · el sostre real · per
   on començar). Cap artifact.
+
+<a id="migra-012"></a>
+## MIGRA-012
+
+**El refactor de `master` va trencar la migració en silenci, i ara no podrà** · 25 de setembre de 2026
+
+En fusionar `master` a `catalan-migration` la migració va deixar de funcionar: **7 de les 11
+suites** queien i les 4 que aguantaven eren les de text pur. La causa no era subtil —`master`
+duia `refactor: the code, in English`, `properties in camelCase` i `naming-standards`, 312
+fitxers de `src` (+23.700/−17.200)— però **la manera de trencar-se sí que ho era**:
+
+| | |
+|---|---|
+| Les que petaven | `src/Models/HoursLiturgy/` → `src/models/hours-liturgy/`. Es veuen de seguida |
+| Les **silencioses** | `ObtainHours` → `obtainHours`, `.Today` → `.today`, `.Anthem` → `.anthem`. No llancen res: llegeixen `undefined` i escriurien caselles buides damunt de text bo |
+
+I res no ho vigilava: [eslint.config.js](eslint.config.js) **ignora `migration-to-saints/`**, i
+en ser JS pla `make types` no hi entra (`allowJs` sense `checkJs` el carrega però no el
+comprova). Els únics detectors eren els tests de la carpeta, i se'n van assabentar en fusionar.
+
+**La correcció no és renombrar: és moure la costura on el compilador la llegeix.**
+
+- **Nou [`src/liturgy-export/`](src/liturgy-export)**, dins de l'app i en TypeScript: `settings.ts`
+  (els ajustos, sense AsyncStorage), `resolveDay.ts` (el dia, els bessons ferials i les dues
+  meitats de la missa) i `indexFields.ts` (el vocabulari de l'índex de saints-app: `himno`,
+  `primer_salmo_texto`, `FIRSTLECTURE_ref`…). `index.ts` és l'única porta: `resolveDayFields()`.
+- **Nou [`src/services/liturgy/liturgyDayInformationService.ts`](src/services/liturgy/liturgyDayInformationService.ts)**:
+  `obtainLiturgyDayInformation` i `isSpecialChristmas` eren privats dins de `dataService` i la
+  migració en duia **tres còpies** («copied verbatim from DataService.tsx, it isn't exported»).
+  Ara hi ha una definició i el `dataService` la crida igual que la migració.
+- [`migration-to-saints/lib/cpl-day-resolver.js`](migration-to-saints/lib/cpl-day-resolver.js)
+  passa de 520 línies a ~90: és el pont, i el que hi queda és el que és de la migració i no de
+  cpl-app (la comparació ferial i les dues columnes de la missa, a `lib/mass-columns.js`).
+- **Les tres còpies de la resolució, fora.** `join-content.test.js`, `laudes.extract.test.js` i
+  `celebration-probe.test.js` en tenien una cadascuna, amb el seu `buildSettings` i el seu
+  `isSpecialChristmas`. I les **8 còpies del mock de la base de dades** passen a fer servir
+  [`__tests__/helpers/mockDatabaseManager.js`](__tests__/helpers/mockDatabaseManager.js), que ja
+  existia i que el manté l'app.
+- **Fora també** el `expandResponsory` i el `GLORIA_PATRI_SHORT` de `join-content.test.js`: codi
+  mort, i una tercera còpia de la regla del responsori de sis línies.
+- **El directori era `src/services/Liturgy` al disc i `src/services/liturgy` al git** —un canvi de
+  caixa que no va arrelar en un sistema de fitxers que no distingeix majúscules— i generava 14
+  errors `TS1261`. Corregit al disc.
+
+**La prova que el guardià és de debò**: amb `role('firstReading', 'readingRenamed')` o amb
+`hourData.anthemRenamed`, `npx tsc --noEmit` cau amb `TS2345` i `TS2339`. Abans d'això,
+`make types` ja fallava amb **61 errors** de caixa i ningú no se n'havia adonat; ara en fa 0.
+
+### Que no ha canviat res, comprovat
+
+| control | resultat |
+|---|---|
+| Els 370 tests de litúrgia de l'app (goldens inclosos) | idèntics |
+| `review/run/cpl-days.json` del 14-IX, contra el committejat | **tots els valors idèntics**; només canvia l'ordre de les claus de `ferialFields` |
+| La sonda de celebracions, 3.650 dates contra el committejat | 6 dates diferents, **totes de la BD v5**: la Setmana Santa de 2026, sant Vicenç que passa de lliure a memòria i santa Teresa de Calcuta, que abans no hi era. Ho diu el propi `anyliturgic` |
+| El join sencer | 62 segons; les caselles, vegeu [CPL-LIT-001b](#cpl-lit-001b) i [MIGRA-013](#migra-013) |
+
+**Queda obert**: `observeHour` del join encara llegeix el model camp a camp en paral·lel a
+`extractHourFields`, que és la mateixa feina dues vegades. Ara les dues són al mateix
+vocabulari i cauen juntes si una es trenca, però val la pena unificar-les.
+
+<a id="migra-013"></a>
+## MIGRA-013
+
+**MIGRA-001 tancat a l’arrel: un sol resolutor de dies, i cap parany** · 25 de setembre de 2026
+
+El [MIGRA-001](#migra-001) deia que `mergeVespersWithCelebration` escriu **dins** de l'objecte
+«sense celebració» (`let vespers = withoutCelebrationVespers`, [vespersService.ts:42](src/services/liturgy/vespersService.ts)),
+o sigui que `hoursLiturgy.vespersOptions.vespersWithoutCelebration` **no és** el control ferial:
+és les Vespres renderitzades. Qui el llegia marcava els 19 camps de Vespres com a ferials i
+inventava una divergència a **cada memòria**.
+
+Mai no es va corregir a l'origen. Es va treballar al voltant: `join-content.test.js` en duia el
+control bo a la seva còpia, `review/resolve-cpl-days.test.js` es va escriure **sencer** per
+tenir-lo, i l'[AGENTS.md](AGENTS.md) i la skill `revisio-dia` prohibien fer servir
+`cpl-day.test.js`. Tres fitxers i dues regles escrites per sortejar vint línies.
+
+Ara el control es pren **una vegada**, fresc, dins de `resolveFerial()` de
+[`src/liturgy-export/resolveDay.ts`](src/liturgy-export/resolveDay.ts), i **abans**
+d'`obtainHoursLiturgy`, que és quan res no hi ha escrit encara cap celebració:
+
+```ts
+vespers: obtainVespers(masters, liturgyDayInformation.today, settings),
+```
+
+Conseqüències:
+
+- `review/resolve-cpl-days.test.js` passa de **200 línies a 43** i no té cap còpia. Surt
+  **idèntic** al committejat, valor per valor.
+- `cpl-day.test.js` deixa de ser un parany, i la prohibició de l'[AGENTS.md](AGENTS.md) i de la
+  skill `revisio-dia` **s'ha retirat**: era un avís que havia passat a ser fals, i un avís fals
+  envia el proper agent pel camí equivocat. Al seu lloc hi ha tres paranys que sí que hi són
+  (la porta única a `src/liturgy-export`, que un `CPL-LIT` de codi es pot perdre en una fusió, i
+  que una base acabada de baixar no duu cap fix de dades). En Pau ho pot desfer si no li quadra.
+- **Els camps ferials només es marquen a Laudes i Vespres**, que són les dues úniques hores amb
+  pestanya de memòria/fèria. `cpl-day.test.js` els marcava a les hores intermèdies també, i
+  `resolve-cpl-days.test.js` no: ara la regla és una, amb el perquè al costat.
+- `resolve-cpl-days.test.js` **se salta** quan no se li donen dates, en lloc de deixar
+  `make tests` en vermell perquè ningú li ha demanat cap dia.
+
+<a id="migra-014"></a>
+## MIGRA-014
+
+**El CPL-LIT-003 delatava el pedaç al `_tables_log`** · 25 de setembre de 2026
+
+En reaplicar `db-fixes/CPL-LIT-003.sql` sobre la base v5, `_tables_log` va passar de **12.615 a
+12.617**. `salteriComuVespres` i `santsMemories` duen un disparador `log_update_*` que insereix
+una fila per cada `UPDATE`, i l'[AGENTS.md](AGENTS.md) és explícit: **mai no s'hi afegeixen
+files**, perquè el seu recompte és el que la wiki del CPL compara amb la versió publicada. Amb
+dues files de més, el pedaç es delata i sembla que la base no és la que diu que és.
+
+El `.sql` no ho netejava: qui el va aplicar el 2 de setembre ho devia fer a mà, i el fitxer
+—que és **l'únic registre** del canvi— no ho deia enlloc. El CPL-LIT-002 no ho necessita perquè
+`anyliturgic` no té disparador.
+
+Ara el fitxer porta un pas 5 que treu les seves pròpies files i torna enrere el
+`sqlite_sequence` (o el proper registre de debò salta dos números), i un pas 6 que imprimeix el
+recompte per a poder-lo comparar. Filtra per data i per fila, **no per id**, com la resta del
+fitxer. Comprovat: executat dues vegades seguides, el **sha256 de la base no es mou**
+(`9bec0208…`) i el recompte es queda a 12.615.
+
+<a id="eina-mes"></a>
+## MIGRA-015
+
+**La taula de llibres bíblics no coneixia mig Antic Testament** · 25 de setembre de 2026
+
+Revisant el 25 de setembre, la primera lectura de la missa sortia com a divergència: cpl-app diu
+`Ecle 3,1-11` i eprex `Ecles 3, 1-11`. És **el mateix** — Eclesiastès 3,1-11 — però
+`BOOK_ALIASES` de [`lib/citation-key.js`](migration-to-saints/lib/citation-key.js) tenia `ecle` i
+no `ecles`, i el castellà queia a `ANON`.
+
+No és soroll de revisió, **és contingut que no es migra**: el join de la missa empelta cada
+lectura a la seva casella **per la cita**, i el que no s'aparella es queda en blanc.
+`lecturas_referencia/486` i `lecturas_texto/607` no eren ni al `join-pending-review.json`. A tot
+el corpus, **87 cites** amb el llibre no reconegut i encara sense català —`Eclo` (29), `1 Sam`
+(20), `2 Sam` (15), `Jon`, `Jc`, `Jos`, `Ecles`, `1/2 Cro`, `1/2 Mac`, `Ne`, `Esd`, `Rt`, `Ct`—
+cadascuna amb el seu text al costat.
+
+I falla en els dos sentits. Quan totes dues bandes cauen a `ANON` el token es redueix al capítol
+i dues lectures diferents comparen **iguals**: `Jt 2` (Jutges, que en català s'abrevia `Jt`) i
+`Jdt 2` (Judit) sortien iguals. N'hi havia **21** de comparacions cegues així.
+
+La taula ara té els llibres que hi faltaven i les formes castellanes que hi faltaven. **`si` no
+s'hi ha posat a posta**: el castellà escriu el Siràcida `Eclo`, i els set `Si …` del corpus són
+el començament d'una rúbrica.
+
+| control | resultat |
+|---|---|
+| Les 4 taules de cites, ca + es, abans i després | 9.836 sense canvi · **160 llibres nous reconeguts** · **0 canviats** |
+| El test és un detector | sense el pedaç, **22 dels 31** de `citation-key.test.js` cauen |
+| `make tests` | les 4 suites de goldens cauen per la BD nova (esperat); cap més |
+
+Dossier: [tooling-bugs/MIGRA-015](migration-to-saints/tooling-bugs/MIGRA-015.md).
+
+**Queda pendent**: tornar a passar el join i l'exportació perquè les 87 lectures arribin a
+saints-app. I `1 Tt 1, 1-9` (`lecturas_referencia/526`) és **Titus** amb un «1» de més al
+davant: error d'eprex, no abreviatura, i per això no s'ha mapat.
+
+## EINA-mes
+
+**El mes diu per què cada dia no és al 100%, no només quant li falta** · 25 de setembre de 2026
+
+El calendari del panell ja hi era i ja donava el % de cada dia. El que no deia és **per què**, que
+és amb el que comença cada sessió de feina: calia obrir el dia per saber-ho.
+
+`checkDay` ja calculava `blameSummary` —de quina celebració és la culpa, camp a camp—, o sigui que
+no calia cap càlcul nou: només **pujar-lo al mes**.
+
+- **`monthCause()`** a [day-check.js](migration-to-saints/day-check.js): la causa que desbloquejaria
+  més camps **pel seu compte** (`soleFields`), perquè una causa compartida amb d'altres no mou res
+  fins que aquelles també es resolguin. Si no hi ha cap culpable, la forma del forat és la resposta:
+  caselles retingudes (algú altre hi discrepa) i caselles sense cap valor observat demanen feines
+  oposades i no se sumen mai.
+- **`checkMonth` retorna `causes`**, les del mes senceres i ordenades pels dies que toquen. Una acció
+  que arregla sis dies val més que sis accions, i una graella de trenta caselles és exactament el que
+  ho amaga.
+- **Al panell**: la causa surt a cada cel·la (retallada a dues línies), sencera al *tooltip* amb què
+  hi celebra cpl-app, i la llista de causes del mes sota el calendari.
+- **Al terminal**, tres ordres que responen a les tres preguntes reals i llegeixen **la mateixa**
+  sortida ja generada —ni base de dades, ni join—, o sigui que els números no poden discrepar:
+
+  | | | |
+  |---|---|---|
+  | `make progress` | com anem, tota la finestra | ~25 s |
+  | `make month [YM=2026-09]` | aquell mes, dia a dia | <1 s |
+  | `make day-check [DATE=…]` | aquell dia, camp a camp (avui, si no en dius cap) | <1 s |
+
+  `make progress` acaba amb **les celebracions que retenen més dies de tota la finestra**, que és
+  la llista per on val la pena començar: cada una es paga una vegada i es cobra a tots els seus
+  dies. La Sagrada Família, ella sola, en toca **299**.
+
+Setembre de 2026, tal com queda: **80%**, 0 dies complets de 30, i **19 causes** per a tot el mes.
+Les tres primeres (els arcàngels, santa Teresa Beneta de la Creu i la Commemoració dels fidels
+difunts) toquen 7 dies entre totes tres.
+
+I la finestra sencera, que fins ara no es podia demanar d'una ordre: **78%** (353.789 de 453.859
+camps), molt estable any per any (77-78% els deu), i **0 dies sencers de 3.651**. Aquest segon
+número és el que encara no s'ha mogut gens, i el que val la pena mirar: cap matí, en deu anys, es
+pot obrir eprex i llegir-ho tot en català.
+
+<a id="eina-anada-i-tornada"></a>
+## EINA-anada-i-tornada
+
+**La migració es valida sola, en el vocabulari de cpl-app** · 25 de setembre de 2026
+
+`~/projects/personal/cpl-db-es` es va escriure per a fer la base castellana de cpl-app a partir dels
+textos de saints-app. Però accepta `LANG_CODE`, i el català és **l'idioma que la migració hi va
+posar**, o sigui que tornar-lo a treure tanca un cercle:
+
+```
+cpl-app.db → el join → saints-app/commons/ca → cpl-db-es → cpl-app-ca.db → comparar
+```
+
+Una casella que torna diferent és una casella que la migració va col·locar malament, **dita en les
+taules i les files de cpl-app** — sense espai d'ids compartits, sense percentatges — que és el
+vocabulari en què estan els volums impresos i l'únic en què en Pau pot dir «això no és així».
+
+`src/check.js` només comparava **presència** (plena/buida). Ara, amb `ca`, compara també el **text**:
+
+```sh
+cd ~/projects/personal/cpl-db-es
+LANG_CODE=ca make db && LANG_CODE=ca make check
+```
+
+| | |
+|---|---|
+| Caselles que aquesta base omple i la catalana deixa buides | **0** — l'invariant que ja hi havia, intacte |
+| Caselles que la catalana omple i saints-app no té | **8.054** — el forat que queda de la migració, en taules de cpl-app |
+| Caselles que tornen amb un text diferent | **1.370** — la cua de feina |
+
+S'exclouen `_publication` i `_tables_log` (no són litúrgia) i les **transformacions volgudes**, que
+es declaren amb el lloc on es van decidir: avui només el prefix `Sl ` del salm responsorial (PLAN
+§18.3) — 568 caselles que abans sortien com a diferència i són la regla funcionant.
+
+Les diferències es presenten **agrupades per taula i columna**, perquè una regla que falla escriu
+cinc-centes caselles i continua sent una sola cosa a arreglar. La primera passada ja retroba sola
+tres qüestions obertes —la [D-005](#d-005) (`salteriComuOfici.himneNitCat`: torna l'himne de dia on
+cpl-app té el nocturn), la P-14 (`diesespecials.titolSalm1Ofici`: «Salm 23» contra «Salm 23 ·
+Entrada del Senyor al santuari») i el llatí copiat d'`es`— i n'ensenya una que no estava anotada:
+**els precs d'Advent tornen començant per una petició en lloc de per la introducció**
+(`tempsAdventSetmanes.pregariesLaudes`, 19 caselles). Sense classificar encara.
+
+**El que no fa**: no veu quina casella llegeix l'app (això és la sonda), ni els conflictes retinguts,
+ni el salteri que el generador dedueix per majoria. No substitueix `day-check.js`; mesuren coses
+diferents i les vols totes dues.
 
 <a id="eprex-005"></a>
 ## EPREX-005

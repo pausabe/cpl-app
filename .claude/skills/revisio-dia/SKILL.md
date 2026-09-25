@@ -64,7 +64,7 @@ no l'enganxis tal qual.
 O pas a pas, si cal depurar:
 
 ```sh
-# 1. cpl-app amb els seus Serveis reals (control ferial de Vespres CORREGIT — vegeu paranys)
+# 1. cpl-app amb els seus serveis reals, a través de src/liturgy-export
 DATES=… OUT=migration-to-saints/review/run/cpl-days.json \
   npx jest migration-to-saints/review/resolve-cpl-days.test.js --silent
 
@@ -145,11 +145,12 @@ un fil nou, `node migration-to-saints/review/fix-prompts.js` els genera.
 
 ## Paranys
 
-1. **No facis servir `migration-to-saints/cpl-day.test.js`.** El seu control ferial de Vespres
-   és el mateix objecte que les Vespres renderitzades (`MergeVespersWithCelebration` no en fa
-   còpia), o sigui que marca els 19 camps com a ferials sempre i inventa divergències falses a
-   **totes** les memòries. Fes servir `review/resolve-cpl-days.test.js`, que pren el control
-   amb un `ObtainVespers()` fresc. Mentre F2 no s'apliqui, això és obligatori.
+1. **El control ferial de Vespres ja és bo per a tothom** (MIGRA-013, 25-IX-2026). Es pren
+   fresc dins de `src/liturgy-export/resolveDay.ts`, abans que `obtainHoursLiturgy` hi escrigui
+   res, o sigui que `cpl-day.test.js` ja no inventa divergències a les memòries i
+   `review/resolve-cpl-days.test.js` ja no en duu còpia: crida el mateix resolutor. Segueix sent
+   el que has de fer servir —és el que sap les set hores i la missa—, però ara perquè és el que
+   escriu el fitxer que la revisió llegeix, no per esquivar cap bug.
 2. **`fromFerial` és imprescindible** per a la comparació de contingut a les memòries.
 3. El manifest cobreix **2017-01-01 → 2026-12-30**, resolt contra `diocese-barcelona`.
 4. Marques de l'espanyol a treure abans de comparar: `_cursiva_`, `$℣. $`.
@@ -167,7 +168,8 @@ un fil nou, `node migration-to-saints/review/fix-prompts.js` els genera.
 
 | | |
 |---|---|
-| `review/resolve-cpl-days.test.js` | cpl-app real, amb el control ferial bo |
+| `review/resolve-cpl-days.test.js` | cpl-app real; 43 línies sobre `lib/cpl-day-resolver.js` |
+| `src/liturgy-export/` | el motor de cpl-app, tipat: l'única porta d'entrada (MIGRA-012) |
 | `review/build-rows.js` | cada camp, ca + es, amb conflicte i causa |
 | `review/commons-proposal.js` | `OficisComuns` → caselles sense font |
 | `review/findings.js` | les troballes, com a dades, lligades al seu dia |

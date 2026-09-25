@@ -73,3 +73,30 @@ UNION ALL
 SELECT 'santsMemories', id, 'Salm2Ofici'
 FROM santsMemories
 WHERE Salm2Ofici LIKE '%La terra ha donat el seu fruit,    *%';
+
+-- 5) Treure les dues files que els disparadors acaben d'escriure a `_tables_log`.
+--
+--    `salteriComuVespres` i `santsMemories` duen un `log_update_*` que hi insereix una fila per
+--    cada UPDATE, i el recompte de `_tables_log` és el que la wiki del CPL compara amb la versió
+--    publicada: si creix, el pedaç es delata i sembla que la base no és la que diu que és. El
+--    `anyliturgic` del CPL-LIT-002 no té disparador i per això aquell fitxer no necessita res.
+--
+--    Es filtra per data i per fila —no per id— perquè sigui idempotent: en una base baixada de nou
+--    els id són altres, i si les sentències 2 i 3 no han canviat res, aquí no hi ha res a treure.
+--    El `sqlite_sequence` es torna enrere també, o el proper registre de debò salta dos números.
+DELETE FROM _tables_log
+WHERE date = (SELECT MAX(date) FROM _tables_log)
+  AND action = 2
+  AND (
+    (table_name = 'salteriComuVespres'
+     AND row_id IN (SELECT id FROM salteriComuVespres WHERE salm2 LIKE '%La terra ha donat el seu fruit,    *%'))
+    OR (table_name = 'santsMemories'
+        AND row_id IN (SELECT id FROM santsMemories WHERE Salm2Ofici LIKE '%La terra ha donat el seu fruit,    *%'))
+  );
+
+UPDATE sqlite_sequence
+SET seq = (SELECT MAX(id) FROM _tables_log)
+WHERE name = '_tables_log';
+
+-- 6) El recompte, que ha de ser el mateix que abans d'executar tot això.
+SELECT COUNT(*) AS tables_log FROM _tables_log;

@@ -44,8 +44,16 @@ la fase 4**, a `saints-app` — o sigui el que veu l'usuari, no el que calcula e
 Reproduir-ho:
 
 ```sh
-node migration-to-saints/day-check.js 2026-08-12
+make month YM=2026-09                             # el mes dia a dia, i per què no és al 100%
+node migration-to-saints/day-check.js 2026-08-12  # un dia, camp a camp
 make run-panel                                    # el panell, a http://localhost:4848
+```
+
+I la validació d'anada i tornada, que mesura el mateix en el vocabulari de cpl-app
+([EINA-anada-i-tornada](../REGISTRE-DE-CANVIS.md#eina-anada-i-tornada)):
+
+```sh
+cd ~/projects/personal/cpl-db-es && LANG_CODE=ca make db && LANG_CODE=ca make check
 ```
 
 ---
@@ -472,6 +480,7 @@ quedar l'anterior sense haver de llegir el git.
 
 | Data | Qui | Què s'ha fet |
 |---|---|---|
+| 2026-09-25 | Claude | **La migració torna a funcionar, i ara no es pot tornar a trencar en silenci** (MIGRA-012): el motor de cpl-app s'entra per `src/liturgy-export`, tipat, i `make types` hi arriba. De pas: **CPL-LIT-001 s'havia perdut al refactor de `master`** i s'ha restaurat (CPL-LIT-001b), els dos fixos de dades s'han reaplicat sobre la v5, i MIGRA-001 s'ha tancat a l'arrel (MIGRA-013). Nou: `make month` i les causes al calendari (EINA-mes), i la validació d'anada i tornada amb `cpl-db-es` (EINA-anada-i-tornada) |
 | 2026-09-08 | Claude | **El comparador del panell no sabia què és l'Ofici ni la missa** (MIGRA-010): resolia cpl-app amb el `cpl-day.test.js` prohibit, que només sap Laudes i Vespres, i etiquetava els 33 camps de les dues com a «només a saints-app» |
 | 2026-09-08 | Claude | **Revisió i panell posats al dia** (MIGRA-007), i dos bugs que en van sortir: el panell exportava per una còpia vella que trepitjava text publicat (MIGRA-008) i el join posava l'antífona de les festes a la casella de la fèria (MIGRA-009 / EPREX-005). **6.297 caselles de 1.954 dies deixen de mostrar `[ERR-001]` a la pantalla** |
 | 2026-09-08 | Claude | **Fase 4 feta.** Missa migrada: del 0% al **79,4%**. L'índex compartit sencer al 88,6%. 0 canvis al text ja publicat (la missa no comparteix cap taula amb les hores). Trobat i verificat l'**EPREX-004**: el diumenge de Pasqua no mostra cap lectura, en cap idioma. Oberta la D-006 |

@@ -798,15 +798,44 @@ function renderCalendar(m) {
   for (const d of m.days) {
     const bucket = calBucket(d);
     const label = d.outOfRange ? '—' : d.notInIndex ? 'n/d' : `${d.percent}%`;
+    // The cause goes in the tooltip as well as under the number, because the cell only has
+    // room for a few words and the question being asked is "why is this day not at 100%".
     const title = d.outOfRange
       ? 'fora del rang migrat'
-      : `${d.litcalId}${d.notInIndex ? ' — sense entrada a l\'índex compartit' : ` — ${d.totals.ok}/${d.total} camps`}`;
+      : [
+          `${d.date} · ${d.litcalId}`,
+          d.celebration ? `cpl-app hi celebra: ${d.celebration}` : 'cpl-app hi resa la fèria',
+          d.notInIndex ? "sense entrada a l'índex compartit" : `${d.totals.ok}/${d.total} camps amb text català`,
+          d.cause ? `per què no és al 100%: ${d.cause.text}` : d.notInIndex ? '' : 'complet',
+        ]
+          .filter(Boolean)
+          .join('\n');
+    const why = d.cause && d.cause.kind === 'blame' ? d.cause.title : d.cause ? d.cause.text : '';
     html += `<button class="cal-day ${bucket}" data-cal-day="${d.date}" title="${escapeHtml(title)}">
       <span class="cal-num">${d.day}</span>
       <span class="cal-pct">${label}</span>
+      ${why ? `<span class="cal-why">${escapeHtml(why)}</span>` : ''}
     </button>`;
   }
   document.querySelector('[data-results="calendar"]').innerHTML = html;
+
+  // The causes of the month, biggest first. One action that unblocks six days is the thing
+  // worth doing, and a grid of thirty cells is exactly what hides it.
+  const causesBox = document.querySelector('[data-results="cal-causes"]');
+  if (causesBox) {
+    causesBox.innerHTML = m.causes && m.causes.length
+      ? `<div class="summary-line">Per què el mes no és al 100%, per causes:</div>` +
+        '<ul class="cal-cause-list">' +
+        m.causes
+          .map(
+            (c) =>
+              `<li><b>${c.days} ${c.days === 1 ? 'dia' : 'dies'}</b> · ${escapeHtml(c.text)}` +
+              ` <span class="cal-cause-dates">${c.dates.map((x) => x.slice(8)).join(', ')}</span></li>`,
+          )
+          .join('') +
+        '</ul><p class="cal-cause-note">Una causa que toca diversos dies es paga una vegada.</p>'
+      : '';
+  }
 }
 
 async function calLoad(year, month) {

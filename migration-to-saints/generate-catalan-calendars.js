@@ -40,7 +40,7 @@ const path = require('path');
 const fs = require('fs');
 const { DatabaseSync } = require('node:sqlite');
 
-const DB_PATH = path.resolve(__dirname, '../src/Assets/db/cpl-app.db');
+const DB_PATH = path.resolve(__dirname, '../src/assets/db/cpl-app.db');
 
 const argv = process.argv.slice(2);
 function argValue(flag, fallback) {

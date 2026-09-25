@@ -522,6 +522,18 @@ async function obtainLaudesCommonPsalter(liturgyDayInformation: LiturgyDayInform
         weekCycle = 2;
         dayNumber = liturgyDayInformation.today.date.getDay();
       }
+      // Ash Wednesday's Laudes does not follow the running psalter. The day itself runs in week IV
+      // — its Office of Readings, its Vespers and the three days that follow all do — but Laudes
+      // alone takes the penitential psalmody of FRIDAY of week III: Ps 50 (Miserere), the canticle
+      // of Jeremiah 14, 17-21 and Ps 99. Lent starts mid-week, so week I is held back for the first
+      // Sunday of Lent and these four days borrow from weeks III and IV.
+      // Without this the day falls through to Wednesday of week IV (Ps 107), which is what cpl-app
+      // printed on every Ash Wednesday from 2017 to 2026. The Catalan texts were already in
+      // salteriComuLaudes row 20; nothing but the routing was missing. [CPL-LIT-001]
+      if (CelebrationIdentifier.checkCelebration(Celebration.AshWednesday, liturgyDayInformation.today)) {
+        weekCycle = 3;
+        dayNumber = 5;
+      }
 
       const id = (weekCycle - 1) * 7 + (dayNumber + 1);
       const row = await DatabaseDataService.obtainMasterRowFromDatabase(LaudesCommonPsalter.masterName, id);

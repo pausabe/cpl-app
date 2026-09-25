@@ -1,4 +1,4 @@
-// Replaces src/Services/DatabaseManagerService in tests: the app's own queries run against
+// Replaces src/services/databaseManagerService in tests: the app's own queries run against
 // src/assets/db/cpl-app.db through node:sqlite instead of expo-sqlite. Everything above this
 // seam is the app's unmodified code.
 const path = require('path');

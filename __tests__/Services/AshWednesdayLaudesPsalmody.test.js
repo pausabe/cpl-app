@@ -13,41 +13,22 @@
 const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 
-jest.mock('../../src/Services/SettingsService', () => {
-  const DioceseName = {
-    Andorra: 'Andorra', Barcelona: 'Barcelona', Girona: 'Girona', Lleida: 'Lleida',
-    Mallorca: 'Mallorca', Menorca: 'Menorca', SantFeliu: 'Sant Feliu de Llobregat',
-    Solsona: 'Solsona', Tarragona: 'Tarragona', Terrassa: 'Terrassa', Tortosa: 'Tortosa',
-    Urgell: 'Urgell', Vic: 'Vic',
-  };
-  const PrayingPlace = { Diocese: 'Diòcesi', City: 'Ciutat', Cathedral: 'Catedral' };
-  return { __esModule: true, DioceseName, PrayingPlace, default: {} };
-});
-
-jest.mock('../../src/Services/DatabaseManagerService', () => {
-  const path = require('path');
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(path.resolve(__dirname, '../../src/Assets/db/cpl-app.db'), { readOnly: true });
-  return {
-    executeQueryAsync: (query) => {
-      try {
-        return Promise.resolve(db.prepare(query).all());
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  };
-});
+jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 
 const { resolveDayForComparison } = require('../../migration-to-saints/lib/cpl-day-resolver');
 
-const DB_PATH = path.resolve(__dirname, '../../src/Assets/db/cpl-app.db');
+const DB_PATH = path.resolve(__dirname, '../../src/assets/db/cpl-app.db');
 
 // Resolving a day reaches two days ahead (first Vespers needs tomorrow, which asks for
 // ITS tomorrow), so a date is only testable when three liturgical years are in the DB.
 function coveredYears() {
   const db = new DatabaseSync(DB_PATH, { readOnly: true });
-  const years = new Set(db.prepare('SELECT DISTINCT any AS y FROM anyliturgic').all().map((r) => String(r.y)));
+  const years = new Set(
+    db
+      .prepare('SELECT DISTINCT any AS y FROM anyliturgic')
+      .all()
+      .map((r) => String(r.y)),
+  );
   db.close();
   return years;
 }
@@ -63,12 +44,22 @@ const laudesCitations = async (date) => {
   const day = await resolveDayForComparison(date, { hours: ['Laudes'] });
   const l = day.hours.Laudes;
   return [l.primer_salmo_cita, l.segundo_salmo_cita, l.tercer_salmo_cita].map((c) =>
-    String(c).replace(/\s+/g, ' ').trim()
+    String(c).replace(/\s+/g, ' ').trim(),
   );
 };
 
-const ASH_WEDNESDAYS = ['2017-03-01', '2018-02-14', '2019-03-06', '2020-02-26', '2021-02-17',
-  '2022-03-02', '2023-02-22', '2024-02-14', '2025-03-05', '2026-02-18'];
+const ASH_WEDNESDAYS = [
+  '2017-03-01',
+  '2018-02-14',
+  '2019-03-06',
+  '2020-02-26',
+  '2021-02-17',
+  '2022-03-02',
+  '2023-02-22',
+  '2024-02-14',
+  '2025-03-05',
+  '2026-02-18',
+];
 
 describe('Ash Wednesday Laudes psalmody (CPL-LIT-001)', () => {
   const dates = ASH_WEDNESDAYS.filter(testable);

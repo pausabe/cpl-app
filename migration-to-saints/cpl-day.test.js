@@ -13,33 +13,9 @@ const path = require('path');
 const fs = require('fs');
 const { DatabaseSync } = require('node:sqlite');
 
-const DB_PATH = path.resolve(__dirname, '../src/Assets/db/cpl-app.db');
+const DB_PATH = path.resolve(__dirname, '../src/assets/db/cpl-app.db');
 
-jest.mock('../src/Services/SettingsService', () => {
-  const DioceseName = {
-    Andorra: 'Andorra', Barcelona: 'Barcelona', Girona: 'Girona', Lleida: 'Lleida',
-    Mallorca: 'Mallorca', Menorca: 'Menorca', SantFeliu: 'Sant Feliu de Llobregat',
-    Solsona: 'Solsona', Tarragona: 'Tarragona', Terrassa: 'Terrassa', Tortosa: 'Tortosa',
-    Urgell: 'Urgell', Vic: 'Vic',
-  };
-  const PrayingPlace = { Diocese: 'Diòcesi', City: 'Ciutat', Cathedral: 'Catedral' };
-  return { __esModule: true, DioceseName, PrayingPlace, default: {} };
-});
-
-jest.mock('../src/Services/DatabaseManagerService', () => {
-  const path = require('path');
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
-  return {
-    executeQueryAsync: (query) => {
-      try {
-        return Promise.resolve(db.prepare(query).all());
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  };
-});
+jest.mock('../src/services/databaseManagerService', () => require('../__tests__/helpers/mockDatabaseManager'));
 
 const { resolveDayForComparison } = require('./lib/cpl-day-resolver');
 

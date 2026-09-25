@@ -1,7 +1,7 @@
 {
  "diocese": "Barcelona",
  "prayingPlace": "Diòcesi",
- "generatedAt": "2026-09-14T05:45:39.816Z",
+ "generatedAt": "2026-09-25T18:04:01.937Z",
  "dateCount": 3650,
  "failed": [
   {
@@ -16552,7 +16552,7 @@
   },
   "2026-01-22": {
    "title": "Sant Vicenç, diaca i màrtir",
-   "type": "L",
+   "type": "M",
    "time": "O_ORDINAR"
   },
   "2026-01-23": {
@@ -16886,24 +16886,24 @@
    "time": "Q_DIUM_RAMS"
   },
   "2026-03-30": {
-   "title": "",
+   "title": "Dilluns Sant",
    "type": "-",
-   "time": "Q_SETMANES"
+   "time": "Q_SET_SANTA"
   },
   "2026-03-31": {
-   "title": "",
+   "title": "Dimarts Sant",
    "type": "-",
-   "time": "Q_SETMANES"
+   "time": "Q_SET_SANTA"
   },
   "2026-04-01": {
-   "title": "",
+   "title": "Dimecres Sant",
    "type": "-",
-   "time": "Q_SETMANES"
+   "time": "Q_SET_SANTA"
   },
   "2026-04-02": {
-   "title": "",
+   "title": "Dijous Sant",
    "type": "-",
-   "time": "Q_SETMANES"
+   "time": "Q_SET_SANTA"
   },
   "2026-04-03": {
    "title": "Divendres Sant",
@@ -17681,8 +17681,8 @@
    "time": "O_ORDINAR"
   },
   "2026-09-05": {
-   "title": "",
-   "type": "-",
+   "title": "Santa Teresa de Calcuta, verge",
+   "type": "L",
    "time": "O_ORDINAR"
   },
   "2026-09-06": {

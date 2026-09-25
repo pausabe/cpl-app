@@ -24,87 +24,16 @@ const OUTPUT_PATH = path.resolve(__dirname, 'output/cpl-celebrations.json');
 const DIOCESE_NAME = process.env.DIOCESE || 'Barcelona';
 const PRAYING_PLACE = 'Diòcesi';
 
-jest.mock('../src/Services/SettingsService', () => {
-  const DioceseName = {
-    Andorra: 'Andorra', Barcelona: 'Barcelona', Girona: 'Girona', Lleida: 'Lleida',
-    Mallorca: 'Mallorca', Menorca: 'Menorca', SantFeliu: 'Sant Feliu de Llobregat',
-    Solsona: 'Solsona', Tarragona: 'Tarragona', Terrassa: 'Terrassa', Tortosa: 'Tortosa',
-    Urgell: 'Urgell', Vic: 'Vic',
-  };
-  const PrayingPlace = { Diocese: 'Diòcesi', City: 'Ciutat', Cathedral: 'Catedral' };
-  return { __esModule: true, DioceseName, PrayingPlace, default: {} };
-});
+jest.mock('../src/services/databaseManagerService', () => require('../__tests__/helpers/mockDatabaseManager'));
 
-jest.mock('../src/Services/DatabaseManagerService', () => {
-  const path = require('path');
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
-  return {
-    executeQueryAsync: (query) => {
-      try {
-        return Promise.resolve(db.prepare(query).all());
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  };
-});
-
-const DatabaseDataService = require('../src/Services/DatabaseDataService');
-const DatabaseDataHelper = require('../src/Services/DatabaseDataHelper');
-const SpecialCelebrationService = require('../src/Services/SpecialCelebrationService');
-const CelebrationIdentifierService = require('../src/Services/CelebrationIdentifierService');
-const { ObtainLiturgyMasters } = require('../src/Services/Liturgy/LiturgyMastersService');
-const { ObtainHoursLiturgy } = require('../src/Services/Liturgy/HoursLiturgyService');
-const { Settings } = require('../src/Models/Settings');
-const LiturgyDayInformation = require('../src/Models/LiturgyDayInformation').default;
-const { DioceseCode } = require('../src/Services/DatabaseEnums');
-const { SpecificLiturgyTimeType } = require('../src/Services/CelebrationTimeEnums');
-
-// Same settings the join uses, so the probe answers for the same app the join extracted
-// from. OptionalFestivityEnabled=false matters here: with optional memorials switched
-// off, an `L`/`V` day serves the plain ferial office, which is exactly why those days
-// never contest a cell and must not be reported as a missing celebration.
-function buildSettings({ dioceseName, prayingPlace }) {
-  const settings = new Settings();
-  settings.PrayingPlace = prayingPlace;
-  settings.DioceseName = dioceseName;
-  settings.DioceseCode = DatabaseDataHelper.GetDioceseCodeFromDioceseName(dioceseName, prayingPlace);
-  settings.DioceseCode2Letters =
-    settings.DioceseCode === DioceseCode.Andorra ? settings.DioceseCode : settings.DioceseCode.substring(0, 2);
-  settings.UseLatin = false;
-  settings.TextSize = 3;
-  settings.DarkModeEnabled = false;
-  settings.InvitationPsalmOption = '94';
-  settings.VirginAntiphonOption = '1';
-  settings.OptionalFestivityEnabled = false;
-  return settings;
-}
-
-function isSpecialChristmas(day) {
-  if (day.SpecificLiturgyTime === SpecificLiturgyTimeType.Ordinary) return false;
-  if (CelebrationIdentifierService.CheckCelebration(CelebrationIdentifierService.Celebration.SacredFamily, day)) {
-    return false;
-  }
-  const d = day.Date.getDate();
-  const m = day.Date.getMonth();
-  if (m === 11) return [17, 18, 19, 20, 21, 22, 23, 24, 29, 30, 31].includes(d);
-  if (m === 0) return [2, 3, 4, 5, 7, 8, 9, 10, 11, 12].includes(d);
-  return false;
-}
-
-async function obtainLiturgyDayInformation(date, settings) {
-  const ldi = new LiturgyDayInformation();
-  ldi.Today = await DatabaseDataService.ObtainLiturgySpecificDayInformation(date, settings);
-  ldi.Today.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(ldi.Today, settings);
-  ldi.Today.IsSpecialChristmas = isSpecialChristmas(ldi.Today);
-  const tomorrowDate = new Date(date);
-  tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-  ldi.Tomorrow = await DatabaseDataService.ObtainLiturgySpecificDayInformation(tomorrowDate, settings);
-  ldi.Tomorrow.SpecialCelebration = SpecialCelebrationService.ObtainSpecialCelebration(ldi.Tomorrow, settings);
-  ldi.Tomorrow.IsSpecialChristmas = isSpecialChristmas(ldi.Tomorrow);
-  return ldi;
-}
+// Same settings the join uses, so the probe answers for the same app the join extracted from.
+// `optionalFestivityEnabled: false` matters here: with optional memorials switched off, an `L`/`V`
+// day serves the plain ferial office, which is exactly why those days never contest a cell and must
+// not be reported as a missing celebration.
+//
+// Neither the weekday twins nor the Mass are asked for: this probe only wants to know WHAT cpl-app
+// celebrates, and over 3.650 dates the two of them are most of the run.
+const { resolveDayFields } = require('../src/liturgy-export');
 
 describe('cpl-app celebration probe', () => {
   test('records the celebration cpl-app reports for every date of the manifest', async () => {
@@ -112,29 +41,24 @@ describe('cpl-app celebration probe', () => {
     const dates = Object.keys(manifest).sort();
     expect(dates.length).toBeGreaterThan(0);
 
-    const settings = buildSettings({ dioceseName: DIOCESE_NAME, prayingPlace: PRAYING_PLACE });
     const days = {};
     const failed = [];
 
     for (const dateStr of dates) {
-      const [y, m, d] = dateStr.split('-').map(Number);
       try {
-        const ldi = await obtainLiturgyDayInformation(new Date(y, m - 1, d), settings);
-        const tomorrowLdi = await obtainLiturgyDayInformation(ldi.Tomorrow.Date, settings);
-        const hours = await ObtainHoursLiturgy(
-          await ObtainLiturgyMasters(ldi, settings),
-          await ObtainLiturgyMasters(tomorrowLdi, settings),
-          ldi,
-          settings
-        );
-        const info = hours.TodayCelebrationInformation || {};
+        const { celebration } = await resolveDayFields(dateStr, {
+          dioceseName: DIOCESE_NAME,
+          prayingPlace: PRAYING_PLACE,
+          hours: [],
+          ferial: false,
+          mass: false,
+        });
         days[dateStr] = {
           // '' for a plain ferial day: cpl-app only names a celebration when there is one.
-          title: (info.Title || '').trim(),
+          title: (celebration.title || '').trim(),
           // 'S' Solemnity · 'F' Festivity · 'M' Memory · 'L'/'V' optional · '-' ferial.
-          type: ldi.Today.CelebrationType || '-',
-          time: ldi.Today.SpecificLiturgyTime,
-          week: ldi.Today.LiturgyWeek,
+          type: celebration.celebrationType || '-',
+          time: celebration.specificLiturgyTime,
         };
       } catch (e) {
         failed.push({ date: dateStr, error: String(e && e.message ? e.message : e) });

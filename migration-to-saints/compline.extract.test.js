@@ -37,51 +37,26 @@ const OUT_DIR = process.env.OUT_DIR
 const ES_DIR = '/Users/pau/projects/saints/saints-app/src/store/db/compline/es';
 const HEADINGS_PATH = path.resolve(__dirname, 'static-translations/compline_oracion.ca.json');
 
-jest.mock('../src/Services/SettingsService', () => {
-  const DioceseName = {
-    Andorra: 'Andorra', Barcelona: 'Barcelona', Girona: 'Girona', Lleida: 'Lleida',
-    Mallorca: 'Mallorca', Menorca: 'Menorca', SantFeliu: 'Sant Feliu de Llobregat',
-    Solsona: 'Solsona', Tarragona: 'Tarragona', Terrassa: 'Terrassa', Tortosa: 'Tortosa',
-    Urgell: 'Urgell', Vic: 'Vic',
-  };
-  const PrayingPlace = { Diocese: 'Diòcesi', City: 'Ciutat', Cathedral: 'Catedral' };
-  return { __esModule: true, DioceseName, PrayingPlace, default: {} };
-});
+jest.mock('../src/services/databaseManagerService', () => require('../__tests__/helpers/mockDatabaseManager'));
 
-jest.mock('../src/Services/DatabaseManagerService', () => {
-  const p = require('path');
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(p.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
-  return {
-    executeQueryAsync: (q) => {
-      try { return Promise.resolve(db.prepare(q).all()); } catch (e) { return Promise.reject(e); }
-    },
-  };
-});
-
-const { buildSettings, resolveDay, responsoryParts } = require('./lib/cpl-day-resolver');
+const { resolveDayFields } = require('../src/liturgy-export');
 
 const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
 
-async function nightPrayer(dateStr, settings) {
-  const [y, m, d] = dateStr.split('-').map(Number);
-  const { hoursLiturgy } = await resolveDay(new Date(y, m - 1, d), settings);
-  return hoursLiturgy.NightPrayer;
-}
+// Only Compline is wanted, and it does not go through the shared index: no Hours, no weekday
+// twins, no Mass.
+const compline = async (dateStr) =>
+  (await resolveDayFields(dateStr, { dioceseName: 'Barcelona', hours: [], ferial: false, mass: false })).compline;
 
 test('writes Catalan Compline for the seven weekdays', async () => {
-  const settings = buildSettings({ dioceseName: 'Barcelona', prayingPlace: 'Diòcesi' });
   const headings = readJson(HEADINGS_PATH);
 
-  // The two seasonal antiphons ride on ShortResponsory.SpecialAntiphon, which is exactly
+  // The two seasonal antiphons ride on the short responsory's special antiphon, which is exactly
   // where cpl-app puts them: the Triduum's "Crist es féu per nosaltres obedient…" and the
   // Easter octave's "Avui és el dia en què ha obrat el Senyor…".
-  const triduum = await nightPrayer(HOLY_SATURDAY, settings);
-  const octave = await nightPrayer(EASTER_OCTAVE, settings);
-  const easter = await nightPrayer(EASTER_WEEKDAY, settings);
-  const antifonaTriduo = triduum.ShortResponsory && triduum.ShortResponsory.SpecialAntiphon;
-  const antifonaInalbis = octave.ShortResponsory && octave.ShortResponsory.SpecialAntiphon;
-  const responsorioPascua = responsoryParts(easter);
+  const antifonaTriduo = (await compline(HOLY_SATURDAY)).specialAntiphon;
+  const antifonaInalbis = (await compline(EASTER_OCTAVE)).specialAntiphon;
+  const responsorioPascua = (await compline(EASTER_WEEKDAY)).fields.responsorio;
   expect(antifonaTriduo).toBeTruthy();
   expect(antifonaInalbis).toBeTruthy();
   expect(responsorioPascua).toHaveLength(6);
@@ -90,7 +65,7 @@ test('writes Catalan Compline for the seven weekdays', async () => {
   const written = [];
   for (const [n, dateStr] of Object.entries(ORDINARY_WEEK)) {
     const es = readJson(path.join(ES_DIR, `${n}.json`));
-    const np = await nightPrayer(dateStr, settings);
+    const { oracion_final: finalPrayer, ...np } = (await compline(dateStr)).fields;
 
     const out = {
       // Identity and the link back to CPL's own site: not content, copied as-is.
@@ -99,33 +74,24 @@ test('writes Catalan Compline for the seven weekdays', async () => {
       // The file's heading ("Completas: Lunes"). Not liturgical text and not in cpl-app.db —
       // hand-translated, the same way invitacion_padrenuestro was.
       oracion: headings[n],
-      himno: np.Anthem,
+      himno: np.himno,
       // Latin does not depend on the app's language, so es is the source. cpl-app pairs the
       // Latin hymns with the weekdays differently; changing that here would make the Catalan
       // app disagree with the Spanish and Italian ones over a text none of them translates.
       himno_latino: es.himno_latino,
     };
 
-    const psalms = [['primer', np.FirstPsalm]];
-    if (np.HasMultiplePsalms && np.SecondPsalm) psalms.push(['segundo', np.SecondPsalm]);
-    for (const [prefix, psalm] of psalms) {
-      out[`${prefix}_salmo_cita`] = psalm.Title;
-      // With two psalms under one antiphon cpl-app leaves the second one's empty; the
-      // renderer then has nothing to print there, which is what the screen shows too.
-      out[`${prefix}_salmo_antifona`] =
-        prefix === 'segundo' && np.UseOnlyFirstPsalmAntiphon ? '' : psalm.Antiphon;
-      out[`${prefix}_salmo_texto`] = psalm.Psalm;
+    // The psalmody, the short reading, the responsory and the gospel antiphon come out of
+    // cpl-app already under the names the file uses (src/liturgy-export/indexFields.ts).
+    for (const [key, value] of Object.entries(np)) {
+      if (key === 'himno') continue;
+      out[key] = value;
     }
-
-    out.lectura_biblica_cita = np.ShortReading.Quote;
-    out.lectura_biblica = np.ShortReading.ShortReading;
-    out.responsorio = responsoryParts(np);
     out.responsorio_pascua = responsorioPascua;
     if ('antifona_triduo' in es) out.antifona_triduo = antifonaTriduo;
     out.antifona_inalbis = antifonaInalbis;
-    out.cantico_evangelico_antifona = np.EvangelicalAntiphon;
     // es renders "Oremos:" as the first line of the blob rather than as its own field.
-    out.final = `Preguem:\n${np.FinalPrayer}`;
+    out.final = `Preguem:\n${finalPrayer}`;
 
     // Same shape as the Spanish file, minus the fields es carries and cpl-app has no source
     // for (the rubrics and alternative prayers inside `final` — see D-004).

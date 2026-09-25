@@ -14,7 +14,7 @@ IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0
 # The first iPhone connected (by cable, or over the network with Xcode open)
 IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
 
-.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android run-panel stop-panel day-check review review-html
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android run-panel stop-panel day-check month progress review review-html
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -46,13 +46,15 @@ help:
 	@echo "make ui-tests-ios      iOS only"
 	@echo ""
 	@echo "make captures          The screenshots of the two stores, at the size each one asks for"
-	@echo "make captures-ios      The iPhone of 6,9\" and the iPad of 13\" (App Store)"
+	@echo "make captures-ios      The iPhone of 6,7\" and the iPad of 13\" (App Store)"
 	@echo "make captures-android  The 1080x1920 of Google Play"
 	@echo ""
-	@echo "make run-panel [PORT=4848]   The migration panel (if the port is taken, it offers another)"
-	@echo "make stop-panel [PORT=4848]  Stop the panel"
-	@echo "make day-check DATE=2026-08-12            The same report for one day, on the terminal"
+	@echo "make progress                             How the migration is doing, the whole window, and what holds most days back"
+	@echo "make month [YM=2026-09]                   The same for one month, day by day, and why each day is not at 100%"
+	@echo "make day-check [DATE=2026-08-12]          The same for one day, field by field (today, if no date is given)"
 	@echo "make review DATES=2026-08-20,2026-08-21   Day by day review against saints-app"
+	@echo "make run-panel [PORT=4848]                The migration panel (if the port is taken, it offers another)"
+	@echo "make stop-panel [PORT=4848]               Stop the panel"
 
 # --- Development -----------------------------------------------------------------------------
 # The first time these build and install the development app (expo-dev-client); after that, JS
@@ -326,5 +328,15 @@ stop-panel:
 	fi
 
 day-check:
-	@test -n "$(DATE)" || (echo "A date is needed: make day-check DATE=2026-08-12" && exit 1)
-	node migration-to-saints/day-check.js $(DATE)
+	node migration-to-saints/day-check.js $(or $(DATE),$(shell date +%F))
+
+# The three read the same generated output and nothing else — no database, no join — so they cost
+# seconds and can be run as often as they are useful. They only move when the pipeline runs again.
+progress:
+	node migration-to-saints/day-check.js --progress
+
+# The month the panel's calendar shows, on the terminal. Reads the generated output only — no
+# database, no join — so it costs under a second and can be run as often as it is useful.
+# Without YM, the month we are in.
+month:
+	node migration-to-saints/day-check.js $(or $(YM),$(shell date +%Y-%m))

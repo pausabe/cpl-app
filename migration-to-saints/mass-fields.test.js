@@ -14,30 +14,7 @@
 //
 //   npx jest migration-to-saints/mass-fields.test.js
 
-jest.mock('../src/Services/SettingsService', () => {
-  const DioceseName = {
-    Andorra: 'Andorra', Barcelona: 'Barcelona', Girona: 'Girona', Lleida: 'Lleida',
-    Mallorca: 'Mallorca', Menorca: 'Menorca', SantFeliu: 'Sant Feliu de Llobregat',
-    Solsona: 'Solsona', Tarragona: 'Tarragona', Terrassa: 'Terrassa', Tortosa: 'Tortosa',
-    Urgell: 'Urgell', Vic: 'Vic',
-  };
-  return { __esModule: true, DioceseName, PrayingPlace: { Diocese: 'Diòcesi', City: 'Ciutat', Cathedral: 'Catedral' }, default: {} };
-});
-
-jest.mock('../src/Services/DatabaseManagerService', () => {
-  const path = require('path');
-  const { DatabaseSync } = require('node:sqlite');
-  const db = new DatabaseSync(path.resolve(__dirname, '../src/Assets/db/cpl-app.db'), { readOnly: true });
-  return {
-    executeQueryAsync: (q) => {
-      try {
-        return Promise.resolve(db.prepare(q).all());
-      } catch (e) {
-        return Promise.reject(e);
-      }
-    },
-  };
-});
+jest.mock('../src/services/databaseManagerService', () => require('../__tests__/helpers/mockDatabaseManager'));
 
 const { buildSettings, resolveDay, extractMassFields, massCitation } = require('./lib/cpl-day-resolver');
 const { fingerprint } = require('./lib/citation-key');
@@ -83,8 +60,8 @@ test('the psalm gets the book name and NO subtitle', () => {
 test('a canticle standing in for the psalm is not given a psalm number', () => {
   // The Easter Vigil's third psalm is the canticle of Exodus 15. "Sl Ex 15…" would be wrong.
   expect(resolved[HOLY_SATURDAY].rendered.THIRDPSALM_ref).toMatch(/^Ex 15,/);
-  expect(massCitation({ Quote: 'Ex 15,1-2' }, true)).toBe('Ex 15,1-2');
-  expect(massCitation({ Quote: '112,1-2' }, true)).toBe('Sl 112,1-2');
+  expect(massCitation({ quote: 'Ex 15,1-2' }, true)).toBe('Ex 15,1-2');
+  expect(massCitation({ quote: '112,1-2' }, true)).toBe('Sl 112,1-2');
 });
 
 test('an empty slot is never observed as a hyphen', () => {
@@ -92,7 +69,7 @@ test('an empty slot is never observed as a hyphen', () => {
   // treats that as empty. Filed as text it would be a hyphen in a shared cell.
   expect(resolved[WEEKDAY].rendered.SECONDLECTURE_ref).toBeUndefined();
   expect(resolved[WEEKDAY].rendered.SECONDLECTURE_texto).toBeUndefined();
-  expect(massCitation({ Quote: '-', Comment: '-' }, false)).toBeNull();
+  expect(massCitation({ quote: '-', comment: '-' }, false)).toBeNull();
 });
 
 test('the acclamation gets a text but never a reference', () => {

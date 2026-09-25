@@ -508,6 +508,35 @@ function checkDay(dateStr, options = {}) {
   return result;
 }
 
+// Why this day is not at 100%, in one line. `blameSummary` already answers "whose fault is
+// it" field by field; the month only has room for the head of it, so what gets carried up is
+// the cause that would unblock the most fields ON ITS OWN (`soleFields`) — a cause shared with
+// other days moves nothing until those are settled too.
+//
+// When nothing is to blame, the shape of the hole is the answer instead: a withheld cell is a
+// cell some other date disagrees about, and a missing one is a cell the join never saw a value
+// for. The two need opposite work, so they are never added together.
+function monthCause(day) {
+  if (day.verdict === 'complete') return null;
+  const top = (day.blameSummary || []).find((b) => b.soleFields > 0) || (day.blameSummary || [])[0];
+  if (top) {
+    return {
+      kind: 'blame',
+      title: top.title,
+      fields: top.fields,
+      soleFields: top.soleFields,
+      text: top.soleFields
+        ? `${top.title} — ${top.soleFields} camp${top.soleFields === 1 ? '' : 's'} només per això`
+        : `${top.title} — ${top.fields} camp${top.fields === 1 ? '' : 's'}, compartits amb altres causes`,
+    };
+  }
+  const { conflict, missing, notInAppYet } = day.totals;
+  if (conflict) return { kind: 'conflict', fields: conflict, text: `${conflict} caselles retingudes per desacord entre dies` };
+  if (missing) return { kind: 'missing', fields: missing, text: `${missing} caselles sense cap valor observat` };
+  if (notInAppYet) return { kind: 'notInAppYet', fields: notInAppYet, text: `${notInAppYet} caselles calculades, pendents d'exportar` };
+  return null;
+}
+
 // One month at a glance: the same verdict as checkDay for every day, without the
 // per-field detail (the UI fetches that when you click a day).
 function checkMonth(year, month, options = {}) {
@@ -539,7 +568,22 @@ function checkMonth(year, month, options = {}) {
       // A day whose litcal id has no entry in the shared index at all (e.g. the new
       // Catalan feasts) is a different thing from a day that is merely incomplete.
       notInIndex: r.hours.every((h) => !h.key),
+      celebration: (r.celebration && r.celebration.title) || null,
+      // Why it is not at 100%, so the month answers that without opening the day.
+      cause: monthCause(r),
     });
+  }
+
+  // The causes of the whole month, biggest first: one action that fixes six days is worth
+  // more than six actions, and a flat day-by-day list hides exactly that.
+  const causeRoll = new Map();
+  for (const d of days) {
+    if (!d.cause) continue;
+    const key = d.cause.kind === 'blame' ? d.cause.title : d.cause.kind;
+    if (!causeRoll.has(key)) causeRoll.set(key, { ...d.cause, days: 0, dates: [] });
+    const r = causeRoll.get(key);
+    r.days++;
+    r.dates.push(d.date);
   }
 
   return {
@@ -548,6 +592,7 @@ function checkMonth(year, month, options = {}) {
     days,
     totals,
     percent: totals.fields ? Math.round((100 * totals.fieldsOk) / totals.fields) : 0,
+    causes: [...causeRoll.values()].sort((a, b) => b.days - a.days),
     lastRun: ctx.lastRun,
   };
 }
@@ -738,6 +783,7 @@ function celebrationSummary(c) {
 module.exports = {
   checkDay,
   checkMonth,
+  monthCause,
   buildContext,
   conflictDetail,
   celebrationSummary,
@@ -754,11 +800,115 @@ module.exports = {
   PATHS: { DAY_TEXTS_DIR, APP_COMMONS_DIR, LOCAL_COMMONS_DIR, MANIFEST_PATH },
 };
 
+// The month, on the terminal: one line per day and the causes of the whole month underneath.
+// Same numbers as the panel's calendar — both read `checkMonth` — for when what you want is to
+// pick the day worth working on rather than to click around.
+function printMonth(year, month) {
+  const m = checkMonth(year, month);
+  const bar = (p) => '█'.repeat(Math.round(p / 10)).padEnd(10, '·');
+  console.log(`${MONTH_CA[month - 1]} de ${year} — ${m.percent}% · ${m.totals.complete} dies complets de ${m.days.length}`);
+  console.log(`  ${m.totals.fieldsOk}/${m.totals.fields} camps amb text català${m.totals.outOfRange ? ` · ${m.totals.outOfRange} dies fora del rang` : ''}`);
+  console.log('');
+  for (const d of m.days) {
+    if (d.outOfRange) {
+      console.log(`  ${d.date}    —    fora del rang migrat`);
+      continue;
+    }
+    const pct = d.notInIndex ? ' n/d' : `${String(d.percent).padStart(3)}%`;
+    const why = d.cause ? d.cause.text : d.notInIndex ? "sense entrada a l'índex compartit" : 'complet';
+    console.log(`  ${d.date}  ${pct}  ${bar(d.notInIndex ? 0 : d.percent)}  ${why}`);
+  }
+  if (m.causes.length) {
+    console.log('\nLes causes del mes, les que més dies toquen primer:');
+    for (const c of m.causes) {
+      console.log(`  ${String(c.days).padStart(2)} dies · ${c.text}`);
+    }
+    console.log('\nUna causa que toca diversos dies es paga una vegada. Per baixar a un dia:');
+    console.log('  node migration-to-saints/day-check.js ' + (m.days.find((d) => d.cause) || m.days[0]).date);
+  }
+}
+
+// The whole migrated window, year by year, and then the handful of celebrations that hold most of
+// it back. Same numbers as the month and the day — one `checkDay` per date — so the three never
+// disagree; it just costs a couple of seconds instead of none.
+//
+// Two numbers, not one, because they answer different questions: the percentage of fields says how
+// much of the text is there, and the count of whole days says how many mornings someone can open
+// the app and read everything in Catalan. The second is the one that moves last.
+function printProgress() {
+  const ctx = buildContext();
+  const dates = Object.keys(ctx.manifest).sort();
+  if (!dates.length) {
+    console.error('El manifest és buit: torna a córrer el migrador.');
+    process.exit(1);
+  }
+  const firstYear = Number(dates[0].slice(0, 4));
+  const lastYear = Number(dates[dates.length - 1].slice(0, 4));
+
+  console.log(`La migració, de ${dates[0]} a ${dates[dates.length - 1]}\n`);
+  console.log(`${'any'.padEnd(6)} ${'camps'.padStart(16)} ${'%'.padStart(5)}  ${'dies sencers'.padStart(13)}`);
+  console.log('-'.repeat(46));
+
+  const totals = { ok: 0, fields: 0, complete: 0, days: 0 };
+  const causeRoll = new Map();
+  for (let year = firstYear; year <= lastYear; year++) {
+    const y = { ok: 0, fields: 0, complete: 0, days: 0 };
+    for (let month = 1; month <= 12; month++) {
+      const r = checkMonth(year, month, { ctx });
+      y.ok += r.totals.fieldsOk;
+      y.fields += r.totals.fields;
+      y.complete += r.totals.complete;
+      y.days += r.days.length - r.totals.outOfRange;
+      for (const c of r.causes) {
+        const key = c.kind === 'blame' ? c.title : c.kind;
+        if (!causeRoll.has(key)) causeRoll.set(key, { ...c, days: 0 });
+        causeRoll.get(key).days += c.days;
+      }
+    }
+    if (!y.fields) continue;
+    totals.ok += y.ok;
+    totals.fields += y.fields;
+    totals.complete += y.complete;
+    totals.days += y.days;
+    const pct = Math.round((100 * y.ok) / y.fields);
+    console.log(
+      `${String(year).padEnd(6)} ${`${y.ok}/${y.fields}`.padStart(16)} ${`${pct}%`.padStart(5)}  ${`${y.complete}/${y.days}`.padStart(13)}`,
+    );
+  }
+
+  console.log('-'.repeat(46));
+  const pct = totals.fields ? Math.round((100 * totals.ok) / totals.fields) : 0;
+  console.log(
+    `${'TOTAL'.padEnd(6)} ${`${totals.ok}/${totals.fields}`.padStart(16)} ${`${pct}%`.padStart(5)}  ${`${totals.complete}/${totals.days}`.padStart(13)}`,
+  );
+
+  const causes = [...causeRoll.values()].sort((a, b) => b.days - a.days);
+  if (causes.length) {
+    console.log('\nLes celebracions que retenen més dies de tota la finestra:');
+    for (const c of causes.slice(0, 15)) {
+      const what = c.kind === 'blame' ? c.title : c.text;
+      console.log(`  ${String(c.days).padStart(4)} dies · ${what}`);
+    }
+    if (causes.length > 15) console.log(`  …i ${causes.length - 15} causes més`);
+    console.log('\nCada una es paga una vegada i es cobra a tots els seus dies.');
+  }
+  console.log('\nEl mes:  make month [YM=2026-09]        Un dia:  make day-check [DATE=2026-09-25]');
+}
+
 if (require.main === module) {
   const date = process.argv[2];
   if (!date) {
-    console.error('Usage: node migration-to-saints/day-check.js YYYY-MM-DD');
+    console.error('Usage: node migration-to-saints/day-check.js YYYY-MM-DD | YYYY-MM | --progress');
     process.exit(1);
+  }
+  if (date === '--progress') {
+    printProgress();
+    process.exit(0);
+  }
+  if (/^\d{4}-\d{2}$/.test(date)) {
+    const [y, mo] = date.split('-').map(Number);
+    printMonth(y, mo);
+    process.exit(0);
   }
   const r = checkDay(date, { impact: true });
   if (r.error) {
