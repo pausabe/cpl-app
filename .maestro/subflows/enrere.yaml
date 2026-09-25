@@ -1,0 +1,18 @@
+appId: cpl.cpl
+---
+# Android: the system back button. iOS has none: the arrow in the header, which carries no text
+# and whose accessibility label is the system's, in the language of the phone («Back», «Enrere»,
+# «Atrás»…). The swipe from the left edge is the same gesture a person makes and does not depend
+# on the language the device happens to be in.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - back
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - swipe:
+          start: "2%,50%"
+          end: "80%,50%"

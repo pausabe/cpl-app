@@ -1,0 +1,21 @@
+appId: cpl.cpl
+name: "The app opens on today"
+---
+- runFlow: subflows/obrir.yaml
+# The day's card: the place, the date in words and the psalter week
+# On iOS it is the screen reader label, which adds the colour to it: «… Color litúrgic: Verd»
+- assertVisible: "Barcelona \\(Diòcesi\\).*"
+- assertVisible: "Di[a-z]+, [0-9]+ d.+"
+- assertVisible: ".*Setmana [IV]+ del salteri"
+# The seven hours and the Mass, right on the home screen
+- assertVisible: "Ofici de lectura"
+- assertVisible: "Laudes"
+- assertVisible: "Tèrcia"
+- assertVisible: "Sexta"
+- assertVisible: "Nona"
+- assertVisible: "Vespres"
+- assertVisible: "Completes"
+- assertVisible: "Evangeli"
+- assertVisible: "Missatge"
+- assertVisible: "Donatiu lliure"
+- takeScreenshot: 01-inici

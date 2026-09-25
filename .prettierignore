@@ -1,0 +1,5 @@
+# Prettier formats the code only (JS and TS): not the texts, not the Maestro flows, not the data
+*.md
+*.yaml
+*.json
+migration-to-saints/

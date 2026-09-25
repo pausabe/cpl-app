@@ -1,0 +1,26 @@
+appId: cpl.cpl
+name: "The seven hours open and are read down to the prayer"
+---
+- runFlow: subflows/obrir.yaml
+# The hours are on the home screen: each card carries the name of the hour
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Ofici de lectura", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Laudes", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Tèrcia", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Sexta", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Nona", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Vespres", FINAL: "ORACIÓ" }
+- runFlow:
+    file: subflows/hora.yaml
+    env: { HORA: "Completes", FINAL: "Antífona final de la Mare de Déu" }

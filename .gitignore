@@ -10,7 +10,6 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-package-lock.json
 .vscode/*
 *.code-workspace
 .idea/*
@@ -19,7 +18,11 @@ package-lock.json
 .DS_Store
 
 # CPL
+# Clau de l'app per a cpl-cloud: s'injecta en compilar, no va mai al repo (que és públic)
+.env
 *.db
+# The Catalan descriptor put aside by make db-es, waiting for make db-ca
+src/assets/db/cpl-app.ca.db.json
 *.lock
 dist
 
@@ -30,3 +33,13 @@ migration-to-saints/output/raw/litcal-days/
 # Còpia de les sortides commons-ca d'abans de regenerar-les: la fa el pipeline i
 # el git ja en guarda l'historial
 migration-to-saints/output/.ca-backup/
+
+# Les captures de les botigues: es refan des de l'app amb `make captures`
+/store/
+
+# Golden de la litúrgia resolta: es fa a partir de cpl-app.db, que tampoc és al git
+__tests__/golden/
+
+# Carpetes natives que genera `expo prebuild` / `expo run`: es refan a cada compilació
+/android
+/ios

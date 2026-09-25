@@ -1,0 +1,38 @@
+#!/bin/sh
+# Before each push, on any branch, make checks: Prettier, the lint, the types and every Jest
+# test. If it fails, nothing is pushed. To skip it in one particular case: git push --no-verify.
+#
+# The "prepare" script in package.json turns it on (git config core.hooksPath .githooks), and it
+# runs with every npm install / yarn install.
+
+to_check=
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Branches only: a tag points at a commit that was pushed already
+  case "$remote_ref" in
+    refs/heads/*) ;;
+    *) continue ;;
+  esac
+  # All zeros: the remote branch is being deleted, no code is pushed
+  case "$local_sha" in
+    *[!0]*) ;;
+    *) continue ;;
+  esac
+  # The checks run on the working tree: it has to hold the same commits that are being pushed
+  if [ "$local_sha" != "$(git rev-parse HEAD)" ]; then
+    echo "pre-push: pushing $local_ref to ${remote_ref#refs/heads/}, but the working tree is on $(git rev-parse --abbrev-ref HEAD)."
+    echo "pre-push: the checks would run on other code. Check out ${local_ref#refs/heads/} and push again."
+    exit 1
+  fi
+  to_check=1
+done
+[ -n "$to_check" ] || exit 0
+
+if [ -n "$(git status --porcelain)" ]; then
+  echo "pre-push: careful, there are uncommitted changes: the checks include them, but they are not pushed."
+fi
+
+echo "pre-push: make checks before pushing (~4 min)…"
+if ! make checks; then
+  echo "pre-push: make checks failed; nothing was pushed."
+  exit 1
+fi

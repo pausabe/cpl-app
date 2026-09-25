@@ -1,0 +1,41 @@
+appId: cpl.cpl
+name: "The settings are saved and change the liturgy"
+---
+- runFlow: subflows/obrir.yaml
+- tapOn: "Configuració"
+- assertVisible: "Mida del text"
+- takeScreenshot: 04-configuracio
+# Diocese: Barcelona → Andorra, in the sheet with the list. On Android the value's text is
+# tapped; on iOS the row is a single button, «Diòcesi: Barcelona».
+- tapOn: "(Diòcesi: )?Barcelona"
+- tapOn: "Andorra"
+# Theme: Automàtic → Fosc, with the three buttons
+- tapOn: "Fosc"
+- scrollUntilVisible:
+    element: "(?s).*Versió de la base de dades: .*"
+    direction: DOWN
+- runFlow: subflows/enrere.yaml
+- extendedWaitUntil:
+    visible: "Andorra \\(Diòcesi\\).*"
+    timeout: 15000
+# With the dark theme, the home screen is dark too
+- takeScreenshot: 04-andorra-mode-fosc
+- tapOn: "Laudes"
+- extendedWaitUntil:
+    visible: "HIMNE.*"
+    timeout: 15000
+- takeScreenshot: 04-laudes-mode-fosc
+- runFlow: subflows/enrere.yaml
+# It is kept after closing and opening the app again
+- stopApp
+- launchApp
+# The home screen, or the midnight notice on top of it (from 0 to 3 h), covering it
+- extendedWaitUntil:
+    visible: "Andorra \\(Diòcesi\\).*|No, la d.avui"
+    timeout: 60000
+- tapOn:
+    text: "No, la d.avui"
+    optional: true
+- extendedWaitUntil:
+    visible: "Andorra \\(Diòcesi\\).*"
+    timeout: 15000

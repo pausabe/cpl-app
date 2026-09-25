@@ -1,19 +1,271 @@
-# Local dev entry points. The app itself runs through expo (npm run ios/android); what
-# lives here is the Catalan migration tooling, which is plain Node with no install step.
+# Development entry points for cpl-app: tests, checks and local builds to try them on.
+# The development app still opens with expo (npm run ios / npm run android).
+
+export ANDROID_HOME ?= $(HOME)/Library/Android/sdk
+ADB := $(ANDROID_HOME)/platform-tools/adb
+MAESTRO ?= $(HOME)/.maestro/bin/maestro
+APK := android/app/build/outputs/apk/release/app-release.apk
+IOS_APP := ios/build/Build/Products/Release-iphonesimulator/CPL.app
+IPHONE_APP := ios/build/Build/Products/Release-iphoneos/CPL.app
+
+# The first Android emulator or phone connected, and the first iOS simulator open
+ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
+IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
+# The first iPhone connected (by cable, or over the network with Xcode open)
+IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
+
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android run-panel stop-panel day-check review review-html
+
+help:
+	@echo "make run-android       Open the development app on the Android emulator or phone"
+	@echo "make run-ios           Open the development app on the iOS simulator"
+	@echo "make run-web           Open the development app in the browser, with no emulator"
+	@echo "make start             Only the development server (Metro), if the app is already installed"
+	@echo ""
+	@echo "make db                Bring the published database the app carries: it is not in the repository (16 MB)"
+	@echo "make db-es             Put the Spanish database in its place instead, to look the texts over"
+	@echo "make db-ca             Bring the Catalan one back (the same as make db)"
+	@echo "make db-latest         Ask the website for the newest publication, even if a Catalan one is put aside"
+	@echo "make db-which          Say which language is sitting in src/assets/db right now"
+	@echo ""
+	@echo "make checks            Prettier, lint, types and every Jest test: what the hook runs before each push (~4 min)"
+	@echo "make checks-ci         What the publishing workflow runs: make checks without the sweeps against the goldens"
+	@echo "make lint              ESLint (the Expo config): only errors stop a push, warnings do not"
+	@echo "make types             TypeScript, without emitting anything (tsc --noEmit)"
+	@echo "make format            Format the code (JS and TS) with Prettier: fixes what make checks reports"
+	@echo ""
+	@echo "make tests             Every Jest test: liturgy, app and services (~4 min)"
+	@echo "make tests-fast        The same ones without the long sweeps (liturgy and screen text)"
+	@echo "make golden            Rewrites the goldens (liturgy and screen text) from this build (only if you checked it)"
+	@echo ""
+	@echo "make android-app       Build the Android release and install it on the emulator or phone connected"
+	@echo "make ios-app           Build the release for the iOS simulator and install it on the simulator open"
+	@echo "make ios-device        Build the release for the iPhone connected and install it there as «CPL 9»"
+	@echo "make ui-tests          Maestro flows on Android and on iOS"
+	@echo "make ui-tests-android  Android only"
+	@echo "make ui-tests-ios      iOS only"
+	@echo ""
+	@echo "make captures          The screenshots of the two stores, at the size each one asks for"
+	@echo "make captures-ios      The iPhone of 6,9\" and the iPad of 13\" (App Store)"
+	@echo "make captures-android  The 1080x1920 of Google Play"
+	@echo ""
+	@echo "make run-panel [PORT=4848]   The migration panel (if the port is taken, it offers another)"
+	@echo "make stop-panel [PORT=4848]  Stop the panel"
+	@echo "make day-check DATE=2026-08-12            The same report for one day, on the terminal"
+	@echo "make review DATES=2026-08-20,2026-08-21   Day by day review against saints-app"
+
+# --- Development -----------------------------------------------------------------------------
+# The first time these build and install the development app (expo-dev-client); after that, JS
+# changes show up right away. For a release like the ones in the stores, make android-app /
+# ios-app.
+
+# None of these report use: they carry EXPO_PUBLIC_CPL_TEST_BUILD, which Metro writes into the
+# bundle it builds here. Otherwise every simulator, every emulator and every Maestro run would
+# count as one more person in the CPL's numbers, and a fresh emulator as a new one every time.
+start run-android run-ios run-web android-app ios-app: export EXPO_PUBLIC_CPL_TEST_BUILD = 1
+
+start:
+	npx expo start
+
+run-android:
+	npx expo run:android
+
+run-ios:
+	npx expo run:ios
+
+# In the browser the database opens in memory (databaseManagerService.web.ts). There is no date
+# picker in the calendar and no YouTube video in the Mass.
+run-web:
+	npx expo start --web
+
+# --- The database -----------------------------------------------------------------------------
+# The texts are not in the repository: they come from the publishing website (cpl-cloud), the same
+# one the phones ask. Needed to run the tests and to build the app. The key is in .env.
+#
+# A build carries one language, the one whose database is sitting in src/assets/db when Metro runs.
+# make db-es puts the Spanish one there to be looked over; make db-ca brings the Catalan one back.
+# There is nothing to switch inside the app: what is in that folder is what it prays with.
+
+DATABASE_DIR = src/assets/db
+DATABASE_DESCRIPTOR = $(DATABASE_DIR)/cpl-app.db.json
+# Where the Spanish database is generated. It is a project of its own, outside this repository.
+SPANISH_GENERATOR ?= ../cpl-db-es
+
+# Going to another language puts the Catalan one aside instead of throwing it away, so coming back
+# needs neither the network nor the key: sixteen megabytes on the disk are cheaper than a download you
+# cannot make on a train.
+DATABASE_KEPT = $(DATABASE_DIR)/cpl-app.ca.db
+
+db: db-ca
+
+db-ca:
+	@if [ -f $(DATABASE_KEPT) ]; then \
+		mv $(DATABASE_KEPT) $(DATABASE_DIR)/cpl-app.db; \
+		mv $(DATABASE_KEPT).json $(DATABASE_DESCRIPTOR); \
+		echo "Catalan database put back from $(DATABASE_KEPT)"; \
+	else \
+		git checkout -- $(DATABASE_DESCRIPTOR) 2>/dev/null || true; \
+		node scripts/fetchDatabase.mjs; \
+	fi
+	@$(MAKE) --no-print-directory db-which
+
+# Rebuilds the Spanish database from saints-app and puts it where Metro will find it. Not for a build
+# that goes to anybody: the interface stays Catalan, texts inside the code and all.
+db-es:
+	@test -d $(SPANISH_GENERATOR) || (echo "No generator at $(SPANISH_GENERATOR) (set SPANISH_GENERATOR=)" && exit 1)
+	$(MAKE) -C $(SPANISH_GENERATOR) db
+	@if [ -f $(DATABASE_DIR)/cpl-app.db ] && ! grep -q '"language"' $(DATABASE_DESCRIPTOR) 2>/dev/null; then \
+		mv $(DATABASE_DIR)/cpl-app.db $(DATABASE_KEPT); \
+		mv $(DATABASE_DESCRIPTOR) $(DATABASE_KEPT).json; \
+		echo "Catalan database kept at $(DATABASE_KEPT)"; \
+	fi
+	@cp $(SPANISH_GENERATOR)/out/cpl-app-es.db $(DATABASE_DIR)/cpl-app.db
+	@cp $(SPANISH_GENERATOR)/out/cpl-app-es.db.json $(DATABASE_DESCRIPTOR)
+	@$(MAKE) --no-print-directory db-which
+
+# The website publishes again whenever the CPL corrects a text, and coming back from Spanish is
+# deliberately offline, so neither make db nor make db-ca notices a new publication while a Catalan
+# database is put aside: that is how you end up building with a version from months ago. This one
+# always asks. The database put aside goes, because it is the old one: keeping it would have the
+# next make db-ca bring it back.
+db-latest:
+	@if [ -f $(DATABASE_KEPT) ]; then \
+		rm -f $(DATABASE_KEPT) $(DATABASE_KEPT).json; \
+		echo "The Catalan database put aside was the old one, and is gone"; \
+	fi
+	@git checkout -- $(DATABASE_DESCRIPTOR) 2>/dev/null || true
+	@node scripts/fetchDatabase.mjs
+	@$(MAKE) --no-print-directory db-which
+
+# Which language is in place, and whether the file and its descriptor still agree
+db-which:
+	@node scripts/whichDatabase.mjs
+
+# --- Checks ----------------------------------------------------------------------------------
+# make checks is what the .githooks/pre-push hook runs before each push. The tests run with --ci
+# and without UPDATE_GOLDEN, so they compare against the goldens instead of rewriting them.
+
+# The goldens are Catalan, and so is the descriptor the repository carries: running the checks with
+# another language in place would fail by the hundred and say nothing about the code.
+db-is-catalan:
+	@node scripts/whichDatabase.mjs --require-catalan
+
+checks: db-is-catalan
+	npx prettier . --check
+	npx eslint .
+	npx tsc --noEmit
+	env -u UPDATE_GOLDEN npx jest --ci
+
+# Without the two sweeps against the goldens: the goldens are not in the repository, and when
+# they are missing they write themselves from the build being checked and pass without comparing
+# anything. Everything else is checked.
+checks-ci:
+	npx prettier . --check
+	npx eslint .
+	npx tsc --noEmit
+	env -u UPDATE_GOLDEN $(MAKE) tests-fast
+
+lint:
+	npx eslint .
+
+types:
+	npx tsc --noEmit
+
+# The texts, the Maestro flows and the data stay out of it (.prettierignore)
+format:
+	npx prettier . --write
+
+# --- Jest ------------------------------------------------------------------------------------
+
+tests:
+	npx jest
+
+tests-fast:
+	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/liturgy/(liturgyGolden|yearSweep)' '/screens/prayerTextGolden'
+
+# A golden is what says «this is how it has to come out». It is rewritten only after checking by
+# hand that the liturgy of this build is right: otherwise it stops catching anything. The screens
+# one (prayer-screens.json) is the text the hours and the readings show: it was made before the
+# redesign, and it has to stay the same.
+golden:
+	UPDATE_GOLDEN=1 npx jest __tests__/liturgy __tests__/screens/prayerTextGolden
+
+# --- Local builds for the Maestro tests -------------------------------------------------------
+# /android and /ios are generated (and gitignored): they are rebuilt from scratch so that nothing
+# is left from an earlier SDK.
+
+android-app:
+	@test -n "$(ANDROID_DEVICE)" || (echo "No Android emulator or phone connected (adb devices)" && exit 1)
+	npx expo prebuild -p android --clean --no-install
+	cd android && ./gradlew assembleRelease
+	$(ADB) -s $(ANDROID_DEVICE) install -r $(APK)
+
+IOS_SIMULATOR_BUILD = xcodebuild -workspace ios/CPL.xcworkspace -scheme CPL -configuration Release \
+		-sdk iphonesimulator -derivedDataPath ios/build CODE_SIGNING_ALLOWED=NO -quiet
+
+ios-app:
+	@test -n "$(IOS_DEVICE)" || (echo "No iOS simulator open (open -a Simulator)" && exit 1)
+	npx expo prebuild -p ios --clean
+	$(IOS_SIMULATOR_BUILD)
+	xcrun simctl install $(IOS_DEVICE) $(IOS_APP)
+
+# On the iPhone, next to the CPL from the store: that one belongs to team JB7WHGG69R, which we do
+# not have on this Mac, and iOS does not allow replacing it. This one is cpl.cpl.dev («CPL 9»),
+# signed with Joan's team (N65TK8GHAL). It needs Xcode 26.4 or later (Swift 6.3, for Expo 57).
+ios-device:
+	@test -n "$(IPHONE)" || (echo "No iPhone connected (xcrun devicectl list devices)" && exit 1)
+	npx expo prebuild -p ios --clean
+	sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = cpl\.cpl;/PRODUCT_BUNDLE_IDENTIFIER = cpl.cpl.dev;/' ios/CPL.xcodeproj/project.pbxproj
+	plutil -replace CFBundleDisplayName -string "CPL 9" ios/CPL/Info.plist
+	xcodebuild -workspace ios/CPL.xcworkspace -scheme CPL -configuration Release \
+		-destination id=$(IPHONE) -derivedDataPath ios/build \
+		-allowProvisioningUpdates DEVELOPMENT_TEAM=N65TK8GHAL -quiet
+	xcrun devicectl device install app --device $(IPHONE) $(IPHONE_APP)
+	xcrun devicectl device process launch --device $(IPHONE) cpl.cpl.dev
+
+# --- Maestro ---------------------------------------------------------------------------------
+# They use the app already installed: after a change, run make android-app / ios-app first.
+
+ui-tests: ui-tests-android ui-tests-ios
+
+ui-tests-android:
+	@test -n "$(ANDROID_DEVICE)" || (echo "No Android emulator or phone connected (adb devices)" && exit 1)
+	$(MAESTRO) --device $(ANDROID_DEVICE) test .maestro/
+
+ui-tests-ios:
+	@test -n "$(IOS_DEVICE)" || (echo "No iOS simulator open (open -a Simulator)" && exit 1)
+	$(MAESTRO) --device $(IOS_DEVICE) test .maestro/
+
+# --- The screenshots of the stores ------------------------------------------------------------
+# scripts/captures.mjs boots the device of each size, installs what was built here, runs the
+# Maestro flow of .maestro/captures and composes each shot onto the canvas the store asks for.
+# They carry EXPO_PUBLIC_CPL_TEST_BUILD like the rest of the local builds, so that taking the
+# screenshots does not count as one more person in the CPL's numbers.
+
+captures: captures-ios captures-android
+
+captures-ios: export EXPO_PUBLIC_CPL_TEST_BUILD = 1
+captures-ios:
+	npx expo prebuild -p ios --clean
+	$(IOS_SIMULATOR_BUILD)
+	node scripts/captures.mjs ios-phone ios-tablet
+
+captures-android: export EXPO_PUBLIC_CPL_TEST_BUILD = 1
+captures-android:
+	@test -n "$(ANDROID_DEVICE)" || (echo "No Android emulator or phone connected (adb devices)" && exit 1)
+	npx expo prebuild -p android --clean --no-install
+	cd android && ./gradlew assembleRelease
+	node scripts/captures.mjs android-phone
+
+# --- The Catalan migration to saints-app -------------------------------------------------------
+# Tooling of its own, under migration-to-saints/: plain Node, with no install step. It reads
+# cpl-app.db and saints-app; it never writes to either.
 
 PORT ?= 4848
 PANEL := migration-to-saints/webui/server.js
 
 REVIEW := migration-to-saints/review
 REVIEW_RUN := $(REVIEW)/run
-
-.PHONY: run-panel stop-panel day-check review review-html help
-
-help:
-	@echo "make run-panel [PORT=4848]   Panell de migració (si el port és ocupat, en proposa un altre)"
-	@echo "make stop-panel [PORT=4848]  Atura el panell"
-	@echo "make day-check DATE=2026-08-12   El mateix informe d'un dia, per terminal"
-	@echo "make review DATES=2026-08-20,2026-08-21   Revisió dia a dia contra saints-app"
 
 # The full review, end to end. Read-only: it never touches cpl-app.db and never commits —
 # corrections come out as prompts to run elsewhere (see .claude/skills/revisio-dia).
@@ -22,7 +274,7 @@ help:
 # the latter's Vespers ferial control is the rendered Vespers object itself, which marks
 # every field ferial and invents false divergences on memorials.
 review:
-	@test -n "$(DATES)" || (echo "Cal una llista de dates: make review DATES=2026-08-20,2026-08-21" && exit 1)
+	@test -n "$(DATES)" || (echo "A list of dates is needed: make review DATES=2026-08-20,2026-08-21" && exit 1)
 	@mkdir -p $(REVIEW_RUN)
 	DATES=$(DATES) DIOCESE=$(or $(DIOCESE),Barcelona) OUT=$(REVIEW_RUN)/cpl-days.json \
 		npx jest $(REVIEW)/resolve-cpl-days.test.js --silent
@@ -47,7 +299,7 @@ run-panel:
 			lsof -ti tcp:$$p -sTCP:LISTEN >/dev/null 2>&1 || { free=$$p; break; }; \
 		done; \
 		if [ -z "$$free" ]; then \
-			echo "Port $$port ocupat i cap port lliure entre $$((port + 1)) i $$((port + 20))."; \
+			echo "Port $$port taken and no free port between $$((port + 1)) and $$((port + 20))."; \
 			exit 1; \
 		fi; \
 		ans=n; \
@@ -65,7 +317,7 @@ run-panel:
 stop-panel:
 	@pids=$$(lsof -ti tcp:$(PORT) -sTCP:LISTEN 2>/dev/null); \
 	if [ -n "$$pids" ]; then \
-		echo "Aturant el panell del port $(PORT) (pid $$pids)"; \
+		echo "Stopping the panel on port $(PORT) (pid $$pids)"; \
 		kill $$pids 2>/dev/null || true; \
 		for i in 1 2 3 4 5 6 7 8 9 10; do \
 			lsof -ti tcp:$(PORT) -sTCP:LISTEN >/dev/null 2>&1 || break; \
@@ -74,5 +326,5 @@ stop-panel:
 	fi
 
 day-check:
-	@test -n "$(DATE)" || (echo "Cal una data: make day-check DATE=2026-08-12" && exit 1)
+	@test -n "$(DATE)" || (echo "A date is needed: make day-check DATE=2026-08-12" && exit 1)
 	node migration-to-saints/day-check.js $(DATE)

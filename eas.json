@@ -1,21 +1,14 @@
 {
+  "cli": {
+    "version": ">= 24.7.0"
+  },
   "build": {
     "production": {
-      "channel": "production_89"
-    },
-    "test": {
-      "channel": "test_89"
-    },
-    "apk": {
-      "channel": "apk_89",
       "android": {
-        "buildType": "apk"
-      }
-    },
-    "simulator": {
-      "channel": "simulator",
+        "buildType": "app-bundle"
+      },
       "ios": {
-        "simulator": true
+        "autoIncrement": true
       }
     }
   }

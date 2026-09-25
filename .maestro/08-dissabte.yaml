@@ -1,0 +1,44 @@
+appId: cpl.cpl
+name: "Saturday: the evening Mass and the optional memorial"
+---
+# Next Saturday, with the app's calendar: it has an evening Mass (Sunday's) and, often,
+# the memorial of Saint Mary.
+- runFlow: subflows/obrir.yaml
+- evalScript: ${(function () { var today = new Date(); var add = (6 - today.getDay() + 7) % 7 || 7; var saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + add); output.day = String(saturday.getDate()); output.nextMonth = saturday.getMonth() !== today.getMonth(); })()}
+- tapOn: "Calendari"
+- runFlow:
+    when:
+      true: ${output.nextMonth}
+    commands:
+      - tapOn: "Mes següent"
+- tapOn: "${output.day}|[^ ]+, ${output.day} d.+"
+- tapOn: "Canvia"
+- extendedWaitUntil:
+    visible: "Dissabte, .+"
+    timeout: 15000
+# «Avui | Vespertina»: the readings of each Mass
+- runFlow:
+    when:
+      visible: "Vespertina"
+    commands:
+      - tapOn: "Avui"
+      - takeScreenshot: 08-missa-avui
+      - tapOn: "Vespertina"
+      - assertVisible: "Segona lectura"
+      - takeScreenshot: 08-missa-vespertina
+# The optional memorial: the switch changes what is prayed, and says so. On iOS the sentence
+# goes in the row's label, with the name: «Celebrar la memòria. Si no l'actives…»
+- runFlow:
+    when:
+      visible: "Celebrar la memòria.*"
+    commands:
+      - assertVisible: ".*Si no l.actives, avui es resa la fèria."
+      - tapOn: "Celebrar la memòria.*"
+      - extendedWaitUntil:
+          visible: ".*Avui es resa la memòria."
+          timeout: 15000
+      - takeScreenshot: 08-memoria-lliure
+      - tapOn: "Celebrar la memòria.*"
+      - extendedWaitUntil:
+          visible: ".*Si no l.actives, avui es resa la fèria."
+          timeout: 15000

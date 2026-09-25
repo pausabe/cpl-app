@@ -1,0 +1,14 @@
+appId: cpl.cpl
+---
+- tapOn: ${HORA}
+- extendedWaitUntil:
+    visible: "HIMNE.*"
+    timeout: 15000
+- takeScreenshot: hora-${HORA}
+# The Office of Readings, with two readings, is very long: fast scrolling and a wide margin
+- scrollUntilVisible:
+    element: ${FINAL}
+    direction: DOWN
+    speed: 90
+    timeout: 180000
+- runFlow: enrere.yaml

@@ -1,0 +1,43 @@
+appId: cpl.cpl
+name: "The contact and donation web pages open"
+---
+- runFlow: subflows/obrir.yaml
+# A sheet comes up with the website's contact page; «Tanca» closes it. It is tapped by id: the
+# backdrop behind the sheet is also called «Tanca» (for screen readers) and the sheet covers it.
+- tapOn: "Missatge"
+- assertVisible:
+    id: "message-sheet-close"
+- waitForAnimationToEnd:
+    timeout: 10000
+- takeScreenshot: 06-missatge
+- tapOn:
+    id: "message-sheet-close"
+- waitForAnimationToEnd
+- tapOn: "Donatiu lliure"
+# Android opens it in another sheet, closed by dragging it down from the top. iOS goes to Stripe
+# in Safari (the App Store only allows collecting donations outside the app) and you must return.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - assertVisible:
+          id: "donation-sheet-close"
+      - waitForAnimationToEnd:
+          timeout: 10000
+      - takeScreenshot: 06-donatiu
+      - swipe:
+          start: "50%, 9%"
+          end: "50%, 75%"
+          duration: 500
+      - waitForAnimationToEnd
+      - assertNotVisible:
+          id: "donation-sheet-close"
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - waitForAnimationToEnd:
+          timeout: 10000
+      - takeScreenshot: 06-donatiu-safari
+      - launchApp
+- assertVisible: "Missatge"

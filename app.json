@@ -3,50 +3,67 @@
     "name": "CPL",
     "description": "This application helps up to pray with biblical texts that the Lord Jesus himself used to pray. Currently it is only available in Catalan.",
     "slug": "CPLApp",
-    "version": "8.0.5",
+    "version": "9.0.0",
     "orientation": "portrait",
-    "icon": "./src/Assets/icon/icon.png",
+    "icon": "./src/assets/icon/icon.png",
     "githubUrl": "https://github.com/pausabe/cpl-app",
     "primaryColor": "#ffffff",
     "backgroundColor": "#000000",
-    "splash": {
-      "image": "./src/Assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#006064"
-    },
-    "updates": {
-      "enabled": true,
-      "checkAutomatically": "ON_ERROR_RECOVERY",
-      "url": "https://u.expo.dev/7b28fd03-7a72-47f9-9760-12bbaaa74516"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "bundleIdentifier": "cpl.cpl",
-      "buildNumber": "89",
+      "buildNumber": "90",
       "supportsTablet": true,
-      "userInterfaceStyle": "automatic"
+      "userInterfaceStyle": "automatic",
+      "infoPlist": {
+        "CADisableMinimumFrameDurationOnPhone": true
+      }
     },
     "android": {
       "package": "cpl.cpl",
-      "versionCode": 89,
+      "versionCode": 90,
       "userInterfaceStyle": "automatic",
-      "icon": "./src/Assets/icon/icon.png",
+      "icon": "./src/assets/icon/icon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./src/Assets/icon/androidForeground.png",
-        "backgroundImage": "./src/Assets/icon/androidBackground.png"
+        "foregroundImage": "./src/assets/icon/androidForeground.png",
+        "monochromeImage": "./src/assets/icon/androidMonochrome.png",
+        "backgroundColor": "#005B79"
       },
       "permissions": []
     },
+    "plugins": [
+      "./plugins/withIosSceneLifecycle",
+      "expo-asset",
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Per saber de quina diòcesi ets i triar-la automàticament. La ubicació no surt del telèfon."
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#E7F2F1",
+          "imageWidth": 184,
+          "dark": {
+            "image": "./src/assets/splashDark.png",
+            "backgroundColor": "#0E1413"
+          },
+          "android": {
+            "imageWidth": 160
+          }
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "7b28fd03-7a72-47f9-9760-12bbaaa74516"
       }
-    },
-    "runtimeVersion": "1.0.0",
-    "plugins": [
-      "expo-asset"
-    ]
+    }
   }
 }
