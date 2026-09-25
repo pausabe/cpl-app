@@ -7,26 +7,28 @@ name: "The six screenshots the stores show"
 #
 # It is not run by `make ui-tests`: Maestro only picks up the flows of the folder it is given,
 # and this one lives in its own. It is run by `make captures`, which boots the device of each
-# size, installs the release and composes the shots. OUT is where the files land.
+# size, installs the release and composes the shots. The names here are bare because Maestro
+# keeps every screenshot inside the folder it is given in --test-output-dir and refuses a path
+# that points anywhere else.
 #
 # The day is today's. To use another one, open the app first, pick the day in the calendar and
 # run this flow without `clearState` — the calendar is the one thing the flow does not touch.
 - runFlow: ../subflows/obrir.yaml
 
 # 1. The home screen: the whole day in one screen
-- takeScreenshot: ${OUT}/01-inici
+- takeScreenshot: 01-inici
 
 # 2. Laudes: the text, the same one as in the books
 - tapOn: "Laudes"
 - extendedWaitUntil:
     visible: "HIMNE.*"
     timeout: 15000
-- takeScreenshot: ${OUT}/02-laudes
+- takeScreenshot: 02-laudes
 
 # 3. The Aa sheet, over the prayer it changes
 - tapOn: "Mida del text i tema"
 - assertVisible: "Mida 3 de 10"
-- takeScreenshot: ${OUT}/03-lletra
+- takeScreenshot: 03-lletra
 - tapOn: "Fet"
 - runFlow: ../subflows/enrere.yaml
 - extendedWaitUntil:
@@ -38,7 +40,7 @@ name: "The six screenshots the stores show"
 - extendedWaitUntil:
     visible: "EVANGELI.*"
     timeout: 15000
-- takeScreenshot: ${OUT}/04-evangeli
+- takeScreenshot: 04-evangeli
 - runFlow: ../subflows/enrere.yaml
 - extendedWaitUntil:
     visible: "Missatge"
@@ -52,9 +54,9 @@ name: "The six screenshots the stores show"
 - extendedWaitUntil:
     visible: "Missatge"
     timeout: 15000
-- takeScreenshot: ${OUT}/06-inici-fosc
+- takeScreenshot: 06-inici-fosc
 - tapOn: "Completes"
 - extendedWaitUntil:
     visible: "HIMNE.*"
     timeout: 15000
-- takeScreenshot: ${OUT}/05-completes-fosc
+- takeScreenshot: 05-completes-fosc

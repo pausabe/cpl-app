@@ -98,6 +98,29 @@ function prepareSimulator(name) {
   }
   run('xcrun', ['simctl', 'bootstatus', device.udid, '-b']);
   run('xcrun', ['simctl', 'install', device.udid, app]);
+
+  // A shot of a phone at 07:34 with no coverage and a half battery looks like somebody's
+  // screenshot, not like a picture of the app. Apple's own are at 9:41.
+  run('xcrun', [
+    'simctl',
+    'status_bar',
+    device.udid,
+    'override',
+    '--time',
+    '9:41',
+    '--cellularMode',
+    'active',
+    '--cellularBars',
+    '4',
+    '--wifiMode',
+    'active',
+    '--wifiBars',
+    '3',
+    '--batteryState',
+    'charged',
+    '--batteryLevel',
+    '100',
+  ]);
   return device.udid;
 }
 
@@ -114,6 +137,18 @@ function prepareAndroid() {
     fail('The Android release is not built. `make captures-android` builds it before coming here.');
   }
   run(adb, ['-s', device[0], 'install', '-r', apk]);
+
+  // The same clean status bar as on iOS. Android does it with the demo mode of the system UI,
+  // which has to be allowed first and stays on until somebody leaves it.
+  const demo = (args) =>
+    run(adb, ['-s', device[0], 'shell', 'am', 'broadcast', '-a', 'com.android.systemui.demo', ...args]);
+  run(adb, ['-s', device[0], 'shell', 'settings', 'put', 'global', 'sysui_demo_allowed', '1']);
+  demo(['-e', 'command', 'enter']);
+  demo(['-e', 'command', 'clock', '-e', 'hhmm', '0941']);
+  demo(['-e', 'command', 'network', '-e', 'wifi', 'show', '-e', 'level', '4']);
+  demo(['-e', 'command', 'network', '-e', 'mobile', 'show', '-e', 'level', '4']);
+  demo(['-e', 'command', 'battery', '-e', 'level', '100', '-e', 'plugged', 'false']);
+  demo(['-e', 'command', 'notifications', '-e', 'visible', 'false']);
   return device[0];
 }
 
@@ -156,14 +191,27 @@ img {
 </style><h1>${shot.caption}</h1><img src="data:image/png;base64,${image}">`;
 }
 
+// Maestro puts what it writes in a folder of its own named after the run, and the shots of the
+// flow in another one named after the flow, so the file is looked for and not guessed
+function findShot(raw, name) {
+  const wanted = `${name}.png`;
+  for (const entry of readdirSync(raw, { recursive: true, withFileTypes: true })) {
+    if (entry.isFile() && entry.name === wanted) {
+      return join(entry.parentPath ?? entry.path, entry.name);
+    }
+  }
+  return null;
+}
+
 function compose(target, raw, out) {
   const browser = chrome();
   const [width, height] = TARGETS[target].canvas;
+  mkdirSync(out, { recursive: true });
   let order = 1;
   for (const shot of SHOTS) {
-    const source = join(raw, `${shot.file}.png`);
-    if (!existsSync(source)) {
-      fail(`The flow did not leave ${shot.file}.png in ${raw}. Run it again and watch where it stops.`);
+    const source = findShot(raw, shot.file);
+    if (!source) {
+      fail(`The flow did not leave ${shot.file}.png under ${raw}. Run it again and watch where it stops.`);
     }
     const page = join(raw, `${shot.file}.html`);
     writeFileSync(page, frameHtml(shot, source, [width, height]));
@@ -195,7 +243,9 @@ function captures(target) {
   const device = platform === 'ios' ? prepareSimulator(simulator) : prepareAndroid();
 
   console.log(`\n→ ${target}: the flow on ${simulator ?? device}\n`);
-  run(MAESTRO, ['--device', device, 'test', FLOW, '-e', `OUT=${raw}`]);
+  // --test-output-dir instead of a path in the flow: Maestro keeps every screenshot inside the
+  // folder it is given and refuses one that resolves outside it
+  run(MAESTRO, ['--device', device, 'test', '--test-output-dir', raw, FLOW]);
 
   compose(target, raw, out);
   const made = readdirSync(out).filter((name) => name.endsWith('.png'));
