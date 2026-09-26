@@ -66,14 +66,14 @@ test('it opens on today and the whole app can be walked through', async () => {
 
   // Home: today's celebration, and no tabs any more
   await findText('Diumenge de Pasqua');
-  expect(DataService.CurrentLiturgyDayInformation.today.date.getDate()).toBe(5);
+  expect(DataService.currentLiturgy().liturgyDayInformation.today.date.getDate()).toBe(5);
   expect(screen.queryByLabelText('Litúrgia de les hores')).toBeNull();
   expect(screen.getByText('Diumenge, 5 d’abril')).toBeTruthy();
 
   // Liturgy of the Hours, from the home: every hour opens, with its whole name on top
   for (const hour of ['Ofici de lectura', 'Laudes', 'Tèrcia', 'Sexta', 'Nona', 'Vespres', 'Completes']) {
     fireEvent.press(screen.getByRole('button', { name: hour }));
-    const hours = DataService.CurrentHoursLiturgy;
+    const hours = DataService.currentLiturgy().hoursLiturgy;
     const expected = {
       'Ofici de lectura': hours.office.firstPsalm.antiphon,
       Laudes: hours.laudes.firstPsalm.antiphon,
@@ -91,9 +91,9 @@ test('it opens on today and the whole app can be walked through', async () => {
   }
 
   // Mass, from the home: the phrase of the Gospel, and the Gospel opens
-  expect(screen.getByText(DataService.CurrentMassLiturgy.today.gospel.comment)).toBeTruthy();
+  expect(screen.getByText(DataService.currentLiturgy().massLiturgy.today.gospel.comment)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Evangeli' }));
-  const gospel = new RegExp(escape(firstWords(DataService.CurrentMassLiturgy.today.gospel.gospel)));
+  const gospel = new RegExp(escape(firstWords(DataService.currentLiturgy().massLiturgy.today.gospel.gospel)));
   await waitFor(() => expect(queryAllPrayerText(gospel).length).toBeGreaterThan(0));
   await goBack(gospel);
 

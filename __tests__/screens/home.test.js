@@ -76,7 +76,7 @@ test('«Llegeix-ne més» opens the sheet with the life of the saint, and «Tanc
   expect(screen.queryByTestId('description-sheet')).toBeNull();
   fireEvent.press(screen.getByRole('button', { name: 'Llegeix-ne més' }));
   expect(await screen.findByTestId('description-sheet')).toBeTruthy();
-  expect(getPrayerText(DataService.CurrentCelebrationInformation.description)).toBeTruthy();
+  expect(getPrayerText(DataService.currentLiturgy().celebrationInformation.description)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Tanca' }));
   await waitFor(() => expect(screen.queryByTestId('description-sheet')).toBeNull());
 });
@@ -109,7 +109,7 @@ test('an optional memorial: the switch makes it celebrated, and it is remembered
   expect(styleOf(screen.getByText('Sants Cosme i Damià, màrtirs')).color).toBe('#475756');
 
   fireEvent.press(memory);
-  await waitFor(() => expect(DataService.CurrentSettings.optionalFestivityEnabled).toBe(true));
+  await waitFor(() => expect(DataService.currentLiturgy().settings.optionalFestivityEnabled).toBe(true));
   await findText('Avui es resa la memòria.');
   expect(await AsyncStorage.getItem('lliureDate')).toBe('26:8:2026');
   expect(styleOf(screen.getByText('Sants Cosme i Damià, màrtirs')).color).toBe('#182322');

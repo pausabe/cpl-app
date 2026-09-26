@@ -40,11 +40,11 @@ async function applyProfile(profile, date) {
 function currentState() {
   return JSON.parse(
     JSON.stringify({
-      settings: DataService.CurrentSettings,
-      dayInformation: DataService.CurrentLiturgyDayInformation,
-      celebration: DataService.CurrentCelebrationInformation,
-      hours: DataService.CurrentHoursLiturgy,
-      mass: DataService.CurrentMassLiturgy,
+      settings: DataService.currentLiturgy().settings,
+      dayInformation: DataService.currentLiturgy().liturgyDayInformation,
+      celebration: DataService.currentLiturgy().celebrationInformation,
+      hours: DataService.currentLiturgy().hoursLiturgy,
+      mass: DataService.currentLiturgy().massLiturgy,
     }),
   );
 }
