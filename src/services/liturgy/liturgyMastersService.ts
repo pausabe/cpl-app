@@ -767,7 +767,7 @@ async function obtainSaintsSolemnitiesWhenFirstsVespersParts(
         settings,
       );
       if (saintsMemoryOrSolemnityMasterIdentifier !== -1) {
-        const row = DatabaseDataService.obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
+        const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
           SaintsSolemnities.masterName,
           saintsMemoryOrSolemnityMasterIdentifier,
         );
