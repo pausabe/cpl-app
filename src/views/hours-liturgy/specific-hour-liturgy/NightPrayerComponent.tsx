@@ -9,7 +9,6 @@ import Rubric from '../../../components/Rubric';
 import ChoiceChips from '../../../components/ChoiceChips';
 import * as Logger from '../../../utils/logger';
 import { withoutPsalmMarks, withoutTrailingSpace as rs } from '../../../utils/prayerText';
-import { StringManagement } from '../../../utils/StringManagement';
 import { GenericLiturgyTimeType, SpecificLiturgyTimeType } from '../../../services/celebrationTimeEnums';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../../../theme';
 import {
@@ -209,8 +208,6 @@ function psalmody(styles: PrayerTextStyles, nightPrayer: NightPrayer) {
   const second = nightPrayer.secondPsalm;
   const differentAntiphons = !nightPrayer.useOnlyFirstPsalmAntiphon;
   const secondAntiphon = differentAntiphons ? rs(second.antiphon) : '';
-  // The comment of the second psalm always takes its place, even when it has none
-  const secondComment = StringManagement.hasLiturgyContent(second.comment) ? rs(second.comment) : '';
   return (
     <>
       {differentAntiphons ? (
@@ -231,7 +228,7 @@ function psalmody(styles: PrayerTextStyles, nightPrayer: NightPrayer) {
       ) : null}
       {psalmBody(styles, {
         title: rs(second.title),
-        comment: secondComment,
+        comment: psalmComment(second),
         psalm: second.psalm,
         hasGloryPrayer: second.hasGloryPrayer,
       })}

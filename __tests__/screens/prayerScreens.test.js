@@ -134,6 +134,32 @@ test('at Easter there is only the fifth antiphon, with no selector', async () =>
   expect(DataService.currentLiturgy().settings.virginAntiphonOption).toBe('5');
 });
 
+// The comment under a psalm title (small, italic, to the right) goes only when the psalm has one
+function emptyPsalmComments() {
+  const found = [];
+  const walk = (node) => {
+    if (!node || typeof node !== 'object') return;
+    if (Array.isArray(node)) return node.forEach(walk);
+    const style = StyleSheet.flatten(node.props && node.props.style) || {};
+    const text = (node.children || []).filter((child) => typeof child === 'string').join('');
+    if (style.textAlign === 'right' && style.fontStyle === 'italic' && text.trim() === '') found.push(node);
+    (node.children || []).forEach(walk);
+  };
+  walk(screen.toJSON());
+  return found;
+}
+
+test('the second psalm of Compline, without a comment, leaves no empty paragraph for it', async () => {
+  // A Saturday: Compline with two psalms
+  await loadDay('2026-09-26');
+  const nightPrayer = DataService.currentLiturgy().hoursLiturgy.nightPrayer;
+  expect(nightPrayer.hasMultiplePsalms).toBe(true);
+  nightPrayer.secondPsalm.comment = '-';
+  await open(HoursPrayerController, { type: 'Completes', title: 'Completes' });
+  expect(getPrayerText(/Salm 133/)).toBeTruthy();
+  expect(emptyPsalmComments()).toEqual([]);
+});
+
 test('the readings: «Continua amb el Salm» shows the psalm below', async () => {
   await open(MassPrayerController, { type: '1Lect', title: 'Missa', needSecondReading: false, useVespersTexts: false });
   expect(screen.getByRole('header', { name: 'Lectura primera' })).toBeTruthy();
