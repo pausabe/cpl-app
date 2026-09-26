@@ -8,6 +8,7 @@ import * as Logger from '../utils/logger';
 import { DateManagement } from '../utils/DateManagement';
 import * as StorageService from '../services/storage/storageService';
 import StorageKeys from '../services/storage/storageKeys';
+import { useAppUpdateNotice } from '../services/appUpdateService';
 import { SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 import * as LiturgyStore from './liturgyStore';
 import { followSystemAppearance } from './appearanceSettings';
@@ -86,6 +87,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   const theme = useTheme();
   const snapshot = LiturgyStore.useLiturgy();
   const hour = useCurrentHour();
+  const appUpdate = useAppUpdateNotice();
   const [databaseAssets, databaseAssetsError] = useAssets([require('../assets/db/cpl-app.db')]);
   const [status, setStatus] = useState<Status>(LiturgyStore.isLoaded() ? 'ready' : 'loading');
   const [latePrayerVisible, setLatePrayerVisible] = useState(false);
@@ -363,6 +365,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         onOptionalMemoryChange={onOptionalMemoryChange}
         onMessage={() => setWebPage('message')}
         onDonation={onDonation}
+        update={appUpdate ? { onOpen: appUpdate.open, onDismiss: appUpdate.dismiss } : null}
       />
       <WebSheet
         visible={webPage === 'message'}

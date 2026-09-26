@@ -26,6 +26,13 @@ export const WHATS_NEW = {
   button: 'D’acord',
 };
 
+// At the bottom of the home, quiet, when the store already has a newer app than this one
+export const APP_UPDATE = {
+  text: 'Hi ha una versió nova de l’aplicació.',
+  action: 'Actualitza-la',
+  dismiss: 'Amaga l’avís',
+};
+
 // How the search for the diocese went. Both the button in Configuració and the notice on the home
 // are keyed by it, so the words for each outcome are written once.
 export type LocationStatus = 'idle' | 'locating' | 'unchanged' | 'nowhere' | 'denied' | 'failed';

@@ -14,6 +14,7 @@ export const LogKeys = {
   DataService: { name: 'DataService', enabled: true },
   StorageService: { name: 'StorageService', enabled: true },
   UsageService: { name: 'UsageService', enabled: true },
+  AppUpdateService: { name: 'AppUpdateService', enabled: true },
   FileSystemService: { name: 'FileSystemService', enabled: true },
   SecureCall: { name: 'SecureCall', enabled: true },
   PrecedenceService: { name: 'PrecedenceService', enabled: true },

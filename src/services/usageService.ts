@@ -1,7 +1,9 @@
+import * as Device from 'expo-device';
 import * as Logger from '../utils/logger';
 import * as StorageService from './storage/storageService';
 import StorageKeys from './storage/storageKeys';
-import { APP_KEY, IS_TEST_BUILD, callApi } from './cplApi';
+import SettingsService, { DioceseName } from './SettingsService';
+import { APP_KEY, IS_TEST_BUILD, appVersion, callApi, phonePlatform } from './cplApi';
 
 // How many people use the app.
 //
@@ -13,9 +15,13 @@ import { APP_KEY, IS_TEST_BUILD, callApi } from './cplApi';
 // and the old one is forgotten. The CPL's privacy policy explains it.
 //
 // The report also says which publication of the database the app is praying with, so that the CPL
-// can see whether a correction has reached people. It is counted and nothing more: the version is
-// not kept next to the identifier, only added to that day's tally. A phone with no database open
-// yet sends no version and is counted all the same.
+// can see whether a correction has reached people; which version of the app it is and on which
+// system (only the big number: iOS 18, Android 14), to know how many already have the newest app
+// and how many a newer minimum would leave out; and which diocese is chosen, to see that the
+// calendar of each one is in use. They are kept next to the identifier, so that each phone counts
+// once however many days it opens the app, and they are only ever read as counts: nobody can look
+// up what one phone said, and they are forgotten with it. What the phone cannot say (no database
+// open yet, the web build) is left out and the phone is counted all the same.
 const MONTHS_OF_IDENTIFIER = 13;
 const MAX_OPENS = 500;
 
@@ -33,6 +39,29 @@ function randomIdentifier(): string {
       .padStart(8, '0');
   }
   return identifier.slice(0, 32);
+}
+
+// "18.6.2" is 18 and "14" is 14: the big number is what a minimum of the system goes by
+function systemVersion(): number | null {
+  const major = parseInt(String(Device.osVersion ?? ''), 10);
+  return Number.isInteger(major) && major > 0 ? major : null;
+}
+
+const DIOCESES = Object.values(DioceseName) as string[];
+
+// What the phone says about itself, leaving out whatever it does not know. The diocese only if it
+// is one of the list: something odd left by an old version would get the whole report refused.
+async function aboutThisPhone(): Promise<Record<string, string | number>> {
+  const about: Record<string, string | number> = {};
+  const app = appVersion();
+  const platform = phonePlatform();
+  const system = systemVersion();
+  const diocese = String((await SettingsService.getSettingDiocese()) ?? '');
+  if (app) about.app = app;
+  if (platform) about.platform = platform;
+  if (system) about.os = system;
+  if (DIOCESES.includes(diocese)) about.diocese = diocese;
+  return about;
 }
 
 function isOlderThanThirteenMonths(madeOn: string): boolean {
@@ -93,6 +122,7 @@ export async function reportUsage(version: number | null = null): Promise<UsageR
         device: await identifier(),
         opens: Math.min(opens, MAX_OPENS),
         ...(version === null ? {} : { version }),
+        ...(await aboutThisPhone()),
       }),
     });
     if (!response.ok) {

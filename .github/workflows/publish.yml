@@ -72,7 +72,10 @@ jobs:
 
       - run: npm ci
 
+      # For the version being built: a publication that needs a newer app is not for this one
       - name: Bring the published database
+        env:
+          CPL_APP_VERSION: ${{ inputs.version }}
         run: node scripts/fetchDatabase.mjs
 
       # Like make checks, without the two sweeps against the golden files: those are not in the
@@ -121,6 +124,7 @@ jobs:
       - name: Bring the published database
         env:
           CPL_DATABASE_VERSION: ${{ needs.checks.outputs.database }}
+          CPL_APP_VERSION: ${{ needs.checks.outputs.version }}
         run: node scripts/fetchDatabase.mjs
 
       # Before prebuild: the native project is made from app.json
@@ -226,6 +230,7 @@ jobs:
       - name: Bring the published database
         env:
           CPL_DATABASE_VERSION: ${{ needs.checks.outputs.database }}
+          CPL_APP_VERSION: ${{ needs.checks.outputs.version }}
         run: node scripts/fetchDatabase.mjs
 
       - name: Write the numbers of this build

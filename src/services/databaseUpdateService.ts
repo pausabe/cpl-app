@@ -12,12 +12,15 @@ import {
   databaseFileName,
   openedDatabaseVersion,
 } from './databaseManagerService';
-import { APP_KEY, callApi } from './cplApi';
+import { APP_KEY, appVersion, callApi } from './cplApi';
 import { countOpen, reportUsage } from './usageService';
+import { checkForNewApp } from './appUpdateService';
 
 // The texts come from the publishing website, not from the app stores: when the CPL corrects a
 // typo, the phone picks the new database up by itself. The app only accepts a database made for
-// the structure it knows (the compatibility key), and only if it is newer than the one it has.
+// the structure it knows (the compatibility key), and only if it is newer than the one it has. It
+// also says its version: a publication that needs code this app does not have yet is not given to
+// it, and it is given the newest one it can show instead.
 const MILLISECONDS_BETWEEN_CHECKS = 6 * 60 * 60 * 1000;
 // A phone that could not reach the website at all is not made to wait the whole six hours: it may
 // be back on a wifi in a minute. Long enough, though, that opening and closing the app on a train
@@ -107,7 +110,8 @@ async function isTimeToCheck(): Promise<boolean> {
 // null when there is nothing for this app: the server answers 204
 async function askForNewDatabase(): Promise<DatabaseManifest | null> {
   const bundled = bundledDatabaseInformation();
-  const response = await callApi(`/v1/db/latest?compat=${bundled.compat}`);
+  const version = appVersion();
+  const response = await callApi(`/v1/db/latest?compat=${bundled.compat}${version ? `&app=${version}` : ''}`);
   if (response.status === 204) {
     return null;
   }
@@ -199,8 +203,9 @@ async function checkItIsTheRightDatabase(pendingName: string, manifest: Database
   }
 }
 
-// Opening the app: one more opening for the count, and a look for a new database. Both are
-// throttled: the database is asked about at most once every six hours, and the count goes with it.
+// Opening the app: one more opening for the count, a look for a new database and one for a newer
+// app in the store. All are throttled: the database is asked about at most once every six hours,
+// and the count goes with it; the store, once a day.
 //
 // It can be called twice at once, as the phone says the app became active right after it started.
 // Only the first one does the work: otherwise the same opening was counted twice and two reports
@@ -224,6 +229,7 @@ async function lookAfterOpening() {
     // may have downloaded a moment ago: that one only counts from the next opening onwards
     await reportUsage(openedDatabaseVersion());
   }
+  await checkForNewApp();
 }
 
 export function useDatabaseUpdates() {

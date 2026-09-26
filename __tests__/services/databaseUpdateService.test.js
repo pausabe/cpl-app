@@ -1,6 +1,7 @@
 // The texts arrive from the publishing website while the app is used. What matters here is that
 // nothing can break a phone that is praying: a file that is not exactly the published one, or that
 // does not open, never replaces the database in use, and the app is left as it was.
+jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0' }));
 jest.mock('expo-file-system/legacy', () => ({
   documentDirectory: 'file:///docs/',
   cacheDirectory: 'file:///cache/',
@@ -75,13 +76,14 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-test('asks the website with the app key and the structure it can read', async () => {
+test('asks the website with the app key, the structure it can read and its version', async () => {
   const service = loadService();
 
   await service.checkForNewDatabase();
 
+  // With the version, a publication that needs a newer app is not given to this one
   expect(global.fetch).toHaveBeenCalledWith(
-    `https://cpl-api.canmartorell.dev/v1/db/latest?compat=${COMPAT}`,
+    `https://cpl-api.canmartorell.dev/v1/db/latest?compat=${COMPAT}&app=9.0.0`,
     expect.objectContaining({ headers: { 'X-CPL-App-Key': 'the-app-key' } }),
   );
 });
@@ -172,6 +174,16 @@ test('two openings at the same time count one opening and report once', async ()
   expect(asked.filter((url) => url.includes('/v1/db/latest'))).toHaveLength(1);
   const [, sent] = global.fetch.mock.calls.find(([url]) => url.endsWith('/v1/usage'));
   expect(JSON.parse(sent.body).opens).toBe(1);
+});
+
+test('opening the app also asks which app its store has', async () => {
+  answer(null, 204);
+  const service = loadService();
+
+  await service.onAppOpened();
+
+  const asked = global.fetch.mock.calls.map(([url]) => url);
+  expect(asked.filter((url) => url.includes('/v1/app/latest?platform='))).toHaveLength(1);
 });
 
 test('the report says the publication it is praying with, not the one it has just downloaded', async () => {
