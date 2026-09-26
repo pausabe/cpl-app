@@ -1022,10 +1022,11 @@ const FINDINGS = [
     fix: {
       where: 'migration-to-saints/lib/citation-key.js · BOOK_ALIASES',
       summary:
-        'Completar la taula amb els llibres que hi falten i les formes castellanes amb -s, i posar-hi '
-        + 'un test que falli mentre una cita d’Escriptura resolgui a ANON.',
-      note: 'MIGRA-015. Cap efecte sobre les dades: només sobre com la revisió les compara.',
-      promptable: true,
+        'Corregit: BOOK_ALIASES completa i el test «knows every book the two editions name», que '
+        + 'sense el pedaç fa caure 22 dels 31 casos.',
+      note: 'MIGRA-015, 25-IX-2026. Queda tornar a passar el join i l’exportació perquè les 87 '
+        + 'lectures arribin a saints-app.',
+      promptable: false,
     },
   },
 ];
@@ -1069,9 +1070,6 @@ const CLAIMS = {
     && /^(primer|segundo|tercer)_salmo_(cita|texto)$/.test(row.key),
   F24: (date, row) => date === '2026-09-14' && row.hour === 'Mass'
     && String(row.key).startsWith('FIRSTLECTURE'),
-  // Ecle vs Ecles: mateix llibre, un àlies que falta a la taula.
-  F25: (date, row) => date === '2026-09-25' && row.hour === 'Mass'
-    && row.key === 'FIRSTLECTURE_ref',
 };
 
 function claimFor(date, row) {
