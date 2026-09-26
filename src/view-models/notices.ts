@@ -61,8 +61,8 @@ export function dioceseOfferTexts(currentDiocese: string, openedBefore: boolean)
   return {
     title: openedBefore ? `Estàs resant amb la diòcesi de ${currentDiocese}` : 'De quina diòcesi ets?',
     body: openedBefore
-      ? 'És la que porta l’aplicació de sèrie, i potser no és la teva. El calendari i els sants del dia en depenen.'
-      : 'El calendari i els sants del dia canvien segons la diòcesi. Podem trobar la teva amb la ubicació del telèfon, o la tries tu mateix.',
+      ? 'És la que porta l’aplicació de sèrie, i potser no és la teva. Les celebracions pròpies en depenen.'
+      : 'Cada diòcesi té les seves celebracions pròpies. Podem trobar la teva amb la ubicació del telèfon, o la pots triar de la llista.',
     find: USE_MY_LOCATION,
     choose: 'La trio jo',
   };

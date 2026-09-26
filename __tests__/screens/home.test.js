@@ -347,17 +347,54 @@ test('the offer closes without writing when they already had the diocese they ar
   expect(await findText('Girona (Diòcesi)')).toBeTruthy();
 });
 
-test('«La trio jo» puts the offer away and opens Configuració', async () => {
+test('«La trio jo» turns the offer into the list, and the diocese chosen is saved and drawn', async () => {
   await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
   await screen.findByTestId('diocese-offer');
 
+  fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+
+  // The same sheet, now the list, with the one they are praying with ticked; nothing written yet
+  expect(screen.getByTestId('diocese-offer')).toBeTruthy();
+  expect(screen.getByRole('header', { name: 'Diòcesi' })).toBeTruthy();
+  expect(screen.getByRole('radio', { name: 'Barcelona' }).props.accessibilityState.checked).toBe(true);
+  expect(screen.getByRole('radio', { name: 'Girona' }).props.accessibilityState.checked).toBe(false);
+  expect(await AsyncStorage.getItem('diocesis')).toBeNull();
+
   await act(async () => {
-    fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+    fireEvent.press(screen.getByRole('radio', { name: 'Girona' }));
   });
 
   await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
-  // Configuració is open: its own diocese picker is there, with what they still have
-  expect(await findText('Himnes en llatí')).toBeTruthy();
-  expect(screen.getByRole('button', { name: 'Diòcesi: Barcelona' })).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
   expect(await AsyncStorage.getItem('DioceseOfferSeen')).toBe('true');
+  // Still on the home, not taken anywhere
+  expect(await findText('Girona (Diòcesi)')).toBeTruthy();
+  expect(screen.queryByText('Himnes en llatí')).toBeNull();
+});
+
+test('choosing the diocese they already had saves it: from then on it is theirs', async () => {
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+
+  fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+  await act(async () => {
+    fireEvent.press(screen.getByRole('radio', { name: 'Barcelona' }));
+  });
+
+  await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Barcelona');
+  expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
+});
+
+test('closing the list without choosing puts the offer away and writes nothing', async () => {
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+
+  fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+  fireEvent.press(screen.getByTestId('diocese-offer-backdrop', { includeHiddenElements: true }));
+
+  await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
+  expect(await AsyncStorage.getItem('diocesis')).toBeNull();
+  expect(await AsyncStorage.getItem('DioceseOfferSeen')).toBe('true');
+  expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
 });
