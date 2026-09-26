@@ -594,8 +594,9 @@ function getSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, 
 }
 
 // A memorial of a saint: what it has of its own, and the rest from its common. Unlike the
-// solemnities, the responsory of the Office is always its own: it has been so since before this
-// file was tidied, and whether it should also come from the common is for the liturgy to decide.
+// solemnities, the versicle of the Office (responsory) never comes from the common: on memorials the
+// psalmody is the weekday's, and the versicle goes with it (OGLH 235). Without one of its own, the
+// Office takes the weekday's (officeService.getResponsory).
 function getSaintsMemoriesHoursLiturgy(saintsMemories: SaintsMemories, settings: Settings): HoursLiturgy {
   const saint = saintsMemories;
   const common = saint.commonOffices;
