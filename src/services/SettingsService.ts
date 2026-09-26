@@ -43,11 +43,10 @@ export enum DarkModeOption {
   System = 'Automàtic',
 }
 
+// What a fresh install prays with. Everything is stored as text, as it always has been.
 const defaultSettings = {
-  showGlories: 'false',
-  prayLliures: 'false',
   useLatin: 'false',
-  textSize: '3', //1-5
+  textSize: '3', //1-10
   diocesis: DioceseName.Barcelona,
   lloc: PrayingPlace.Diocese,
   dayStart: '0', //Values from 0 to 3 allowed, which means 00:00AM, 01:00AM, 02:00AM and 03:00AM
@@ -57,65 +56,42 @@ const defaultSettings = {
   showVideos: 'false',
 };
 
+type SettingKey = keyof typeof defaultSettings;
+
+// What is stored under a key, or its default when there is nothing (or an empty text)
+async function storedValue(key: SettingKey): Promise<string> {
+  const value = await StorageService.getData(key);
+  return value == null ? defaultSettings[key] : value;
+}
+
+// Stores a value only if it is one of those allowed: a bad diocese would break every query
+function storeIfValid(key: SettingKey, value: string, isValid: (value: string) => boolean): Promise<void> {
+  if (isValid(value)) return StorageService.storeData(key, value);
+  return Promise.reject(new Error('Invalid value'));
+}
+
+// Whether a value is one of those of an enumeration
+function isOneOf(options: Record<string, string>, value: string): boolean {
+  return Object.values(options).includes(value);
+}
+
+const isBoolean = (value: string) => value === 'true' || value === 'false';
+
 export default class SettingsService {
-  /**
-   * The undescore means that the method is "private", DO NOT USE outside of SettingsService
-   *
-   * Returns an asynchronous Promise with the callback set when callback is a Function, if not, returns just the Promise.
-   */
-  static _getStorageValue(key, callback, defaultValue) {
-    let getPromise = StorageService.getData(key);
-    let settingsPromise = new Promise((resolve, reject) => {
-      getPromise
-        .then((value) => {
-          resolve(value == null ? defaultValue : value);
-        })
-        .catch((error) => reject(error));
-    });
-    if (callback instanceof Function) {
-      settingsPromise.then(callback);
-    }
-    return settingsPromise;
+  static getSettingUseLatin(): Promise<string> {
+    return storedValue('useLatin');
   }
 
-  static _setStorageValue(key, value, callback) {
-    let savePromise = StorageService.storeData(key, value);
-    if (callback) savePromise.then(callback);
-    return savePromise;
+  static getSettingTextSize(): Promise<string> {
+    return storedValue('textSize');
   }
 
-  static _setValueIfValid(key, value, validateFunc, callback) {
-    if (!(validateFunc instanceof Function) || validateFunc(value)) {
-      return SettingsService._setStorageValue(key, value, callback);
-    } else {
-      return new Promise((resolve, reject) => {
-        reject(new Error('Invalid value'));
-      });
-    }
+  static getSettingDarkMode(): Promise<string> {
+    return storedValue('darkMode');
   }
 
-  static getSettingShowGlories(callback) {
-    return SettingsService._getStorageValue('showGlories', callback, defaultSettings.showGlories);
-  }
-
-  static getSettingOptionalFestivity(callback) {
-    return SettingsService._getStorageValue('prayLliures', callback, defaultSettings.prayLliures);
-  }
-
-  static getSettingUseLatin(callback?) {
-    return SettingsService._getStorageValue('useLatin', callback, defaultSettings.useLatin);
-  }
-
-  static getSettingTextSize(callback?) {
-    return SettingsService._getStorageValue('textSize', callback, defaultSettings.textSize);
-  }
-
-  static getSettingDarkMode(callback?) {
-    return SettingsService._getStorageValue('darkMode', callback, defaultSettings.darkMode);
-  }
-
-  static getSettingDiocese(callback?) {
-    return SettingsService._getStorageValue('diocesis', callback, defaultSettings.diocesis);
+  static getSettingDiocese(): Promise<string> {
+    return storedValue('diocesis');
   }
 
   /**
@@ -128,122 +104,60 @@ export default class SettingsService {
     return stored !== undefined && stored !== null && stored !== '';
   }
 
-  static getSettingPrayingPlace(callback?) {
-    return SettingsService._getStorageValue('lloc', callback, defaultSettings.lloc);
+  static getSettingPrayingPlace(): Promise<string> {
+    return storedValue('lloc');
   }
 
-  static getSettingDayStart(callback) {
-    return SettingsService._getStorageValue('dayStart', callback, defaultSettings.dayStart);
+  static getSettingDayStart(): Promise<string> {
+    return storedValue('dayStart');
   }
 
-  static getSettingInvitationPsalm(callback?) {
-    return SettingsService._getStorageValue('salmInvitatori', callback, defaultSettings.salmInvitatori);
+  static getSettingInvitationPsalm(): Promise<string> {
+    return storedValue('salmInvitatori');
   }
 
-  static getSettingVirginAntiphon(callback?) {
-    return SettingsService._getStorageValue('antMare', callback, defaultSettings.antMare);
+  static getSettingVirginAntiphon(): Promise<string> {
+    return storedValue('antMare');
   }
 
-  static getSettingShowVideos(callback?) {
-    return SettingsService._getStorageValue('showVideos', callback, defaultSettings.showVideos);
+  static getSettingShowVideos(): Promise<string> {
+    return storedValue('showVideos');
   }
 
-  static setSettingShowGlories(value, callback) {
-    return SettingsService._setValueIfValid('showGlories', value, (val) => val || !val, callback);
+  static setSettingUseLatin(value: string): Promise<void> {
+    return storeIfValid('useLatin', value, isBoolean);
   }
 
-  static setSettingUseLatin(value, callback) {
-    return SettingsService._setValueIfValid('useLatin', value, (val) => val === 'true' || val === 'false', callback);
+  // A whole number
+  static setSettingTextSize(value: string): Promise<void> {
+    return storeIfValid('textSize', value, (val) => !isNaN(Number(val)) && (parseFloat(val) * 10) % 10 == 0);
   }
 
-  static setSettingOptionalFestivity(value, callback) {
-    return SettingsService._setValueIfValid('prayLliures', value, (val) => val || !val, callback);
+  static setSettingDarkMode(value: string): Promise<void> {
+    return storeIfValid('darkMode', value, (val) => isOneOf(DarkModeOption, val));
   }
 
-  static setSettingTextSize(value, callback) {
-    return SettingsService._setValueIfValid(
-      'textSize',
-      value,
-      (val) => !isNaN(val) && (parseFloat(val) * 10) % 10 == 0,
-      callback,
-    );
+  static setSettingDiocese(value: string): Promise<void> {
+    return storeIfValid('diocesis', value, (val) => isOneOf(DioceseName, val));
   }
 
-  static setSettingDarkMode(value, callback) {
-    return SettingsService._setValueIfValid(
-      'darkMode',
-      value,
-      (val) => {
-        return findValueInObject(DarkModeOption, val);
-      },
-      callback,
-    );
+  static setSettingPrayingPlace(value: string): Promise<void> {
+    return storeIfValid('lloc', value, (val) => isOneOf(PrayingPlace, val));
   }
 
-  static setSettingDiocese(value, callback) {
-    return SettingsService._setValueIfValid(
-      'diocesis',
-      value,
-      (val) => {
-        return findValueInObject(DioceseName, val);
-      },
-      callback,
-    );
+  static setSettingDayStart(value: string): Promise<void> {
+    return storeIfValid('dayStart', value, (val) => val == '0' || val == '1' || val == '2' || val == '3');
   }
 
-  static setSettingPrayingPlace(value, callback) {
-    return SettingsService._setValueIfValid(
-      'lloc',
-      value,
-      (val) => {
-        return findValueInObject(PrayingPlace, val);
-      },
-      callback,
-    );
+  static setSettingInvitationPsalm(value: string): Promise<void> {
+    return storeIfValid('salmInvitatori', value, (val) => isOneOf(InvitationPsalmOption, val));
   }
 
-  static setSettingDayStart(value, callback) {
-    return SettingsService._setValueIfValid(
-      'dayStart',
-      value,
-      (val) => val == '0' || val == '1' || val == '2' || val == '3',
-      callback,
-    );
+  static setSettingVirginAntiphon(value: string): Promise<void> {
+    return storeIfValid('antMare', value, (val) => isOneOf(VirginAntiphonOption, val));
   }
 
-  static setSettingInvitationPsalm(value) {
-    return SettingsService._setValueIfValid(
-      'salmInvitatori',
-      value,
-      (val) => {
-        return findValueInObject(InvitationPsalmOption, val);
-      },
-      undefined,
-    );
+  static setSettingShowVideos(value: string): Promise<void> {
+    return storeIfValid('showVideos', value, isBoolean);
   }
-
-  static setSettingVirginAntiphon(value) {
-    return SettingsService._setValueIfValid(
-      'antMare',
-      value,
-      (val) => {
-        return findValueInObject(VirginAntiphonOption, val);
-      },
-      undefined,
-    );
-  }
-
-  static setSettingShowVideos(value, callback) {
-    return SettingsService._setValueIfValid('showVideos', value, (val) => val === 'true' || val === 'false', callback);
-  }
-}
-
-function findValueInObject(obj, value) {
-  let found = false;
-  for (let key in obj) {
-    if (obj[key] == value) {
-      found = true;
-    }
-  }
-  return found;
 }

@@ -55,8 +55,8 @@ export default function MassLiturgyPrayerScreen({
   const [gospelType, setGospelType] = useState('normal');
   const showEasterVigilReadingsAndPsalms = type === 'VetllaPasquaLecturesSalms';
   const showPalmSunday = type === 'Rams';
-  // The Mass of the evening before, or the one of the day
-  const mass = useVespersTexts ? massLiturgy.vespers : massLiturgy.today;
+  // The Mass of the evening before (which is there when the home offers it), or the one of the day
+  const mass = (useVespersTexts ? massLiturgy.vespers : massLiturgy.today) as DayMassLiturgy;
 
   return content();
 

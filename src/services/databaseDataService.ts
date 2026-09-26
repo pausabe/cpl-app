@@ -8,6 +8,9 @@ import { DioceseName, PrayingPlace } from './SettingsService';
 import { DioceseCode } from './databaseEnums';
 import * as DatabaseHelper from './databaseDataHelper';
 
+// A row as the database gives it: its columns by name
+type DatabaseRow = Record<string, any>;
+
 export function getDatabaseVersion(): Promise<number> {
   return new Promise((resolve) => {
     executeQueryAsync(`SELECT IFNULL(MAX(id), 0) As databaseVersion FROM _tables_log`)
@@ -147,7 +150,7 @@ export async function obtainFreeVirginMemoryAsync() {
   return result[0];
 }
 
-export async function obtainCommonOfficesAsync(category) {
+export async function obtainCommonOfficesAsync(category: string) {
   let query = `SELECT * FROM OficisComuns WHERE Categoria = '${category}'`;
   const result = await executeQueryAsync(query);
   return result[0];
@@ -183,7 +186,7 @@ export async function getNormalDaysMassLiturgy(liturgyDayInformation: LiturgySpe
   return rowToMassLiturgy(result[index]);
 }
 
-function rowToMassLiturgy(row): DayMassLiturgy {
+function rowToMassLiturgy(row: DatabaseRow | undefined): DayMassLiturgy {
   let dayMassLiturgy = new DayMassLiturgy();
   if (row !== undefined) {
     dayMassLiturgy.hasGlory = row.Gloria === '1';
@@ -238,7 +241,13 @@ async function dateIsMoved(date: Date, dioceseCode2Letters: string): Promise<boo
   return result.length > 0;
 }
 
-function findCorrectIndexFromSettings(result, length, diocese, dioceseName, place) {
+function findCorrectIndexFromSettings(
+  result: DatabaseRow[],
+  length: number,
+  diocese: string,
+  dioceseName: string,
+  place: string,
+): number {
   //Cathedral < City < Diocese < -
   if (length === 1) return 0;
   let auxDioceseName = dioceseName;
@@ -273,7 +282,12 @@ function findCorrectIndexFromSettings(result, length, diocese, dioceseName, plac
   return 0;
 }
 
-function getNormalDaysMassLiturgyIndex(result, cycleABC, evenOrOdd, dayOfTheWeek) {
+function getNormalDaysMassLiturgyIndex(
+  result: DatabaseRow[],
+  cycleABC: string,
+  evenOrOdd: string,
+  dayOfTheWeek: string,
+): number {
   let i;
   //For getLDSantoral it is necessary to keep in result just the rows with dayOfTheWeek (just in case any of them have dayOfTheWeek != '-')
   let haveSomeDayOfTheWeek = false;

@@ -154,8 +154,7 @@ export default class EasterSunday {
   officeThirdPsalm: EasterOfficePsalm = new EasterOfficePsalm();
   officeFourthReading: ReadingOfTheOffice = new ReadingOfTheOffice();
   officeFourthPsalm: EasterOfficePsalm = new EasterOfficePsalm();
-  officeFinalPrayer;
-  string;
+  officeFinalPrayer: string;
   laudesLatinAnthem: string;
   laudesCatalanAnthem: string;
   laudesFirstPsalm: Psalm = new Psalm();

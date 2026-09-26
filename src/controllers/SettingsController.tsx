@@ -147,23 +147,23 @@ export default function SettingsController() {
         onDarkModeChange={textSettings.onDarkModeChange}
         onLatinChange={async (enabled) => {
           change({ useLatin: enabled });
-          await SettingsService.setSettingUseLatin(enabled ? 'true' : 'false', undefined);
+          await SettingsService.setSettingUseLatin(enabled ? 'true' : 'false');
           await reloadLiturgy();
         }}
         onDioceseChange={async (diocese) => {
           change({ diocese });
           setLocationStatus('idle');
-          await SettingsService.setSettingDiocese(diocese, undefined);
+          await SettingsService.setSettingDiocese(diocese);
           await reloadLiturgy();
         }}
         onPlaceChange={async (place) => {
           change({ place });
-          await SettingsService.setSettingPrayingPlace(place, undefined);
+          await SettingsService.setSettingPrayingPlace(place);
           await reloadLiturgy();
         }}
         onShowVideosChange={async (enabled) => {
           change({ showVideos: enabled });
-          await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false', undefined);
+          await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false');
         }}
         onAskAgainForTheDatabase={() => {
           askAgainOnTheNextOpening().catch(() => undefined);

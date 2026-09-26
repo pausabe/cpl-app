@@ -44,7 +44,7 @@ export class DateManagement {
     );
   }
 
-  static weekDayName(num) {
+  static weekDayName(num: number) {
     switch (num) {
       case 0:
         return 'Diumenge';

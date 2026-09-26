@@ -341,7 +341,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
 
   // Saved even when it is the one they already had: from now on it is theirs, chosen
   const chooseDiocese = async (diocese: string) => {
-    await SettingsService.setSettingDiocese(diocese, undefined);
+    await SettingsService.setSettingDiocese(diocese);
     closeDioceseOffer();
     if (diocese !== dioceseOffer?.current) await load(LiturgyStore.currentDate());
   };

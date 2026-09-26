@@ -89,8 +89,8 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
 
 async function obtainCurrentSettings(date: Date): Promise<Settings> {
   let currentSettings = new Settings();
-  currentSettings.prayingPlace = (await SettingsService.getSettingPrayingPlace()) as string;
-  currentSettings.dioceseName = (await SettingsService.getSettingDiocese()) as string;
+  currentSettings.prayingPlace = await SettingsService.getSettingPrayingPlace();
+  currentSettings.dioceseName = await SettingsService.getSettingDiocese();
   currentSettings.dioceseCode = getDioceseCodeFromDioceseName(
     currentSettings.dioceseName,
     currentSettings.prayingPlace,
@@ -100,10 +100,10 @@ async function obtainCurrentSettings(date: Date): Promise<Settings> {
       ? currentSettings.dioceseCode
       : currentSettings.dioceseCode.substring(0, 2);
   currentSettings.useLatin = (await SettingsService.getSettingUseLatin()) === 'true';
-  currentSettings.textSize = (await SettingsService.getSettingTextSize()) as number;
-  currentSettings.darkModeEnabled = determineDarkModeIsEnabled((await SettingsService.getSettingDarkMode()) as string);
-  currentSettings.invitationPsalmOption = (await SettingsService.getSettingInvitationPsalm()) as string;
-  currentSettings.virginAntiphonOption = (await SettingsService.getSettingVirginAntiphon()) as string;
+  currentSettings.textSize = await SettingsService.getSettingTextSize();
+  currentSettings.darkModeEnabled = determineDarkModeIsEnabled(await SettingsService.getSettingDarkMode());
+  currentSettings.invitationPsalmOption = await SettingsService.getSettingInvitationPsalm();
+  currentSettings.virginAntiphonOption = await SettingsService.getSettingVirginAntiphon();
   currentSettings.optionalFestivityEnabled = await determineOptionalFestivityEnabled(date);
   return currentSettings;
 }

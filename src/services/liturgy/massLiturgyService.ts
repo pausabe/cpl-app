@@ -28,13 +28,14 @@ export async function obtainMassLiturgy(
     todayCelebrationInformation,
     tomorrowCelebrationInformation,
   );
-  massLiturgy.vespers = massLiturgy.hasVespers
+  const vespers = massLiturgy.hasVespers
     ? await getVespersMassLiturgy(liturgyDayInformation.tomorrow, settings)
     : undefined;
-  if (massLiturgy.hasVespers && StringManagement.hasLiturgyContent(tomorrowCelebrationInformation.title)) {
-    massLiturgy.vespers.title = tomorrowCelebrationInformation.title;
-  } else if (massLiturgy.hasVespers && liturgyDayInformation.tomorrow.date.getDay() === 0) {
-    massLiturgy.vespers.title = 'Missa de diumenge';
+  massLiturgy.vespers = vespers;
+  if (vespers && StringManagement.hasLiturgyContent(tomorrowCelebrationInformation.title)) {
+    vespers.title = tomorrowCelebrationInformation.title;
+  } else if (vespers && liturgyDayInformation.tomorrow.date.getDay() === 0) {
+    vespers.title = 'Missa de diumenge';
   }
   return massLiturgy;
 }

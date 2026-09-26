@@ -4,7 +4,7 @@ import { Asset } from 'expo-asset';
 
 // Web version of DatabaseManagerService: there is no file system to copy the
 // database into, so we download the asset and open it as an in-memory database.
-let CPLDataBase = undefined;
+let CPLDataBase: SQLite.SQLiteDatabase | undefined = undefined;
 
 export async function openDatabase(databaseAsset: Asset) {
   Logger.log(
@@ -28,7 +28,7 @@ export async function executeQueryAsync(query: string): Promise<any> {
     Logger.logError(
       Logger.LogKeys.DatabaseManagerService,
       '_executeQuery',
-      new Error(`Error in query (${query}): ${error.message}`),
+      new Error(`Error in query (${query}): ${(error as Error).message}`),
     );
     throw error;
   }

@@ -174,7 +174,7 @@ async function download(manifest: DatabaseManifest): Promise<boolean> {
 // thrown away with the rest by whoever asked for the download.
 async function downloadGivingUpAfterTheTimeout(url: string): Promise<FileSystem.FileSystemDownloadResult | undefined> {
   const task = FileSystem.createDownloadResumable(url, DOWNLOAD_FILE);
-  let timer: ReturnType<typeof setTimeout>;
+  let timer: ReturnType<typeof setTimeout> | undefined;
   const giveUp = new Promise<never>((_, reject) => {
     timer = setTimeout(() => {
       // It answers on its own time, and by then nobody is listening any more

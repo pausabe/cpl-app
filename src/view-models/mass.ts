@@ -26,7 +26,8 @@ export interface DayMassInput {
 export interface MassInput {
   today: DayMassInput;
   hasVespers: boolean;
-  vespers: DayMassInput;
+  // Only when hasVespers
+  vespers?: DayMassInput;
 }
 
 export interface MassDayInput {
@@ -115,13 +116,15 @@ const phraseOf = (comment: string) => (hasVisibleText(comment) ? singleLine(comm
 
 export function buildMass({ today, tomorrow, mass, choice }: MassBlockInput): MassBlock {
   const vespers = choice === 'vespers' && !!mass.hasVespers;
-  const selected = vespers ? mass.vespers : mass.today;
+  // The evening Mass is there whenever hasVespers says so
+  const eveningMass = mass.vespers as DayMassInput;
+  const selected = vespers ? eveningMass : mass.today;
   const params: MassScreenParams = {
     needSecondReading: hasContent(selected.secondReading.reading),
     useVespersTexts: choice === 'vespers',
   };
   const selector = mass.hasVespers
-    ? { choice, vespersTitle: hasContent(mass.vespers.title) ? mass.vespers.title : '' }
+    ? { choice, vespersTitle: hasContent(eveningMass.title) ? eveningMass.title : '' }
     : null;
 
   // Holy Saturday: the Easter Vigil
@@ -169,7 +172,7 @@ export function buildMass({ today, tomorrow, mass, choice }: MassBlockInput): Ma
     selector,
     gospel: {
       caption: gospelCaption(
-        vespers && hasContent(mass.vespers.title) ? mass.vespers.title : null,
+        vespers && hasContent(eveningMass.title) ? eveningMass.title : null,
         selected.gospel.quote,
       ),
       phrase: phraseOf(selected.gospel.comment),

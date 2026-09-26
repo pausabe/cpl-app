@@ -410,7 +410,7 @@ function getEvangelicalAntiphon(
   liturgyMasters: LiturgyMasters,
   liturgyDayInformation: LiturgySpecificDayInformation,
 ): string {
-  let evangelicalAntiphon;
+  let evangelicalAntiphon: string | undefined;
   if (liturgyDayInformation.dayOfTheWeek !== 0 && liturgyDayInformation.dayOfTheWeek !== 6) {
     evangelicalAntiphon = liturgyMasters.vespersCommonPsalter.evangelicalAntiphon;
   } else {
@@ -616,7 +616,8 @@ function getEvangelicalAntiphon(
       }
       break;
   }
-  return evangelicalAntiphon;
+  // Every branch gives one: the year is always A, B or C
+  return evangelicalAntiphon as string;
 }
 
 function getPrayers(liturgyMasters: LiturgyMasters, liturgyDayInformation: LiturgySpecificDayInformation): string {
