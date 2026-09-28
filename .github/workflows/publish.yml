@@ -281,7 +281,7 @@ jobs:
           echo "keychain=$KEYCHAIN" >> "$GITHUB_OUTPUT"
           echo "uuid=$UUID" >> "$GITHUB_OUTPUT"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
-          echo "Profile «$NAME»"
+          echo "Profile: $NAME"
 
       - name: Tell the project what to sign with
         env:
