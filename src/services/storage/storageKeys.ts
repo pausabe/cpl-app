@@ -10,5 +10,6 @@ let StorageKeys = {
   AppCheckDay: 'AppCheckDay',
   AppInStore: 'AppInStore',
   AppUpdateDismissed: 'AppUpdateDismissed',
+  KnownEditions: 'KnownEditions',
 };
 export default StorageKeys;

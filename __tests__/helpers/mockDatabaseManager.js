@@ -21,11 +21,19 @@ function database() {
 module.exports = {
   DB_PATH,
   DATABASE_DIRECTORY: 'file:///docs/SQLite/',
-  databaseFileName: (compat, version) => `cpl-${compat}-v${version}.db`,
-  bundledDatabaseInformation: () => bundled,
+  databaseFileName: (compat, version, edition = 'ca') =>
+    edition === 'ca' ? `cpl-${compat}-v${version}.db` : `cpl-${compat}-v${version}-${edition}.db`,
+  bundledDatabaseInformation: () => ({ ...bundled, edition: bundled.language ?? 'ca' }),
   currentDatabaseVersion: async () => bundled.version,
   // In tests the app always opens the database it carries inside
   openedDatabaseVersion: () => bundled.version,
+  // The one the database says it is, so that CPL_DB can point to another edition
+  openedDatabaseEdition: () => {
+    const edition = database()
+      .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = '_edition'")
+      .get();
+    return edition ? database().prepare('SELECT language FROM _edition').get().language : 'ca';
+  },
   openDatabase: async () => {
     database();
   },

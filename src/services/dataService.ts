@@ -1,5 +1,5 @@
 import { Appearance } from 'react-native';
-import SettingsService, { DarkModeOption } from './SettingsService';
+import SettingsService, { DarkModeOption, DEFAULT_EDITION } from './SettingsService';
 import * as DatabaseDataService from './databaseDataService';
 import * as DatabaseManagerService from './databaseManagerService';
 import { getDatabaseVersion } from './databaseDataService';
@@ -18,6 +18,7 @@ import CelebrationInformation from '../models/hours-liturgy/CelebrationInformati
 import { obtainMassLiturgy } from './liturgy/massLiturgyService';
 import { DateManagement } from '../utils/DateManagement';
 import { getDioceseCodeFromDioceseName } from './databaseDataHelper';
+import * as CalendarService from './calendarService';
 import { SpecificLiturgyTimeType } from './celebrationTimeEnums';
 import * as CelebrationIdentifierService from './celebrationIdentifierService';
 import { Celebration } from './celebrationIdentifierService';
@@ -89,12 +90,25 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
 
 async function obtainCurrentSettings(date: Date): Promise<Settings> {
   let currentSettings = new Settings();
-  currentSettings.prayingPlace = await SettingsService.getSettingPrayingPlace();
-  currentSettings.dioceseName = await SettingsService.getSettingDiocese();
-  currentSettings.dioceseCode = getDioceseCodeFromDioceseName(
-    currentSettings.dioceseName,
-    currentSettings.prayingPlace,
-  );
+  // The place saved for the edition of the database open: each edition has its own calendars
+  const edition = DatabaseManagerService.openedDatabaseEdition() ?? DEFAULT_EDITION;
+  currentSettings.prayingPlace = await SettingsService.getSettingPrayingPlace(edition);
+  currentSettings.dioceseName = await SettingsService.getSettingDiocese(edition);
+  // The code of the place in the tables of texts: the one of its calendar when the database has
+  // calendars, and otherwise the one the app has always known
+  const calendars = await CalendarService.obtainCalendars();
+  if (calendars) {
+    const place = CalendarService.resolvePlace(
+      CalendarService.placeOptions(calendars),
+      currentSettings.dioceseName,
+      currentSettings.prayingPlace,
+    );
+    currentSettings.dioceseName = place.diocese;
+    currentSettings.prayingPlace = place.place;
+  }
+  const calendar = calendars ? CalendarService.calendarOfPlace(calendars, currentSettings) : undefined;
+  currentSettings.dioceseCode =
+    calendar?.code ?? getDioceseCodeFromDioceseName(currentSettings.dioceseName, currentSettings.prayingPlace);
   currentSettings.dioceseCode2Letters =
     currentSettings.dioceseCode === DioceseCode.Andorra
       ? currentSettings.dioceseCode

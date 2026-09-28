@@ -17,6 +17,15 @@ export async function openDatabase(databaseAsset: Asset) {
   CPLDataBase = await SQLite.deserializeDatabaseAsync(databaseBytes);
 }
 
+// The web build opens only the database it carries, the Catalan one, and knows no publications
+export function openedDatabaseVersion(): number | null {
+  return null;
+}
+
+export function openedDatabaseEdition(): string | null {
+  return 'ca';
+}
+
 export async function executeQueryAsync(query: string): Promise<any> {
   if (CPLDataBase === undefined) {
     throw new Error('You must call openDatabase function to execute queries');

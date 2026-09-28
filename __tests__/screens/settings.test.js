@@ -163,6 +163,7 @@ test('in plain sight, the approval text and the versions; the technical data, be
   expect(screen.getByTestId('technical-data')).toBeTruthy();
   expect(screen.getByText(/^Publicació en ús: \d+ \(l'app va arribar amb la \d+\)$/)).toBeTruthy();
   expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
+  expect(screen.getByText('Edició: ca')).toBeTruthy();
   expect(screen.getByText(/^Identificador: (encara cap|[0-9a-f]{32})/)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
 });

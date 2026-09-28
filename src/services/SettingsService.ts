@@ -43,6 +43,20 @@ export enum DarkModeOption {
   System = 'Automàtic',
 }
 
+// The edition is the language of the texts: each one is a database of its own, published apart
+// (cpl-cloud), with its own calendars. The Catalan one is the one the app carries inside, and the
+// only one there was before.
+export const DEFAULT_EDITION = 'ca';
+
+// How each edition calls itself in the list, in its own language, as languages are listed
+export const EDITION_NAMES: Record<string, string> = { ca: 'Català', es: 'Castellano' };
+
+export function editionName(edition: string): string {
+  return EDITION_NAMES[edition] ?? edition;
+}
+
+const EDITION_PATTERN = /^[a-z]{2}$/;
+
 // What a fresh install prays with. Everything is stored as text, as it always has been.
 const defaultSettings = {
   useLatin: 'false',
@@ -54,6 +68,7 @@ const defaultSettings = {
   antMare: VirginAntiphonOption.Antiphon1,
   darkMode: DarkModeOption.System,
   showVideos: 'false',
+  edicio: DEFAULT_EDITION,
 };
 
 type SettingKey = keyof typeof defaultSettings;
@@ -77,6 +92,18 @@ function isOneOf(options: Record<string, string>, value: string): boolean {
 
 const isBoolean = (value: string) => value === 'true' || value === 'false';
 
+// The diocese and the place are kept for each edition: going over to another one and coming back
+// finds the place where it was left. The Catalan ones stay under the keys they always had. Another
+// edition has no default: its place is the first of its calendars until one is chosen.
+function placeKey(key: 'diocesis' | 'lloc', edition: string): string {
+  return edition === DEFAULT_EDITION ? key : `${key}-${edition}`;
+}
+
+async function storedPlaceValue(key: 'diocesis' | 'lloc', edition: string): Promise<string> {
+  if (edition === DEFAULT_EDITION) return storedValue(key);
+  return ((await StorageService.getData(placeKey(key, edition))) as string | null) ?? '';
+}
+
 export default class SettingsService {
   static getSettingUseLatin(): Promise<string> {
     return storedValue('useLatin');
@@ -90,8 +117,10 @@ export default class SettingsService {
     return storedValue('darkMode');
   }
 
-  static getSettingDiocese(): Promise<string> {
-    return storedValue('diocesis');
+  // Of the Catalan edition unless another one is said: the one the app has open is what counts
+  // for the texts (see dataService)
+  static getSettingDiocese(edition: string = DEFAULT_EDITION): Promise<string> {
+    return storedPlaceValue('diocesis', edition);
   }
 
   /**
@@ -104,8 +133,14 @@ export default class SettingsService {
     return stored !== undefined && stored !== null && stored !== '';
   }
 
-  static getSettingPrayingPlace(): Promise<string> {
-    return storedValue('lloc');
+  static getSettingPrayingPlace(edition: string = DEFAULT_EDITION): Promise<string> {
+    return storedPlaceValue('lloc', edition);
+  }
+
+  // The edition chosen, which is not always the one open: until the phone has its database, the app
+  // prays with the one it carries (see databaseManagerService)
+  static getSettingEdition(): Promise<string> {
+    return storedValue('edicio');
   }
 
   static getSettingDayStart(): Promise<string> {
@@ -137,12 +172,30 @@ export default class SettingsService {
     return storeIfValid('darkMode', value, (val) => isOneOf(DarkModeOption, val));
   }
 
-  static setSettingDiocese(value: string): Promise<void> {
-    return storeIfValid('diocesis', value, (val) => isOneOf(DioceseName, val));
+  // The dioceses and places allowed are those of the calendars of the database, when it has them
+  // (see calendarService); otherwise, those of before
+  static setSettingDiocese(
+    value: string,
+    allowed: string[] = Object.values(DioceseName),
+    edition: string = DEFAULT_EDITION,
+  ): Promise<void> {
+    if (edition === DEFAULT_EDITION) return storeIfValid('diocesis', value, (val) => allowed.includes(val));
+    if (!allowed.includes(value)) return Promise.reject(new Error('Invalid value'));
+    return StorageService.storeData(placeKey('diocesis', edition), value);
   }
 
-  static setSettingPrayingPlace(value: string): Promise<void> {
-    return storeIfValid('lloc', value, (val) => isOneOf(PrayingPlace, val));
+  static setSettingPrayingPlace(
+    value: string,
+    allowed: string[] = Object.values(PrayingPlace),
+    edition: string = DEFAULT_EDITION,
+  ): Promise<void> {
+    if (edition === DEFAULT_EDITION) return storeIfValid('lloc', value, (val) => allowed.includes(val));
+    if (!allowed.includes(value)) return Promise.reject(new Error('Invalid value'));
+    return StorageService.storeData(placeKey('lloc', edition), value);
+  }
+
+  static setSettingEdition(value: string): Promise<void> {
+    return storeIfValid('edicio', value, (val) => EDITION_PATTERN.test(val));
   }
 
   static setSettingDayStart(value: string): Promise<void> {
