@@ -36,20 +36,29 @@ export interface OptionalMemory {
   caption: string;
 }
 
+// A celebration with a rank ("Festa", "Memòria lliure"…): the card says it under a line, apart
+// from the day in its season
+export interface Celebration {
+  typeLabel: string;
+  title: string;
+  // An optional memorial that is not being celebrated: its label and title go grey
+  muted: boolean;
+  description: string | null;
+  optionalMemory: OptionalMemory | null;
+}
+
 export interface DayCard {
   place: string;
   dateText: string;
   colorCode: ColorCode;
   colorName: string;
-  // "Festa", "Memòria lliure"… only when a celebration has a title
-  typeLabel: string | null;
+  // The day in its season: "Setmana XXV de durant l'any", "Octava de Nadal", "Temps de Nadal", or
+  // the proper name of a day of the season ("Diumenge de Rams"). Never the weekday, which the
+  // date says.
   title: string;
-  // An optional memorial that is not being celebrated: its label and title go grey
-  muted: boolean;
-  // "Setmana XXV · Any A · Setmana I del salteri"
+  // "Any A · Setmana I del salteri", with the season first when the title does not say it
   meta: string;
-  description: string | null;
-  optionalMemory: OptionalMemory | null;
+  celebration: Celebration | null;
 }
 
 const COLOR_NAMES: Record<ColorCode, string> = { R: 'Vermell', V: 'Verd', M: 'Morat', B: 'Blanc' };
@@ -61,14 +70,6 @@ export function colorCode(code: unknown): ColorCode {
 
 const isOptionalMemory = (type: string) =>
   type === CelebrationType.OptionalMemory || type === CelebrationType.OptionalVirginMemory;
-
-// Celebrations that fall on a weekday of a week: the week is said next to the title
-const WEEKDAY_CELEBRATIONS: string[] = [
-  CelebrationType.Festivity,
-  CelebrationType.Memory,
-  CelebrationType.OptionalMemory,
-  CelebrationType.OptionalVirginMemory,
-];
 
 const validNumber = (value: string) => value !== '0' && value !== '.' && hasVisibleText(value);
 
@@ -89,15 +90,28 @@ export function weekText(day: DayInput): string | null {
   return null;
 }
 
-// The week of a celebration, on the line under its title: "Setmana XXV", and out of the ordinary
-// time "Setmana II de Quaresma". Without the weekday, which the date above already says: with it
-// ("Dilluns de la setmana XXV · Any A · …") the line always took two. The days after Ash
+// The week in its season, the title of the card: "Setmana XXV de durant l'any", "Setmana II de
+// Quaresma". Without the weekday, which the date above already says. The days after Ash
 // Wednesday have no week: "Dijous després de Cendra".
 export function weekOfSeason(day: DayInput): string | null {
   if (!validNumber(day.week)) return weekText(day);
   const week = `Setmana ${romanize(day.week)}`;
   const season = day.genericLiturgyTime;
-  return !season || season === GenericLiturgyTimeType.Ordinary ? week : `${week} ${ofName(season)}`;
+  if (!season) return week;
+  return season === GenericLiturgyTimeType.Ordinary ? `${week} de durant l'any` : `${week} ${ofName(season)}`;
+}
+
+// The octaves go by that name, not by the week: in the Christmas octave the database's week is
+// that of the psalter, and Christmas would be «Setmana IV de Nadal». Easter Sunday opens its own.
+export function octaveName(specificLiturgyTime: string): string | null {
+  switch (specificLiturgyTime) {
+    case SpecificLiturgyTimeType.ChristmasOctave:
+      return 'Octava de Nadal';
+    case SpecificLiturgyTimeType.EasterSunday:
+    case SpecificLiturgyTimeType.EasterOctave:
+      return 'Octava de Pasqua';
+  }
+  return null;
 }
 
 // What HomeScreen.transfromCelTypeName wrote above the title
@@ -121,49 +135,81 @@ export function optionalMemoryCaption(enabled: boolean): string {
   return enabled ? 'Avui es resa la memòria.' : 'Si no l’actives, avui es resa la fèria.';
 }
 
+// The season as the title of the day: "Temps de Pasqua", not "Pasqua", which on its own reads as
+// Easter Day
+export function seasonTitle(genericLiturgyTime: string): string {
+  switch (genericLiturgyTime) {
+    case '':
+    case GenericLiturgyTimeType.Ordinary:
+    case GenericLiturgyTimeType.PaschalTriduum:
+      return seasonName(genericLiturgyTime);
+  }
+  return `Temps ${ofName(genericLiturgyTime)}`;
+}
+
+// The title of the day in its season, and whether it already names the season ("Octava de
+// Pasqua", "Fèria d’Advent", but not "Diumenge de Rams")
+function dayInSeason(
+  day: DayInput,
+  properName: string | null,
+  solemnity: boolean,
+): { title: string; saysSeason: boolean } {
+  if (properName) return { title: properName, saysSeason: properName.includes(day.genericLiturgyTime) };
+  const octave = octaveName(day.specificLiturgyTime);
+  if (octave) return { title: octave, saysSeason: true };
+  // A solemnity takes the whole day, and its week says nothing (Pentecost would be the eighth
+  // week of Easter). In Christmas time the database's week is that of the psalter: there are no
+  // weeks of Christmas.
+  const week = solemnity || day.genericLiturgyTime === GenericLiturgyTimeType.Christmas ? null : weekOfSeason(day);
+  if (week) return { title: week, saysSeason: validNumber(day.week) };
+  return { title: seasonTitle(day.genericLiturgyTime), saysSeason: true };
+}
+
+function buildCelebration(
+  day: DayInput,
+  celebration: CelebrationInput,
+  typeLabel: string,
+  settings: PlaceAndOptionsInput,
+): Celebration {
+  const optional = isOptionalMemory(day.celebrationType);
+  const enabled = !!settings.optionalFestivityEnabled;
+  return {
+    typeLabel,
+    title: celebration.title,
+    muted: optional && !enabled,
+    description: hasContent(celebration.description) ? celebration.description : null,
+    optionalMemory: optional ? { enabled, caption: optionalMemoryCaption(enabled) } : null,
+  };
+}
+
 export function buildDayCard(day: DayInput, celebration: CelebrationInput, settings: PlaceAndOptionsInput): DayCard {
   const hasTitle = hasContent(celebration.title);
-  const season = seasonName(day.genericLiturgyTime);
-  const week = weekText(day);
+  const typeLabel = hasTitle ? celebrationTypeLabel(day.celebrationType, day.genericLiturgyTime) : null;
+  // A day of the season with a name of its own and no rank (Palm Sunday, the Triduum, the days
+  // of the Easter octave) is the day itself: it goes on top, with nothing under the line
+  const { title, saysSeason } = dayInSeason(
+    day,
+    hasTitle && !typeLabel ? celebration.title : null,
+    typeLabel !== null && day.celebrationType === CelebrationType.Solemnity,
+  );
 
-  let title: string;
-  let first: string | null;
-  if (hasTitle) {
-    title = celebration.title;
-    first = week && WEEKDAY_CELEBRATIONS.includes(day.celebrationType) ? weekOfSeason(day) : season;
-  } else if (week) {
-    title = week;
-    first = season;
-  } else {
-    title = season;
-    first = null;
-  }
   const cycle = validNumber(day.weekCycle);
   const meta = [
-    first,
+    saysSeason ? null : seasonName(day.genericLiturgyTime),
     cycle && hasVisibleText(day.yearType) ? `Any ${day.yearType}` : null,
     cycle ? `Setmana ${romanize(day.weekCycle)} del salteri` : null,
   ]
     .filter(Boolean)
     .join(' · ');
 
-  const optional = hasTitle && isOptionalMemory(day.celebrationType);
   const code = colorCode(day.liturgyColor);
   return {
     place: `${settings.dioceseName} (${settings.prayingPlace})`,
     dateText: longDate(day.date),
     colorCode: code,
     colorName: COLOR_NAMES[code],
-    typeLabel: hasTitle ? celebrationTypeLabel(day.celebrationType, day.genericLiturgyTime) : null,
     title,
-    muted: optional && !settings.optionalFestivityEnabled,
     meta,
-    description: hasTitle && hasContent(celebration.description) ? celebration.description : null,
-    optionalMemory: optional
-      ? {
-          enabled: !!settings.optionalFestivityEnabled,
-          caption: optionalMemoryCaption(!!settings.optionalFestivityEnabled),
-        }
-      : null,
+    celebration: typeLabel ? buildCelebration(day, celebration, typeLabel, settings) : null,
   };
 }
