@@ -11,8 +11,14 @@ IPHONE_APP := ios/build/Build/Products/Release-iphoneos/CPL.app
 # The first Android emulator or phone connected, and the first iOS simulator open
 ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
 IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
-# The first iPhone connected (by cable, or over the network with Xcode open)
-IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
+# The first iPhone connected (by cable, or over the network with Xcode open). One on the cable
+# whose link with the Mac has dropped (after days locked, or a new Xcode) is only "available
+# (paired)": it counts too, after the connected ones, and ios-device brings the link back. Over
+# the network only a connected one counts, since other paired iPhones may be on the same wifi.
+IPHONE = $(shell xcrun devicectl list devices --quiet --json-output /dev/stdout 2>/dev/null | jq -r '\
+	[.result.devices[]? | select(.hardwareProperties.deviceType == "iPhone" and .hardwareProperties.reality == "physical") \
+	| select(.connectionProperties.tunnelState == "connected" or .connectionProperties.transportType == "wired")] \
+	| sort_by(.connectionProperties.tunnelState != "connected") | .[0].hardwareProperties.udid // empty')
 
 .PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
 
@@ -209,6 +215,7 @@ ios-app:
 # signed with Joan's team (N65TK8GHAL). It needs Xcode 26.4 or later (Swift 6.3, for Expo 57).
 ios-device:
 	@test -n "$(IPHONE)" || (echo "No iPhone connected (xcrun devicectl list devices)" && exit 1)
+	xcrun devicectl device info details --device $(IPHONE) > /dev/null
 	npx expo prebuild -p ios --clean
 	sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = cpl\.cpl;/PRODUCT_BUNDLE_IDENTIFIER = cpl.cpl.dev;/' ios/CPL.xcodeproj/project.pbxproj
 	plutil -replace CFBundleDisplayName -string "CPL 9" ios/CPL/Info.plist
