@@ -142,6 +142,17 @@ base64 -i AuthKey_XXXXXXXX.p8 | gh secret set APP_STORE_CONNECT_KEY --repo pausa
 Certificates and profiles expire, the certificate after a year: when a run stops signing, that is
 the first thing to look at.
 
+## Why TestFlight does not ask about encryption
+
+Every build used to sit in TestFlight waiting for someone to answer «Missing Compliance» by hand
+before anyone could install it. The answer is always the same: the app uses no encryption of its
+own, only the HTTPS of the system, which is exempt. That answer is now written in `app.json`, as
+`ios.infoPlist.ITSAppUsesNonExemptEncryption: false`, and `expo prebuild` puts it in the
+Info.plist of every build.
+
+If the app ever did add encryption of its own, that line would stop being true and would have to
+go.
+
 ## When something goes wrong
 
 - **The bundle is signed with the debug key.** The Expo template changed and
