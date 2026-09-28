@@ -46,51 +46,48 @@ write_version() {
     -m "Built as $BUILD and taken by $STORES.${RUN:+ Written by the Publish workflow: $RUN}"
 }
 
+# The token a workflow runs with cannot push a tag with git: GitHub counts a new tag as bringing
+# in every file, `.github/workflows/publish.yml` among them, and refuses it. Through the API it is
+# not a push and `contents: write` is enough, but then the commit has to be on the server already.
+# That is why master goes first and the tag is put on what ended up there.
+tag_release() {
+  if [ -z "${GITHUB_REPOSITORY:-}" ]; then
+    git tag -a "$TAG" -m "CPL $VERSION ($BUILD): $STORES" "$RELEASE"
+    git push -q origin "refs/tags/$TAG"
+    return
+  fi
+  local object
+  object=$(gh api "repos/$GITHUB_REPOSITORY/git/tags" \
+    -f tag="$TAG" -f message="CPL $VERSION ($BUILD): $STORES" \
+    -f object="$RELEASE" -f type=commit --jq .sha)
+  gh api "repos/$GITHUB_REPOSITORY/git/refs" -f ref="refs/tags/$TAG" -f sha="$object" --silent
+}
+
 git fetch -q --tags origin
 
-BUILT=$(git rev-parse HEAD)
 BEFORE=$(app_version)
-if [ "$BEFORE" != "$VERSION" ]; then
-  write_version
-fi
-RELEASE=$(git rev-parse HEAD)
-
-TAG="v$VERSION"
-if git rev-parse -q --verify "refs/tags/$TAG" > /dev/null; then
-  # A tag that is out there is not moved: whoever has already fetched it would keep the old one
-  if [ "$(git rev-parse "$TAG^{tree}")" = "$(git rev-parse "$RELEASE^{tree}")" ]; then
-    TAGGED="l'etiqueta $TAG ja hi era"
-  else
-    TAGGED="⚠️ l'etiqueta $TAG ja hi era, amb un altre codi: aquest build duu el mateix número i no és igual"
-  fi
-else
-  git tag -a "$TAG" -m "CPL $VERSION ($BUILD): $STORES" "$RELEASE"
-  git push -q origin "refs/tags/$TAG"
-  TAGGED="etiqueta $TAG"
-fi
 
 # master may have moved while this was building. The version is written there unless it already
 # says it, or somebody has put another one in the meantime: that one was decided later.
 MASTER=""
+RELEASE=""
 for attempt in 1 2 3; do
   git fetch -q origin master
   git checkout -q --detach origin/master
   NOW=$(app_version)
   if [ "$NOW" = "$VERSION" ]; then
     MASTER="master diu $VERSION"
+    RELEASE=$(git rev-parse HEAD)
     break
   fi
   if [ "$NOW" != "$BEFORE" ]; then
     MASTER="⚠️ master no s'ha tocat: mentrestant hi han posat la $NOW"
     break
   fi
-  if [ "$(git rev-parse HEAD)" = "$BUILT" ]; then
-    git checkout -q "$RELEASE"
-  else
-    write_version
-  fi
+  write_version
   if git push -q origin HEAD:master; then
     MASTER="master diu $VERSION"
+    RELEASE=$(git rev-parse HEAD)
     break
   fi
   echo "master moved while pushing (attempt $attempt): again, from where it is now."
@@ -98,6 +95,21 @@ done
 if [ -z "$MASTER" ]; then
   echo "Could not write $VERSION into app.json on master." >&2
   exit 1
+fi
+
+TAG="v$VERSION"
+if git rev-parse -q --verify "refs/tags/$TAG" > /dev/null; then
+  # A tag that is out there is not moved: whoever has already fetched it would keep the old one
+  if [ -n "$RELEASE" ] && [ "$(git rev-parse "$TAG^{tree}")" = "$(git rev-parse "$RELEASE^{tree}")" ]; then
+    TAGGED="l'etiqueta $TAG ja hi era"
+  else
+    TAGGED="⚠️ l'etiqueta $TAG ja hi era, amb un altre codi: aquest build duu el mateix número i no és igual"
+  fi
+elif [ -n "$RELEASE" ]; then
+  tag_release
+  TAGGED="etiqueta $TAG"
+else
+  TAGGED="⚠️ sense etiqueta $TAG: la versió no ha arribat a master i no hi ha res a etiquetar"
 fi
 
 SAID="$TAGGED · $MASTER"
