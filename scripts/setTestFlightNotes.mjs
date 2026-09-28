@@ -96,26 +96,21 @@ async function main() {
     return;
   }
 
-  // Apple makes one of these for each language the app has; all of them say the same thing here
+  // Apple makes one of these for each language the app is on the store in; all of them say the
+  // same thing here. The text goes in `whatsNew`: it used to be called `whatsToTest`, and if one
+  // day it answers that whatsNew is not an attribute, that is what has changed.
   const { data: languages } = await ask('GET', `/builds/${buildId}/betaBuildLocalizations`);
-  if (languages?.length) {
-    for (const language of languages) {
-      await ask('PATCH', `/betaBuildLocalizations/${language.id}`, {
-        data: { type: 'betaBuildLocalizations', id: language.id, attributes: { whatsToTest: notes } },
-      });
-      console.log(`Written in ${language.attributes.locale}`);
-    }
+  if (!languages?.length) {
+    console.log(`::warning::Build ${buildNumber} has no language in TestFlight to write the text in`);
     return;
   }
 
-  await ask('POST', '/betaBuildLocalizations', {
-    data: {
-      type: 'betaBuildLocalizations',
-      attributes: { locale: 'ca', whatsToTest: notes },
-      relationships: { build: { data: { type: 'builds', id: buildId } } },
-    },
-  });
-  console.log('Written in ca');
+  for (const language of languages) {
+    await ask('PATCH', `/betaBuildLocalizations/${language.id}`, {
+      data: { type: 'betaBuildLocalizations', id: language.id, attributes: { whatsNew: notes } },
+    });
+    console.log(`Written in ${language.attributes.locale}`);
+  }
 }
 
 main().catch((error) => {
