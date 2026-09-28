@@ -77,11 +77,13 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [EINA-mes](#eina-mes) | 2026-09-25 | eines | codi | No — va al git | — |
 | [EINA-anada-i-tornada](#eina-anada-i-tornada) | 2026-09-25 | eines | codi | No — va al git | — |
 | [MIGRA-015](#migra-015) | 2026-09-25 | eines | codi | No — va al git | — |
+| [CPL-LIT-005](#cpl-lit-005) | 2026-09-28 | cpl-app | codi | No — va al git | `1bd79cc`, branca `litcal-sweep`, local |
+| [CPL-LIT-006](#cpl-lit-006) | 2026-09-28 | cpl-app | codi | No — va al git | `1ea6f96`, branca `litcal-sweep`, local |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 
-**Errors de cpl-app trobats fins ara: 3.** Dos són de dades i un de codi. Per llistar-los des
+**Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
 
 ```sh
@@ -262,6 +264,9 @@ anys de la base passa el **2019** i el **2024**; la propera vegada serà el **20
 | Prova | La mateixa taula ja sap fer el trasllat i l'aplica bé a sant Josep (2023) i a l'Anunciació (2024): no és un criteri pastoral, és un forat |
 | Efecte a la migració | 98 caselles contestades, 210 observacions reassignades, **45 caselles queden unànimes** |
 
+> Quan es publiqui la taula `anyliturgic` que surt de litcal (el procés X de cpl-cloud), el trasllat ja hi serà
+> i el `.sql` no hi trobarà res a canviar: es podrà deixar d'aplicar.
+
 ## CPL-LIT-003
 
 **Al Salm 66 li falta l'asterisc de mediació a l'últim vers, fora de Laudes** · 2 de setembre de 2026
@@ -281,6 +286,52 @@ sense la pausa que la mateixa estrofa sí que duu al matí.
 | BD | `_tables_log` = 12.528 · sha256 `fda34735…` → `38842ab0…` (ja porta CPL-LIT-002 aplicat) |
 | Prova | **Interna**: les edicions en línia despullen la puntuació i no poden dir-hi res. La còpia germana de Laudes duu la marca, i un cop normalitzats els espais és **l'única** diferència entre les dues |
 | Efecte a la migració | Cap casella nova migrada. `salmos_textos/144` passa de **26 grups acusats a 1**, i 17 grups desapareixen de l'informe |
+
+<a id="cpl-lit-005"></a>
+## CPL-LIT-005
+
+**La Mare de Déu de la Cinta no hi és quan l'1 de setembre cau en diumenge** · 28 de setembre de 2026
+
+La Cinta, a Tortosa, és el dissabte abans del primer diumenge de setembre: memòria a la diòcesi i solemnitat a la
+ciutat. Les seves files no tenen data, i l'app calculava el dia buscant el primer diumenge a partir del dia 2: quan
+l'1 és diumenge, la posava el 7. El 31 d'agost del 2019 i del 2024, on la té la taula, la diòcesi tenia sant Ramon
+Nonat i la ciutat cap celebració. La propera vegada serà el 2030.
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-005.md](migration-to-saints/cpl-bugs/CPL-LIT-005.md) |
+| Commit | `1bd79cc` — branca `litcal-sweep`, local |
+| Fix | Codi: `src/services/celebrationIdentifierService.ts`, `isMotherOfGodFromTheTibbon` |
+| Test | `__tests__/liturgy/cintaDay.test.js` |
+| Reaplicar | **No** — és codi, va al git |
+| Prova | **Interna**: les files de la Cinta porten la regla («Dissabte abans del primer diumenge de setembre») i la taula `anyliturgic` l'aplica bé; litcal també |
+| Efecte a la migració | Cap: litcal calcula la Cinta per regla |
+
+<a id="cpl-lit-006"></a>
+## CPL-LIT-006
+
+**Els trasllats d'una sola diòcesi o d'un sol lloc no van bé** · 28 de setembre de 2026
+
+Quan una celebració es trasllada només en una diòcesi (`diocesiMogut` = `To`) o només en un lloc (`BaC`), l'app
+s'equivocava de sant. El trasllat es feia servir a sis llocs del codi, i cadascun comparava `diocesiMogut` amb una
+cosa diferent (les dues lletres de la diòcesi, el nom, les tres lletres o res). El 9 de juny del 2018 Barcelona i
+Girona perdien el Cor Immaculat per un trasllat de Tortosa; el 12 de maig del 2025 Lleida perdia sant Anastasi; el
+4 de maig del 2026 la catedral de Barcelona tenia sant Felip i sant Jaume en lloc de la Santa Creu. Només anaven bé
+els trasllats per a tothom (`*`).
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-006.md](migration-to-saints/cpl-bugs/CPL-LIT-006.md) |
+| Commit | `1ea6f96` — branca `litcal-sweep`, local |
+| Fix | Codi: `src/services/databaseDataHelper.ts` (`isTransferForPlace`), `databaseDataService.ts` i `liturgy/liturgyMastersService.ts` |
+| Test | `__tests__/liturgy/movedCelebrations.test.js` i `__tests__/Services/databaseDataHelper.test.js` |
+| Reaplicar | **No** — és codi, va al git. Quan arribi a `master`, cal `make golden`: sis dies canvien, només en la informació del dia traslladat |
+| Prova | Els serveis de l'app amb la BD que porta (els quatre casos), i l'escombrada de Jest de tots els dies i llocs del 2017 al 2100 amb la taula que surt de litcal: cap trasllat no hi falla |
+| Efecte a la migració | Cap: a litcal cada calendari resol els seus trasllats |
+
+La taula que surt de litcal diu, a més, per a qui val cada trasllat lloc per lloc a `Mogut` («Ba Gi Ll SF So Ta
+Te To Ur Vi Andorra» per a Sant Jordi, que no es trasllada a Mallorca ni a Menorca), i l'app ho llegeix; les
+versions d'abans continuen llegint `diocesiMogut`.
 
 ---
 
