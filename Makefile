@@ -20,7 +20,7 @@ IPHONE = $(shell xcrun devicectl list devices --quiet --json-output /dev/stdout 
 	| select(.connectionProperties.tunnelState == "connected" or .connectionProperties.transportType == "wired")] \
 	| sort_by(.connectionProperties.tunnelState != "connected") | .[0].hardwareProperties.udid // empty')
 
-.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden litcal-sweep android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -43,6 +43,7 @@ help:
 	@echo "make tests             Every Jest test: liturgy, app and services (~4 min)"
 	@echo "make tests-fast        The same ones without the long sweeps (liturgy and screen text)"
 	@echo "make golden            Rewrites the goldens (liturgy and screen text) from this build (only if you checked it)"
+	@echo "make litcal-sweep DB=… EXPECTED=…  Every day and place of the calendar table cpl-cloud writes from litcal (~30 min)"
 	@echo ""
 	@echo "make android-app       Build the Android release and install it on the emulator or phone connected"
 	@echo "make ios-app           Build the release for the iOS simulator and install it on the simulator open"
@@ -190,6 +191,13 @@ tests-fast:
 # redesign, and it has to stay the same.
 golden:
 	UPDATE_GOLDEN=1 npx jest __tests__/liturgy __tests__/screens/prayerTextGolden
+
+# The calendar table that cpl-cloud's process X writes from litcal (calendar/, npm run write): every
+# day and every place loaded the way the app loads it, against the celebration litcal chose. DB and
+# EXPECTED are the two files it writes (out/cpl-app.db and out/expected.json); FROM and TO, years.
+litcal-sweep:
+	@test -n "$(DB)" -a -n "$(EXPECTED)" || (echo "make litcal-sweep DB=<cpl-app.db> EXPECTED=<expected.json> [FROM=2027 TO=2027]" && exit 1)
+	node scripts/litcalSweep.mjs "$(DB)" "$(EXPECTED)" $(FROM) $(TO)
 
 # --- Local builds for the Maestro tests -------------------------------------------------------
 # /android and /ios are generated (and gitignored): they are rebuilt from scratch so that nothing
