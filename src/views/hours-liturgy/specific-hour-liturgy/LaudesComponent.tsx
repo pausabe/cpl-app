@@ -9,7 +9,7 @@ import {
   completePrayer,
   intercessionsOf,
   withoutPsalmMarks,
-  withoutTrailingSpace as rs,
+  withoutStraySpaces as rs,
 } from '../../../utils/prayerText';
 import { SpecificLiturgyTimeType } from '../../../services/celebrationTimeEnums';
 import { prayerTextStyles, useTheme } from '../../../theme';

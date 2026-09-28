@@ -18,7 +18,7 @@ import {
   hasAlleluia,
   responsoryTogether,
   withoutPsalmMarks,
-  withoutTrailingSpace as rs,
+  withoutStraySpaces as rs,
 } from '../../utils/prayerText';
 import type Invitation from '../../models/hours-liturgy/Invitation';
 import type { Psalm, ShortReading, ShortResponsory } from '../../models/liturgy-masters/CommonParts';
@@ -181,8 +181,10 @@ export function shortReading(styles: PrayerTextStyles, reading: ShortReading) {
   );
 }
 
+const HALF_GLORIA = "Glòria al Pare i al Fill i a l'Esperit Sant.";
+
 // The versicles of a short responsory, from its three parts and the first half of the Glòria
-export function responsoryVersicles(responsory: ShortResponsory, halfGloria: string) {
+export function responsoryVersicles(responsory: ShortResponsory) {
   const firstAndSecondPart = responsoryTogether(rs(responsory.firstPart), rs(responsory.secondPart));
   return (
     <>
@@ -192,7 +194,7 @@ export function responsoryVersicles(responsory: ShortResponsory, halfGloria: str
       <Rubric label={'V. '}>{rs(responsory.thirdPart)}</Rubric>
       <Rubric label={'R. '}>{rs(responsory.secondPart)}</Rubric>
       <Gap />
-      <Rubric label={'V. '}>{halfGloria}</Rubric>
+      <Rubric label={'V. '}>{HALF_GLORIA}</Rubric>
       <Rubric label={'R. '}>{firstAndSecondPart}</Rubric>
     </>
   );
@@ -203,7 +205,7 @@ export function shortResponsory(responsory: ShortResponsory) {
   if (responsory.hasSpecialAntiphon) {
     return <Rubric label={'Ant.'}> {rs(responsory.specialAntiphon)}</Rubric>;
   }
-  return responsoryVersicles(responsory, "Glòria al Pare i al Fill i a l'Esperit Sant.");
+  return responsoryVersicles(responsory);
 }
 
 export function intercessions(styles: PrayerTextStyles, prayers: Intercessions) {

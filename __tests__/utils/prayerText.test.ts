@@ -10,20 +10,28 @@ import {
   trimmedText,
   withConcreteNames,
   withoutPsalmMarks,
-  withoutTrailingSpace,
+  withoutStraySpaces,
 } from '../../src/utils/prayerText';
 import { SpecificLiturgyTimeType } from '../../src/services/celebrationTimeEnums';
 
-describe('the space the database leaves at the end', () => {
-  test('one space or line break goes, and only one', () => {
-    expect(withoutTrailingSpace('Amén. ')).toBe('Amén.');
-    expect(withoutTrailingSpace('Amén.\n')).toBe('Amén.');
-    expect(withoutTrailingSpace('Amén.  ')).toBe('Amén. ');
+describe('the spaces the database leaves at the ends of a text', () => {
+  test('at the end, one space or line break goes, and only one', () => {
+    expect(withoutStraySpaces('Amén. ')).toBe('Amén.');
+    expect(withoutStraySpaces('Amén.\n')).toBe('Amén.');
+    expect(withoutStraySpaces('Amén.  ')).toBe('Amén. ');
+  });
+
+  test('at the start, every space goes: after «Ant. » it would be a second one', () => {
+    expect(withoutStraySpaces(' Realment el Senyor ha ressuscitat, al·leluia.')).toBe(
+      'Realment el Senyor ha ressuscitat, al·leluia.',
+    );
+    expect(withoutStraySpaces('  Escolteu, Senyor, i allibereu-me. ')).toBe('Escolteu, Senyor, i allibereu-me.');
+    expect(trimmedText(' Al·leluia.')).toBe('Al·leluia.');
   });
 
   test('nothing stays nothing in the hours, and becomes an empty text in the readings', () => {
-    expect(withoutTrailingSpace(undefined)).toBeUndefined();
-    expect(withoutTrailingSpace('')).toBe('');
+    expect(withoutStraySpaces(undefined)).toBeUndefined();
+    expect(withoutStraySpaces('')).toBe('');
     expect(trimmedText(undefined)).toBe('');
     expect(trimmedText('Mt 9,9-13 ')).toBe('Mt 9,9-13');
   });
@@ -97,6 +105,12 @@ describe('the two first parts of a responsory, as one sentence', () => {
     expect(responsoryTogether('Ho dic.', 'Amb vós.')).toBe('Ho dic. Amb vós.');
     expect(responsoryTogether('Us lloem,', 'Senyor, per sempre.')).toBe('Us lloem, Senyor, per sempre.');
     expect(responsoryTogether('Pregueu per nosaltres,', 'Maria.')).toBe('Pregueu per nosaltres, Maria.');
+  });
+
+  test('a second part that started with a space in the database also goes on in lower case', () => {
+    expect(
+      responsoryTogether('Déu m\u2019ha fet apòstol,', withoutStraySpaces(' I la gràcia que ell m\u2019ha donat.')),
+    ).toBe('Déu m\u2019ha fet apòstol, i la gràcia que ell m\u2019ha donat.');
   });
 
   test('with a part missing there is nothing to join', () => {

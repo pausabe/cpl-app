@@ -10,7 +10,7 @@ import {
   completePrayer,
   responsoryTogether,
   withoutPsalmMarks,
-  withoutTrailingSpace as rs,
+  withoutStraySpaces as rs,
 } from '../../../utils/prayerText';
 import { SpecificLiturgyTimeType } from '../../../services/celebrationTimeEnums';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../../../theme';

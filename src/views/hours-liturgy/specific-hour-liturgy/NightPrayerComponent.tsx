@@ -8,7 +8,7 @@ import Gap from '../../../components/Gap';
 import Rubric from '../../../components/Rubric';
 import ChoiceChips from '../../../components/ChoiceChips';
 import * as Logger from '../../../utils/logger';
-import { withoutPsalmMarks, withoutTrailingSpace as rs } from '../../../utils/prayerText';
+import { withoutPsalmMarks, withoutStraySpaces as rs } from '../../../utils/prayerText';
 import { GenericLiturgyTimeType, SpecificLiturgyTimeType } from '../../../services/celebrationTimeEnums';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../../../theme';
 import {
@@ -104,7 +104,7 @@ export default function NightPrayerComponent({ hours, today, settings, onVirginA
             nightPrayer.shortResponsory.hasSpecialAntiphon ? (
               <Rubric label={'Ant. '}>{rs(nightPrayer.shortResponsory.specialAntiphon)}</Rubric>
             ) : (
-              responsoryVersicles(nightPrayer.shortResponsory, " Glòria al Pare i al Fill i a l'Esperit Sant.")
+              responsoryVersicles(nightPrayer.shortResponsory)
             ),
           )}
           {section(

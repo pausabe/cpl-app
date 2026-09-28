@@ -5,12 +5,15 @@ import { SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 // here gives the same text it always gave: the golden of the screens holds them to it, word for
 // word, and a change of behaviour belongs in a commit of its own.
 
-// The text without the one space or line break it ends with, which the database often leaves.
-// What is not a text (nothing, or an empty one) comes back as it is.
-export function withoutTrailingSpace<T extends string | null | undefined>(text: T): T {
+// The text without the spaces a few texts of the database start with (after «Ant. » they would be a
+// second space) and without the one space or line break many of them end with. What is not a text
+// (nothing, or an empty one) comes back as it is.
+export function withoutStraySpaces<T extends string | null | undefined>(text: T): T {
   if (text) {
-    const lastChar = text.charAt(text.length - 1);
-    if (lastChar === ' ' || lastChar === '\n') return text.slice(0, text.length - 1) as T;
+    const tidy = text.replace(/^ +/, '');
+    const lastChar = tidy.charAt(tidy.length - 1);
+    if (lastChar === ' ' || lastChar === '\n') return tidy.slice(0, tidy.length - 1) as T;
+    return tidy as T;
   }
   return text;
 }
@@ -22,9 +25,7 @@ export function trimmedText(text: string | null | undefined): string {
   }
 
   try {
-    const lastChar = text.charAt(text.length - 1);
-    if (lastChar === ' ' || lastChar === '\n') return text.slice(0, text.length - 1);
-    return text;
+    return withoutStraySpaces(text);
   } catch (error) {
     Logger.logError(Logger.LogKeys.GlobalFunctions, 'trim', error as Error);
     return text;
@@ -153,7 +154,7 @@ export function intercessionsOf(
   hour: 'laudes' | 'vespers',
   names: { pope: string; bishop: string },
 ): Intercessions {
-  let all = withoutTrailingSpace(prayers);
+  let all = withoutStraySpaces(prayers);
   if (all === null || all === undefined || all === '' || all === '-') return { kind: 'text', text: '-' };
 
   all = withConcreteNames(all, names.pope, names.bishop);

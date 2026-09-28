@@ -9,7 +9,7 @@ import {
   completePrayer,
   intercessionsOf,
   withoutPsalmMarks,
-  withoutTrailingSpace as rs,
+  withoutStraySpaces as rs,
 } from '../../../utils/prayerText';
 import { prayerTextStyles, useTheme } from '../../../theme';
 import {

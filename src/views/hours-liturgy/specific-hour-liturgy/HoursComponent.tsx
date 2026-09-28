@@ -5,7 +5,7 @@ import Text from '../../../components/PrayerText';
 import Gap from '../../../components/Gap';
 import Rubric from '../../../components/Rubric';
 import * as Logger from '../../../utils/logger';
-import { completePrayer, withoutTrailingSpace as rs } from '../../../utils/prayerText';
+import { completePrayer, withoutStraySpaces as rs } from '../../../utils/prayerText';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../../../theme';
 import { opening, psalmBody, psalmComment, section, shortReading } from '../hourBlocks';
 import type { SpecificHour } from '../../../models/hours-liturgy/Hours';
