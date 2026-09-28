@@ -5,9 +5,11 @@ appId: cpl.cpl
     visible: "HIMNE.*"
     timeout: 15000
 - takeScreenshot: hora-${HORA}
-# The Office of Readings, with two readings, is very long: fast scrolling and a wide margin
+# The Office of Readings, with two readings, is very long: fast scrolling and a wide margin.
+# On Android the title is sewn into one text with the prayer below it (PrayerFlow), and Maestro
+# matches whole texts: the one that starts with it, as with «HIMNE.*» above.
 - scrollUntilVisible:
-    element: ${FINAL}
+    element: "(?s)${FINAL}.*"
     direction: DOWN
     speed: 90
     timeout: 180000

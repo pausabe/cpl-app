@@ -11,8 +11,9 @@ name: "The settings are saved and change the liturgy"
 - tapOn: "Andorra"
 # Theme: Automàtic → Fosc, with the three buttons
 - tapOn: "Fosc"
+# Down to the versions at the bottom: the app's and the texts' (fix(settings) 89bdb6c renamed the second)
 - scrollUntilVisible:
-    element: "(?s).*Versió de la base de dades: .*"
+    element: "(?s).*Revisió dels textos: .*"
     direction: DOWN
 - runFlow: subflows/enrere.yaml
 - extendedWaitUntil:

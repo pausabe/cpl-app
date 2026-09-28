@@ -9,6 +9,9 @@
 //   Controllers        The glue: they read the data (LiturgyStore), call the services and hand
 //                      props to the views.
 //   Services, Models   The liturgy and its data. The redesign does not touch them.
+//
+// A type (import type) is not a dependency: it is gone once the code is compiled. The views say
+// with the types of the models what their props are, and that is all they take from them.
 const fs = require('fs');
 const path = require('path');
 
@@ -31,19 +34,19 @@ function importsOf(file) {
     ...code.matchAll(/(?:import|export)\s[^'"]*?from\s+['"]([^'"]+)['"]/g),
     ...code.matchAll(/import\s+['"]([^'"]+)['"]/g),
     ...code.matchAll(/require\(\s*['"]([^'"]+)['"]\s*\)/g),
-  ].map((m) => m[1]);
-  return specifiers.map((spec) => {
-    if (!spec.startsWith('.')) return { spec, target: `package:${spec}` };
+  ].map((m) => ({ spec: m[1], typeOnly: /^(?:import|export)\s+type\s/.test(m[0]) }));
+  return specifiers.map(({ spec, typeOnly }) => {
+    if (!spec.startsWith('.')) return { spec, typeOnly, target: `package:${spec}` };
     const resolved = path.relative(SRC, path.resolve(path.dirname(file), spec)).replace(/\\/g, '/');
-    return { spec, target: resolved.replace(/\.(js|jsx|ts|tsx)$/, '') };
+    return { spec, typeOnly, target: resolved.replace(/\.(js|jsx|ts|tsx)$/, '') };
   });
 }
 
 function violations(layer, isAllowed) {
   const out = [];
   for (const file of filesIn(path.join(SRC, layer))) {
-    for (const { spec, target } of importsOf(file)) {
-      if (!isAllowed(target)) out.push(`${path.relative(SRC, file)} → ${spec}`);
+    for (const { spec, target, typeOnly } of importsOf(file)) {
+      if (!isAllowed(target, typeOnly)) out.push(`${path.relative(SRC, file)} → ${spec}`);
     }
   }
   return out;
@@ -77,10 +80,11 @@ test('Views only get the data through props: no services and no controllers', ()
   expect(
     violations(
       'views',
-      (t) =>
+      (t, typeOnly) =>
         isPackage(t) ||
         inside(t, 'views', 'components', 'theme', 'view-models', 'assets', ...DOMAIN_ENUMS) ||
-        inside(t, 'utils/globalViewFunctions', 'utils/logger', 'utils/StringManagement'),
+        inside(t, 'utils/prayerText', 'utils/logger', 'utils/StringManagement') ||
+        (typeOnly && inside(t, 'models')),
     ),
   ).toEqual([]);
 });

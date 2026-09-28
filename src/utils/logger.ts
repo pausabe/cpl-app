@@ -23,17 +23,27 @@ export const LogKeys = {
   DeviceLocationService: { name: 'DeviceLocationService', enabled: true },
 };
 
-export function debug(message, param) {
+export type LogKey = { name: string; enabled: boolean };
+
+export function debug(message: string, param?: unknown) {
   log(LogKeys.Debug, '', message, param);
 }
 
-export function log(logKey, methodName, message, param = undefined, limit = MessageCharacterLimit) {
+export function log(
+  logKey: LogKey,
+  methodName: string,
+  message: string,
+  param: unknown = undefined,
+  limit: number = MessageCharacterLimit,
+) {
   if (logKey.enabled) {
     printLine('[' + logKey.name + ' - ' + methodName + ']', message, param, limit);
   }
 }
 
-export function logError(logKey, methodName, error: Error = undefined, limit = MessageCharacterLimit) {
+// Whatever was thrown: an Error says its name, its message and where it happened
+export function logError(logKey: LogKey, methodName: string, thrown?: unknown, limit: number = MessageCharacterLimit) {
+  const error = thrown as Partial<Error> | undefined;
   let errorName = '';
   let errorMessage = '';
   let param = '';
@@ -52,7 +62,7 @@ export function logError(logKey, methodName, error: Error = undefined, limit = M
   printLine('[' + logKey.name + ' - ' + methodName + '] ERROR:', errorName + ' ' + errorMessage, param, limit);
 }
 
-function printLine(prefix, message, param, limit) {
+function printLine(prefix: string, message: string, param: unknown, limit: number) {
   try {
     if (LogsEnabled) {
       message = message.substring(0, limit);
@@ -70,7 +80,7 @@ function printLine(prefix, message, param, limit) {
         SessionLogs += finalMessageNoParam + '\n';
         console.log(finalMessageNoParam);
       } else {
-        SessionLogs += finalMessageNoParam + param.toString() + '\n';
+        SessionLogs += finalMessageNoParam + String(param) + '\n';
         console.log(finalMessageNoParam, param);
       }
     }

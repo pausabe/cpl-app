@@ -1,15 +1,16 @@
 // Text size and dark mode: saved in the same place as always, and applied without reloading.
-jest.mock('../../src/services/dataService', () => ({
-  __esModule: true,
-  CurrentSettings: { darkModeEnabled: false, textSize: '3' },
-  CurrentDatabaseInformation: {},
-  CurrentLiturgyDayInformation: { today: {} },
-  CurrentCelebrationInformation: {},
-  CurrentHoursLiturgy: {},
-  CurrentMassLiturgy: {},
-  LastRefreshDate: new Date(),
-  reloadAllData: jest.fn(),
-}));
+jest.mock('../../src/services/dataService', () => {
+  const current = {
+    settings: { darkModeEnabled: false, textSize: '3' },
+    databaseInformation: {},
+    liturgyDayInformation: { today: {} },
+    celebrationInformation: {},
+    hoursLiturgy: {},
+    massLiturgy: {},
+    lastRefreshDate: new Date(),
+  };
+  return { __esModule: true, currentLiturgy: () => current, reloadAllData: jest.fn() };
+});
 
 import { Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,8 +26,8 @@ import {
 
 beforeEach(async () => {
   await AsyncStorage.clear();
-  DataService.CurrentSettings.darkModeEnabled = false;
-  DataService.CurrentSettings.textSize = '3';
+  DataService.currentLiturgy().settings.darkModeEnabled = false;
+  DataService.currentLiturgy().settings.textSize = '3';
 });
 
 test('the dark mode: on, off or the one of the system', () => {
@@ -42,7 +43,7 @@ test('the text size is saved as text, applied right away and does not reload the
   const unsubscribe = LiturgyStore.subscribe(listener);
   await setTextSize(5);
   expect(await AsyncStorage.getItem('textSize')).toBe('5');
-  expect(DataService.CurrentSettings.textSize).toBe('5');
+  expect(DataService.currentLiturgy().settings.textSize).toBe('5');
   expect(listener).toHaveBeenCalled();
   expect(DataService.reloadAllData).not.toHaveBeenCalled();
   await setTextSize(14);
@@ -53,19 +54,19 @@ test('the text size is saved as text, applied right away and does not reload the
 test('the dark mode is saved under the same name as always and is applied', async () => {
   await setDarkMode('Activat');
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
-  expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);
+  expect(DataService.currentLiturgy().settings.darkModeEnabled).toBe(true);
   expect(await loadDarkMode()).toBe('Activat');
   await setDarkMode('Desactivat');
-  expect(DataService.CurrentSettings.darkModeEnabled).toBe(false);
+  expect(DataService.currentLiturgy().settings.darkModeEnabled).toBe(false);
 });
 
 test('on automatic, it follows the system when it changes', async () => {
   const scheme = jest.spyOn(Appearance, 'getColorScheme').mockReturnValue('dark');
   await followSystemAppearance();
-  expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);
+  expect(DataService.currentLiturgy().settings.darkModeEnabled).toBe(true);
 
   await setDarkMode('Desactivat');
   await followSystemAppearance();
-  expect(DataService.CurrentSettings.darkModeEnabled).toBe(false);
+  expect(DataService.currentLiturgy().settings.darkModeEnabled).toBe(false);
   scheme.mockRestore();
 });

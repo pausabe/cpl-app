@@ -26,14 +26,14 @@ test('where they are becomes the diocese, and it is saved', async () => {
 });
 
 test('having already the diocese they are in changes nothing', async () => {
-  await SettingsService.setSettingDiocese(DioceseName.Girona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Girona);
   asked.mockResolvedValueOnce(IN_GIRONA);
   expect(await autoselectDiocese()).toEqual({ kind: 'unchanged', diocese: DioceseName.Girona });
   expect(await SettingsService.getSettingDiocese()).toBe(DioceseName.Girona);
 });
 
 test('a diocese chosen before is replaced, because the button was asked for', async () => {
-  await SettingsService.setSettingDiocese(DioceseName.Girona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Girona);
   asked.mockResolvedValueOnce(IN_TARRAGONA);
   expect(await autoselectDiocese()).toEqual({ kind: 'saved', diocese: DioceseName.Tarragona });
   expect(await SettingsService.getSettingDiocese()).toBe(DioceseName.Tarragona);
@@ -42,21 +42,21 @@ test('a diocese chosen before is replaced, because the button was asked for', as
 // --- Everything that must leave the setting alone -------------------------------------------
 
 test('with no permission nothing is written', async () => {
-  await SettingsService.setSettingDiocese(DioceseName.Girona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Girona);
   asked.mockResolvedValueOnce({ kind: 'denied' });
   expect(await autoselectDiocese()).toEqual({ kind: 'denied' });
   expect(await SettingsService.getSettingDiocese()).toBe(DioceseName.Girona);
 });
 
 test('with no position nothing is written', async () => {
-  await SettingsService.setSettingDiocese(DioceseName.Girona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Girona);
   asked.mockResolvedValueOnce({ kind: 'failed' });
   expect(await autoselectDiocese()).toEqual({ kind: 'failed' });
   expect(await SettingsService.getSettingDiocese()).toBe(DioceseName.Girona);
 });
 
 test('outside the territory nothing is written', async () => {
-  await SettingsService.setSettingDiocese(DioceseName.Girona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Girona);
   // Paris
   asked.mockResolvedValueOnce({ kind: 'position', latitude: 48.8566, longitude: 2.3522, accuracyMeters: 50 });
   expect(await autoselectDiocese()).toEqual({ kind: 'nowhere' });
@@ -64,7 +64,7 @@ test('outside the territory nothing is written', async () => {
 });
 
 test('a position too vague to tell dioceses apart writes nothing', async () => {
-  await SettingsService.setSettingDiocese(DioceseName.Girona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Girona);
   asked.mockResolvedValueOnce({ ...IN_TARRAGONA, accuracyMeters: 100000 });
   expect(await autoselectDiocese()).toEqual({ kind: 'nowhere' });
   expect(await SettingsService.getSettingDiocese()).toBe(DioceseName.Girona);
@@ -77,9 +77,9 @@ test('whoever has never chosen a diocese is offered it', async () => {
 });
 
 test('whoever chose a diocese is left alone, even the default one', async () => {
-  await SettingsService.setSettingDiocese(DioceseName.Girona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Girona);
   expect(await shouldOfferAutoselection()).toBe(false);
 
-  await SettingsService.setSettingDiocese(DioceseName.Barcelona, undefined);
+  await SettingsService.setSettingDiocese(DioceseName.Barcelona);
   expect(await shouldOfferAutoselection()).toBe(false);
 });

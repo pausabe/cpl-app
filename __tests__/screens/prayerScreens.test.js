@@ -66,7 +66,7 @@ test('the Aa button opens the sheet; A+ makes the text bigger at once and saves 
 
   expect(styleOf(view.getByText('Sigueu amb nosaltres, Déu nostre.')).fontSize).toBe(24);
   expect(view.getByText('Mida 4 de 10')).toBeTruthy();
-  expect(DataService.CurrentSettings.textSize).toBe('4');
+  expect(DataService.currentLiturgy().settings.textSize).toBe('4');
   expect(await AsyncStorage.getItem('textSize')).toBe('4');
 
   fireEvent.press(view.getByRole('button', { name: 'Fet' }));
@@ -79,7 +79,7 @@ test('the dark theme is chosen in the same sheet and the prayer turns dark', asy
   await act(async () => {
     fireEvent.press(view.getByRole('radio', { name: 'Fosc' }));
   });
-  expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);
+  expect(DataService.currentLiturgy().settings.darkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
   expect(styleOf(view.getByText('HIMNE')).color).toBe('#F28B82');
 });
@@ -91,7 +91,7 @@ test('the invitatory psalm chosen is remembered', async () => {
   fireEvent.press(screen.getByRole('radio', { name: 'Salm 99' }));
   expect(screen.getByRole('radio', { name: 'Salm 99' }).props.accessibilityState.checked).toBe(true);
   expect(getPrayerText(/Invitació a lloar Déu en el seu temple/)).toBeTruthy();
-  expect(DataService.CurrentSettings.invitationPsalmOption).toBe('99');
+  expect(DataService.currentLiturgy().settings.invitationPsalmOption).toBe('99');
   await act(async () => {
     await Promise.resolve();
   });
@@ -104,7 +104,7 @@ test('the antiphon of the Mother of God chosen is remembered', async () => {
   expect(screen.getByRole('header', { name: 'Antífona final de la Mare de Déu' })).toBeTruthy();
   fireEvent.press(screen.getByRole('radio', { name: 'Ant. 3' }));
   expect(screen.getByRole('radio', { name: 'Ant. 3' }).props.accessibilityState.checked).toBe(true);
-  expect(DataService.CurrentSettings.virginAntiphonOption).toBe('3');
+  expect(DataService.currentLiturgy().settings.virginAntiphonOption).toBe('3');
   await act(async () => {
     await Promise.resolve();
   });
@@ -131,7 +131,33 @@ test('at Easter there is only the fifth antiphon, with no selector', async () =>
   await loadDay('2026-04-05');
   await open(HoursPrayerController, { type: 'Completes', title: 'Completes' });
   expect(screen.queryAllByRole('radio')).toHaveLength(0);
-  expect(DataService.CurrentSettings.virginAntiphonOption).toBe('5');
+  expect(DataService.currentLiturgy().settings.virginAntiphonOption).toBe('5');
+});
+
+// The comment under a psalm title (small, italic, to the right) goes only when the psalm has one
+function emptyPsalmComments() {
+  const found = [];
+  const walk = (node) => {
+    if (!node || typeof node !== 'object') return;
+    if (Array.isArray(node)) return node.forEach(walk);
+    const style = StyleSheet.flatten(node.props && node.props.style) || {};
+    const text = (node.children || []).filter((child) => typeof child === 'string').join('');
+    if (style.textAlign === 'right' && style.fontStyle === 'italic' && text.trim() === '') found.push(node);
+    (node.children || []).forEach(walk);
+  };
+  walk(screen.toJSON());
+  return found;
+}
+
+test('the second psalm of Compline, without a comment, leaves no empty paragraph for it', async () => {
+  // A Saturday: Compline with two psalms
+  await loadDay('2026-09-26');
+  const nightPrayer = DataService.currentLiturgy().hoursLiturgy.nightPrayer;
+  expect(nightPrayer.hasMultiplePsalms).toBe(true);
+  nightPrayer.secondPsalm.comment = '-';
+  await open(HoursPrayerController, { type: 'Completes', title: 'Completes' });
+  expect(getPrayerText(/Salm 133/)).toBeTruthy();
+  expect(emptyPsalmComments()).toEqual([]);
 });
 
 test('the readings: «Continua amb el Salm» shows the psalm below', async () => {
@@ -179,7 +205,7 @@ test('the readings are aligned to the left and have a maximum width', async () =
     needSecondReading: false,
     useVespersTexts: false,
   });
-  const gospel = DataService.CurrentMassLiturgy.today.gospel.gospel.replace(/\s+$/, '');
+  const gospel = DataService.currentLiturgy().massLiturgy.today.gospel.gospel.replace(/\s+$/, '');
   expect(styleOf(getPrayerText(gospel)).textAlign).toBe('left');
 });
 

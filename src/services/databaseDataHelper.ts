@@ -1,7 +1,7 @@
 import { DioceseName, PrayingPlace } from './SettingsService';
 import { CelebrationType, DioceseCode } from './databaseEnums';
 
-export function getDioceseCodeFromDioceseName(dioceseName, place) {
+export function getDioceseCodeFromDioceseName(dioceseName: string, place: string): string {
   switch (dioceseName) {
     case DioceseName.Barcelona:
       switch (place) {
@@ -280,7 +280,7 @@ export function getDateShortDatabaseCode(
   return dayShort + '-' + monthShort;
 }
 
-export function getDateFromShortDatabaseCode(dateString: string, year: number): Date {
+export function getDateFromShortDatabaseCode(dateString: string, year: number): Date | undefined {
   if (!dateString || !dateString.includes('-')) {
     return undefined;
   }

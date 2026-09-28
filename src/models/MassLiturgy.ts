@@ -1,7 +1,8 @@
 export default class MassLiturgy {
   today: DayMassLiturgy = new DayMassLiturgy();
   hasVespers: boolean;
-  vespers: DayMassLiturgy = new DayMassLiturgy();
+  // The Mass of the evening before tomorrow's celebration: only when hasVespers
+  vespers?: DayMassLiturgy = new DayMassLiturgy();
 }
 
 export class DayMassLiturgy {

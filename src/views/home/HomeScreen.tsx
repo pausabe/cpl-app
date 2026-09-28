@@ -44,7 +44,7 @@ export default function HomeScreen(props: HomeScreenProps) {
   const onFooterLayout = (event: LayoutChangeEvent) => setFooterHeight(Math.ceil(event.nativeEvent.layout.height));
 
   // Another day, another saint: the sheet does not stay open
-  useEffect(() => setDescriptionOpen(false), [props.day.dateText, props.day.title]);
+  useEffect(() => setDescriptionOpen(false), [props.day.dateText, props.day.celebration?.title]);
 
   return (
     <View testID="home" style={[styles.screen, { backgroundColor: theme.colors.homeBackground }]}>
@@ -79,8 +79,13 @@ export default function HomeScreen(props: HomeScreenProps) {
           <HomeFooter onMessage={props.onMessage} onDonation={props.onDonation} />
         </View>
       </View>
-      {props.day.description ? (
-        <DescriptionSheet day={props.day} visible={descriptionOpen} onClose={() => setDescriptionOpen(false)} />
+      {props.day.celebration?.description ? (
+        <DescriptionSheet
+          celebration={props.day.celebration}
+          colorCode={props.day.colorCode}
+          visible={descriptionOpen}
+          onClose={() => setDescriptionOpen(false)}
+        />
       ) : null}
     </View>
   );

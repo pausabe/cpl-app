@@ -9,8 +9,8 @@ import MassLiturgy from '../models/MassLiturgy';
 
 // The seam between the screens and the rest of the app.
 //
-// DataService keeps the day's data in module variables and replaces them on every reload.
-// This is the only place on the side of the screens that reads them: the controllers take a
+// DataService keeps the day's data (currentLiturgy) and replaces it on every reload. This is
+// the only place on the side of the screens that reads it: the controllers take a
 // snapshot from here and hand plain props to the views, and they hear from here when the data
 // or the settings change. Replacing where the data comes from means changing this file, not
 // the screens.
@@ -33,14 +33,15 @@ let revision = 0;
 let snapshot: LiturgySnapshot = take();
 
 function take(): LiturgySnapshot {
+  const current = DataService.currentLiturgy();
   return {
     revision,
-    settings: DataService.CurrentSettings,
-    database: DataService.CurrentDatabaseInformation,
-    day: DataService.CurrentLiturgyDayInformation,
-    celebration: DataService.CurrentCelebrationInformation,
-    hours: DataService.CurrentHoursLiturgy,
-    mass: DataService.CurrentMassLiturgy,
+    settings: current.settings,
+    database: current.databaseInformation,
+    day: current.liturgyDayInformation,
+    celebration: current.celebrationInformation,
+    hours: current.hoursLiturgy,
+    mass: current.massLiturgy,
   };
 }
 
@@ -83,23 +84,23 @@ export function reload(date: Date, databaseAsset?: unknown): Promise<void> {
 
 // The day being shown: the one to reload after a setting changes.
 export function currentDate(): Date {
-  return DataService.CurrentLiturgyDayInformation.today.date;
+  return DataService.currentLiturgy().liturgyDayInformation.today.date;
 }
 
 // When the data was last loaded: coming back to the app on another day loads today's.
 export function lastRefreshDate(): Date {
-  return DataService.LastRefreshDate;
+  return DataService.currentLiturgy().lastRefreshDate;
 }
 
 // Changes some settings of the loaded data without reloading it: they only change how the
 // texts look, not which texts. The caller saves them with SettingsService.
 export function updateSettings(changes: Partial<Settings>, notify = true): void {
-  Object.assign(DataService.CurrentSettings, changes);
+  Object.assign(DataService.currentLiturgy().settings, changes);
   if (notify) publish();
 }
 
 export function isLoaded(): boolean {
-  return DataService.CurrentLiturgyDayInformation.today.date !== undefined;
+  return DataService.currentLiturgy().liturgyDayInformation.today.date !== undefined;
 }
 
 export function useLiturgy(): LiturgySnapshot {

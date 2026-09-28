@@ -4,28 +4,29 @@ import PrayerText from '../../components/PrayerText';
 import { useTheme } from '../../theme';
 import BottomSheet from '../../components/BottomSheet';
 import ActionButton from '../../components/ActionButton';
-import { DayCard } from '../../view-models/dayCard';
+import { Celebration, ColorCode } from '../../view-models/dayCard';
 
 // The story of the saint of the day, in a sheet that comes up: the screen below stays still, and
 // a long text scrolls inside. It closes with "Tanca", touching outside, or the back button.
 interface DescriptionSheetProps {
-  day: DayCard;
+  celebration: Celebration;
+  colorCode: ColorCode;
   visible: boolean;
   onClose: () => void;
 }
 
-export default function DescriptionSheet({ day, visible, onClose }: DescriptionSheetProps) {
+export default function DescriptionSheet({ celebration, colorCode, visible, onClose }: DescriptionSheetProps) {
   const theme = useTheme();
   const { colors } = theme;
-  const accent = theme.liturgical(day.colorCode).accent;
+  const accent = theme.liturgical(colorCode).accent;
   return (
-    <BottomSheet visible={visible} onClose={onClose} accessibilityLabel={day.title} testID="description-sheet">
-      {day.typeLabel ? <Text style={[styles.type, { color: accent }]}>{day.typeLabel}</Text> : null}
+    <BottomSheet visible={visible} onClose={onClose} accessibilityLabel={celebration.title} testID="description-sheet">
+      <Text style={[styles.type, { color: accent }]}>{celebration.typeLabel}</Text>
       <Text
         accessibilityRole="header"
         style={[styles.title, { color: colors.text, fontFamily: theme.fonts.serifSemiBold }]}
       >
-        {day.title}
+        {celebration.title}
       </Text>
       <ScrollView
         style={styles.scroll}
@@ -33,7 +34,7 @@ export default function DescriptionSheet({ day, visible, onClose }: DescriptionS
         indicatorStyle={theme.scrollIndicator}
       >
         <PrayerText selectable={true} style={[styles.description, { color: colors.text }]}>
-          {day.description}
+          {celebration.description}
         </PrayerText>
       </ScrollView>
       <ActionButton label="Tanca" onPress={onClose} style={styles.close} />

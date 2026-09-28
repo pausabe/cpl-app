@@ -2,7 +2,12 @@ appId: cpl.cpl
 name: "The Mass readings open"
 ---
 - runFlow: subflows/obrir.yaml
-# The buttons for the readings are on the home screen
+# The buttons for the readings are on the home screen. On a Saturday with an optional memorial the
+# home is longer and they end up under the footer, where a tap does not reach them: first, into view.
+- scrollUntilVisible:
+    element: "Evangeli"
+    direction: DOWN
+    centerElement: true
 - tapOn: "Evangeli"
 - extendedWaitUntil:
     visible: "Lectura de l.evangeli.*"

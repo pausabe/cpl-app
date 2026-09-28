@@ -5,7 +5,7 @@ import { Asset } from 'expo-asset';
 import { FileSystemService } from './FileSystemService';
 import bundledDatabase from '../assets/db/cpl-app.db.json';
 
-let CPLDataBase = undefined;
+let CPLDataBase: SQLite.SQLiteDatabase | undefined = undefined;
 
 export const DATABASE_DIRECTORY = `${FileSystem.documentDirectory}SQLite/`;
 
@@ -72,30 +72,16 @@ async function openBundledAfterFailure(databaseAsset: Asset, failedName: string,
   return SQLite.openDatabaseAsync(bundledName);
 }
 
-export function executeQueryAsync(query): Promise<any> {
-  return new Promise((resolve, reject) =>
-    executeQuery(
-      query,
-      (result) => resolve(result),
-      (error) => reject(error),
-    ),
-  );
-}
-
-async function executeQuery(query, callback, errorCallback) {
+// The rows a query gives. Asked before the database is open, it fails at once (it used to wait
+// for ever, with the error lost on the way).
+export async function executeQueryAsync(query: string): Promise<any> {
   if (CPLDataBase === undefined) {
     throw new Error('You must call openDatabase function to execute queries');
   }
-
-  try {
-    const result = await _executeQuery(query);
-    callback && callback(result);
-  } catch (error) {
-    errorCallback && errorCallback(error);
-  }
+  return _executeQuery(CPLDataBase, query);
 }
 
-async function databaseExists(databaseName) {
+async function databaseExists(databaseName: string) {
   return databaseName && (await FileSystem.getInfoAsync(`${DATABASE_DIRECTORY}${databaseName}`)).exists;
 }
 
@@ -113,8 +99,9 @@ async function usableDownloadedDatabases(): Promise<{ name: string; version: num
       const name = databaseNameFromUri(uri);
       return { name, parsed: parseDatabaseFileName(name) };
     })
-    .filter(({ parsed }) => parsed !== null && parsed.compat === bundledDatabase.compat)
-    .map(({ name, parsed }) => ({ name, version: parsed.version }))
+    .flatMap(({ name, parsed }) =>
+      parsed !== null && parsed.compat === bundledDatabase.compat ? [{ name, version: parsed.version }] : [],
+    )
     .sort((one, other) => other.version - one.version);
 }
 
@@ -146,7 +133,7 @@ async function placeBundledDatabase(databaseAsset: Asset, bundledName: string) {
   if (await databaseExists(bundledName)) {
     return;
   }
-  await FileSystemService.copyFile(databaseAsset?.localUri, `${DATABASE_DIRECTORY}${bundledName}`);
+  await FileSystemService.copyFile(databaseAsset?.localUri ?? '', `${DATABASE_DIRECTORY}${bundledName}`);
 }
 
 // Only the database in use is kept: each one takes 16 MB
@@ -160,21 +147,21 @@ async function deleteEveryDatabaseBut(databaseName: string) {
   }
 }
 
-function databaseNameFromUri(uri) {
+function databaseNameFromUri(uri: string): string {
   if (!uri) {
     return '';
   }
-  return uri.split('/').pop();
+  return uri.split('/').pop() ?? '';
 }
 
-async function _executeQuery(query: string): Promise<any> {
+async function _executeQuery(database: SQLite.SQLiteDatabase, query: string): Promise<any> {
   try {
-    return await CPLDataBase.getAllAsync(query);
+    return await database.getAllAsync(query);
   } catch (error) {
     Logger.logError(
       Logger.LogKeys.DatabaseManagerService,
       '_executeQuery',
-      new Error(`Error in query (${query}): ${error.message}`),
+      new Error(`Error in query (${query}): ${(error as Error).message}`),
     );
     throw error;
   }

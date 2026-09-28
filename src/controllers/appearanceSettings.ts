@@ -24,13 +24,13 @@ export function darkModeEnabledFor(choice: string, systemScheme: string | null |
 
 export async function setTextSize(step: number): Promise<void> {
   const value = String(textSizeStep(step));
-  LiturgyStore.updateSettings({ textSize: value as any });
-  await SettingsService.setSettingTextSize(value, undefined);
+  LiturgyStore.updateSettings({ textSize: value });
+  await SettingsService.setSettingTextSize(value);
 }
 
 export async function setDarkMode(choice: DarkModeChoice): Promise<void> {
   LiturgyStore.updateSettings({ darkModeEnabled: darkModeEnabledFor(choice, Appearance.getColorScheme()) });
-  await SettingsService.setSettingDarkMode(choice, undefined);
+  await SettingsService.setSettingDarkMode(choice);
 }
 
 export async function loadDarkMode(): Promise<DarkModeChoice> {

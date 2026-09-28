@@ -1,4 +1,6 @@
-module.exports = {
+// The identifiers (id) of the rows of the database that the liturgy looks for by name: the
+// solemnities, memorials and special days that have texts of their own in a given table.
+const SoulKeys = {
   LDSantoral_JesucristGranSacerdotPerSempreI: 31,
   LDSantoral_JesucristGranSacerdotPerSempreII: 32,
   LDSantoral_CorImmaculatBenauradaVergeMaria: 33,
@@ -115,3 +117,5 @@ module.exports = {
   tempsSolemnitatsFestes_SagratCorJesus: 10,
   tempsSolemnitatsFestes_NostreSenyorJesucrist: 11,
 };
+
+export default SoulKeys;

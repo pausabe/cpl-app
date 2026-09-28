@@ -118,7 +118,8 @@ async function massChain(label, type, vespers, needSecondReading) {
 }
 
 async function massTexts() {
-  const { CurrentMassLiturgy, CurrentLiturgyDayInformation } = DataService;
+  const { massLiturgy: CurrentMassLiturgy, liturgyDayInformation: CurrentLiturgyDayInformation } =
+    DataService.currentLiturgy();
   const out = {};
   if (CurrentLiturgyDayInformation.tomorrow.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday) {
     Object.assign(out, await massChain('Vetlla: lectures i salms', 'VetllaPasquaLecturesSalms', false, false));
