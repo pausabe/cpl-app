@@ -75,8 +75,8 @@ De dalt a baix, sota la capçalera de sempre (calendari · CPL · configuració)
    - Després, el dia dins el seu temps, sense repetir el dia de la setmana que ja diu la data: «Setmana XXV de
      durant l'any», «Octava de Nadal», «Temps de Pasqua» (a les solemnitats) o el nom propi del dia («Diumenge
      de Rams»). A sota, l'any i la setmana del salteri.
-   - Si hi ha celebració, va sota una ratlla, tota junta: el tipus («FESTA»), el títol, «Llegeix-ne més» si té
-     descripció i l'interruptor si és una memòria lliure.
+   - Si hi ha celebració, va sota una ratlla, tota junta: el tipus («FESTA»), el títol, l'interruptor si és una
+     memòria lliure i, a baix de tot, «Llegeix-ne més» si té descripció.
    - La data i els títols van en Literata; la resta, amb la lletra del sistema.
 2. **Litúrgia de les Hores:** les set hores en fitxes, en tres files (Ofici de lectura · Laudes / Tèrcia · Sexta ·
    Nona / Vespres · Completes).

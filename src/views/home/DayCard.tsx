@@ -62,6 +62,18 @@ export default function DayCard({ day, onOptionalMemoryChange, onReadMore }: Day
           >
             {celebration.title}
           </Text>
+          {celebration.optionalMemory ? (
+            <SwitchRow
+              testID="optional-memory"
+              label="Celebrar la memòria"
+              labelWeight="600"
+              caption={celebration.optionalMemory.caption}
+              value={celebration.optionalMemory.enabled}
+              onValueChange={onOptionalMemoryChange}
+              style={styles.memory}
+            />
+          ) : null}
+          {/* Always the last thing of the card, with the switch or without it */}
           {celebration.description ? (
             <Pressable
               accessibilityRole="button"
@@ -74,17 +86,6 @@ export default function DayCard({ day, onOptionalMemoryChange, onReadMore }: Day
               </Text>
               <Icon name="chevronRight" size={16} color={liturgical.accent} />
             </Pressable>
-          ) : null}
-          {celebration.optionalMemory ? (
-            <SwitchRow
-              testID="optional-memory"
-              label="Celebrar la memòria"
-              labelWeight="600"
-              caption={celebration.optionalMemory.caption}
-              value={celebration.optionalMemory.enabled}
-              onValueChange={onOptionalMemoryChange}
-              style={styles.memory}
-            />
           ) : null}
         </View>
       ) : null}

@@ -108,8 +108,10 @@ test('an optional memorial: the switch makes it celebrated, and it is remembered
   // All of the memorial together under the line: the type, the saint, the story and the switch
   const memorial = within(screen.getByTestId('day-celebration'));
   expect(memorial.getByText('Memòria lliure')).toBeTruthy();
-  expect(memorial.getByRole('button', { name: 'Llegeix-ne més' })).toBeTruthy();
   expect(memorial.getByTestId('optional-memory')).toBeTruthy();
+  // «Llegeix-ne més» is the last thing, under the switch
+  const block = screen.getByTestId('day-celebration');
+  expect(within(block.children[block.children.length - 1]).getByText('Llegeix-ne més')).toBeTruthy();
   // The weekday it can be left for stays on top, not in grey
   expect(styleOf(screen.getByText("Setmana XXV de durant l'any")).color).toBe('#182322');
   // The screen reader hears the name and the line under it together
