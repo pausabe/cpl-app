@@ -8,7 +8,7 @@
 // to expected.json, as sweep.json. LITCAL_DAYS (a JSON file with a list of dates) limits it to them.
 import { spawn } from 'node:child_process';
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
-import { availableParallelism, tmpdir } from 'node:os';
+import { availableParallelism, tmpdir, totalmem } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 
 const [database, expected, from, to] = process.argv.slice(2);
@@ -24,8 +24,11 @@ const COLUMNS = [
   ...['Ma', 'Me'].flatMap((diocese) => ['D', 'V', 'C'].map((place) => diocese + place)),
 ];
 
-// The columns dealt out one by one, so that every Jest gets dioceses, cities and cathedrals alike
-const workers = Math.min(availableParallelism(), COLUMNS.length);
+// The columns dealt out one by one, so that every Jest gets dioceses, cities and cathedrals alike. Each
+// Jest grows to about 3 GB over the 84 years: on a Mac of 16 GB, eight of them went to swap and took
+// twice as long, so there are only as many as fit in memory.
+const MEMORY_PER_JEST = 3.5 * 1024 ** 3;
+const workers = Math.max(1, Math.min(availableParallelism(), Math.floor(totalmem() / MEMORY_PER_JEST), COLUMNS.length));
 const groups = Array.from({ length: workers }, (_, worker) => COLUMNS.filter((_, i) => i % workers === worker));
 const scratch = mkdtempSync(join(tmpdir(), 'litcal-sweep-'));
 
