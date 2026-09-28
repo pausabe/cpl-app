@@ -73,13 +73,16 @@ export default function DayCard({ day, onOptionalMemoryChange, onReadMore }: Day
               style={styles.memory}
             />
           ) : null}
-          {/* Always the last thing of the card, with the switch or without it */}
+          {/* Always the last thing of the card, with the switch or without it. It is only as tall
+              as its text, like the other lines: the touch reaches beyond it (hitSlop), and at the
+              bottom it stays inside the card's padding, where Android still takes it. */}
           {celebration.description ? (
             <Pressable
               accessibilityRole="button"
               accessibilityHint={celebration.title}
               onPress={onReadMore}
-              style={({ pressed }) => [styles.readMore, { minHeight: theme.touch.min, opacity: pressed ? 0.6 : 1 }]}
+              hitSlop={READ_MORE_SLOP}
+              style={({ pressed }) => [styles.readMore, { opacity: pressed ? 0.6 : 1 }]}
             >
               <Text maxFontSizeMultiplier={scale} style={[styles.readMoreText, { color: liturgical.accent }]}>
                 Llegeix-ne més
@@ -92,6 +95,8 @@ export default function DayCard({ day, onOptionalMemoryChange, onReadMore }: Day
     </View>
   );
 }
+
+const READ_MORE_SLOP = { top: 12, bottom: 12, left: 16, right: 16 };
 
 const styles = StyleSheet.create({
   card: {
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   readMore: {
-    marginTop: 4,
+    marginTop: 6,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,

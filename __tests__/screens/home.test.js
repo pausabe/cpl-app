@@ -77,7 +77,11 @@ test('a feast: the day in words, the colour, the type, the title and the week; L
 test('«Llegeix-ne més» opens the sheet with the life of the saint, and «Tanca» closes it', async () => {
   await openAt(new Date(2026, 8, 21, 9, 0));
   expect(screen.queryByTestId('description-sheet')).toBeNull();
-  fireEvent.press(screen.getByRole('button', { name: 'Llegeix-ne més' }));
+  const link = screen.getByRole('button', { name: 'Llegeix-ne més' });
+  // As tall as its text, like the other lines of the card: the touch reaches beyond it
+  expect(styleOf(link).minHeight).toBeUndefined();
+  expect(link.props.hitSlop).toMatchObject({ top: 12, bottom: 12 });
+  fireEvent.press(link);
   expect(await screen.findByTestId('description-sheet')).toBeTruthy();
   expect(getPrayerText(DataService.currentLiturgy().celebrationInformation.description)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Tanca' }));
