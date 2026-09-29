@@ -138,6 +138,13 @@ generar `commons/ca/*` perquè el renderitzador de saints-app el mostri igual qu
 
 ## 6. Calendaris litúrgics catalans nous (litcal)
 
+> **Superat el 28 i el 29 de setembre de 2026.** La capa catalana ja no surt d'aquest generador:
+> es va refer a litcal com a model (branca `catalan-calendars`, PR #25), amb ciutat i catedral, els
+> ids de romcal per als sants universals i regles amb anys, perquè la taula `anyliturgic` de
+> cpl-app en surti (cpl-cloud, procés X). El generador i les etapes 1 i 2 del panell es van treure
+> el 29-9: vegeu [EINA-calendari](../REGISTRE-DE-CANVIS.md#eina-calendari). El que ve a continuació
+> és la història de com es va fer la primera capa.
+
 Descobert després del pilot inicial: cpl-app permet triar diòcesi/lloc (Diòcesi/Ciutat/
 Catedral × 12 diòcesis + Andorra = 37 codis, `DatabaseEnums.DioceseCode`), i això ha de
 traduir-se en **calendaris litcal nous** — avui `spain.json` només té festes d'àmbit
@@ -378,8 +385,7 @@ make run-panel PORT=4849                                   # ...en un altre port
 make stop-panel                                            # aturar-lo
 make day-check DATE=2026-08-12                             # l'informe d'un dia, per terminal
 npx jest migration-to-saints/laudes.extract.test.js        # extracció de mostra (Laudes)
-node migration-to-saints/generate-catalan-calendars.js --dry-run   # calendaris (revisió)
-node migration-to-saints/generate-catalan-calendars.js             # calendaris (escriu a litcal)
+node migration-to-saints/missing-celebrations.js           # per què discrepen els dies: la celebració
 ```
 
 ### Refrescar-ho tot des del panell (targeta de dalt)
@@ -387,9 +393,9 @@ node migration-to-saints/generate-catalan-calendars.js             # calendaris 
 La targeta **Refrescar** encadena els passos en l'ordre correcte i mostra el progrés en
 viu (SSE), perquè un eprex local vegi l'últim estat sense publicar res:
 
-- **Regenerar litcal ca**: candidats → filtre + escriptura a `src/data/calendars/` →
-  `generate-loaders` → `npm run build` → deixar el `dist/` nou a l'abast de saints-app.
-  Trigat ~10 s. Idempotent (verificat: `git status` de litcal queda net).
+- **Compilar litcal**: `generate-loaders` → `npm run build` → deixar el `dist/` nou a
+  l'abast de saints-app. Els calendaris catalans ja no s'hi generen (29-9-2026): són a
+  litcal i el panell només els compila.
 - **Regenerar eprex ca**: manifest de dates → join del contingut → escriure a
   `saints-app/.../commons/ca/`. Aquest és el llarg (finestra de 10 anys).
 - **Refrescar-ho tot**: els dos seguits.

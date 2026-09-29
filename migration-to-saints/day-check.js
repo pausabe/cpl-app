@@ -311,7 +311,6 @@ function blameFor(ctx, table, id) {
       verdict: g.verdict,
       verdictLabel: g.verdictLabel,
       ranks: g.ranks,
-      suggestedId: g.suggestedId,
       inLitcal: g.inLitcal,
       // True when this celebration is the ONLY thing contesting the cell: sorting it out
       // makes the cell resolvable on its own.
@@ -770,7 +769,7 @@ function celebrationSummary(c) {
   if (c.verdictLabel) lines.push(`Diagnòstic: ${c.verdictLabel}`);
   if (c.group && c.group.verdict === 'missing') {
     lines.push(
-      `  id proposat: ${c.group.suggestedId} · afecta ${c.group.contestedDays} dies i ` +
+      `  afecta ${c.group.contestedDays} dies i ` +
         `${c.group.cellsBlamed} caselles (${c.group.cellsSole} només seves)`
     );
   }

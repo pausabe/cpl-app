@@ -27,20 +27,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const { slugify } = require('./generate-catalan-calendars');
 
 const MIGRATION_DIR = __dirname;
 const MANIFEST_PATH = path.join(MIGRATION_DIR, 'webui/run/date-to-key-manifest.json');
 const PROBE_PATH = path.join(MIGRATION_DIR, 'output/cpl-celebrations.json');
 const PENDING_PATH = path.join(MIGRATION_DIR, 'output/join-pending-review.json');
 const OUTPUT_PATH = path.join(MIGRATION_DIR, 'output/missing-celebrations.json');
-const LITCAL_CALENDARS_DIR = '/Users/pau/projects/saints/litcal/src/data/calendars';
-const CATALAN_CALENDARS = [
-  'catalonia', 'diocese-andorra', 'diocese-barcelona', 'diocese-girona', 'diocese-lleida',
-  'diocese-mallorca', 'diocese-menorca', 'diocese-sant-feliu-de-llobregat', 'diocese-solsona',
-  'diocese-tarragona', 'diocese-terrassa', 'diocese-tortosa', 'diocese-urgell', 'diocese-vic',
-  'spain',
-];
+// cpl-cloud's process X, the one that writes anyliturgic out of litcal: the same default as the
+// Makefile's PROCESS_X, next to cpl-app.
+const PROCESS_X = process.env.PROCESS_X || path.resolve(MIGRATION_DIR, '../../cpl-cloud/calendar');
+const CELEBRATIONS_PATH = path.join(PROCESS_X, 'data/celebrations.json');
 
 // The same ferial-key test the join uses to decide whether a litcal id names a proper
 // celebration or just a weekday (join-content.test.js, HOURS_CONFIG.Celebration).
@@ -100,23 +96,19 @@ function readJsonSafe(p, fallback) {
   }
 }
 
-// Which celebration names litcal already carries, so a group can say whether the fix is
-// "add it" or "it's there, the disagreement is elsewhere". Matched on the Catalan name
-// the generator stamps into metadata, falling back to the derived id slug.
+// Which of cpl-app's celebrations litcal knows, and by which id, so a group can say whether
+// the fix is "add it" or "it's there, the disagreement is elsewhere". Process X keeps that
+// pairing in data/celebrations.json: every celebration of the app's santoral, its litcal id
+// and the rows that hold its texts. Matched on the name the app gives it, which is what the
+// probe records. The proper of time (Christmas, Easter…) is not in it: litcal always knows
+// those, and no verdict asks.
 function litcalCelebrationIndex() {
+  const data = readJsonSafe(CELEBRATIONS_PATH, null);
   const byName = new Map();
-  const bySlug = new Map();
-  for (const calId of CATALAN_CALENDARS) {
-    const def = readJsonSafe(path.join(LITCAL_CALENDARS_DIR, `${calId}.json`), null);
-    if (!def || !Array.isArray(def.rules)) continue;
-    for (const rule of def.rules) {
-      const c = rule.celebration || {};
-      const entry = { calendar: calId, id: c.id, rank: c.rank };
-      if (c.metadata && c.metadata.catalanName) byName.set(c.metadata.catalanName.trim(), entry);
-      if (c.id) bySlug.set(c.id, entry);
-    }
+  for (const c of (data && data.celebrations) || []) {
+    byName.set(c.name.trim(), { id: c.id, origin: c.origin, places: c.places });
   }
-  return { byName, bySlug, available: byName.size + bySlug.size > 0 };
+  return { byName, available: byName.size > 0 };
 }
 
 // Per contested cell, which dates carry a text other than the majority one. Those are the
@@ -223,9 +215,7 @@ function build() {
     if (!contested.length) continue;
     const b = blame.get(g.key) || { cells: new Set(), sole: new Set() };
 
-    const suggestedId = g.title ? slugify(g.title) : null;
-    const known =
-      (g.title && litcal.byName.get(g.title)) || (suggestedId && litcal.bySlug.get(suggestedId)) || null;
+    const known = (g.title && litcal.byName.get(g.title.trim())) || null;
 
     let verdict;
     if (!g.hasCplCelebration) verdict = 'ferial-drift';
@@ -251,8 +241,7 @@ function build() {
       // A celebration reported as several ranks across the window keeps them all: it is
       // usually the same feast downgraded in a year where something outranked it.
       ranks: [...g.types].filter((t) => t !== '-').map((t) => RANK_LABEL[t] || t),
-      suggestedId,
-      inLitcal: known ? { calendar: known.calendar, id: known.id, rank: known.rank } : null,
+      inLitcal: known,
       cellsBlamed: b.cells.size,
       cellsSole: b.sole.size,
       contestedDays: contested.length,
@@ -310,7 +299,6 @@ function explainDate(dateStr, report) {
       title: group.title,
       verdictLabel: group.verdictLabel,
       ranks: group.ranks,
-      suggestedId: group.suggestedId,
       inLitcal: group.inLitcal,
       cellsBlamed: group.cellsBlamed,
       cellsSole: group.cellsSole,
@@ -349,7 +337,6 @@ if (require.main === module) {
       `  ${String(g.cellsSole).padStart(4)} caselles nomes seves · ${String(g.cellsBlamed).padStart(4)} en total · ` +
         `${g.contestedDays} dies · ${g.ranks.join('/')} · ${g.title}`
     );
-    console.log(`       id proposat: ${g.suggestedId}${g.inLitcal ? ` (JA a ${g.inLitcal.calendar})` : ''}`);
   }
 
   const notApplied = report.groups.filter((g) => g.verdict === 'not-applied');
@@ -357,7 +344,7 @@ if (require.main === module) {
   for (const g of notApplied.slice(0, 8)) {
     console.log(
       `  ${String(g.cellsSole).padStart(4)} caselles nomes seves · ${g.contestedDays} dies · ${g.ranks.join('/')} · ${g.title}` +
-        `\n       ${g.inLitcal.calendar}: ${g.inLitcal.id} (${g.inLitcal.rank})`
+        `\n       litcal: ${g.inLitcal.id} (${g.inLitcal.origin}; a l'app: ${g.inLitcal.places.join(' ')})`
     );
   }
 

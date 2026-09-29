@@ -385,8 +385,8 @@ function dcCelebrationBlock(d) {
       html += `<div class="dc-cel-verdict ${escapeHtml(c.verdict)}">${escapeHtml(c.verdictLabel)}</div>`;
     }
     if (c.verdict === 'missing' && c.group) {
-      html += `<div class="dc-cel-suggest">Id proposat per al calendari català:
-        <code>${escapeHtml(c.group.suggestedId)}</code> · afecta ${c.group.contestedDays} dies i
+      html += `<div class="dc-cel-suggest">No és a <code>celebrations.json</code> del procés X: cal afegir-la a
+        litcal · afecta ${c.group.contestedDays} dies i
         ${c.group.cellsBlamed} caselles (<b>${c.group.cellsSole}</b> només per aquesta celebració)</div>`;
     }
   }
