@@ -524,10 +524,20 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         observe('lectura_breve_textos', entry.lectura_biblica, hourData.shortReading.shortReading, tag);
       }
       // Six lines for Laudes and Vespers, a versicle/response pair for the intermediate
-      // Hours — same helper, so the two shapes can't be paired up wrongly here.
+      // Hours — same helper, so the two shapes can't be paired up wrongly here. They are
+      // paired by position, which holds only up to the first cell the app shows twice:
+      // past it, every line lands in its neighbour's cell. So they are paired up to there,
+      // and not at all when the app shows fewer lines than cpl-app has, because then there
+      // is no telling where the gap is. With saints-app at dev of 28-9-2026: on 24 July
+      // (seven lines, the second cell twice) the first two pair up; on 25 July (five) none
+      // do; on 30 November (the Gloria's cell 13 twice, at the end) the first five; and on
+      // 12 October the intermediate Hours show four cells for cpl-app's two, the first two.
       const respParts = responsoryParts(hourData);
-      if (respParts && Array.isArray(entry.responsorios)) {
-        entry.responsorios.forEach((id, i) => observe('responsorios', id, respParts[i], tag));
+      const respCells = Array.isArray(entry.responsorios) ? entry.responsorios : null;
+      if (respParts && respCells && respCells.length >= respParts.length) {
+        const firstRepeat = respCells.findIndex((id, i) => respCells.indexOf(id) !== i);
+        const upTo = firstRepeat === -1 ? respCells.length : firstRepeat;
+        respCells.slice(0, upTo).forEach((id, i) => observe('responsorios', id, respParts[i], tag));
       }
       observe('cantico_evangelico_antifonas', entry.cantico_evangelico_antifona, hourData.evangelicalAntiphon, tag);
       const prayers = parsePrayers(hourData.prayers);
