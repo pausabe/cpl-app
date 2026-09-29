@@ -49,7 +49,7 @@ Play. Viu en una carpeta a part perquè `maestro test .maestro/` només agafa el
 carpeta que se li dona, i així `make ui-tests` no el troba.
 
     make captures          totes les mides
-    make captures-ios      l'iPhone de 6,9" i l'iPad de 13"
+    make captures-ios      l'iPhone de 6,7" i l'iPad de 13"
     make captures-android  el 1080x1920 de Google Play
 
 `scripts/captures.mjs` arrenca el simulador de cada mida, hi instal·la la release, executa el

@@ -7,20 +7,17 @@
 // 2026. The neighbouring days are asserted too, because the temptation when fixing this
 // is to move the whole four-day block, and only the Wednesday moves.
 //
-// This drives cpl-app's own Services against the shipped DB, so it fails if the routing
-// in LiturgyMastersService regresses OR if the psalter rows themselves are edited.
-
-const path = require('path');
-const { DatabaseSync } = require('node:sqlite');
-
+// Each day is loaded the way the app loads it, against the database under test, so this
+// fails if the routing in liturgyMastersService regresses OR if the psalter rows themselves
+// are edited. Merges have dropped that routing twice without a conflict: this is what says so.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 
-const { resolveDayForComparison } = require('../../migration-to-saints/lib/cpl-day-resolver');
+const { DatabaseSync } = require('node:sqlite');
+const { DB_PATH } = require('../helpers/mockDatabaseManager');
+const { loadDay } = require('../helpers/liturgyDay');
 
-const DB_PATH = path.resolve(__dirname, '../../src/assets/db/cpl-app.db');
-
-// Resolving a day reaches two days ahead (first Vespers needs tomorrow, which asks for
-// ITS tomorrow), so a date is only testable when three liturgical years are in the DB.
+// Loading a day reaches two days ahead (first Vespers needs tomorrow, which asks for ITS
+// tomorrow), so a date is only testable when the years of all three are in the database.
 function coveredYears() {
   const db = new DatabaseSync(DB_PATH, { readOnly: true });
   const years = new Set(
@@ -40,11 +37,11 @@ const testable = (date) =>
     return YEARS.has(String(d.getUTCFullYear()));
   });
 
-const laudesCitations = async (date) => {
-  const day = await resolveDayForComparison(date, { hours: ['Laudes'] });
-  const l = day.hours.Laudes;
-  return [l.primer_salmo_cita, l.segundo_salmo_cita, l.tercer_salmo_cita].map((c) =>
-    String(c).replace(/\s+/g, ' ').trim(),
+// The titles of the three psalms, as the screen shows them: «Salm 50 \nOració de penediment»
+const laudesPsalms = async (date) => {
+  const { laudes } = (await loadDay(date)).hours;
+  return [laudes.firstPsalm, laudes.secondPsalm, laudes.thirdPsalm].map((psalm) =>
+    String(psalm.title).replace(/\s+/g, ' ').trim(),
   );
 };
 
@@ -67,7 +64,7 @@ describe('Ash Wednesday Laudes psalmody (CPL-LIT-001)', () => {
   it('has dates to check', () => expect(dates.length).toBeGreaterThan(0));
 
   it.each(dates)('%s uses Friday of week III: Ps 50 / Jr 14 / Ps 99', async (date) => {
-    const [first, second, third] = await laudesCitations(date);
+    const [first, second, third] = await laudesPsalms(date);
     expect(first).toMatch(/^Salm 50\b/);
     expect(second).toMatch(/^Càntic Jr 14, 17-21\b/);
     expect(third).toMatch(/^Salm 99\b/);
@@ -78,7 +75,7 @@ describe('Ash Wednesday Laudes psalmody (CPL-LIT-001)', () => {
   it('the Thursday after keeps Thursday of week IV', async () => {
     const date = '2022-03-03';
     if (!testable(date)) return;
-    const [first, , third] = await laudesCitations(date);
+    const [first, , third] = await laudesPsalms(date);
     expect(first).toMatch(/^Salm 142\b/);
     expect(third).toMatch(/^Salm 146\b/);
   });
@@ -89,7 +86,7 @@ describe('Ash Wednesday Laudes psalmody (CPL-LIT-001)', () => {
   it('Good Friday keeps its own proper: Ps 50 / Ha 3 / Ps 147', async () => {
     const date = '2022-04-15';
     if (!testable(date)) return;
-    const [first, second, third] = await laudesCitations(date);
+    const [first, second, third] = await laudesPsalms(date);
     expect(first).toMatch(/^Salm 50\b/);
     expect(second).toMatch(/^Càntic Ha 3\b/);
     expect(third).toMatch(/^Salm 147\b/);

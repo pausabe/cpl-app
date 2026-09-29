@@ -6,8 +6,8 @@
 | **Component** | cpl-app · Laudes · salmòdia |
 | **Gravetat** | Alta — text litúrgic incorrecte, tots els anys, per a tots els usuaris |
 | **Trobat** | 14 d'agost de 2026, comparant cpl-app amb saints-app (eprex) al panell de migració |
-| **Correcció** | `src/Services/Liturgy/LiturgyMastersService.tsx`, funció `ObtainLaudesCommonPsalter` |
-| **Regressió** | `__tests__/Services/AshWednesdayLaudesPsalmody.test.js` |
+| **Correcció** | `src/services/liturgy/liturgyMastersService.ts`, funció `obtainLaudesCommonPsalter` |
+| **Regressió** | `__tests__/services/AshWednesdayLaudesPsalmody.test.js` |
 
 ## Símptoma
 
@@ -38,7 +38,7 @@ cpl-app no tenia aquesta excepció:
    cap columna de salmòdia**. Porta lectures, responsoris, antífona de Zacaries, pregàries i
    oració final, però cap salm. Comparada amb `tempsQuaresmaTridu`, que sí que té
    `salm1Laudes`/`salm2Laudes`/`salm3Laudes`, es veu que és un forat de dades, no una decisió.
-2. Sense res que ho sobreescrigui, `ObtainLaudesCommonPsalter` calculava la fila del salteri
+2. Sense res que ho sobreescrigui, `obtainLaudesCommonPsalter` calculava la fila del salteri
    amb `id = (setmana - 1) * 7 + (dia + 1)`, que per a Cendra dona la fila 25 —
    **dimecres de la setmana IV**. La fila que tocava és la 20, divendres de la setmana III.
 
@@ -85,7 +85,7 @@ Senyor, arreu de la terra»— és paraula per paraula la fila 20 de `salteriCom
 
 ## Correcció
 
-A `ObtainLaudesCommonPsalter`, seguint el patró que ja hi havia per a solemnitats, festes i la
+A `obtainLaudesCommonPsalter`, seguint el patró que ja hi havia per a solemnitats, festes i la
 Sagrada Família, s'hi afegeix l'excepció del Dimecres de Cendra: `weekCycle = 3`,
 `dayNumber = 5` (divendres de la setmana III, fila 20).
 
@@ -93,6 +93,11 @@ El test de regressió cobreix els 10 Dimecres de Cendra i, com a control, el dij
 (que ha de continuar a la setmana IV) i el Divendres Sant (que arriba al mateix Salm 50 per un
 camí diferent: el propi explícit de `tempsQuaresmaTridu`, divendres de la setmana II). Sense
 la correcció, 10 dels 13 casos fallen; els 3 controls passen igualment.
+
+Un efecte que es veu a la pantalla, i que és correcte: amb el Salm 99 a Laudes, qui té triat el
+99 com a salm de l'invitatori diu el 94 aquell dia. És la regla que l'app ja aplicava
+(`canBeInvitatoryPsalm`: el salm de l'invitatori no pot sortir a l'hora), i és el mateix que ja
+passava cada divendres de la setmana III, que té aquesta salmòdia.
 
 ## Efecte secundari sobre la migració al saints-app
 
