@@ -80,6 +80,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [CPL-LIT-005](#cpl-lit-005) | 2026-09-28 | cpl-app | codi | No — va al git | `1bd79cc`, branca `litcal-sweep`, local |
 | [CPL-LIT-006](#cpl-lit-006) | 2026-09-28 | cpl-app | codi | No — va al git | `1ea6f96`, branca `litcal-sweep`, local |
 | [CPL-LIT-001c](#cpl-lit-001c) | 2026-09-29 | cpl-app | codi (**recaiguda**, aturada a la fusió) | No — va al git | `50eed05` |
+| [EINA-calendari](#eina-calendari) | 2026-09-29 | eines | codi | No — va al git | `3193fb5`, `2a66094` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -1308,6 +1309,28 @@ ni el salteri que el generador dedueix per majoria. No substitueix `day-check.js
 diferents i les vols totes dues.
 
 <a id="eprex-005"></a>
+## EINA-calendari
+
+**La migració pren el calendari de litcal i ja no el genera** · 29 de setembre de 2026
+
+Des del 28 de setembre, la capa catalana de litcal és un model fet a partir de la taula
+`anyliturgic` (branca `catalan-calendars`, PR #25): ciutat i catedral, els ids de romcal per als
+sants universals, regles amb anys. D'aquesta capa en surt ara la taula de cpl-app (cpl-cloud,
+procés X). Les eines de la migració, en canvi, encara la generaven de `cpl-app.db` amb pèrdues
+(§6 del PLAN), i el botó «Refrescar-ho tot» del panell la reescrivia a `litcal/src/data/calendars/`.
+
+| | |
+|---|---|
+| Panell | Fora l'etapa 1 (`generate-catalan-calendars.js`), la 2 (`build-catalan-calendars.ts --write`, de litcal) i l'informe de sants descartats. «Compilar litcal» fa el que cal: el carregador, el `dist/` i la còpia a saints-app. Les targetes, de l'1 al 5 |
+| Generador | `generate-catalan-calendars.js`, esborrat. Sense arguments escrivia directament a litcal |
+| Quina celebració coneix litcal | [`missing-celebrations.js`](migration-to-saints/missing-celebrations.js) ho treu de `cpl-cloud/calendar/data/celebrations.json`, el del procés X: el nom de l'app → l'id de litcal, l'origen i els llocs. Abans ho buscava pel `catalanName` de les regles o per l'slug del nom, que la capa nova ja no fa servir |
+| Efecte, amb el manifest del 14-9 | «Falten a litcal»: d'1 a 0 (santa Maria en dissabte ja hi és). La resta de veredictes, igual. Ja no proposa cap id: una celebració que falti s'afegeix a litcal a mà |
+| Commits | `3193fb5` (panell), `2a66094` (`celebrations.json`) |
+| Reaplicar | **No** — és codi, va al git |
+
+**Queda a litcal** `scripts/build-catalan-calendars.ts`, que ja no crida ningú. És de la branca
+`catalan-calendars` (PR #25), i s'ha de treure allà.
+
 ## EPREX-005
 
 **A les hores intermèdies, una festa perd la seva antífona pròpia** · 8 de setembre de 2026
