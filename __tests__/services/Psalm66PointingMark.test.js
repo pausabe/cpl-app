@@ -10,16 +10,18 @@
 // This is a DATA fix, not a code fix: the correction lives in db-fixes/CPL-LIT-003.sql and
 // is applied to src/assets/db/cpl-app.db. That database is gitignored and comes from the
 // Deployment website, so a freshly downloaded copy will NOT have the fix. This test is what
-// tells you so — if it fails, run the .sql over the new database again.
+// tells you so — if it fails, run the .sql over the new database again. It reads the database
+// under test: the one in place, or the one CPL_DB points to. Since 29 September 2026 the fixes
+// stay off the one in place until the end of the migration (Pau's call): `make db-fixed` makes
+// a copy with both, and CPL_DB=migration-to-saints/output/cpl-app.fixed.db checks that one.
 //
 // The copies are found by their text, not by id, so the test keeps working on a database
 // whose ids have moved.
 
-const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 const { textKey } = require('../../migration-to-saints/lib/text-key');
 
-const DB_PATH = path.resolve(__dirname, '../../src/assets/db/cpl-app.db');
+const DB_PATH = require('../../migration-to-saints/lib/cpl-db-path');
 const OPENING = 'Que Déu s’apiadi de nosaltres i ens beneeixi';
 const VERSE = 'La terra ha donat el seu fruit,';
 

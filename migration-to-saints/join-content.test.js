@@ -23,6 +23,7 @@
 const path = require('path');
 const fs = require('fs');
 const { DatabaseSync } = require('node:sqlite');
+const CPL_DB_PATH = require('./lib/cpl-db-path');
 const { textKey } = require('./lib/text-key');
 const { mergeCitationHeadings } = require('./lib/citation-headings');
 const memorialFerial = require('./lib/memorial-ferial');
@@ -383,7 +384,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // demana mai el Comú (`Categoria = '0000'`, vegeu decisions/D-001). En castellà aquella
     // pestanya SÍ que mostra el Comú, i el 3 de setembre de 2026 es va decidir que el català
     // hi faci igual. Això és el que l'omple.
-    const commonsDb = new DatabaseSync(path.resolve(__dirname, '../src/assets/db/cpl-app.db'), { readOnly: true });
+    const commonsDb = new DatabaseSync(CPL_DB_PATH, { readOnly: true });
     const { commons: commonRows, byCategoria: commonsByCategoria } = commonOffice.loadCommons(commonsDb);
     const esTableCache = {};
     function esTable(table) {
@@ -638,7 +639,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // makes cpl-app's own services throw on an empty row (e.g. ObtainPentecostDay reading
     // result[0].mes of nothing), which used to kill the whole run over a single edge day.
     // Skip those days and report them instead.
-    const rangeDb = new DatabaseSync(path.resolve(__dirname, '../src/assets/db/cpl-app.db'), { readOnly: true });
+    const rangeDb = new DatabaseSync(CPL_DB_PATH, { readOnly: true });
     const coveredYears = new Set(
       rangeDb.prepare('SELECT DISTINCT any AS y FROM anyliturgic').all().map((r) => String(r.y))
     );

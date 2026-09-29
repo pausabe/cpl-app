@@ -20,7 +20,7 @@ IPHONE = $(shell xcrun devicectl list devices --quiet --json-output /dev/stdout 
 	| select(.connectionProperties.tunnelState == "connected" or .connectionProperties.transportType == "wired")] \
 	| sort_by(.connectionProperties.tunnelState != "connected") | .[0].hardwareProperties.udid // empty')
 
-.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-infinite proposal db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden litcal-sweep android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android run-panel stop-panel day-check month progress review review-html
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-infinite proposal db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden litcal-sweep android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android run-panel stop-panel day-check month progress review review-html db-fixed
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -61,6 +61,7 @@ help:
 	@echo "make progress                             How the migration is doing, the whole window, and what holds most days back"
 	@echo "make month [YM=2026-09]                   The same for one month, day by day, and why each day is not at 100%"
 	@echo "make day-check [DATE=2026-08-12]          The same for one day, field by field (today, if no date is given)"
+	@echo "make db-fixed                             The database in place with the db-fixes on top, for the migration (CPL_DB=…)"
 	@echo "make review DATES=2026-08-20,2026-08-21   Day by day review against saints-app"
 	@echo "make run-panel [PORT=4848]                The migration panel (if the port is taken, it offers another)"
 	@echo "make stop-panel [PORT=4848]               Stop the panel"
@@ -301,6 +302,20 @@ captures-android:
 
 PORT ?= 4848
 PANEL := migration-to-saints/webui/server.js
+
+# The database in place with the two db-fixes on top, for the migration's runs: CPL_DB=$(FIXED_DB)
+# before make review, the join or the panel. The one in place stays as it was published, which is
+# what the goldens are made from and what make proposal takes its texts from; Pau decided on
+# 29 September 2026 to put the fixes on it for good only at the end. Run it again after make db or
+# make db-latest.
+FIXED_DB := migration-to-saints/output/cpl-app.fixed.db
+
+db-fixed:
+	cp $(DATABASE_DIR)/cpl-app.db $(FIXED_DB)
+	sqlite3 $(FIXED_DB) < db-fixes/CPL-LIT-002.sql > /dev/null
+	sqlite3 $(FIXED_DB) < db-fixes/CPL-LIT-003.sql > /dev/null
+	CPL_DB=$(FIXED_DB) npx jest __tests__/services/ImmaculateConceptionTransfer.test.js __tests__/services/Psalm66PointingMark.test.js --silent
+	@echo "CPL_DB=$(FIXED_DB)"
 
 REVIEW := migration-to-saints/review
 REVIEW_RUN := $(REVIEW)/run

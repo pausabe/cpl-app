@@ -280,7 +280,7 @@ function handleDayCheck(req, res, url) {
 // the DB is newer than the cache (or when asked to refresh).
 
 const CPL_DAY_CACHE_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/output/raw/cpl-days');
-const CPL_DB_PATH = path.join(CPL_APP_ROOT, 'src/assets/db/cpl-app.db');
+const CPL_DB_PATH = require('../lib/cpl-db-path');
 
 function cplDayCachePath(diocese, prayingPlace, date) {
   const who = `${diocese}-${prayingPlace}`.replace(/[^\w-]/g, '_');

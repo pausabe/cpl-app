@@ -9,19 +9,21 @@
 // This is a DATA fix, not a code fix: the correction lives in db-fixes/CPL-LIT-002.sql and
 // is applied to src/assets/db/cpl-app.db. That database is gitignored and comes from the
 // Deployment website, so a freshly downloaded copy will NOT have the fix. This test is what
-// tells you so — if it fails, run the .sql over the new database again.
+// tells you so — if it fails, run the .sql over the new database again. It reads the database
+// under test: the one in place, or the one CPL_DB points to. Since 29 September 2026 the fixes
+// stay off the one in place until the end of the migration (Pau's call): `make db-fixed` makes
+// a copy with both, and CPL_DB=migration-to-saints/output/cpl-app.fixed.db checks that one.
 //
 // The affected years are read from the database rather than hardcoded, so the test keeps
 // working on a database that covers years this one doesn't (the next occurrence is 2030).
 
-const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 
 const { resolveDayForComparison } = require('../../migration-to-saints/lib/cpl-day-resolver');
 
-const DB_PATH = path.resolve(__dirname, '../../src/assets/db/cpl-app.db');
+const DB_PATH = require('../../migration-to-saints/lib/cpl-db-path');
 
 // The years where 8 December is a Sunday of Advent — the only ones where anything moves.
 // Read from the calendar table itself, which is also what the .sql keys off.
