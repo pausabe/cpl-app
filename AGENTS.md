@@ -60,5 +60,7 @@ ones in our own tooling go to `migration-to-saints/tooling-bugs/` and are not re
   place until the end of the migration (Pau's call: master's goldens are recorded against the
   published one, and `make proposal` takes its texts from it). The migration runs on a copy with
   both: `make db-fixed`, then `CPL_DB=migration-to-saints/output/cpl-app.fixed.db` for the join,
-  the review or the panel. The recipe to put them on for good is in
+  the review or the panel. `make checks` and `make tests` run the two data detectors on that copy
+  (they build it), and everything else on the database in place. The recipe to put them on for
+  good is in
   [REGISTRE-DE-CANVIS.md](REGISTRE-DE-CANVIS.md#el-que-sha-de-reaplicar-sobre-una-base-de-dades-acabada-de-baixar).

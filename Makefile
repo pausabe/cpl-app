@@ -185,7 +185,8 @@ checks: db-is-catalan
 	npx prettier . --check
 	npx eslint .
 	npx tsc --noEmit
-	env -u UPDATE_GOLDEN npx jest --ci
+	env -u UPDATE_GOLDEN npx jest --ci --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS)
+	@$(MAKE) --no-print-directory db-fixed
 
 # Without the two sweeps against the goldens: the goldens are not in the repository, and when
 # they are missing they write themselves from the build being checked and pass without comparing
@@ -208,11 +209,18 @@ format:
 
 # --- Jest ------------------------------------------------------------------------------------
 
+# The two data detectors (CPL-LIT-002 and CPL-LIT-003) check the copy make db-fixed makes, not the
+# database in place: since 29 September 2026 the fixes stay off that one until the end of the
+# migration (Pau's call), and against it they could only fail. make db-fixed runs them on the copy.
+JEST_IGNORED := '/node_modules/' '/__tests__/helpers/'
+DATA_DETECTORS := '/(ImmaculateConceptionTransfer|Psalm66PointingMark)\.test\.js$$'
+
 tests:
-	npx jest
+	npx jest --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS)
+	@$(MAKE) --no-print-directory db-fixed
 
 tests-fast:
-	npx jest --testPathIgnorePatterns '/node_modules/' '/__tests__/helpers/' '/liturgy/(liturgyGolden|yearSweep)' '/screens/prayerTextGolden'
+	npx jest --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS) '/liturgy/(liturgyGolden|yearSweep)' '/screens/prayerTextGolden'
 
 # A golden is what says «this is how it has to come out». It is rewritten only after checking by
 # hand that the liturgy of this build is right: otherwise it stops catching anything. The screens

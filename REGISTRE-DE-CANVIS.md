@@ -1390,7 +1390,8 @@ llavors, que la migració no en depengui.
 | `CPL_DB` | La variable que ja llegia el mock dels tests, ara també a totes les lectures directes de la migració ([`lib/cpl-db-path.js`](migration-to-saints/lib/cpl-db-path.js)): el join, el Comú, la revisió, el panell i els dos detectors |
 | Comprovat | Amb `CPL_DB` a la còpia, el join surt com el del git (`commons-ca/` idèntic), llevat del 9-6-2018 del [CPL-LIT-006](#cpl-lit-006). Amb la base publicada, retindria unes 80 caselles de la Immaculada i l'Advent (el [CPL-LIT-002](#cpl-lit-002)) |
 | `FROM` | `make db-fixed FROM=../cpl-cloud/calendar/out/cpl-app.db` fa la còpia de la base del procés X, amb el calendari tret de litcal. Per a Barcelona 2017–2026 el join en surt amb els mateixos textos: el calendari que movia caselles era el de saints-app |
-| Commit | `1dbfce3`, `38a2547` (`FROM`) |
+| `make checks` i `make tests` | Hi passen els dos detectors de dades sobre la còpia (la fan), i la resta de tests sobre la base del lloc. Si no, cap `push` de la branca no passaria el hook: contra la base publicada només poden fallar |
+| Commit | `1dbfce3`, `38a2547` (`FROM`), el del `make checks` |
 | Reaplicar | **No** — és codi, va al git |
 
 ## EPREX-005
