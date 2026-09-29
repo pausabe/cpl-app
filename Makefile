@@ -20,7 +20,7 @@ IPHONE = $(shell xcrun devicectl list devices --quiet --json-output /dev/stdout 
 	| select(.connectionProperties.tunnelState == "connected" or .connectionProperties.transportType == "wired")] \
 	| sort_by(.connectionProperties.tunnelState != "connected") | .[0].hardwareProperties.udid // empty')
 
-.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-infinite db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden litcal-sweep android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-infinite proposal db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden litcal-sweep android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -33,6 +33,7 @@ help:
 	@echo "make db-ca             Bring the Catalan one back (the same as make db)"
 	@echo "make db-latest         Ask the website for the newest publication, even if a Catalan one is put aside"
 	@echo "make db-infinite       The same database with its calendar out of litcal up to 2100 (not published)"
+	@echo "make proposal          Write cpl-cloud's calendar/out again (and the proposal for the website), app untouched"
 	@echo "make db-which          Say which language is sitting in src/assets/db right now"
 	@echo ""
 	@echo "make checks            Prettier, lint, types and every Jest test: what the hook runs before each push (~4 min)"
@@ -147,11 +148,17 @@ db-latest:
 # the published database and fail with this one, on purpose: make db-latest brings the published one back.
 PROCESS_X ?= ../cpl-cloud/calendar
 
-db-infinite:
-	@test -d $(PROCESS_X) || (echo "No process X at $(PROCESS_X) (set PROCESS_X=)" && exit 1)
-	npm --prefix $(PROCESS_X) run write -- --db $(abspath $(DATABASE_DIR)/cpl-app.db)
+db-infinite: proposal
 	@node scripts/infiniteDatabase.mjs $(PROCESS_X)/out/cpl-app.db
 	@$(MAKE) --no-print-directory db-which
+
+# The same without touching the app: process X writes its out/ again from the database in place (the
+# databases, the 2027 spreadsheet for the CPL, and out/proposal, the proposal the website shows). For
+# when a rule of litcal changes: then out/proposal goes up in the Calendari tab of the website.
+proposal:
+	@test -d $(PROCESS_X) || (echo "No process X at $(PROCESS_X) (set PROCESS_X=)" && exit 1)
+	npm --prefix $(PROCESS_X) run write -- --db $(abspath $(DATABASE_DIR)/cpl-app.db)
+	@echo "To show it to the CPL: upload $(PROCESS_X)/out/proposal in the Calendari tab of the website"
 
 # Which language is in place, and whether the file and its descriptor still agree
 db-which:
