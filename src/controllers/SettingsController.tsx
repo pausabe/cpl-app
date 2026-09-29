@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Appearance, Linking } from 'react-native';
 import * as ExpoApplication from 'expo-application';
 import Constants from 'expo-constants';
-import SettingsService, { DEFAULT_EDITION, DioceseName, PrayingPlace, editionName } from '../services/SettingsService';
+import SettingsService, {
+  DEFAULT_EDITION,
+  DioceseName,
+  PrayingPlace,
+  editionName,
+  editionsOffered,
+} from '../services/SettingsService';
 import { SessionLogs } from '../utils/logger';
 import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen';
 import { EditionStatus, LocationStatus } from '../view-models/notices';
@@ -74,7 +80,7 @@ async function load(): Promise<Loaded> {
       showVideos: (await SettingsService.getSettingShowVideos()) === 'true',
     },
     options: fromDatabase ?? FIXED_OPTIONS,
-    editions: editionChoices(await knownEditions(), chosen),
+    editions: editionsOffered() ? editionChoices(await knownEditions(), chosen) : [],
   };
 }
 

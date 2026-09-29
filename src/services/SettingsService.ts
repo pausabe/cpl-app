@@ -55,6 +55,14 @@ export function editionName(edition: string): string {
   return EDITION_NAMES[edition] ?? edition;
 }
 
+// Whether this build offers the language of the texts in Configuració: only one built with
+// EXPO_PUBLIC_CPL_EDITIONS=1 (in .env, or exported when building). Until another edition is ready
+// for everybody, the row stays hidden even when the website has one. Metro writes the value in when
+// it builds, as with the other EXPO_PUBLIC_ variables.
+export function editionsOffered(): boolean {
+  return process.env.EXPO_PUBLIC_CPL_EDITIONS === '1';
+}
+
 const EDITION_PATTERN = /^[a-z]{2}$/;
 
 // What a fresh install prays with. Everything is stored as text, as it always has been.

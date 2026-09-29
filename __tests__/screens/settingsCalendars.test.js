@@ -88,6 +88,22 @@ test('the places are those of the diocese', async () => {
 });
 
 describe('the language of the texts', () => {
+  // Only the builds that carry EXPO_PUBLIC_CPL_EDITIONS offer it
+  beforeEach(() => {
+    process.env.EXPO_PUBLIC_CPL_EDITIONS = '1';
+  });
+  afterEach(() => {
+    delete process.env.EXPO_PUBLIC_CPL_EDITIONS;
+  });
+
+  test('is not offered by a build without EXPO_PUBLIC_CPL_EDITIONS, whatever the website has', async () => {
+    delete process.env.EXPO_PUBLIC_CPL_EDITIONS;
+    await AsyncStorage.setItem('KnownEditions', JSON.stringify(['ca', 'es']));
+    await open();
+
+    expect(screen.queryByRole('button', { name: /^Llengua dels textos/ })).toBeNull();
+  });
+
   test('is not offered while the website has only the Catalan one', async () => {
     await open();
 
