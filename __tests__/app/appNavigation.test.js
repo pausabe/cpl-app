@@ -14,6 +14,9 @@ jest.mock('expo-asset', () => {
 jest.mock('../../src/services/databaseUpdateService', () => ({
   useDatabaseUpdates: () => {},
   checkForNewDatabase: jest.fn(async () => 'up-to-date'),
+  // The website has only the Catalan edition: Configuració offers no language to choose
+  knownEditions: jest.fn(async () => []),
+  prepareEdition: jest.fn(async () => 'ready'),
 }));
 jest.mock('../../src/controllers/firstRun', () => ({ wasOpenedBefore: jest.fn(async () => true) }));
 jest.mock('expo-splash-screen', () => ({

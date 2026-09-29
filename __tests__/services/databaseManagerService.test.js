@@ -26,6 +26,7 @@ jest.mock('expo-sqlite', () => ({
   openDatabaseAsync: jest.fn(async (name) => ({ name, getAllAsync: jest.fn(async () => [{ ok: 1 }]) })),
 }));
 
+const AsyncStorage = require('@react-native-async-storage/async-storage');
 const FileSystem = require('expo-file-system/legacy');
 const SQLite = require('expo-sqlite');
 const DatabaseManagerService = require('../../src/services/databaseManagerService');
@@ -36,9 +37,10 @@ const BUNDLED_NAME = `cpl-${bundled.compat}-v${bundled.version}.db`;
 const asset = { localUri: 'file:///bundle/cpl-app.db' };
 const downloaded = (version, compat = bundled.compat) => `${DIRECTORY}cpl-${compat}-v${version}.db`;
 
-beforeEach(() => {
+beforeEach(async () => {
   FileSystem.__files.clear();
   jest.clearAllMocks();
+  await AsyncStorage.clear();
 });
 
 test('on the first launch it copies the database that comes inside the app', async () => {
@@ -114,4 +116,66 @@ test('currentDatabaseVersion is the newest one the app can read', async () => {
   FileSystem.__files.add(downloaded(bundled.version + 3));
 
   expect(await DatabaseManagerService.currentDatabaseVersion()).toBe(bundled.version + 3);
+});
+
+describe('the editions', () => {
+  const spanish = (version) => `${DIRECTORY}cpl-${bundled.compat}-v${version}-es.db`;
+
+  test('with another edition chosen, its newest database is opened and the Catalan one goes', async () => {
+    await AsyncStorage.setItem('edicio', 'es');
+    FileSystem.__files.add(`${DIRECTORY}${BUNDLED_NAME}`);
+    FileSystem.__files.add(spanish(bundled.version + 2));
+
+    await DatabaseManagerService.openDatabase(asset);
+
+    expect(SQLite.openDatabaseAsync).toHaveBeenCalledWith(`cpl-${bundled.compat}-v${bundled.version + 2}-es.db`);
+    expect(DatabaseManagerService.openedDatabaseEdition()).toBe('es');
+    expect([...FileSystem.__files]).toEqual([spanish(bundled.version + 2)]);
+  });
+
+  test('while the phone has none of the chosen edition, the app prays with the one it carries', async () => {
+    await AsyncStorage.setItem('edicio', 'es');
+
+    await DatabaseManagerService.openDatabase(asset);
+
+    expect(SQLite.openDatabaseAsync).toHaveBeenCalledWith(BUNDLED_NAME);
+    expect(DatabaseManagerService.openedDatabaseEdition()).toBe('ca');
+  });
+
+  test('coming back to the Catalan edition copies the one inside the app again, on a reload without it', async () => {
+    await AsyncStorage.setItem('edicio', 'es');
+    FileSystem.__files.add(spanish(bundled.version + 2));
+    await DatabaseManagerService.openDatabase(asset);
+
+    await AsyncStorage.setItem('edicio', 'ca');
+    // The reloads after a setting changes do not carry the asset
+    await DatabaseManagerService.openDatabase();
+
+    expect(FileSystem.copyAsync).toHaveBeenCalledWith({ from: asset.localUri, to: `${DIRECTORY}${BUNDLED_NAME}` });
+    expect(SQLite.openDatabaseAsync).toHaveBeenLastCalledWith(BUNDLED_NAME);
+    expect(DatabaseManagerService.openedDatabaseEdition()).toBe('ca');
+  });
+
+  test('a database of another edition is never taken for the Catalan one, however new', async () => {
+    FileSystem.__files.add(spanish(bundled.version + 5));
+
+    await DatabaseManagerService.openDatabase(asset);
+
+    expect(SQLite.openDatabaseAsync).toHaveBeenCalledWith(BUNDLED_NAME);
+    expect([...FileSystem.__files]).toEqual([`${DIRECTORY}${BUNDLED_NAME}`]);
+  });
+
+  test('currentDatabaseVersion of an edition the phone does not have is 0', async () => {
+    expect(await DatabaseManagerService.currentDatabaseVersion('es')).toBe(0);
+
+    FileSystem.__files.add(spanish(bundled.version + 2));
+
+    expect(await DatabaseManagerService.currentDatabaseVersion('es')).toBe(bundled.version + 2);
+    expect(await DatabaseManagerService.currentDatabaseVersion('ca')).toBe(bundled.version);
+  });
+
+  test('the name of a database says its edition, and the Catalan ones keep the name of before', () => {
+    expect(DatabaseManagerService.databaseFileName('s0-abc', 7)).toBe('cpl-s0-abc-v7.db');
+    expect(DatabaseManagerService.databaseFileName('s0-abc', 7, 'es')).toBe('cpl-s0-abc-v7-es.db');
+  });
 });

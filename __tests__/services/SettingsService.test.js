@@ -46,3 +46,38 @@ test('the invalid values are not saved', async () => {
   expect(await SettingsService.getSettingInvitationPsalm()).toBe('94');
   expect(await SettingsService.getSettingDayStart()).toBe('0');
 });
+
+describe('the editions', () => {
+  test('a fresh install prays in Catalan', async () => {
+    expect(await SettingsService.getSettingEdition()).toBe('ca');
+  });
+
+  test('an edition is two letters, and nothing else is saved', async () => {
+    await SettingsService.setSettingEdition('es');
+    await Promise.resolve(SettingsService.setSettingEdition('castellano')).catch(() => {});
+
+    expect(await SettingsService.getSettingEdition()).toBe('es');
+  });
+
+  test('each edition keeps its own diocese and place, and the Catalan ones stay where they were', async () => {
+    await SettingsService.setSettingDiocese('Girona');
+    await SettingsService.setSettingDiocese('España', ['España'], 'es');
+    await SettingsService.setSettingPrayingPlace('Diòcesi', ['Diòcesi'], 'es');
+
+    expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
+    expect(await SettingsService.getSettingDiocese()).toBe('Girona');
+    expect(await SettingsService.getSettingDiocese('es')).toBe('España');
+    expect(await SettingsService.getSettingPrayingPlace('es')).toBe('Diòcesi');
+  });
+
+  test('another edition has no place until one is chosen in it', async () => {
+    expect(await SettingsService.getSettingDiocese('es')).toBe('');
+    expect(await SettingsService.getSettingPrayingPlace('es')).toBe('');
+  });
+
+  test('a place that is not among those of the edition is not saved', async () => {
+    await Promise.resolve(SettingsService.setSettingDiocese('Madrid', ['España'], 'es')).catch(() => {});
+
+    expect(await SettingsService.getSettingDiocese('es')).toBe('');
+  });
+});

@@ -5,8 +5,9 @@ import { LiturgySpecificDayInformation } from '../models/LiturgyDayInformation';
 import { DayMassLiturgy } from '../models/MassLiturgy';
 import { SpecificLiturgyTimeType } from './celebrationTimeEnums';
 import { DioceseName, PrayingPlace } from './SettingsService';
-import { DioceseCode } from './databaseEnums';
+import { CelebrationType, DioceseCode } from './databaseEnums';
 import * as DatabaseHelper from './databaseDataHelper';
+import * as CalendarService from './calendarService';
 
 // A row as the database gives it: its columns by name
 type DatabaseRow = Record<string, any>;
@@ -50,22 +51,40 @@ export async function obtainLiturgySpecificDayInformation(
   let liturgyDayInformation = new LiturgySpecificDayInformation();
   liturgyDayInformation.date = date;
   liturgyDayInformation.pentecostDay = await obtainPentecostDay(liturgyDayInformation.date);
-  liturgyDayInformation.celebrationType = DatabaseHelper.getCelebrationTypeFromTodayLiurgyRow(
-    currentSettings.dioceseCode,
-    todayLiturgy,
-  );
 
-  // Moved day is used to detect if today's celebrations is meant to be celebrated in another day
-  liturgyDayInformation.movedDay.originDateShortDatabaseCode = todayLiturgy.diaMogut;
-  liturgyDayInformation.movedDay.todayIsMoved = await dateIsMoved(
-    liturgyDayInformation.date,
-    currentSettings.dioceseCode2Letters,
-  );
-  liturgyDayInformation.movedDay.originDate = DatabaseHelper.getDateFromShortDatabaseCode(
-    todayLiturgy.diaMogut,
-    date.getFullYear(),
-  );
-  liturgyDayInformation.movedDay.dioceseCode2Letters = todayLiturgy.diocesiMogut;
+  // The letter and the transfer of the day: from the calendar of the place when the database has it,
+  // otherwise from the column of the place in anyliturgic
+  const ofPlace = await CalendarService.obtainDayOfPlace(date, currentSettings);
+  if (ofPlace) {
+    const { day, chain } = ofPlace;
+    liturgyDayInformation.celebrationType = day.letter as CelebrationType;
+    liturgyDayInformation.movedDay.originDateShortDatabaseCode = DatabaseHelper.normalizeShortDatabaseCode(day.moved);
+    liturgyDayInformation.movedDay.todayIsMoved = await CalendarService.isMovedAway(date, chain);
+    liturgyDayInformation.movedDay.originDate = DatabaseHelper.getDateFromShortDatabaseCode(
+      day.moved,
+      date.getFullYear(),
+    );
+    liturgyDayInformation.movedDay.dioceseCode2Letters = chain[0];
+  } else {
+    liturgyDayInformation.celebrationType = DatabaseHelper.getCelebrationTypeFromTodayLiurgyRow(
+      currentSettings.dioceseCode,
+      todayLiturgy,
+    );
+    // A transfer counts only in the places it is for: anywhere else the day is as usual
+    const movedHere = DatabaseHelper.isTransferForPlace(
+      DatabaseHelper.transferPlaces(todayLiturgy.diocesiMogut, todayLiturgy.Mogut),
+      currentSettings,
+    );
+    liturgyDayInformation.movedDay.originDateShortDatabaseCode = movedHere
+      ? DatabaseHelper.normalizeShortDatabaseCode(todayLiturgy.diaMogut)
+      : '-';
+    // Whether today's own celebration has been moved to another day
+    liturgyDayInformation.movedDay.todayIsMoved = await dateIsMoved(liturgyDayInformation.date, currentSettings);
+    liturgyDayInformation.movedDay.originDate = movedHere
+      ? DatabaseHelper.getDateFromShortDatabaseCode(todayLiturgy.diaMogut, date.getFullYear())
+      : undefined;
+    liturgyDayInformation.movedDay.dioceseCode2Letters = todayLiturgy.diocesiMogut;
+  }
 
   liturgyDayInformation.liturgyColor = todayLiturgy.Color;
   liturgyDayInformation.genericLiturgyTime = todayLiturgy.tempsespecific;
@@ -218,9 +237,7 @@ async function getHolyDaysMassWithoutIdentifier(
 ): Promise<DayMassLiturgy> {
   const dateString = DatabaseHelper.getDateShortDatabaseCode(
     liturgySpecificDayInformation.date,
-    settings.dioceseCode,
     liturgySpecificDayInformation.movedDay.originDateShortDatabaseCode,
-    liturgySpecificDayInformation.movedDay.dioceseCode2Letters,
   );
   const customizedSpecificTime = liturgySpecificDayInformation.isSpecialChristmas
     ? 'Especial'
@@ -230,15 +247,20 @@ async function getHolyDaysMassWithoutIdentifier(
   return rowToMassLiturgy(result[0]);
 }
 
-async function dateIsMoved(date: Date, dioceseCode2Letters: string): Promise<boolean> {
+// Whether the celebration of this date has been moved to another day of the year, for the place of
+// the settings
+async function dateIsMoved(date: Date, settings: Settings): Promise<boolean> {
   const movedDateShortDatabaseCode = DatabaseHelper.getDateShortDatabaseCode(date);
-  const query = `SELECT any, mes, dia
+  const query = `SELECT diaMogut, diocesiMogut, Mogut
                    FROM anyliturgic
                    WHERE any = '${date.getFullYear()}'
-                     AND diaMogut = '${movedDateShortDatabaseCode}'
-                     AND (diocesiMogut = '*' OR (diocesiMogut <> '-' AND diocesiMogut = '${dioceseCode2Letters}'))`;
+                     AND diaMogut <> '-'`;
   const result = await executeQueryAsync(query);
-  return result.length > 0;
+  return result.some(
+    (row: DatabaseRow) =>
+      DatabaseHelper.normalizeShortDatabaseCode(row.diaMogut) === movedDateShortDatabaseCode &&
+      DatabaseHelper.isTransferForPlace(DatabaseHelper.transferPlaces(row.diocesiMogut, row.Mogut), settings),
+  );
 }
 
 function findCorrectIndexFromSettings(

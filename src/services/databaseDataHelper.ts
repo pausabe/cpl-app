@@ -1,5 +1,6 @@
 import { DioceseName, PrayingPlace } from './SettingsService';
 import { CelebrationType, DioceseCode } from './databaseEnums';
+import { Settings } from '../models/Settings';
 
 export function getDioceseCodeFromDioceseName(dioceseName: string, place: string): string {
   switch (dioceseName) {
@@ -213,21 +214,38 @@ export function getCelebrationTypeFromTodayLiurgyRow(
   return liturgyYearDatabaseRow.BaD;
 }
 
-export function isMovedDiocese(dioceseCode: string, dioceseCodeMoved: string): boolean {
-  if (!dioceseCode || dioceseCode === '' || dioceseCodeMoved === '-' || dioceseCode === undefined) return false;
-  if (dioceseCodeMoved === '*') return true;
-  if (dioceseCode === dioceseCodeMoved) return true;
-  return dioceseCode === dioceseCodeMoved;
+// The places a transfer of anyliturgic is for. diocesiMogut says it with one code: «*» for more than
+// one diocese, the two letters of a diocese for all of it, or the code of a place (BaC) for that place
+// only. A table made from litcal also says it place by place in Mogut («Ba Gi … Vi Andorra», «MeV MeC»),
+// because «*» is all it can write for St George moved in Catalonia and not in Mallorca. Mogut used to
+// be a note («Terrasa 10-dic»): then diocesiMogut is the one that counts.
+export function transferPlaces(diocesiMogut: string, mogut?: string): string[] {
+  const places = (mogut ?? '').trim().split(/\s+/);
+  if (places.every((place) => /^(\*|Andorra|[A-Z][A-Za-z][DVC]?)$/.test(place))) {
+    return places;
+  }
+  return [diocesiMogut];
 }
 
-export function getDateShortDatabaseCode(
-  date: Date,
-  dioceseCode2Letters: string = '-',
-  movedDay: string = '-',
-  dioceseCodeMoved: string = '-',
-): string {
-  if (movedDay !== '-' && isMovedDiocese(dioceseCode2Letters, dioceseCodeMoved)) {
-    return movedDay;
+// Whether a transfer is for the place of the settings: the two letters of its diocese, its own code,
+// or everyone
+export function isTransferForPlace(places: string[], settings: Settings): boolean {
+  return places.some(
+    (place) => place === '*' || place === settings.dioceseCode2Letters || place === settings.dioceseCode,
+  );
+}
+
+// «3-may» and «03-may» are the same day; the santoral writes it with the zero. Anything else is no day.
+export function normalizeShortDatabaseCode(code: string): string {
+  const match = /^(\d{1,2})-([a-z]{3})$/.exec((code ?? '').trim());
+  return match ? `${match[1].padStart(2, '0')}-${match[2]}` : '-';
+}
+
+// The code of a day in the santoral tables (08-jun): the day's own or, when its celebration comes from
+// another day, that one's
+export function getDateShortDatabaseCode(date: Date, movedDay: string = '-'): string {
+  if (movedDay && movedDay !== '-') {
+    return normalizeShortDatabaseCode(movedDay);
   }
 
   let monthShort;
@@ -330,7 +348,8 @@ export function getDateFromShortDatabaseCode(dateString: string, year: number): 
       break;
   }
 
-  if (!date || !month) {
+  // January is month 0
+  if (!date || month === undefined) {
     return undefined;
   }
 

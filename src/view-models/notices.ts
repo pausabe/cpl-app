@@ -47,6 +47,18 @@ export const LOCATION_NOTICES: Record<LocationStatus, string | null> = {
   failed: 'No s’ha pogut saber on ets. Torna-ho a provar.',
 };
 
+// Going over to another language of the texts: its database is downloaded first, and until it is
+// on the phone nothing changes. Every outcome but the good one is told under the row.
+export type EditionStatus = 'idle' | 'downloading' | 'none' | 'unreachable' | 'rejected';
+
+export const EDITION_NOTICES: Record<EditionStatus, string | null> = {
+  idle: null,
+  downloading: 'Baixant els textos… Pot trigar una estona.',
+  none: 'Aquesta llengua encara no és a punt per a aquesta versió de l’app.',
+  unreachable: 'No s’han pogut baixar els textos. Torna-ho a provar quan tinguis connexió.',
+  rejected: 'Els textos no han arribat bé. Torna-ho a provar més tard.',
+};
+
 // Once the permission has been refused, iOS never asks again: pressing the same button would do
 // nothing at all and look broken. It becomes the way out instead.
 export const OPEN_PHONE_SETTINGS = 'Obre els Ajustos del telèfon';

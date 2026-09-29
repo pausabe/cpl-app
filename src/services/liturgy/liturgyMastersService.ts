@@ -720,9 +720,7 @@ async function obtainSaintsSolemnities(
       if (saintsMemoryOrSolemnityMasterIdentifier === -1) {
         let day = DatabaseHelper.getDateShortDatabaseCode(
           liturgyDayInformation.today.date,
-          settings.dioceseCode2Letters,
           liturgyDayInformation.today.movedDay.originDateShortDatabaseCode,
-          liturgyDayInformation.today.movedDay.dioceseCode2Letters,
         );
         const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
           SaintsSolemnities.masterName,
@@ -777,25 +775,10 @@ async function obtainSaintsSolemnitiesWhenFirstsVespersParts(
         );
         return saintsSolemnitiesParts;
       } else {
-        let day = '-';
-        if (
-          liturgyDayInformation.tomorrow.movedDay.originDateShortDatabaseCode !== '-' &&
-          DatabaseHelper.isMovedDiocese(
-            settings.dioceseName,
-            liturgyDayInformation.tomorrow.movedDay.dioceseCode2Letters,
-          )
-        ) {
-          day = liturgyDayInformation.tomorrow.movedDay.originDateShortDatabaseCode;
-        }
-
-        if (day === '-') {
-          day = DatabaseHelper.getDateShortDatabaseCode(
-            liturgyDayInformation.tomorrow.date,
-            settings.dioceseName,
-            '-',
-            '-',
-          );
-        }
+        const day = DatabaseHelper.getDateShortDatabaseCode(
+          liturgyDayInformation.tomorrow.date,
+          liturgyDayInformation.tomorrow.movedDay.originDateShortDatabaseCode,
+        );
         const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
           SaintsSolemnities.masterName,
           day,
@@ -843,9 +826,7 @@ async function obtainSaintsMemories(
         if (masterIdentifierOfVariableDays === -1) {
           const day = DatabaseHelper.getDateShortDatabaseCode(
             liturgyDayInformation.today.date,
-            settings.dioceseName,
             liturgyDayInformation.today.movedDay.originDateShortDatabaseCode,
-            liturgyDayInformation.today.movedDay.dioceseCode2Letters,
           );
           const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
             SaintsMemories.masterName,

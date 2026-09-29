@@ -446,17 +446,12 @@ function isMotherOfGodFromTheTibbon(date: Date, settings?: Settings): boolean {
   if (settings && settings.dioceseName !== DioceseName.Tortosa) {
     return false;
   }
-  const auxDay = new Date(date.getFullYear(), 8, 2);
-  let b = true;
-  let days = 0;
-  while (b && days < 7) {
-    if (auxDay.getDay() === 0) {
-      b = false;
-    }
-    auxDay.setDate(auxDay.getDate() + 1);
-    days += 1;
+  // The first Sunday of September can be the 1st: then the Saturday before is 31 August
+  const firstSunday = new Date(date.getFullYear(), 8, 1);
+  while (firstSunday.getDay() !== 0) {
+    firstSunday.setDate(firstSunday.getDate() + 1);
   }
-  const tibbonDate = new Date(date.getFullYear(), 8, days);
+  const tibbonDate = new Date(date.getFullYear(), 8, firstSunday.getDate() - 1);
   return DateManagement.datesAreTheEqual(date, tibbonDate);
 }
 
