@@ -56,6 +56,9 @@ ones in our own tooling go to `migration-to-saints/tooling-bugs/` and are not re
   `ImmaculateConceptionTransfer`, `Psalm66PointingMark`— are the only net there is, so a red
   `make tests` is never something to work around.
 - **A freshly downloaded database has no data fix in it.** `make db` and `make db-latest` bring
-  the published one; the two `db-fixes/*.sql` go back on top of it, in order. They are
-  idempotent, and the recipe is in
+  the published one. Since 29 September 2026 the two `db-fixes/*.sql` stay off the database in
+  place until the end of the migration (Pau's call: master's goldens are recorded against the
+  published one, and `make proposal` takes its texts from it). The migration runs on a copy with
+  both: `make db-fixed`, then `CPL_DB=migration-to-saints/output/cpl-app.fixed.db` for the join,
+  the review or the panel. The recipe to put them on for good is in
   [REGISTRE-DE-CANVIS.md](REGISTRE-DE-CANVIS.md#el-que-sha-de-reaplicar-sobre-una-base-de-dades-acabada-de-baixar).

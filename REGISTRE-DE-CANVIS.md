@@ -81,6 +81,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [CPL-LIT-006](#cpl-lit-006) | 2026-09-28 | cpl-app | codi | No — va al git | `1ea6f96`, branca `litcal-sweep`, local |
 | [CPL-LIT-001c](#cpl-lit-001c) | 2026-09-29 | cpl-app | codi (**recaiguda**, aturada a la fusió) | No — va al git | `50eed05` |
 | [EINA-calendari](#eina-calendari) | 2026-09-29 | eines | codi | No — va al git | `3193fb5`, `2a66094` |
+| [EINA-db-fixed](#eina-db-fixed) | 2026-09-29 | eines | codi | No — va al git | `1dbfce3` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -95,6 +96,11 @@ git log --grep='^Cpl-Bug:' --format='%(trailers:key=Cpl-Bug,valueonly,separator=
 ---
 
 ## El que s'ha de reaplicar sobre una base de dades acabada de baixar
+
+> **Des del 29 de setembre de 2026, els fixos no es tornen a posar a la base del lloc** fins al
+> final de la migració, per decisió d'en Pau. La migració corre sobre una còpia que en porta tots
+> dos: `make db-fixed` i, després, `CPL_DB=migration-to-saints/output/cpl-app.fixed.db`. Vegeu
+> [EINA-db-fixed](#eina-db-fixed). La recepta de sota és per al dia que es posin per sempre.
 
 `src/assets/db/cpl-app.db` **està gitignorada** i ve del web de Deployment. Els fixos de dades
 no hi són quan te la baixes de nou. Aquests dos fitxers `.sql` **són l'únic registre** del que
@@ -1330,6 +1336,23 @@ procés X). Les eines de la migració, en canvi, encara la generaven de `cpl-app
 
 **Queda a litcal** `scripts/build-catalan-calendars.ts`, que ja no crida ningú. És de la branca
 `catalan-calendars` (PR #25), i s'ha de treure allà.
+
+## EINA-db-fixed
+
+**La migració llegeix una còpia amb els fixos, i la base del lloc queda com es publica** · 29 de setembre de 2026
+
+Els dos `db-fixes` es perden cada cop que es torna a baixar la base (el 25 i el 28 de setembre), i
+posar-los a la del lloc té un preu: els goldens de `master` s'hi graven sense (el sha256 ja no hi
+quadra) i `make proposal` en treu els textos. En Pau, el 29-9: es faran permanents al final; fins
+llavors, que la migració no en depengui.
+
+| | |
+|---|---|
+| `make db-fixed` | Copia la base del lloc a `migration-to-saints/output/cpl-app.fixed.db` (ignorada), hi aplica els dos `.sql` i hi passa els dos detectors |
+| `CPL_DB` | La variable que ja llegia el mock dels tests, ara també a totes les lectures directes de la migració ([`lib/cpl-db-path.js`](migration-to-saints/lib/cpl-db-path.js)): el join, el Comú, la revisió, el panell i els dos detectors |
+| Comprovat | Amb `CPL_DB` a la còpia, el join surt com el del git (`commons-ca/` idèntic), llevat del 9-6-2018 del [CPL-LIT-006](#cpl-lit-006). Amb la base publicada, retindria unes 80 caselles de la Immaculada i l'Advent (el [CPL-LIT-002](#cpl-lit-002)) |
+| Commit | `1dbfce3` |
+| Reaplicar | **No** — és codi, va al git |
 
 ## EPREX-005
 
