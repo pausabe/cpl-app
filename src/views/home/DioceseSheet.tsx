@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { useTheme } from '../../theme';
 import BottomSheet from '../../components/BottomSheet';
 import ActionButton from '../../components/ActionButton';
+import { OptionList } from '../../components/OptionSheet';
 import {
   DioceseOfferTexts,
   LOCATION_NOTICES,
@@ -12,30 +13,44 @@ import {
 } from '../../view-models/notices';
 
 // Offered once on the home, to whoever has never chosen a diocese. Two ways out and both are
-// doors: the phone can look for it, or they go and pick it themselves. Nothing is decided for
-// them and nothing is written until one of the two is pressed.
+// doors: the phone can look for it, or they pick it themselves from the list, which comes up in
+// this same sheet (a second sheet over the first is a second Modal, and iOS does not like one
+// opening while the other goes). Nothing is decided for them and nothing is written until a
+// diocese is found or chosen.
 export default function DioceseSheet({
   visible,
   texts,
   status,
+  dioceses,
+  current,
   onUseMyLocation,
   onOpenPhoneSettings,
-  onChooseMyself,
+  onChoose,
   onClose,
 }: {
   visible: boolean;
   texts: DioceseOfferTexts;
   status: LocationStatus;
+  dioceses: string[];
+  current: string;
   onUseMyLocation: () => void;
   onOpenPhoneSettings: () => void;
-  onChooseMyself: () => void;
+  onChoose: (diocese: string) => void;
   onClose: () => void;
 }) {
   const theme = useTheme();
   const { colors } = theme;
+  const [choosing, setChoosing] = useState(false);
   const locating = status === 'locating';
   const denied = status === 'denied';
   const notice = LOCATION_NOTICES[status];
+  if (choosing) {
+    return (
+      <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="Diòcesi" testID="diocese-offer">
+        <OptionList title="Diòcesi" options={dioceses} value={current} onChoose={onChoose} />
+      </BottomSheet>
+    );
+  }
   return (
     <BottomSheet visible={visible} onClose={onClose} accessibilityLabel="Diòcesi" testID="diocese-offer">
       <Text
@@ -56,7 +71,7 @@ export default function DioceseSheet({
       <ActionButton
         label={texts.choose}
         variant="outlined"
-        onPress={onChooseMyself}
+        onPress={() => setChoosing(true)}
         style={styles.secondButton}
         testID="diocese-offer-choose"
       />

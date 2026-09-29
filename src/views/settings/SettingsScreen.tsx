@@ -11,6 +11,8 @@ import SwitchRow from '../../components/SwitchRow';
 import TextSizeControl from '../../components/TextSizeControl';
 import { DarkModeChoice, THEME_SEGMENTS } from '../../components/TextSettingsSheet';
 import {
+  EDITION_NOTICES,
+  EditionStatus,
   LOCATION_NOTICES,
   LocationStatus,
   LOOKING_FOR_YOU,
@@ -26,6 +28,8 @@ export interface SettingsValues {
   textSizeStep: number;
   darkMode: DarkModeChoice;
   useLatin: boolean;
+  // The language of the texts, by its name (Català, Castellano)
+  edition: string;
   diocese: string;
   place: string;
   showVideos: boolean;
@@ -37,6 +41,11 @@ export type SettingsInfo = TechnicalData;
 
 export interface SettingsScreenProps {
   values: SettingsValues | null;
+  // The languages of the texts there are for this app; with fewer than two there is nothing to choose
+  editions: string[];
+  editionStatus: EditionStatus;
+  onEditionChange: (edition: string) => void;
+  // With a single diocese or a single place there is nothing to choose either, and the row goes
   dioceses: string[];
   places: string[];
   info: SettingsInfo;
@@ -65,7 +74,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
   const theme = useTheme();
   const { colors } = theme;
   const { values, info } = props;
-  const [sheet, setSheet] = useState<'diocese' | 'place' | null>(null);
+  const [sheet, setSheet] = useState<'edition' | 'diocese' | 'place' | null>(null);
   const [touches, setTouches] = useState(0);
   const technicalVisible = touches >= TOUCHES_FOR_TECHNICAL_DATA;
   // It stays saying «Fet»: whoever pressed it is on their way to closing the app, which is the
@@ -137,6 +146,17 @@ export default function SettingsScreen(props: SettingsScreenProps) {
             <View style={styles.groups}>
               {groupLabel('Lectura', true)}
               <Card radius={theme.radius.tile}>
+                {props.editions.length > 1 ? (
+                  <>
+                    {pickerRow('Llengua dels textos', values.edition, () => setSheet('edition'))}
+                    {EDITION_NOTICES[props.editionStatus] ? (
+                      <Text testID="edition-notice" style={[styles.locationNotice, { color: colors.text3 }]}>
+                        {EDITION_NOTICES[props.editionStatus]}
+                      </Text>
+                    ) : null}
+                    {divider}
+                  </>
+                ) : null}
                 <View style={styles.block}>
                   <View style={styles.sizeTitle}>
                     <Text style={[styles.rowLabel, { color: colors.text }]}>Mida del text</Text>
@@ -169,14 +189,18 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               {groupLabel('Calendari')}
               <Card radius={theme.radius.tile}>
                 {pickerRow('Diòcesi', values.diocese, () => setSheet('diocese'))}
-                {locationRow()}
-                {divider}
-                {pickerRow(
-                  'Lloc',
-                  values.place,
-                  () => setSheet('place'),
-                  'Algunes celebracions canvien segons on reses, com la dedicació de la catedral.',
-                )}
+                {props.dioceses.length > 1 ? locationRow() : null}
+                {props.places.length > 1 ? (
+                  <>
+                    {divider}
+                    {pickerRow(
+                      'Lloc',
+                      values.place,
+                      () => setSheet('place'),
+                      'Algunes celebracions canvien segons on reses, com la dedicació de la catedral.',
+                    )}
+                  </>
+                ) : null}
               </Card>
 
               {groupLabel('Missa')}
@@ -245,6 +269,17 @@ export default function SettingsScreen(props: SettingsScreenProps) {
 
       {values ? (
         <>
+          <OptionSheet
+            visible={sheet === 'edition'}
+            title="Llengua dels textos"
+            options={props.editions}
+            value={values.edition}
+            onClose={() => setSheet(null)}
+            onChoose={(edition) => {
+              setSheet(null);
+              if (edition !== values.edition) props.onEditionChange(edition);
+            }}
+          />
           <OptionSheet
             visible={sheet === 'diocese'}
             title="Diòcesi"

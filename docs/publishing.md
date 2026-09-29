@@ -20,7 +20,8 @@ from the Actions tab. There is no trigger on push: publishing is always a decisi
    picks the new one up.
 3. **The numbers.** `scripts/setBuildVersion.mjs` writes them into `app.json` before
    `expo prebuild`, which is what makes the native projects:
-   - the version people read is the one in `app.json`, unless another one is typed in the form;
+   - the version people read is the one in `app.json`, unless another one is typed in the form
+     (step 6 writes it back);
    - the build number, which is the only thing the stores ask never to go back, is 1000 plus the
      run number of the workflow.
 4. **Android.** `expo prebuild`, the release key put into the generated `build.gradle`,
@@ -29,8 +30,17 @@ from the Actions tab. There is no trigger on push: publishing is always a decisi
 5. **iOS.** `expo prebuild`, the certificate into a keychain made for that build, the project told
    exactly what to sign with, `xcodebuild archive`, and the file to App Store Connect. When Apple
    has processed it, a last job writes what has to be tried, in Catalan, in TestFlight.
-
-6. **Telegram.** When everything is over, a message says how it went: which store took it, which
+6. **The version, in the repository.** If at least one store took the build,
+   `scripts/keepRelease.sh` writes the version into `app.json` on `master` and tags the code that
+   was built (`v9.0.1`), like the versions published by hand before. So `master` always says the
+   version the stores have, the publishing website shows it, and the other store comes out with
+   the same number without typing it again. A version typed in the form becomes a
+   `chore(release)` commit by `github-actions[bot]` on top of the built one, which is what the tag
+   points to; if `master` moved meanwhile, it gets the same change on top. It does not move a tag
+   that already exists, and it leaves `master` alone if somebody has put another version there in
+   the meantime; the Telegram message says both. **After a publish, pull before pushing:**
+   `master` on GitHub may have one commit more.
+7. **Telegram.** When everything is over, a message says how it went: which store took it, which
    database it carries and what has to be tried. It is sent whether it went well or badly, which
    is when it matters most. Without the bot set up, nothing is sent and the publication is not
    affected.
@@ -131,6 +141,17 @@ base64 -i AuthKey_XXXXXXXX.p8 | gh secret set APP_STORE_CONNECT_KEY --repo pausa
 
 Certificates and profiles expire, the certificate after a year: when a run stops signing, that is
 the first thing to look at.
+
+## Why TestFlight does not ask about encryption
+
+Every build used to sit in TestFlight waiting for someone to answer «Missing Compliance» by hand
+before anyone could install it. The answer is always the same: the app uses no encryption of its
+own, only the HTTPS of the system, which is exempt. That answer is now written in `app.json`, as
+`ios.infoPlist.ITSAppUsesNonExemptEncryption: false`, and `expo prebuild` puts it in the
+Info.plist of every build.
+
+If the app ever did add encryption of its own, that line would stop being true and would have to
+go.
 
 ## When something goes wrong
 

@@ -40,7 +40,7 @@ export function buildSettings({
   settings.optionalFestivityEnabled = optionalFestivityEnabled;
   // The three that only change how the screen looks. They are set so that nothing downstream
   // reads an undefined, never because the export cares.
-  settings.textSize = 3;
+  settings.textSize = '3';
   settings.darkModeEnabled = false;
   return settings;
 }

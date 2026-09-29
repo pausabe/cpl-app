@@ -11,6 +11,8 @@ import MassBlock from './MassBlock';
 import HomeFooter from './HomeFooter';
 import DescriptionSheet from './DescriptionSheet';
 import EdgeFade from '../../components/EdgeFade';
+import UpdateNotice from '../../components/UpdateNotice';
+import { APP_UPDATE } from '../../view-models/notices';
 
 // The home, "el tauler": everything of every day on one screen. The card of the day, the seven
 // hours with the one of now, the Mass with the phrase of the Gospel, and Message and Donation in
@@ -29,6 +31,8 @@ export interface HomeScreenProps {
   onOptionalMemoryChange: (enabled: boolean) => void;
   onMessage: () => void;
   onDonation: () => void;
+  // A newer app in the store: one quiet line above Message and Donation
+  update?: { onOpen: () => void; onDismiss: () => void } | null;
 }
 
 export default function HomeScreen(props: HomeScreenProps) {
@@ -40,7 +44,7 @@ export default function HomeScreen(props: HomeScreenProps) {
   const onFooterLayout = (event: LayoutChangeEvent) => setFooterHeight(Math.ceil(event.nativeEvent.layout.height));
 
   // Another day, another saint: the sheet does not stay open
-  useEffect(() => setDescriptionOpen(false), [props.day.dateText, props.day.title]);
+  useEffect(() => setDescriptionOpen(false), [props.day.dateText, props.day.celebration?.title]);
 
   return (
     <View testID="home" style={[styles.screen, { backgroundColor: theme.colors.homeBackground }]}>
@@ -63,11 +67,25 @@ export default function HomeScreen(props: HomeScreenProps) {
       <View testID="home-footer" style={styles.footer} pointerEvents="box-none" onLayout={onFooterLayout}>
         <EdgeFade color={theme.colors.homeBackground} height={FADE_HEIGHT} />
         <View style={{ backgroundColor: theme.colors.homeBackground, paddingBottom: Math.max(insets.bottom, 6) }}>
+          {props.update ? (
+            <UpdateNotice
+              text={APP_UPDATE.text}
+              action={APP_UPDATE.action}
+              dismissLabel={APP_UPDATE.dismiss}
+              onOpen={props.update.onOpen}
+              onDismiss={props.update.onDismiss}
+            />
+          ) : null}
           <HomeFooter onMessage={props.onMessage} onDonation={props.onDonation} />
         </View>
       </View>
-      {props.day.description ? (
-        <DescriptionSheet day={props.day} visible={descriptionOpen} onClose={() => setDescriptionOpen(false)} />
+      {props.day.celebration?.description ? (
+        <DescriptionSheet
+          celebration={props.day.celebration}
+          colorCode={props.day.colorCode}
+          visible={descriptionOpen}
+          onClose={() => setDescriptionOpen(false)}
+        />
       ) : null}
     </View>
   );

@@ -8,6 +8,7 @@ import * as Logger from '../utils/logger';
 import { DateManagement } from '../utils/DateManagement';
 import * as StorageService from '../services/storage/storageService';
 import StorageKeys from '../services/storage/storageKeys';
+import { useAppUpdateNotice } from '../services/appUpdateService';
 import { SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 import * as LiturgyStore from './liturgyStore';
 import { followSystemAppearance } from './appearanceSettings';
@@ -25,7 +26,7 @@ import { buildDayCard } from '../view-models/dayCard';
 import { buildHours, HourTile } from '../view-models/hours';
 import { buildMass, massChoiceToStore, MassChoice, MassScreenType, resolveMassChoice } from '../view-models/mass';
 import { DioceseOfferTexts, dioceseOfferTexts, latePrayerTexts, LocationStatus } from '../view-models/notices';
-import SettingsService from '../services/SettingsService';
+import SettingsService, { DioceseName } from '../services/SettingsService';
 import { autoselectDiocese, shouldOfferAutoselection } from './dioceseAutoselection';
 
 // The home. It loads the day when the app opens and when the day changes, and keeps doing what
@@ -47,6 +48,7 @@ const WHATS_NEW_SEEN_KEY = 'WhatsNewSeen_9.0.0';
 // stop offering it.
 const SHOW_DIOCESE_OFFER = true;
 const DIOCESE_OFFER_SEEN_KEY = 'DioceseOfferSeen';
+const DIOCESES = Object.values(DioceseName) as string[];
 
 type Status = 'loading' | 'ready' | 'error';
 
@@ -85,13 +87,14 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   const theme = useTheme();
   const snapshot = LiturgyStore.useLiturgy();
   const hour = useCurrentHour();
+  const appUpdate = useAppUpdateNotice();
   const [databaseAssets, databaseAssetsError] = useAssets([require('../assets/db/cpl-app.db')]);
   const [status, setStatus] = useState<Status>(LiturgyStore.isLoaded() ? 'ready' : 'loading');
   const [latePrayerVisible, setLatePrayerVisible] = useState(false);
   const [calendarVisible, setCalendarVisible] = useState(false);
   const [whatsNewPending, setWhatsNewPending] = useState(false);
   // The words of the offer to find the diocese, and null while there is nothing to offer
-  const [dioceseOffer, setDioceseOffer] = useState<DioceseOfferTexts | null>(null);
+  const [dioceseOffer, setDioceseOffer] = useState<{ texts: DioceseOfferTexts; current: string } | null>(null);
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
   const [webPage, setWebPage] = useState<'message' | 'donation' | null>(null);
   const [massChoice, setMassChoice] = useState<{ day: string; choice: MassChoice } | null>(null);
@@ -140,7 +143,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         // question is put away for them too and never comes back.
         if (await shouldOfferAutoselection()) {
           const current = (await SettingsService.getSettingDiocese()) as string;
-          setDioceseOffer(dioceseOfferTexts(current, openedBefore));
+          setDioceseOffer({ texts: dioceseOfferTexts(current, openedBefore), current });
         } else {
           StorageService.storeData(DIOCESE_OFFER_SEEN_KEY, 'true');
         }
@@ -336,9 +339,11 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     setLocationStatus('idle');
   };
 
-  const chooseDioceseMyself = () => {
+  // Saved even when it is the one they already had: from now on it is theirs, chosen
+  const chooseDiocese = async (diocese: string) => {
+    await SettingsService.setSettingDiocese(diocese);
     closeDioceseOffer();
-    navigation.navigate('Settings');
+    if (diocese !== dioceseOffer?.current) await load(LiturgyStore.currentDate());
   };
 
   if (status === 'error') {
@@ -360,6 +365,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         onOptionalMemoryChange={onOptionalMemoryChange}
         onMessage={() => setWebPage('message')}
         onDonation={onDonation}
+        update={appUpdate ? { onOpen: appUpdate.open, onDismiss: appUpdate.dismiss } : null}
       />
       <WebSheet
         visible={webPage === 'message'}
@@ -394,11 +400,13 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       {dioceseOffer ? (
         <DioceseSheet
           visible={!latePrayerVisible && !whatsNewPending}
-          texts={dioceseOffer}
+          texts={dioceseOffer.texts}
           status={locationStatus}
+          dioceses={DIOCESES}
+          current={dioceseOffer.current}
           onUseMyLocation={findMyDiocese}
           onOpenPhoneSettings={openPhoneSettings}
-          onChooseMyself={chooseDioceseMyself}
+          onChoose={chooseDiocese}
           onClose={closeDioceseOffer}
         />
       ) : null}

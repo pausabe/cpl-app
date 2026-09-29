@@ -29,7 +29,7 @@ export class FileSystemService {
   }
 
   static async getFileUrisInDirectory(directoryPath: string, fileExtension: string): Promise<string[]> {
-    let listOfFiles = [];
+    const listOfFiles: string[] = [];
     if (!directoryPath || !fileExtension) {
       return listOfFiles;
     }

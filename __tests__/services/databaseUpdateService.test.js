@@ -1,6 +1,7 @@
 // The texts arrive from the publishing website while the app is used. What matters here is that
 // nothing can break a phone that is praying: a file that is not exactly the published one, or that
 // does not open, never replaces the database in use, and the app is left as it was.
+jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0' }));
 jest.mock('expo-file-system/legacy', () => ({
   documentDirectory: 'file:///docs/',
   cacheDirectory: 'file:///cache/',
@@ -20,10 +21,12 @@ jest.mock('expo-sqlite', () => ({
 }));
 jest.mock('../../src/services/databaseManagerService', () => ({
   DATABASE_DIRECTORY: 'file:///docs/SQLite/',
-  databaseFileName: (compat, version) => `cpl-${compat}-v${version}.db`,
-  bundledDatabaseInformation: () => ({ version: 1, compat: 's0-abcdef0123456789', md5: 'whatever' }),
+  databaseFileName: (compat, version, edition = 'ca') =>
+    edition === 'ca' ? `cpl-${compat}-v${version}.db` : `cpl-${compat}-v${version}-${edition}.db`,
+  bundledDatabaseInformation: () => ({ version: 1, compat: 's0-abcdef0123456789', md5: 'whatever', edition: 'ca' }),
   currentDatabaseVersion: jest.fn(async () => 1),
   openedDatabaseVersion: jest.fn(() => 1),
+  openedDatabaseEdition: jest.fn(() => 'ca'),
 }));
 
 const AsyncStorage = require('@react-native-async-storage/async-storage');
@@ -53,7 +56,8 @@ function answer(body, status = 200) {
   }));
 }
 
-// The key is read when the module is loaded, as it is written into the app when it is built
+// The key is read when the module is loaded, as it is written into the app when it is built. The
+// edition chosen in Configuració is saved where that same service reads it.
 function loadService({ appKey = 'the-app-key' } = {}) {
   let service;
   jest.isolateModules(() => {
@@ -63,11 +67,37 @@ function loadService({ appKey = 'the-app-key' } = {}) {
   return service;
 }
 
+async function loadServiceWithEdition(edition) {
+  let service;
+  let storage;
+  jest.isolateModules(() => {
+    process.env.EXPO_PUBLIC_CPL_APP_KEY = 'the-app-key';
+    service = require('../../src/services/databaseUpdateService');
+    storage = require('@react-native-async-storage/async-storage');
+  });
+  await storage.setItem('edicio', edition);
+  return service;
+}
+
+// A downloaded database as the app reads it: its stamp, and the language it says it is in (the
+// Catalan ones of before do not say it)
+function databaseSaying({ version = 7, compat = COMPAT, language } = {}) {
+  return {
+    getFirstAsync: jest.fn(async (query) => {
+      if (query.includes('_publication')) return { version, compat };
+      if (query.includes('sqlite_master')) return language ? { name: '_edition' } : null;
+      return { language };
+    }),
+    closeAsync: jest.fn(async () => {}),
+  };
+}
+
 beforeEach(async () => {
   jest.useRealTimers();
   await AsyncStorage.clear();
   jest.clearAllMocks();
   DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(1);
+  DatabaseManagerService.openedDatabaseEdition.mockReturnValue('ca');
   answer(manifest());
 });
 
@@ -75,13 +105,14 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-test('asks the website with the app key and the structure it can read', async () => {
+test('asks the website with the app key, the structure it can read and its version', async () => {
   const service = loadService();
 
   await service.checkForNewDatabase();
 
+  // With the version, a publication that needs a newer app is not given to this one
   expect(global.fetch).toHaveBeenCalledWith(
-    `https://cpl-api.canmartorell.dev/v1/db/latest?compat=${COMPAT}`,
+    `https://cpl-api.canmartorell.dev/v1/db/latest?compat=${COMPAT}&app=9.0.0`,
     expect.objectContaining({ headers: { 'X-CPL-App-Key': 'the-app-key' } }),
   );
 });
@@ -172,6 +203,16 @@ test('two openings at the same time count one opening and report once', async ()
   expect(asked.filter((url) => url.includes('/v1/db/latest'))).toHaveLength(1);
   const [, sent] = global.fetch.mock.calls.find(([url]) => url.endsWith('/v1/usage'));
   expect(JSON.parse(sent.body).opens).toBe(1);
+});
+
+test('opening the app also asks which app its store has', async () => {
+  answer(null, 204);
+  const service = loadService();
+
+  await service.onAppOpened();
+
+  const asked = global.fetch.mock.calls.map(([url]) => url);
+  expect(asked.filter((url) => url.includes('/v1/app/latest?platform='))).toHaveLength(1);
 });
 
 test('the report says the publication it is praying with, not the one it has just downloaded', async () => {
@@ -290,4 +331,112 @@ test('asking again makes the next opening look, and nothing else', async () => {
 
   await expect(service.checkForNewDatabase()).resolves.toBe('downloaded');
   expect(global.fetch).toHaveBeenCalledTimes(2);
+});
+
+describe('the editions', () => {
+  const SPANISH_PATH = `file:///docs/SQLite/cpl-${COMPAT}-v7-es.db`;
+
+  test('with another edition chosen it asks for that one, and keeps it under a name that says so', async () => {
+    DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(0);
+    answer(manifest({ edition: 'es' }));
+    SQLite.openDatabaseAsync.mockResolvedValueOnce(databaseSaying({ language: 'es' }));
+    const service = await loadServiceWithEdition('es');
+
+    await expect(service.checkForNewDatabase()).resolves.toBe('downloaded');
+
+    expect(global.fetch.mock.calls[0][0]).toBe(
+      `https://cpl-api.canmartorell.dev/v1/db/latest?compat=${COMPAT}&app=9.0.0&edition=es`,
+    );
+    expect(DatabaseManagerService.currentDatabaseVersion).toHaveBeenCalledWith('es');
+    expect(FileSystem.moveAsync).toHaveBeenLastCalledWith({ from: PENDING_PATH, to: SPANISH_PATH });
+  });
+
+  test('the Catalan one is asked for as always, without saying it', async () => {
+    const service = loadService();
+
+    await service.checkForNewDatabase();
+
+    expect(global.fetch.mock.calls[0][0]).not.toContain('edition');
+  });
+
+  test('a website from before the editions, which gives the Catalan one, gives nothing to another edition', async () => {
+    answer(manifest());
+    const service = await loadServiceWithEdition('es');
+
+    await expect(service.checkForNewDatabase()).resolves.toBe('up-to-date');
+    expect(FileSystem.createDownloadResumable).not.toHaveBeenCalled();
+  });
+
+  test('a database in another language than the one asked for is thrown away', async () => {
+    SQLite.openDatabaseAsync.mockResolvedValueOnce(databaseSaying({ language: 'es' }));
+    const service = loadService();
+
+    await expect(service.checkForNewDatabase()).resolves.toBe('rejected');
+    expect(FileSystem.deleteAsync).toHaveBeenCalledWith(PENDING_PATH, { idempotent: true });
+  });
+
+  test('the editions the website has for this app are remembered for Configuració', async () => {
+    answer(manifest({ edition: 'ca', editions: ['ca', 'es'] }));
+    const service = loadService();
+
+    expect(await service.knownEditions()).toEqual([]);
+    await service.checkForNewDatabase();
+
+    expect(await service.knownEditions()).toEqual(['ca', 'es']);
+  });
+
+  test('an edition chosen that the phone does not have is asked for after a quarter of an hour, not six', async () => {
+    answer(null, 204);
+    // It has chosen Spanish, and prays in Catalan until the Spanish one for this app arrives
+    DatabaseManagerService.openedDatabaseEdition.mockReturnValue('ca');
+    const service = await loadServiceWithEdition('es');
+    const start = Date.now();
+    await service.checkForNewDatabase();
+
+    jest.spyOn(Date, 'now').mockReturnValue(start + 20 * 60 * 1000);
+    await service.checkForNewDatabase();
+    expect(global.fetch).toHaveBeenCalledTimes(2);
+    Date.now.mockRestore();
+  });
+
+  describe('going over to another one from Configuració', () => {
+    test('downloads its texts first', async () => {
+      DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(0);
+      answer(manifest({ edition: 'es' }));
+      SQLite.openDatabaseAsync.mockResolvedValueOnce(databaseSaying({ language: 'es' }));
+      const service = loadService();
+
+      await expect(service.prepareEdition('es')).resolves.toBe('ready');
+      expect(FileSystem.moveAsync).toHaveBeenLastCalledWith({ from: PENDING_PATH, to: SPANISH_PATH });
+    });
+
+    test('says so when the website has none for this app', async () => {
+      DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(0);
+      answer(null, 204);
+      const service = loadService();
+
+      await expect(service.prepareEdition('es')).resolves.toBe('none');
+    });
+
+    test('without network, it will do with the one the phone has, and without one it cannot', async () => {
+      global.fetch = jest.fn(async () => {
+        throw new Error('Network request failed');
+      });
+      const service = loadService();
+
+      DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(0);
+      await expect(service.prepareEdition('es')).resolves.toBe('unreachable');
+      DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(5);
+      await expect(service.prepareEdition('es')).resolves.toBe('ready');
+    });
+
+    test('a download that went wrong leaves it where it was', async () => {
+      DatabaseManagerService.currentDatabaseVersion.mockResolvedValue(0);
+      answer(manifest({ edition: 'es' }));
+      FileSystem.getInfoAsync.mockResolvedValueOnce({ exists: true, md5: 'something-else' });
+      const service = loadService();
+
+      await expect(service.prepareEdition('es')).resolves.toBe('rejected');
+    });
+  });
 });

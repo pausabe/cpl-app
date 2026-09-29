@@ -1,10 +1,12 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    // TypeScript 6 turns strict on and stops loading @types by itself. The app was written
-    // without strict, so it stays off here until the code is ready for it; the tests need the
-    // globals of Jest.
-    "strict": false,
+    "strict": true,
+    // The models are data classes that the services fill in field by field once created: asking for
+    // every field to be set in a constructor would mean writing them all again, for nothing the
+    // tests do not already check.
+    "strictPropertyInitialization": false,
+    // TypeScript 6 stops loading @types by itself; the tests need the globals of Jest
     "types": ["jest", "node"]
   }
 }

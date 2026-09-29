@@ -1,5 +1,5 @@
 import { Appearance } from 'react-native';
-import SettingsService, { DarkModeOption } from './SettingsService';
+import SettingsService, { DarkModeOption, DEFAULT_EDITION } from './SettingsService';
 import * as DatabaseDataService from './databaseDataService';
 import * as DatabaseManagerService from './databaseManagerService';
 import { getDatabaseVersion } from './databaseDataService';
@@ -18,70 +18,103 @@ import CelebrationInformation from '../models/hours-liturgy/CelebrationInformati
 import { obtainMassLiturgy } from './liturgy/massLiturgyService';
 import { DateManagement } from '../utils/DateManagement';
 import { getDioceseCodeFromDioceseName } from './databaseDataHelper';
+import * as CalendarService from './calendarService';
 import { Asset } from 'expo-asset';
 import { DioceseCode } from './databaseEnums';
 
-// TODO: [UI Refactor] I don't like the idea of these variables made public to all project
-//  it should be hidden and only controllers should access it
-export let LastRefreshDate = new Date();
-export let CurrentSettings = new Settings();
-export let CurrentDatabaseInformation = new DatabaseInformation();
-export let CurrentLiturgyDayInformation = new LiturgyDayInformation();
-export let CurrentCelebrationInformation = new CelebrationInformation();
-export let CurrentHoursLiturgy = new HoursLiturgy();
-export let CurrentMassLiturgy = new MassLiturgy();
+// The liturgy of the day being shown, with the settings it was loaded with. Only the services and
+// the store (controllers/liturgyStore) read it: the screens get it from the store, as props.
+export interface CurrentLiturgy {
+  // When it was last loaded: coming back to the app on another day loads today's
+  lastRefreshDate: Date;
+  settings: Settings;
+  databaseInformation: DatabaseInformation;
+  liturgyDayInformation: LiturgyDayInformation;
+  celebrationInformation: CelebrationInformation;
+  hoursLiturgy: HoursLiturgy;
+  massLiturgy: MassLiturgy;
+}
+
+const current: CurrentLiturgy = {
+  lastRefreshDate: new Date(),
+  settings: new Settings(),
+  databaseInformation: new DatabaseInformation(),
+  liturgyDayInformation: new LiturgyDayInformation(),
+  celebrationInformation: new CelebrationInformation(),
+  hoursLiturgy: new HoursLiturgy(),
+  massLiturgy: new MassLiturgy(),
+};
+
+// Every reload replaces its parts, one after the other; nobody else can. The settings can be
+// changed in place (the text size, the dark mode), which does not change which texts they are.
+export function currentLiturgy(): Readonly<CurrentLiturgy> {
+  return current;
+}
 
 export async function reloadAllData(date: Date, databaseAsset: Asset) {
   Logger.log(Logger.LogKeys.FileSystemService, 'reloadAllData', 'Starting reloading data');
-  LastRefreshDate = new Date();
+  current.lastRefreshDate = new Date();
   await DatabaseManagerService.openDatabase(databaseAsset);
-  CurrentSettings = await obtainCurrentSettings(date);
-  CurrentDatabaseInformation = await obtainCurrentDatabaseInformation();
-  CurrentLiturgyDayInformation = await obtainLiturgyDayInformation(date, CurrentSettings);
+  current.settings = await obtainCurrentSettings(date);
+  current.databaseInformation = await obtainCurrentDatabaseInformation();
+  current.liturgyDayInformation = await obtainLiturgyDayInformation(date, current.settings);
   const tomorrowLiturgyDayInformation = await obtainLiturgyDayInformation(
-    CurrentLiturgyDayInformation.tomorrow.date,
-    CurrentSettings,
+    current.liturgyDayInformation.tomorrow.date,
+    current.settings,
   );
-  const todayLiturgyMasters = await obtainLiturgyMasters(CurrentLiturgyDayInformation, CurrentSettings);
-  const tomorrowLiturgyMasters = await obtainLiturgyMasters(tomorrowLiturgyDayInformation, CurrentSettings);
-  CurrentHoursLiturgy = await obtainHoursLiturgy(
+  const todayLiturgyMasters = await obtainLiturgyMasters(current.liturgyDayInformation, current.settings);
+  const tomorrowLiturgyMasters = await obtainLiturgyMasters(tomorrowLiturgyDayInformation, current.settings);
+  current.hoursLiturgy = await obtainHoursLiturgy(
     todayLiturgyMasters,
     tomorrowLiturgyMasters,
-    CurrentLiturgyDayInformation,
-    CurrentSettings,
+    current.liturgyDayInformation,
+    current.settings,
   );
-  CurrentCelebrationInformation = obtainCurrentCelebrationInformation(CurrentHoursLiturgy);
-  CurrentMassLiturgy = await obtainMassLiturgy(
-    CurrentLiturgyDayInformation,
-    CurrentHoursLiturgy.todayCelebrationInformation,
-    CurrentHoursLiturgy.tomorrowCelebrationInformation,
-    CurrentSettings,
+  current.celebrationInformation = obtainCurrentCelebrationInformation(current.hoursLiturgy);
+  current.massLiturgy = await obtainMassLiturgy(
+    current.liturgyDayInformation,
+    current.hoursLiturgy.todayCelebrationInformation,
+    current.hoursLiturgy.tomorrowCelebrationInformation,
+    current.settings,
   );
   Logger.log(
     Logger.LogKeys.FileSystemService,
     'reloadAllData',
     'Total time reloading data: ',
-    DateManagement.differenceBetweenDatesInSeconds(LastRefreshDate, new Date()) + 's',
+    DateManagement.differenceBetweenDatesInSeconds(current.lastRefreshDate, new Date()) + 's',
   );
 }
 
 async function obtainCurrentSettings(date: Date): Promise<Settings> {
   let currentSettings = new Settings();
-  currentSettings.prayingPlace = (await SettingsService.getSettingPrayingPlace()) as string;
-  currentSettings.dioceseName = (await SettingsService.getSettingDiocese()) as string;
-  currentSettings.dioceseCode = getDioceseCodeFromDioceseName(
-    currentSettings.dioceseName,
-    currentSettings.prayingPlace,
-  );
+  // The place saved for the edition of the database open: each edition has its own calendars
+  const edition = DatabaseManagerService.openedDatabaseEdition() ?? DEFAULT_EDITION;
+  currentSettings.prayingPlace = await SettingsService.getSettingPrayingPlace(edition);
+  currentSettings.dioceseName = await SettingsService.getSettingDiocese(edition);
+  // The code of the place in the tables of texts: the one of its calendar when the database has
+  // calendars, and otherwise the one the app has always known
+  const calendars = await CalendarService.obtainCalendars();
+  if (calendars) {
+    const place = CalendarService.resolvePlace(
+      CalendarService.placeOptions(calendars),
+      currentSettings.dioceseName,
+      currentSettings.prayingPlace,
+    );
+    currentSettings.dioceseName = place.diocese;
+    currentSettings.prayingPlace = place.place;
+  }
+  const calendar = calendars ? CalendarService.calendarOfPlace(calendars, currentSettings) : undefined;
+  currentSettings.dioceseCode =
+    calendar?.code ?? getDioceseCodeFromDioceseName(currentSettings.dioceseName, currentSettings.prayingPlace);
   currentSettings.dioceseCode2Letters =
     currentSettings.dioceseCode === DioceseCode.Andorra
       ? currentSettings.dioceseCode
       : currentSettings.dioceseCode.substring(0, 2);
   currentSettings.useLatin = (await SettingsService.getSettingUseLatin()) === 'true';
-  currentSettings.textSize = (await SettingsService.getSettingTextSize()) as number;
-  currentSettings.darkModeEnabled = determineDarkModeIsEnabled((await SettingsService.getSettingDarkMode()) as string);
-  currentSettings.invitationPsalmOption = (await SettingsService.getSettingInvitationPsalm()) as string;
-  currentSettings.virginAntiphonOption = (await SettingsService.getSettingVirginAntiphon()) as string;
+  currentSettings.textSize = await SettingsService.getSettingTextSize();
+  currentSettings.darkModeEnabled = determineDarkModeIsEnabled(await SettingsService.getSettingDarkMode());
+  currentSettings.invitationPsalmOption = await SettingsService.getSettingInvitationPsalm();
+  currentSettings.virginAntiphonOption = await SettingsService.getSettingVirginAntiphon();
   currentSettings.optionalFestivityEnabled = await determineOptionalFestivityEnabled(date);
   return currentSettings;
 }

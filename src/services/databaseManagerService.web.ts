@@ -4,7 +4,7 @@ import { Asset } from 'expo-asset';
 
 // Web version of DatabaseManagerService: there is no file system to copy the
 // database into, so we download the asset and open it as an in-memory database.
-let CPLDataBase = undefined;
+let CPLDataBase: SQLite.SQLiteDatabase | undefined = undefined;
 
 export async function openDatabase(databaseAsset: Asset) {
   Logger.log(
@@ -15,6 +15,15 @@ export async function openDatabase(databaseAsset: Asset) {
   const response = await fetch(databaseAsset.uri);
   const databaseBytes = new Uint8Array(await response.arrayBuffer());
   CPLDataBase = await SQLite.deserializeDatabaseAsync(databaseBytes);
+}
+
+// The web build opens only the database it carries, the Catalan one, and knows no publications
+export function openedDatabaseVersion(): number | null {
+  return null;
+}
+
+export function openedDatabaseEdition(): string | null {
+  return 'ca';
 }
 
 export async function executeQueryAsync(query: string): Promise<any> {
@@ -28,7 +37,7 @@ export async function executeQueryAsync(query: string): Promise<any> {
     Logger.logError(
       Logger.LogKeys.DatabaseManagerService,
       '_executeQuery',
-      new Error(`Error in query (${query}): ${error.message}`),
+      new Error(`Error in query (${query}): ${(error as Error).message}`),
     );
     throw error;
   }

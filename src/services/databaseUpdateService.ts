@@ -5,19 +5,25 @@ import * as SQLite from 'expo-sqlite';
 import * as Logger from '../utils/logger';
 import * as StorageService from './storage/storageService';
 import StorageKeys from './storage/storageKeys';
+import SettingsService, { DEFAULT_EDITION } from './SettingsService';
 import {
   DATABASE_DIRECTORY,
   bundledDatabaseInformation,
   currentDatabaseVersion,
   databaseFileName,
+  openedDatabaseEdition,
   openedDatabaseVersion,
 } from './databaseManagerService';
-import { APP_KEY, callApi } from './cplApi';
+import { APP_KEY, appVersion, callApi } from './cplApi';
 import { countOpen, reportUsage } from './usageService';
+import { checkForNewApp } from './appUpdateService';
 
 // The texts come from the publishing website, not from the app stores: when the CPL corrects a
 // typo, the phone picks the new database up by itself. The app only accepts a database made for
-// the structure it knows (the compatibility key), and only if it is newer than the one it has.
+// the structure it knows (the compatibility key), and only if it is newer than the one it has. It
+// also says its version: a publication that needs code this app does not have yet is not given to
+// it, and it is given the newest one it can show instead. And it asks for the edition chosen in
+// Configuració (the language of the texts), which is the Catalan one unless another one was chosen.
 const MILLISECONDS_BETWEEN_CHECKS = 6 * 60 * 60 * 1000;
 // A phone that could not reach the website at all is not made to wait the whole six hours: it may
 // be back on a wifi in a minute. Long enough, though, that opening and closing the app on a train
@@ -42,6 +48,10 @@ interface DatabaseManifest {
   md5: string;
   bytes: number;
   url: string;
+  // The website says which edition it is, and which editions there are for this app; one from
+  // before the editions says neither, and all it has is Catalan
+  edition?: string;
+  editions?: string[];
 }
 
 export async function checkForNewDatabase(force = false): Promise<DatabaseUpdateResult> {
@@ -49,18 +59,23 @@ export async function checkForNewDatabase(force = false): Promise<DatabaseUpdate
     Logger.log(Logger.LogKeys.DatabaseUpdaterService, 'checkForNewDatabase', 'No app key: not checking');
     return 'no-key';
   }
-  if (!force && !(await isTimeToCheck())) {
+  const edition = await SettingsService.getSettingEdition();
+  // An edition chosen that the phone does not have yet (the app was updated, and its database is
+  // for the app of before) is asked for without waiting the six hours: until it arrives, the app
+  // prays in another language
+  const missing = openedDatabaseEdition() !== null && openedDatabaseEdition() !== edition;
+  if (!force && !(await isTimeToCheck(missing))) {
     return 'too-soon';
   }
 
   try {
-    const manifest = await askForNewDatabase();
+    const manifest = await askForNewDatabase(edition);
     await rememberTheCheck(false);
     if (!manifest) {
       return 'up-to-date';
     }
 
-    const currentVersion = await currentDatabaseVersion();
+    const currentVersion = await currentDatabaseVersion(edition);
     if (manifest.version <= currentVersion) {
       Logger.log(
         Logger.LogKeys.DatabaseUpdaterService,
@@ -70,7 +85,7 @@ export async function checkForNewDatabase(force = false): Promise<DatabaseUpdate
       return 'up-to-date';
     }
 
-    return (await download(manifest)) ? 'downloaded' : 'rejected';
+    return (await download(manifest, edition)) ? 'downloaded' : 'rejected';
   } catch (error) {
     // No network, the server down, the plan's daily limit reached: the app keeps the database it
     // has and asks again later. Nothing is lost.
@@ -78,6 +93,46 @@ export async function checkForNewDatabase(force = false): Promise<DatabaseUpdate
     Logger.logError(Logger.LogKeys.DatabaseUpdaterService, 'checkForNewDatabase', error as Error);
     return 'unreachable';
   }
+}
+
+export type EditionPreparation = 'ready' | 'none' | 'unreachable' | 'rejected';
+
+// Before Configuració goes over to another edition: the phone must have its database, the newest one
+// published for this app, and it is downloaded now if it has not. 'ready' when it has it (without
+// network, the one it has will do); 'none' when the website has none for this app.
+export async function prepareEdition(edition: string): Promise<EditionPreparation> {
+  let current = 0;
+  try {
+    current = await currentDatabaseVersion(edition);
+    const manifest = await askForNewDatabase(edition);
+    if (!manifest) {
+      return current > 0 ? 'ready' : 'none';
+    }
+    if (manifest.version <= current) {
+      return 'ready';
+    }
+    const downloaded = await download(manifest, edition);
+    // A download that went wrong leaves the phone with the one it had, if it had one
+    return downloaded || current > 0 ? 'ready' : 'rejected';
+  } catch (error) {
+    Logger.logError(Logger.LogKeys.DatabaseUpdaterService, 'prepareEdition', error as Error);
+    return current > 0 ? 'ready' : 'unreachable';
+  }
+}
+
+// The editions the website has for this app, as it said the last time it was asked. Configuració
+// offers to choose only when there is more than one.
+export async function knownEditions(): Promise<string[]> {
+  try {
+    const editions = JSON.parse((await StorageService.getData(StorageKeys.KnownEditions, '[]')) as string);
+    return isEditionList(editions) ? editions : [];
+  } catch {
+    return [];
+  }
+}
+
+function isEditionList(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((edition) => typeof edition === 'string' && /^[a-z]{2}$/.test(edition));
 }
 
 // When the last check was, and whether the website answered it. Both are written on every check
@@ -95,19 +150,24 @@ export async function askAgainOnTheNextOpening(): Promise<void> {
   await StorageService.storeData(StorageKeys.LastDatabaseCheck, Date.now() - MILLISECONDS_BETWEEN_CHECKS - 1000);
 }
 
-async function isTimeToCheck(): Promise<boolean> {
+async function isTimeToCheck(soon = false): Promise<boolean> {
   const lastCheck = Number(await StorageService.getData(StorageKeys.LastDatabaseCheck, '0'));
   const failed = (await StorageService.getData(StorageKeys.LastDatabaseCheckFailed, '')) === 'true';
-  const wait = failed ? MILLISECONDS_AFTER_A_FAILED_CHECK : MILLISECONDS_BETWEEN_CHECKS;
+  const wait = failed || soon ? MILLISECONDS_AFTER_A_FAILED_CHECK : MILLISECONDS_BETWEEN_CHECKS;
   const elapsed = Date.now() - lastCheck;
   // A clock moved backwards would otherwise stop the checks for good
   return !Number.isFinite(elapsed) || elapsed < 0 || elapsed > wait;
 }
 
-// null when there is nothing for this app: the server answers 204
-async function askForNewDatabase(): Promise<DatabaseManifest | null> {
+// null when there is nothing for this app: the server answers 204. The Catalan edition is asked for
+// as it always was, without saying it.
+async function askForNewDatabase(edition: string): Promise<DatabaseManifest | null> {
   const bundled = bundledDatabaseInformation();
-  const response = await callApi(`/v1/db/latest?compat=${bundled.compat}`);
+  const version = appVersion();
+  const response = await callApi(
+    `/v1/db/latest?compat=${bundled.compat}${version ? `&app=${version}` : ''}` +
+      (edition === DEFAULT_EDITION ? '' : `&edition=${edition}`),
+  );
   if (response.status === 204) {
     return null;
   }
@@ -115,12 +175,16 @@ async function askForNewDatabase(): Promise<DatabaseManifest | null> {
     throw new Error(`The server answered ${response.status}`);
   }
   const manifest = (await response.json()) as DatabaseManifest;
-  return manifest.compat === bundled.compat ? manifest : null;
+  if (isEditionList(manifest.editions)) {
+    await StorageService.storeData(StorageKeys.KnownEditions, JSON.stringify(manifest.editions));
+  }
+  // A website from before the editions gives the Catalan one whatever is asked
+  return manifest.compat === bundled.compat && (manifest.edition ?? DEFAULT_EDITION) === edition ? manifest : null;
 }
 
 // Downloads and checks it before letting it anywhere near the database folder. It is used the next
 // time the app opens, which is when the old one is deleted.
-async function download(manifest: DatabaseManifest): Promise<boolean> {
+async function download(manifest: DatabaseManifest, edition: string): Promise<boolean> {
   Logger.log(
     Logger.LogKeys.DatabaseUpdaterService,
     'download',
@@ -144,11 +208,11 @@ async function download(manifest: DatabaseManifest): Promise<boolean> {
 
     // Opening it is the last check: a database the app cannot read never replaces the good one
     await FileSystem.moveAsync({ from: DOWNLOAD_FILE, to: pendingPath });
-    await checkItIsTheRightDatabase(pendingName, manifest);
+    await checkItIsTheRightDatabase(pendingName, manifest, edition);
 
     await FileSystem.moveAsync({
       from: pendingPath,
-      to: `${DATABASE_DIRECTORY}${databaseFileName(manifest.compat, manifest.version)}`,
+      to: `${DATABASE_DIRECTORY}${databaseFileName(manifest.compat, manifest.version, edition)}`,
     });
     Logger.log(
       Logger.LogKeys.DatabaseUpdaterService,
@@ -170,7 +234,7 @@ async function download(manifest: DatabaseManifest): Promise<boolean> {
 // thrown away with the rest by whoever asked for the download.
 async function downloadGivingUpAfterTheTimeout(url: string): Promise<FileSystem.FileSystemDownloadResult | undefined> {
   const task = FileSystem.createDownloadResumable(url, DOWNLOAD_FILE);
-  let timer: ReturnType<typeof setTimeout>;
+  let timer: ReturnType<typeof setTimeout> | undefined;
   const giveUp = new Promise<never>((_, reject) => {
     timer = setTimeout(() => {
       // It answers on its own time, and by then nobody is listening any more
@@ -185,7 +249,7 @@ async function downloadGivingUpAfterTheTimeout(url: string): Promise<FileSystem.
   }
 }
 
-async function checkItIsTheRightDatabase(pendingName: string, manifest: DatabaseManifest) {
+async function checkItIsTheRightDatabase(pendingName: string, manifest: DatabaseManifest, edition: string) {
   const database = await SQLite.openDatabaseAsync(pendingName);
   try {
     const stamp = await database.getFirstAsync<{ version: number; compat: string }>(
@@ -194,13 +258,24 @@ async function checkItIsTheRightDatabase(pendingName: string, manifest: Database
     if (!stamp || stamp.version !== manifest.version || stamp.compat !== manifest.compat) {
       throw new Error('The database does not say it is the published version');
     }
+    // Its language is the one asked for: the Catalan ones of before do not say it
+    const hasEdition = await database.getFirstAsync<{ name: string }>(
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name = '_edition'",
+    );
+    const language = hasEdition
+      ? (await database.getFirstAsync<{ language: string }>('SELECT language FROM _edition LIMIT 1'))?.language
+      : undefined;
+    if ((language ?? DEFAULT_EDITION) !== edition) {
+      throw new Error(`The database is of the edition ${language}, not ${edition}`);
+    }
   } finally {
     await database.closeAsync();
   }
 }
 
-// Opening the app: one more opening for the count, and a look for a new database. Both are
-// throttled: the database is asked about at most once every six hours, and the count goes with it.
+// Opening the app: one more opening for the count, a look for a new database and one for a newer
+// app in the store. All are throttled: the database is asked about at most once every six hours,
+// and the count goes with it; the store, once a day.
 //
 // It can be called twice at once, as the phone says the app became active right after it started.
 // Only the first one does the work: otherwise the same opening was counted twice and two reports
@@ -224,6 +299,7 @@ async function lookAfterOpening() {
     // may have downloaded a moment ago: that one only counts from the next opening onwards
     await reportUsage(openedDatabaseVersion());
   }
+  await checkForNewApp();
 }
 
 export function useDatabaseUpdates() {

@@ -2,30 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { Appearance, Linking } from 'react-native';
 import * as ExpoApplication from 'expo-application';
 import Constants from 'expo-constants';
-import SettingsService, { DioceseName, PrayingPlace } from '../services/SettingsService';
+import SettingsService, {
+  DEFAULT_EDITION,
+  DioceseName,
+  PrayingPlace,
+  editionName,
+  editionsOffered,
+} from '../services/SettingsService';
 import { SessionLogs } from '../utils/logger';
 import SettingsScreen, { SettingsValues } from '../views/settings/SettingsScreen';
-import { LocationStatus } from '../view-models/notices';
+import { EditionStatus, LocationStatus } from '../view-models/notices';
 import WebSheet from '../components/WebSheet';
 import * as LiturgyStore from './liturgyStore';
 import {
   bundledDatabaseInformation,
   currentDatabaseVersion,
+  openedDatabaseEdition,
   openedDatabaseVersion,
 } from '../services/databaseManagerService';
 import { currentIdentifier } from '../services/usageService';
-import { askAgainOnTheNextOpening } from '../services/databaseUpdateService';
+import { askAgainOnTheNextOpening, knownEditions, prepareEdition } from '../services/databaseUpdateService';
 import { useTextSettings } from './appearanceSettings';
 import { autoselectDiocese } from './dioceseAutoselection';
+import { obtainPlaceOptions, PlaceOptions, resolvePlace } from '../services/calendarService';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
-// (SettingsService). The Latin hymns, the diocese and the place change the liturgy: the day being
-// shown is loaded again with them. The text size and the dark mode apply at once.
+// (SettingsService). The language of the texts, the Latin hymns, the diocese and the place change
+// the liturgy: the day being shown is loaded again with them. The text size and the dark mode apply
+// at once.
 
 const PRIVACY_URL = 'https://www.cpl.es/politica-de-privacidad/';
 
+// The dioceses and places of before; a database with calendars brings its own (see calendarService)
 const DIOCESES = Object.values(DioceseName) as string[];
 const PLACES = Object.values(PrayingPlace) as string[];
+const FIXED_OPTIONS: PlaceOptions = { dioceses: DIOCESES, placesOf: () => PLACES };
 
 function versionName(): string {
   try {
@@ -37,12 +48,39 @@ function versionName(): string {
 
 type OtherValues = Omit<SettingsValues, 'textSizeStep' | 'darkMode'>;
 
-async function loadOtherValues(): Promise<OtherValues> {
+// The editions to choose from: those the website has for this app, and always the Catalan one and
+// the one chosen, so that whoever chose another one can come back. Nothing to choose while the
+// website has only the Catalan one.
+export function editionChoices(known: string[], chosen: string): string[] {
+  const editions = [...new Set([DEFAULT_EDITION, ...known, chosen])];
+  return editions.length > 1 ? editions : [];
+}
+
+interface Loaded {
+  others: OtherValues;
+  options: PlaceOptions;
+  editions: string[];
+}
+
+// What the screen shows: the diocese and the place are those of the database open, as the app
+// prays with them (see dataService), and its calendars are what can be chosen
+async function load(): Promise<Loaded> {
+  const opened = openedDatabaseEdition() ?? DEFAULT_EDITION;
+  const fromDatabase = await obtainPlaceOptions().catch(() => null);
+  const saved = {
+    diocese: await SettingsService.getSettingDiocese(opened),
+    place: await SettingsService.getSettingPrayingPlace(opened),
+  };
+  const chosen = await SettingsService.getSettingEdition();
   return {
-    useLatin: (await SettingsService.getSettingUseLatin()) === 'true',
-    diocese: (await SettingsService.getSettingDiocese()) as string,
-    place: (await SettingsService.getSettingPrayingPlace()) as string,
-    showVideos: (await SettingsService.getSettingShowVideos()) === 'true',
+    others: {
+      useLatin: (await SettingsService.getSettingUseLatin()) === 'true',
+      edition: chosen,
+      ...(fromDatabase ? resolvePlace(fromDatabase, saved.diocese, saved.place) : saved),
+      showVideos: (await SettingsService.getSettingShowVideos()) === 'true',
+    },
+    options: fromDatabase ?? FIXED_OPTIONS,
+    editions: editionsOffered() ? editionChoices(await knownEditions(), chosen) : [],
   };
 }
 
@@ -77,10 +115,19 @@ export default function SettingsController() {
   }, []);
   const textSettings = useTextSettings();
   const [others, setOthers] = useState<OtherValues | null>(null);
+  const [options, setOptions] = useState<PlaceOptions>(FIXED_OPTIONS);
+  const [editions, setEditions] = useState<string[]>([]);
+  const [editionStatus, setEditionStatus] = useState<EditionStatus>('idle');
+
+  const show = ({ others: values, options: fromDatabase, editions: choices }: Loaded) => {
+    setOthers(values);
+    setOptions(fromDatabase);
+    setEditions(choices);
+  };
 
   useEffect(() => {
     let active = true;
-    loadOtherValues().then((values) => active && setOthers(values));
+    load().then((loaded) => active && show(loaded));
     return () => {
       active = false;
     };
@@ -89,6 +136,23 @@ export default function SettingsController() {
   const reloadLiturgy = () => LiturgyStore.reload(LiturgyStore.currentDate());
   const change = (changes: Partial<OtherValues>) =>
     setOthers((current) => (current ? { ...current, ...changes } : current));
+
+  // Another language of the texts: its database first, downloaded if the phone does not have it, and
+  // then the day loaded again with it. Its calendars are what the diocese and the place can be now.
+  const changeEdition = async (edition: string) => {
+    if (editionStatus === 'downloading') return;
+    setEditionStatus('downloading');
+    const outcome = await prepareEdition(edition);
+    if (outcome !== 'ready') {
+      setEditionStatus(outcome);
+      return;
+    }
+    await SettingsService.setSettingEdition(edition);
+    change({ edition });
+    setEditionStatus('idle');
+    await reloadLiturgy();
+    show(await load());
+  };
 
   // Once out to the phone's own settings, whatever they do there is theirs: the refusal is
   // forgotten so that coming back and pressing again asks for the position, not for the settings.
@@ -114,10 +178,14 @@ export default function SettingsController() {
   const values: SettingsValues | null = others
     ? {
         ...others,
+        edition: editionName(others.edition),
         textSizeStep: textSettings.textSizeStep,
         darkMode: textSettings.darkMode,
       }
     : null;
+  // The diocese and the place are saved for the edition open, which is the chosen one once the phone
+  // has it
+  const opened = openedDatabaseEdition() ?? DEFAULT_EDITION;
 
   // What the bottom of the screen shows, and what the «Copia-ho tot» button copies
   const info = {
@@ -128,6 +196,7 @@ export default function SettingsController() {
       `Precedència: avui (${hours.todayCelebrationInformation?.precedence}) demà (${hours.tomorrowCelebrationInformation?.precedence})`,
       publicationLine(openedDatabaseVersion(), readyVersion, bundledDatabaseInformation().version),
       `Compatibilitat: ${bundledDatabaseInformation().compat}`,
+      `Edició: ${opened}`,
       `Identificador: ${usage?.device ?? 'encara cap'}${usage ? ` (fet el ${usage.madeOn})` : ''}`,
     ],
     logs: SessionLogs,
@@ -137,8 +206,14 @@ export default function SettingsController() {
     <>
       <SettingsScreen
         values={values}
-        dioceses={DIOCESES}
-        places={PLACES}
+        editions={editions.map(editionName)}
+        editionStatus={editionStatus}
+        onEditionChange={(name) => {
+          const edition = editions.find((candidate) => editionName(candidate) === name);
+          if (edition) changeEdition(edition);
+        }}
+        dioceses={options.dioceses}
+        places={others ? options.placesOf(others.diocese) : PLACES}
         locationStatus={locationStatus}
         onUseMyLocation={useMyLocation}
         onOpenPhoneSettings={openPhoneSettings}
@@ -147,23 +222,31 @@ export default function SettingsController() {
         onDarkModeChange={textSettings.onDarkModeChange}
         onLatinChange={async (enabled) => {
           change({ useLatin: enabled });
-          await SettingsService.setSettingUseLatin(enabled ? 'true' : 'false', undefined);
+          await SettingsService.setSettingUseLatin(enabled ? 'true' : 'false');
           await reloadLiturgy();
         }}
         onDioceseChange={async (diocese) => {
-          change({ diocese });
+          // A diocese without the place chosen until now (Andorra has only one) takes its first one
+          const places = options.placesOf(diocese);
+          const place = others && !places.includes(others.place) ? places[0] : undefined;
+          change(place ? { diocese, place } : { diocese });
           setLocationStatus('idle');
-          await SettingsService.setSettingDiocese(diocese, undefined);
+          await SettingsService.setSettingDiocese(diocese, options.dioceses, opened);
+          if (place) await SettingsService.setSettingPrayingPlace(place, places, opened);
           await reloadLiturgy();
         }}
         onPlaceChange={async (place) => {
           change({ place });
-          await SettingsService.setSettingPrayingPlace(place, undefined);
+          await SettingsService.setSettingPrayingPlace(
+            place,
+            others ? options.placesOf(others.diocese) : PLACES,
+            opened,
+          );
           await reloadLiturgy();
         }}
         onShowVideosChange={async (enabled) => {
           change({ showVideos: enabled });
-          await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false', undefined);
+          await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false');
         }}
         onAskAgainForTheDatabase={() => {
           askAgainOnTheNextOpening().catch(() => undefined);

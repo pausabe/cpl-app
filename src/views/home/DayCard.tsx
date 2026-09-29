@@ -5,8 +5,10 @@ import Icon from '../../components/Icon';
 import SwitchRow from '../../components/SwitchRow';
 import { DayCard as DayCardModel } from '../../view-models/dayCard';
 
-// The card of the day, on the soft colour of the liturgical colour: where and when, what is
-// celebrated, the week, and the optional memorial and the saint's story when there are.
+// The card of the day, on the soft colour of the liturgical colour: where and when, the day in
+// its season and, under a line, the celebration when there is one, with the saint's story and
+// the switch of the optional memorial. Everything about the saint stays together, and the week
+// no longer sits between the memorial and its switch.
 //
 // The colour is only the background (and the type of celebration): no dot or name. White is
 // ivory and gold, and next to the word «Blanc» it looked yellow. The screen reader still hears
@@ -21,8 +23,8 @@ export default function DayCard({ day, onOptionalMemoryChange, onReadMore }: Day
   const theme = useTheme();
   const { colors } = theme;
   const liturgical = theme.liturgical(day.colorCode);
-  const accent = day.muted ? colors.text2 : liturgical.accent;
   const scale = theme.maxFontScaleForLabels;
+  const { celebration } = day;
 
   return (
     <View
@@ -42,44 +44,59 @@ export default function DayCard({ day, onOptionalMemoryChange, onReadMore }: Day
       >
         {day.dateText}
       </Text>
-      {day.typeLabel ? (
-        <Text maxFontSizeMultiplier={scale} style={[styles.type, { color: accent }]}>
-          {day.typeLabel}
-        </Text>
-      ) : null}
-      <Text
-        style={[styles.title, { color: day.muted ? colors.text2 : colors.text, fontFamily: theme.fonts.serifSemiBold }]}
-      >
-        {day.title}
-      </Text>
+      <Text style={[styles.title, { color: colors.text, fontFamily: theme.fonts.serifSemiBold }]}>{day.title}</Text>
       {day.meta ? <Text style={[styles.meta, { color: colors.text2 }]}>{day.meta}</Text> : null}
-      {day.optionalMemory ? (
-        <SwitchRow
-          testID="optional-memory"
-          label="Celebrar la memòria"
-          labelWeight="600"
-          caption={day.optionalMemory.caption}
-          value={day.optionalMemory.enabled}
-          onValueChange={onOptionalMemoryChange}
-          style={[styles.memory, { borderTopColor: colors.rule }]}
-        />
-      ) : null}
-      {day.description ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityHint={day.title}
-          onPress={onReadMore}
-          style={({ pressed }) => [styles.readMore, { minHeight: theme.touch.min, opacity: pressed ? 0.6 : 1 }]}
-        >
-          <Text maxFontSizeMultiplier={scale} style={[styles.readMoreText, { color: liturgical.accent }]}>
-            Llegeix-ne més
+      {celebration ? (
+        <View testID="day-celebration" style={[styles.celebration, { borderTopColor: colors.rule }]}>
+          <Text
+            maxFontSizeMultiplier={scale}
+            style={[styles.type, { color: celebration.muted ? colors.text2 : liturgical.accent }]}
+          >
+            {celebration.typeLabel}
           </Text>
-          <Icon name="chevronRight" size={16} color={liturgical.accent} />
-        </Pressable>
+          <Text
+            style={[
+              styles.title,
+              { color: celebration.muted ? colors.text2 : colors.text, fontFamily: theme.fonts.serifSemiBold },
+            ]}
+          >
+            {celebration.title}
+          </Text>
+          {celebration.optionalMemory ? (
+            <SwitchRow
+              testID="optional-memory"
+              label="Celebrar la memòria"
+              labelWeight="600"
+              caption={celebration.optionalMemory.caption}
+              value={celebration.optionalMemory.enabled}
+              onValueChange={onOptionalMemoryChange}
+              style={styles.memory}
+            />
+          ) : null}
+          {/* Always the last thing of the card, with the switch or without it. It is only as tall
+              as its text, like the other lines: the touch reaches beyond it (hitSlop), and at the
+              bottom it stays inside the card's padding, where Android still takes it. */}
+          {celebration.description ? (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityHint={celebration.title}
+              onPress={onReadMore}
+              hitSlop={READ_MORE_SLOP}
+              style={({ pressed }) => [styles.readMore, { opacity: pressed ? 0.6 : 1 }]}
+            >
+              <Text maxFontSizeMultiplier={scale} style={[styles.readMoreText, { color: liturgical.accent }]}>
+                Llegeix-ne més
+              </Text>
+              <Icon name="chevronRight" size={16} color={liturgical.accent} />
+            </Pressable>
+          ) : null}
+        </View>
       ) : null}
     </View>
   );
 }
+
+const READ_MORE_SLOP = { top: 12, bottom: 12, left: 16, right: 16 };
 
 const styles = StyleSheet.create({
   card: {
@@ -95,13 +112,6 @@ const styles = StyleSheet.create({
     fontSize: 23,
     lineHeight: 28,
   },
-  type: {
-    marginTop: 8,
-    fontSize: 12,
-    fontWeight: '700',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-  },
   title: {
     marginTop: 3,
     fontSize: 18,
@@ -112,13 +122,22 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
   },
-  memory: {
-    marginTop: 10,
-    paddingVertical: 6,
+  celebration: {
+    marginTop: 12,
+    paddingTop: 10,
     borderTopWidth: 1,
   },
+  type: {
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  memory: {
+    paddingVertical: 6,
+  },
   readMore: {
-    marginTop: 4,
+    marginTop: 6,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,

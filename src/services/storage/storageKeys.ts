@@ -7,5 +7,9 @@ let StorageKeys = {
   UsageDevice: 'UsageDevice',
   UsageOpens: 'UsageOpens',
   UsageReportedDay: 'UsageReportedDay',
+  AppCheckDay: 'AppCheckDay',
+  AppInStore: 'AppInStore',
+  AppUpdateDismissed: 'AppUpdateDismissed',
+  KnownEditions: 'KnownEditions',
 };
 export default StorageKeys;

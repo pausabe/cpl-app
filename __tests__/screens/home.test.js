@@ -25,7 +25,7 @@ jest.mock('../../src/services/deviceLocationService', () => ({ currentPosition: 
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Linking } from 'react-native';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react-native';
 import App from '../../App';
 import * as DataService from '../../src/services/dataService';
 import { styleOf } from '../helpers/renderWithTheme';
@@ -61,9 +61,12 @@ test('a feast: the day in words, the colour, the type, the title and the week; L
   expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
   expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
   expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Vermell')).toBeTruthy();
-  expect(screen.getByText('Festa')).toBeTruthy();
-  expect(screen.getByText('Sant Mateu, apòstol i evangelista')).toBeTruthy();
-  expect(screen.getByText('Setmana XXV · Any A · Setmana I del salteri')).toBeTruthy();
+  expect(screen.getByText("Setmana XXV de durant l'any")).toBeTruthy();
+  expect(screen.getByText('Any A · Setmana I del salteri')).toBeTruthy();
+  // The feast, under the line, apart from the week
+  const feast = within(screen.getByTestId('day-celebration'));
+  expect(feast.getByText('Festa')).toBeTruthy();
+  expect(feast.getByText('Sant Mateu, apòstol i evangelista')).toBeTruthy();
   expect(tile('Laudes').props.accessibilityValue).toEqual({ text: 'Ara' });
   expect(tile('Tèrcia').props.accessibilityValue?.text).toBeUndefined();
   expect(screen.getByText('Evangeli · Mt 9,9-13')).toBeTruthy();
@@ -74,17 +77,22 @@ test('a feast: the day in words, the colour, the type, the title and the week; L
 test('«Llegeix-ne més» opens the sheet with the life of the saint, and «Tanca» closes it', async () => {
   await openAt(new Date(2026, 8, 21, 9, 0));
   expect(screen.queryByTestId('description-sheet')).toBeNull();
-  fireEvent.press(screen.getByRole('button', { name: 'Llegeix-ne més' }));
+  const link = screen.getByRole('button', { name: 'Llegeix-ne més' });
+  // As tall as its text, like the other lines of the card: the touch reaches beyond it
+  expect(styleOf(link).minHeight).toBeUndefined();
+  expect(link.props.hitSlop).toMatchObject({ top: 12, bottom: 12 });
+  fireEvent.press(link);
   expect(await screen.findByTestId('description-sheet')).toBeTruthy();
-  expect(getPrayerText(DataService.CurrentCelebrationInformation.description)).toBeTruthy();
+  expect(getPrayerText(DataService.currentLiturgy().celebrationInformation.description)).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: 'Tanca' }));
   await waitFor(() => expect(screen.queryByTestId('description-sheet')).toBeNull());
 });
 
-test('a weekday: the day of the week is the title, with no «Llegeix-ne més»', async () => {
+test('a weekday: the week is the title, with no line under it and no «Llegeix-ne més»', async () => {
   await openAt(new Date(2026, 8, 22, 10, 0));
-  expect(screen.getByText('Dimarts de la setmana XXV')).toBeTruthy();
-  expect(screen.getByText("Durant l'any · Any A · Setmana I del salteri")).toBeTruthy();
+  expect(screen.getByText("Setmana XXV de durant l'any")).toBeTruthy();
+  expect(screen.getByText('Any A · Setmana I del salteri')).toBeTruthy();
+  expect(screen.queryByTestId('day-celebration')).toBeNull();
   expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Verd')).toBeTruthy();
   expect(screen.queryByRole('button', { name: 'Llegeix-ne més' })).toBeNull();
   expect(tile('Tèrcia').props.accessibilityValue).toEqual({ text: 'Ara' });
@@ -101,7 +109,15 @@ test('Sunday: four readings, which on a narrow phone get smaller before breaking
 
 test('an optional memorial: the switch makes it celebrated, and it is remembered for the day', async () => {
   await openAt(new Date(2026, 8, 26, 8, 0));
-  expect(screen.getByText('Memòria lliure')).toBeTruthy();
+  // All of the memorial together under the line: the type, the saint, the story and the switch
+  const memorial = within(screen.getByTestId('day-celebration'));
+  expect(memorial.getByText('Memòria lliure')).toBeTruthy();
+  expect(memorial.getByTestId('optional-memory')).toBeTruthy();
+  // «Llegeix-ne més» is the last thing, under the switch
+  const block = screen.getByTestId('day-celebration');
+  expect(within(block.children[block.children.length - 1]).getByText('Llegeix-ne més')).toBeTruthy();
+  // The weekday it can be left for stays on top, not in grey
+  expect(styleOf(screen.getByText("Setmana XXV de durant l'any")).color).toBe('#182322');
   // The screen reader hears the name and the line under it together
   const memory = screen.getByRole('switch', { name: 'Celebrar la memòria. Si no l’actives, avui es resa la fèria.' });
   expect(memory.props.accessibilityState.checked).toBe(false);
@@ -109,7 +125,7 @@ test('an optional memorial: the switch makes it celebrated, and it is remembered
   expect(styleOf(screen.getByText('Sants Cosme i Damià, màrtirs')).color).toBe('#475756');
 
   fireEvent.press(memory);
-  await waitFor(() => expect(DataService.CurrentSettings.optionalFestivityEnabled).toBe(true));
+  await waitFor(() => expect(DataService.currentLiturgy().settings.optionalFestivityEnabled).toBe(true));
   await findText('Avui es resa la memòria.');
   expect(await AsyncStorage.getItem('lliureDate')).toBe('26:8:2026');
   expect(styleOf(screen.getByText('Sants Cosme i Damià, màrtirs')).color).toBe('#182322');
@@ -173,8 +189,10 @@ test('Holy Saturday: the Easter Vigil, with «Lectures i salms» and «Evangeli�
 test('Easter Sunday: white and a solemnity', async () => {
   await openAt(new Date(2026, 3, 5, 10, 0));
   expect(screen.getByLabelText('Barcelona (Diòcesi). Color litúrgic: Blanc')).toBeTruthy();
+  expect(screen.getByText('Octava de Pasqua')).toBeTruthy();
+  expect(screen.getByText('Any A · Setmana I del salteri')).toBeTruthy();
   expect(screen.getByText('Solemnitat')).toBeTruthy();
-  expect(screen.getByText('Pasqua · Any A · Setmana I del salteri')).toBeTruthy();
+  expect(screen.getByText('Diumenge de Pasqua')).toBeTruthy();
 });
 
 test('at midnight it asks about the liturgy of yesterday, and «Sí, la d’ahir» loads it', async () => {
@@ -347,17 +365,54 @@ test('the offer closes without writing when they already had the diocese they ar
   expect(await findText('Girona (Diòcesi)')).toBeTruthy();
 });
 
-test('«La trio jo» puts the offer away and opens Configuració', async () => {
+test('«La trio jo» turns the offer into the list, and the diocese chosen is saved and drawn', async () => {
   await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
   await screen.findByTestId('diocese-offer');
 
+  fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+
+  // The same sheet, now the list, with the one they are praying with ticked; nothing written yet
+  expect(screen.getByTestId('diocese-offer')).toBeTruthy();
+  expect(screen.getByRole('header', { name: 'Diòcesi' })).toBeTruthy();
+  expect(screen.getByRole('radio', { name: 'Barcelona' }).props.accessibilityState.checked).toBe(true);
+  expect(screen.getByRole('radio', { name: 'Girona' }).props.accessibilityState.checked).toBe(false);
+  expect(await AsyncStorage.getItem('diocesis')).toBeNull();
+
   await act(async () => {
-    fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+    fireEvent.press(screen.getByRole('radio', { name: 'Girona' }));
   });
 
   await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
-  // Configuració is open: its own diocese picker is there, with what they still have
-  expect(await findText('Himnes en llatí')).toBeTruthy();
-  expect(screen.getByRole('button', { name: 'Diòcesi: Barcelona' })).toBeTruthy();
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
   expect(await AsyncStorage.getItem('DioceseOfferSeen')).toBe('true');
+  // Still on the home, not taken anywhere
+  expect(await findText('Girona (Diòcesi)')).toBeTruthy();
+  expect(screen.queryByText('Himnes en llatí')).toBeNull();
+});
+
+test('choosing the diocese they already had saves it: from then on it is theirs', async () => {
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+
+  fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+  await act(async () => {
+    fireEvent.press(screen.getByRole('radio', { name: 'Barcelona' }));
+  });
+
+  await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
+  expect(await AsyncStorage.getItem('diocesis')).toBe('Barcelona');
+  expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
+});
+
+test('closing the list without choosing puts the offer away and writes nothing', async () => {
+  await openAt(new Date(2026, 8, 21, 9, 0), {}, { offerDiocese: true });
+  await screen.findByTestId('diocese-offer');
+
+  fireEvent.press(screen.getByTestId('diocese-offer-choose'));
+  fireEvent.press(screen.getByTestId('diocese-offer-backdrop', { includeHiddenElements: true }));
+
+  await waitFor(() => expect(screen.queryByTestId('diocese-offer')).toBeNull());
+  expect(await AsyncStorage.getItem('diocesis')).toBeNull();
+  expect(await AsyncStorage.getItem('DioceseOfferSeen')).toBe('true');
+  expect(screen.getByText('Barcelona (Diòcesi)')).toBeTruthy();
 });

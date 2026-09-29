@@ -1,14 +1,19 @@
 // Counting how many people use the app: an identifier the phone makes itself, which lasts at most
 // thirteen months, and the number of openings since the last report. It only serves not to count
 // the same phone twice.
+jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0' }));
+jest.mock('expo-device', () => ({ osVersion: '18.6.2' }));
+
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
 
-function loadService({ appKey = 'the-app-key', testBuild = false } = {}) {
+function loadService({ appKey = 'the-app-key', testBuild = false, version = '9.0.0', system = '18.6.2' } = {}) {
   let service;
   jest.isolateModules(() => {
     process.env.EXPO_PUBLIC_CPL_APP_KEY = appKey;
     process.env.EXPO_PUBLIC_CPL_TEST_BUILD = testBuild ? '1' : '';
+    jest.doMock('expo-application', () => ({ nativeApplicationVersion: version }));
+    jest.doMock('expo-device', () => ({ osVersion: system }));
     service = require('../../src/services/usageService');
   });
   return service;
@@ -158,4 +163,52 @@ test('the openings that are sent are capped, so no phone can count for a crowd',
   await service.reportUsage();
 
   expect(sent().opens).toBe(500);
+});
+
+test('the report says which app it is, on which system and with which diocese', async () => {
+  await AsyncStorage.setItem('diocesis', 'Sant Feliu de Llobregat');
+  const service = loadService();
+  await service.countOpen();
+
+  await service.reportUsage(12);
+
+  // Under Jest the phone is an iPhone. Of the system, only the big number.
+  expect(sent()).toMatchObject({ app: '9.0.0', platform: 'ios', os: 18, diocese: 'Sant Feliu de Llobregat' });
+});
+
+test('whoever never chose a diocese says the one the app prays with, the one it comes with', async () => {
+  const service = loadService();
+  await service.countOpen();
+
+  await service.reportUsage();
+
+  expect(sent().diocese).toBe('Barcelona');
+});
+
+test('what the phone cannot say is left out, and it is counted all the same', async () => {
+  // The web build has no version of its own, and an odd one would be refused by the website
+  for (const [version, system] of [
+    [null, null],
+    ['9.0', 'unknown'],
+  ]) {
+    await AsyncStorage.clear();
+    answer();
+    const service = loadService({ version, system });
+    await service.countOpen();
+
+    await expect(service.reportUsage()).resolves.toBe('reported');
+
+    expect(sent()).not.toHaveProperty('app');
+    expect(sent()).not.toHaveProperty('os');
+  }
+});
+
+test('a diocese that is not one of the list is left out, so the report is not refused for it', async () => {
+  await AsyncStorage.setItem('diocesis', 'Barcelona (antiga)');
+  const service = loadService();
+  await service.countOpen();
+
+  await expect(service.reportUsage()).resolves.toBe('reported');
+
+  expect(sent()).not.toHaveProperty('diocese');
 });

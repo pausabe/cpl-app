@@ -3,7 +3,8 @@ export class Settings {
   dioceseName: string;
   dioceseCode: string;
   useLatin: boolean;
-  textSize: number;
+  // From 1 to 10, stored as text
+  textSize: string;
   darkModeEnabled: boolean;
   invitationPsalmOption: string;
   virginAntiphonOption: string;

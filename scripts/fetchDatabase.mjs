@@ -7,6 +7,10 @@
 // ship texts the phones have already replaced. The two files are rewritten together, so the app
 // always knows which version it carries.
 //
+// It says which version of the app is being built, as the app does: a publication that needs a
+// newer app is left for that one, and this build gets the newest publication its code can show.
+// It is the one in app.json, or CPL_APP_VERSION when the workflow is told to build another one.
+//
 // CPL_DATABASE_VERSION asks for one exact publication instead of the newest one. The workflow
 // builds Android and iOS in parallel, each bringing the database down on its own, so it says here
 // which publication the build was checked with: if the CPL publishes a correction in the middle,
@@ -47,9 +51,19 @@ function md5(file) {
   return createHash('md5').update(readFileSync(file)).digest('hex');
 }
 
-// null when the website has nothing for this structure: it answers 204
-async function publishedDatabase(compat, key) {
-  const response = await fetch(`${API_URL}/v1/db/latest?compat=${encodeURIComponent(compat)}`, {
+function appVersion() {
+  const version =
+    process.env.CPL_APP_VERSION?.trim() || JSON.parse(readFileSync(join(ROOT, 'app.json'), 'utf8')).expo.version;
+  if (!/^(0|[1-9]\d{0,2})\.(0|[1-9]\d{0,2})\.(0|[1-9]\d{0,2})$/.test(version)) {
+    throw new Error(`The version of the app "${version}" is not three numbers such as 9.1.0`);
+  }
+  return version;
+}
+
+// null when the website has nothing for this structure and this app: it answers 204
+async function publishedDatabase(compat, app, key) {
+  const query = `compat=${encodeURIComponent(compat)}&app=${encodeURIComponent(app)}`;
+  const response = await fetch(`${API_URL}/v1/db/latest?${query}`, {
     headers: { [APP_KEY_HEADER]: key },
   });
   if (response.status === 204) {
@@ -80,9 +94,10 @@ async function download(manifest) {
 
 async function main() {
   const bundled = JSON.parse(readFileSync(INFORMATION_FILE, 'utf8'));
-  const manifest = await publishedDatabase(bundled.compat, appKey());
+  const app = appVersion();
+  const manifest = await publishedDatabase(bundled.compat, app, appKey());
   if (!manifest) {
-    throw new Error(`The website has no database for ${bundled.compat}: this code cannot be published`);
+    throw new Error(`The website has no database for ${bundled.compat} and app ${app}: this code cannot be published`);
   }
   if (manifest.compat !== bundled.compat) {
     throw new Error(`The website answered with ${manifest.compat} and this code reads ${bundled.compat}`);

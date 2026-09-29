@@ -78,7 +78,7 @@ test('the diocese is chosen in a sheet; it is saved and the liturgy reloads with
   await act(async () => {
     fireEvent.press(screen.getByRole('radio', { name: 'Andorra' }));
   });
-  await waitFor(() => expect(DataService.CurrentSettings.dioceseName).toBe('Andorra'));
+  await waitFor(() => expect(DataService.currentLiturgy().settings.dioceseName).toBe('Andorra'));
   expect(await AsyncStorage.getItem('diocesis')).toBe('Andorra');
   expect(screen.getByRole('button', { name: 'Diòcesi: Andorra' })).toBeTruthy();
 });
@@ -89,7 +89,7 @@ test('the place, too', async () => {
   await act(async () => {
     fireEvent.press(screen.getByRole('radio', { name: 'Catedral' }));
   });
-  await waitFor(() => expect(DataService.CurrentSettings.prayingPlace).toBe('Catedral'));
+  await waitFor(() => expect(DataService.currentLiturgy().settings.prayingPlace).toBe('Catedral'));
   expect(await AsyncStorage.getItem('lloc')).toBe('Catedral');
 });
 
@@ -98,7 +98,7 @@ test('the Latin hymns are saved and reload the liturgy', async () => {
   await act(async () => {
     fireEvent.press(screen.getByRole('switch', { name: 'Himnes en llatí' }));
   });
-  await waitFor(() => expect(DataService.CurrentSettings.useLatin).toBe(true));
+  await waitFor(() => expect(DataService.currentLiturgy().settings.useLatin).toBe(true));
   expect(await AsyncStorage.getItem('useLatin')).toBe('true');
 });
 
@@ -115,7 +115,7 @@ test('the theme, Automàtic, Clar or Fosc, is applied at once and saved as alway
   await act(async () => {
     fireEvent.press(screen.getByRole('radio', { name: 'Fosc' }));
   });
-  expect(DataService.CurrentSettings.darkModeEnabled).toBe(true);
+  expect(DataService.currentLiturgy().settings.darkModeEnabled).toBe(true);
   expect(await AsyncStorage.getItem('darkMode')).toBe('Activat');
 });
 
@@ -124,7 +124,7 @@ test('the text size goes up and down with A+ and A−, the same control as in th
   await act(async () => {
     fireEvent.press(screen.getByRole('button', { name: 'Text més gran' }));
   });
-  expect(DataService.CurrentSettings.textSize).toBe('4');
+  expect(DataService.currentLiturgy().settings.textSize).toBe('4');
   expect(await AsyncStorage.getItem('textSize')).toBe('4');
   expect(styleOf(screen.getByTestId('text-size-preview', { includeHiddenElements: true })).fontSize).toBe(24);
   expect(screen.getByTestId('text-size-value').props.children).toBe('Mida 4 de 10');
@@ -163,6 +163,7 @@ test('in plain sight, the approval text and the versions; the technical data, be
   expect(screen.getByTestId('technical-data')).toBeTruthy();
   expect(screen.getByText(/^Publicació en ús: \d+ \(l'app va arribar amb la \d+\)$/)).toBeTruthy();
   expect(screen.getByText(/^Compatibilitat: s\d+-[0-9a-f]+$/)).toBeTruthy();
+  expect(screen.getByText('Edició: ca')).toBeTruthy();
   expect(screen.getByText(/^Identificador: (encara cap|[0-9a-f]{32})/)).toBeTruthy();
   expect(screen.getByText(/^Precedència: avui \(\d+\) demà \(\d+\)$/)).toBeTruthy();
 });
@@ -230,7 +231,7 @@ test('the button under the diocese finds the one where the phone is, saves it an
     fireEvent.press(screen.getByRole('button', { name: 'Fes servir la meva ubicació per triar la diòcesi' }));
   });
 
-  await waitFor(() => expect(DataService.CurrentSettings.dioceseName).toBe('Girona'));
+  await waitFor(() => expect(DataService.currentLiturgy().settings.dioceseName).toBe('Girona'));
   expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
   expect(screen.getByRole('button', { name: 'Diòcesi: Girona' })).toBeTruthy();
 });

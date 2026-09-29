@@ -11,10 +11,10 @@ beforeEach(() => AsyncStorage.clear());
 test('the optional memorial is only on for the day the user turned it on', async () => {
   await AsyncStorage.setItem('lliureDate', '6:3:2026');
   await DataService.reloadAllData(EASTER_MONDAY, null);
-  expect(DataService.CurrentSettings.optionalFestivityEnabled).toBe(true);
+  expect(DataService.currentLiturgy().settings.optionalFestivityEnabled).toBe(true);
 
   await DataService.reloadAllData(new Date(2026, 3, 7), null);
-  expect(DataService.CurrentSettings.optionalFestivityEnabled).toBe(false);
+  expect(DataService.currentLiturgy().settings.optionalFestivityEnabled).toBe(false);
 });
 
 test.each([
@@ -26,13 +26,13 @@ test.each([
   jest.spyOn(Appearance, 'getColorScheme').mockReturnValue(system);
   await AsyncStorage.setItem('darkMode', option);
   await DataService.reloadAllData(EASTER_MONDAY, null);
-  expect(DataService.CurrentSettings.darkModeEnabled).toBe(expected);
+  expect(DataService.currentLiturgy().settings.darkModeEnabled).toBe(expected);
 });
 
 test('the diocese and the place chosen reach the query', async () => {
   await AsyncStorage.setItem('diocesis', 'Tarragona');
   await AsyncStorage.setItem('lloc', 'Catedral');
   await DataService.reloadAllData(EASTER_MONDAY, null);
-  expect(DataService.CurrentSettings.dioceseName).toBe('Tarragona');
-  expect(DataService.CurrentSettings.dioceseCode).toBe('TaC');
+  expect(DataService.currentLiturgy().settings.dioceseName).toBe('Tarragona');
+  expect(DataService.currentLiturgy().settings.dioceseCode).toBe('TaC');
 });

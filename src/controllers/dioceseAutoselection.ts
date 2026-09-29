@@ -46,7 +46,7 @@ export async function autoselectDiocese(): Promise<AutoselectionOutcome> {
   if (saved === diocese) {
     return { kind: 'unchanged', diocese };
   }
-  await SettingsService.setSettingDiocese(diocese, undefined);
+  await SettingsService.setSettingDiocese(diocese);
   return { kind: 'saved', diocese };
 }
 

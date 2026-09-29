@@ -27,7 +27,8 @@ export class LiturgySpecificDayInformation {
 class MovedDay {
   todayIsMoved: boolean;
   originDateShortDatabaseCode: string;
-  originDate: Date;
+  // Only when the celebration of today comes from another day
+  originDate: Date | undefined;
   dioceseCode2Letters: string;
 }
 

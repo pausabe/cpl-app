@@ -15,10 +15,19 @@ interface OptionSheetProps {
 }
 
 export default function OptionSheet({ visible, title, options, value, onChoose, onClose }: OptionSheetProps) {
+  return (
+    <BottomSheet visible={visible} onClose={onClose} accessibilityLabel={title} testID="option-sheet">
+      <OptionList title={title} options={options} value={value} onChoose={onChoose} />
+    </BottomSheet>
+  );
+}
+
+// The list on its own, for a sheet that already has other things in it and turns into the list
+export function OptionList({ title, options, value, onChoose }: Omit<OptionSheetProps, 'visible' | 'onClose'>) {
   const theme = useTheme();
   const { colors } = theme;
   return (
-    <BottomSheet visible={visible} onClose={onClose} accessibilityLabel={title} testID="option-sheet">
+    <>
       <Text accessibilityRole="header" style={[styles.title, { color: colors.text }]}>
         {title}
       </Text>
@@ -46,7 +55,7 @@ export default function OptionSheet({ visible, title, options, value, onChoose, 
           );
         })}
       </ScrollView>
-    </BottomSheet>
+    </>
   );
 }
 

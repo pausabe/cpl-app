@@ -11,10 +11,16 @@ IPHONE_APP := ios/build/Build/Products/Release-iphoneos/CPL.app
 # The first Android emulator or phone connected, and the first iOS simulator open
 ANDROID_DEVICE = $(shell $(ADB) devices 2>/dev/null | awk 'NR>1 && $$2=="device" {print $$1; exit}')
 IOS_DEVICE = $(shell xcrun simctl list devices booted 2>/dev/null | grep -oE '[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}' | head -1)
-# The first iPhone connected (by cable, or over the network with Xcode open)
-IPHONE = $(shell xcrun devicectl list devices 2>/dev/null | grep -E ' connected .*physical' | grep -oE '[0-9A-F]{8}-[0-9A-F]{16}' | head -1)
+# The first iPhone connected (by cable, or over the network with Xcode open). One on the cable
+# whose link with the Mac has dropped (after days locked, or a new Xcode) is only "available
+# (paired)": it counts too, after the connected ones, and ios-device brings the link back. Over
+# the network only a connected one counts, since other paired iPhones may be on the same wifi.
+IPHONE = $(shell xcrun devicectl list devices --quiet --json-output /dev/stdout 2>/dev/null | jq -r '\
+	[.result.devices[]? | select(.hardwareProperties.deviceType == "iPhone" and .hardwareProperties.reality == "physical") \
+	| select(.connectionProperties.tunnelState == "connected" or .connectionProperties.transportType == "wired")] \
+	| sort_by(.connectionProperties.tunnelState != "connected") | .[0].hardwareProperties.udid // empty')
 
-.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android run-panel stop-panel day-check month progress review review-html
+.PHONY: help start run-android run-ios run-web db db-ca db-es db-latest db-infinite proposal db-which db-is-catalan checks checks-ci lint types format tests tests-fast golden litcal-sweep android-app ios-app ios-device ui-tests ui-tests-android ui-tests-ios captures captures-ios captures-android run-panel stop-panel day-check month progress review review-html
 
 help:
 	@echo "make run-android       Open the development app on the Android emulator or phone"
@@ -26,6 +32,8 @@ help:
 	@echo "make db-es             Put the Spanish database in its place instead, to look the texts over"
 	@echo "make db-ca             Bring the Catalan one back (the same as make db)"
 	@echo "make db-latest         Ask the website for the newest publication, even if a Catalan one is put aside"
+	@echo "make db-infinite       The same database with its calendar out of litcal up to 2100 (not published)"
+	@echo "make proposal          Write cpl-cloud's calendar/out again (and the proposal for the website), app untouched"
 	@echo "make db-which          Say which language is sitting in src/assets/db right now"
 	@echo ""
 	@echo "make checks            Prettier, lint, types and every Jest test: what the hook runs before each push (~4 min)"
@@ -37,6 +45,7 @@ help:
 	@echo "make tests             Every Jest test: liturgy, app and services (~4 min)"
 	@echo "make tests-fast        The same ones without the long sweeps (liturgy and screen text)"
 	@echo "make golden            Rewrites the goldens (liturgy and screen text) from this build (only if you checked it)"
+	@echo "make litcal-sweep DB=… EXPECTED=…  Every day and place of the calendar table cpl-cloud writes from litcal (~30 min)"
 	@echo ""
 	@echo "make android-app       Build the Android release and install it on the emulator or phone connected"
 	@echo "make ios-app           Build the release for the iOS simulator and install it on the simulator open"
@@ -139,6 +148,25 @@ db-latest:
 	@node scripts/fetchDatabase.mjs
 	@$(MAKE) --no-print-directory db-which
 
+# The calendar up to 2100 in the database in place: cpl-cloud's process X takes it, keeps its texts and
+# writes the table anyliturgic out of litcal, from 2017 to 2100. Start from the newest publication
+# (make db-latest), or the website will say so when it is published. Nothing reaches the phones until
+# that file (../cpl-cloud/calendar/out/cpl-app.db) is published on the website. The goldens are made from
+# the published database and fail with this one, on purpose: make db-latest brings the published one back.
+PROCESS_X ?= ../cpl-cloud/calendar
+
+db-infinite: proposal
+	@node scripts/infiniteDatabase.mjs $(PROCESS_X)/out/cpl-app.db
+	@$(MAKE) --no-print-directory db-which
+
+# The same without touching the app: process X writes its out/ again from the database in place (the
+# databases, the 2027 spreadsheet for the CPL, and out/proposal, the proposal the website shows). For
+# when a rule of litcal changes: then out/proposal goes up in the Calendari tab of the website.
+proposal:
+	@test -d $(PROCESS_X) || (echo "No process X at $(PROCESS_X) (set PROCESS_X=)" && exit 1)
+	npm --prefix $(PROCESS_X) run write -- --db $(abspath $(DATABASE_DIR)/cpl-app.db)
+	@echo "To show it to the CPL: upload $(PROCESS_X)/out/proposal in the Calendari tab of the website"
+
 # Which language is in place, and whether the file and its descriptor still agree
 db-which:
 	@node scripts/whichDatabase.mjs
@@ -192,6 +220,13 @@ tests-fast:
 golden:
 	UPDATE_GOLDEN=1 npx jest __tests__/liturgy __tests__/screens/prayerTextGolden
 
+# The calendar table that cpl-cloud's process X writes from litcal (calendar/, npm run write): every
+# day and every place loaded the way the app loads it, against the celebration litcal chose. DB and
+# EXPECTED are the two files it writes (out/cpl-app.db and out/expected.json); FROM and TO, years.
+litcal-sweep:
+	@test -n "$(DB)" -a -n "$(EXPECTED)" || (echo "make litcal-sweep DB=<cpl-app.db> EXPECTED=<expected.json> [FROM=2027 TO=2027]" && exit 1)
+	node scripts/litcalSweep.mjs "$(DB)" "$(EXPECTED)" $(FROM) $(TO)
+
 # --- Local builds for the Maestro tests -------------------------------------------------------
 # /android and /ios are generated (and gitignored): they are rebuilt from scratch so that nothing
 # is left from an earlier SDK.
@@ -216,6 +251,7 @@ ios-app:
 # signed with Joan's team (N65TK8GHAL). It needs Xcode 26.4 or later (Swift 6.3, for Expo 57).
 ios-device:
 	@test -n "$(IPHONE)" || (echo "No iPhone connected (xcrun devicectl list devices)" && exit 1)
+	xcrun devicectl device info details --device $(IPHONE) > /dev/null
 	npx expo prebuild -p ios --clean
 	sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = cpl\.cpl;/PRODUCT_BUNDLE_IDENTIFIER = cpl.cpl.dev;/' ios/CPL.xcodeproj/project.pbxproj
 	plutil -replace CFBundleDisplayName -string "CPL 9" ios/CPL/Info.plist

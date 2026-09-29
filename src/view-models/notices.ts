@@ -26,6 +26,13 @@ export const WHATS_NEW = {
   button: 'D’acord',
 };
 
+// At the bottom of the home, quiet, when the store already has a newer app than this one
+export const APP_UPDATE = {
+  text: 'Hi ha una versió nova de l’aplicació.',
+  action: 'Actualitza-la',
+  dismiss: 'Amaga l’avís',
+};
+
 // How the search for the diocese went. Both the button in Configuració and the notice on the home
 // are keyed by it, so the words for each outcome are written once.
 export type LocationStatus = 'idle' | 'locating' | 'unchanged' | 'nowhere' | 'denied' | 'failed';
@@ -38,6 +45,18 @@ export const LOCATION_NOTICES: Record<LocationStatus, string | null> = {
   nowhere: 'No s’ha pogut dir a quina diòcesi correspon aquesta ubicació. Tria-la tu mateix.',
   denied: 'No has donat permís d’ubicació. El pots donar als Ajustos del telèfon.',
   failed: 'No s’ha pogut saber on ets. Torna-ho a provar.',
+};
+
+// Going over to another language of the texts: its database is downloaded first, and until it is
+// on the phone nothing changes. Every outcome but the good one is told under the row.
+export type EditionStatus = 'idle' | 'downloading' | 'none' | 'unreachable' | 'rejected';
+
+export const EDITION_NOTICES: Record<EditionStatus, string | null> = {
+  idle: null,
+  downloading: 'Baixant els textos… Pot trigar una estona.',
+  none: 'Aquesta llengua encara no és a punt per a aquesta versió de l’app.',
+  unreachable: 'No s’han pogut baixar els textos. Torna-ho a provar quan tinguis connexió.',
+  rejected: 'Els textos no han arribat bé. Torna-ho a provar més tard.',
 };
 
 // Once the permission has been refused, iOS never asks again: pressing the same button would do
@@ -61,8 +80,8 @@ export function dioceseOfferTexts(currentDiocese: string, openedBefore: boolean)
   return {
     title: openedBefore ? `Estàs resant amb la diòcesi de ${currentDiocese}` : 'De quina diòcesi ets?',
     body: openedBefore
-      ? 'És la que porta l’aplicació de sèrie, i potser no és la teva. El calendari i els sants del dia en depenen.'
-      : 'El calendari i els sants del dia canvien segons la diòcesi. Podem trobar la teva amb la ubicació del telèfon, o la tries tu mateix.',
+      ? 'És la que porta l’aplicació de sèrie, i potser no és la teva. Les celebracions pròpies en depenen.'
+      : 'Cada diòcesi té les seves celebracions pròpies. Podem trobar la teva amb la ubicació del telèfon, o la pots triar de la llista.',
     find: USE_MY_LOCATION,
     choose: 'La trio jo',
   };

@@ -3,7 +3,7 @@
     "name": "CPL",
     "description": "This application helps up to pray with biblical texts that the Lord Jesus himself used to pray. Currently it is only available in Catalan.",
     "slug": "CPLApp",
-    "version": "9.0.0",
+    "version": "9.0.2",
     "orientation": "portrait",
     "icon": "./src/assets/icon/icon.png",
     "githubUrl": "https://github.com/pausabe/cpl-app",
@@ -18,7 +18,8 @@
       "supportsTablet": true,
       "userInterfaceStyle": "automatic",
       "infoPlist": {
-        "CADisableMinimumFrameDurationOnPhone": true
+        "CADisableMinimumFrameDurationOnPhone": true,
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -56,6 +57,15 @@
           },
           "android": {
             "imageWidth": 160
+          }
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableMinifyInReleaseBuilds": true,
+            "extraProguardRules": "# Hermes carries the JS; what R8 renames here is the Java and Kotlin\n# underneath. Keeping the file and the line makes a native crash report\n# readable once Play has the mapping file of the build.\n-keepattributes SourceFile,LineNumberTable\n-renamesourcefileattribute SourceFile\n"
           }
         }
       ]

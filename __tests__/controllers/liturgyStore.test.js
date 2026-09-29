@@ -2,17 +2,20 @@
 // a time.
 jest.mock('../../src/services/dataService', () => {
   const state = { running: 0, maxRunning: 0, calls: [] };
-  // An ES module, as the real one: `import * as` sees the variables it reassigns
+  // What the real one keeps and replaces on every reload
+  const current = {
+    settings: { darkModeEnabled: false, textSize: '3' },
+    databaseInformation: {},
+    liturgyDayInformation: { today: { date: undefined } },
+    celebrationInformation: {},
+    hoursLiturgy: {},
+    massLiturgy: {},
+    lastRefreshDate: new Date(2026, 8, 21),
+  };
   const module = {
     __esModule: true,
     __state: state,
-    CurrentSettings: { darkModeEnabled: false, textSize: '3' },
-    CurrentDatabaseInformation: {},
-    CurrentLiturgyDayInformation: { today: { date: undefined } },
-    CurrentCelebrationInformation: {},
-    CurrentHoursLiturgy: {},
-    CurrentMassLiturgy: {},
-    LastRefreshDate: new Date(2026, 8, 21),
+    currentLiturgy: () => current,
     reloadAllData: jest.fn(async (date) => {
       state.running++;
       state.maxRunning = Math.max(state.maxRunning, state.running);
@@ -22,7 +25,7 @@ jest.mock('../../src/services/dataService', () => {
         state.running--;
         throw new Error('database closed');
       }
-      module.CurrentLiturgyDayInformation = { today: { date: date } };
+      current.liturgyDayInformation = { today: { date: date } };
       state.running--;
     }),
   };
@@ -67,7 +70,7 @@ test('every reload tells the screens with a new snapshot', async () => {
   const after = LiturgyStore.getSnapshot();
   expect(after).not.toBe(before);
   expect(after.revision).toBe(before.revision + 1);
-  expect(after.day).toBe(DataService.CurrentLiturgyDayInformation);
+  expect(after.day).toBe(DataService.currentLiturgy().liturgyDayInformation);
   unsubscribe();
   await LiturgyStore.reload(new Date(2026, 8, 25));
   expect(listener).toHaveBeenCalledTimes(1);
@@ -81,7 +84,7 @@ test('the text size and dark mode change without reloading, and tell the screens
   const listener = jest.fn();
   const unsubscribe = LiturgyStore.subscribe(listener);
   LiturgyStore.updateSettings({ textSize: '5', darkModeEnabled: true });
-  expect(DataService.CurrentSettings).toMatchObject({ textSize: '5', darkModeEnabled: true });
+  expect(DataService.currentLiturgy().settings).toMatchObject({ textSize: '5', darkModeEnabled: true });
   expect(listener).toHaveBeenCalledTimes(1);
   expect(DataService.reloadAllData).not.toHaveBeenCalledWith(undefined);
   LiturgyStore.updateSettings({ invitationPsalmOption: '99' }, false);

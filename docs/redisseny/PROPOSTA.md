@@ -72,10 +72,12 @@ De dalt a baix, sota la capçalera de sempre (calendari · CPL · configuració)
    - Colors: vermell (R), verd (V), morat (M) i blanc (B). El blanc es fa amb un fons marfil i text daurat fosc, per
      llegir-se bé.
    - Hi surt el lloc («Barcelona (Diòcesi)») i la data en paraules («Dilluns, 21 de setembre»).
-   - Si hi ha celebració, el tipus («FESTA») i el títol. Si és fèria, «Dimarts de la setmana XXV».
-   - Una línia amb la setmana, l'any i la setmana del salteri.
-   - La data i el títol van en Literata; la resta, amb la lletra del sistema.
-   - Si el dia té descripció, al peu surt el botó «Llegeix-ne més».
+   - Després, el dia dins el seu temps, sense repetir el dia de la setmana que ja diu la data: «Setmana XXV de
+     durant l'any», «Octava de Nadal», «Temps de Pasqua» (a les solemnitats) o el nom propi del dia («Diumenge
+     de Rams»). A sota, l'any i la setmana del salteri.
+   - Si hi ha celebració, va sota una ratlla, tota junta: el tipus («FESTA»), el títol, l'interruptor si és una
+     memòria lliure i, a baix de tot, «Llegeix-ne més» si té descripció.
+   - La data i els títols van en Literata; la resta, amb la lletra del sistema.
 2. **Litúrgia de les Hores:** les set hores en fitxes, en tres files (Ofici de lectura · Laudes / Tèrcia · Sexta ·
    Nona / Vespres · Completes).
    - Cada fitxa porta una icona: un arc amb el sol a cada lloc. A Laudes surt, a Sexta és a dalt, a Vespres es
@@ -99,8 +101,9 @@ Totes les dades ja es carreguen en obrir l'app (`CurrentLiturgyDayInformation`, 
 
 Tots dissenyats a la fila 2 de la pàgina final, amb dades reals:
 
-- **Memòria lliure** (26/09, Sants Cosme i Damià). Dins la targeta hi ha una fila «Celebrar la memòria» amb un
-  interruptor i una línia que explica què passa. Apagat: el títol queda en gris i es resa la fèria. És la mateixa
+- **Memòria lliure** (26/09, Sants Cosme i Damià). Sota la ratlla, amb la memòria, hi ha una fila «Celebrar la
+  memòria» amb un interruptor i una línia que explica què passa. Apagat: la memòria queda en gris (la setmana de
+  dalt no) i es resa la fèria. És la mateixa
   lògica d'ara (`HandleOnSwitchFreePrayerPressed`). Els dissabtes amb la memòria de Santa Maria (`V`), igual.
 - **Primeres vespres** (31/10, vigília de Tots Sants). El títol de la solemnitat surt sota «Vespres», dins la
   fitxa (`CurrentHoursLiturgy.Vespers.Title`). El Diumenge de Pasqua no surt, com ara.

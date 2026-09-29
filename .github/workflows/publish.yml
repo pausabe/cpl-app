@@ -72,7 +72,10 @@ jobs:
 
       - run: npm ci
 
+      # For the version being built: a publication that needs a newer app is not for this one
       - name: Bring the published database
+        env:
+          CPL_APP_VERSION: ${{ inputs.version }}
         run: node scripts/fetchDatabase.mjs
 
       # Like make checks, without the two sweeps against the golden files: those are not in the
@@ -121,6 +124,7 @@ jobs:
       - name: Bring the published database
         env:
           CPL_DATABASE_VERSION: ${{ needs.checks.outputs.database }}
+          CPL_APP_VERSION: ${{ needs.checks.outputs.version }}
         run: node scripts/fetchDatabase.mjs
 
       # Before prebuild: the native project is made from app.json
@@ -181,6 +185,9 @@ jobs:
           track: internal
           status: completed
           whatsNewDirectory: ${{ runner.temp }}/whatsnew
+          # R8 renames the classes: without this file a crash in Play arrives as
+          # a.b.c() and says nothing
+          mappingFile: android/app/build/outputs/mapping/release/mapping.txt
 
   ios:
     name: iOS, TestFlight
@@ -223,6 +230,7 @@ jobs:
       - name: Bring the published database
         env:
           CPL_DATABASE_VERSION: ${{ needs.checks.outputs.database }}
+          CPL_APP_VERSION: ${{ needs.checks.outputs.version }}
         run: node scripts/fetchDatabase.mjs
 
       - name: Write the numbers of this build
@@ -273,7 +281,7 @@ jobs:
           echo "keychain=$KEYCHAIN" >> "$GITHUB_OUTPUT"
           echo "uuid=$UUID" >> "$GITHUB_OUTPUT"
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
-          echo "Profile «$NAME»"
+          echo "Profile: $NAME"
 
       - name: Tell the project what to sign with
         env:
@@ -362,13 +370,49 @@ jobs:
           NOTES: ${{ needs.checks.outputs.notes }}
         run: node scripts/setTestFlightNotes.mjs
 
+  # What reached a store stays written in the repository: the version in app.json on master, and a
+  # tag on the code that was built. One store is enough: that one already has this version, and the
+  # other one has to come out with the same number when it is published.
+  release:
+    name: Keep the version in the repository
+    if: ${{ !cancelled() && needs.checks.result == 'success' && (needs.android.result == 'success' || needs.ios.result == 'success') }}
+    needs: [checks, android, ios]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      said: ${{ steps.keep.outputs.said }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # All of it, tags included: to see if the tag is there and where master has gone
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Tag the code and write the version on master
+        id: keep
+        env:
+          VERSION: ${{ needs.checks.outputs.version }}
+          BUILD: ${{ needs.checks.outputs.build }}
+          ANDROID: ${{ needs.android.result }}
+          IOS: ${{ needs.ios.result }}
+          RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          scripts/keepRelease.sh
+
   # Una publicació dura tres quarts d'hora: ningú no s'ha de quedar mirant la pàgina. Diu com ha
   # anat encara que alguna cosa hagi fallat, que és quan més fa falta saber-ho. Sense el bot
   # configurat no fa res: la publicació no depèn d'això.
   telegram:
     name: Say how it went
     if: ${{ !cancelled() }}
-    needs: [checks, android, ios, notes]
+    needs: [checks, android, ios, notes, release]
     runs-on: ubuntu-latest
     steps:
       - name: Say it on Telegram
@@ -384,6 +428,8 @@ jobs:
           DATABASE: ${{ needs.checks.outputs.database }}
           NOTES: ${{ needs.checks.outputs.notes }}
           WHERE: ${{ inputs.platforms }}
+          RELEASE: ${{ needs.release.result }}
+          KEPT: ${{ needs.release.outputs.said }}
           RUN: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           set -euo pipefail
@@ -434,6 +480,11 @@ jobs:
               TEXT="$TEXT${NL}• iOS, TestFlight: $(said "$IOS")"
             fi
             TEXT="$TEXT${NL}• Textos: base de dades versió ${DATABASE:-?}"
+            if [ "${RELEASE:-}" = "success" ]; then
+              TEXT="$TEXT${NL}• Repositori: $KEPT"
+            elif [ "${RELEASE:-}" = "failure" ]; then
+              TEXT="$TEXT${NL}• ⚠️ La versió no s'ha pogut desar al repositori: cal posar la $VERSION a app.json i l'etiqueta v$VERSION a mà"
+            fi
             if [ "${WHATS_TO_TEST:-}" = "failure" ]; then
               TEXT="$TEXT${NL}• El text del que s'ha de provar s'ha d'escriure a mà a TestFlight"
             fi

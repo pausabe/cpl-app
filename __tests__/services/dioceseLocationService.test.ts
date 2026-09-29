@@ -174,6 +174,6 @@ test('each episcopal see is in its own diocese', () => {
   for (const [name, diocese] of sees) {
     const see = TABLE.find((municipality) => municipality.name === name);
     expect(see).toBeDefined();
-    expect(resolveDiocese(see.latitude, see.longitude)).toBe(diocese);
+    expect(resolveDiocese(see!.latitude, see!.longitude)).toBe(diocese);
   }
 });
