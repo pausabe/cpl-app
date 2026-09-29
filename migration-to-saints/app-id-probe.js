@@ -202,7 +202,16 @@ const PROBE = (date) => `(async () => {
   const app = document.querySelector('#app').__vue_app__;
   const pinia = app.config.globalProperties.$pinia;
   const dateStore = pinia._s.get('dateStore');
-  await dateStore.setDate(new Date('${date}T12:00:00'));
+  const when = new Date('${date}T12:00:00');
+  await dateStore.setDate(when);
+  // Since dev of 24-9-2026 setDate refreshes only the Hours someone has opened, and an Hour
+  // with a load still pending for another date hands back that load instead of this one
+  // (useRefreshAllStores, ensureHourLoaded). So each store is asked for this date here, one
+  // after the other, before anything is read: otherwise it may still hold the day before.
+  for (const storeId of ${JSON.stringify(Object.values(STORE_IDS))}) {
+    const s = pinia._s.get(storeId);
+    if (s && typeof s.changeDay === 'function') await s.changeDay(when);
+  }
   const out = { date: '${date}', hours: {}, state: {} };
   for (const [hour, storeId] of ${JSON.stringify(Object.entries(STORE_IDS))}) {
     const s = pinia._s.get(storeId);
@@ -358,6 +367,10 @@ async function main() {
     await cdp.evalJs(`localStorage.setItem('selectedLanguage','ca');
       localStorage.setItem('selectedCalendar','diocese-barcelona');
       localStorage.setItem('selectedCalendarSource','manual'); true`);
+    // The Hours saints-app has not been asked for it loads in idle time, one by one, and one
+    // of those loads for the previous date can land after PROBE has asked for the next one.
+    // The page gets no idle time at all: PROBE asks for every Hour itself.
+    await cdp.send('Page.addScriptToEvaluateOnNewDocument', { source: 'window.requestIdleCallback = () => 0;' });
     await cdp.send('Page.navigate', { url: `${APP_URL}/liturgy-of-hours/lauds` });
 
     for (let i = 0; i < 40; i++) {
