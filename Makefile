@@ -61,7 +61,7 @@ help:
 	@echo "make progress                             How the migration is doing, the whole window, and what holds most days back"
 	@echo "make month [YM=2026-09]                   The same for one month, day by day, and why each day is not at 100%"
 	@echo "make day-check [DATE=2026-08-12]          The same for one day, field by field (today, if no date is given)"
-	@echo "make db-fixed                             The database in place with the db-fixes on top, for the migration (CPL_DB=…)"
+	@echo "make db-fixed [FROM=…]                    The database in place with the db-fixes on top, for the migration (CPL_DB=…)"
 	@echo "make review DATES=2026-08-20,2026-08-21   Day by day review against saints-app"
 	@echo "make run-panel [PORT=4848]                The migration panel (if the port is taken, it offers another)"
 	@echo "make stop-panel [PORT=4848]               Stop the panel"
@@ -307,11 +307,13 @@ PANEL := migration-to-saints/webui/server.js
 # before make review, the join or the panel. The one in place stays as it was published, which is
 # what the goldens are made from and what make proposal takes its texts from; Pau decided on
 # 29 September 2026 to put the fixes on it for good only at the end. Run it again after make db or
-# make db-latest.
+# make db-latest. FROM takes another database instead, like the one process X writes with the
+# calendar out of litcal: FROM=$(PROCESS_X)/out/cpl-app.db, the same calendar saints-app prays with.
 FIXED_DB := migration-to-saints/output/cpl-app.fixed.db
+FROM ?= $(DATABASE_DIR)/cpl-app.db
 
 db-fixed:
-	cp $(DATABASE_DIR)/cpl-app.db $(FIXED_DB)
+	cp $(FROM) $(FIXED_DB)
 	sqlite3 $(FIXED_DB) < db-fixes/CPL-LIT-002.sql > /dev/null
 	sqlite3 $(FIXED_DB) < db-fixes/CPL-LIT-003.sql > /dev/null
 	CPL_DB=$(FIXED_DB) npx jest __tests__/services/ImmaculateConceptionTransfer.test.js __tests__/services/Psalm66PointingMark.test.js --silent
