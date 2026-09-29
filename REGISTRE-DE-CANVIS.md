@@ -23,7 +23,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | ID | Data | On | Tipus | Cal reaplicar-ho? | Commit |
 |---|---|---|---|---|---|
 | [APP-001](#app-001) | 2026-09-21 | cpl-app | **actualització** (Expo 51 → 57) | No — va al git | branca `upgrade-expo-57`, local |
-| [CPL-LIT-001](#cpl-lit-001) | 2026-08-14 | cpl-app | codi | No — va al git | `cdc8c79` |
+| [CPL-LIT-001](#cpl-lit-001) | 2026-08-14 | cpl-app | codi | No — va al git | `cdc8c79`; a `master`, `2514944` |
 | [CPL-LIT-002](#cpl-lit-002) | 2026-08-15 | cpl-app | **dades (BD)** | **Sí** | `6726622` |
 | [CPL-LIT-003](#cpl-lit-003) | 2026-09-02 | cpl-app | **dades (BD)** | **Sí** | `9f472d8` |
 | [MIGRA-001](#migra-001) | 2026-09-01 | eines | codi | No — va al git | `a3e4d52` |
@@ -133,11 +133,13 @@ recompte és el que el wiki de CPL fa servir per comparar amb la versió publica
 | Detectors | `ImmaculateConceptionTransfer` i `Psalm66PointingMark`, tots dos en verd |
 
 **Els quatre goldens estan gravats contra la v5 SENSE els fixos** (`databaseSha256:
-7235a715…`), o sigui que ara mateix donen per bons el Dimecres de Cendra equivocat, la
-Immaculada del dia que no toca i el Salm 66 sense asterisc. Els quatre peten amb *«was made from
-another cpl-app.db»*, que és el guardià fent la seva feina i no cap regressió: **812 fallades,
-totes el mateix missatge**. Regravar-los demana repassar l'app a mà abans (`UPDATE_GOLDEN=1`), i
-això només ho pot fer en Pau.
+7235a715…`). Es van tornar a gravar el 29 de setembre, amb el CPL-LIT-001 ja a `master`, i només
+hi van canviar els dos Dimecres de Cendra (5-3-2025 i 18-2-2026): la salmòdia de Laudes, i
+l'invitatori de qui té triat el Salm 99, que aquell dia passa al 94. O sigui que ara donen per bo
+el Dimecres de Cendra, però encara la Immaculada del dia que no toca i el Salm 66 sense asterisc.
+Amb els fixos a la base del lloc, els quatre peten amb *«was made from another cpl-app.db»*, que
+és el guardià fent la seva feina i no cap regressió. Regravar-los contra una base amb els fixos
+demana repassar l'app a mà abans (`UPDATE_GOLDEN=1`), i això només ho pot fer en Pau.
 
 Els dos fixos hi faltaven: la base es va tornar a baixar el 25 de setembre i se'ls va endur, que
 és exactament el que aquesta secció existeix per a evitar. El CPL-LIT-003 **afegia dues files a
@@ -205,6 +207,10 @@ setmana IV. Passava **tots els anys**, verificat als 10 que cobreix la base.
 | Efecte a la migració | 8 caselles desbloquejades, **1.034 observacions-dia** |
 
 > **Va tornar el 25 de setembre de 2026.** Vegeu [CPL-LIT-001b](#cpl-lit-001b).
+
+> **A `master` des del 29 de setembre de 2026** (`2514944`): fins llavors el fix només era en
+> aquesta branca, i l'app publicada resava el Salm 107. El test viu a `__tests__/services/` i carrega
+> el dia com l'app (`__tests__/helpers/liturgyDay`), sense les eines de la migració.
 
 <a id="cpl-lit-001b"></a>
 ## CPL-LIT-001b
