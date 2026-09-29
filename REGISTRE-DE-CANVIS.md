@@ -108,8 +108,8 @@ sqlite3 src/assets/db/cpl-app.db < db-fixes/CPL-LIT-002.sql
 sqlite3 src/assets/db/cpl-app.db < db-fixes/CPL-LIT-003.sql
 
 # 3. Els detectors. Si fallen, a la base li falta el fix.
-npx jest __tests__/Services/ImmaculateConceptionTransfer.test.js
-npx jest __tests__/Services/Psalm66PointingMark.test.js
+npx jest __tests__/services/ImmaculateConceptionTransfer.test.js
+npx jest __tests__/services/Psalm66PointingMark.test.js
 
 # 4. Si has tocat la base, el join ha de tornar a córrer.
 HOURS=Laudes,Vespers npx jest migration-to-saints/join-content.test.js --silent
@@ -199,7 +199,7 @@ setmana IV. Passava **tots els anys**, verificat als 10 que cobreix la base.
 | Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-001.md](migration-to-saints/cpl-bugs/CPL-LIT-001.md) |
 | Commit | `cdc8c79` — [GitHub](https://github.com/pausabe/cpl-app/commit/cdc8c799942f25059e83cb7195ec76be6367314d) |
 | Fix | Codi: `src/services/liturgy/liturgyMastersService.ts`, `obtainLaudesCommonPsalter` |
-| Test | [`__tests__/Services/AshWednesdayLaudesPsalmody.test.js`](__tests__/Services/AshWednesdayLaudesPsalmody.test.js) |
+| Test | [`__tests__/services/AshWednesdayLaudesPsalmody.test.js`](__tests__/services/AshWednesdayLaudesPsalmody.test.js) |
 | Reaplicar | **No** — és codi, va al git |
 | Prova | Tres fonts en tres idiomes (anglès, castellà per data exacta, i la rúbrica explicada), més la contraverificació que les Vespres **no** canvien |
 | Efecte a la migració | 8 caselles desbloquejades, **1.034 observacions-dia** |
@@ -291,7 +291,7 @@ anys de la base passa el **2019** i el **2024**; la propera vegada serà el **20
 | Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-002.md](migration-to-saints/cpl-bugs/CPL-LIT-002.md) |
 | Commit | `6726622` — [GitHub](https://github.com/pausabe/cpl-app/commit/67266222dbc633f340034370993e77045db3f301) |
 | Fix | **Dades**: [`db-fixes/CPL-LIT-002.sql`](db-fixes/CPL-LIT-002.sql), taula `anyliturgic`, 4 files |
-| Test | [`__tests__/Services/ImmaculateConceptionTransfer.test.js`](__tests__/Services/ImmaculateConceptionTransfer.test.js) |
+| Test | [`__tests__/services/ImmaculateConceptionTransfer.test.js`](__tests__/services/ImmaculateConceptionTransfer.test.js) |
 | Reaplicar | **Sí, sobre cada base nova** |
 | BD | `_tables_log` = 12.528 · sha256 `6eed8fe8…` → `fda34735…` |
 | Prova | La mateixa taula ja sap fer el trasllat i l'aplica bé a sant Josep (2023) i a l'Anunciació (2024): no és un criteri pastoral, és un forat |
@@ -314,7 +314,7 @@ sense la pausa que la mateixa estrofa sí que duu al matí.
 | Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-003.md](migration-to-saints/cpl-bugs/CPL-LIT-003.md) |
 | Commit | `9f472d8` — [GitHub](https://github.com/pausabe/cpl-app/commit/9f472d83e01d22e1bff64e1890ab630489c06e73) |
 | Fix | **Dades**: [`db-fixes/CPL-LIT-003.sql`](db-fixes/CPL-LIT-003.sql), `salteriComuVespres/12.salm2` i `santsMemories/377.Salm2Ofici` |
-| Test | [`__tests__/Services/Psalm66PointingMark.test.js`](__tests__/Services/Psalm66PointingMark.test.js) |
+| Test | [`__tests__/services/Psalm66PointingMark.test.js`](__tests__/services/Psalm66PointingMark.test.js) |
 | Reaplicar | **Sí, sobre cada base nova** |
 | BD | `_tables_log` = 12.528 · sha256 `fda34735…` → `38842ab0…` (ja porta CPL-LIT-002 aplicat) |
 | Prova | **Interna**: les edicions en línia despullen la puntuació i no poden dir-hi res. La còpia germana de Laudes duu la marca, i un cop normalitzats els espais és **l'única** diferència entre les dues |
@@ -357,7 +357,7 @@ els trasllats per a tothom (`*`).
 | Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-006.md](migration-to-saints/cpl-bugs/CPL-LIT-006.md) |
 | Commit | `1ea6f96` — branca `litcal-sweep`, local |
 | Fix | Codi: `src/services/databaseDataHelper.ts` (`isTransferForPlace`), `databaseDataService.ts` i `liturgy/liturgyMastersService.ts` |
-| Test | `__tests__/liturgy/movedCelebrations.test.js` i `__tests__/Services/databaseDataHelper.test.js` |
+| Test | `__tests__/liturgy/movedCelebrations.test.js` i `__tests__/services/databaseDataHelper.test.js` |
 | Reaplicar | **No** — és codi, va al git. Quan arribi a `master`, cal `make golden`: sis dies canvien, només en la informació del dia traslladat |
 | Prova | Els serveis de l'app amb la BD que porta (els quatre casos), i l'escombrada de Jest de tots els dies i llocs del 2017 al 2100 amb la taula que surt de litcal: cap trasllat no hi falla |
 | Efecte a la migració | Cap: a litcal cada calendari resol els seus trasllats |

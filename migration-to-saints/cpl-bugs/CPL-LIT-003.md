@@ -7,7 +7,7 @@
 | **Gravetat** | Baixa per a qui resa (una marca de pausa que falta) — alta per a la migració |
 | **Trobat** | 2 de setembre de 2026, revisant el dia amb la skill `revisio-dia` (fèria del dimecres de la setmana 22) |
 | **Correcció** | **Dades**: `db-fixes/CPL-LIT-003.sql` sobre `src/Assets/db/cpl-app.db`, taules `salteriComuVespres` i `santsMemories` |
-| **Regressió** | `__tests__/Services/Psalm66PointingMark.test.js` |
+| **Regressió** | `__tests__/services/Psalm66PointingMark.test.js` |
 
 ## Símptoma
 
@@ -98,7 +98,7 @@ base de dades acabada de baixar no el portarà.
 
 ```sh
 sqlite3 src/Assets/db/cpl-app.db < db-fixes/CPL-LIT-003.sql
-npx jest __tests__/Services/Psalm66PointingMark.test.js
+npx jest __tests__/services/Psalm66PointingMark.test.js
 ```
 
 El `.sql` no fa servir els `id` de fila sinó l'estat incorrecte (el vers seguit de salt de

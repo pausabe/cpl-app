@@ -7,7 +7,7 @@
 | **Gravetat** | Alta — el dia del trasllat hi ha un sant equivocat, al lloc del trasllat o en tots els altres |
 | **Trobat** | 28 de setembre de 2026, comparant la taula `anyliturgic` amb litcal; verificat amb Jest |
 | **Correcció** | **Codi**: `src/services/databaseDataHelper.ts`, `databaseDataService.ts`, `liturgy/liturgyMastersService.ts` |
-| **Regressió** | `__tests__/liturgy/movedCelebrations.test.js` i `__tests__/Services/databaseDataHelper.test.js` |
+| **Regressió** | `__tests__/liturgy/movedCelebrations.test.js` i `__tests__/services/databaseDataHelper.test.js` |
 
 ## Símptoma
 
@@ -58,7 +58,7 @@ De passada: `getDateFromShortDatabaseCode` no tornava cap data per al gener (el 
 
 - `__tests__/liturgy/movedCelebrations.test.js`, amb els serveis reals de l'app i la BD que porta: els quatre
   casos de la taula de dalt (sense la correcció, fallen tots quatre).
-- `__tests__/Services/databaseDataHelper.test.js`: per a qui és cada trasllat, i els codis dels dies.
+- `__tests__/services/databaseDataHelper.test.js`: per a qui és cada trasllat, i els codis dels dies.
 - Les proves que recorren tots els dies del 2025 i del 2026 (els goldens) només canvien en sis dies, i només en
   la informació del dia traslladat dels llocs on el trasllat no és: no hi canvia ni l'ofici ni la missa.
 

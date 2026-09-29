@@ -7,7 +7,7 @@
 | **Gravetat** | Alta — dos dies sencers equivocats, i un diumenge d'Advent que desapareix |
 | **Trobat** | 15 d'agost de 2026, investigant un conflicte del primer salm de Laudes al panell de migració |
 | **Correcció** | **Dades**: `db-fixes/CPL-LIT-002.sql` sobre `src/Assets/db/cpl-app.db`, taula `anyliturgic` |
-| **Regressió** | `__tests__/Services/ImmaculateConceptionTransfer.test.js` |
+| **Regressió** | `__tests__/services/ImmaculateConceptionTransfer.test.js` |
 
 ## Símptoma
 
@@ -95,7 +95,7 @@ Per reaplicar-lo:
 
 ```sh
 sqlite3 src/Assets/db/cpl-app.db < db-fixes/CPL-LIT-002.sql
-npx jest __tests__/Services/ImmaculateConceptionTransfer.test.js
+npx jest __tests__/services/ImmaculateConceptionTransfer.test.js
 ```
 
 El `.sql` no fa servir els `id` de fila sinó l'estat incorrecte, així que és **idempotent** i
