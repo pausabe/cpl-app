@@ -79,6 +79,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [MIGRA-015](#migra-015) | 2026-09-25 | eines | codi | No — va al git | — |
 | [CPL-LIT-005](#cpl-lit-005) | 2026-09-28 | cpl-app | codi | No — va al git | `1bd79cc`, branca `litcal-sweep`, local |
 | [CPL-LIT-006](#cpl-lit-006) | 2026-09-28 | cpl-app | codi | No — va al git | `1ea6f96`, branca `litcal-sweep`, local |
+| [CPL-LIT-001c](#cpl-lit-001c) | 2026-09-29 | cpl-app | codi (**recaiguda**, aturada a la fusió) | No — va al git | `50eed05` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -243,6 +244,38 @@ tapava.
 al git. Els dos detectors de dades (`ImmaculateConceptionTransfer`, `Psalm66PointingMark`) i
 aquest són l'única xarxa, i **han de córrer en verd sempre**, perquè una fusió gran és
 exactament quan un `CPL-LIT` es perd.
+
+## CPL-LIT-001c
+
+**La fusió de `master` del 29 de setembre deixava el Dimecres de Cendra cridant un nom que ja no existeix** · 29 de setembre de 2026
+
+En fusionar `master` a `catalan-migration` (el calendari de litcal, el CPL-LIT-005 i el 006, i el
+refactor a TypeScript estricte), git va conservar el bloc del CPL-LIT-001 dins
+`obtainLaudesCommonPsalter` sense cap conflicte, però cridant `CelebrationIdentifier.checkCelebration`:
+un àlies d'importació que el refactor de `master` va treure. El fitxer ara només importa
+`CelebrationIdentifierService`, i git no ho veu perquè ningú no toca aquella línia.
+
+Aquesta vegada no hauria estat una pèrdua silenciosa com la del [CPL-LIT-001b](#cpl-lit-001b),
+sinó una de més gran: la línia s'avalua a tots els dies que calculen el salteri de Laudes (tots
+menys el Tridu i l'octava de Pasqua), i hi llança un `ReferenceError`.
+
+| | |
+|---|---|
+| Com s'ha vist | Llegint el bloc després de la fusió. `make types` també l'atura: `TS2552: Cannot find name 'CelebrationIdentifier'` |
+| Comprovat | Amb la línia tal com la va deixar git, el detector `AshWednesdayLaudesPsalmody` cau en 11 dels 13 casos, també «the Thursday after keeps Thursday of week IV», que no és cap Dimecres de Cendra |
+| Fix | `CelebrationIdentifierService.checkCelebration(Celebration.AshWednesday, …)`, com la resta del fitxer |
+| Test | El detector, 13/13 |
+| Commit | `50eed05`, el de la fusió |
+| Reaplicar | **No** — és codi, va al git |
+
+La mateixa fusió, a les eines: `Settings.textSize` és text a `master` («From 1 to 10, stored as
+text»), i [`src/liturgy-export/settings.ts`](src/liturgy-export/settings.ts) hi posa `'3'`. No
+canvia res del que s'exporta: és la mida de la lletra.
+
+**La fusió no mou cap text de la migració.** Amb la v5 més els dos `db-fixes`, les sortides
+`commons-ca/` del join surten idèntiques a les del git. L'única diferència és de calendari, i és
+bona: el 9-6-2018 a Barcelona surt el Cor Immaculat en lloc de sant Efrem, que és el
+[CPL-LIT-006](#cpl-lit-006) arribant de `master`.
 
 ## CPL-LIT-002
 
