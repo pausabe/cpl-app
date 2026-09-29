@@ -13,8 +13,10 @@ Els dossiers llargs viuen a `migration-to-saints/cpl-bugs/` (errors de cpl-app) 
 `migration-to-saints/tooling-bugs/` (errors de les nostres eines). Aquí hi ha la fitxa curta i
 els enllaços.
 
-Tots els commits d'aquest fitxer són a `origin`: cpl-app a la branca `catalan-migration`,
-saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
+Els commits de cpl-app són a `origin`, a la branca `catalan-migration` (pujada el 29-9-2026), i
+els seus enllaços de GitHub funcionen; els de litcal, a `catalan-calendars`. Els de saints-app
+**no**: a 29-9-2026 la branca `catalan-language-support-dev` no s'havia pujat mai, i els enllaços
+cap a saints-app no funcionaran fins que s'hi pugi.
 
 ---
 
@@ -89,6 +91,7 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
+| [D-008](#d-008) | 2026-09-29 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -1869,6 +1872,19 @@ retall del cos del càntic de la mateixa fila (que és una coincidència de la t
 petjada de transcripció). **Per a la redacció d'un text català, la concordança entre llengües no
 és prova de res**: només ho és el volum imprès. Apuntat al parany 7 de la skill `revisio-dia`.
 
+
+## D-008
+
+**La Mare de l'Església del 2017 no s'arregla** · 29 de setembre de 2026
+
+cpl-app la dona el 5-6-2017, un any abans del decret que la va instituir (2018). No ve de la
+taula, que el procés X ja genera bé, sinó del codi, que la posa cada dilluns de Pentecosta. Des
+del 2018 és correcte, i ningú no resarà el 2017. En Pau, el 29-9: no és rellevant d'arreglar.
+
+| | |
+|---|---|
+| Què costa | A la migració, 16 caselles de sant Bonifaci (5 de juny) queden retingudes perquè el 2017 hi discrepa: `responsorios/5243–5248` i `19057–19062`, les antífones `899` i `1995`, `oraciones_finales/98` i l'Ofici `315` |
+| Si algun dia calen | Es resol a la migració, sense tocar cpl-app: treure el 2017-06-05 del join, o una decisió de revisió |
 
 # Canvis a saints-app
 
