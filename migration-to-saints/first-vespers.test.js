@@ -9,9 +9,15 @@
 // observation agrees" was true by vacuum, and the join WROTE the Baptist's antiphon into
 // the Sacred Heart's cell. Fifteen cells regressed that way.
 //
-// This runs the real join over exactly those ten dates, into a throwaway output dir, and
-// asserts the cell ends up RETAINED rather than written. Without the fix the join skips
-// nine dates, sees one observation, and writes it — which is what fails here.
+// This runs the real join over exactly those ten dates, into a throwaway output dir.
+//
+// Since 29 September 2026 the tenth evening is not what it was. With the Catalan calendars
+// rebuilt in litcal and saints-app at dev, 23-6-2022 is the Nativity of the Baptist in both
+// apps (the Holy See moved it there that year), and on its evening both pray the Baptist's
+// own Vespers: the Sacred Heart ranks the same, and at equal rank the current day's are said
+// (GILH 61). So the dispute is gone, and the nine other evenings write the cell, with the
+// Sacred Heart's antiphon. A join that skipped the First Vespers evenings again would see
+// none of them and write nothing — which is what fails here now.
 //
 //   npx jest migration-to-saints/first-vespers.test.js
 
@@ -29,6 +35,8 @@ const EVES = [
 const CELL = { table: 'salmos_antifonas', id: '9998' };
 // What cpl-app gives on 2022-06-23 — the lone observation that used to win.
 const BAPTIST = 'Déu envià un home';
+// The Sacred Heart's own antiphon, which the nine evenings agree on.
+const SACRED_HEART = 'Oh amor etern de Déu';
 
 test('the eve of a solemnity is observed into its First Vespers cell, not skipped', () => {
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'migra006-'));
@@ -61,12 +69,10 @@ test('the eve of a solemnity is observed into its First Vespers cell, not skippe
 
     // The precise failure MIGRA-006 describes: one date's text standing in for ten.
     expect(written[CELL.id] || '').not.toContain(BAPTIST);
-    // And the reason it must not be written: the ten evenings do not agree, so the cell
-    // is disputed and belongs in the review queue.
-    expect(held).toBeDefined();
-    expect(held.variants.length).toBeGreaterThan(1);
-    // All ten evenings must reach the cell. Nine skipped is what the bug looked like.
-    expect(held.affectedCount).toBe(EVES.length);
+    // The nine evenings reach the cell and agree on it. Skipping them is what the bug
+    // looked like, and then nothing is written at all.
+    expect(written[CELL.id] || '').toContain(SACRED_HEART);
+    expect(held).toBeUndefined();
   } finally {
     fs.rmSync(outDir, { recursive: true, force: true });
   }
