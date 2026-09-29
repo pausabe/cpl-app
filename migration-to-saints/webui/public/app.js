@@ -47,52 +47,6 @@ async function runAction(action, { method = 'POST', body, endpoint, displayKey }
   }
 }
 
-function renderStage1(data) {
-  const el = resultsEl('stage1');
-  if (!data || !data.summary) {
-    el.innerHTML = logBlock(data && data.log);
-    return;
-  }
-  const { representativeYear, rowsSkipped, calendars } = data.summary;
-  let html = `<div class="summary-line">Any de referència: <b>${representativeYear}</b> · files descartades en llegir cpl-app.db: <b>${rowsSkipped}</b></div>`;
-  html += '<table><tr><th>Calendari</th><th>Parent</th><th>Regles candidates</th><th>Avisos</th></tr>';
-  for (const [id, c] of Object.entries(calendars)) {
-    html += `<tr><td>${id}.json</td><td>${c.parent}</td><td>${c.ruleCount}</td><td>${c.warnings.length}</td></tr>`;
-  }
-  html += '</table>' + logBlock(data.log);
-  el.innerHTML = html;
-}
-
-function renderStage2(data) {
-  const el = resultsEl('stage2');
-  if (!data || !data.summary) {
-    el.innerHTML = logBlock(data && data.log);
-    return;
-  }
-  const { droppedCount, promotedCount, survivors } = data.summary;
-  let html = `<div class="summary-line">${data.wrote ? '<b>Escrit a litcal/src/data/calendars/</b> · ' : '(prova, no escrit) · '}`;
-  html += `Descartats per ja existir a litcal: <b>${droppedCount}</b> · promoguts a catalonia.json: <b>${promotedCount}</b></div>`;
-  html += '<table><tr><th>Calendari</th><th>Parent</th><th>Celebracions noves</th></tr>';
-  for (const [id, c] of Object.entries(survivors)) {
-    html += `<tr><td>${id}.json</td><td>${c.parent}</td><td>${c.ruleCount}</td></tr>`;
-  }
-  html += '</table>';
-  html += renderDroppedTable(data.summary.dropped);
-  html += logBlock(data.log);
-  el.innerHTML = html;
-}
-
-function renderDroppedTable(dropped) {
-  if (!dropped || !dropped.length) return '';
-  let html = `<details><summary>Veure els ${dropped.length} sants omesos (ja existeixen a litcal)</summary>`;
-  html += '<table><tr><th>Calendari</th><th>Data</th><th>Nom català</th><th>Ja existeix com a</th></tr>';
-  for (const d of dropped) {
-    html += `<tr><td>${escapeHtml(d.calendar)}</td><td>${escapeHtml(d.date)}</td><td>${escapeHtml(d.catalanName)}</td><td>${escapeHtml((d.existing || []).map((e) => e.id).join(', '))}</td></tr>`;
-  }
-  html += '</table></details>';
-  return html;
-}
-
 function renderGenerateLoaders(data) {
   resultsEl('generate-loaders').innerHTML = logBlock(data && data.log) || '<p class="summary-line">Fet.</p>';
 }
@@ -125,10 +79,6 @@ function renderLaudes(data) {
 function laudesField(label, value) {
   if (!value) return '';
   return `<div class="field"><div class="field-label">${escapeHtml(label)}</div><div class="field-value">${escapeHtml(value)}</div></div>`;
-}
-
-function renderDroppedReport(data) {
-  resultsEl('dropped-report').innerHTML = renderDroppedTable(data && data.report) || '<p class="summary-line">Cap informe guardat trobat.</p>';
 }
 
 function renderMigrator(data) {
@@ -266,7 +216,7 @@ function refreshStepsHtml(steps, state) {
 function runRefresh(what) {
   const opts = migratorOptions();
   if (what !== 'litcal' && opts.hours.length === 0) {
-    setStatus('refresh', 'Tria almenys una hora a la targeta 5', 'error');
+    setStatus('refresh', 'Tria almenys una hora a la targeta 3', 'error');
     return;
   }
   const buttons = document.querySelectorAll('[data-action^="refresh-"]');
@@ -1604,17 +1554,11 @@ document.addEventListener('click', async (e) => {
   }
   if (action.startsWith('refresh-')) {
     const what = action.replace('refresh-', '');
-    if (what !== 'litcal' && !confirm('Això escriurà de veritat a litcal i/o a saints-app/.../commons/ca/. Continuar?')) return;
-    if (what === 'litcal' && !confirm('Això escriurà de veritat a litcal/src/data/calendars/. Continuar?')) return;
+    if (what !== 'litcal' && !confirm('Això escriurà de veritat a saints-app/.../commons/ca/. Continuar?')) return;
     runRefresh(what);
     return;
   }
-  if (action === 'stage1') renderStage1(await runAction('stage1'));
-  else if (action === 'stage2') renderStage2(await runAction('stage2', { body: { write: false } }));
-  else if (action === 'stage2-write') {
-    if (!confirm('Això escriurà de veritat a litcal/src/data/calendars/. Continuar?')) return;
-    renderStage2(await runAction('stage2-write', { body: { write: true } }));
-  } else if (action === 'generate-loaders') renderGenerateLoaders(await runAction('generate-loaders'));
+  if (action === 'generate-loaders') renderGenerateLoaders(await runAction('generate-loaders'));
   else if (action === 'laudes') renderLaudes(await runAction('laudes'));
   else if (action === 'mig-calculate' || action === 'mig-export') {
     const start = document.getElementById('mig-start').value;
@@ -1624,10 +1568,5 @@ document.addEventListener('click', async (e) => {
     if (action === 'mig-export' && !confirm('Això escriurà de veritat a saints-app/.../commons/ca/. Continuar?')) return;
     const endpoint = action === 'mig-export' ? 'migrator/export' : 'migrator/calculate';
     renderMigrator(await runAction(action, { body: { start, end, hours, diocese }, endpoint, displayKey: 'migrator' }));
-  }
-  else if (action === 'dropped-report') {
-    const res = await fetch('/api/dropped-report');
-    renderDroppedReport(await res.json());
-    setStatus('dropped-report', 'Fet', 'ok');
   }
 });

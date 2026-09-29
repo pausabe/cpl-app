@@ -26,9 +26,6 @@ const SAINTS_APP_COMMONS_CA = path.join(DAY_TEXTS_DIR, 'commons/ca');
 const SAINTS_APP_COMMONS_ES = path.join(DAY_TEXTS_DIR, 'commons/es');
 const STATIC_TRANSLATIONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/static-translations');
 const RUN_DIR = path.join(__dirname, 'run');
-const CANDIDATES_DIR = path.join(RUN_DIR, 'candidates');
-const STAGE1_JSON = path.join(RUN_DIR, 'stage1-summary.json');
-const STAGE2_JSON = path.join(RUN_DIR, 'stage2-summary.json');
 const LINK_STATE_JSON = path.join(RUN_DIR, 'link-state.json');
 const PUBLIC_DIR = path.join(__dirname, 'public');
 
@@ -90,29 +87,6 @@ function serveStatic(req, res) {
     res.writeHead(200, { 'Content-Type': type + '; charset=utf-8' });
     res.end(data);
   });
-}
-
-async function handleStage1(req, res) {
-  const result = await runCommand(
-    'node',
-    [
-      'migration-to-saints/generate-catalan-calendars.js',
-      '--out', CANDIDATES_DIR,
-      '--json', STAGE1_JSON,
-    ],
-    CPL_APP_ROOT
-  );
-  const summary = readJsonSafe(STAGE1_JSON);
-  sendJson(res, result.code === 0 ? 200 : 500, { ok: result.code === 0, log: result.stdout + result.stderr, summary });
-}
-
-async function handleStage2(req, res, body) {
-  const write = !!(body && body.write);
-  const args = ['tsx', 'scripts/build-catalan-calendars.ts', CANDIDATES_DIR, '--json', STAGE2_JSON];
-  if (write) args.push('--write');
-  const result = await runCommand('npx', args, LITCAL_ROOT);
-  const summary = readJsonSafe(STAGE2_JSON);
-  sendJson(res, result.code === 0 ? 200 : 500, { ok: result.code === 0, wrote: write, log: result.stdout + result.stderr, summary });
 }
 
 async function handleGenerateLoaders(req, res) {
@@ -448,11 +422,6 @@ function handleMonthCheck(req, res, url) {
   }
 }
 
-function handleDroppedReport(req, res) {
-  const report = readJsonSafe(path.join(CPL_APP_ROOT, 'migration-to-saints/dropped-needs-content-reconciliation.json'));
-  sendJson(res, 200, { report });
-}
-
 // --- Local litcal link -------------------------------------------------------------
 //
 // saints-app normally consumes litcal as a published npm package. While the Catalan
@@ -589,29 +558,6 @@ function sseSend(res, event, data) {
 
 function refreshPlan(what, opts) {
   const litcalSteps = [
-    {
-      id: 'stage1',
-      label: 'Generar candidats de calendari des de cpl-app.db',
-      run: () =>
-        runCommand('node', ['migration-to-saints/generate-catalan-calendars.js', '--out', CANDIDATES_DIR, '--json', STAGE1_JSON], CPL_APP_ROOT),
-      summary: () => {
-        const s = readJsonSafe(STAGE1_JSON);
-        if (!s) return null;
-        const rules = Object.values(s.calendars || {}).reduce((a, c) => a + (c.ruleCount || 0), 0);
-        return `${Object.keys(s.calendars || {}).length} calendaris · ${rules} regles candidates`;
-      },
-    },
-    {
-      id: 'stage2',
-      label: 'Filtrar contra litcal i escriure src/data/calendars/',
-      run: () => runCommand('npx', ['tsx', 'scripts/build-catalan-calendars.ts', CANDIDATES_DIR, '--json', STAGE2_JSON, '--write'], LITCAL_ROOT),
-      summary: () => {
-        const s = readJsonSafe(STAGE2_JSON);
-        if (!s) return null;
-        const kept = Object.values(s.survivors || {}).reduce((a, c) => a + (c.ruleCount || 0), 0);
-        return `${kept} celebracions escrites · ${s.droppedCount ?? 0} descartades · ${s.promotedCount ?? 0} promogudes a catalonia.json`;
-      },
-    },
     {
       id: 'loaders',
       label: 'Regenerar el carregador de calendaris de litcal',
@@ -808,15 +754,12 @@ const server = http.createServer(async (req, res) => {
     if (req.method === 'GET' && url.pathname === '/api/review-bundle') return handleReviewBundle(req, res, url);
     if (req.method === 'POST' && url.pathname === '/api/review-decision')
       return handleReviewDecision(req, res, await readBody(req));
-    if (req.method === 'POST' && req.url === '/api/stage1') return handleStage1(req, res);
-    if (req.method === 'POST' && req.url === '/api/stage2') return handleStage2(req, res, await readBody(req));
     if (req.method === 'POST' && req.url === '/api/generate-loaders') return handleGenerateLoaders(req, res);
     if (req.method === 'POST' && req.url === '/api/laudes') return handleLaudes(req, res);
     if (req.method === 'POST' && req.url === '/api/migrator/calculate')
       return handleMigratorRun(req, res, await readBody(req), { exportToSaintsApp: false });
     if (req.method === 'POST' && req.url === '/api/migrator/export')
       return handleMigratorRun(req, res, await readBody(req), { exportToSaintsApp: true });
-    if (req.method === 'GET' && req.url === '/api/dropped-report') return handleDroppedReport(req, res);
     if (req.method === 'GET' && req.url === '/api/pending-report') return handlePendingReport(req, res);
     return serveStatic(req, res);
   } catch (e) {
