@@ -81,7 +81,11 @@ saints-app i litcal a les seves. Els enllaços de GitHub funcionen.
 | [CPL-LIT-006](#cpl-lit-006) | 2026-09-28 | cpl-app | codi | No — va al git | `1ea6f96`, branca `litcal-sweep`, local |
 | [CPL-LIT-001c](#cpl-lit-001c) | 2026-09-29 | cpl-app | codi (**recaiguda**, aturada a la fusió) | No — va al git | `50eed05` |
 | [EINA-calendari](#eina-calendari) | 2026-09-29 | eines | codi | No — va al git | `3193fb5`, `2a66094` |
-| [EINA-db-fixed](#eina-db-fixed) | 2026-09-29 | eines | codi | No — va al git | `1dbfce3` |
+| [EINA-db-fixed](#eina-db-fixed) | 2026-09-29 | eines | codi | No — va al git | `1dbfce3`, `38a2547` |
+| [SA-16](#sa-16) | 2026-09-29 | saints-app | **codi** | No — va al git | `f1cc32d42`, `4709adfe4` |
+| [MIGRA-016](#migra-016) | 2026-09-29 | eines | codi | No — va al git | `02d5724` |
+| [MIGRA-017](#migra-017) | 2026-09-29 | eines | codi | No — va al git | `d3322a2` |
+| [SA-17](#sa-17) | 2026-09-29 | saints-app | contingut | Es regenera | `1c6b0af4d` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -1226,6 +1230,40 @@ Dossier: [tooling-bugs/MIGRA-015](migration-to-saints/tooling-bugs/MIGRA-015.md)
 saints-app. I `1 Tt 1, 1-9` (`lecturas_referencia/526`) és **Titus** amb un «1» de més al
 davant: error d'eprex, no abreviatura, i per això no s'ha mapat.
 
+## MIGRA-016
+
+**La sonda llegia hores que saints-app encara no havia carregat per al dia** · 29 de setembre de 2026
+
+Amb saints-app a `dev`, `setDate` només espera les hores que algú ha obert i la resta les carrega
+quan el navegador no fa res; a més, una hora amb una càrrega pendent d'un altre dia torna aquella
+i no la nova. La sonda llegia els stores just després de `setDate`, i l'11-3-2017 Laudes li
+sortien les dels arcàngels (el 29 de setembre, el dia en què arrenca l'app). El 2017 tenia 227
+dies amb caselles mogudes, contra uns 95 als altres anys, i el join en treia 313 conflictes nous.
+
+| | |
+|---|---|
+| Correcció | `PROBE` demana cada hora per a la data i n'espera la càrrega; la pàgina no té temps d'inactivitat |
+| Dossier | [tooling-bugs/MIGRA-016](migration-to-saints/tooling-bugs/MIGRA-016.md) |
+| Commit | `02d5724` |
+| Per a en Fernando | La desduplicació per hora sense data també pot deixar una hora amb el dia d'abans si l'usuari canvia de data mentre carrega |
+
+## MIGRA-017
+
+**El join aparellava els responsoris per posició encara que l'app no en mostrés sis** · 29 de setembre de 2026
+
+Les Vespres de sant Jaume, amb saints-app a `dev`, mostren el responsori amb set caselles (una de
+repetida) el 24 de juliol i amb cinc el 25. El join hi aparellava les sis línies de cpl-app per
+posició, i l'exportació anava a canviar sis caselles bones per les del costat
+(`responsorios/18666` passava a dir `℟. Si sou deixebles meus.`; el castellà hi diu
+`℣. En que os amáis unos a otros.`).
+
+| | |
+|---|---|
+| Correcció | Per posició fins a la primera casella que l'app repeteix; gens si l'app en mostra menys que cpl-app |
+| Comprovat | Contra aparellar-ho tot, només deixen d'escriure's les caselles corregudes de sant Jaume; sant Andreu (el Glòria dues vegades al final) i el Pilar (quatre caselles per a dues línies) es queden com eren |
+| Dossier | [tooling-bugs/MIGRA-017](migration-to-saints/tooling-bugs/MIGRA-017.md) |
+| Commit | `d3322a2` |
+
 ## EINA-mes
 
 **El mes diu per què cada dia no és al 100%, no només quant li falta** · 25 de setembre de 2026
@@ -1351,7 +1389,8 @@ llavors, que la migració no en depengui.
 | `make db-fixed` | Copia la base del lloc a `migration-to-saints/output/cpl-app.fixed.db` (ignorada), hi aplica els dos `.sql` i hi passa els dos detectors |
 | `CPL_DB` | La variable que ja llegia el mock dels tests, ara també a totes les lectures directes de la migració ([`lib/cpl-db-path.js`](migration-to-saints/lib/cpl-db-path.js)): el join, el Comú, la revisió, el panell i els dos detectors |
 | Comprovat | Amb `CPL_DB` a la còpia, el join surt com el del git (`commons-ca/` idèntic), llevat del 9-6-2018 del [CPL-LIT-006](#cpl-lit-006). Amb la base publicada, retindria unes 80 caselles de la Immaculada i l'Advent (el [CPL-LIT-002](#cpl-lit-002)) |
-| Commit | `1dbfce3` |
+| `FROM` | `make db-fixed FROM=../cpl-cloud/calendar/out/cpl-app.db` fa la còpia de la base del procés X, amb el calendari tret de litcal. Per a Barcelona 2017–2026 el join en surt amb els mateixos textos: el calendari que movia caselles era el de saints-app |
+| Commit | `1dbfce3`, `38a2547` (`FROM`) |
 | Reaplicar | **No** — és codi, va al git |
 
 ## EPREX-005
@@ -1384,6 +1423,60 @@ Verificat a l'app real: el 8-IX-2026 la Tèrcia passa de
 
 També s'hi han restaurat els quatre precs que l'exportació del panell havia trepitjat
 ([MIGRA-008](#migra-008)).
+
+## SA-16
+
+**dev portat a la branca catalana, i les I Vespres de demà per precedència** · 29 de setembre de 2026
+
+`catalan-language-support-dev` anava 61 commits enrere de `dev` (textos del 28-9, el refactor de
+les Vespres, la FEAST2 a les hores menors). Quatre conflictes: tres d'imports a les hores menors, i
+les Vespres. `dev` decidia les I Vespres pels camps de l'índex (l'entrada de demà en té i la
+d'avui no); la SA-09, per la precedència. Tots els diumenges porten camps d'I Vespres i cap festa
+no en porta, o sigui que els camps sols no diuen qui cedeix:
+
+| vigília | amb la regla de `dev` | amb la precedència |
+|---|---|---|
+| 7-12-2025, diumenge II d'Advent → Immaculada | II Vespres del diumenge ✓ | les mateixes ✓ |
+| 14-8-2022, diumenge XX → Assumpció | II Vespres del diumenge ✗ | I Vespres de l'Assumpció ✓ |
+| 24-12-2023, diumenge IV d'Advent → Nadal | II Vespres del diumenge ✗ | I Vespres de Nadal ✓ |
+| 14-9-2019, dissabte, Exaltació de la Santa Creu | I Vespres del diumenge ✗ | les de la festa del Senyor ✓ |
+
+Ara hi ha una sola regla, `prayFirstVespersOfTomorrow` (`utils/firstVespers`): les I Vespres de
+demà si en té i si demà supera avui (OGLH 61). `dateStore` en duia una còpia per a la capçalera de
+la pàgina i fa servir la mateixa. El cas del dissabte el va trobar la sonda: la primera versió de
+la fusió deixava cedir sempre un dia sense camps d'I Vespres.
+
+| | |
+|---|---|
+| Commits | `f1cc32d42` (la fusió), `4709adfe4` (la precedència sola, i `dateStore`) |
+| Test | `firstVespers.spec.ts`, 8 de 8; sense la precedència, en fallen 3. La resta de vitest, els mateixos 10 errors d'abans de la fusió |
+| Comprovat a l'app | La sonda llegeix les I Vespres de l'Assumpció el 14-8-2022, les del diumenge el 7-12-2025 i les de Nadal el 24-12-2023 |
+| De rebot | El detector de la [MIGRA-006](#migra-006) comptava amb la disputa del 23-6-2022; ara les dues apps hi resen les Vespres del Baptista, i el test comprova que les nou vigílies escriuen la casella (`f5abb4c`) |
+
+## SA-17
+
+**Reexportació amb el calendari català de litcal i els textos de dev: 493 caselles noves** · 29 de setembre de 2026
+
+Litcal a `catalan-calendars` (la capa catalana refeta, [EINA-calendari](#eina-calendari)),
+saints-app amb la [SA-16](#sa-16), la sonda de la [MIGRA-016](#migra-016) i el join de la
+[MIGRA-017](#migra-017), sobre la base v5 amb els dos `db-fixes` ([EINA-db-fixed](#eina-db-fixed)).
+Finestra 2017–2026, Barcelona.
+
+| | caselles en conflicte | ids resolts |
+|---|---|---|
+| Abans (litcal del 14-9) | 1.886 | 19.375 |
+| Litcal nou | 1.829 | 19.526 |
+| Litcal nou + `dev` + les correccions | **1.677** | **19.724** |
+
+A saints-app: **493 caselles noves** (99 referències i 98 textos de lectures de la missa —les de
+la [MIGRA-015](#migra-015)—, 93 responsoris, 45 antífones…) i **28 de canviades**, repassades
+contra el castellà de cada casella: 8 que ara sí que en són la traducció (les antífones de la
+Immaculada 9395–9397 duien les d'Advent), 5 correccions de la CPL a la publicació 5, 7 només
+d'espais i 8 de les Vespres de després de l'Epifania, que no ho són ni abans ni ara (l'edició
+catalana hi va per data, la castellana per dia de la setmana: per revisar). Completes no canvia
+de contingut i no s'ha tocat.
+
+`make progress`: el **80%** dels camps de la finestra (371.748 de 464.428).
 
 <a id="migra-007"></a>
 ## MIGRA-007

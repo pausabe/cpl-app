@@ -651,6 +651,7 @@ const FINDINGS = [
   {
     id: 'F15',
     verdict: 3,
+    resolved: 'EINA-calendari, el 29 de setembre de 2026: la capa catalana refeta a litcal porta l’id de romcal per als sants universals. Les dates del manifest sense clau passen de 238 a 176',
     days: ['2026-09-04'],
     headline: 'El generador emet duplicats catalans de celebracions que romcal ja té',
     detail:

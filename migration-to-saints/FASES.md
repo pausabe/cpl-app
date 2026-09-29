@@ -41,6 +41,11 @@ la fase 4**, a `saints-app` — o sigui el que veu l'usuari, no el que calcula e
 > missa: cpl-app no modela cap forma alternativa ni breu, o sigui que comptar-los seria reportar
 > com a «falta» caselles que res no pot omplir mai.
 
+**29 de setembre de 2026**, amb la capa catalana refeta a litcal i saints-app a `dev` del 28-9
+([SA-17](../REGISTRE-DE-CANVIS.md#sa-17)): 1.677 caselles en conflicte al join (abans 1.886) i
+19.724 ids resolts (abans 19.375); a saints-app, 493 caselles noves. `make progress`: el 80% dels
+camps de la finestra. Per mesurar-ho ara: `make db-fixed` i `CPL_DB=migration-to-saints/output/cpl-app.fixed.db`.
+
 Reproduir-ho:
 
 ```sh
