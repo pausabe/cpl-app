@@ -1,5 +1,11 @@
 [
   {
+    "table": "cantico_evangelico_antifonas",
+    "id": "37",
+    "kept": "Aquesta verge santa s’ha negat ella mateixa, ha pres la creu, ha imitat el Senyor, espòs de les verges i primícia dels màrtirs.",
+    "common": "Els qui no estimen la seva pròpia vida en aquest món la guarden per a la vida eterna."
+  },
+  {
     "table": "preces_contenido",
     "id": "1968",
     "kept": "Oh Crist, l’únic sant, que ens revelàreu la vostra glòria assumint la nostra naturalesa i duguéreu a compliment l’Aliança antiga,\nus demanem que feu arribar fins a nosaltres la vostra llum.",
