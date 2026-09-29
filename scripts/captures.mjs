@@ -1,10 +1,10 @@
 // The screenshots of the App Store and of Google Play, made from the app itself.
 //
-// Each store wants its own size, and none of them is the size of any phone: Apple asks for the
-// 6.9" iPhone (1320×2868) and, because the app runs on iPad, the 13" iPad (2064×2752); Google
-// Play refuses anything more than twice as tall as it is wide, which rules out the 1080×2400 of
-// a normal Android and leaves 1080×1920. So the shots are taken at the size of the device and
-// then composed onto the canvas of each store, with the sentence on top.
+// Each store wants its own size, and none of them is the size of any phone: the iPhone slot of
+// this listing takes 1284×2778 (the 6.7") and, because the app runs on iPad, the 13" iPad wants
+// 2064×2752; Google Play refuses anything more than twice as tall as it is wide, which rules out
+// the 1080×2400 of a normal Android and leaves 1080×1920. So the shots are taken at the size of
+// the device and then composed onto the canvas of each store, with the sentence on top.
 //
 //     make captures            every size
 //     make captures-ios        the two of Apple
@@ -46,9 +46,12 @@ const SHOTS = [
 const TARGETS = {
   'ios-phone': {
     platform: 'ios',
-    // Any 6.9" iPhone gives 1320×2868. The name has to be one of `xcrun simctl list devices`.
+    // The device only takes the shot: it is scaled onto the canvas, so its size need not match.
+    // The name has to be one of `xcrun simctl list devices`.
     simulator: process.env.CAPTURES_IPHONE ?? 'iPhone 18 Pro Max',
-    canvas: [1320, 2868],
+    // App Store Connect refuses the 1320×2868 of the 6.9" on this listing: its iPhone slot is the
+    // 6.7" one, which takes 1242×2688 or 1284×2778.
+    canvas: [1284, 2778],
   },
   'ios-tablet': {
     platform: 'ios',

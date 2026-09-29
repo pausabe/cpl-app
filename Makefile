@@ -55,7 +55,7 @@ help:
 	@echo "make ui-tests-ios      iOS only"
 	@echo ""
 	@echo "make captures          The screenshots of the two stores, at the size each one asks for"
-	@echo "make captures-ios      The iPhone of 6,9\" and the iPad of 13\" (App Store)"
+	@echo "make captures-ios      The iPhone of 6,7\" and the iPad of 13\" (App Store)"
 	@echo "make captures-android  The 1080x1920 of Google Play"
 
 # --- Development -----------------------------------------------------------------------------
