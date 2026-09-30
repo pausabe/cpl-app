@@ -99,6 +99,8 @@ cap a saints-app no funcionaran fins que s'hi pugi.
 | [D-008](#d-008) | 2026-09-29 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-009](#d-009) | 2026-09-30 | saints-app | **decisió** (un sol cas) | Es regenera: `static-translations/himnos.ca.json` | `a346ca8db` |
 | [D-010](#d-010) | 2026-09-30 | eines + saints-app | **decisió** (17 caselles, una per una) + codi | Es regenera: `decided-cells.json` | `48f9ac4` · saints-app `f07309896` |
+| [D-011](#d-011) | 2026-09-30 | saints-app | **decisió** (un sol cas) | Es regenera: `static-translations/lecturas_*.ca.json` | saints-app `8bbcfd124` |
+| [SA-20](#sa-20) | 2026-09-30 | saints-app | **codi** | No — va al git | `6899c5077` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -1581,6 +1583,23 @@ difunts, i la `9573` s'ha esborrat **a mà** (l'exportació no esborra). 56 dies
 |---|---|
 | Commit | `26767fa24` (saints-app, branca `catalan-language-support-dev`, local) |
 
+<a id="sa-20"></a>
+## SA-20
+
+**Una pregària que un idioma no té, ja no surt com «id … not found»** · 30 de setembre de 2026
+
+Quan a un idioma li falta un text, saints-app en mostrava el marcador tècnic («id 9573 not found in
+preces_contenido»). A la missa ja l'amagava; a les hores, no. En Pau, responsable del programari, el
+30-9: a les pregàries no és cap error (un idioma en pot tenir menys que un altre, com a la
+[MIGRA-020](#migra-020)) i no s'ha de veure; **a la resta de textos sí**: si falla un salm s'ha de
+veure, perquè ens ho reportin.
+
+| | |
+|---|---|
+| Codi | `src/utils/missingText.ts` (nou): `withoutMissingPreces()`, aplicat a les pregàries de Laudes i Vespres, també a la pestanya ferial; `isMissingTextPlaceholder` s'hi trasllada i `TextService` el continua exportant |
+| Test | `tests/unit/utils/missingText.spec.ts`, 3 de 3. La resta de vitest, les mateixes 10 fallades d'abans (findOfficeDeceased, bible-parallels, calendari); `tsc` sense errors |
+| Commit | `6899c5077` (branca `catalan-language-support-dev`, local) |
+
 <a id="migra-007"></a>
 ## MIGRA-007
 
@@ -2024,6 +2043,24 @@ el text del qual s'hi posa, i per què), i el join les escriu.
 | Per què | Els dies que hi discrepen (els Àngels de la Guarda, sant Bernabé, santa Teresa Beneta de la Creu, uns dies de gener) saints-app hi mostra el saltiri i cpl-app hi resa una cosa pròpia; totes dues són lícites (OGLH 232 i 236, i el llibre) |
 | Efecte | El join escriu aquestes 17 i res més; el 30-IX passa a 135 de 135 caselles assolibles |
 | Commits | cpl-app `48f9ac4` · saints-app `f07309896` |
+
+<a id="d-011"></a>
+## D-011
+
+**La missa pròpia de sant Jeroni, amb les lectures de la CPL retallades** · 30 de setembre de 2026
+
+A la pestanya del sant, saints-app mostra la missa pròpia de sant Jeroni: 2 Tm 3,14-17, Sl 118,9-14 i
+Mt 13,47-52. cpl-app no la té, perquè en una memòria resa la del dia, però sí aquelles lectures més
+llargues. Aplicant la [D-010](#d-010) (mana eprex, i si falta el català se li pregunta la font), en Pau
+va triar retallar-les: «tira de l'opció b, no passa res».
+
+| | |
+|---|---|
+| 2 Tm 3,14-17 | El primer paràgraf de 2Tm 3,14–4,2 (diumenge XXIX, C), que acaba al verset 17; el segon comença a 4,1 |
+| Mt 13,47-52 | Mt 13,47-53 (dijous XVII) sense l'última frase, que és el verset 53 |
+| Sl 118,9-14 | El text ja hi era; la cita, la mateixa que té sant Alfons (`lecturas_referencia/297`) |
+| On | `static-translations/lecturas_referencia.ca.json` (599, 600, 601) i `lecturas_texto.ca.json` (750, 752); només les fa servir sant Jeroni |
+| Commit | saints-app `8bbcfd124`; a cpl-app, el mateix commit que aquesta fitxa |
 
 # Canvis a saints-app
 
