@@ -60,6 +60,34 @@
    ]
   },
   {
+   "cell": "lectura_breve_textos/86",
+   "took": {
+    "preview": "Estimats, alegreu-vos de poder compartir els sofriments del Crist: també el dia que es revelarà la seva glòria desbordar",
+    "days": 80
+   },
+   "others": [
+    {
+     "preview": "Alegreu-vos de poder compartir els sofriments del Crist: també el dia que es revelarà la seva glòria, desbordareu d’aleg",
+     "days": 10,
+     "changed": [
+      "estimats"
+     ]
+    },
+    {
+     "preview": "Alegreu-vos de poder compartir els sofriments del Crist: també el dia que es revelarà la seva glòria, des­bordareu d’ale",
+     "days": 10,
+     "changed": [
+      "estimats"
+     ]
+    },
+    {
+     "preview": "Estimats, alegreu-vos de poder compartir els sofriments del Crist: també el dia que es revelarà la seva glòria, desborda",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
    "cell": "lectura_breve_textos/1218",
    "took": {
     "preview": "Germans, interesseu-vos per tot allò que és veritat, respectable, just, net, amable, de bona reputació, virtuós i digne ",
@@ -123,6 +151,104 @@
    ]
   },
   {
+   "cell": "lectura_breve_textos/210",
+   "took": {
+    "preview": "Jo, com un anyell mansoi que duen a immolar, no sabia que tramaven un pla contra mi. Deien: Des­truïm l’arbre en ple vig",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Jo, com un anyell mansoi que duen a immolar, no sabia que tramaven un pla contra mi. Deien: Destruïm l’arbre en ple vigo",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1193",
+   "took": {
+    "preview": "Portem el pes de les nostres prevaricacions i pe­cats que ens van consumint. ¿Com podríem viure? Ho juro per la meva vid",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Portem el pes de les nostres prevaricacions i pecats que ens van consumint. ¿Com podríem viure? Ho juro per la meva vida",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1171",
+   "took": {
+    "preview": "Això diu el Senyor: En el desert he concedit el meu favor al poble escapat de l’espasa: mentre Israel caminava cap al ll",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Això diu el Senyor: En el desert he concedit el meu favor al poble escapat de l’espasa: mentre Israel caminava cap al ll",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/410",
+   "took": {
+    "preview": "Abocaré sobre el llinatge de David i sobre els ha­bitants de Jerusalem un esperit d’afecte i de benvolença. Llavors mira",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Abocaré sobre el llinatge de David i sobre els habitants de Jerusalem un esperit d’afecte i de benvolença. Llavors mirar",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/3699",
+   "took": {
+    "preview": "Déu, per confondre els forts, ha escollit els qui el món té per dèbils i els qui, als ulls del món, són gent de classe b",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Déu, per confondre els forts, ha escollit els qui el món té per dèbils i els qui, als ulls del món, són gent de classe b",
+     "days": 8,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1873",
+   "took": {
+    "preview": "Els qui van a la perdició tenen la doctrina de la creu per un absurd, però nosaltres, cridats a la sal­vació, hi veiem e",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Els qui van a la perdició tenen la doctrina de la creu per un absurd, però nosaltres, cridats a la salvació, hi veiem el",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/139",
+   "took": {
+    "preview": "El Senyor m’ha parlat a cau d’orella i jo no m’he resistit ni m’he fet enrere: he parat l’esquena als qui m’assotaven i ",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "El Senyor m’ha parlat a cau d’orella i jo no m’he resistit ni m’he fet enrere: he parat l’esquena als qui m’assotaven i ",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
    "cell": "lectura_breve_textos/1654",
    "took": {
     "preview": "Déu, el nostre salvador, vol que tots els homes se salvin i arribin al coneixement de la veritat. Hi ha un sol Déu. El m",
@@ -146,6 +272,408 @@
     {
      "preview": "Crist no va fer pas la seva pròpia comoditat, sinó que en ell es va complir aquell salm que diu: «He hagut de rebre els ",
      "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1204",
+   "took": {
+    "preview": "El Crist va ser ofert una sola vegada, quan va prendre damunt seu els pecats de tots. Després tor­narà a revelar-se, no ",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "El Crist va ser ofert una sola vegada, quan va prendre damunt seu els pecats de tots. Després tornarà a revelar-se, no j",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1220",
+   "took": {
+    "preview": "Mantinguem ferma la fe que professem, ja que en Jesús, el Fill de Déu, tenim el gran sacerdot que, tra­vessant els cels,",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Mantinguem ferma la fe que professem, ja que en Jesús, el Fill de Déu, tenim el gran sacerdot que, travessant els cels, ",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/2074",
+   "took": {
+    "preview": "Crist ha vingut com a gran sacerdot del món re­novat que ara comença. Ha entrat una vegada per sempre al lloc sant, pass",
+    "days": 10
+   },
+   "others": [
+    {
+     "preview": "Crist ha vingut com a gran sacerdot del món renovat que ara comença. Ha entrat una vegada per sempre al lloc sant, passa",
+     "days": 9,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/103",
+   "took": {
+    "preview": "Déu ressuscità Jesús el tercer dia, i concedí que s’aparegués, no a tot el poble, sinó a uns testimonis que, des d’abans",
+    "days": 20
+   },
+   "others": [
+    {
+     "preview": "Déu ressuscità Jesús el tercer dia, i concedí que s’aparegués, no a tot el poble, sinó a uns testimonis que, des d’abans",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/178",
+   "took": {
+    "preview": "Jesucrist, després d’oferir-se una sola vegada com a víctima pels pecats, s’ha assegut per sempre a la dreta de Déu, esp",
+    "days": 30
+   },
+   "others": [
+    {
+     "preview": "Jesucrist, després d’oferir-se una sola vegada com a víctima pels pecats, s’ha assegut per sempre a la dreta de Déu, esp",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1534",
+   "took": {
+    "preview": "Crist, com deien ja les Escriptures, morí pels nostres pecats, fou sepultat i al tercer dia, com deien ja les Escripture",
+    "days": 40
+   },
+   "others": [
+    {
+     "preview": "Crist, com deien ja les Escriptures, morí pels nos­tres pecats, fou sepultat i al tercer dia, com deien ja les Escriptur",
+     "days": 20,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1185",
+   "took": {
+    "preview": "Déu, que és ric en l’amor, ens ha estimat tant que ens ha donat la vida juntament amb Crist, a nosal­tres que érem morts",
+    "days": 40
+   },
+   "others": [
+    {
+     "preview": "Déu, que és ric en l’amor, ens ha estimat tant que ens ha donat la vida juntament amb Crist, a nosaltres que érem morts ",
+     "days": 20,
+     "changed": []
+    },
+    {
+     "preview": "Déu, que és ric en l’amor, ens ha estimat tant que ens ha donat la vida juntament amb Crist, a nosaltres que érem morts ",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1182",
+   "took": {
+    "preview": "Pel baptisme hem estat sepultats amb Crist en la mort, perquè, tal com Crist, gràcies al poder admirable del Pare, va se",
+    "days": 40
+   },
+   "others": [
+    {
+     "preview": "Pel baptisme hem estat sepultats amb Crist en la mort, perquè, tal com Crist, gràcies al poder admira­ble del Pare, va s",
+     "days": 20,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1191",
+   "took": {
+    "preview": "Jo, Joan, vaig veure el Fill de l’home que em digué: Jo sóc el primer i el darrer. Sóc el qui viu: Jo, que era mort, ara",
+    "days": 50
+   },
+   "others": [
+    {
+     "preview": "Jo, Joan, vaig veure el Fill de l’home que em di­gué: Jo sóc el primer i el darrer. Sóc el qui viu: Jo, que era mort, ar",
+     "days": 14,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1215",
+   "took": {
+    "preview": "En Crist hi ha realment present tota la plenitud de la divinitat, i vosaltres heu arribat en ell a la ple­nitud; pel bap",
+    "days": 50
+   },
+   "others": [
+    {
+     "preview": "En Crist hi ha realment present tota la plenitud de la divinitat, i vosaltres heu arribat en ell a la plenitud; pel bapt",
+     "days": 4,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1252",
+   "took": {
+    "preview": "Pensa que Jesucrist, del llinatge de David, ha ressuscitat d’entre els morts. Aquesta és la Bona Nova que jo predico. Ai",
+    "days": 44
+   },
+   "others": [
+    {
+     "preview": "Pensa que Jesucrist, del llinatge de David, ha res­suscitat d’entre els morts. Aquesta és la Bona Nova que jo predico. A",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/73",
+   "took": {
+    "preview": "Déu ressuscità Jesús d’entre els morts, i durant molts dies s’aparegué als qui havien pujat amb ell de Galilea a Jerusal",
+    "days": 18
+   },
+   "others": [
+    {
+     "preview": "Déu ressuscità Jesús d’entre els morts, i durant molts dies s’aparegué als qui havien pujat amb ell de Galilea a Jerusal",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1860",
+   "took": {
+    "preview": "Acosteu-vos al Senyor, que és la pedra viva. Els homes l’havien rebutjada, però als ulls de Déu és escollida, de gran va",
+    "days": 11
+   },
+   "others": [
+    {
+     "preview": "Acosteu-vos al Senyor, que és la pedra viva. Els homes l’havien rebutjada, però als ulls de Déu és es­collida, de gran v",
+     "days": 10,
+     "changed": []
+    },
+    {
+     "preview": "Acosteu-vos al Senyor, que és la pedra viva. Els homes l’havien rebutjada, però als ulls de Déu és «escollida, de gran v",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1203",
+   "took": {
+    "preview": "Ell és la pedra que vosaltres, els constructors, havíeu rebutjat, i ara corona l’edifici. La salvació no es troba en nin",
+    "days": 43
+   },
+   "others": [
+    {
+     "preview": "Ell és la pedra que vosaltres, els constructors, ha­víeu rebutjat, i ara corona l’edifici. La salvació no es troba en ni",
+     "days": 16,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1245",
+   "took": {
+    "preview": "El baptisme que ara us salva no consisteix a deixar net el cos, sinó a demanar a Déu una consciència bona gràcies a la r",
+    "days": 49
+   },
+   "others": [
+    {
+     "preview": "El baptisme que ara us salva no consisteix a dei­xar net el cos, sinó a demanar a Déu una consciència bona gràcies a la ",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/83",
+   "took": {
+    "preview": "Si hem mort amb Crist, creiem que també viurem amb ell. I sabem que Crist, un cop ressuscitat d’entre els morts, ja no m",
+    "days": 16
+   },
+   "others": [
+    {
+     "preview": "Si hem mort amb Crist, creiem que també viurem amb ell. I sabem que Crist, un cop ressuscitat d’entre els morts, ja no m",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/3372",
+   "took": {
+    "preview": "Jesús, que viu per sempre, no traspassa a ningú les funcions sacerdotals. Per això té el poder de salvar definitivament ",
+    "days": 11
+   },
+   "others": [
+    {
+     "preview": "Jesús, que viu per sempre, no traspassa a ningú les funcions sacerdotals. Per això té el poder de sal­var definitivament",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1175",
+   "took": {
+    "preview": "Nosaltres hem cregut que Déu ha ressuscitat d’entre els morts Jesús, el nostre Senyor, entregat a la mort en pena dels n",
+    "days": 47
+   },
+   "others": [
+    {
+     "preview": "Nosaltres hem cregut que Déu ha ressuscitat d’en­tre els morts Jesús, el nostre Senyor, entregat a la mort en pena dels ",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1266",
+   "took": {
+    "preview": "Que es renovi el vostre esperit i tota la vostra manera de pensar! Revestiu-vos d’aquesta nova naturalesa que Déu ha cre",
+    "days": 47
+   },
+   "others": [
+    {
+     "preview": "Que es renovi el vostre esperit i tota la vostra ma­nera de pensar! Revestiu-vos d’aquesta nova natura­lesa que Déu ha c",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/171",
+   "took": {
+    "preview": "Si Crist està en vosaltres, encara que el cos hagi de morir per culpa del pecat, com que sou justos, l’Esperit és la vos",
+    "days": 15
+   },
+   "others": [
+    {
+     "preview": "Si Crist està en vosaltres, encara que el cos hagi de morir per culpa del pecat, com que sou justos, l’Esperit és la vos",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1313",
+   "took": {
+    "preview": "Doneu gràcies al Pare, que us ha fet dignes de tenir part en l’heretat del poble sant, en el Regne de la llum. Ell ens a",
+    "days": 48
+   },
+   "others": [
+    {
+     "preview": "Doneu gràcies al Pare, que us ha fet dignes de te­nir part en l’heretat del poble sant, en el Regne de la llum. Ell ens ",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/87",
+   "took": {
+    "preview": "El Déu dels nostres pares ressuscità Jesús, que vosaltres havíeu mort penjant-lo en un patíbul. La dreta de Déu l’ha ena",
+    "days": 28
+   },
+   "others": [
+    {
+     "preview": "El Déu dels nostres pares ressuscità Jesús, que vosaltres havíeu mort penjant-lo en un patíbul. La dreta de Déu l’ha ena",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/3376",
+   "took": {
+    "preview": "El Crist, tot i que era el Fill de Déu, aprengué en els sofriments què és obeir, i un cop consagrat sacerdot es convertí",
+    "days": 11
+   },
+   "others": [
+    {
+     "preview": "El Crist, tot i que era el Fill de Déu, aprengué en els sofriments què és obeir, i un cop consagrat sacer­dot es convert",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1644",
+   "took": {
+    "preview": "Aquest Jesús, Déu l’ha ressuscitat. Tots nosaltres en som testimonis. Per tant, tot el poble d’Israel ha de saber sense ",
+    "days": 50
+   },
+   "others": [
+    {
+     "preview": "Aquest Jesús, Déu l’ha ressuscitat. Tots nosaltres en som testimonis. Per tant, tot el poble d’Israel ha de saber sense ",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1166",
+   "took": {
+    "preview": "Netegeu-vos bé del llevat que éreu abans perquè sigueu una pasta nova. Vosaltres heu de ser com pans sense fermentar, ar",
+    "days": 50
+   },
+   "others": [
+    {
+     "preview": "Netegeu-vos bé del llevat que éreu abans perquè sigueu una pasta nova. Vosaltres heu de ser com pans sense fermentar, ar",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1279",
+   "took": {
+    "preview": "Si vam ser reconciliats amb Déu al preu de la mort del seu Fill quan érem encara enemics, molt més ara que ja estem reco",
+    "days": 51
+   },
+   "others": [
+    {
+     "preview": "Si vam ser reconciliats amb Déu al preu de la mort del seu Fill quan érem encara enemics, molt més ara que ja estem reco",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1201",
+   "took": {
+    "preview": "Crist ha ressuscitat d’entre els morts, el primer d’entre tots els qui han mort. Ja que la mort vingué per un home, tamb",
+    "days": 51
+   },
+   "others": [
+    {
+     "preview": "Crist ha ressuscitat d’entre els morts, el primer d’entre tots els qui han mort. Ja que la mort vingué per un home, tamb",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "lectura_breve_textos/1293",
+   "took": {
+    "preview": "L’amor que el Crist ens té ens obliga: hem de reconèixer que un ha mort per tots. I és que tots han mort, però ell ha mo",
+    "days": 51
+   },
+   "others": [
+    {
+     "preview": "L’amor que el Crist ens té ens obliga: hem de re­conèixer que un ha mort per tots. I és que tots han mort, però ell ha m",
+     "days": 10,
      "changed": []
     }
    ]
@@ -344,6 +872,76 @@
    ]
   },
   {
+   "cell": "preces_intro/37",
+   "took": {
+    "preview": "Adorem Crist, autor de la vida, que Déu ha ressuscitat d’entre els morts i que ens ressuscitarà amb el seu poder, i digu",
+    "days": 20
+   },
+   "others": [
+    {
+     "preview": "Adorem Crist, autor de la vida, que Déu ha ressusci­tat d’entre els morts i que ens ressuscitarà amb el seu poder, i dig",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "preces_intro/1327",
+   "took": {
+    "preview": "L’Esperit Sant vivificà i constituí font de vida la hu­manitat de Crist. Invoquem, doncs, amb alegria Crist ressuscitat,",
+    "days": 15
+   },
+   "others": [
+    {
+     "preview": "L’Esperit Sant vivificà i constituí font de vida la humanitat de Crist. Invoquem, doncs, amb alegria Crist ressuscitat, ",
+     "days": 5,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "preces_intro/244",
+   "took": {
+    "preview": "Alegrem-nos amb Crist, que reconstruí el temple destruït del seu cos, i supliquem-li:",
+    "days": 18
+   },
+   "others": [
+    {
+     "preview": "Alegrem-nos amb Crist, que reconstruí el temple des­truït del seu cos, i supliquem-li:",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "preces_intro/21",
+   "took": {
+    "preview": "Adrecem la nostra oració a Déu Pare, que ens ha donat la vida nova per la resurrecció de Jesucrist, i diguem-li:",
+    "days": 18
+   },
+   "others": [
+    {
+     "preview": "Adrecem la nostra oració a Déu Pare, que ens ha do­nat la vida nova per la resurrecció de Jesucrist, i diguem-li:",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "preces_intro/1117",
+   "took": {
+    "preview": "Enaltim Crist, que és el camí, la veritat i la vida; in­voquem-lo així:",
+    "days": 17
+   },
+   "others": [
+    {
+     "preview": "Enaltim Crist, que és el camí, la veritat i la vida; invoquem-lo així:",
+     "days": 4,
+     "changed": []
+    }
+   ]
+  },
+  {
    "cell": "preces_respuesta/197",
    "took": {
     "preview": "Rei etern de la glòria, escolteu-nos.",
@@ -389,6 +987,20 @@
      "changed": [
       "la"
      ]
+    }
+   ]
+  },
+  {
+   "cell": "preces_respuesta/244",
+   "took": {
+    "preview": "Senyor, concediu-nos els fruits de la vostra resurrecció.",
+    "days": 18
+   },
+   "others": [
+    {
+     "preview": "Senyor, concediu-nos els fruits de la vostra re­surrecció.",
+     "days": 10,
+     "changed": []
     }
    ]
   },
@@ -491,6 +1103,34 @@
    ]
   },
   {
+   "cell": "oraciones_finales/322",
+   "took": {
+    "preview": "Déu totpoderós, feu que, els qui defallim per la nostra feblesa, trobem la força en la Passió del vos­tre Fill unigènit.",
+    "days": 20
+   },
+   "others": [
+    {
+     "preview": "Déu totpoderós, feu que, els qui defallim per la nostra feblesa, trobem la força en la Passió del vostre Fill unigènit. ",
+     "days": 10,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "oraciones_finales/217",
+   "took": {
+    "preview": "Que vingui, Senyor, sobre nosaltres la força de l’Esperit Sant, perquè complim sempre fidelment la vostra voluntat i la ",
+    "days": 14
+   },
+   "others": [
+    {
+     "preview": "Que vingui, Senyor, sobre nosaltres la força de l’Esperit Sant, perquè complim sempre fidelment la vostra voluntat i la ",
+     "days": 2,
+     "changed": []
+    }
+   ]
+  },
+  {
    "cell": "oraciones_finales/161",
    "took": {
     "preview": "Déu totpoderós, concediu-nos de celebrar amb alegria la festa de l’apòstol sant Tomàs; feu que no ens manqui mai la seva",
@@ -500,6 +1140,20 @@
     {
      "preview": "Déu totpoderós, concediu-nos de celebrar amb alegria la festa de l’apòstol sant Tomàs. Feu que no ens manqui mai la seva",
      "days": 8,
+     "changed": []
+    }
+   ]
+  },
+  {
+   "cell": "oraciones_finales/277",
+   "took": {
+    "preview": "Oh Déu, que sou la vida dels fidels, la glòria dels humils i la felicitat dels justos; escolteu les nostres pregàries i ",
+    "days": 8
+   },
+   "others": [
+    {
+     "preview": "Oh Déu, que sou la vida dels fidels, la glòria dels humils i la felicitat dels justos; escolteu les nostres pregàries i ",
+     "days": 1,
      "changed": []
     }
    ]

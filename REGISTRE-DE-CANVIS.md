@@ -108,6 +108,8 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [MIGRA-021](#migra-021) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
 | [SA-22](#sa-22) | 2026-09-30 | saints-app | contingut | Es regenera, **però la 12003 cal esborrar-la a mà** si es torna a partir d'una còpia vella | `a38ce6afa` |
 | [D-013](#d-013) | 2026-09-30 | eines + saints-app | **decisió** (13 caselles, una per una) + codi | Es regenera: `copied-cells.json` | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
+| [MIGRA-022](#migra-022) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
+| [SA-23](#sa-23) | 2026-09-30 | saints-app | contingut | Es regenera | `73d93983e` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2201,6 +2203,34 @@ català: el salteri de la CPL, que té aquests mateixos salms en altres caselles
 | Test | `copied-cells.test.js`: l'origen té català, i la cita i el text són el salm que diu el castellà de la casella |
 | Efecte | Tèrcia i Nona d'aquests 30 dies tenen tots els salms en català. Divergeixen de cpl-app, com és d'esperar: F31 |
 | Commit | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
+
+<a id="migra-022"></a>
+## MIGRA-022
+
+**Un guionet invisible dins d'una paraula feia de dues còpies d'un mateix text dos textos** · 30 de setembre de 2026
+
+Algunes còpies de la base de la CPL porten el guionet de partició invisible (U+00AD) enmig de paraules
+(«em di­gué», «m'ha pre­servat»), sobretot a les lectures breus de l'octava de Pasqua. La comparació de la
+[D-012](#d-012) el prenia per un separador: «di» i «gué» eren dues paraules, i dues còpies idèntiques
+quedaven retingudes com si fossin textos diferents.
+
+| | |
+|---|---|
+| Correcció | `looseWords()` a `lib/held-resolution.js` treu el guionet invisible i els espais d'amplada zero abans de separar paraules |
+| Test | `held-resolution.test.js`, 22 de 22 |
+| Efecte | 45 caselles més s'escriuen com a còpies d'un mateix text (195 → 240) |
+
+<a id="sa-23"></a>
+## SA-23
+
+**Les còpies que el guionet invisible retenia, a saints-app** · 30 de setembre de 2026
+
+Reexportació després de la [MIGRA-022](#migra-022): 44 claus noves i 1 canviada. La migració passa a
+424.584 de 464.428 textos-dia.
+
+| | |
+|---|---|
+| Commit | `73d93983e` (saints-app, branca `catalan-language-support-dev`) |
 
 # Canvis a saints-app
 

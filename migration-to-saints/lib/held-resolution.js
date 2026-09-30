@@ -35,9 +35,12 @@ const NEVER_A_DETAIL = new Set(['alleluia', 'rrr', 'vvv']);
 // Case, accents, punctuation, the psalm-pointing marks and line breaks all go: none of them
 // changes which text it is. The apostrophe splits ("d’aquests" -> "d", "aquests") so the
 // straight and curly spellings meet. The responsory marks stay: «℟. I féu la meva vida
-// immaculada» and «℣. I féu…» are one line said by two different voices.
+// immaculada» and «℣. I féu…» are one line said by two different voices. The invisible soft
+// hyphen goes before anything else: cpl-app's copies carry it inside words («di­gué»,
+// «pre­servat»), and splitting there made two copies of one short reading read as different words.
 function looseWords(value) {
   return String(value == null ? '' : value)
+    .replace(/[\u00ad\u200b-\u200d\ufeff]/g, '')
     .replace(/℟/g, ' rrr ')
     .replace(/℣/g, ' vvv ')
     .normalize('NFD')

@@ -18,6 +18,14 @@ describe('the same text, copied with a detail of difference', () => {
     expect(lightVariant('ens ha beneït en Crist.\n\nPer amor ens destinà', 'ens ha beneït en Crist.\nPer amor ens destinà', 'salmos_textos')).toBeTruthy();
   });
 
+  test('an invisible soft hyphen inside a word is the same word', () => {
+    expect(lightVariant(
+      'Jo, Joan, vaig veure el Fill de l’home que em digué: Jo sóc el primer i el darrer.',
+      'Jo, Joan, vaig veure el Fill de l’home que em di\u00adgué: Jo sóc el primer i el darrer.',
+      'lectura_breve_textos',
+    )).toEqual({ edits: 0, changed: [] });
+  });
+
   test('one word in fifty may differ in prose, and no more', () => {
     const base = Array.from({ length: 100 }, (_, i) => `mot${i}`);
     const two = [...base];
