@@ -1172,6 +1172,25 @@ const FINDINGS = [
       promptable: true,
     },
   },
+  {
+    id: 'F30',
+    verdict: 4,
+    days: ['2026-10-02', '2026-06-11'],
+    hours: ['Tercia', 'Sexta', 'Nona'],
+    headline: 'Els Àngels de la Guarda i sant Bernabé: lectura pròpia a les hores menors a cpl-app, la del saltiri a saints-app',
+    detail:
+      'cpl-app hi resa la lectura breu i el versicle propis a Tèrcia, Sexta i Nona (els Àngels: Fets 5,17-20, '
+      + 'Fets 12,7, Fets 10,3-5; sant Bernabé: Rm 1,16-17, 1 Te 2,2b-4a, 2 Tm 1,8b-9), com la Liturgia Horarum. '
+      + 'eprex hi posa els del saltiri del dia (<code>__MEMORY_FERIAL</code>, tot a -1).',
+    why:
+      'Les dues coses són lícites: l’OGLH 236 diu que a les hores menors d’una memòria tot és de la fèria, i el '
+      + 'llibre hi fa l’excepció. Quan la norma permet les dues, mana eprex (D-010). No és error de ningú.',
+    proof: [
+      ['Llatí, data exacta', 'Liturgia Horarum, 2-X-2026 Ad Tertiam: Lectio brevis (Act 5, 17-20)', 'https://www.societaslaudis.org/fr/2026-10-02/hebdomada-xxvi-per-annum/ss-angelorum-custodum-memoria/liturgia-horarum/ad-tertiam/'],
+      ['eprex', 'all_tercia/sexta/nona.json: holy_guardian_angels__MEMORY_FERIAL i barnabas_apostle__MEMORY_FERIAL, tot a -1', null],
+    ],
+    fix: null,
+  },
 ];
 
 const VERDICTS = {
@@ -1213,6 +1232,10 @@ const CLAIMS = {
     && /^(primer|segundo|tercer)_salmo_(cita|texto)$/.test(row.key),
   F24: (date, row) => date === '2026-09-14' && row.hour === 'Mass'
     && String(row.key).startsWith('FIRSTLECTURE'),
+  // The short reading and its responsory at the little hours, the days eprex keeps them ferial.
+  F30: (date, row) => ['Tercia', 'Sexta', 'Nona'].includes(row.hour)
+    && /^(lectura_biblica|lectura_biblica_cita|responsorios)$/.test(row.key)
+    && ['diff', 'diffRef'].includes(row.match),
   // Only the rows the comparison already flags: the prose ones were never counted.
   F26: (date, row) => row.hour === 'Mass' && String(row.key).startsWith('CELEBRATION_')
     && ['diff', 'diffRef'].includes(row.match),

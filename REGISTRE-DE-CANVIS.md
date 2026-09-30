@@ -62,7 +62,7 @@ cap a saints-app no funcionaran fins que s'hi pugi.
 | [D-005](#d-005) | 2026-09-07 | — | **decisió oberta** | — decideix en Pau | — |
 | [EINA-missa](#eina-missa) | 2026-09-08 | eines | codi | No — va al git | — |
 | [SA-14](#sa-14) | 2026-09-08 | saints-app | contingut | Es regenera | — |
-| [D-006](#d-006) | 2026-09-08 | — | **decisió oberta** | — decideix en Pau | — |
+| [D-006](#d-006) | 2026-09-08 | saints-app | **decisió en part** (4 de 14, el 30-9) | Es regenera: `static-translations/lecturas_referencia.ca.json` | saints-app `d66683b08` |
 | [MIGRA-007](#migra-007) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-008](#migra-008) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-009](#migra-009) | 2026-09-08 | eines | codi | No — va al git | — |
@@ -1716,7 +1716,7 @@ Tres forats coneguts, tots amb causa:
 | Vigília Pasqual | ~0% | [EPREX-004](#eprex-004): l'app no llegeix cap casella el diumenge de Pasqua |
 
 <a id="d-006"></a>
-## D-006 — **OBERTA**
+## D-006 — **EN PART** (4 de 14)
 
 **La tornada de l'aclamació: 14 línies que cpl-app no té** · 8 de setembre de 2026
 
@@ -1731,6 +1731,14 @@ redacció catalana, i ja va costar un `CPL-LIT` retirat. Hi ha una taula per omp
 un cop plena va a `static-translations/lecturas_referencia.ca.json` i l'exportació la recull sola.
 
 Dossier: [decisions/D-006](migration-to-saints/decisions/D-006-la-tornada-de-l-aclamacio.md).
+
+**30-9-2026, en Pau (la seva opció b):** les quatre caselles que en castellà diuen «Aleluya, aleluya,
+aleluya» porten «Al·leluia, al·leluia, al·leluia», la fórmula que la CPL ja fa servir com a antífona
+de les hores menors del temps de Pasqua: `6000` (tot l'any fora de Quaresma), `100`, `929` (24-XII) i
+`110` (Nadal). Les altres deu —les fórmules de Quaresma, les seqüències i la `6006` de l'Anunciació,
+que barreja Quaresma i Pasqua— esperen el llibre. La revisió ja no compta aquesta casella com a
+divergència: cpl-app no la té per disseny. Commit saints-app `d66683b08`; a cpl-app, el mateix commit que
+aquesta nota.
 
 <a id="eprex-004"></a>
 ## EPREX-004

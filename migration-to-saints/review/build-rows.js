@@ -120,9 +120,15 @@ function main() {
         // Everything else counts, and it is where the real findings are: on a feast cpl-app
         // says ONE antiphon over the three psalms of an intermediate Hour, so antiphons 2 and
         // 3 come back empty — while eprex prints two antiphons nobody prays that day.
+        //
+        // The other is the refrain of the acclamation before the Gospel (`ACCLAMATION_ref`):
+        // cpl-app keeps no text for it — its screen prints a fixed red «Al·leluia.» label —
+        // and the Catalan in saints-app comes from Pau's decision (D-006), not from cpl-app.
         const cplEmpty = cpl == null || String(cpl).trim() === '';
-        const expectedNoSource = cplEmpty && r.key.startsWith('CELEBRATION_')
-          && !Object.keys((cplDay.hours && cplDay.hours[h.hour]) || {}).some((k) => k.startsWith('CELEBRATION_'));
+        const expectedNoSource = cplEmpty && (
+          (r.key.startsWith('CELEBRATION_')
+            && !Object.keys((cplDay.hours && cplDay.hours[h.hour]) || {}).some((k) => k.startsWith('CELEBRATION_')))
+          || /(^|_)ACCLAMATION_ref$/.test(r.key));
 
         let match = null;
         if (channel === 'C1') {

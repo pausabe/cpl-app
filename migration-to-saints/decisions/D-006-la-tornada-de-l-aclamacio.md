@@ -1,6 +1,6 @@
 # D-006 — La tornada de l'aclamació abans de l'evangeli: 14 línies que cpl-app no té
 
-**Estat:** obert. **Decideix:** en Pau, amb el Missal a la mà. **Bloqueja:** només aquest camp.
+**Estat:** en part (4 de 14, el 30-9-2026). **Decideix:** en Pau, amb el Missal a la mà. **Bloqueja:** només aquest camp.
 **Trobat:** 8 de setembre de 2026, fent la fase 4 de [FASES.md](../FASES.md).
 
 ## El fet
@@ -49,19 +49,19 @@ pot dir la seqüència…»), que segueixen la redacció del Missal català igua
 
 | id | català |
 |---|---|
-| 6000 | |
+| 6000 | `_Al·leluia, al·leluia, al·leluia._` (30-9) |
 | 6001 | |
-| 100 | |
+| 100 | `_Al·leluia, al·leluia, al·leluia._` (30-9) |
 | 6004 | |
 | 152 | |
 | 6002 | |
 | 6010 | |
 | 1670 | |
 | 6005 | |
-| 929 | |
+| 929 | `_Al·leluia, al·leluia, al·leluia._` (30-9) |
 | 6006 | |
 | 6003 | |
-| 110 | |
+| 110 | `_Al·leluia, al·leluia, al·leluia._` (30-9) |
 | 6007 | |
 
 Un cop omplerta, va a `static-translations/lecturas_referencia.ca.json` amb la forma
@@ -73,3 +73,9 @@ servir l'`oracion` de Completes i la invitació al Parenostre.
 Les catorze caselles **queden buides**, i el verset de sota surt igualment. A la pantalla es
 veurà el verset sense el «Al·leluia» de davant. És l'única cosa que falta de la missa un cop
 feta la fase 4.
+
+## 30 de setembre de 2026
+
+En Pau va triar, per a les quatre que en castellà diuen «Aleluya, aleluya, aleluya», la fórmula que
+la CPL ja fa servir com a antífona de les hores menors del temps de Pasqua: «Al·leluia, al·leluia,
+al·leluia». Les altres deu esperen el llibre.
