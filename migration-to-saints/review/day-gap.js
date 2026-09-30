@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { forDay, claimFor, VERDICTS, FINDINGS, isDivergent, isOnlyApp } = require('./findings');
+const { DECIDED_EMPTY } = require('../lib/preces-alignment');
 
 const RUN = process.env.RUN_DIR || path.join(__dirname, 'run');
 const data = JSON.parse(fs.readFileSync(path.join(RUN, 'review-rows.json'), 'utf8'));
@@ -95,7 +96,11 @@ function day(d) {
       + (im.days ? ` · triar la majoritària trenca ${im.breakDays} de ${im.days} dies` : ''));
     say(`      ${rows.map((r) => `${HOUR_LABELS[r.hour]} ${r.label} ${cell(r)}`).join(' · ')}`);
   }
-  const missing = d.rows.filter((r) => r.status === 'missing' || r.status === 'notInAppYet');
+  // A cell left without Catalan by one of Pau's decisions is not a gap: one line, not a row each.
+  const decidedEmpty = d.rows.filter((r) => DECIDED_EMPTY.has(`${r.table}/${r.id}`));
+  if (decidedEmpty.length) say(`  buides per decisió — ${decidedEmpty.length} (${decidedEmpty.map(cell).join(' · ')})`);
+  const missing = d.rows.filter((r) => (r.status === 'missing' || r.status === 'notInAppYet')
+    && !DECIDED_EMPTY.has(`${r.table}/${r.id}`));
   for (const r of missing) {
     say(`  ${r.status === 'missing' ? 'sense font' : 'encara no a l’app'} — ${HOUR_LABELS[r.hour]} ${r.label} ${cell(r)} · cpl «${clip(r.cplClean, 50)}» · es «${clip(r.esClean, 50)}»`);
   }

@@ -1068,6 +1068,7 @@ const FINDINGS = [
     verdict: 3,
     days: ['2026-09-30'],
     hours: ['Vespers'],
+    resolved: 'MIGRA-020, decisió d’en Pau (opció a), 30 de setembre de 2026',
     headline: 'Les pregàries de Vespres del dimecres II: el llatí en té cinc amb una alternativa, el castellà en fa sis, i el join hi posa les cinc de la CPL per ordre',
     detail:
       'cpl-app en resa cinc. La quarta del llatí té una alternativa marcada «vel»: «Ærem nobis… largire '
@@ -1090,9 +1091,9 @@ const FINDINGS = [
       ['Volum imprès', 'Si hi ha un «o bé» després de la quarta pregària, el text català de l’alternativa és de la CPL', null],
     ],
     fix: {
-      where: 'decisió d’en Pau, i després migration-to-saints/join-content.test.js (preces_contenido)',
-      summary: 'La dels difunts, a 9574. A 9573 (l’alternativa), o bé el text català de la CPL si el volum el '
-        + 'dona, o bé res, i llavors cal que saints-app amagui la casella buida en lloc de mostrar «id not found».',
+      where: 'migration-to-saints/lib/preces-alignment.js · join-content.test.js · day-compare.js',
+      summary: 'Corregit: la dels difunts va a 9574 i la 9573 (l’alternativa) queda sense català, com va '
+        + 'decidir en Pau. Cal que saints-app amagui la casella buida en lloc de mostrar «id not found».',
       note: 'No és cap CPL-LIT. liturgiadeleshores.cat no és cap font oficial: l’edició oficial és la CPL.',
       promptable: false,
     },

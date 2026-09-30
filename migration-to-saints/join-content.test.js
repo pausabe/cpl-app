@@ -32,6 +32,7 @@ const memorialFerial = require('./lib/memorial-ferial');
 // lib/common-office.js and decisions/D-001-el-comu-a-les-memories.md.
 const commonOffice = require('./lib/common-office');
 const { fingerprint, readingMatch } = require('./lib/citation-key');
+const { alignPreces } = require('./lib/preces-alignment');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
 const {
@@ -545,8 +546,10 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         observe('preces_intro', entry.preces_intro, prayers.intro, tag);
         observe('preces_respuesta', entry.preces_respuesta, prayers.respuesta, tag);
         if (Array.isArray(entry.preces_contenido)) {
+          // By position, except the lists decided one by one (lib/preces-alignment.js).
+          const aligned = alignPreces(entry.preces_contenido, prayers.contenido);
           entry.preces_contenido.forEach((id, i) => {
-            const item = prayers.contenido[i];
+            const item = aligned[i];
             if (item) observe('preces_contenido', id, `${item.peticion}\n${item.cierre}`, tag);
           });
         }

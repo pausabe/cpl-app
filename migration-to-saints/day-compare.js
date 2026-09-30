@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const dayCheck = require('./day-check');
+const { alignPreces } = require('./lib/preces-alignment');
 
 const { DAY_TEXTS_DIR, LOCAL_COMMONS_DIR } = dayCheck.PATHS;
 const readJsonSafe = dayCheck.readJsonSafe;
@@ -114,7 +115,12 @@ function compareHour(hour, appHour, cplFields) {
     const key = def.key;
     const appCells = appByKey.get(key) || [];
     const rawCpl = cplFields ? cplFields[key] : undefined;
-    const cplValues = rawCpl === undefined || rawCpl === null ? [] : Array.isArray(rawCpl) ? rawCpl : [rawCpl];
+    let cplValues = rawCpl === undefined || rawCpl === null ? [] : Array.isArray(rawCpl) ? rawCpl : [rawCpl];
+    // The same layout the join writes with, or the review would call its own decision a
+    // divergence (lib/preces-alignment.js).
+    if (key === 'preces_contenido' && appCells.length) {
+      cplValues = alignPreces(appCells.map((c) => c.id), cplValues).map((v) => (v === undefined ? null : v));
+    }
     const count = Math.max(appCells.length, cplValues.length);
     for (let i = 0; i < count; i++) {
       rows.push(
