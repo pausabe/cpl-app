@@ -44,6 +44,11 @@ el seu `CLAIMS`), perquè la passada següent ja la conegui i no la torni a marc
 | **4** | no és error | només s'informa |
 | **5** | no ho sé | només s'informa, amb el que falta per decidir |
 
+**Quan la norma permet les dues coses, no hi ha error: mana eprex.** Si cpl-app en fa una i eprex
+l'altra, la casella porta el text català del que mostra eprex; i si aquest text no el tenim, es
+pregunta a en Pau d'on es treu — no el triïs tu (D-010). Les caselles retingudes que se'n deriven es
+decideixen una per una a `migration-to-saints/decided-cells.json`, mai amb una regla per a moltes.
+
 **El llistó per dir «error»**: fonts externes en 2-3 idiomes — però només per a la
 **identitat** litúrgica del camp, no per a la seva redacció catalana; per a això, vegeu el
 parany 7. Sense proves el veredicte és **5**, mai una conjectura. Val també la prova interna: si eprex ja té la casella bona per a

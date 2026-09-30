@@ -98,6 +98,7 @@ cap a saints-app no funcionaran fins que s'hi pugi.
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-008](#d-008) | 2026-09-29 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-009](#d-009) | 2026-09-30 | saints-app | **decisió** (un sol cas) | Es regenera: `static-translations/himnos.ca.json` | `a346ca8db` |
+| [D-010](#d-010) | 2026-09-30 | eines + saints-app | **decisió** (17 caselles, una per una) + codi | Es regenera: `decided-cells.json` | `48f9ac4` · saints-app `f07309896` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2003,6 +2004,26 @@ doctors de l'edició catalana (`OficisComuns` 07aO), «Oh sol etern, que amb vos
 | On | `migration-to-saints/static-translations/himnos.ca.json`, clau `959` |
 | Commit | saints-app `a346ca8db`; a cpl-app, el mateix commit que aquesta fitxa |
 | Queden | 44 sants de memòria més amb la mateixa situació a l'Ofici; cadascun es decidirà pel seu compte |
+
+<a id="d-010"></a>
+## D-010
+
+**Quan la norma permet les dues coses, mana eprex; i les primeres 17 caselles decidides així** · 30 de setembre de 2026
+
+En Pau, el 30-9: si la norma permet fer una cosa o una altra i cpl-app en fa una i eprex l'altra,
+**no hi ha cap problema: mana eprex**. I si al català li falta el text del que mostra eprex, se li
+pregunta d'on es treu; no ho tria ningú més.
+
+Les caselles retingudes no es podien alliberar: la cua de revisió desava decisions que cap pas no
+llegia. Ara `migration-to-saints/decided-cells.json` les llista **una per una** (`taula/id` → el dia
+el text del qual s'hi posa, i per què), i el join les escriu.
+
+| | |
+|---|---|
+| Les primeres 17 | Les retingudes del 30-IX: el saltiri del dimecres II a Tèrcia, Sexta i Nona (lectura, cita i responsori), l'antífona i els himnes de les hores menors, i el càntic de Col 1 de les Vespres del dimecres |
+| Per què | Els dies que hi discrepen (els Àngels de la Guarda, sant Bernabé, santa Teresa Beneta de la Creu, uns dies de gener) saints-app hi mostra el saltiri i cpl-app hi resa una cosa pròpia; totes dues són lícites (OGLH 232 i 236, i el llibre) |
+| Efecte | El join escriu aquestes 17 i res més; el 30-IX passa a 135 de 135 caselles assolibles |
+| Commits | cpl-app `48f9ac4` · saints-app `f07309896` |
 
 # Canvis a saints-app
 
