@@ -91,6 +91,8 @@ cap a saints-app no funcionaran fins que s'hi pugi.
 | [MIGRA-018](#migra-018) | 2026-09-30 | eines | codi | No — va al git | `15b1375` |
 | [MIGRA-019](#migra-019) | 2026-09-30 | eines | codi | No — va al git | `7fdbea0` |
 | [SA-18](#sa-18) | 2026-09-30 | saints-app | contingut | Es regenera, **però les 17 caselles esborrades cal esborrar-les a mà** si es torna a partir d'una còpia vella | `56fbbcd54` |
+| [MIGRA-020](#migra-020) | 2026-09-30 | eines | codi (**decisió d'en Pau**) | No — va al git | `7ded8b1` |
+| [SA-19](#sa-19) | 2026-09-30 | saints-app | contingut | Es regenera, **però la 9573 cal esborrar-la a mà** si es torna a partir d'una còpia vella | `26767fa24` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -1543,6 +1545,39 @@ Reexportació després de la [MIGRA-018](#migra-018). L'exportació només afege
 | Noves | `lecturas_referencia` 297, 988, 1531, 1559, 1640, 1845, 4342 · `lecturas_texto` 88, 368, 473, 1225, 1918, 2057, 2302, 6173, totes iguals al castellà |
 | No tocat | Completes: l'exportació en reescriu els set fitxers, però només hi canvia l'ordre de les claus; desfet, com a la [SA-17](#sa-17) |
 | Commit | `56fbbcd54` (saints-app, branca `catalan-language-support-dev`, local) |
+
+<a id="migra-020"></a>
+## MIGRA-020
+
+**Les pregàries de Vespres del dimecres II anaven una casella corregudes** · 30 de setembre de 2026
+
+Al llatí, el dimecres II a Vespres hi ha **cinc** pregàries, i la quarta té dues opcions («vel»): el bon
+temps per a les collites, **o bé** que el Senyor ens alliberi de tot perill i beneeixi les nostres cases.
+La CPL en dona cinc, amb la primera opció: **és correcte**. El castellà imprimeix les dues opcions
+seguides i l'índex de saints-app hi té sis caselles. El join les aparellava per posició, i la pregària
+dels difunts anava a la casella de l'alternativa. Es va prendre primer per un error de cpl-app, perquè
+`liturgiadeleshores.cat` en té sis; aquella web no és oficial i imprimeix com el castellà. No hi ha CPL-LIT.
+
+| | |
+|---|---|
+| Decisió | En Pau, 30-9-2026: la casella de l'alternativa (`preces_contenido/9573`) queda sense català; el català mostra les cinc de la CPL |
+| Correcció | `lib/preces-alignment.js`: les llistes decidides, **una per una**, i quina pregària va a cada casella; totes les altres, per posició. El fan servir el join i el comparador de la revisió |
+| Test | `preces-alignment.test.js` |
+| Per a en Fernando | Les hores mostren «id … not found» quan falta un text; cal amagar-lo, com ja fa la missa |
+| Dossier | [tooling-bugs/MIGRA-020](migration-to-saints/tooling-bugs/MIGRA-020.md) |
+| Commit | `7ded8b1` |
+
+<a id="sa-19"></a>
+## SA-19
+
+**La pregària dels difunts dels dimecres II, a la seva casella** · 30 de setembre de 2026
+
+Reexportació després de la [MIGRA-020](#migra-020): `preces_contenido/9574` passa a tenir la pregària dels
+difunts, i la `9573` s'ha esborrat **a mà** (l'exportació no esborra). 56 dies de la finestra.
+
+| | |
+|---|---|
+| Commit | `26767fa24` (saints-app, branca `catalan-language-support-dev`, local) |
 
 <a id="migra-007"></a>
 ## MIGRA-007
