@@ -1,11 +1,17 @@
 #!/bin/sh
-# Before each push, on any branch, make checks: Prettier, the lint, the types and every Jest
-# test. If it fails, nothing is pushed. To skip it in one particular case: git push --no-verify.
+# Before each push, make checks on exactly the commits being pushed: Prettier, the lint, the types
+# and every Jest test. They run in a worktree of each commit apart from this directory, so neither
+# the branch checked out here nor anything left uncommitted (another session's work, say) gets in
+# the way. What git does not carry comes from here: node_modules, the goldens, the migration's
+# manifest and the database the goldens were recorded against. If the checks fail, nothing is
+# pushed. To skip them in one particular case: git push --no-verify.
 #
 # The "prepare" script in package.json turns it on (git config core.hooksPath .githooks), and it
-# runs with every npm install / yarn install.
+# runs with every npm install.
 
-to_check=
+root=$(git rev-parse --show-toplevel) || exit 1
+
+shas=
 while read -r local_ref local_sha remote_ref remote_sha; do
   # Branches only: a tag points at a commit that was pushed already
   case "$remote_ref" in
@@ -17,22 +23,58 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     *[!0]*) ;;
     *) continue ;;
   esac
-  # The checks run on the working tree: it has to hold the same commits that are being pushed
-  if [ "$local_sha" != "$(git rev-parse HEAD)" ]; then
-    echo "pre-push: pushing $local_ref to ${remote_ref#refs/heads/}, but the working tree is on $(git rev-parse --abbrev-ref HEAD)."
-    echo "pre-push: the checks would run on other code. Check out ${local_ref#refs/heads/} and push again."
+  case " $shas " in
+    *" $local_sha "*) ;;
+    *) shas="$shas $local_sha" ;;
+  esac
+done
+[ -n "$shas" ] || exit 0
+
+# The goldens say which database they were recorded against, and the checks need that one: the one
+# in place, or the Catalan one make db-es put aside. Without goldens, the one in place.
+database="$root/src/assets/db/cpl-app.db"
+golden="$root/__tests__/golden/liturgy-days.json"
+if [ -f "$golden" ]; then
+  wanted=$(head -3 "$golden" | sed -n 's/.*"databaseSha256": *"\([0-9a-f]*\)".*/\1/p')
+  database=
+  for candidate in "$root/src/assets/db/cpl-app.db" "$root/src/assets/db/cpl-app.ca.db"; do
+    [ -f "$candidate" ] || continue
+    if [ "$(shasum -a 256 "$candidate" | cut -d' ' -f1)" = "$wanted" ]; then
+      database=$candidate
+      break
+    fi
+  done
+  if [ -z "$database" ]; then
+    echo "pre-push: the goldens were recorded against the database ${wanted%"${wanted#????????}"}…, which is neither in place"
+    echo "pre-push: nor put aside by make db-es. make db-latest brings the published one back; or, if the one in"
+    echo "pre-push: place is the right one now, record the goldens again (make golden, after checking them)."
     exit 1
   fi
-  to_check=1
+fi
+
+# Always the same place, so that Jest's cache, which goes by path, is still warm on the next push
+worktree="${TMPDIR:-/tmp}/cpl-app-pre-push-$(printf '%s' "$root" | shasum | cut -c1-8)"
+cleanup() {
+  git worktree remove --force "$worktree" >/dev/null 2>&1
+  rm -rf "$worktree"
+}
+trap cleanup EXIT
+trap 'exit 1' INT TERM
+
+for sha in $shas; do
+  cleanup
+  git worktree prune
+  git worktree add --detach --quiet "$worktree" "$sha" || exit 1
+  ln -s "$root/node_modules" "$worktree/node_modules"
+  ln -sf "$database" "$worktree/src/assets/db/cpl-app.db"
+  [ -d "$root/__tests__/golden" ] && ln -s "$root/__tests__/golden" "$worktree/__tests__/golden"
+  if [ -d "$root/migration-to-saints/webui/run" ] && [ -d "$worktree/migration-to-saints/webui" ]; then
+    ln -s "$root/migration-to-saints/webui/run" "$worktree/migration-to-saints/webui/run"
+  fi
+
+  echo "pre-push: make checks on $(git log --oneline -1 "$sha" | cut -c1-80) (about a minute)…"
+  if ! (cd "$worktree" && make checks); then
+    echo "pre-push: make checks failed; nothing was pushed."
+    exit 1
+  fi
 done
-[ -n "$to_check" ] || exit 0
-
-if [ -n "$(git status --porcelain)" ]; then
-  echo "pre-push: careful, there are uncommitted changes: the checks include them, but they are not pushed."
-fi
-
-echo "pre-push: make checks before pushing (~4 min)…"
-if ! make checks; then
-  echo "pre-push: make checks failed; nothing was pushed."
-  exit 1
-fi
