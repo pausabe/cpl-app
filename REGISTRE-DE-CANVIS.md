@@ -97,6 +97,7 @@ cap a saints-app no funcionaran fins que s'hi pugi.
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-008](#d-008) | 2026-09-29 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
+| [D-009](#d-009) | 2026-09-30 | saints-app | **decisió** (un sol cas) | Es regenera: `static-translations/himnos.ca.json` | `a346ca8db` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -1982,6 +1983,26 @@ del 2018 és correcte, i ningú no resarà el 2017. En Pau, el 29-9: no és rell
 |---|---|
 | Què costa | A la migració, 16 caselles de sant Bonifaci (5 de juny) queden retingudes perquè el 2017 hi discrepa: `responsorios/5243–5248` i `19057–19062`, les antífones `899` i `1995`, `oraciones_finales/98` i l'Ofici `315` |
 | Si algun dia calen | Es resol a la migració, sense tocar cpl-app: treure el 2017-06-05 del join, o una decisió de revisió |
+
+<a id="d-009"></a>
+## D-009
+
+**L'himne de l'Ofici de sant Jeroni: el del Comú de doctors de la CPL** · 30 de setembre de 2026
+
+A l'Ofici, saints-app no té pestanya ferial: els dies de memòria mostra l'himne del sant. La CPL, en
+una memòria, resa el del dia de la setmana (OGLH 235b: «del Comú o de la fèria», les dues coses són
+lícites), o sigui que cpl-app no en dona mai cap per a aquella casella, i en català sortia «id 959 not
+found in himnos». No és culpa de ningú: són dues opcions lícites que no encaixen en una casella
+compartida, i omplir-la és feina de la migració.
+
+En Pau, el 30-9: **per a aquest cas concret, i no com a norma general**, l'himne de l'Ofici del Comú de
+doctors de l'edició catalana (`OficisComuns` 07aO), «Oh sol etern, que amb vostra llum».
+
+| | |
+|---|---|
+| On | `migration-to-saints/static-translations/himnos.ca.json`, clau `959` |
+| Commit | saints-app `a346ca8db`; a cpl-app, el mateix commit que aquesta fitxa |
+| Queden | 44 sants de memòria més amb la mateixa situació a l'Ofici; cadascun es decidirà pel seu compte |
 
 # Canvis a saints-app
 
