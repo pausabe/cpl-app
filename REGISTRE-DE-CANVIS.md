@@ -103,8 +103,8 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [SA-20](#sa-20) | 2026-09-30 | saints-app | **codi** | No — va al git | `6899c5077` |
 | [D-012](#d-012) | 2026-09-30 | eines | **decisió** (dues regles, fetes codi) | No — va al git | el que afegeix la fitxa · saints-app `fdbcaaaf5` |
 | [SA-21](#sa-21) | 2026-09-30 | saints-app | contingut | Es regenera | `fdbcaaaf5` |
-| [EPREX-006](#eprex-006) | 2026-09-30 | saints-app | **proposat** | — missatge per a en Fernando redactat el 30-9; l'envia en Pau | — |
-| [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-006 | — |
+| [EPREX-006](#eprex-006) | 2026-09-30 | saints-app | **acceptat com a limitació** ([D-015](#d-015)) | — no es corregeix | — |
+| [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **corregit per en Fernando** (30-9) | Arriba amb la pròxima exportació | — |
 | [MIGRA-021](#migra-021) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
 | [SA-22](#sa-22) | 2026-09-30 | saints-app | contingut | Es regenera, **però la 12003 cal esborrar-la a mà** si es torna a partir d'una còpia vella | `a38ce6afa` |
 | [D-013](#d-013) | 2026-09-30 | eines + saints-app | **decisió** (13 caselles, una per una) + codi | Es regenera: `copied-cells.json` | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
@@ -113,6 +113,7 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [EPREX-008](#eprex-008) | 2026-09-30 | saints-app | **proposat** | — segon missatge per a en Fernando, redactat el 30-9 | — |
 | [EPREX-009](#eprex-009) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-008 | — |
 | [D-014](#d-014) | 2026-09-30 | eines + saints-app | **decisió** (197 caselles, una per una) | Es regenera: `decided-cells.json` | el que afegeix la fitxa · saints-app `ed7ea84f1` |
+| [D-015](#d-015) | 2026-09-30 | saints-app | **decisió** (limitació acceptada) | — | el que afegeix la fitxa |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2138,6 +2139,7 @@ solemnitat (`all_saints__ANY`…) i no en distingeix el diumenge. **No és un bu
 | Contra | societaslaudis hi posa els graduals (29-VI-2025), però és una transcripció i la norma és explícita |
 | Revisió | Troballa F32 |
 | Qui | En Fernando: en Pau, el 30-9, «dona'm missatge per a en Fernando», amb l'[EPREX-007](#eprex-007) al mateix missatge. Toca com eprex construeix les hores per a totes les llengües, i ha d'arribar a `dev` abans de Tots Sants |
+| Estat | **Acceptat com a limitació, no es corregeix** ([D-015](#d-015)). En Fernando, el 30-9: «no está implementado cambiar la salmodia complementaria para horas intermedias. ¿Crees que vale la pena meterse en ese lío?» |
 | Dossier i missatge | [eprex-bugs/EPREX-006](migration-to-saints/eprex-bugs/EPREX-006.md), que també porta l'EPREX-007 |
 
 Les solemnitats en **dia feiner** no hi entren: cpl-app hi diu el mateix grup (122-124) a les tres hores i
@@ -2156,6 +2158,7 @@ Troballa F31, veredicte «no és error».
 | Llengües | Totes: és l'índex |
 | Com | Per saints-admin i `chore(texts)`, mai tocant el JSON exportat |
 | Revisió | Troballa F33 |
+| Estat | **Corregit** per en Fernando a saints-admin el 30-9: «corregida sexta de Anunciación del Señor», «corregida tercia de Sta María Madre de Dios». Arriba a saints-app amb la pròxima exportació; llavors el join ja podrà provar el text del 123 de Sexta que la [D-013](#d-013) hi va copiar |
 | Dossier i missatge | [eprex-bugs/EPREX-006](migration-to-saints/eprex-bugs/EPREX-006.md), el mateix missatge que l'EPREX-006 |
 
 <a id="migra-021"></a>
@@ -2278,6 +2281,24 @@ castellà. En Pau, el 30-9: «ok, palante».
 | Efecte | De 424.584 a **437.185** textos-dia (el **94%**) i de 28 a **119** dies sencers. El 30-IX continua al 100% |
 | Conseqüència visible | Aquells pocs dies, el català mostra el mateix que el castellà i no el text propi de la CPL: per exemple, el diumenge de Quaresma l'himne de l'Ofici és el dels dies feiners |
 | Commit | el que afegeix la fitxa · saints-app `ed7ea84f1` |
+
+<a id="d-015"></a>
+## D-015
+
+**Una solemnitat en diumenge: els graduals a les hores menors, acceptat** · 30 de setembre de 2026
+
+L'[EPREX-006](#eprex-006) no es corregeix. eprex no té cap regla que canviï la salmòdia complementària de
+les hores menors quan la solemnitat cau en diumenge, i fer-la per a tan pocs dies no val la pena. En
+Fernando, el 30-9: «¿Crees que vale la pena meterse en ese lío?»; en Pau: «tiene razón en no liarnos».
+
+| | |
+|---|---|
+| Dies | Tots Sants 2026, sant Jaume i l'Assumpció 2027, sant Joan 2029, sant Pere i sant Pau 2031: cinc dies en cinc anys |
+| Què es veu | A Tèrcia, Sexta i Nona, els salms graduals en lloc del salm 117 (I, II i III). Les antífones són les pròpies de la festa. Res trencat: és una rúbrica (OGLH 82) |
+| Contra | cpl-app ho fa bé. Quan el català passi a saints-app, aquests cinc dies aniran un pas enrere. L'1-XI-2026 no canvia res: els usuaris en català encara són a cpl-app |
+| A favor | societaslaudis també hi posa els graduals: és una simplificació habitual |
+| Revisió | La troballa F32 continua sent un error d'eprex (veredicte 2), però ja sense correcció proposada |
+| Commit | el que afegeix la fitxa |
 
 # Canvis a saints-app
 

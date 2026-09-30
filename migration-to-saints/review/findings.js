@@ -1237,7 +1237,7 @@ const FINDINGS = [
       '2018-06-24', '2020-11-01', '2021-07-25', '2021-08-15', '2025-06-29', '2026-11-01',
     ],
     hours: ['Tercia', 'Sexta', 'Nona'],
-    headline: 'Una solemnitat en diumenge: les hores menors són les del diumenge I, i saints-app hi deixa els salms graduals',
+    headline: 'Una solemnitat en diumenge: les hores menors són les del diumenge I, i saints-app hi deixa els salms graduals (acceptat: D-015)',
     detail:
       'cpl-app hi resa el salm 117 (I, II i III) a les tres hores, com el diumenge I del saltiri. saints-app hi mostra '
       + 'els salms graduals de sempre, en totes les llengües: l’índex té una sola entrada per a la solemnitat '
@@ -1245,12 +1245,15 @@ const FINDINGS = [
     why:
       'L’OGLH 82 fa l’excepció explícita: «vel celebratio sollemnitatis occurrat die dominica, quo in casu sumuntur '
       + 'psalmi de dominica hebdomadæ I». societaslaudis hi posa els graduals, però és una transcripció i la norma '
-      + 'és clara.',
+      + 'és clara. Acceptat com a limitació coneguda (D-015, 30-9-2026): eprex no té manera de canviar la salmòdia '
+      + 'quan la solemnitat cau en diumenge, i per a cinc dies en cinc anys no val la pena fer-la.',
     proof: [
       ['Norma', 'Institutio generalis de Liturgia Horarum, 82', 'https://breviar.sk/la/docs/smernice_lh.htm'],
       ['eprex', 'all_tercia/sexta/nona.json: una sola clau __ANY per a Tots Sants, sant Joan, sant Pere i sant Pau, sant Jaume i l’Assumpció', null],
     ],
-    fix: 'A saints-app: quan una d’aquestes solemnitats cau en diumenge, les hores menors han de prendre la salmòdia del diumenge I.',
+    // Accepted, not fixed (D-015): eprex has no rule to swap the psalmody on a Sunday, and
+    // Pau and Fernando agreed it is not worth building for five days in five years.
+    fix: null,
   },
   {
     id: 'F33',
@@ -1262,6 +1265,7 @@ const FINDINGS = [
     ],
     hours: ['Tercia', 'Sexta'],
     headline: 'Dues caselles mal apuntades a l’índex d’eprex: l’Anunciació a Sexta i l’1 de gener a Tèrcia',
+    resolved: 'EPREX-007, corregit per en Fernando a saints-admin el 30 de setembre de 2026; arriba a saints-app amb la pròxima exportació',
     detail:
       'A l’Anunciació, el segon salm de Sexta té la cita del salm 122 (<code>salmos_citas/12004</code>, la del primer) i el '
       + 'text del 123 (<code>salmos_textos/12005</code>). L’1 de gener, el tercer salm de Tèrcia és el 128 '
@@ -1273,7 +1277,11 @@ const FINDINGS = [
       ['eprex', 'all_sexta.json annunciation_of_the_lord__ANY: segundo_salmo_cita 12004, segundo_salmo_texto 12005', null],
       ['eprex', 'all_tercia.json mary_mother_of_god__ANY: tercer_salmo 3419/3420 (Salmo 128); els altres, 12001 i 12002', null],
     ],
-    fix: 'A eprex (saints-admin): Anunciació, Sexta, segon salm: cita 12005. Santa Maria Mare de Déu, Tèrcia, tercer salm: 12003/12003.',
+    fix: {
+      where: 'eprex (saints-admin) · all_sexta.json, all_tercia.json',
+      summary: 'Anunciació, Sexta, segon salm: cita 12005. Santa Maria Mare de Déu, Tèrcia, tercer salm: 12003/12003.',
+      promptable: false,
+    },
   },
 ];
 

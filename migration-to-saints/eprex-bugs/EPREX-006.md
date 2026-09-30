@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Estat** | Proposat. Missatge redactat el 30-9-2026; l'envia en Pau |
+| **Estat** | EPREX-006: **acceptat com a limitació, no es corregeix** (D-015). EPREX-007: **corregit** per en Fernando a saints-admin el 30-9-2026 |
 | **Llengües** | Totes: és l'índex (`all_tercia/sexta/nona.json`) |
 | **Trobat** | 30 de setembre de 2026, revisant les celebracions que la D-012 va deixar per mirar una per una |
 | **Revisió** | Troballes F32 (EPREX-006) i F33 (EPREX-007) |
@@ -54,3 +54,22 @@ Diumenges: Tots Sants 2020 i **2026**, sant Joan 2018 i 2029, sant Pere i sant P
 > Las casillas del 2 y el 3 ya existen, no hace falta contenido nuevo. ¿Te lo miras y me dices?
 >
 > Gracias!
+
+## Resposta d'en Fernando (30-9-2026)
+
+> Solemnidad en domingo, no está implementado cambiar la salmodia complementaria para horas intermedias.
+> ¿Crees que vale la pena meterse en ese lío?
+>
+> corregida sexta de Anunciación del Señor
+>
+> corregida tercia de Sta María Madre de Dios
+
+L'EPREX-007 queda fet a l'origen i arriba a saints-app amb la pròxima exportació. L'EPREX-006 no: eprex no
+té cap regla que canviï la salmòdia d'una solemnitat quan cau en diumenge, i per a cinc dies en cinc anys
+(Tots Sants 2026, sant Jaume i l'Assumpció 2027, sant Joan 2029, sant Pere i sant Pau 2031) en Pau i en
+Fernando acorden no fer-la. Vegeu la D-015 al registre.
+
+Resposta que li torna en Pau:
+
+> De acuerdo, no merece la pena para cinco días en cinco años. Lo dejamos como limitación conocida.
+> Gracias por lo de la Anunciación y Santa María!
