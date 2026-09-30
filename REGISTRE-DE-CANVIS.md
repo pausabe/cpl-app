@@ -101,6 +101,8 @@ cap a saints-app no funcionaran fins que s'hi pugi.
 | [D-010](#d-010) | 2026-09-30 | eines + saints-app | **decisió** (17 caselles, una per una) + codi | Es regenera: `decided-cells.json` | `48f9ac4` · saints-app `f07309896` |
 | [D-011](#d-011) | 2026-09-30 | saints-app | **decisió** (un sol cas) | Es regenera: `static-translations/lecturas_*.ca.json` | saints-app `8bbcfd124` |
 | [SA-20](#sa-20) | 2026-09-30 | saints-app | **codi** | No — va al git | `6899c5077` |
+| [D-012](#d-012) | 2026-09-30 | eines | **decisió** (dues regles, fetes codi) | No — va al git | el que afegeix la fitxa · saints-app `fdbcaaaf5` |
+| [SA-21](#sa-21) | 2026-09-30 | saints-app | contingut | Es regenera | `fdbcaaaf5` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2069,6 +2071,44 @@ va triar retallar-les: «tira de l'opció b, no passa res».
 | Sl 118,9-14 | El text ja hi era; la cita, la mateixa que té sant Alfons (`lecturas_referencia/297`) |
 | On | `static-translations/lecturas_referencia.ca.json` (599, 600, 601) i `lecturas_texto.ca.json` (750, 752); només les fa servir sant Jeroni |
 | Commit | saints-app `8bbcfd124`; a cpl-app, el mateix commit que aquesta fitxa |
+
+<a id="d-012"></a>
+## D-012
+
+**Les caselles retingudes que tenen resposta: el salm que diu el castellà, i les còpies d'un mateix text** · 30 de setembre de 2026
+
+Un sol dia que discrepa retenia una casella per a tots els dies que la fan servir. El salm 118 (Teth) de
+Tèrcia i Sexta el comparteixen uns 400 dies: cpl-app hi resa el salm 118 en 390, i els 2 de novembre el
+salm 69 de l'Ofici de difunts. Per aquell dia l'any, la casella era buida els 400. El 95% del que faltava
+per migrar eren caselles retingudes així, i els salms en feien el 43%.
+
+En Pau, el 30-9, dues regles:
+
+| | |
+|---|---|
+| **El salm que diu el castellà** | Si la casella és un salm o la seva cita, el castellà de la mateixa casella diu quin salm és («Salmo 118,65-72»). Hi va la variant catalana que és aquell salm, comprovada per la cita: llibre, capítol, part (I, II, III) i versets. Una cita que no hi quadra no hi va mai, encara que sigui la majoritària; si cap no hi quadra, o n'hi quadren dues de diferents, la casella segueix retinguda. Aplica la [D-010](#d-010): la casella és el que eprex diu que és, i el castellà ja hi mostra aquest salm tots aquests dies |
+| **Còpies d'un mateix text** | Si totes les variants són el mateix text amb una coma, unes cometes, un accent, un salt de línia o, en la prosa, una paraula de cada cinquanta de diferència, hi va la més repetida. És la regla que en Pau va donar el 25-9 («no direm que és error de cpl; importem el majoritari»), que fins ara només s'aplicava als espais. No compten com a còpia: l'«al·leluia» de més (és l'antífona de Pasqua), el ℟/℣ canviat d'un responsori, ni cap signe d'una cita («Is 12,2-3.4» i «Is 12,2.3-4» són altres versets). Un empat queda retingut: no hi ha «la més repetida» |
+| El que **no** decideix | Els dies en què cpl-app resa **un altre salm** no se'n diu res: surten a la revisió com a divergència, i es miren **un per un**. Són 34 celebracions, i són les que més dies retenien: Fidels Difunts, les solemnitats a les hores menors (Tots Sants, sant Joan, sant Pere i sant Pau, sant Jaume, l'Assumpció, sant Josep, el Sagrat Cor, Santa Maria Mare de Déu, l'Anunciació), els Sants Innocents, la Sagrada Família, sant Bernabé, sant Basili i sant Gregori, el Baptisme, les Vespres dels apòstols (conversió de sant Pau, sant Felip i sant Jaume, Càtedra de sant Pere, sant Andreu) i unes quantes fèries de desembre i gener |
+| Codi | `lib/held-resolution.js` (nou): `resolveHeld`, `psalmScore`, `lightVariant`. El join el crida per a cada casella retinguda sense decisió; per als textos dels salms hi porta, de cada dia, com quadrava la cita de cpl-app amb la castellana de la mateixa ranura. La revisió (`build-rows.js`, `match: 'sameLight'`) i el panell (`day-compare.js`) fan servir el mateix `lightVariant`, perquè els dies de la còpia minoritària no surtin com a divergència |
+| Rastre | `output/join-held-resolved.json`: cada casella escrita així, amb quina regla, què s'hi ha posat i què hi deien els altres dies (les paraules que canvien, o les dates on cpl-app resa un altre salm) |
+| Test | `held-resolution.test.js`, 19 casos |
+| Efecte | 178 caselles de salms i 195 de còpies, fora de la cua. La migració passa del **81% al 91%** (376.888 → 422.591 de 464.428 textos-dia) i de 2 a 28 dies sencers. El 30-IX continua al 100% |
+| Commit | el mateix commit que aquesta fitxa · saints-app `fdbcaaaf5` ([SA-21](#sa-21)) |
+
+<a id="sa-21"></a>
+## SA-21
+
+**Els salms i les còpies de la D-012, a saints-app** · 30 de setembre de 2026
+
+Reexportació després de la [D-012](#d-012): 324 claus noves i 13 canviades. De les canviades, 12 són la
+mateixa cita amb la línia de descripció, o el mateix text amb espais, puntuació o una paraula de
+diferència (la còpia més repetida). La que no:
+`salmos_citas/3498` deia «Salm 109» d'una exportació antiga, i el castellà de la casella és «Salmo 118,
+105-112»; ara diu «Salm 118, 105-112 / XIV (Nun)».
+
+| | |
+|---|---|
+| Commit | `fdbcaaaf5` (saints-app, branca `catalan-language-support-dev`, local) |
 
 # Canvis a saints-app
 

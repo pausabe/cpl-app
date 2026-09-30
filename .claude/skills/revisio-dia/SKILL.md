@@ -180,6 +180,13 @@ un fil nou, `node migration-to-saints/review/fix-prompts.js` els genera.
    prova és el **volum imprès** del CPL — que en Pau té. Per a dir que una **estructura** és
    dolenta (quin salm, quina setmana del salteri, quin ofici), les fonts externes sí que valen.
 
+8. **Algunes retingudes ja no ho són (D-012, 30-IX-2026).** El join escriu sol dues menes de casella
+   retinguda: la del salm que diu el castellà de la casella (comprovat per la cita) i la de les còpies
+   d'un mateix text (la més repetida). Els dies en què cpl-app resa **un altre salm** en una d'aquestes
+   caselles surten com a divergència `diffRef`/`diff`: són casos per mirar un per un, no soroll, i
+   `output/join-held-resolved.json` diu quin salm hi deia cpl-app i quin el castellà. Els dies de la
+   còpia minoritària surten com a `sameLight` i no compten com a divergència.
+
 ## On són les coses
 
 | | |

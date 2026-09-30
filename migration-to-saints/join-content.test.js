@@ -33,6 +33,9 @@ const memorialFerial = require('./lib/memorial-ferial');
 const commonOffice = require('./lib/common-office');
 const { fingerprint, readingMatch } = require('./lib/citation-key');
 const { alignPreces } = require('./lib/preces-alignment');
+// Held cells with an answer that is not a matter of taste: copies of one text, and the psalm
+// the Spanish of the cell names (D-012).
+const { resolveHeld, psalmScore, lightVariant } = require('./lib/held-resolution');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
 const {
@@ -55,6 +58,9 @@ const OUTPUT_ROOT = process.env.OUT_DIR
   : path.resolve(__dirname, 'output');
 const OUTPUT_DIR = path.join(OUTPUT_ROOT, 'commons-ca');
 const PENDING_PATH = path.join(OUTPUT_ROOT, 'join-pending-review.json');
+// What lib/held-resolution.js wrote, and what it left for review: the days cpl-app prays another
+// psalm than the one the cell is for.
+const HELD_RESOLVED_PATH = path.join(OUTPUT_ROOT, 'join-held-resolved.json');
 // Held cells Pau has decided one by one: "table/id" -> { take: <date>, because }. Never a rule
 // for many cells at once (REGISTRE-DE-CANVIS.md, D-010).
 const DECIDED_CELLS = (() => {
@@ -363,7 +369,9 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     const observations = {};
     for (const table of TABLES) observations[table] = new Map(); // id -> Map(textKey -> group)
 
-    function observe(table, id, value, tag) {
+    // `evidence.psalmScore`: for a psalm text, how the heading cpl-app said it under that day
+    // compares with the Spanish heading of the same slot (lib/held-resolution.js).
+    function observe(table, id, value, tag, evidence) {
       // `-1` is the index saying "this entry has no text here, take it from the other tab",
       // not a cell. It arrives as a number from the index and as the STRING "-1" from the
       // measured cell map, and comparing only against the number let the string through:
@@ -379,6 +387,17 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       if (!group) byValue.set(vk, (group = { raws: new Map(), tags: [] }));
       group.raws.set(value, (group.raws.get(value) || 0) + 1);
       group.tags.push(tag);
+      if (evidence && evidence.psalmScore != null) {
+        if (!group.psalmScores) group.psalmScores = new Map();
+        group.psalmScores.set(evidence.psalmScore, (group.psalmScores.get(evidence.psalmScore) || 0) + 1);
+      }
+    }
+
+    // The evidence for a psalm text: the heading cpl-app printed over it, against the Spanish of
+    // the heading cell the same slot points at. Nothing when the Spanish cell is empty.
+    function psalmEvidence(entry, prefix, cplHeading) {
+      const es = esTable('salmos_citas')[String(entry[`${prefix}_salmo_cita`])];
+      return es == null || cplHeading == null ? null : { psalmScore: psalmScore(cplHeading, es) };
     }
 
     // The spelling cpl-app produced most often; ties go to the first one seen. Any of them
@@ -527,7 +546,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         if (!psalm) return;
         observe('salmos_citas', entry[`${prefix}_salmo_cita`], psalm.title, tag);
         observe('salmos_antifonas', entry[`${prefix}_salmo_antifona`], antiphons[i], tag);
-        observe('salmos_textos', entry[`${prefix}_salmo_texto`], psalm.psalm, tag);
+        observe('salmos_textos', entry[`${prefix}_salmo_texto`], psalm.psalm, tag, psalmEvidence(entry, prefix, psalm.title));
       });
       if (hourData.shortReading) {
         observe('lectura_breve_citas', entry.lectura_biblica_cita, hourData.shortReading.quote, tag);
@@ -675,7 +694,8 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           if (!Array.isArray(id)) continue;
           value.forEach((v, i) => observe(table, id[i], v, tag));
         } else {
-          observe(table, id, value, tag);
+          const psalmSlot = field.match(/^(primer|segundo|tercer)_salmo_texto$/);
+          observe(table, id, value, tag, psalmSlot ? psalmEvidence(entry, psalmSlot[1], fields[`${psalmSlot[1]}_salmo_cita`]) : null);
         }
       }
     }
@@ -945,6 +965,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // --- Resolve: single distinct value per id -> write it. Multiple -> pending. ---
     const commons = {};
     const pending = {};
+    const heldResolved = { light: [], psalm: [] };
     for (const table of TABLES) {
       commons[table] = {};
       pending[table] = [];
@@ -961,10 +982,41 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         const decidedGroup = byValue.size > 1 && decision
           ? [...byValue.values()].find((g) => g.tags.some((t) => t.startsWith(`${decision.take} `)))
           : null;
+        const autoGroups = byValue.size > 1 && !decidedGroup
+          ? [...byValue.values()].map((g) => ({ group: g, value: representative(g), count: g.tags.length, psalmScores: g.psalmScores }))
+          : null;
+        const auto = autoGroups
+          ? resolveHeld({ table, groups: autoGroups, esCitation: table === 'salmos_citas' ? esTable('salmos_citas')[id] : null })
+          : null;
         if (byValue.size === 1) {
           commons[table][id] = representative([...byValue.values()][0]);
         } else if (decidedGroup) {
           commons[table][id] = representative(decidedGroup);
+        } else if (auto) {
+          const taken = autoGroups[auto.take];
+          commons[table][id] = taken.value;
+          heldResolved[auto.rule].push({
+            cell: `${table}/${id}`,
+            ...(table === 'salmos_citas' ? { es: esTable('salmos_citas')[id] } : {}),
+            took: { preview: taken.value.slice(0, 120), days: taken.count },
+            others: auto.others.map((i) => {
+              const g = autoGroups[i];
+              const other = { preview: g.value.slice(0, 120), days: g.count };
+              // Copies of one text differ in a detail: say which, so a wrong call shows. A psalm
+              // cpl-app prays instead is a day to review: say when.
+              if (auto.rule === 'light') {
+                const diff = lightVariant(taken.value, g.value, table);
+                other.changed = diff ? diff.changed.slice(0, 12) : null;
+              } else {
+                // 0: another psalm. More: the same psalm, spelt or cut differently.
+                other.score = table === 'salmos_citas'
+                  ? psalmScore(g.value, esTable('salmos_citas')[id])
+                  : (g.psalmScores && g.psalmScores.size === 1 ? [...g.psalmScores.keys()][0] : null);
+                other.tags = g.group.tags;
+              }
+              return other;
+            }),
+          });
         } else {
           pending[table].push({
             id,
@@ -990,6 +1042,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       fs.writeFileSync(path.join(OUTPUT_DIR, `${table}.json`), JSON.stringify(data, null, 2), 'utf8');
     }
     fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2), 'utf8');
+    fs.writeFileSync(HELD_RESOLVED_PATH, JSON.stringify(heldResolved, null, 1), 'utf8');
 
     const totalResolved = Object.values(commons).reduce((n, t) => n + Object.keys(t).length, 0);
     const totalPending = Object.values(pending).reduce((n, t) => n + t.length, 0);
@@ -1068,6 +1121,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       console.log(`  ${table}: ${Object.keys(commons[table]).length} resolved, ${pending[table].length} pending`);
     }
     console.log(`Total: ${totalResolved} resolved, ${totalPending} pending review (see ${PENDING_PATH})`);
+    console.log(`Held cells written by D-012: ${heldResolved.light.length} copies of one text, ${heldResolved.psalm.length} psalms the Spanish names (see ${HELD_RESOLVED_PATH})`);
 
     expect(processed).toBeGreaterThan(0);
   }, 300000);

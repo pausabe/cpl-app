@@ -24,6 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const dayCheck = require('./day-check');
 const { alignPreces } = require('./lib/preces-alignment');
+const { lightVariant } = require('./lib/held-resolution');
 
 const { DAY_TEXTS_DIR, LOCAL_COMMONS_DIR } = dayCheck.PATHS;
 const readJsonSafe = dayCheck.readJsonSafe;
@@ -47,18 +48,20 @@ function norm(s) {
 
 // `same` / `diff` are only meaningful when both sides have text; the other two verdicts say
 // which side is empty, which is the more common outcome mid-migration.
-function verdictFor(cpl, app) {
+function verdictFor(cpl, app, table) {
   if (cpl == null && app == null) return 'none';
   if (app == null) return 'onlyCpl';
   if (cpl == null) return 'onlyApp';
-  return norm(cpl) === norm(app) ? 'same' : 'diff';
+  // Two copies of one text (D-012): the cell holds the most common one, and on the days of
+  // the other the two differ only by a detail. See `lightVariant` on the row.
+  return norm(cpl) === norm(app) || lightVariant(cpl, app, table) ? 'same' : 'diff';
 }
 
 function makeRow({ key, label, cpl, appField, index = 0, count = 1, noProperText = false }) {
   const app = appField ? appField.value : null;
   // `ferial` is not a gap: saints-app is not supposed to have its own text here, so it
   // must not be counted (or coloured) like an empty cell that still needs migrating.
-  const verdict = noProperText && app == null ? 'ferial' : verdictFor(cpl, app);
+  const verdict = noProperText && app == null ? 'ferial' : verdictFor(cpl, app, appField ? appField.table : null);
 
   // The page can show a second text for this field (the memorial/ferial switch). The
   // column already reads the tab cpl-app corresponds to — the ferial one on a memorial,
@@ -94,7 +97,9 @@ function makeRow({ key, label, cpl, appField, index = 0, count = 1, noProperText
     // The verdict compares collapsed whitespace, so two texts can be "the same" and still
     // not be byte-identical. That happens when the cell was filled from another day whose
     // text is spaced differently, which is worth seeing without calling it a difference.
-    whitespaceOnly: verdict === 'same' && String(cpl) !== String(app),
+    whitespaceOnly: verdict === 'same' && String(cpl) !== String(app) && norm(cpl) === norm(app),
+    // The same text, with a comma, a quote mark or a word of difference (D-012).
+    lightVariant: verdict === 'same' && norm(cpl) !== norm(app),
   };
 }
 

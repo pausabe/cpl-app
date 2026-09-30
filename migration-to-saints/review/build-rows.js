@@ -14,6 +14,7 @@ const dayCheck = require(path.join(REPO, 'migration-to-saints/day-check'));
 const dayCompare = require(path.join(REPO, 'migration-to-saints/day-compare'));
 const { splitHeading } = require(path.join(REPO, 'migration-to-saints/lib/citation-headings'));
 const { textKey } = require(path.join(REPO, 'migration-to-saints/lib/text-key'));
+const { lightVariant } = require(path.join(REPO, 'migration-to-saints/lib/held-resolution'));
 
 const RUN = process.env.RUN_DIR || path.join(__dirname, 'run');
 fs.mkdirSync(RUN, { recursive: true });
@@ -137,6 +138,10 @@ function main() {
           // both a single space — was reported as "the app shows what cpl-app does not".
           const equal = textKey(String(cpl ?? '')) === textKey(String(ca ?? ''));
           match = equal ? 'same' : cplEmpty ? 'onlyApp' : 'diff';
+          // The cell holds the most common copy of a text cpl-app keeps in several (D-012): on
+          // the days of the other copy the two differ by a comma or a quote mark, and that is not
+          // a different prayer. Same test the join wrote the cell by, so they cannot disagree.
+          if (match === 'diff' && lightVariant(cpl, ca, r.table)) match = 'sameLight';
 
           // A citation is not prose: what makes two of them the same is the scripture they
           // name, not the bytes. cpl-app keeps the reference and its descriptive line in two
