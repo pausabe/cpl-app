@@ -47,6 +47,14 @@ function massIndexEntry(litcalId) {
   return key ? allLectures[key].lecturas : null;
 }
 
+// Is what cpl-app prays today the weekday's Mass? On a memorial without readings of its own —
+// all of them but the 20 that `LDSantoral` carries — it is, and the two candidates are the same
+// readings. The citations are enough to tell: they are what the index itself files by.
+function praysTheWeekday(renderedFields, ferialFields) {
+  const refs = Object.keys(renderedFields).filter((k) => k.endsWith('_ref'));
+  return refs.length > 0 && refs.every((k) => renderedFields[k] === ferialFields[k]);
+}
+
 /** The Mass fields of one day, in the shape the index keeps them: one column, or two. */
 function massColumns(dateStr, rendered, ferial) {
   const renderedFields = rendered || {};
@@ -54,10 +62,15 @@ function massColumns(dateStr, rendered, ferial) {
   const entry = massIndexEntry(litcalIdFor(dateStr));
   const twoColumns = entry && Object.keys(entry).some((k) => k.startsWith('CELEBRATION_'));
   if (!twoColumns || !Object.keys(ferialFields).length) return renderedFields;
+  // cpl-app prays the weekday's Mass, so it has nothing for the saint's column. Copying the
+  // weekday there too made the review compare Jb 9 with 2 Tm 3 on Saint Jerome's day and
+  // report three divergences that were nobody's (MIGRA-019). With no `CELEBRATION_*` key,
+  // build-rows.js reads that column as "cpl-app has nothing here by design" (D-001).
+  if (praysTheWeekday(renderedFields, ferialFields)) return ferialFields;
   return {
     ...ferialFields,
     ...Object.fromEntries(Object.entries(renderedFields).map(([k, v]) => [`CELEBRATION_${k}`, v])),
   };
 }
 
-module.exports = { massColumns, litcalIdFor, massIndexEntry, DAY_TEXTS_DIR };
+module.exports = { massColumns, praysTheWeekday, litcalIdFor, massIndexEntry, DAY_TEXTS_DIR };

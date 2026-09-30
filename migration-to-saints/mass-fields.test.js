@@ -110,3 +110,24 @@ test('a Catalan citation fingerprints the same as its Spanish twin', () => {
   // on "proper or ferial" would have swapped them every year.
   expect(fingerprint('Fets 12,1-11').token).not.toBe(fingerprint('Hch 3, 1-10').token);
 });
+
+// MIGRA-019: on a memorial without readings of its own cpl-app prays the weekday's Mass, and the
+// review copied it into the saint's column as well — Jb 9 beside 2 Tm 3 on Saint Jerome's day,
+// three "divergences" that were nobody's. The saint's column must come back empty there, and
+// still full on a memorial that does have its own Mass in cpl-app (the Guardian Angels).
+describe('the two columns of a memorial', () => {
+  const { resolveDayForComparison } = require('./lib/cpl-day-resolver');
+  const celebrationKeys = (mass) => Object.keys(mass).filter((k) => k.startsWith('CELEBRATION_'));
+
+  test('Saint Jerome, who has none in cpl-app, gives the weekday and nothing for the saint', async () => {
+    const day = await resolveDayForComparison('2026-09-30', { hours: ['Mass'] });
+    expect(day.hours.Mass.GOSPEL_ref).toMatch(/^Lc 9,57-62/);
+    expect(celebrationKeys(day.hours.Mass)).toEqual([]);
+  }, 180000);
+
+  test('the Guardian Angels, who have their own, still fill the saint\'s column', async () => {
+    const day = await resolveDayForComparison('2026-10-02', { hours: ['Mass'] });
+    expect(day.hours.Mass.CELEBRATION_FIRSTLECTURE_ref).toMatch(/^Ex 23,20-23a/);
+    expect(day.hours.Mass.FIRSTLECTURE_ref).not.toMatch(/^Ex 23/);
+  }, 180000);
+});
