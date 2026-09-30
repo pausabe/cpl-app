@@ -55,6 +55,15 @@ const OUTPUT_ROOT = process.env.OUT_DIR
   : path.resolve(__dirname, 'output');
 const OUTPUT_DIR = path.join(OUTPUT_ROOT, 'commons-ca');
 const PENDING_PATH = path.join(OUTPUT_ROOT, 'join-pending-review.json');
+// Held cells Pau has decided one by one: "table/id" -> { take: <date>, because }. Never a rule
+// for many cells at once (REGISTRE-DE-CANVIS.md, D-010).
+const DECIDED_CELLS = (() => {
+  try {
+    return JSON.parse(fs.readFileSync(path.resolve(__dirname, 'decided-cells.json'), 'utf8')).cells || {};
+  } catch {
+    return {};
+  }
+})();
 
 const DIOCESE_NAME = process.env.DIOCESE || 'Barcelona';
 const PRAYING_PLACE = 'Diòcesi';
@@ -946,8 +955,16 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         const byValue = CITATION_TABLES.has(table)
           ? mergeCitationHeadings(rawByValue, representative)
           : rawByValue;
+        // A held cell Pau has decided, one by one (decided-cells.json): the text cpl-app says on
+        // the date the decision names. If no observation of that date is left, it stays held.
+        const decision = DECIDED_CELLS[`${table}/${id}`];
+        const decidedGroup = byValue.size > 1 && decision
+          ? [...byValue.values()].find((g) => g.tags.some((t) => t.startsWith(`${decision.take} `)))
+          : null;
         if (byValue.size === 1) {
           commons[table][id] = representative([...byValue.values()][0]);
+        } else if (decidedGroup) {
+          commons[table][id] = representative(decidedGroup);
         } else {
           pending[table].push({
             id,
