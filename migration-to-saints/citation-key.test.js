@@ -9,7 +9,7 @@
 // "1Pe 1, 22-23" both came out as 1PET|1. Both are live on 3 September 2026: the Common of
 // Pastors gives 1Pe 5, 1-4 at Vespers and the weekday gives 1Pe 1, 22-23.
 
-const { fingerprint } = require('./lib/citation-key');
+const { fingerprint, readingMatch } = require('./lib/citation-key');
 
 const token = (s) => fingerprint(s).token;
 const same = (a, b) => expect(token(a)).toBe(token(b));
@@ -108,5 +108,53 @@ describe('fingerprint', () => {
       expect(fingerprint('Si la fiesta cae en domingo, la Opción 2 se toma como segunda lectura.'))
         .toBeNull();
     });
+  });
+});
+
+// MIGRA-018: the join chose between two readings of the same chapter on the chapter alone, and
+// eight Mass readings went to saints-app with another Mass's text. These are the eight, as the
+// Spanish cell and the cpl-app reading that was filed into it: each shares book and chapter
+// and none is the same reading.
+describe('readingMatch', () => {
+  const FILED_WRONG = [
+    ['Lc 1, 5-17', 'Lc 1,57-66.80: _S’ha de dir Joan_'],                      // vigil of John the Baptist
+    ['Sal 88, 4-5.16-17.27.29', 'Sl 88,2-3.4-5.27 i 29 (R.: 2a)'],             // vigil of Christmas
+    ['Sal 36, 3-6.30-31', 'Sl 36,3-4.18 i 23.27 i 29 (R.: 39a)'],             // Leo the Great
+    ['Jn 17, 20-26', 'Jo 17,1-11a'],                                            // Philip Neri
+    ['Mt 25, 31-40', 'Mt 25,1-13'],                                             // Teresa Jornet
+    ['Rm 12, 3-13', 'Rm 12,5-16a'],                                             // Charles Borromeo
+    ['Lectura Sálmica  Lc 1, 46-55', 'Lc 1,69-70.71-73.74-75 (R.: 68)'],       // Our Lady of the Rosary
+    ['Sal 30, 3cd-4.6.8ab.16bc-17', 'Sl 30,20.21.22.23.24 (R.: 25)'],         // Common of Martyrs
+  ];
+
+  it.each(FILED_WRONG)('%s is not the reading %s', (es, ca) => {
+    expect(fingerprint(es).token).toBe(fingerprint(ca).token);
+    expect(readingMatch(ca, es)).toBeLessThan(2);
+  });
+
+  it('turns down verses that do not meet', () => {
+    expect(readingMatch('Lc 1,57-66.80', 'Lc 1, 5-17')).toBe(0);
+    expect(readingMatch('Mt 25,1-13', 'Mt 25, 31-40')).toBe(0);
+  });
+
+  it('still takes the same reading spelled the other edition’s way', () => {
+    expect(readingMatch('Mc 1,21b-28', 'Mc 1, 21-28')).toBe(2);
+    expect(readingMatch('Sl 87,10bc-11.12-13.14-15 (R.: 3a)', 'Sal 87, 10-15')).toBe(2);
+    expect(readingMatch('Sl 36,3-4.18 i 23.27 i 29 (R.: 39a)', 'Sal 36, 3-4.18.23.27.29')).toBe(2);
+    expect(readingMatch('Rm 12,5-16a', 'Rm 12, 5-16')).toBe(2);
+    expect(readingMatch('Gn 1,1–2,2', 'Gn 1, 1-2, 2')).toBe(2);
+    expect(readingMatch('Sa 11,23–12,2', 'Sab 11, 22-12, 2')).toBeGreaterThan(0);
+    // Hosea 2 is numbered two verses apart in the two editions.
+    expect(readingMatch('Os 2,14.15b-16.19-20', 'Os 2, 16-18.21-22')).toBe(2);
+  });
+
+  it('keeps a reading whose verses one side does not spell out', () => {
+    expect(readingMatch('Salm 109', 'Salmo 109, 1-5. 7')).toBe(1);
+  });
+
+  it('compares a reading that runs on into another chapter on both halves', () => {
+    // The Spanish cell has a typo in the first half ("17" for "1-7"); the second half agrees.
+    expect(readingMatch('Ez 9,1-7;10,18-22', 'Ez 9, 17; 10, 18-22')).toBe(1);
+    expect(readingMatch('Tb 1,1a.2;2,1-9', 'Tob 1, 3; 2, 1b-8')).toBe(1);
   });
 });

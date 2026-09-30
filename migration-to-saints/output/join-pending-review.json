@@ -123227,7 +123227,7 @@
     },
     {
       "id": "575",
-      "affectedCount": 12,
+      "affectedCount": 9,
       "variants": [
         {
           "preview": "Jo 8,1-11: _Aquell de vosaltres que no tingui cap pecat, que comenci a tirar pedres_",
@@ -123248,15 +123248,6 @@
             "2019-04-07 (Mass)",
             "2022-04-03 (Mass)",
             "2025-04-06 (Mass)"
-          ]
-        },
-        {
-          "preview": "Jo 8,12-20: _Jo soc la llum del món_",
-          "truncated": false,
-          "tags": [
-            "2019-04-08 (Mass)",
-            "2022-04-04 (Mass)",
-            "2025-04-07 (Mass)"
           ]
         }
       ]
@@ -123466,7 +123457,7 @@
     },
     {
       "id": "1623",
-      "affectedCount": 11,
+      "affectedCount": 8,
       "variants": [
         {
           "preview": "Jo 10,1-10: _Jo soc la porta de les ovelles_",
@@ -123476,15 +123467,6 @@
             "2020-05-03 (Mass)",
             "2023-04-30 (Mass)",
             "2026-04-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Jo 10,11-18: _El bon pastor dona la vida per les seves ovelles_",
-          "truncated": false,
-          "tags": [
-            "2017-05-08 (Mass)",
-            "2020-05-04 (Mass)",
-            "2023-05-01 (Mass)"
           ]
         },
         {
@@ -123632,56 +123614,6 @@
       ]
     },
     {
-      "id": "1559",
-      "affectedCount": 14,
-      "variants": [
-        {
-          "preview": "Mt 5,20-26: _El qui s’enfadi amb el seu germà serà reu davant el tribunal_",
-          "truncated": false,
-          "tags": [
-            "2017-06-15 (Mass)",
-            "2018-06-14 (Mass)",
-            "2020-06-11 (Mass)",
-            "2020-06-11 (Mass)",
-            "2021-06-10 (Mass)",
-            "2023-06-15 (Mass)",
-            "2024-06-13 (Mass)",
-            "2026-06-11 (Mass)",
-            "2026-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 5,1-12: _Feliços els pobres en l’esperit_",
-          "truncated": false,
-          "tags": [
-            "2018-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 5,13-16: _Vosaltres sou la llum del món_",
-          "truncated": false,
-          "tags": [
-            "2019-06-11 (Mass)",
-            "2024-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 5,33-37: _Jo us dic: No juris mai_",
-          "truncated": false,
-          "tags": [
-            "2022-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 5,17-19: _No vinc a desautoritzar, sinó a completar_",
-          "truncated": false,
-          "tags": [
-            "2025-06-11 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "3675",
       "affectedCount": 6,
       "variants": [
@@ -123728,56 +123660,6 @@
             "2022-07-06 (Mass)",
             "2024-07-10 (Mass)",
             "2026-07-08 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "247",
-      "affectedCount": 8,
-      "variants": [
-        {
-          "preview": "Mt 13,1-9: _Dona fruit: o cent, o seixanta, o trenta_",
-          "truncated": false,
-          "tags": [
-            "2017-07-26 (Mass)",
-            "2023-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 13,10-17: _Déu us fa a vosaltres el do de conèixer els secrets del Regne, però a ells, no_",
-          "truncated": false,
-          "tags": [
-            "2018-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 13,18-23: _Aquells que han sentit la predicació del Regne i l’han entesa i donen fruit_",
-          "truncated": false,
-          "tags": [
-            "2019-07-26 (Mass)",
-            "2024-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 13,31-35: _El gra de mostassa arriba a ser com un arbre, tant que els ocells hi van per ajocar-se a les seves branques_",
-          "truncated": false,
-          "tags": [
-            "2021-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 13,36-43: _Així com cullen el jull i el cremen, passarà igual a la fi del món_",
-          "truncated": false,
-          "tags": [
-            "2022-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 13,24-30: _Deixeu que creixin junts fins a l’hora de la sega_",
-          "truncated": false,
-          "tags": [
-            "2025-07-26 (Mass)"
           ]
         }
       ]
@@ -123837,37 +123719,6 @@
             "2024-07-23 (Mass)",
             "2025-07-23 (Mass)",
             "2026-07-23 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "1315",
-      "affectedCount": 7,
-      "variants": [
-        {
-          "preview": "Mt 14,22-36: _Maneu-me que vingui caminant sobre l’aigua_",
-          "truncated": false,
-          "tags": [
-            "2017-08-07 (Mass)",
-            "2023-08-07 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 14,13-21: _Alçà els ulls al cel, digué la benedicció, donava els pans als deixebles i ells els donaven a la gent_",
-          "truncated": false,
-          "tags": [
-            "2019-08-05 (Mass)",
-            "2021-08-02 (Mass)",
-            "2025-08-04 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 14,13-21: _Tothom en menjà com en volgué_",
-          "truncated": false,
-          "tags": [
-            "2020-08-02 (Mass)",
-            "2026-08-02 (Mass)"
           ]
         }
       ]
@@ -124021,36 +123872,6 @@
             "2025-05-26 (Mass)",
             "2025-09-25 (Mass)",
             "2026-05-11 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "298",
-      "affectedCount": 6,
-      "variants": [
-        {
-          "preview": "Mt 23,13-22: _Ai de vosaltres, guies cecs_",
-          "truncated": false,
-          "tags": [
-            "2017-08-28 (Mass)",
-            "2023-08-28 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 23,23-26: _Això és el que havíeu de complir, sense deixar allò altre_",
-          "truncated": false,
-          "tags": [
-            "2018-08-28 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 23,27-32: _Sou fills dels qui van matar els profetes_",
-          "truncated": false,
-          "tags": [
-            "2019-08-28 (Mass)",
-            "2024-08-28 (Mass)",
-            "2025-08-28 (Mass)"
           ]
         }
       ]
@@ -124259,58 +124080,6 @@
       ]
     },
     {
-      "id": "988",
-      "affectedCount": 12,
-      "variants": [
-        {
-          "preview": "Lc 1,39-45: _Qui soc jo perquè la mare del meu Senyor vingui a visitar-me?_",
-          "truncated": false,
-          "tags": [
-            "2017-12-21 (Mass)",
-            "2018-12-21 (Mass)",
-            "2019-12-21 (Mass)",
-            "2020-12-21 (Mass)",
-            "2021-12-19 (Mass)",
-            "2021-12-21 (Mass)",
-            "2022-12-21 (Mass)",
-            "2023-12-21 (Mass)",
-            "2024-12-21 (Mass)",
-            "2024-12-22 (Mass)",
-            "2026-12-21 (Mass)"
-          ]
-        },
-        {
-          "preview": "Lc 1,57-66: _Naixement de Joan Baptista_",
-          "truncated": false,
-          "tags": [
-            "2018-12-23 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "1845",
-      "affectedCount": 4,
-      "variants": [
-        {
-          "preview": "Sl 39,2.4ab.7.8-9.10 (R.: 8a i 9a)",
-          "truncated": false,
-          "tags": [
-            "2018-01-14 (Mass)",
-            "2021-01-17 (Mass)",
-            "2024-01-14 (Mass)"
-          ]
-        },
-        {
-          "preview": "Sl 39,7.8-9.10.17 (R.: 1C 11,26b)",
-          "truncated": false,
-          "tags": [
-            "2022-09-13 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "3602",
       "affectedCount": 8,
       "variants": [
@@ -124394,30 +124163,6 @@
       ]
     },
     {
-      "id": "297",
-      "affectedCount": 6,
-      "variants": [
-        {
-          "preview": "Sl 118,9.10.11.12.13.14 (R.: 12b)",
-          "truncated": false,
-          "tags": [
-            "2018-02-03 (Mass)",
-            "2020-02-08 (Mass)",
-            "2022-02-05 (Mass)",
-            "2024-02-03 (Mass)",
-            "2026-02-07 (Mass)"
-          ]
-        },
-        {
-          "preview": "Sl 118,29.43.79.80.95.102 (R.: 68b)",
-          "truncated": false,
-          "tags": [
-            "2022-08-01 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "604",
       "affectedCount": 12,
       "variants": [
@@ -124443,38 +124188,6 @@
             "2019-10-27 (Mass)",
             "2022-10-23 (Mass)",
             "2025-10-26 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "143",
-      "affectedCount": 8,
-      "variants": [
-        {
-          "preview": "Jo 15,9-17: _No sou vosaltres, els qui m’heu escollit. Soc jo qui us he escollit_",
-          "truncated": false,
-          "tags": [
-            "2018-05-15 (Mass)",
-            "2019-05-15 (Mass)",
-            "2021-05-15 (Mass)",
-            "2024-05-15 (Mass)",
-            "2025-05-15 (Mass)",
-            "2026-05-15 (Mass)"
-          ]
-        },
-        {
-          "preview": "Jo 15,12-17: _Això us mano: que us estimeu els uns als altres_",
-          "truncated": false,
-          "tags": [
-            "2020-05-15 (Mass)"
-          ]
-        },
-        {
-          "preview": "Jo 15,26–16,4a: _L’Esperit de la veritat donarà testimoni de mi_",
-          "truncated": false,
-          "tags": [
-            "2023-05-15 (Mass)"
           ]
         }
       ]
@@ -124683,6 +124396,8 @@
           "truncated": false,
           "tags": [
             "2019-01-08 (Mass)",
+            "2020-01-09 (Mass)",
+            "2025-01-09 (Mass)",
             "2026-01-08 (Mass)"
           ]
         },
@@ -124691,37 +124406,6 @@
           "truncated": false,
           "tags": [
             "2019-01-10 (Mass)"
-          ]
-        },
-        {
-          "preview": "1Jo 4,11-18: _Si ens estimem, Déu està en nosaltres_",
-          "truncated": false,
-          "tags": [
-            "2020-01-09 (Mass)",
-            "2025-01-09 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "1640",
-      "affectedCount": 5,
-      "variants": [
-        {
-          "preview": "Mc 6,34-44: _Jesús es revela com a profeta en la multiplicació dels pans_",
-          "truncated": false,
-          "tags": [
-            "2019-01-08 (Mass)",
-            "2026-01-08 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mc 6,45-52: _Els deixebles veieren caminar Jesús sobre l’aigua_",
-          "truncated": false,
-          "tags": [
-            "2019-01-10 (Mass)",
-            "2020-01-09 (Mass)",
-            "2025-01-09 (Mass)"
           ]
         }
       ]
@@ -124735,6 +124419,8 @@
           "truncated": false,
           "tags": [
             "2019-01-08 (Mass)",
+            "2020-01-09 (Mass)",
+            "2025-01-09 (Mass)",
             "2026-01-08 (Mass)"
           ]
         },
@@ -124744,41 +124430,26 @@
           "tags": [
             "2019-01-10 (Mass)"
           ]
-        },
-        {
-          "preview": "Sl 71,1-2.10.12-13 (R.: cf. 11)",
-          "truncated": false,
-          "tags": [
-            "2020-01-09 (Mass)",
-            "2025-01-09 (Mass)"
-          ]
         }
       ]
     },
     {
       "id": "1529",
-      "affectedCount": 5,
+      "affectedCount": 4,
       "variants": [
         {
           "preview": "1Jo 4,19–5,4: _Qui estima Déu, que estimi també el seu germà_",
           "truncated": false,
           "tags": [
-            "2019-01-11 (Mass)",
-            "2020-01-10 (Mass)",
-            "2025-01-10 (Mass)"
-          ]
-        },
-        {
-          "preview": "1Jo 4,7-10: _Déu és amor_",
-          "truncated": false,
-          "tags": [
-            "2021-01-08 (Mass)"
+            "2019-01-11 (Mass)"
           ]
         },
         {
           "preview": "1Jo 4,11-18: _Si ens estimem, Déu està en nosaltres_",
           "truncated": false,
           "tags": [
+            "2020-01-10 (Mass)",
+            "2025-01-10 (Mass)",
             "2026-01-09 (Mass)"
           ]
         }
@@ -124838,23 +124509,24 @@
       ]
     },
     {
-      "id": "1531",
-      "affectedCount": 4,
+      "id": "1315",
+      "affectedCount": 5,
       "variants": [
         {
-          "preview": "Mc 6,45-52: _Els deixebles veieren caminar Jesús sobre l’aigua_",
+          "preview": "Mt 14,13-21: _Alçà els ulls al cel, digué la benedicció, donava els pans als deixebles i ells els donaven a la gent_",
           "truncated": false,
           "tags": [
-            "2020-01-10 (Mass)",
-            "2025-01-10 (Mass)",
-            "2026-01-09 (Mass)"
+            "2019-08-05 (Mass)",
+            "2021-08-02 (Mass)",
+            "2025-08-04 (Mass)"
           ]
         },
         {
-          "preview": "Mc 6,34-44: _Jesús es revela com a profeta en la multiplicació dels pans_",
+          "preview": "Mt 14,13-21: _Tothom en menjà com en volgué_",
           "truncated": false,
           "tags": [
-            "2021-01-08 (Mass)"
+            "2020-08-02 (Mass)",
+            "2026-08-02 (Mass)"
           ]
         }
       ]
@@ -124913,68 +124585,6 @@
           "truncated": false,
           "tags": [
             "2022-01-08 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "1790",
-      "affectedCount": 2,
-      "variants": [
-        {
-          "preview": "Jo 17,1-11a: _Pare, glorifiqueu el vostre Fill_",
-          "truncated": false,
-          "tags": [
-            "2020-05-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Jo 17,20-26: _Que siguin plenament u_",
-          "truncated": false,
-          "tags": [
-            "2023-05-26 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "4342",
-      "affectedCount": 4,
-      "variants": [
-        {
-          "preview": "Mt 14,22-36: _Maneu-me que vingui caminant sobre l’aigua_",
-          "truncated": false,
-          "tags": [
-            "2020-08-03 (Mass)",
-            "2026-08-03 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 14,13-21: _Alçà els ulls al cel, digué la benedicció, donava els pans als deixebles i ells els donaven a la gent_",
-          "truncated": false,
-          "tags": [
-            "2022-08-01 (Mass)",
-            "2024-08-05 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "1155",
-      "affectedCount": 2,
-      "variants": [
-        {
-          "preview": "Mt 12,1-8: _El Fill de l’home és amo del repòs del dissabte_",
-          "truncated": false,
-          "tags": [
-            "2021-07-16 (Mass)"
-          ]
-        },
-        {
-          "preview": "Mt 12,14-21: _Els manà que no ho fessin públic, perquè es complís allò que havia dit el profeta_",
-          "truncated": false,
-          "tags": [
-            "2022-07-16 (Mass)"
           ]
         }
       ]
@@ -125684,7 +125294,7 @@
     },
     {
       "id": "6043",
-      "affectedCount": 38,
+      "affectedCount": 37,
       "variants": [
         {
           "preview": "El Senyor m’ha enviat a portar la Bona Nova als desvalguts,\na proclamar als captius la llibertat.",
@@ -125698,7 +125308,6 @@
             "2019-09-04 (Mass)",
             "2020-01-18 (Mass)",
             "2020-09-02 (Mass)",
-            "2021-01-08 (Mass)",
             "2021-01-16 (Mass)",
             "2021-09-01 (Mass)",
             "2022-01-15 (Mass)",
@@ -126593,33 +126202,6 @@
             "2023-10-18 (Mass)",
             "2024-10-18 (Mass)",
             "2025-10-18 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "88",
-      "affectedCount": 9,
-      "variants": [
-        {
-          "preview": "Canteu al Senyor un càntic nou,\ncanteu al Senyor, arreu de la terra,\ncanteu al Senyor, beneïu el seu nom.\n\nR. Conteu a tots els pobles els prodigis del Senyor.\n\nAnuncieu de dia en dia que ens ha salvat,\nconteu a les nacions la seva glòria,\nconteu a tots els pobles els seus prodigis. R.\n\nDoneu al Sen",
-          "truncated": true,
-          "tags": [
-            "2017-01-26 (Mass)",
-            "2018-01-26 (Mass)",
-            "2019-01-26 (Mass)",
-            "2021-01-26 (Mass)",
-            "2022-01-26 (Mass)",
-            "2023-01-26 (Mass)",
-            "2024-01-26 (Mass)",
-            "2026-01-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "Canteu al Senyor un càntic nou,\ncanteu al Senyor, arreu de la terra,\nconteu a les nacions la seva glòria,\nconteu a tots els pobles els seus prodigis.\n\nR. El Senyor ve a judicar la terra.\n\nEl Senyor és gran, és digne de ser lloat,\nés més temible que tots els déus;\nperquè els déus dels pobles són no-r",
-          "truncated": true,
-          "tags": [
-            "2019-09-03 (Mass)"
           ]
         }
       ]
@@ -128458,7 +128040,7 @@
     },
     {
       "id": "6103",
-      "affectedCount": 25,
+      "affectedCount": 22,
       "variants": [
         {
           "preview": "Diu el Senyor:\n«No em complau la mort del pecador,\nsinó que es converteixi i que visqui».",
@@ -128498,15 +128080,6 @@
             "2022-10-22 (Mass)",
             "2024-10-26 (Mass)",
             "2025-10-25 (Mass)"
-          ]
-        },
-        {
-          "preview": "Jo soc la llum del món;\nel qui em segueix no camina a les fosques,\nsinó que té la llum de la vida.",
-          "truncated": false,
-          "tags": [
-            "2019-04-08 (Mass)",
-            "2022-04-04 (Mass)",
-            "2025-04-07 (Mass)"
           ]
         }
       ]
@@ -128732,7 +128305,7 @@
     },
     {
       "id": "1349",
-      "affectedCount": 24,
+      "affectedCount": 19,
       "variants": [
         {
           "preview": "En aquell temps, Jesús digué als seus deixebles: «Jo us dic que si no sou més justos del que ho són els mestres de la Llei i els fariseus, no entrareu pas al Regne del cel.\nJa sabeu que als antics els van manar: “No matis”, i tothom que mati serà reu davant el tribunal. Doncs jo us dic: El qui s’enf",
@@ -128763,35 +128336,6 @@
             "2024-06-13 (Mass)",
             "2026-06-11 (Mass)",
             "2026-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, en veure Jesús les multituds, pujà a la muntanya, s’assegué i els deixebles se li acostaren. Llavors es posà a parlar i els instruïa dient:\n«Feliços els pobres en l’esperit: el Regne del cel és per a ells. Feliços els qui estan de dol: vindrà el dia que seran consolats. Feliços els ",
-          "truncated": true,
-          "tags": [
-            "2018-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué als seus deixebles: «Vosaltres sou la sal de la terra. Si la sal ha perdut el gust, amb què la tornarien salada? No serà bona per a res. La llençaran al carrer i que la gent la trepitgi. Vosaltres sou la llum del món. Un poble dalt d’una muntanya no es pot amagar. Tampoc",
-          "truncated": true,
-          "tags": [
-            "2019-06-11 (Mass)",
-            "2024-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué als seus deixebles: «També sabeu que als antics els van manar: “No trenquis els juraments”. I també: “Compleix tot allò que has jurat en nom del Senyor”. Doncs jo us dic: No juris mai: ni pel cel, que és el tron de Déu, ni per la terra que és l’escambell dels seus peus, ",
-          "truncated": true,
-          "tags": [
-            "2022-06-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué als seus deixebles: «No us penseu que jo vinc a desautoritzar els llibres de la Llei i dels Profetes. No vinc a desautoritzar-los, sinó a completar-los. Us ho dic amb tota veritat: Mentre durin el cel i la terra, no passarà per alt ni la lletra més menuda, ni el tret més",
-          "truncated": true,
-          "tags": [
-            "2025-06-11 (Mass)"
           ]
         }
       ]
@@ -129575,7 +129119,7 @@
     },
     {
       "id": "719",
-      "affectedCount": 12,
+      "affectedCount": 9,
       "variants": [
         {
           "preview": "En aquell temps, Jesús se n’anà a la muntanya de les Oliveres i l’endemà de bon matí es presentà de nou al temple. Tothom acudia al seu entorn i ell, assegut, els ensenyava.\nEls mestres de la Llei i els fariseus li portaren una dona que havia estat sorpresa cometent adulteri. La posaren al mig i li ",
@@ -129596,15 +129140,6 @@
             "2019-04-07 (Mass)",
             "2022-04-03 (Mass)",
             "2025-04-06 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús parlà als fariseus i els deia: «Jo soc la llum del món; el qui em segueix no camina a les fosques, sinó que té la llum de la vida». Els fariseus li digueren: «Tu ets testimoni de tu mateix: la teva declaració no té cap valor». Jesús els respongué: «Encara que jo sigui testimon",
-          "truncated": true,
-          "tags": [
-            "2019-04-08 (Mass)",
-            "2022-04-04 (Mass)",
-            "2025-04-07 (Mass)"
           ]
         }
       ]
@@ -130676,7 +130211,7 @@
     },
     {
       "id": "2035",
-      "affectedCount": 11,
+      "affectedCount": 8,
       "variants": [
         {
           "preview": "En aquell temps, Jesús parlà així: «Us ho dic amb tota veritat: el qui no entra per la porta al corral de les ovelles, sinó que salta per un altre indret, és un lladre o un bandoler. El qui entra per la porta és el pastor de les ovelles: el guarda li obre la porta, i les ovelles reconeixen la seva v",
@@ -130686,15 +130221,6 @@
             "2020-05-03 (Mass)",
             "2023-04-30 (Mass)",
             "2026-04-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús parlà així: «Jo soc el bon pastor. El bon pastor dona la vida per les seves ovelles. El qui no és pastor, sinó que treballa només a jornal, quan veu venir el llop, fuig i abandona les ovelles, perquè no són seves. És que ell només treballa pel jornal i tant se li’n dona, de le",
-          "truncated": true,
-          "tags": [
-            "2017-05-08 (Mass)",
-            "2020-05-04 (Mass)",
-            "2023-05-01 (Mass)"
           ]
         },
         {
@@ -130711,7 +130237,7 @@
     },
     {
       "id": "6017",
-      "affectedCount": 25,
+      "affectedCount": 22,
       "variants": [
         {
           "preview": "Jo soc el bon pastor, diu el Senyor:\njo reconec les meves ovelles,\ni elles em reconeixen a mi.",
@@ -130727,33 +130253,30 @@
           ]
         },
         {
-          "preview": "Jo soc el bon pastor,\ndiu el Senyor;\njo reconec les meves ovelles,\ni elles em reconeixen a mi.",
-          "truncated": false,
-          "tags": [
-            "2017-05-08 (Mass)",
-            "2018-07-10 (Mass)",
-            "2019-05-13 (Mass)",
-            "2019-07-09 (Mass)",
-            "2020-05-04 (Mass)",
-            "2020-07-07 (Mass)",
-            "2021-07-06 (Mass)",
-            "2022-05-09 (Mass)",
-            "2022-07-05 (Mass)",
-            "2023-05-01 (Mass)",
-            "2024-04-22 (Mass)",
-            "2024-07-09 (Mass)",
-            "2025-05-12 (Mass)",
-            "2025-07-08 (Mass)",
-            "2026-07-07 (Mass)"
-          ]
-        },
-        {
           "preview": "Jo soc el bon pastor, diu el Senyor;\njo reconec les meves ovelles,\ni elles em reconeixen a mi.",
           "truncated": false,
           "tags": [
             "2018-04-22 (Mass)",
             "2021-04-25 (Mass)",
             "2024-04-21 (Mass)"
+          ]
+        },
+        {
+          "preview": "Jo soc el bon pastor,\ndiu el Senyor;\njo reconec les meves ovelles,\ni elles em reconeixen a mi.",
+          "truncated": false,
+          "tags": [
+            "2018-07-10 (Mass)",
+            "2019-05-13 (Mass)",
+            "2019-07-09 (Mass)",
+            "2020-07-07 (Mass)",
+            "2021-07-06 (Mass)",
+            "2022-05-09 (Mass)",
+            "2022-07-05 (Mass)",
+            "2024-04-22 (Mass)",
+            "2024-07-09 (Mass)",
+            "2025-05-12 (Mass)",
+            "2025-07-08 (Mass)",
+            "2026-07-07 (Mass)"
           ]
         }
       ]
@@ -131352,36 +130875,6 @@
       ]
     },
     {
-      "id": "1225",
-      "affectedCount": 12,
-      "variants": [
-        {
-          "preview": "En aquell temps, Jesús alçà els ulls al cel i pregà dient: «Pare sant, no prego només per ells, sinó també pels qui creuran en mi gràcies a la seva paraula. Que tots siguin u. Que estiguin en nosaltres, Pare, com vós esteu en mi i jo en vós. Així el món creurà que vós m’heu enviat. La glòria que vós",
-          "truncated": true,
-          "tags": [
-            "2017-06-01 (Mass)",
-            "2018-05-17 (Mass)",
-            "2019-06-06 (Mass)",
-            "2020-05-28 (Mass)",
-            "2021-05-20 (Mass)",
-            "2022-06-02 (Mass)",
-            "2023-05-25 (Mass)",
-            "2023-05-26 (Mass)",
-            "2024-05-16 (Mass)",
-            "2025-06-05 (Mass)",
-            "2026-05-21 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús alçà els ulls al cel i digué: «Pare, ha arribat l’hora. Glorifiqueu el vostre Fill, perquè el Fill us pugui glorificar amb la sobirania que li heu donat sobre tots els homes, perquè doni vida eterna a tots els qui vós li heu confiat. I la vida eterna és que us coneguin a vós, ",
-          "truncated": true,
-          "tags": [
-            "2020-05-26 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "154",
       "affectedCount": 9,
       "variants": [
@@ -131493,7 +130986,7 @@
     },
     {
       "id": "96",
-      "affectedCount": 28,
+      "affectedCount": 22,
       "variants": [
         {
           "preview": "Beneiré el Senyor en tot moment,\ntindré sempre als llavis la seva lloança.\nLa meva ànima es gloria en el Senyor;\nse n’alegraran els humils quan ho sentin.\n\nR. Tasteu, i veureu que n’és, de bo, el Senyor.\n\nTots amb mi glorifiqueu el Senyor,\nexalcem plegats el seu nom.\nHe demanat al Senyor que em guié",
@@ -131539,18 +131032,6 @@
             "2018-08-12 (Mass)",
             "2021-08-08 (Mass)",
             "2024-08-11 (Mass)"
-          ]
-        },
-        {
-          "preview": "Beneiré el Senyor en tot moment,\ntindré sempre als llavis la seva lloança.\nLa meva ànima es gloria en el Senyor;\nse n’alegraran els humils quan ho sentin.\n\nR. El Senyor m’ha escoltat, res no m’espanta.\n\nTots amb mi glorifiqueu el Senyor,\nexalcem plegats el seu nom.\nHe demanat al Senyor que em guiés;",
-          "truncated": true,
-          "tags": [
-            "2019-01-22 (Mass)",
-            "2020-01-22 (Mass)",
-            "2021-01-22 (Mass)",
-            "2022-01-22 (Mass)",
-            "2025-01-22 (Mass)",
-            "2026-01-22 (Mass)"
           ]
         }
       ]
@@ -132478,56 +131959,6 @@
       ]
     },
     {
-      "id": "307",
-      "affectedCount": 8,
-      "variants": [
-        {
-          "preview": "Aquell dia, Jesús sortí de casa i s’assegué vora el llac. Era tanta la gent que es reuní entorn d’ell, que pujà a una barca i s’hi assegué. Tota la gent es quedà vora l’aigua i ell els parlà llargament en paràboles. Digué: «El sembrador va sortir a sembrar. Tot sembrant, una part de la llavor caigué",
-          "truncated": true,
-          "tags": [
-            "2017-07-26 (Mass)",
-            "2023-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, els deixebles s’acostaren a Jesús i li preguntaren: «Per què els parleu en paràboles?» Ell respongué: «Déu us fa a vosaltres el do de conèixer els secrets del Regne, però a ells, no. Als qui tenen, Déu els donarà encara més i en tindran a vessar; però als qui no tenen, els prendrà f",
-          "truncated": true,
-          "tags": [
-            "2018-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué als seus deixebles: «Escolteu vosaltres què vol dir la paràbola del sembrador. La llavor sembrada arran del camí vol dir que a tots aquells que escolten la predicació del Regne però no l’entenen, el Maligne els pren la llavor sembrada en els seus cors. La llavor sembrada",
-          "truncated": true,
-          "tags": [
-            "2019-07-26 (Mass)",
-            "2024-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús proposà encara a la gent una altra paràbola: «Amb el Regne del cel passa com amb un gra de mostassa que un home ha sembrat en el seu camp: és la més petita de les llavors, però, a mesura que creix, es fa més gran que totes les hortalisses i arriba a ser com un arbre, tant que ",
-          "truncated": true,
-          "tags": [
-            "2021-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús deixà la gent i se n’anà a casa. Els deixebles anaren a demanar-li que els expliqués la paràbola del jull sembrat en el camp. Ell els digué: «El qui sembra la bona llavor és el Fill de l’home. El camp és el món. La bona llavor són els del Regne. El jull són els del Maligne. L’",
-          "truncated": true,
-          "tags": [
-            "2022-07-26 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús proposà a la gent aquesta paràbola: «Amb el Regne del cel passa com amb un home que havia sembrat bona llavor al seu camp, però a la nit, mentre tothom dormia, vingué el seu enemic, sembrà jull enmig del blat, i se n’anà. Quan el sembrat hagué crescut i s’espigà, aparegué tamb",
-          "truncated": true,
-          "tags": [
-            "2025-07-26 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "169",
       "affectedCount": 6,
       "variants": [
@@ -132624,82 +132055,6 @@
             "2021-09-29 (Mass)",
             "2023-09-29 (Mass)",
             "2025-09-29 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "1644",
-      "affectedCount": 11,
-      "variants": [
-        {
-          "preview": "En aquells dies, quan la gent hagué menjat, Jesús obligà els deixebles a pujar tot seguit a la barca i avançar-se-li cap a l’altra riba, mentre ell acomiadava la gent. Després d’acomiadar tothom, pujà tot sol a la muntanya per pregar. Al vespre encara era allà tot sol.\nLa barca ja s’havia allunyat b",
-          "truncated": true,
-          "tags": [
-            "2017-08-07 (Mass)",
-            "2020-08-03 (Mass)",
-            "2023-08-07 (Mass)",
-            "2026-08-03 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, quan Jesús rebé la nova de la mort de Joan Baptista, se n’anà amb una barca cap a un lloc despoblat. Així que la gent ho va saber, el van seguir a peu des dels pobles. Quan desembarcà veié una gran gentada, se’n compadí i curava els seus malalts.\nEls deixebles, veient que es feia ta",
-          "truncated": true,
-          "tags": [
-            "2019-08-05 (Mass)",
-            "2021-08-02 (Mass)",
-            "2022-08-01 (Mass)",
-            "2024-08-05 (Mass)",
-            "2025-08-04 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, quan Jesús rebé la nova de la mort de Joan Baptista, se n’anà amb una barca cap a un lloc despoblat. Així que la gent ho va saber el van seguir a peu des dels pobles. Quan desembarcà veié una gran gentada, se’n compadí i curava els seus malalts. Els deixebles, veient que es feia tar",
-          "truncated": true,
-          "tags": [
-            "2020-08-02 (Mass)",
-            "2026-08-02 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "6142",
-      "affectedCount": 17,
-      "variants": [
-        {
-          "preview": "L’home no viu només de pa;\nviu de tota paraula que surt de la boca de Déu.",
-          "truncated": false,
-          "tags": [
-            "2017-08-08 (Mass)",
-            "2020-08-04 (Mass)",
-            "2023-08-08 (Mass)",
-            "2026-08-04 (Mass)"
-          ]
-        },
-        {
-          "preview": "Rabí, vós sou el Fill de Déu,\nsou el Rei d’Israel.",
-          "truncated": false,
-          "tags": [
-            "2017-08-24 (Mass)",
-            "2018-08-24 (Mass)",
-            "2019-08-24 (Mass)",
-            "2020-08-24 (Mass)",
-            "2021-08-24 (Mass)",
-            "2022-08-24 (Mass)",
-            "2023-08-24 (Mass)",
-            "2024-08-24 (Mass)",
-            "2026-08-24 (Mass)"
-          ]
-        },
-        {
-          "preview": "Rabí, vós sou el Fill de Déu, sou el Rei d’Israel.",
-          "truncated": false,
-          "tags": [
-            "2018-08-07 (Mass)",
-            "2021-08-03 (Mass)",
-            "2022-08-02 (Mass)",
-            "2025-08-05 (Mass)"
           ]
         }
       ]
@@ -133051,6 +132406,37 @@
       ]
     },
     {
+      "id": "6142",
+      "affectedCount": 13,
+      "variants": [
+        {
+          "preview": "Rabí, vós sou el Fill de Déu,\nsou el Rei d’Israel.",
+          "truncated": false,
+          "tags": [
+            "2017-08-24 (Mass)",
+            "2018-08-24 (Mass)",
+            "2019-08-24 (Mass)",
+            "2020-08-24 (Mass)",
+            "2021-08-24 (Mass)",
+            "2022-08-24 (Mass)",
+            "2023-08-24 (Mass)",
+            "2024-08-24 (Mass)",
+            "2026-08-24 (Mass)"
+          ]
+        },
+        {
+          "preview": "Rabí, vós sou el Fill de Déu, sou el Rei d’Israel.",
+          "truncated": false,
+          "tags": [
+            "2018-08-07 (Mass)",
+            "2021-08-03 (Mass)",
+            "2022-08-02 (Mass)",
+            "2025-08-05 (Mass)"
+          ]
+        }
+      ]
+    },
+    {
       "id": "899",
       "affectedCount": 13,
       "variants": [
@@ -133182,36 +132568,6 @@
           "tags": [
             "2021-05-28 (Mass)",
             "2023-06-02 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "369",
-      "affectedCount": 6,
-      "variants": [
-        {
-          "preview": "En aquell temps, digué Jesús: «Ai de vosaltres, mestres de la Llei i fariseus hipòcrites, que tanqueu a la gent l’entrada al Regne del cel: vosaltres no hi voleu entrar, i no permeteu que hi entrin els qui voldrien entrar-hi. Ai de vosaltres, mestres de la Llei i fariseus hipòcrites, que recorreu ma",
-          "truncated": true,
-          "tags": [
-            "2017-08-28 (Mass)",
-            "2023-08-28 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué: «Ai de vosaltres, mestres de la Llei i fariseus hipòcrites, que pagueu a Déu el delme fins i tot de la menta, del fonoll i del comí, però no us preocupeu de les exigències més importants de la Llei, com són la justícia, la misericòrdia i la lleialtat. Això és el que hav",
-          "truncated": true,
-          "tags": [
-            "2018-08-28 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué: «Ai de vosaltres, mestres de la Llei i fariseus hipòcrites, sou com els sepulcres emblanquinats, que de fora fan bonic, però per dintre són plens d’ossos i de brutícia. Igualment vosaltres, vistos de fora, sembleu gent de bé, però per dintre sou plens d’hipocresia i de ",
-          "truncated": true,
-          "tags": [
-            "2019-08-28 (Mass)",
-            "2024-08-28 (Mass)",
-            "2025-08-28 (Mass)"
           ]
         }
       ]
@@ -135003,16 +134359,10 @@
           ]
         },
         {
-          "preview": "Quan es complí el temps, Elisabet tingué un fill. Els veïns i els parents sentien dir que el Senyor li havia fet aquest favor tan gran, i tots la felicitaven. El dia vuitè es reuniren per circumcidar el nen, i proposaven que es digués Zacaries, com el seu pare. Però la mare s’hi oposava dient: «No, ",
-          "truncated": true,
-          "tags": [
-            "2018-12-23 (Mass)"
-          ]
-        },
-        {
           "preview": "Per aquells dies, Maria se n’anà decididament a la Muntanya, a la província de Judà; entrà a casa de Zacaries i saludà Elisabet. Tan bon punt Elisabet va sentir la salutació de Maria el nen saltà dins les seves entranyes, i Elisabet, plena de l’Esperit Sant, cridà amb totes les seves forces: «Ets be",
           "truncated": true,
           "tags": [
+            "2018-12-23 (Mass)",
             "2021-12-19 (Mass)",
             "2024-12-22 (Mass)"
           ]
@@ -135045,31 +134395,6 @@
             "2024-12-24 (Mass)",
             "2025-12-24 (Mass)",
             "2026-12-24 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "6173",
-      "affectedCount": 7,
-      "variants": [
-        {
-          "preview": "Soc l’esclava del Senyor:\nque es compleixin en mi les teves paraules.",
-          "truncated": false,
-          "tags": [
-            "2017-12-24 (Mass)",
-            "2020-12-20 (Mass)",
-            "2021-12-19 (Mass)",
-            "2023-12-24 (Mass)",
-            "2024-12-22 (Mass)",
-            "2026-12-20 (Mass)"
-          ]
-        },
-        {
-          "preview": "Rei de les nacions\ni pedra angular de l’Església:\nveniu a salvar l’home que vàreu formar del fang.",
-          "truncated": false,
-          "tags": [
-            "2018-12-23 (Mass)"
           ]
         }
       ]
@@ -135198,28 +134523,6 @@
       ]
     },
     {
-      "id": "2302",
-      "affectedCount": 4,
-      "variants": [
-        {
-          "preview": "Tenia posada l’esperança en el Senyor\ni ell, inclinant-se cap a mi,\nha inspirat als meus llavis un càntic nou,\nun himne de lloança al nostre Déu.\n\nR. Aquí em teniu: «Déu meu, vull fer la vostra voluntat».\n\nPerò vós no voleu oblacions ni sacrificis,\ni m’heu parlat a cau d’orella;\nno exigiu l’holocaus",
-          "truncated": true,
-          "tags": [
-            "2018-01-14 (Mass)",
-            "2021-01-17 (Mass)",
-            "2024-01-14 (Mass)"
-          ]
-        },
-        {
-          "preview": "Vós no voleu oblacions ni sacrificis,\ni m’heu parlat a cau d’orella;\nno exigiu l’holocaust ni l’expiació.\n\nR. Anuncieu la mort del Senyor fins que torni.\n\nPer això us dic: «Aquí em teniu:\ncom està escrit de mi en el llibre,\nDéu meu, vull fer la vostra voluntat,\nguardo la vostra llei al fons del cor»",
-          "truncated": true,
-          "tags": [
-            "2022-09-13 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "322",
       "affectedCount": 13,
       "variants": [
@@ -135307,30 +134610,6 @@
             "2018-07-15 (Mass)",
             "2021-07-11 (Mass)",
             "2024-07-14 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "368",
-      "affectedCount": 6,
-      "variants": [
-        {
-          "preview": "Com mantindrà pur un jove el seu camí?\nVivint d’acord amb la vostra paraula.\n\nR. Senyor, feu que aprengui els vostres decrets.\n\nUs he buscat amb tot el cor,\nno deixeu que m’aparti dels manaments. R.\n\nGuardo al fons del cor el que heu promès,\nper no pecar contra vós. R.\n\nSou beneït, Senyor,\nfeu que a",
-          "truncated": true,
-          "tags": [
-            "2018-02-03 (Mass)",
-            "2020-02-08 (Mass)",
-            "2022-02-05 (Mass)",
-            "2024-02-03 (Mass)",
-            "2026-02-07 (Mass)"
-          ]
-        },
-        {
-          "preview": "Aparteu-me dels falsos camins,\ndoneu-me, Senyor, la vostra llei.\n\nR. Feu, Senyor, que aprengui els vostres decrets.\n\nNo em tragueu dels llavis\nla promesa que no enganya:\nconfio en el vostre judici. R.\n\nEs posaran a favor meu el fidels,\nels qui coneixen el vostre pacte. R.\n\nSi guardo plenament els vo",
-          "truncated": true,
-          "tags": [
-            "2022-08-01 (Mass)"
           ]
         }
       ]
@@ -135440,6 +134719,8 @@
           "truncated": true,
           "tags": [
             "2019-01-08 (Mass)",
+            "2020-01-09 (Mass)",
+            "2025-01-09 (Mass)",
             "2026-01-08 (Mass)"
           ]
         },
@@ -135448,46 +134729,6 @@
           "truncated": true,
           "tags": [
             "2019-01-10 (Mass)"
-          ]
-        },
-        {
-          "preview": "Estimats meus, si Déu ens ha estimat així, també nosaltres ens hem d’estimar els uns als altres. Mai ningú no ha pogut contemplar Déu, però si ens estimem, Déu està en nosaltres, i dintre nostre el seu amor és tan gran que ja no hi falta res. Un senyal per a saber que estem en ell i ell en nosaltres",
-          "truncated": true,
-          "tags": [
-            "2020-01-09 (Mass)",
-            "2025-01-09 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "178",
-      "affectedCount": 8,
-      "variants": [
-        {
-          "preview": "En aquell temps, Jesús digué als seus deixebles: «Jo us estimo tal com el Pare m’estima. Manteniu-vos en l’amor que us tinc. Si observeu els meus manaments, us mantindreu en l’amor que us tinc, com jo també observo els manaments del meu Pare i em mantinc en l’amor que em té.\nUs he dit tot això perqu",
-          "truncated": true,
-          "tags": [
-            "2018-05-15 (Mass)",
-            "2019-05-15 (Mass)",
-            "2021-05-15 (Mass)",
-            "2024-05-15 (Mass)",
-            "2025-05-15 (Mass)",
-            "2026-05-15 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué als seus deixebles: «El meu manament és que us estimeu els uns als altres tal com jo us he estimat. Ningú no té un amor més gran que el qui dona la vida pels seus amics. Vosaltres sou els meus amics si feu el que jo us mano. Ja no us dic servents, perquè el servent no sa",
-          "truncated": true,
-          "tags": [
-            "2020-05-15 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús digué als seus deixebles: «Quan vindrà el Defensor que jo us enviaré quan seré amb el Pare, l’Esperit de la veritat que prové del Pare, donarà testimoni de mi. I vosaltres, que sou amb mi des del principi, també en donareu testimoni. Us dic això perquè no tinguéssiu un desenga",
-          "truncated": true,
-          "tags": [
-            "2023-05-15 (Mass)"
           ]
         }
       ]
@@ -135687,37 +134928,6 @@
           "tags": [
             "2019-06-27 (Mass)",
             "2025-06-26 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "473",
-      "affectedCount": 7,
-      "variants": [
-        {
-          "preview": "En aquell temps, mentre Jesús parlava a la gent, la seva mare i els seus familiars, que eren fora de la casa, volien parlar amb ell. Algú li digué: «La vostra mare i els vostres parents són aquí fora, que us volen parlar». Jesús li respongué: «Qui és la meva mare? Qui són els meus parents?» Llavors ",
-          "truncated": true,
-          "tags": [
-            "2018-07-24 (Mass)",
-            "2020-07-21 (Mass)",
-            "2021-07-20 (Mass)",
-            "2022-07-19 (Mass)",
-            "2026-07-21 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, Jesús passava per uns sembrats un dissabte. Els seus deixebles, que tenien gana, començaren a collir espigues i a menjar-se-les. Quan els fariseus ho veieren, digueren a Jesús: «Mira, els teus deixebles fan una feina que no és permès de fer en dissabte». Jesús els respongué: «No heu",
-          "truncated": true,
-          "tags": [
-            "2021-07-16 (Mass)"
-          ]
-        },
-        {
-          "preview": "En aquell temps, els fariseus planejaven com podrien fer-ho per matar Jesús. Quan ell ho sabé, se n’anà d’allà. Molta gent el va seguir, i ell curà tots els malalts, però els manà que no ho fessin públic, perquè es complís allò que havia dit el profeta Isaïes: «Aquí teniu el meu servent, de qui he p",
-          "truncated": true,
-          "tags": [
-            "2022-07-16 (Mass)"
           ]
         }
       ]
@@ -136355,29 +135565,6 @@
       ]
     },
     {
-      "id": "2057",
-      "affectedCount": 5,
-      "variants": [
-        {
-          "preview": "En aquell temps, Jesús veié una gran gentada i se’n compadí, perquè eren com ovelles sense pastor. I es posà a instruir-los llargament. Veient que s’havia fet tard, els deixebles anaren a dir-li: «Som en un indret despoblat i ja s’ha fet tard. Acomiadeu la gent: que se’n vagin a les cases i als pobl",
-          "truncated": true,
-          "tags": [
-            "2019-01-08 (Mass)",
-            "2026-01-08 (Mass)"
-          ]
-        },
-        {
-          "preview": "Després de la multiplicació dels pans, Jesús obligà els deixebles a pujar tot seguit a la barca i avançar-se cap a l’altra riba, en direcció a Betsaida, mentre ell acomiadava la gent. Després d’acomiadar-los, se n’anà a la muntanya a pregar. Al vespre la barca ja era al mig del llac, i ell era a ter",
-          "truncated": true,
-          "tags": [
-            "2019-01-10 (Mass)",
-            "2020-01-09 (Mass)",
-            "2025-01-09 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "2056",
       "affectedCount": 5,
       "variants": [
@@ -136386,6 +135573,8 @@
           "truncated": true,
           "tags": [
             "2019-01-08 (Mass)",
+            "2020-01-09 (Mass)",
+            "2025-01-09 (Mass)",
             "2026-01-08 (Mass)"
           ]
         },
@@ -136395,68 +135584,26 @@
           "tags": [
             "2019-01-10 (Mass)"
           ]
-        },
-        {
-          "preview": "Déu meu, doneu al rei el vostre dret;\ndoneu al príncep la vostra rectitud.\nQue governi amb justícia el vostre poble,\nque sigui recte amb els humils. \n\nR. Us adoraran, Senyor, tots els pobles.\n\nLi portaran obsequis les illes\ni els reis de Tarsís;\nels reis d’Aràbia i de Sabà\nli oferiran presents. R.\n\n",
-          "truncated": true,
-          "tags": [
-            "2020-01-09 (Mass)",
-            "2025-01-09 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "6002",
-      "affectedCount": 9,
-      "variants": [
-        {
-          "preview": "Glòria a vós, oh Crist, proclamat a tots els pobles;\nglòria a vós, oh Crist, cregut en el món.",
-          "truncated": false,
-          "tags": [
-            "2019-01-10 (Mass)",
-            "2020-01-05 (Mass)",
-            "2020-01-09 (Mass)",
-            "2021-01-03 (Mass)",
-            "2022-01-02 (Mass)",
-            "2025-01-05 (Mass)",
-            "2025-01-09 (Mass)",
-            "2026-01-04 (Mass)"
-          ]
-        },
-        {
-          "preview": "El Senyor m’ha enviat a portar la Bona Nova als desvalguts,\na proclamar als captius la llibertat.",
-          "truncated": false,
-          "tags": [
-            "2026-01-08 (Mass)"
-          ]
         }
       ]
     },
     {
       "id": "1916",
-      "affectedCount": 5,
+      "affectedCount": 4,
       "variants": [
         {
           "preview": "Estimats, veient com Déu s’ha avançat a estimar-nos, estimem també nosaltres. Si algú deia que estima Déu però no estimava el seu germà, mentiria, perquè els qui no estimen els germans, que veuen, no poden estimar Déu que no veuen. Jesucrist mateix és qui ens dona aquest manament: Qui estima Déu, qu",
           "truncated": true,
           "tags": [
-            "2019-01-11 (Mass)",
-            "2020-01-10 (Mass)",
-            "2025-01-10 (Mass)"
-          ]
-        },
-        {
-          "preview": "Estimats meus, hem d’estimar-nos els uns als altres, perquè l’amor ve de Déu. Tothom qui estima és fill de Déu: ha nascut d’ell i el coneix. Els qui no estimen no coneixen Déu, perquè Déu és amor. Hem vist clarament l’amor que Déu ens té quan ell ha enviat al món el seu Fill únic, perquè visquem grà",
-          "truncated": true,
-          "tags": [
-            "2021-01-08 (Mass)"
+            "2019-01-11 (Mass)"
           ]
         },
         {
           "preview": "Estimats meus, si Déu ens ha estimat així, també nosaltres ens hem d’estimar els uns als altres. Mai ningú no ha pogut contemplar Déu, però si ens estimem, Déu està en nosaltres, i dintre nostre el seu amor és tan gran que ja no hi falta res. Un senyal per a saber que estem en ell i ell en nosaltres",
           "truncated": true,
           "tags": [
+            "2020-01-10 (Mass)",
+            "2025-01-10 (Mass)",
             "2026-01-09 (Mass)"
           ]
         }
@@ -136586,6 +135733,31 @@
       ]
     },
     {
+      "id": "1644",
+      "affectedCount": 7,
+      "variants": [
+        {
+          "preview": "En aquell temps, quan Jesús rebé la nova de la mort de Joan Baptista, se n’anà amb una barca cap a un lloc despoblat. Així que la gent ho va saber, el van seguir a peu des dels pobles. Quan desembarcà veié una gran gentada, se’n compadí i curava els seus malalts.\nEls deixebles, veient que es feia ta",
+          "truncated": true,
+          "tags": [
+            "2019-08-05 (Mass)",
+            "2021-08-02 (Mass)",
+            "2022-08-01 (Mass)",
+            "2024-08-05 (Mass)",
+            "2025-08-04 (Mass)"
+          ]
+        },
+        {
+          "preview": "En aquell temps, quan Jesús rebé la nova de la mort de Joan Baptista, se n’anà amb una barca cap a un lloc despoblat. Així que la gent ho va saber el van seguir a peu des dels pobles. Quan desembarcà veié una gran gentada, se’n compadí i curava els seus malalts. Els deixebles, veient que es feia tar",
+          "truncated": true,
+          "tags": [
+            "2020-08-02 (Mass)",
+            "2026-08-02 (Mass)"
+          ]
+        }
+      ]
+    },
+    {
       "id": "3201",
       "affectedCount": 5,
       "variants": [
@@ -136609,23 +135781,27 @@
       ]
     },
     {
-      "id": "1918",
-      "affectedCount": 4,
+      "id": "6002",
+      "affectedCount": 8,
       "variants": [
         {
-          "preview": "Després de la multiplicació dels pans, Jesús obligà els deixebles a pujar tot seguit a la barca i avançar-se cap a l’altra riba, en direcció a Betsaida, mentre ell acomiadava la gent. Després d’acomiadar-los, se n’anà a la muntanya a pregar. Al vespre la barca ja era al mig del llac, i ell era a ter",
-          "truncated": true,
+          "preview": "Glòria a vós, oh Crist, proclamat a tots els pobles;\nglòria a vós, oh Crist, cregut en el món.",
+          "truncated": false,
           "tags": [
-            "2020-01-10 (Mass)",
-            "2025-01-10 (Mass)",
-            "2026-01-09 (Mass)"
+            "2020-01-05 (Mass)",
+            "2021-01-03 (Mass)",
+            "2022-01-02 (Mass)",
+            "2025-01-05 (Mass)",
+            "2026-01-04 (Mass)"
           ]
         },
         {
-          "preview": "En aquell temps, Jesús veié una gran gentada i se’n compadí, perquè eren com ovelles sense pastor. I es posà a instruir-los llargament. Veient que s’havia fet tard, els deixebles anaren a dir-li: «Som en un indret despoblat i ja s’ha fet tard. Acomiadeu la gent: que se’n vagin a les cases i als pobl",
-          "truncated": true,
+          "preview": "El Senyor m’ha enviat a portar la Bona Nova als desvalguts,\na proclamar als captius la llibertat.",
+          "truncated": false,
           "tags": [
-            "2021-01-08 (Mass)"
+            "2020-01-09 (Mass)",
+            "2025-01-09 (Mass)",
+            "2026-01-08 (Mass)"
           ]
         }
       ]

@@ -208,4 +208,78 @@ function fingerprint(value) {
   };
 }
 
-module.exports = { stripMarkup, bareReference, bookKey, fingerprint };
+// The verses a citation names, as "chapter:verse", so a reading that runs on into another
+// chapter ("Ez 9,1-7;10,18-22") compares on both halves. The part-verse letters go ("Mc
+// 1,21b-28" is "Mc 1,21-28"), and so do the psalm's response ("(R.: 4b)") and the Catalan
+// list separator ("3-4.18 i 23"). A range that crosses into the next chapter ("Gn 1,1–2,2",
+// "Sa 11, 22-12, 2") keeps only where it starts. Null when the verses are not spelled out
+// ("Salm 109") or cannot be read: that is a difference of precision, not of reading.
+function verseSet(fp) {
+  if (!fp || !fp.chapter || !fp.verses) return null;
+  const body = fp.verses.split('(')[0].replace(/\s+i\s+/g, '.').replace(/\s+/g, '').replace(/[.,;]+$/, '');
+  const first = body.match(/^(\d+)/);
+  if (!first) return null;
+  if (/^\d+[a-e]*–\d+[a-e]*,/.test(body)) return { open: true, start: `${fp.chapter}:${first[1]}` };
+  const set = new Set();
+  let start = null;
+  for (const [n, segment] of body.split(';').entries()) {
+    let chapter = fp.chapter;
+    let verses = segment;
+    if (n > 0) {
+      const m = /^(\d+),(.+)$/.exec(segment);
+      if (!m) return null;
+      [, chapter, verses] = m;
+    }
+    for (const part of verses.split(/[.,]/)) {
+      const m = /^(\d+)[a-e]*(?:[-–](\d+)[a-e]*)?$/.exec(part);
+      if (!m) return null;
+      const a = Number(m[1]);
+      const b = m[2] ? Number(m[2]) : a;
+      if (b < a) return { open: true, start: `${fp.chapter}:${first[1]}` };
+      if (b - a > 200) return null;
+      for (let v = a; v <= b; v++) set.add(`${chapter}:${v}`);
+      if (start === null) start = `${chapter}:${a}`;
+    }
+  }
+  return { open: false, start, set };
+}
+
+const sameSet = (a, b) => a.size === b.size && [...a].every((v) => b.has(v));
+
+// The same verses counted from a different place: Hosea 2, Tobit and Daniel 3 are numbered
+// differently in the two editions, by up to three verses.
+function shiftedEqual(a, b) {
+  for (let k = -3; k <= 3; k++) {
+    if (k === 0) continue;
+    const moved = new Set([...a].map((cv) => {
+      const [c, v] = cv.split(':');
+      return `${c}:${Number(v) + k}`;
+    }));
+    if (sameSet(moved, b)) return true;
+  }
+  return false;
+}
+
+// How well two citations name the same reading:
+//   2  the same verses (or the same ones numbered from a different place)
+//   1  the same book and chapter, with overlapping verses or verses one side leaves out
+//   0  a different book or chapter, or verses that do not meet at all
+//
+// Book and chapter are enough to say that two spellings are the same reading, which is what
+// the review needs (`token`). They are not enough to CHOOSE between two readings of the same
+// chapter, which is what the join does with the Mass: "Lc 1" is the vigil of John the
+// Baptist (1, 5-17) and the day (1, 57-66.80), and the join filed the day into the vigil's
+// cell every year (MIGRA-018).
+function readingMatch(a, b) {
+  const fa = typeof a === 'string' ? fingerprint(a) : a;
+  const fb = typeof b === 'string' ? fingerprint(b) : b;
+  if (!fa || !fb || fa.token !== fb.token) return 0;
+  const va = verseSet(fa);
+  const vb = verseSet(fb);
+  if (!va || !vb) return 1;
+  if (va.open || vb.open) return va.start === vb.start ? 2 : 1;
+  if (sameSet(va.set, vb.set) || shiftedEqual(va.set, vb.set)) return 2;
+  return [...va.set].some((v) => vb.set.has(v)) ? 1 : 0;
+}
+
+module.exports = { stripMarkup, bareReference, bookKey, fingerprint, verseSet, readingMatch };

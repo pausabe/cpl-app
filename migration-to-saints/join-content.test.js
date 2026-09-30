@@ -31,7 +31,7 @@ const memorialFerial = require('./lib/memorial-ferial');
 // without this the Catalan half of saints-app's memorial tab can never be filled. See
 // lib/common-office.js and decisions/D-001-el-comu-a-les-memories.md.
 const commonOffice = require('./lib/common-office');
-const { fingerprint } = require('./lib/citation-key');
+const { fingerprint, readingMatch } = require('./lib/citation-key');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
 const {
@@ -572,6 +572,15 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     //              carries the VIGIL in its plain roles — cpl-app resolves that vigil on Holy
     //              Saturday (PLAN §18.4). Costs nothing: the citation gate keeps it from
     //              reaching any other day.
+    //
+    // Book and chapter are not enough to choose (MIGRA-018). The vigil of John the Baptist
+    // reads Lc 1, 5-17 and the day Lc 1, 57-66.80; on a memorial without readings of its own,
+    // the weekday's Rm 12, 5-16a is the same chapter as the saint's Rm 12, 3-13. Matching on
+    // the chapter filed the day into the vigil's cell and the weekday into the saint's, nine
+    // readings in all. So the match is graded by the verses (`readingMatch`): verses that do
+    // not meet are no match, and a reading of cpl-app goes only to the cell of the day it fits
+    // best — the weekday's Rm 12, 5-16a fits the weekday's cell exactly, so it is not also
+    // offered to the saint's.
     const massStats = { cells: 0, byCandidate: { rendered: 0, ferial: 0, eve: 0 }, unmatched: 0 };
     function observeMass(entry, candidates, tag) {
       const flat = {
@@ -579,48 +588,62 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         ferial: extractMassFields(candidates.ferial),
         eve: extractMassFields(candidates.eve),
       };
+      const matches = [];
       for (const [field, id] of Object.entries(entry)) {
         const m = /^(CELEBRATION_)?([A-Z]+)_ref$/.exec(field);
         if (!m) continue;                       // `_texto` is filled by whoever wins the `_ref`
         const role = m[2];
         if (!MASS_ROLES[role]) continue;        // ALTERNATIVE_/SHORT_/COMMENT: cpl-app has none
-        const want = citeKey(esTable('lecturas_referencia')[String(id)]);
+        const want = fingerprint(esTable('lecturas_referencia')[String(id)] || '');
         if (!want) continue;                    // no citation in the cell: nothing to match on
-        let picked = null;
         for (const source of ['rendered', 'ferial', 'eve']) {
           const fields = flat[source];
           if (!fields || !fields[`${role}_ref`]) continue;
-          if (citeKey(fields[`${role}_ref`]) !== want) continue;
-          picked = { source, fields };
-          break;
+          const score = readingMatch(fields[`${role}_ref`], want);
+          if (score) matches.push({ field, id, prefix: m[1] || '', role, source, fields, ref: fields[`${role}_ref`], score });
         }
-        if (!picked) { massStats.unmatched++; continue; }
-        observe('lecturas_referencia', id, picked.fields[`${role}_ref`], tag);
-        const textId = entry[`${m[1] || ''}${role}_texto`];
-        const body = picked.fields[`${role}_texto`];
+      }
+      // Yesterday's Mass counts only where it IS the Mass of the column: two readings or more of
+      // it in the same column. That keeps the Easter Vigil and the days after the Epiphany
+      // (cpl-app goes by date, saints-app by weekday), and drops a lone psalm that happens to
+      // share a chapter — Monday's Sl 95 of week 22, filed into Gregory the Great's cell on
+      // Tuesday 3-IX-2019.
+      const eveRoles = {};
+      for (const x of matches) if (x.source === 'eve') eveRoles[x.prefix] = (eveRoles[x.prefix] || 0) + 1;
+      for (let i = matches.length - 1; i >= 0; i--) {
+        if (matches[i].source === 'eve' && (eveRoles[matches[i].prefix] || 0) < 2) matches.splice(i, 1);
+      }
+      const bestFor = new Map();
+      for (const x of matches) bestFor.set(x.ref, Math.max(bestFor.get(x.ref) || 0, x.score));
+      const pickedFor = {};                     // "<prefix>GOSPEL" -> the Mass that supplied it
+      for (const [field, id] of Object.entries(entry)) {
+        const m = /^(CELEBRATION_)?([A-Z]+)_ref$/.exec(field);
+        if (!m || !MASS_ROLES[m[2]]) continue;
+        const own = matches.filter((x) => x.field === field && x.score === bestFor.get(x.ref));
+        if (!own.length) {
+          if (fingerprint(esTable('lecturas_referencia')[String(id)] || '')) massStats.unmatched++;
+          continue;
+        }
+        // Best score first; between equals, the order of the candidates (rendered, ferial, eve).
+        const picked = own.reduce((a, b) => (b.score > a.score ? b : a));
+        observe('lecturas_referencia', id, picked.ref, tag);
+        const textId = entry[`${picked.prefix}${picked.role}_texto`];
+        const body = picked.fields[`${picked.role}_texto`];
         if (textId !== undefined && body) observe('lecturas_texto', textId, body, tag);
         massStats.cells++;
         massStats.byCandidate[picked.source]++;
+        pickedFor[`${picked.prefix}${picked.role}`] = picked.fields;
       }
       // The verse before the Gospel is the one role with no citation of its own in the cell
       // (`es` keeps the REFRAIN there — "Aleluya, aleluya, aleluya" — which is not data in
-      // cpl-app at all, see PLAN §18.3), so it can't be matched and is filed from whichever
-      // Mass supplied the Gospel of the same column.
+      // cpl-app at all, see PLAN §18.3), so it can't be matched and is filed from the Mass
+      // that supplied the Gospel of the same column — and from none if no Mass did.
       for (const prefix of ['', 'CELEBRATION_']) {
         const textId = entry[`${prefix}ACCLAMATION_texto`];
-        if (textId === undefined) continue;
-        const gospelRef = entry[`${prefix}GOSPEL_ref`];
-        const want = citeKey(esTable('lecturas_referencia')[String(gospelRef)]);
-        if (!want) continue;
-        for (const source of ['rendered', 'ferial', 'eve']) {
-          const fields = flat[source];
-          if (!fields || !fields.GOSPEL_ref || citeKey(fields.GOSPEL_ref) !== want) continue;
-          if (fields.ACCLAMATION_texto) {
-            observe('lecturas_texto', textId, fields.ACCLAMATION_texto, tag);
-            massStats.cells++;
-          }
-          break;
-        }
+        const fields = pickedFor[`${prefix}GOSPEL`];
+        if (textId === undefined || !fields || !fields.ACCLAMATION_texto) continue;
+        observe('lecturas_texto', textId, fields.ACCLAMATION_texto, tag);
+        massStats.cells++;
       }
     }
 
