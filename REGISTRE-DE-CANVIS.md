@@ -14,9 +14,9 @@ Els dossiers llargs viuen a `migration-to-saints/cpl-bugs/` (errors de cpl-app) 
 els enllaços.
 
 Els commits de cpl-app són a `origin`, a la branca `catalan-migration` (pujada el 29-9-2026), i
-els seus enllaços de GitHub funcionen; els de litcal, a `catalan-calendars`. Els de saints-app
-**no**: a 29-9-2026 la branca `catalan-language-support-dev` no s'havia pujat mai, i els enllaços
-cap a saints-app no funcionaran fins que s'hi pugi.
+els seus enllaços de GitHub funcionen; els de litcal, a `catalan-calendars`. Els de saints-app, a la
+branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per primer cop el 30-9-2026
+(fins a `fdbcaaaf5`).
 
 ---
 
@@ -1550,7 +1550,7 @@ Reexportació després de la [MIGRA-018](#migra-018). L'exportació només afege
 | Esborrades | `lecturas_referencia` 283, 328, 444, 703, 927, 964, 1619, 1790, 1946 · `lecturas_texto` 350, 408, 553, 883, 998, 1163, 2426, 6058 |
 | Noves | `lecturas_referencia` 297, 988, 1531, 1559, 1640, 1845, 4342 · `lecturas_texto` 88, 368, 473, 1225, 1918, 2057, 2302, 6173, totes iguals al castellà |
 | No tocat | Completes: l'exportació en reescriu els set fitxers, però només hi canvia l'ordre de les claus; desfet, com a la [SA-17](#sa-17) |
-| Commit | `56fbbcd54` (saints-app, branca `catalan-language-support-dev`, local) |
+| Commit | `56fbbcd54` (saints-app, branca `catalan-language-support-dev`) |
 
 <a id="migra-020"></a>
 ## MIGRA-020
@@ -1583,7 +1583,7 @@ difunts, i la `9573` s'ha esborrat **a mà** (l'exportació no esborra). 56 dies
 
 | | |
 |---|---|
-| Commit | `26767fa24` (saints-app, branca `catalan-language-support-dev`, local) |
+| Commit | `26767fa24` (saints-app, branca `catalan-language-support-dev`) |
 
 <a id="sa-20"></a>
 ## SA-20
@@ -1600,7 +1600,7 @@ veure, perquè ens ho reportin.
 |---|---|
 | Codi | `src/utils/missingText.ts` (nou): `withoutMissingPreces()`, aplicat a les pregàries de Laudes i Vespres, també a la pestanya ferial; `isMissingTextPlaceholder` s'hi trasllada i `TextService` el continua exportant |
 | Test | `tests/unit/utils/missingText.spec.ts`, 3 de 3. La resta de vitest, les mateixes 10 fallades d'abans (findOfficeDeceased, bible-parallels, calendari); `tsc` sense errors |
-| Commit | `6899c5077` (branca `catalan-language-support-dev`, local) |
+| Commit | `6899c5077` (branca `catalan-language-support-dev`) |
 
 <a id="migra-007"></a>
 ## MIGRA-007
@@ -2108,7 +2108,7 @@ diferència (la còpia més repetida). La que no:
 
 | | |
 |---|---|
-| Commit | `fdbcaaaf5` (saints-app, branca `catalan-language-support-dev`, local) |
+| Commit | `fdbcaaaf5` (saints-app, branca `catalan-language-support-dev`) |
 
 # Canvis a saints-app
 
