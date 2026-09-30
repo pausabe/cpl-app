@@ -18,11 +18,11 @@ d'idioma**, això provocava dues coses:
 
 ## Estat actual: 100% traduït
 
-- `literals.json` — **1.494/1.494 fulles** en català (0 pendents).
+- `literals.json` — **1.531/1.531 fulles** en català (0 pendents, 30-9-2026).
 - `prayers.json` — **76/76 cossos** en català (0 pendents).
 - `invitatoryPsalms.json` i `permitedShortWords.json` — complets.
-- Els 21 calendaris de litcal (Espanya + Catalunya + 13 diòcesis + Andorra) tenen la
-  seva clau `calendar_*`.
+- Tots els calendaris de litcal que es poden triar en català (Espanya, Catalunya, les 12
+  diòcesis, Andorra i les 22 ciutats i catedrals) tenen la seva clau `calendar_*`.
 
 Verificat: paritat exacta de claus amb `es/`, JSON vàlid, cap pregària amb cos
 idèntic al castellà per descuit.
@@ -36,7 +36,11 @@ python3 migration-to-saints/generic-texts/build_literals.py     # literals + cal
 python3 migration-to-saints/generic-texts/build_prayers.py      # devocionari
 ```
 
-Escriuen directament a `saints-app/src/store/db/generic_texts/ca/`.
+Escriuen directament a `saints-app/src/store/db/generic_texts/ca/`. Per escriure en una altra
+còpia (un worktree), `build_literals.py` accepta `SAINTS_APP=<directori de saints-app>`.
+
+A saints-app, `tests/unit/catalanLiterals.spec.ts` falla quan el castellà té una clau que el català
+no té: llavors toca afegir-ne la traducció a un lot i tornar a córrer l'script.
 
 `build_literals.py` mergeix tots els `ca-literals-ui*.json` del directori (cada un és
 un lot de traducció amb claus en ruta de punts, p. ex. `lent.itinerary.day_20_feb`).
@@ -76,8 +80,8 @@ producció, val la pena que algú amb criteri litúrgic en català ho revisi, es
   passatges bíblics i patrístics, no la Bíblia Catalana Interconfessional ni el Breviari
   oficial.
 
-## Fora d'abast (però trencarà igual)
+## Fora d'abast
 
-`bible/ca/` i `catecismo/ca/` tampoc existeixen. No afecten l'arrencada — només es
-carreguen en entrar a la Bíblia o al Catecisme — però aquestes pantalles fallaran en
-català exactament pel mateix motiu.
+`bible/ca/`, `catecismo/ca/`, `novena/ca/` i `dailySaints/ca/` no existeixen. Des del 30-9-2026
+aquestes funcions estan apagades en català (`LanguageFeatures.ts`, registre SA-25), igual que el
+devocionari, que té `prayers.json` però sense revisar.

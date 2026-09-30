@@ -114,6 +114,11 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [EPREX-009](#eprex-009) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-008 | — |
 | [D-014](#d-014) | 2026-09-30 | eines + saints-app | **decisió** (197 caselles, una per una) | Es regenera: `decided-cells.json` | el que afegeix la fitxa · saints-app `ed7ea84f1` |
 | [D-015](#d-015) | 2026-09-30 | saints-app | **decisió** (limitació acceptada) | — | el que afegeix la fitxa |
+| [SA-24](#sa-24) | 2026-09-30 | saints-app | **codi** | No — va al git | `9e5ecaaf8`, branca `catalan-language-support-dev`, local |
+| [SA-25](#sa-25) | 2026-09-30 | saints-app | **codi** | No — va al git | `bdbb1a29b`, local |
+| [SA-26](#sa-26) | 2026-09-30 | saints-app | contingut + codi | Es regenera: `generic-texts/build_literals.py` | `688e9d04a`, local |
+| [EINA-literals](#eina-literals) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
+| [SA-27](#sa-27) | 2026-09-30 | saints-app | **codi** | No — va al git | `519e122a2`, local |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2299,6 +2304,115 @@ Fernando, el 30-9: «¿Crees que vale la pena meterse en ese lío?»; en Pau: «
 | A favor | societaslaudis també hi posa els graduals: és una simplificació habitual |
 | Revisió | La troballa F32 continua sent un error d'eprex (veredicte 2), però ja sense correcció proposada |
 | Commit | el que afegeix la fitxa |
+
+<a id="sa-24"></a>
+## SA-24
+
+**En català, la bandera del Canadà, la pàgina d'inici buida i «Italiano»** · 30 de setembre de 2026
+
+Tres coses que es veien triant el català a saints-app, totes de codi i cap de textos:
+
+- Els selectors d'idioma (configuració i benvinguda) posaven la bandera buscant-la pel codi de l'idioma, i
+  a la col·lecció de banderes `ca` és el Canadà. Ara cada idioma diu quina bandera porta, i el català, la
+  senyera (`es-ct.svg`, rodona com les altres).
+- La data del dia no tenia format català i sortia buida. La pàgina d'inici espera la data per aparèixer: en
+  català quedava en blanc. Ara diu «Dimecres, 30 de setembre». Les dates de la safata d'entrada, que anaven
+  sempre en castellà, fan servir l'idioma triat.
+- El selector de veus de la lectura en veu alta deia «Italiano» quan l'idioma era el català.
+
+| | |
+|---|---|
+| Codi | `src/constants/languages.ts` (bandera i `locale` de cada idioma), `utils/buildDateString.ts`, els dos selectors d'idioma, `InboxPage`/`InboxDetailPage`, `TtsVoiceSelector`; fora `FlagCaIcon.vue`, sense ús des del redisseny de la benvinguda |
+| Test | `tests/unit/utils/buildDateString.spec.ts` (data en català, castellà i italià) |
+| Commit | `9e5ecaaf8` (saints-app, branca `catalan-language-support-dev`, **local, sense pujar**) |
+
+<a id="sa-25"></a>
+## SA-25
+
+**En català s'apaga el que no té contingut català** · 30 de setembre de 2026
+
+En català no hi ha Bíblia, catecisme, novenes, comentaris a l'Evangeli, rosari gravat ni vides de sants, i
+el devocionari és una traducció automàtica sense revisar. L'app només n'amagava les targetes de l'inici, i
+per altres portes s'hi arribava igual:
+
+- Un recordatori, una notificació, un missatge de la safata o un enllaç compartit obrien aquelles pàgines
+  **buides**. Ara la ruta diu quina funció necessita i, si l'idioma no la té, l'app torna a l'inici.
+- El selector de recordatoris oferia Bíblia, catecisme, sant del dia, novenes i devocionari. Ja no; i
+  torna a carregar les llistes quan canvia l'idioma (abans es quedaven en el primer).
+- La targeta del sant del dia deia literalment «error». Ara és una funció més, apagada en català.
+- La **lectura en veu alta s'aturava** en qualsevol text amb un parèntesi: buscava cites bíbliques a la
+  Bíblia catalana, que no existeix.
+- Els comentaris a l'Evangeli es carregaven igualment: unes 4.000 cerques fallides a cada canvi de dia.
+
+I el més greu, que no es veia: **cada càrrega fallida desactivava les actualitzacions de textos** per a tot
+el contingut (esborrava `textsDownloadedVersion`), i l'app tornava als textos que porta de fàbrica.
+
+| | |
+|---|---|
+| Codi | `services/LanguageFeatures.ts` (`saintOfTheDay`, nova), `router/` (`meta.feature` a 13 rutes i una guarda), `SelectReminderSectionModal.vue`, `HomePage.vue`, i els magatzems de Bíblia, novenes, comentaris i sants, i el lector de cites |
+| Test | `tests/unit/services/LanguageFeatures.spec.ts`, `tests/unit/router/featureRoutes.spec.ts`. La resta de vitest, les mateixes fallades d'abans |
+| Commit | `bdbb1a29b` (local) |
+
+<a id="sa-26"></a>
+## SA-26
+
+**Els literals catalans que faltaven, i fora el castellà fixat al codi** · 30 de setembre de 2026
+
+Des de la traducció, dev hi havia afegit dotze textos que en català sortien com a `⟪clau⟫`: les pantalles de
+benvinguda del calendari i de les notificacions, l'etiqueta «Cicle» de la capçalera del dia i la nota sobre
+la numeració dels salms. I la configuració i la benvinguda tenien text en castellà escrit dins del codi
+(«Textos y contenido», «Interfaz», «Siguiente», «Volver»): ara són literals, en les tres llengües. També hi
+ha els noms dels 22 calendaris de ciutat i catedral de litcal, i dos textos del selector de calendari
+nou ([SA-27](#sa-27)).
+
+| | |
+|---|---|
+| Contingut | `generic_texts/ca/literals.json`, generat amb `build_literals.py` ([EINA-literals](#eina-literals)); les claus noves de `es` i `it`, a mà |
+| Test | `tests/unit/catalanLiterals.spec.ts`: falla si el castellà té una clau que el català no té (comprovat contra el fitxer d'abans: en trobava 17) |
+| Commit | `688e9d04a` (local) |
+
+Les tres pregàries del devocionari que el castellà ha afegit (241, 336, 337) no s'han traduït: el devocionari
+està apagat en català ([SA-25](#sa-25)).
+
+<a id="eina-literals"></a>
+## EINA-literals
+
+**`build_literals.py` pot escriure en una altra còpia de saints-app, i els calendaris catalans surten sols** · 30 de setembre de 2026
+
+L'script escrivia sempre a `/Users/pau/projects/saints/saints-app`, i aquell directori era a mig merge d'una
+altra branca. Ara `SAINTS_APP=<directori>` l'apunta a una altra còpia (un worktree). A més, les claus dels
+calendaris catalans ja no són una llista de 14 dins de l'script: són totes les `calendar_*` de
+`ca-literals.json` que no hi ha en castellà. Les traduccions noves són al lot `ca-literals-ui-onboarding.json`.
+
+| | |
+|---|---|
+| Comprovació | Corregut sobre el `ca/literals.json` d'abans, el reprodueix exactament llevat de les dues claus que el castellà ja no té |
+| Commit | el que afegeix la fitxa |
+
+<a id="sa-27"></a>
+## SA-27
+
+**El calendari es tria en un arbre, amb el camí a dalt** · 30 de setembre de 2026
+
+Amb els calendaris catalans, litcal en té 43, fins a set nivells (general → Europa → Espanya → Catalunya →
+diòcesi → ciutat → catedral). La configuració els llistava tots seguits, amb les diòcesis pel nom sol
+(«Barcelona»), i la benvinguda només en dibuixava dos nivells: **Catalunya i tot el que penja d'ella no hi
+sortien mai**.
+
+Ara es navega per pantalles: a dalt, el camí («General › Europa › Espanya › Catalunya › Barcelona»), que es
+pot tocar per tornar enrere; a sota, el calendari de la pantalla i els seus fills, nivell per nivell mentre
+càpiguen en 12 files. En castellà i italià tot cap en una pantalla, com abans. En català: el camí fins a
+Catalunya, una pantalla amb les 12 diòcesis i una per diòcesi amb la ciutat i la catedral. S'obre on és el
+calendari triat. Les restriccions per idioma s'hereten per l'arbre: `catalonia` sola tapa les seves diòcesis,
+ciutats i catedrals en castellà i italià.
+
+| | |
+|---|---|
+| Codi | `components/calendar/CalendarTreePicker.vue` (nou, el fan servir la configuració i la benvinguda), `services/calendar/calendarTree.ts`, `config/calendarLanguageRestrictions.ts` |
+| Test | `tests/unit/services/calendar/calendarTree.spec.ts` (amb l'arbre de litcal: cada calendari d'un idioma s'hi pot arribar un sol cop i té nom) i el de restriccions, reescrit. El que fallava d'aquest fitxer ja passa |
+| Comprovat | Captures a Chrome sense cap (web, sense simulador): configuració en català i en castellà, i la benvinguda |
+| Commit | `519e122a2` (local) |
+| Pendent | Que litcal publiqui els calendaris catalans (PR #25). Mentrestant, saints-app porta la 2.4.5 i l'arbre català només es veu amb el `dist/` local de litcal |
 
 # Canvis a saints-app
 

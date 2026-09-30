@@ -10,29 +10,17 @@ import json
 import os
 import sqlite3
 
-BASE = "/Users/pau/projects/saints/saints-app/src/store/db/generic_texts"
+# SAINTS_APP apunta a una altra còpia de saints-app (un worktree, per exemple)
+SAINTS_APP = os.environ.get("SAINTS_APP", "/Users/pau/projects/saints/saints-app")
+BASE = f"{SAINTS_APP}/src/store/db/generic_texts"
 SCRATCH = os.path.dirname(os.path.abspath(__file__))
 CPL_DB = "/Users/pau/projects/personal/cpl-app/src/Assets/db/cpl-app.db"
 
-# Les 14 claus dels calendaris catalans no existeixen a es/: són noves. S'insereixen
-# just després de calendar_venezuela per mantenir agrupats els calendaris.
+# Els calendaris catalans (Catalunya, les diòcesis i Andorra, i les seves ciutats i catedrals)
+# no existeixen a es/: són de l'edició catalana. Són les claus `calendar_*` de ca-literals.json que
+# no hi ha a es/, i s'insereixen, en el mateix ordre, just després de calendar_venezuela per mantenir
+# agrupats els calendaris.
 NEW_AFTER = "calendar_venezuela"
-NEW_CALENDAR_KEYS = [
-    "calendar_catalonia",
-    "calendar_diocese_barcelona",
-    "calendar_diocese_girona",
-    "calendar_diocese_lleida",
-    "calendar_diocese_mallorca",
-    "calendar_diocese_menorca",
-    "calendar_diocese_sant_feliu_de_llobregat",
-    "calendar_diocese_solsona",
-    "calendar_diocese_tarragona",
-    "calendar_diocese_terrassa",
-    "calendar_diocese_tortosa",
-    "calendar_diocese_urgell",
-    "calendar_diocese_vic",
-    "calendar_diocese_andorra",
-]
 
 
 def catalan_our_father() -> str:
@@ -79,10 +67,12 @@ def main() -> None:
             return es_val
         return ca_val
 
+    new_calendar_keys = [key for key in ca if key.startswith("calendar_") and key not in es]
+
     for key, es_val in es.items():
         out[key] = resolve(key, es_val, ca.get(key))
         if key == NEW_AFTER:
-            for new_key in NEW_CALENDAR_KEYS:
+            for new_key in new_calendar_keys:
                 out[new_key] = ca[new_key]
 
     # Qualsevol clau catalana que no existeixi a es/ (per si se n'afegeix alguna més).

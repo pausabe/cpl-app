@@ -1,0 +1,19 @@
+{
+  "cycleLabel": "Cicle",
+  "onboarding_calendar_title": "El teu calendari litúrgic",
+  "onboarding_calendar_subtitle": "Hem preseleccionat el calendari de la teva zona. El pots canviar si ho prefereixes.",
+  "onboarding_notifications_title": "Activa les notificacions",
+  "onboarding_notifications_description": "Rep recordatoris de les teves oracions preferides i no perdis el ritme espiritual del dia.",
+  "onboarding_notifications_cta": "Activar les notificacions",
+  "onboarding_notifications_loading": "Demanant permís...",
+  "onboarding_notifications_granted": "Activades",
+  "onboarding_notifications_skip": "Ara no",
+  "onboarding_next": "Següent",
+  "calendar_tree_whole": "Tot el territori",
+  "calendar_tree_path": "Camí del calendari",
+  "settingsModal.textsAndContent": "Textos i contingut",
+  "settingsModal.interface": "Interfície",
+  "infoPsalmNumberingTitle": "Numeració dels Salms",
+  "psalmNumberingExplanation": "<b>Els Salms poden aparèixer amb dues numeracions diferents segons la tradició que se segueixi</b>. Per això, en alguns casos trobaràs una referència com Salm 129 (130).<br><br>Al llarg de la història s'han seguit principalment dues maneres de numerar-los: <b>una basada en la tradició llatina de l'Església i una altra en el text hebreu.</b><br><br>A ePrex <b>fem servir com a referència principal la numeració llatina</b> i, quan hi ha una diferència, <b>hi afegim entre parèntesis la numeració hebrea.</b> Així podràs identificar fàcilment el mateix Salm en qualsevol Bíblia o publicació.<br><br><b>Aquesta diferència afecta únicament la numeració</b>, no el contingut del Salm.<br>",
+  "bible.continueReading": "Continuar llegint"
+}
