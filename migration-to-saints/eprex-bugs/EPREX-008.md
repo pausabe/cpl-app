@@ -25,32 +25,34 @@ Passa quan aquests dies cauen abans del 17 de desembre: 2021, 2022 i, el pròxim
 
 ## Missatge per a en Fernando (Telegram, text pla)
 
-Refet el 30-9 a petició d'en Pau: amb dates exactes i acabant amb una pregunta, sense donar per fet que és
-un error.
+Refet dues vegades el 30-9 a petició d'en Pau: amb dates exactes, i cada punt diu quin és el problema, què
+creiem que hi hauria d'anar i acaba amb una pregunta.
 
 > Hola Fernando, otra tanda de cosas del índice que nos han salido comparando con el catalán. Afectan a
-> todos los idiomas. Te las paso por si son errores, aunque igual se nos escapa algo:
+> todos los idiomas:
 >
-> 1. Santísima Trinidad (domingo 31 de mayo de 2026; la próxima, el 23 de mayo de 2027). En Tercia, Sexta
-> y Nona el himno apunta a las casillas de Cuaresma: 1172, 1165 y 1207, «Pastor que con tus silbos
-> amorosos». En latín ese día va el himno ordinario de cada hora («Nunc, Sancte, nobis Spiritus» en
-> Tercia). Es most_holy_trinity__ANY en all_tercia, all_sexta y all_nona.
+> 1. La Trinidad sale con el himno de Cuaresma en la Hora intermedia. El domingo 31 de mayo de 2026, en
+> Tercia, Sexta y Nona, apuntaba a 1172, 1165 y 1207 («Pastor que con tus silbos amorosos»), que son los
+> himnos de Cuaresma. ¿No debería llevar el himno de domingo, como los domingos del tiempo ordinario? En
+> latín ese día va el himno ordinario de cada hora. Es most_holy_trinity__ANY en all_tercia, all_sexta y
+> all_nona, y la próxima vez es el 23 de mayo de 2027.
 >
-> 2. San Lucas, Vísperas (viernes 18 de octubre de 2024, por ejemplo; la próxima, el lunes 18 de octubre de
-> 2027). Sale «Como una ofrenda de la tarde» (3751), que es el de Vísperas del tiempo ordinario. El
-> breviario de ese día da «Benditos son los pies de los que llegan», como San Marcos (1014). Es
-> luke_evangelist__ANY en all_visperas.
+> 2. San Lucas sale con el himno de Vísperas de un día cualquiera del tiempo ordinario. El viernes 18 de
+> octubre de 2024 salió «Como una ofrenda de la tarde» (3751). ¿No debería ser «Benditos son los pies de
+> los que llegan», como en San Marcos (1014)? Es el que da el breviario ese día. Es luke_evangelist__ANY en
+> all_visperas; la próxima vez, el 18 de octubre de 2027.
 >
-> 3. Visitación, Vísperas (viernes 31 de mayo de 2024; la próxima, el lunes 31 de mayo de 2027). Sale «¿Y
-> dejas, Pastor santo» (3835), que es el de la Ascensión. El breviario da «Y salta el pequeño Juan» (410).
-> Es visitation_of_mary__ANY en all_visperas.
+> 3. La Visitación sale con el himno de Vísperas de la Ascensión. El viernes 31 de mayo de 2024 salió «¿Y
+> dejas, Pastor santo» (3835). ¿No debería ser «Y salta el pequeño Juan» (410), que es el que da el
+> breviario ese día? Es visitation_of_mary__ANY en all_visperas; la próxima vez, el 31 de mayo de 2027.
 >
-> 4. Adviento III, de miércoles a viernes cuando caen antes del 17 de diciembre (el miércoles 15 de
-> diciembre de 2021 y el jueves 15 de diciembre de 2022; la próxima, el 15 y el 16 de diciembre de 2027).
-> La salmodia sale de la semana I: el jueves 15 de diciembre de 2022, en Laudes, Salmo 56, Jr 31 y Salmo
-> 47, y el breviario de ese día da la semana III, Salmo 86, Is 40 y Salmo 98. Pasa en Laudes, Vísperas,
-> Sexta y Nona, y el viernes también en Tercia: advent_3_wednesday, advent_3_thursday y advent_3_friday.
+> 4. Los días de la semana III de Adviento salen con los salmos de la semana I. El jueves 15 de diciembre
+> de 2022, en Laudes, salieron el Salmo 56, Jr 31 y el Salmo 47. ¿No deberían ser los de la semana III, el
+> Salmo 86, Is 40 y el Salmo 98, que son los que da el breviario ese día? Pasa de miércoles a viernes, en
+> Laudes, Vísperas, Sexta y Nona (y el viernes también en Tercia): advent_3_wednesday, advent_3_thursday y
+> advent_3_friday. Solo se nota cuando caen antes del 17 de diciembre, como el 15 de diciembre de 2021 y de
+> 2022; la próxima vez, el 15 y el 16 de diciembre de 2027.
 >
-> ¿Te cuadra que sean cosas del índice, o hay algo que no estamos viendo?
+> ¿Lo ves igual?
 >
 > Gracias!
