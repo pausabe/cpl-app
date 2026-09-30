@@ -1,0 +1,18 @@
+{
+  "_": "Caselles que cpl-app no omple mai i que porten un text que la CPL sí que té, en una altra casella: se'n copia el català en exportar. Una per una, amb el perquè. D-013 al REGISTRE-DE-CANVIS.md.",
+  "cells": {
+    "salmos_citas/12001": { "from": "salmos_citas/3455", "because": "Salm 119, Tèrcia de l'Anunciació, la Immaculada i l'1 de gener (salmòdia complementària)" },
+    "salmos_textos/12001": { "from": "salmos_textos/3456", "because": "Salm 119, Tèrcia" },
+    "salmos_citas/12002": { "from": "salmos_citas/4576", "because": "Salm 120, Tèrcia" },
+    "salmos_textos/12002": { "from": "salmos_textos/4577", "because": "Salm 120, Tèrcia" },
+    "salmos_citas/12003": { "from": "salmos_citas/4577", "because": "Salm 121, Tèrcia" },
+    "salmos_textos/12003": { "from": "salmos_textos/4578", "because": "Salm 121, Tèrcia" },
+    "salmos_textos/12005": { "from": "salmos_textos/3986", "because": "Salm 123, Sexta: la cita de l'Anunciació apunta a la del 122 (EPREX-007) i el join no el pot provar" },
+    "salmos_citas/12007": { "from": "salmos_citas/3423", "because": "Salm 125, Nona" },
+    "salmos_textos/12007": { "from": "salmos_textos/3424", "because": "Salm 125, Nona" },
+    "salmos_citas/12008": { "from": "salmos_citas/3424", "because": "Salm 126, Nona" },
+    "salmos_textos/12008": { "from": "salmos_textos/3425", "because": "Salm 126, Nona" },
+    "salmos_citas/12009": { "from": "salmos_citas/3418", "because": "Salm 127, Nona" },
+    "salmos_textos/12009": { "from": "salmos_textos/3419", "because": "Salm 127, Nona" }
+  }
+}

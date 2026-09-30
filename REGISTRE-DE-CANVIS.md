@@ -103,10 +103,11 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [SA-20](#sa-20) | 2026-09-30 | saints-app | **codi** | No — va al git | `6899c5077` |
 | [D-012](#d-012) | 2026-09-30 | eines | **decisió** (dues regles, fetes codi) | No — va al git | el que afegeix la fitxa · saints-app `fdbcaaaf5` |
 | [SA-21](#sa-21) | 2026-09-30 | saints-app | contingut | Es regenera | `fdbcaaaf5` |
-| [EPREX-006](#eprex-006) | 2026-09-30 | saints-app | **proposat** | — pendent de decidir qui ho arregla | — |
-| [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **proposat** | — pendent de decidir qui ho arregla | — |
+| [EPREX-006](#eprex-006) | 2026-09-30 | saints-app | **proposat** | — missatge per a en Fernando redactat el 30-9; l'envia en Pau | — |
+| [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-006 | — |
 | [MIGRA-021](#migra-021) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
 | [SA-22](#sa-22) | 2026-09-30 | saints-app | contingut | Es regenera, **però la 12003 cal esborrar-la a mà** si es torna a partir d'una còpia vella | `a38ce6afa` |
+| [D-013](#d-013) | 2026-09-30 | eines + saints-app | **decisió** (13 caselles, una per una) + codi | Es regenera: `copied-cells.json` | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2131,6 +2132,7 @@ solemnitat (`all_saints__ANY`…) i no en distingeix el diumenge. **No és un bu
 | Norma | IGLH 82: «vel celebratio sollemnitatis occurrat die dominica, quo in casu sumuntur psalmi de dominica hebdomadæ I» ([text llatí](https://breviar.sk/la/docs/smernice_lh.htm)) |
 | Contra | societaslaudis hi posa els graduals (29-VI-2025), però és una transcripció i la norma és explícita |
 | Revisió | Troballa F32 |
+| Qui | En Fernando: en Pau, el 30-9, «dona'm missatge per a en Fernando», amb l'[EPREX-007](#eprex-007) al mateix missatge. Toca com eprex construeix les hores per a totes les llengües, i ha d'arribar a `dev` abans de Tots Sants |
 
 Les solemnitats en **dia feiner** no hi entren: cpl-app hi diu el mateix grup (122-124) a les tres hores i
 eprex un grup per hora. Totes dues maneres són lícites (IGLH 81-82), i mana eprex ([D-010](#d-010)).
@@ -2176,6 +2178,27 @@ Després de la [MIGRA-021](#migra-021): `salmos_citas/12003` i `salmos_textos/12
 | | |
 |---|---|
 | Commit | `a38ce6afa` (saints-app, branca `catalan-language-support-dev`) |
+
+<a id="d-013"></a>
+## D-013
+
+**Els salms graduals de l'Anunciació, la Immaculada i l'1 de gener, copiats del salteri de la CPL** · 30 de setembre de 2026
+
+A les hores menors d'aquestes tres solemnitats, eprex dona a cada hora el seu grup de salms graduals
+(119-121 a Tèrcia, 122-124 a Sexta, 125-127 a Nona) i hi fa servir caselles pròpies. cpl-app hi diu la
+salmòdia de Sexta a les tres hores (lícit, troballa F31), i les caselles de Tèrcia i Nona es quedaven sense
+català: s'hi veia «id … not found». Aplicant la [D-010](#d-010), mana eprex, i en Pau tria la font del
+català: el salteri de la CPL, que té aquests mateixos salms en altres caselles («sí, si us plau», 30-9).
+
+| | |
+|---|---|
+| Quines | Cita i text dels salms 119, 120, 121, 125, 126 i 127, i el text del 123 de Sexta (la seva cita a l'Anunciació apunta a la del 122, [EPREX-007](#eprex-007), i el join no el pot provar): 13 caselles |
+| D'on | La còpia del salteri de cada salm, l'única que hi ha: 3455/3456, 4576/4577, 4577/4578, 3985/3986, 3423/3424, 3424/3425, 3418/3419 |
+| Descartada | La còpia de les solemnitats de sant Antoni abat i la Mare de Déu del Toro, a `santsSolemnitats`: sense els asteriscs i amb errates («Augurau», «han arribar») |
+| Com | `migration-to-saints/copied-cells.json`, **una per una** i amb el perquè; l'exportació en copia el català de la casella d'origen, i si l'origen es corregeix, la còpia el segueix |
+| Test | `copied-cells.test.js`: l'origen té català, i la cita i el text són el salm que diu el castellà de la casella |
+| Efecte | Tèrcia i Nona d'aquests 30 dies tenen tots els salms en català. Divergeixen de cpl-app, com és d'esperar: F31 |
+| Commit | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
 
 # Canvis a saints-app
 

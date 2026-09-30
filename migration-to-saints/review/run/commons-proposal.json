@@ -1,15 +1,6 @@
 {
   "days": [
     {
-      "date": "2026-06-24",
-      "title": "Naixement de sant Joan Baptista",
-      "common": null,
-      "missing": 8,
-      "covered": 0,
-      "citationChecks": [],
-      "proposals": []
-    },
-    {
       "date": "2026-03-25",
       "title": "Anunciació del Senyor",
       "common": null,
@@ -19,7 +10,7 @@
       "proposals": []
     },
     {
-      "date": "2026-11-01",
+      "date": "2026-12-08",
       "missing": 0,
       "covered": 0,
       "proposals": []
