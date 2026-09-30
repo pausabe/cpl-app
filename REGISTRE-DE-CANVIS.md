@@ -110,6 +110,8 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [D-013](#d-013) | 2026-09-30 | eines + saints-app | **decisió** (13 caselles, una per una) + codi | Es regenera: `copied-cells.json` | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
 | [MIGRA-022](#migra-022) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
 | [SA-23](#sa-23) | 2026-09-30 | saints-app | contingut | Es regenera | `73d93983e` |
+| [EPREX-008](#eprex-008) | 2026-09-30 | saints-app | **proposat** | — segon missatge per a en Fernando, redactat el 30-9 | — |
+| [EPREX-009](#eprex-009) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-008 | — |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2231,6 +2233,25 @@ Reexportació després de la [MIGRA-022](#migra-022): 44 claus noves i 1 canviad
 | | |
 |---|---|
 | Commit | `73d93983e` (saints-app, branca `catalan-language-support-dev`) |
+
+<a id="eprex-008"></a>
+## EPREX-008
+
+**Tres himnes que no són del dia: la Trinitat, sant Lluc i la Visitació** · 30 de setembre de 2026
+
+A la Trinitat, Tèrcia, Sexta i Nona apunten als himnes de Quaresma; a les Vespres de sant Lluc hi ha
+l'himne de durant l'any, i a les de la Visitació, el de l'Ascensió. El llatí i el breviari castellà hi
+donen l'himne ordinari de l'hora, «Benditos son los pies…» i «Y salta el pequeño Juan». En totes les
+llengües. Dossier i missatge: [eprex-bugs/EPREX-008](migration-to-saints/eprex-bugs/EPREX-008.md).
+
+<a id="eprex-009"></a>
+## EPREX-009
+
+**Els dimecres, dijous i divendres d'Advent III, amb el salteri de la setmana I** · 30 de setembre de 2026
+
+Laudes, Vespres, Sexta i Nona (i Tèrcia el divendres) duen la salmòdia de la setmana I; el breviari hi dona
+la de la setmana III. Es veu quan aquests dies cauen abans del 17 de desembre (2021, 2022; el pròxim cop,
+2027). Mateix dossier i missatge que l'[EPREX-008](#eprex-008).
 
 # Canvis a saints-app
 
