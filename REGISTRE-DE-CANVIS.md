@@ -103,6 +103,8 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [SA-20](#sa-20) | 2026-09-30 | saints-app | **codi** | No — va al git | `6899c5077` |
 | [D-012](#d-012) | 2026-09-30 | eines | **decisió** (dues regles, fetes codi) | No — va al git | el que afegeix la fitxa · saints-app `fdbcaaaf5` |
 | [SA-21](#sa-21) | 2026-09-30 | saints-app | contingut | Es regenera | `fdbcaaaf5` |
+| [EPREX-006](#eprex-006) | 2026-09-30 | saints-app | **proposat** | — pendent de decidir qui ho arregla | — |
+| [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **proposat** | — pendent de decidir qui ho arregla | — |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2109,6 +2111,41 @@ diferència (la còpia més repetida). La que no:
 | | |
 |---|---|
 | Commit | `fdbcaaaf5` (saints-app, branca `catalan-language-support-dev`) |
+
+<a id="eprex-006"></a>
+## EPREX-006
+
+**Una solemnitat en diumenge: saints-app no hi posa els salms del diumenge a les hores menors** · 30 de setembre de 2026
+
+Trobat revisant les 34 celebracions que la [D-012](#d-012) va deixar per mirar una per una. A les hores
+menors d'una solemnitat, l'OGLH 82 demana «tres salms triats de la salmòdia complementària»,
+**llevat que caigui en diumenge**: llavors, els del diumenge I (el salm 117, en tres parts). cpl-app ho fa bé.
+saints-app hi deixa els graduals en totes les llengües, perquè l'índex té una sola entrada per a la
+solemnitat (`all_saints__ANY`…) i no en distingeix el diumenge. **No és un bug del català.**
+
+| | |
+|---|---|
+| Dies de la finestra | sant Joan 2018, Tots Sants 2020, sant Jaume 2021, l'Assumpció 2021, sant Pere i sant Pau 2025 i **Tots Sants 2026 (d'aquí a un mes)** |
+| Norma | IGLH 82: «vel celebratio sollemnitatis occurrat die dominica, quo in casu sumuntur psalmi de dominica hebdomadæ I» ([text llatí](https://breviar.sk/la/docs/smernice_lh.htm)) |
+| Contra | societaslaudis hi posa els graduals (29-VI-2025), però és una transcripció i la norma és explícita |
+| Revisió | Troballa F32 |
+
+Les solemnitats en **dia feiner** no hi entren: cpl-app hi diu el mateix grup (122-124) a les tres hores i
+eprex un grup per hora. Totes dues maneres són lícites (IGLH 81-82), i mana eprex ([D-010](#d-010)).
+Troballa F31, veredicte «no és error».
+
+<a id="eprex-007"></a>
+## EPREX-007
+
+**Dues caselles mal apuntades a l'índex d'eprex: l'Anunciació a Sexta i l'1 de gener a Tèrcia** · 30 de setembre de 2026
+
+| | |
+|---|---|
+| Anunciació, Sexta, 2n salm | La cita apunta a `salmos_citas/12004` (el salm 122, el mateix del primer) i el text a `12005` (el 123). Es llegeix «Salmo 122» sobre el text del 123. Ha de ser la cita `12005` |
+| 1 de gener, Tèrcia, 3r salm | Apunta a `3419/3420` (el salm 128, del saltiri); els altres dos són del grup gradual de Tèrcia (`12001`, `12002`). Ha de ser `12003/12003` (el salm 121) |
+| Llengües | Totes: és l'índex |
+| Com | Per saints-admin i `chore(texts)`, mai tocant el JSON exportat |
+| Revisió | Troballa F33 |
 
 # Canvis a saints-app
 

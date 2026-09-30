@@ -1191,6 +1191,87 @@ const FINDINGS = [
     ],
     fix: null,
   },
+  {
+    id: 'F31',
+    verdict: 4,
+    // The weekdays of the solemnities whose little hours take the gradual psalms, 2017-2026.
+    days: [
+      '2017-03-20', '2017-03-25', '2017-06-23', '2017-06-24', '2017-06-29', '2017-07-25', '2017-08-15',
+      '2017-11-01', '2018-01-01', '2018-03-19', '2018-04-09', '2018-06-08', '2018-06-29', '2018-07-25',
+      '2018-08-15', '2018-11-01', '2019-01-01', '2019-03-19', '2019-03-25', '2019-06-24', '2019-06-28',
+      '2019-06-29', '2019-07-25', '2019-08-15', '2019-11-01', '2020-01-01', '2020-03-19', '2020-03-25',
+      '2020-06-19', '2020-06-24', '2020-06-29', '2020-07-25', '2020-08-15', '2021-01-01', '2021-03-19',
+      '2021-03-25', '2021-06-11', '2021-06-24', '2021-06-29', '2021-11-01', '2022-01-01', '2022-03-19',
+      '2022-03-25', '2022-06-23', '2022-06-24', '2022-06-29', '2022-07-25', '2022-08-15', '2022-11-01',
+      '2023-03-20', '2023-03-25', '2023-06-16', '2023-06-24', '2023-06-29', '2023-07-25', '2023-08-15',
+      '2023-11-01', '2024-01-01', '2024-03-19', '2024-04-08', '2024-06-07', '2024-06-24', '2024-06-29',
+      '2024-07-25', '2024-08-15', '2024-11-01', '2025-01-01', '2025-03-19', '2025-03-25', '2025-06-24',
+      '2025-06-27', '2025-07-25', '2025-08-15', '2025-11-01', '2026-01-01', '2026-03-19', '2026-03-25',
+      '2026-06-12', '2026-06-24', '2026-06-29', '2026-07-25', '2026-08-15',
+    ],
+    hours: ['Tercia', 'Sexta', 'Nona'],
+    headline: 'Solemnitats en dia feiner: cpl-app diu els mateixos tres salms graduals a Tèrcia, Sexta i Nona; saints-app, un grup per hora',
+    detail:
+      'cpl-app hi diu els salms 122, 123 i 124 a les tres hores: la base de dades de la CPL només té una salmòdia per '
+      + 'a les hores menors de cada solemnitat (<code>santsSolemnitats.salm1Menor</code>…), i en 34 hi ha la de Sexta. '
+      + 'eprex hi posa 119-121 a Tèrcia, 122-124 a Sexta i 125-127 a Nona, com el llibre castellà. El llatí de '
+      + 'societaslaudis fa com cpl-app.',
+    why:
+      'L’OGLH 82 diu «tres salms triats de la salmòdia complementària», i l’OGLH 81 que qui resa una sola hora fa '
+      + 'servir una salmòdia i qui en resa més les altres. Les dues maneres són lícites, i quan la norma permet les '
+      + 'dues, mana eprex (D-010). No és error de ningú.',
+    proof: [
+      ['Norma', 'Institutio generalis de Liturgia Horarum, 81-83 («cum tribus psalmis e psalmodia complementari seligendis»)', 'https://breviar.sk/la/docs/smernice_lh.htm'],
+      ['Llatí, data exacta', 'Liturgia Horarum, 24-VI-2026: Ps 122, 123, 124 a Tèrcia, Sexta i Nona', 'https://www.societaslaudis.org/fr/2026-06-24/hebdomada-xii-per-annum/in-nativitate-s-ioannis-baptistae-sollemnitas/liturgia-horarum/ad-tertiam/'],
+      ['cpl-app', 'santsSolemnitats: salm1Menor és el salm 122 en 34 solemnitats i el 119 en 2; una sola salmòdia per a les tres hores', null],
+    ],
+    fix: null,
+  },
+  {
+    id: 'F32',
+    verdict: 2,
+    days: [
+      '2018-06-24', '2020-11-01', '2021-07-25', '2021-08-15', '2025-06-29', '2026-11-01',
+    ],
+    hours: ['Tercia', 'Sexta', 'Nona'],
+    headline: 'Una solemnitat en diumenge: les hores menors són les del diumenge I, i saints-app hi deixa els salms graduals',
+    detail:
+      'cpl-app hi resa el salm 117 (I, II i III) a les tres hores, com el diumenge I del saltiri. saints-app hi mostra '
+      + 'els salms graduals de sempre, en totes les llengües: l’índex té una sola entrada per a la solemnitat '
+      + '(<code>all_saints__ANY</code>…) i no en distingeix el diumenge. El pròxim cas és Tots Sants, l’1-XI-2026.',
+    why:
+      'L’OGLH 82 fa l’excepció explícita: «vel celebratio sollemnitatis occurrat die dominica, quo in casu sumuntur '
+      + 'psalmi de dominica hebdomadæ I». societaslaudis hi posa els graduals, però és una transcripció i la norma '
+      + 'és clara.',
+    proof: [
+      ['Norma', 'Institutio generalis de Liturgia Horarum, 82', 'https://breviar.sk/la/docs/smernice_lh.htm'],
+      ['eprex', 'all_tercia/sexta/nona.json: una sola clau __ANY per a Tots Sants, sant Joan, sant Pere i sant Pau, sant Jaume i l’Assumpció', null],
+    ],
+    fix: 'A saints-app: quan una d’aquestes solemnitats cau en diumenge, les hores menors han de prendre la salmòdia del diumenge I.',
+  },
+  {
+    id: 'F33',
+    verdict: 2,
+    days: [
+      '2017-03-25', '2018-01-01', '2018-04-09', '2019-01-01', '2019-03-25', '2020-01-01', '2020-03-25',
+      '2021-01-01', '2021-03-25', '2022-01-01', '2022-03-25', '2023-03-25', '2024-01-01', '2024-04-08',
+      '2025-01-01', '2025-03-25', '2026-01-01', '2026-03-25',
+    ],
+    hours: ['Tercia', 'Sexta'],
+    headline: 'Dues caselles mal apuntades a l’índex d’eprex: l’Anunciació a Sexta i l’1 de gener a Tèrcia',
+    detail:
+      'A l’Anunciació, el segon salm de Sexta té la cita del salm 122 (<code>salmos_citas/12004</code>, la del primer) i el '
+      + 'text del 123 (<code>salmos_textos/12005</code>). L’1 de gener, el tercer salm de Tèrcia és el 128 '
+      + '(<code>3419/3420</code>) en lloc del 121 (<code>12003</code>), l’últim del grup de Tèrcia. Passa en totes les llengües.',
+    why:
+      'Els altres dos salms de cada hora són del grup gradual que toca (119-121 a Tèrcia, 122-124 a Sexta): aquests dos '
+      + 'en surten, i el primer ni tan sols quadra amb el seu propi text.',
+    proof: [
+      ['eprex', 'all_sexta.json annunciation_of_the_lord__ANY: segundo_salmo_cita 12004, segundo_salmo_texto 12005', null],
+      ['eprex', 'all_tercia.json mary_mother_of_god__ANY: tercer_salmo 3419/3420 (Salmo 128); els altres, 12001 i 12002', null],
+    ],
+    fix: 'A eprex (saints-admin): Anunciació, Sexta, segon salm: cita 12005. Santa Maria Mare de Déu, Tèrcia, tercer salm: 12003/12003.',
+  },
 ];
 
 const VERDICTS = {
@@ -1210,6 +1291,10 @@ const VERDICTS = {
 //
 // A row that is divergent but claimed by nobody is NOT hidden — the report surfaces it as
 // "encara sense investigar", which is the to-do list for the session.
+const littleHourPsalmDiverges = (row) => ['Tercia', 'Sexta', 'Nona'].includes(row.hour)
+  && /^(primer|segundo|tercer)_salmo_(cita|texto)$/.test(row.key)
+  && ['diff', 'diffRef'].includes(row.match);
+
 const CLAIMS = {
   F1: (date, row) => date === '2026-08-24' && row.hour === 'Vespers' && row.key !== 'oracion_final',
   F3: (date, row) => row.key === 'cantico_evangelico_antifona'
@@ -1232,6 +1317,14 @@ const CLAIMS = {
     && /^(primer|segundo|tercer)_salmo_(cita|texto)$/.test(row.key),
   F24: (date, row) => date === '2026-09-14' && row.hour === 'Mass'
     && String(row.key).startsWith('FIRSTLECTURE'),
+  // The psalms of the little hours of a solemnity, on a weekday (F31) and on a Sunday (F32);
+  // the two cells eprex points wrong on the Annunciation and on 1 January (F33) are its own.
+  F31: (date, row) => littleHourPsalmDiverges(row) && !CLAIMS.F33(date, row),
+  F32: (date, row) => littleHourPsalmDiverges(row),
+  F33: (date, row) => (row.hour === 'Sexta' && /^segundo_salmo_(cita|texto)$/.test(row.key)
+      && ['12004', '12005'].includes(String(row.id)))
+    || (row.hour === 'Tercia' && /^tercer_salmo_(cita|texto)$/.test(row.key)
+      && ['3419', '3420'].includes(String(row.id))),
   // The short reading and its responsory at the little hours, the days eprex keeps them ferial.
   F30: (date, row) => ['Tercia', 'Sexta', 'Nona'].includes(row.hour)
     && /^(lectura_biblica|lectura_biblica_cita|responsorios)$/.test(row.key)
