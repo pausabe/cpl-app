@@ -2133,6 +2133,7 @@ solemnitat (`all_saints__ANY`…) i no en distingeix el diumenge. **No és un bu
 | Contra | societaslaudis hi posa els graduals (29-VI-2025), però és una transcripció i la norma és explícita |
 | Revisió | Troballa F32 |
 | Qui | En Fernando: en Pau, el 30-9, «dona'm missatge per a en Fernando», amb l'[EPREX-007](#eprex-007) al mateix missatge. Toca com eprex construeix les hores per a totes les llengües, i ha d'arribar a `dev` abans de Tots Sants |
+| Dossier i missatge | [eprex-bugs/EPREX-006](migration-to-saints/eprex-bugs/EPREX-006.md), que també porta l'EPREX-007 |
 
 Les solemnitats en **dia feiner** no hi entren: cpl-app hi diu el mateix grup (122-124) a les tres hores i
 eprex un grup per hora. Totes dues maneres són lícites (IGLH 81-82), i mana eprex ([D-010](#d-010)).
@@ -2150,6 +2151,7 @@ Troballa F31, veredicte «no és error».
 | Llengües | Totes: és l'índex |
 | Com | Per saints-admin i `chore(texts)`, mai tocant el JSON exportat |
 | Revisió | Troballa F33 |
+| Dossier i missatge | [eprex-bugs/EPREX-006](migration-to-saints/eprex-bugs/EPREX-006.md), el mateix missatge que l'EPREX-006 |
 
 <a id="migra-021"></a>
 ## MIGRA-021
