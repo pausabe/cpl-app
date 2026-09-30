@@ -4,7 +4,7 @@
 |---|---|
 | **Estat** | **Tancada** — no es toca res |
 | **Component** | cpl-app · `santsMemories.Categoria` · Laudes i Vespres de les 527 memòries |
-| **Veredicte** | **4 — no és error.** L'OGLH 235b permet expressament les dues opcions, i la que fa cpl-app és la que publica la font catalana oficial |
+| **Veredicte** | **4 — no és error.** L'OGLH 235b permet expressament les dues opcions, i la que fa cpl-app és la de l'edició oficial catalana, la de la CPL (la web `liturgiadeleshores.cat`, que no és oficial, fa el mateix) |
 | **Trobat** | 3 de setembre de 2026, revisant el dia amb la skill `revisio-dia` (memòria de sant Gregori el Gran) |
 | **Correcció** | **Cap.** Ni codi, ni base de dades, ni `.sql` |
 | **Regressió** | Cap. No hi ha res a detectar: el comportament actual és el bo |
@@ -113,7 +113,7 @@ i els de la font catalana són **el mateix text, paraula per paraula**, les cinc
 **No és error de cpl-app.** Dues raons, i cadascuna sola ja bastaria:
 
 1. L'OGLH 235b permet expressament la fèria.
-2. La font catalana oficial fa exactament el mateix que cpl-app, a Laudes i a Vespres.
+2. La web catalana `liturgiadeleshores.cat`, que no és oficial, fa exactament el mateix que cpl-app, a Laudes i a Vespres.
 
 El que hi ha aquí és una **diferència d'ús entre edicions**: la catalana resa la fèria a les
 memòries, la castellana i l'anglesa prenen el Comú. Posar `Categoria` a les 527 files canviaria

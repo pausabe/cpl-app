@@ -120,25 +120,36 @@ Poca cobertura vol dir «encara no fet», no «trencat» — no s'ha de pintar d
 
 ## Forma de la resposta
 
-Al terminal, en català, i **per causes, no per camps**: onze antífones que falten per un sol
-override d'eprex són una causa, no onze línies. Sense taules de camps ni textos llargs; la
-prova, en una frase i amb l'enllaç o l'id que la sosté.
+En Pau ha de poder llegir-la d'una tirada i decidir. **Ordenada per gravetat per a l'usuari i
+mastegada**: amb dies reals, el que es veu a la pantalla i què implica. La resposta del 30-IX-2026
+anava per veredictes, amb ids i sigles, i no es podia llegir. Al terminal, en català, i **per causes,
+no per camps**: onze antífones que falten per un sol override d'eprex són una causa, no onze línies.
 
-1. **On som** — una línia: el dia i la celebració, contingut `X/Y (Z%)`, progrés `A/B (C%)`, i
-   la distància al 100% en caselles.
-2. **Per què no és al 100%** — una entrada per causa: quantes caselles, **el culpable**
-   (veredicte 1-5), la prova en una frase, i l'estat (obert, corregit i pendent de
-   reexportar, proposat i pendent d'enviar…).
-3. **Accions per arribar-hi** — llista **ordenada per caselles que allibera respecte de
-   l'esforç**. Cadascuna concreta: què es fa, on (fitxer, taula, repo), qui ho ha de fer
-   (nosaltres; cpl-app → `CPL-LIT-NNN`; eprex → proposta), quantes caselles mou i de què
-   depèn. Una acció que depèn d'una decisió ho diu.
-4. **Decisions que et toquen** — cada una com a pregunta tancada, amb les opcions, la teva
-   recomanació i què desbloqueja. Si ja té número (`D-00N` al registre), cita'l.
-5. **El 100% real** — el que no s'hi arribarà mai i per què (veredicte 4, conflictes
-   estructurals com els tres cicles de diumenge, D-001), perquè el sostre del dia quedi dit i
-   no es persegueixi.
-6. **Per on començaria** — una sola recomanació, i atura't aquí.
+**El soroll de les nostres eines no li arriba.** Si una divergència surt de la revisió mateixa (el
+comparador, `build-rows`, `massColumns`…), es corregeix abans de respondre, amb el seu MIGRA i el
+seu test; si no hi ha temps, surt en una sola línia al final, mai com un problema del dia. En Pau
+ho va dir així: «la revisió s'ha de fer bé i que no hi hagi soroll, almenys que no m'arribi a mi».
+
+1. **En resum** — dues o tres línies en llenguatge pla: si les dues apps resen el mateix, i els
+   textos del dia repartits en quatre piles: «N ja són en català · N hi podrien ser · N depenen
+   d'un error · N no hi seran mai». Res de `X/Y` sense dir què vol dir.
+2. **Un bloc per problema**, del més greu al menys (primer el text **equivocat**, després el que
+   **falta**, al final el que només toca les eines), cadascun amb:
+   - **Què es veu** — un dia real, l'hora, i el text que surt o que falta, citat;
+   - **Quins dies** — dates reals, sobretot les que vénen, no només un recompte;
+   - **Per què** — una frase, sense noms de funcions;
+   - **De qui és** — nosaltres, cpl-app (`CPL-LIT`, va a l'informe del client) o eprex;
+   - **Si no es fa res** — què passa;
+   - **Què cal fer** — i què li toca fer a ell, si li toca res.
+   Els ids de casella i les sigles, com a molt una referència discreta al títol.
+3. **Casos que ha de decidir, un per un** — mai una regla general per a molts casos d'un cop (en
+   Pau: «aquesta premissa la veig perillosa decidir-la així; cal analitzar cada cas»). Per a cada
+   cas: què diuen la norma (OGLH) i el llibre, amb la prova; què passa amb cada opció, amb un
+   exemple; la recomanació. Si un cas no li demana res, es diu clarament: «aquí no has de decidir
+   res».
+4. **El sostre del dia** — el que no s'hi arribarà mai i per què (veredicte 4, conflictes
+   estructurals com els tres cicles de diumenge, D-001).
+5. **Per on començaria** — una sola recomanació, i atura't aquí.
 
 Els prompts de `fix-prompts.js` no s'enganxen a la resposta. Si en Pau vol portar una acció a
 un fil nou, `node migration-to-saints/review/fix-prompts.js` els genera.
@@ -184,5 +195,10 @@ un fil nou, `node migration-to-saints/review/fix-prompts.js` els genera.
 - `apps.idteologia.org` — castellà, **per data exacta**. La més útil.
 - `ebreviary.com` — anglès, PDF per celebració. Cal llegir el PDF, no el HTML.
 - `chiesacattolica.it` — italià, dona el rang però no la salmòdia.
-- `liturgiadeleshores.cat` — català, **només el dia en curs**. Rarament utilitzable.
+- `societaslaudis.org` — la *Liturgia Horarum* llatina, **per data exacta**, hora per hora: la millor per
+  a l'estructura (quants precs, si hi ha una alternativa «vel», si una memòria té lectura pròpia a les
+  hores menors). URL: `/fr/AAAA-MM-DD/`, i d'allà els enllaços de cada hora.
+- `liturgiadeleshores.cat` — català, **només el dia en curs**. **No és oficial**: l'edició oficial és
+  la de la CPL, que és el que resa cpl-app. Imprimeix com el castellà (p. ex. les dues opcions d'un
+  prec, seguides), o sigui que no prova res contra la CPL.
 - `divineoffice.org` respon 403; `liturgies.net` té URLs inestables.

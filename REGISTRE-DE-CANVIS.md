@@ -88,6 +88,9 @@ cap a saints-app no funcionaran fins que s'hi pugi.
 | [MIGRA-016](#migra-016) | 2026-09-29 | eines | codi | No — va al git | `02d5724` |
 | [MIGRA-017](#migra-017) | 2026-09-29 | eines | codi | No — va al git | `d3322a2` |
 | [SA-17](#sa-17) | 2026-09-29 | saints-app | contingut | Es regenera | `1c6b0af4d` |
+| [MIGRA-018](#migra-018) | 2026-09-30 | eines | codi | No — va al git | `15b1375` |
+| [MIGRA-019](#migra-019) | 2026-09-30 | eines | codi | No — va al git | `7fdbea0` |
+| [SA-18](#sa-18) | 2026-09-30 | saints-app | contingut | Es regenera, **però les 17 caselles esborrades cal esborrar-les a mà** si es torna a partir d'una còpia vella | `56fbbcd54` |
 | [D-001](#d-001) | 2026-09-03 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
 | [D-002](#d-002) | 2026-09-03 | saints-app | **decisió** (qüestió tancada) | — | — |
 | [D-003](#d-003) | 2026-09-04 | cpl-app | **cap canvi** (qüestió tancada) | — | — |
@@ -1482,6 +1485,65 @@ de contingut i no s'ha tocat.
 
 `make progress`: el **80%** dels camps de la finestra (371.748 de 464.428).
 
+<a id="migra-018"></a>
+## MIGRA-018
+
+**El join triava les lectures de la missa pel capítol, i en va exportar nou amb el text d'una altra missa** · 30 de setembre de 2026
+
+A la missa, el join decideix quina lectura de cpl-app va a cada casella per la cita que el
+castellà ja hi té (PLAN §18.7). Però comparava només **llibre i capítol**, i guanyava la primera
+candidata que hi encaixava. Resultat, a saints-app en català, cada any:
+
+- la **vigília de sant Joan Baptista** (24-VI) llegia l'evangeli de la missa del dia (Lc 1,57-66
+  en lloc de Lc 1,5-17), i també la seva aclamació;
+- la **vigília de Nadal** (24-XII), el salm de la missa del matí;
+- la **Mare de Déu del Roser** (7-X), el Benedictus en lloc del Magníficat com a salm;
+- el **Comú de màrtirs** (santa Àgata, sant Maximilià Kolbe), **sant Lleó el Gran**, **sant Felip
+  Neri**, **santa Teresa Jornet**, **sant Carles Borromeu** i **sant Gregori el Gran**, una lectura
+  de la fèria d'un any concret.
+
+| | |
+|---|---|
+| Correcció | `readingMatch()` a `lib/citation-key.js` gradua pels versets; cada lectura de cpl-app va a la casella del dia on encaixa millor; la missa d'ahir només compta si hi encaixa sencera |
+| Comprovat | Contra el join d'abans, amb la mateixa base i sonda: deixen de sortir les 9 cites i 8 textos dolents, surten 7 cites i 8 textos bons que retenien, i no es perd cap lectura bona (la Vigília Pasqual i els dies de després de l'Epifania es mantenen) |
+| Test | `citation-key.test.js`, «readingMatch», amb les vuit parelles exportades; sense la correcció en fallen 12 de 43. `make tests`: 945 i els 22 dels detectors, tots bé |
+| Dossier | [tooling-bugs/MIGRA-018](migration-to-saints/tooling-bugs/MIGRA-018.md) |
+| Commit | `15b1375` |
+
+<a id="migra-019"></a>
+## MIGRA-019
+
+**La revisió comparava la missa ferial de cpl-app amb les lectures del sant** · 30 de setembre de 2026
+
+El dia de sant Jeroni la revisió deia que la missa no coincidia (Jb 9 contra 2 Tm 3). No era
+veritat: cpl-app resa la missa del dia de la setmana, com prefereix el Missal a les memòries sense
+lectures pròpies, i la columna ferial de saints-app diu el mateix. La revisió posava aquella missa
+també a la columna del sant. Passava a totes les memòries sense missa pròpia, amb 3-5 divergències
+falses cada dia. No toca l'app ni el join; sí el que arribava a en Pau.
+
+| | |
+|---|---|
+| Correcció | `massColumns()` torna només la columna ferial quan la missa que resa cpl-app és la ferial |
+| Test | `mass-fields.test.js`, «the two columns of a memorial» (sant Jeroni i els Àngels de la Guarda); sense la correcció falla el primer |
+| Efecte | El 30-IX, de 130/133 a 132/132 |
+| Dossier | [tooling-bugs/MIGRA-019](migration-to-saints/tooling-bugs/MIGRA-019.md) |
+| Commit | `7fdbea0` |
+
+<a id="sa-18"></a>
+## SA-18
+
+**Fora nou lectures de la missa que duien el text d'una altra, i quinze de noves** · 30 de setembre de 2026
+
+Reexportació després de la [MIGRA-018](#migra-018). L'exportació només afegeix o canvia claus: les
+17 caselles dolentes que el join ja no produeix s'han tret **a mà** de `commons/ca`.
+
+| | |
+|---|---|
+| Esborrades | `lecturas_referencia` 283, 328, 444, 703, 927, 964, 1619, 1790, 1946 · `lecturas_texto` 350, 408, 553, 883, 998, 1163, 2426, 6058 |
+| Noves | `lecturas_referencia` 297, 988, 1531, 1559, 1640, 1845, 4342 · `lecturas_texto` 88, 368, 473, 1225, 1918, 2057, 2302, 6173, totes iguals al castellà |
+| No tocat | Completes: l'exportació en reescriu els set fitxers, però només hi canvia l'ordre de les claus; desfet, com a la [SA-17](#sa-17) |
+| Commit | `56fbbcd54` (saints-app, branca `catalan-language-support-dev`, local) |
+
 <a id="migra-007"></a>
 ## MIGRA-007
 
@@ -1811,7 +1873,7 @@ el `'0000'`, cpl-app no va mai a `OficisComuns` i resa la fèria. Semblava un fo
 |---|---|
 | Dossier | [migration-to-saints/decisions/D-001-el-comu-a-les-memories.md](migration-to-saints/decisions/D-001-el-comu-a-les-memories.md) |
 | Veredicte | **4 — no és error.** Cap canvi a cpl-app ni a la base de dades |
-| Prova | **OGLH 235b**: la lectura breu, les antífones i els precs, si no són propis, «se tomarán **del Común o de la feria correspondiente**» — les dues opcions són lícites · i `liturgiadeleshores.cat`, la font catalana oficial, resa **la fèria** el 3-09-2026, amb els precs de Vespres iguals als de cpl-app paraula per paraula |
+| Prova | **OGLH 235b**: la lectura breu, les antífones i els precs, si no són propis, «se tomarán **del Común o de la feria correspondiente**» — les dues opcions són lícites · i `liturgiadeleshores.cat` —una web catalana, no oficial: l'edició oficial és la de la CPL— resa **la fèria** el 3-09-2026, amb els precs de Vespres iguals als de cpl-app paraula per paraula |
 | Per contrast | El castellà (`idteologia`) i l'anglès (`universalis`) sí que prenen el Comú. És una **diferència d'ús entre edicions**, no un error de ningú |
 | Efecte a la migració | Les ~19 caselles buides per dia de memòria **no** es desbloquegen tocant la base de dades. Si s'han d'omplir, és fent que el join culli `OficisComuns` per a la pestanya del sant de saints-app — decisió de saints-app, no de cpl-app |
 

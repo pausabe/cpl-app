@@ -1219,8 +1219,8 @@ categories reals).
 
 **No és un forat, és la mateixa opció.** L'OGLH 235b diu que en una memòria l'himne, la
 lectura breu, el responsori i les pregàries es prenen «del comú **o** de la fèria» quan no són
-propis, i l'edició catalana de referència (`liturgiadeleshores.cat`) serveix exactament el
-mateix que cpl-app: comprovat el 14-08-2026, lectura breu 2C 12, 9b-10 i responsori ferial.
+propis, i la web catalana `liturgiadeleshores.cat` (no oficial: l'edició oficial és la de la CPL) serveix
+exactament el mateix que cpl-app: comprovat el 14-08-2026, lectura breu 2C 12, 9b-10 i responsori ferial.
 No hi ha cap bug de cpl-app aquí — no s'obre cap `CPL-LIT-NNN`.
 
 ### 13.2 La conseqüència: el join escrivia text ferial dins del comú

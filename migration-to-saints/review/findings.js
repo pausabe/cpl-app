@@ -1030,6 +1030,147 @@ const FINDINGS = [
       promptable: false,
     },
   },
+  {
+    id: 'F26',
+    verdict: 3,
+    days: ['2026-09-30', '2026-08-28', '2026-09-03', '2026-09-16'],
+    hours: ['Mass'],
+    headline: 'A les memòries sense lectures pròpies, la revisió posava la missa ferial de cpl-app a la columna del sant',
+    resolved: 'MIGRA-019, corregit el 30 de setembre de 2026',
+    detail:
+      'Sant Jeroni: cpl-app llegeix <strong>Jb 9 · Sl 87 · Lc 9,57-62</strong>, la missa del dimecres XXVI '
+      + '(any II), i la revisió ho comparava amb la columna <code>CELEBRATION_*</code> de saints-app '
+      + '(2 Tm 3,14-17 · Sl 118 · Mt 13,47-52). Tres divergències de cita que no ho eren: la columna '
+      + 'ferial de saints-app diu exactament el que resa cpl-app, 8 caselles de 8.',
+    why:
+      '<code>massColumns()</code> copiava <code>rendered</code> a <code>CELEBRATION_*</code> sempre que l’entrada '
+      + 'de l’índex té dues columnes i hi ha missa ferial, sense mirar si <code>rendered</code> <em>és</em> la '
+      + 'ferial. cpl-app només té missa pròpia per a 20 memòries de <code>LDSantoral</code> (Bernabé, Marta, '
+      + 'els Àngels de la Guarda…); a la resta resa la fèria i les dues candidates són la mateixa. Així no '
+      + 's’activava mai el cas que <code>build-rows.js</code> ja preveu (<code>expectedNoSource</code>).',
+    impact:
+      'Cada memòria sense missa pròpia sortia amb 3-5 divergències falses a la missa: el 28-VIII, el 3-IX, '
+      + 'el 16-IX i el 30-IX de 2026, entre d’altres. El join no passa per aquí.',
+    proof: [
+      ['Prova interna', 'run/review-rows.json del 30-IX: FIRSTLECTURE, PSALM, ACCLAMATION i GOSPEL iguals en C1; els CELEBRATION_* duien el mateix text de cpl-app', null],
+      ['cpl-app', 'LDSantoral: 20 files amb Categoria M, cap de sant Jeroni', null],
+      ['El cas bo', 'Els Àngels de la Guarda, 2-X-2026, amb missa pròpia a cpl-app: les caselles CELEBRATION_ coincideixen', null],
+    ],
+    fix: {
+      where: 'migration-to-saints/lib/mass-columns.js · massColumns()',
+      summary: 'Corregit: si totes les cites de <code>rendered</code> són les de la ferial, torna només la ferial.',
+      note: 'Test a mass-fields.test.js («the two columns of a memorial»); sense el pedaç falla el de sant Jeroni.',
+      promptable: false,
+    },
+  },
+  {
+    id: 'F27',
+    verdict: 3,
+    days: ['2026-09-30'],
+    hours: ['Vespers'],
+    headline: 'Les pregàries de Vespres del dimecres II: el llatí en té cinc amb una alternativa, el castellà en fa sis, i el join hi posa les cinc de la CPL per ordre',
+    detail:
+      'cpl-app en resa cinc. La quarta del llatí té una alternativa marcada «vel»: «Ærem nobis… largire '
+      + 'propitium» <em>o bé</em> «Ab omnibus noxis libera nos… super domus nostras». La CPL en dona la '
+      + 'primera; el castellà (i liturgiadeleshores.cat) imprimeixen les dues seguides, com si fossin sis. '
+      + 'saints-app té sis caselles i el join les omple per posició: la dels difunts va a '
+      + '<code>preces_contenido/9573</code>, que és l’alternativa («Líbranos, Señor, de todo peligro»), i la '
+      + '<code>9574</code>, que és la dels difunts, queda sense català.',
+    why:
+      'La CPL no s’equivoca: fa el que fa el llatí. L’error és nostre, d’aparellar per posició dues llistes '
+      + 'de mida diferent.',
+    impact:
+      '56 dies de la finestra 2017-2026: tots els dimecres de la setmana II del salteri durant l’any, memòries '
+      + 'incloses. A saints-app, quan <code>commons/ca</code> no té l’id, <code>TextService</code> no cau al '
+      + 'castellà i les Vespres mostren literalment «id 9574 not found in preces_contenido».',
+    proof: [
+      ['Llatí, data exacta', 'Liturgia Horarum, Vespres del 2-IX-2026: cinc pregàries; després de «Ærem nobis», «vel: Ab ómnibus noxis líbera nos»', 'https://www.societaslaudis.org/fr/2026-09-02/hebdomada-xxii-per-annum/de-ea/liturgia-horarum/ad-vesperas/'],
+      ['Castellà', 'preces_contenido/9569-9574: sis, la cinquena «Líbranos, Señor, de todo peligro, y bendice nuestros hogares»', null],
+      ['cpl-app', 'salteriComuVespres id 12: cinc, la quarta «Concediu-nos el bon temps»; cap taula no conté «qualsevol perill»', null],
+      ['Volum imprès', 'Si hi ha un «o bé» després de la quarta pregària, el text català de l’alternativa és de la CPL', null],
+    ],
+    fix: {
+      where: 'decisió d’en Pau, i després migration-to-saints/join-content.test.js (preces_contenido)',
+      summary: 'La dels difunts, a 9574. A 9573 (l’alternativa), o bé el text català de la CPL si el volum el '
+        + 'dona, o bé res, i llavors cal que saints-app amagui la casella buida en lloc de mostrar «id not found».',
+      note: 'No és cap CPL-LIT. liturgiadeleshores.cat no és cap font oficial: l’edició oficial és la CPL.',
+      promptable: false,
+    },
+  },
+  {
+    id: 'F28',
+    verdict: 3,
+    days: ['2026-09-30', '2026-06-24', '2026-12-24', '2026-10-07', '2026-11-10', '2025-11-04', '2022-08-26', '2020-05-26', '2019-09-03'],
+    hours: ['Mass'],
+    headline: 'El join triava les lectures de la missa pel capítol, i en va exportar nou amb el text d’una altra missa',
+    resolved: 'MIGRA-018, corregit el 30 de setembre de 2026',
+    detail:
+      'El join es quedava amb el <code>token</code> de <code>fingerprint()</code> —llibre i capítol— i agafava '
+      + 'la primera candidata que hi encaixava. Quan la missa ferial, la del dia en una vigília o la d’ahir '
+      + 'llegeixen el mateix capítol que la casella, hi anava la que no és.',
+    table: {
+      head: ['celebració', 'caselles', 'castellà', 'català que hi havia', 'dies'],
+      rows: [
+        ['Vigília de sant Joan Baptista, evangeli i aclamació', '703 · 883 · 6058', 'Lc 1, 5-17', 'Lc 1,57-66.80, la del dia', '10'],
+        ['Vigília de Nadal, salm', '927 · 1163', 'Sal 88, 4-5.16-17.27.29', 'Sl 88,2-3.4-5.27 i 29, la del matí', '8'],
+        ['La Mare de Déu del Roser, salm', '328 · 408', 'Lc 1, 46-55 (Magníficat)', 'Lc 1,69-75 (Benedictus), una fèria', '9'],
+        ['Comú de màrtirs (Àgata, Kolbe), salm', '444 · 553', 'Sal 30, 3cd-4.6.8ab.16bc-17', 'Sl 30,20-24, una fèria', '17'],
+        ['Sant Lleó el Gran, salm', '1619 · 998', 'Sal 36, 3-6.30-31', 'Sl 36,3-4.18 i 23.27 i 29, la fèria', '2'],
+        ['Sant Felip Neri, evangeli', '1790', 'Jn 17, 20-26', 'Jo 17,1-11a, la fèria', '1'],
+        ['Santa Teresa de Jesús Jornet, evangeli', '283 · 350', 'Mt 25, 31-40', 'Mt 25,1-13, la fèria', '1'],
+        ['Sant Carles Borromeu, 1a lectura', '1946 · 2426', 'Rm 12, 3-13', 'Rm 12,5-16a, la fèria', '1'],
+        ['Sant Gregori el Gran, salm', '964', 'Sal 95, 1-3.7-8a.10', 'Sl 95,1 i 3.4-5.11-13, la missa d’ahir', '8'],
+      ],
+    },
+    why:
+      'Comparar llibre i capítol és bo per a dir que dues cites són la mateixa lectura escrita diferent '
+      + '(«Salm 109» i «Salmo 109, 1-5. 7»), però no per a triar entre dues lectures del mateix capítol. El '
+      + 'PLAN §18.7 ho va resoldre per a sant Pere i sant Pau perquè allà el capítol canvia (ACTS|12 ≠ ACTS|3).',
+    impact:
+      'El 30-IX: la variant minoritària que retenia <code>lecturas_texto/368</code>, el salm de sant Jeroni, era '
+      + 'el salm ferial de sant Alfons del 2022-08-01. Corregit, la 368 s’allibera, i amb ella 7 cites i 7 textos més.',
+    proof: [
+      ['Prova interna', 'fingerprint(\'Sal 118, 29.43…\').token = fingerprint(\'Sal 118, 9-14\').token = PS|118; el tokenFull difereix', null],
+      ['saints-app', 'commons/ca: lecturas_referencia/703 deia «Lc 1,57-66.80» on el castellà diu «Lc 1, 5-17»', null],
+    ],
+    fix: {
+      where: 'lib/citation-key.js · readingMatch() · join-content.test.js · observeMass()',
+      summary: 'Corregit: tria pels versets, cada lectura de cpl-app va a la casella del dia on encaixa millor, i '
+        + 'la missa d’ahir només compta si hi encaixa sencera. Les 17 caselles dolentes, fora de saints-app (SA-18).',
+      note: 'Contra el join d’abans: cap lectura bona perduda (la Vigília Pasqual i els dies de després de '
+        + 'l’Epifania es mantenen).',
+      promptable: false,
+    },
+  },
+  {
+    id: 'F29',
+    verdict: 3,
+    days: ['2026-09-30'],
+    hours: ['Office'],
+    headline: 'L’Ofici no té pestanya ferial, i el join arxiva l’himne ferial de cpl-app a la casella del sant',
+    detail:
+      '<code>himnos/959</code> és l’himne de l’Ofici de sant Jeroni i només el fa servir ell. El castellà hi '
+      + 'diu «Estate, Señor, conmigo». cpl-app hi resa l’himne ferial, i el join en recull sis de diferents en '
+      + 'nou anys, un per dia de la setmana: 2017 i 2023 (dissabte), 2019 i 2024 (dilluns), 2020 i 2026 '
+      + '(dimecres)… La casella queda retinguda i cap variant no és la bona.',
+    why:
+      'La regla del MIGRA-004 (F12) aparta el text ferial de la casella del sant a Laudes i Vespres, que '
+      + 'tenen pestanya ferial (<code>HOURS_WITH_A_FERIAL_TAB</code>). L’Ofici no en té, o sigui que '
+      + '<code>fromFerial</code> no s’hi calcula i l’himne ferial s’observa a la casella del sant.',
+    impact:
+      '56 caselles de l’Ofici retingudes amb una sola clau de memòria (45 himnes, 8 responsoris, 3 de la lectura), '
+      + '470 observacions. No s’exporta res de dolent, però compten com a retingudes quan són sense font.',
+    proof: [
+      ['Prova interna', 'join-pending-review.json, himnos/959: les sis variants van per dia de la setmana, mai per any', null],
+    ],
+    fix: {
+      where: 'migration-to-saints/lib/memorial-ferial.js · lib/cpl-day-resolver.js · join-content.test.js',
+      summary: 'Calcular <code>fromFerial</code> també per a l’Ofici i, com fa <code>isProperOnly()</code>, '
+        + 'descartar l’observació si no hi ha casella ferial on posar-la.',
+      note: 'Aclareix el progrés, no el mou: la casella passa de retinguda a sense font, tret que el Comú n’hi doni una.',
+      promptable: true,
+    },
+  },
 ];
 
 const VERDICTS = {
@@ -1071,6 +1212,9 @@ const CLAIMS = {
     && /^(primer|segundo|tercer)_salmo_(cita|texto)$/.test(row.key),
   F24: (date, row) => date === '2026-09-14' && row.hour === 'Mass'
     && String(row.key).startsWith('FIRSTLECTURE'),
+  // Only the rows the comparison already flags: the prose ones were never counted.
+  F26: (date, row) => row.hour === 'Mass' && String(row.key).startsWith('CELEBRATION_')
+    && ['diff', 'diffRef'].includes(row.match),
 };
 
 function claimFor(date, row) {
