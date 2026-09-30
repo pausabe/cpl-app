@@ -1,22 +1,19 @@
 {
   "days": [
     {
-      "date": "2026-03-25",
-      "title": "Anunciació del Senyor",
-      "common": null,
-      "missing": 1,
-      "covered": 0,
-      "citationChecks": [],
-      "proposals": []
-    },
-    {
-      "date": "2026-12-08",
+      "date": "2026-09-30",
       "missing": 0,
       "covered": 0,
       "proposals": []
     },
     {
-      "date": "2026-01-01",
+      "date": "2026-09-29",
+      "missing": 0,
+      "covered": 0,
+      "proposals": []
+    },
+    {
+      "date": "2026-06-11",
       "missing": 0,
       "covered": 0,
       "proposals": []

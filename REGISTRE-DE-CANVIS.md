@@ -112,6 +112,7 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [SA-23](#sa-23) | 2026-09-30 | saints-app | contingut | Es regenera | `73d93983e` |
 | [EPREX-008](#eprex-008) | 2026-09-30 | saints-app | **proposat** | — segon missatge per a en Fernando, redactat el 30-9 | — |
 | [EPREX-009](#eprex-009) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-008 | — |
+| [D-014](#d-014) | 2026-09-30 | eines + saints-app | **decisió** (197 caselles, una per una) | Es regenera: `decided-cells.json` | el que afegeix la fitxa · saints-app `ed7ea84f1` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2252,6 +2253,31 @@ llengües. Dossier i missatge: [eprex-bugs/EPREX-008](migration-to-saints/eprex-
 Laudes, Vespres, Sexta i Nona (i Tèrcia el divendres) duen la salmòdia de la setmana I; el breviari hi dona
 la de la setmana III. Es veu quan aquests dies cauen abans del 17 de desembre (2021, 2022; el pròxim cop,
 2027). Mateix dossier i missatge que l'[EPREX-008](#eprex-008).
+
+<a id="d-014"></a>
+## D-014
+
+**197 caselles retingudes amb un text molt majoritari, decidides una per una** · 30 de setembre de 2026
+
+Caselles on cpl-app diu el mateix text gairebé tots els dies que la casella surt, i on els dies que
+discrepen tenen una causa ja coneguda. En totes, el text de la casella és el de la majoria, que també és
+el que el castellà hi mostra; els dies que discrepen continuen mostrant, en català, el mateix que en
+castellà. En Pau, el 30-9: «ok, palante».
+
+| Grup | Caselles | Per què el text de la casella no té dubte |
+|---|---|---|
+| Memòries amb text propi a les hores menors (els Àngels de la Guarda, sant Bernabé) | 72 | Totes dues coses són lícites (OGLH 236) i mana eprex ([D-010](#d-010)); troballa F30 |
+| Festes amb antífona pròpia a les hores menors (sant Marc, sant Maties, sant Felip i sant Jaume, santa Caterina de Siena, sant Bartomeu…) | 11 | La casella és l'antífona del saltiri; la festa perd la seva per l'[EPREX-005](#eprex-005) |
+| Anys solts | 78 | La celebració coincideix amb la majoria la resta d'anys: l'Anunciació traslladada després de Pasqua (2018, 2024), el diumenge III d'Advent quan és 17 de desembre (2017, 2023), sant Joan de la Creu el 2022… Criteri: 2 anys de cada 10 com a molt, i mai a la missa, on 3 de 10 és el cicle C |
+| Himnes | 18 | La casella és un himne comú (el de Tèrcia de durant l'any, el de Quaresma…). Els dies que discrepen són una tria de l'edició, i mana eprex (diumenges de Quaresma, dies després de l'Epifania, les hores menors d'algunes festes), o eprex hi apunta malament ([EPREX-008](#eprex-008)) |
+| Advent III | 19 | La casella és la del salteri de la setmana I; eprex hi apunta els dimecres, dijous i divendres d'Advent III ([EPREX-009](#eprex-009)) |
+
+| | |
+|---|---|
+| Com | `decided-cells.json`, una entrada per casella amb el dia del text que s'hi escriu i el perquè. El dia és sempre un en què la casella només té el text de la majoria |
+| Efecte | De 424.584 a **437.185** textos-dia (el **94%**) i de 28 a **119** dies sencers. El 30-IX continua al 100% |
+| Conseqüència visible | Aquells pocs dies, el català mostra el mateix que el castellà i no el text propi de la CPL: per exemple, el diumenge de Quaresma l'himne de l'Ofici és el dels dies feiners |
+| Commit | el que afegeix la fitxa · saints-app `ed7ea84f1` |
 
 # Canvis a saints-app
 

@@ -68,6 +68,794 @@
     "himnos/1301": {
       "take": "2026-09-30",
       "because": "Himne de les hores menors durant l'any: eprex el mostra també a 9 dies de gener després de l'Epifania, on cpl-app resa el de Nadal (el problema de gener, pendent a part). Mana eprex."
+    },
+    "himnos/1193": {
+      "take": "2026-11-19",
+      "because": "Himne comú de la casella. Els dies de Exaltació de la Santa Creu cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1182": {
+      "take": "2026-11-20",
+      "because": "Himne comú de la casella. Els dies de Sants arcàngels Miquel, Gabriel i Rafael cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1198": {
+      "take": "2026-11-21",
+      "because": "Himne comú de la casella. Els dies de Exaltació de la Santa Creu cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/3499": {
+      "take": "2026-11-23",
+      "because": "Himne comú de la casella. Els dies de dilluns II d'Advent cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1197": {
+      "take": "2026-11-26",
+      "because": "Himne comú de la casella. Els dies de dijous després de l'Epifania cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1302": {
+      "take": "2026-11-26",
+      "because": "Himne comú de la casella. Els dies de dijous després de l'Epifania cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1303": {
+      "take": "2026-11-26",
+      "because": "Himne comú de la casella. Els dies de dijous després de l'Epifania cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1184": {
+      "take": "2026-11-27",
+      "because": "Himne comú de la casella. Els dies de dimarts després de l'Epifania, divendres després de l'Epifania cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1304": {
+      "take": "2026-11-27",
+      "because": "Himne comú de la casella. Els dies de dimarts després de l'Epifania, divendres després de l'Epifania cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1305": {
+      "take": "2026-11-27",
+      "because": "Himne comú de la casella. Els dies de dimarts després de l'Epifania, divendres després de l'Epifania cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/3751": {
+      "take": "2026-11-14",
+      "because": "Himne comú de la casella. Els dies de Sants Joaquim i Anna, Sant Lluc cpl-app hi diu un himne propi: a sant Lluc eprex hi apunta malament (EPREX-008); a la resta, mana eprex (D-010)."
+    },
+    "himnos/1173": {
+      "take": "2026-11-28",
+      "because": "Himne comú de la casella. Els dies de Divendres Sant cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1172": {
+      "take": "2026-03-28",
+      "because": "Himne comú de la casella. Els dies de Solemnitat de la Santíssima Trinitat cpl-app hi diu l'himne propi, i eprex hi apunta malament (EPREX-008)."
+    },
+    "himnos/1165": {
+      "take": "2026-03-28",
+      "because": "Himne comú de la casella. Els dies de Solemnitat de la Santíssima Trinitat cpl-app hi diu l'himne propi, i eprex hi apunta malament (EPREX-008)."
+    },
+    "himnos/1207": {
+      "take": "2026-03-28",
+      "because": "Himne comú de la casella. Els dies de Solemnitat de la Santíssima Trinitat cpl-app hi diu l'himne propi, i eprex hi apunta malament (EPREX-008)."
+    },
+    "himnos/3365": {
+      "take": "2026-03-27",
+      "because": "Himne comú de la casella. Els dies de diumenge I de Quaresma, diumenge II de Quaresma, diumenge III de Quaresma, diumenge IV de Quaresma, diumenge V de Quaresma cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/1187": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "himnos/1188": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "himnos/1189": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "himnos/918": {
+      "take": "2024-05-10",
+      "because": "Sant Joan d’Àvila: coincideix amb la resta de dies tots els anys menys 2025-05-10."
+    },
+    "himnos/3835": {
+      "take": "2026-05-17",
+      "because": "Himne comú de la casella. Els dies de Visitació de la Benaurada Verge Maria cpl-app hi diu l'himne propi, i eprex hi apunta malament (EPREX-008)."
+    },
+    "himnos/3732": {
+      "take": "2026-12-14",
+      "because": "Himne comú de la casella. Els dies de Sant Andreu cpl-app hi diu un himne propi i eprex hi mostra aquest: mana eprex (D-010)."
+    },
+    "himnos/109": {
+      "take": "2026-12-15",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "himnos/3391": {
+      "take": "2026-12-15",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "salmos_antifonas/3434": {
+      "take": "2026-11-16",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Bartomeu cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/158": {
+      "take": "2026-12-02",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "salmos_antifonas/159": {
+      "take": "2026-12-02",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "salmos_antifonas/160": {
+      "take": "2026-12-02",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "salmos_antifonas/9344": {
+      "take": "2026-07-29",
+      "because": "Sant Joan de la Creu: coincideix amb la resta de dies tots els anys menys 2022-12-14."
+    },
+    "salmos_antifonas/9345": {
+      "take": "2026-07-29",
+      "because": "Sant Joan de la Creu: coincideix amb la resta de dies tots els anys menys 2022-12-14."
+    },
+    "salmos_antifonas/209": {
+      "take": "2026-12-03",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "salmos_antifonas/210": {
+      "take": "2026-12-03",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "salmos_antifonas/211": {
+      "take": "2026-12-03",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "salmos_antifonas/3419": {
+      "take": "2026-11-21",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Sants Simó i Judes cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/3361": {
+      "take": "2026-11-23",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Sants Simó i Judes cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/3381": {
+      "take": "2026-11-27",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Santa Teresa Beneta de la Creu cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/3689": {
+      "take": "2026-10-10",
+      "because": "Antífona del saltiri a les hores menors. Mare de Déu del Pilar: l'antífona pròpia que saints-app no llegeix (EPREX-005); Dedicació de la Basílica del Laterà: només 2019-11-09, 2024-11-09."
+    },
+    "salmos_antifonas/3364": {
+      "take": "2026-11-10",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Santa Brígida, Santa Teresa de Jesús cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/3454": {
+      "take": "2026-11-11",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Visitació de la Benaurada Verge Maria cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/3391": {
+      "take": "2026-11-13",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Lluc, Visitació de la Benaurada Verge Maria cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/3447": {
+      "take": "2026-11-14",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Mateu cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/3427": {
+      "take": "2026-09-07",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Llorenç cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/740": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/741": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/742": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/7125": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/4507": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/7": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/8": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/9": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/3360": {
+      "take": "2026-05-23",
+      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Marc, Sants Felip i Jaume, Sant Maties, Santa Caterina de Siena, Sant Isidor cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
+    },
+    "salmos_antifonas/9926": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/9927": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "salmos_antifonas/9928": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "lectura_breve_citas/1281": {
+      "take": "2026-08-31",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1448": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1172": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1259": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1842": {
+      "take": "2026-07-07",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1715": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1220": {
+      "take": "2026-11-25",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1282": {
+      "take": "2026-06-10",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1319": {
+      "take": "2026-07-09",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1284": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1383": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1365": {
+      "take": "2026-10-30",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1176": {
+      "take": "2026-10-30",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1472": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1553": {
+      "take": "2026-08-03",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1991": {
+      "take": "2026-06-13",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1303": {
+      "take": "2026-09-05",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1572": {
+      "take": "2026-06-13",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1270": {
+      "take": "2026-09-01",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1234": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1366": {
+      "take": "2026-10-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1256": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1166": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/2824": {
+      "take": "2026-10-31",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1609": {
+      "take": "2026-10-31",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_citas/1254": {
+      "take": "2026-10-31",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1306": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1173": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1235": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1367": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1257": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1222": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1384": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1339": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1234": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1177": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1426": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1213": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1428": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/2810": {
+      "take": "2026-10-31",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1598": {
+      "take": "2026-10-31",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/1255": {
+      "take": "2026-10-31",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/6681": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/6682": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7845": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7846": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8343": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8344": {
+      "take": "2026-11-23",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/9677": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/9678": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7807": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7808": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8379": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8380": {
+      "take": "2026-11-24",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/6757": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/6758": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8587": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8588": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7593": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7594": {
+      "take": "2026-11-26",
+      "because": "Hores menors d'una memòria: els dies de Sant Bernabé, Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/6795": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/6796": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7605": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7606": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8553": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8554": {
+      "take": "2026-11-27",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/13090": {
+      "take": "2026-11-05",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "responsorios/13091": {
+      "take": "2026-11-05",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "responsorios/9457": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/9458": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7567": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/7568": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8601": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/8602": {
+      "take": "2026-11-28",
+      "because": "Hores menors d'una memòria: els dies de Sants Àngels de la Guarda, Sant Bernabé cpl-app hi diu un text propi i eprex hi mostra el saltiri. Totes dues coses són lícites (OGLH 236): mana eprex (D-010)."
+    },
+    "responsorios/1351": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/1352": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/1354": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/1356": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/7975": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/7976": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/7483": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/7484": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/6489": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/6490": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/11532": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/11533": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/11535": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/11536": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/11538": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/11539": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/11742": {
+      "take": "2026-11-04",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "responsorios/11743": {
+      "take": "2026-11-04",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "responsorios/5827": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/5828": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/5829": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/5830": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/5832": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/13495": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/13496": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/33499": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/33500": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/13502": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/13503": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "responsorios/15136": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/15137": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/15139": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "responsorios/15141": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "cantico_evangelico_antifonas/2418": {
+      "take": "2025-03-01",
+      "because": "dissabte VII de durant l'any: coincideix amb la resta de dies tots els anys menys 2017-02-25."
+    },
+    "cantico_evangelico_antifonas/232": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "cantico_evangelico_antifonas/2432": {
+      "take": "2026-06-21",
+      "because": "diumenge XII de durant l'any: coincideix amb la resta de dies tots els anys menys 2021-06-20."
+    },
+    "cantico_evangelico_antifonas/1151": {
+      "take": "2026-08-14",
+      "because": "Sant Maximilià Maria Kolbe: coincideix amb la resta de dies tots els anys menys 2021-08-14."
+    },
+    "cantico_evangelico_antifonas/221": {
+      "take": "2026-12-02",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "cantico_evangelico_antifonas/164": {
+      "take": "2026-12-03",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "cantico_evangelico_antifonas/1328": {
+      "take": "2026-03-25",
+      "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
+    },
+    "cantico_evangelico_antifonas/1317": {
+      "take": "2025-12-03",
+      "because": "Sant Joan de la Creu: coincideix amb la resta de dies tots els anys menys 2022-12-14."
+    },
+    "preces_intro/136": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_intro/1232": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_intro/215": {
+      "take": "2026-12-02",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "preces_intro/158": {
+      "take": "2026-12-03",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "preces_respuesta/1232": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/3309": {
+      "take": "2026-12-03",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "preces_contenido/4045": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/4046": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/4047": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/4048": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/9474": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/9475": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/9476": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/9477": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "preces_contenido/9478": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "oraciones_finales/1841": {
+      "take": "2026-01-01",
+      "because": "Solemnitat de Santa Maria Mare de Déu: coincideix amb la resta de dies tots els anys menys 2017-01-01, 2023-01-01."
+    },
+    "oraciones_finales/1694": {
+      "take": "2026-08-06",
+      "because": "Transfiguració del Senyor: coincideix amb la resta de dies tots els anys menys 2017-08-06, 2023-08-06."
+    },
+    "oraciones_finales/282": {
+      "take": "2026-12-02",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "oraciones_finales/1322": {
+      "take": "2026-12-02",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "oraciones_finales/1825": {
+      "take": "2026-12-03",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "oraciones_finales/1846": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "oraciones_finales/225": {
+      "take": "2025-12-04",
+      "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
+    },
+    "oficio_citas/1654": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "oficio_citas/655": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "oficio_titulos/1654": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "oficio_titulos/655": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "oficio_textos/1654": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "oficio_textos/655": {
+      "take": "2026-12-13",
+      "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
     }
   }
 }
