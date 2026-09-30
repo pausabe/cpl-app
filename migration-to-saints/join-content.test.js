@@ -35,7 +35,7 @@ const { fingerprint, readingMatch } = require('./lib/citation-key');
 const { alignPreces } = require('./lib/preces-alignment');
 // Held cells with an answer that is not a matter of taste: copies of one text, and the psalm
 // the Spanish of the cell names (D-012).
-const { resolveHeld, psalmScore, lightVariant } = require('./lib/held-resolution');
+const { resolveHeld, psalmScore, lightVariant, anotherPsalm } = require('./lib/held-resolution');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
 const {
@@ -988,8 +988,20 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         const auto = autoGroups
           ? resolveHeld({ table, groups: autoGroups, esCitation: table === 'salmos_citas' ? esTable('salmos_citas')[id] : null })
           : null;
-        if (byValue.size === 1) {
-          commons[table][id] = representative([...byValue.values()][0]);
+        // A psalm cpl-app says on every day it is asked, but not the one the Spanish of the cell
+        // names, is held like a disagreement (MIGRA-021, lib/held-resolution.js).
+        const lone = byValue.size === 1 ? [...byValue.values()][0] : null;
+        if (lone && anotherPsalm({
+          table, value: representative(lone), psalmScores: lone.psalmScores, esCitation: esTable('salmos_citas')[id],
+        })) {
+          pending[table].push({
+            id,
+            affectedCount: lone.tags.length,
+            reason: 'anotherPsalm',
+            variants: [{ preview: representative(lone).slice(0, 300), truncated: representative(lone).length > 300, tags: lone.tags }],
+          });
+        } else if (lone) {
+          commons[table][id] = representative(lone);
         } else if (decidedGroup) {
           commons[table][id] = representative(decidedGroup);
         } else if (auto) {

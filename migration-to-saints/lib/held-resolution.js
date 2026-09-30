@@ -187,4 +187,15 @@ function resolveHeld({ table, groups, esCitation }) {
   return null;
 }
 
-module.exports = { looseWords, lightVariant, psalmPart, psalmScore, resolveHeld, CITATION_TABLES };
+// A cell cpl-app agrees with itself about, but that holds another psalm than the one the Spanish
+// of the cell names (MIGRA-021). Unanimity says cpl-app is consistent, not that this is the cell
+// for its psalm: on a weekday solemnity cpl-app says Psalm 124 in Terce's third place, where
+// eprex's cell is Psalm 121. Same evidence as `resolveHeld`: the heading against the Spanish one,
+// or, for a text, how its heading compared on every day it was said.
+function anotherPsalm({ table, value, psalmScores, esCitation }) {
+  if (table === 'salmos_citas') return esCitation != null && psalmScore(value, esCitation) === 0;
+  if (table === 'salmos_textos') return !!psalmScores && psalmScores.size === 1 && psalmScores.has(0);
+  return false;
+}
+
+module.exports = { looseWords, lightVariant, psalmPart, psalmScore, resolveHeld, anotherPsalm, CITATION_TABLES };

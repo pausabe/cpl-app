@@ -105,6 +105,8 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [SA-21](#sa-21) | 2026-09-30 | saints-app | contingut | Es regenera | `fdbcaaaf5` |
 | [EPREX-006](#eprex-006) | 2026-09-30 | saints-app | **proposat** | — pendent de decidir qui ho arregla | — |
 | [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **proposat** | — pendent de decidir qui ho arregla | — |
+| [MIGRA-021](#migra-021) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
+| [SA-22](#sa-22) | 2026-09-30 | saints-app | contingut | Es regenera, **però la 12003 cal esborrar-la a mà** si es torna a partir d'una còpia vella | `a38ce6afa` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2146,6 +2148,34 @@ Troballa F31, veredicte «no és error».
 | Llengües | Totes: és l'índex |
 | Com | Per saints-admin i `chore(texts)`, mai tocant el JSON exportat |
 | Revisió | Troballa F33 |
+
+<a id="migra-021"></a>
+## MIGRA-021
+
+**El join escrivia un salm unànime encara que no fos el de la casella** · 30 de setembre de 2026
+
+Quan cpl-app diu sempre el mateix en una casella, el join l'escrivia sense preguntar-se si era el salm que
+hi va. A Tèrcia de l'Anunciació, la Immaculada i l'1 de gener, cpl-app diu el salm 124 (la salmòdia de
+Sexta, que fa servir a les tres hores: lícit, troballa F31), i la casella d'eprex és la del salm 121. El
+català mostrava el 124 on el castellà mostra el 121. Mirat tot el català, era l'única casella així.
+
+| | |
+|---|---|
+| Correcció | `anotherPsalm()` a `lib/held-resolution.js`: la mateixa prova de la cita que la [D-012](#d-012), també per a les caselles unànimes. Si és un altre salm, queda retinguda (`reason: 'anotherPsalm'`) |
+| Test | `held-resolution.test.js`, 21 de 21 |
+| Dossier | [tooling-bugs/MIGRA-021](migration-to-saints/tooling-bugs/MIGRA-021.md) |
+
+<a id="sa-22"></a>
+## SA-22
+
+**Fora el salm 124 de la casella del salm 121 de Tèrcia** · 30 de setembre de 2026
+
+Després de la [MIGRA-021](#migra-021): `salmos_citas/12003` i `salmos_textos/12003`, esborrades **a mà**
+(l'exportació no esborra). Queden buides fins que s'hi posi el salm 121 de la CPL.
+
+| | |
+|---|---|
+| Commit | `a38ce6afa` (saints-app, branca `catalan-language-support-dev`) |
 
 # Canvis a saints-app
 

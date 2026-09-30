@@ -3,7 +3,7 @@
 //
 //   npx jest migration-to-saints/held-resolution.test.js
 
-const { lightVariant, psalmPart, psalmScore, resolveHeld } = require('./lib/held-resolution');
+const { lightVariant, psalmPart, psalmScore, resolveHeld, anotherPsalm } = require('./lib/held-resolution');
 
 describe('the same text, copied with a detail of difference', () => {
   test('a quote mark on the other side of the full stop is the same psalm', () => {
@@ -170,5 +170,20 @@ describe('a held cell', () => {
       ],
     });
     expect(r).toBeNull();
+  });
+});
+
+describe('a psalm cpl-app always says, in another psalm\'s cell (MIGRA-021)', () => {
+  test('Psalm 124 in the cell the Spanish calls Psalm 121 is not written', () => {
+    expect(anotherPsalm({ table: 'salmos_citas', value: 'Salm 124', esCitation: 'Salmo 121: La ciudad santa de Jerusalén' })).toBe(true);
+    expect(anotherPsalm({ table: 'salmos_textos', value: 'El qui confia en el Senyor', psalmScores: new Map([[0, 20]]) })).toBe(true);
+  });
+
+  test('the psalm the Spanish names, or no evidence either way, is written', () => {
+    expect(anotherPsalm({ table: 'salmos_citas', value: 'Salm 121', esCitation: 'Salmo 121' })).toBe(false);
+    expect(anotherPsalm({ table: 'salmos_citas', value: 'Salm 121', esCitation: null })).toBe(false);
+    expect(anotherPsalm({ table: 'salmos_textos', value: 'x', psalmScores: new Map([[2, 5], [0, 1]]) })).toBe(false);
+    expect(anotherPsalm({ table: 'salmos_textos', value: 'x' })).toBe(false);
+    expect(anotherPsalm({ table: 'himnos', value: 'x' })).toBe(false);
   });
 });

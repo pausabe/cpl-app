@@ -12342,6 +12342,39 @@
           ]
         }
       ]
+    },
+    {
+      "id": "12003",
+      "affectedCount": 20,
+      "reason": "anotherPsalm",
+      "variants": [
+        {
+          "preview": "Salm 124\n",
+          "truncated": false,
+          "tags": [
+            "2017-03-25 (Tercia)",
+            "2017-12-08 (Tercia)",
+            "2018-04-09 (Tercia)",
+            "2018-12-08 (Tercia)",
+            "2019-03-25 (Tercia)",
+            "2019-12-09 (Tercia)",
+            "2020-03-25 (Tercia)",
+            "2020-12-08 (Tercia)",
+            "2021-03-25 (Tercia)",
+            "2021-12-08 (Tercia)",
+            "2022-03-25 (Tercia)",
+            "2022-12-08 (Tercia)",
+            "2023-03-25 (Tercia)",
+            "2023-12-08 (Tercia)",
+            "2024-04-08 (Tercia)",
+            "2024-12-09 (Tercia)",
+            "2025-03-25 (Tercia)",
+            "2025-12-08 (Tercia)",
+            "2026-03-25 (Tercia)",
+            "2026-12-08 (Tercia)"
+          ]
+        }
+      ]
     }
   ],
   "salmos_antifonas": [
@@ -24321,6 +24354,39 @@
             "2026-01-01 (Nona)",
             "2026-03-25 (Nona)",
             "2026-12-08 (Nona)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12003",
+      "affectedCount": 20,
+      "reason": "anotherPsalm",
+      "variants": [
+        {
+          "preview": "El qui confia en el Senyor mai no caurà.    *\nÉs com Sió, incommovible, ferm per sempre.\n\nJerusalem està envoltada de muntanyes.    †\nÉs així com el Senyor envolta el seu poble,    * \nara i  per tots els segles.\n\nEl ceptre injust no pesarà més\nsobre la terra dels justos,    *\nno fos que els justos d",
+          "truncated": true,
+          "tags": [
+            "2017-03-25 (Tercia)",
+            "2017-12-08 (Tercia)",
+            "2018-04-09 (Tercia)",
+            "2018-12-08 (Tercia)",
+            "2019-03-25 (Tercia)",
+            "2019-12-09 (Tercia)",
+            "2020-03-25 (Tercia)",
+            "2020-12-08 (Tercia)",
+            "2021-03-25 (Tercia)",
+            "2021-12-08 (Tercia)",
+            "2022-03-25 (Tercia)",
+            "2022-12-08 (Tercia)",
+            "2023-03-25 (Tercia)",
+            "2023-12-08 (Tercia)",
+            "2024-04-08 (Tercia)",
+            "2024-12-09 (Tercia)",
+            "2025-03-25 (Tercia)",
+            "2025-12-08 (Tercia)",
+            "2026-03-25 (Tercia)",
+            "2026-12-08 (Tercia)"
           ]
         }
       ]
