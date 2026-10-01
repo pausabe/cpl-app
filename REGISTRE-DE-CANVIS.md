@@ -114,11 +114,15 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [EPREX-009](#eprex-009) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-008 | — |
 | [D-014](#d-014) | 2026-09-30 | eines + saints-app | **decisió** (197 caselles, una per una) | Es regenera: `decided-cells.json` | el que afegeix la fitxa · saints-app `ed7ea84f1` |
 | [D-015](#d-015) | 2026-09-30 | saints-app | **decisió** (limitació acceptada) | — | el que afegeix la fitxa |
-| [SA-24](#sa-24) | 2026-09-30 | saints-app | **codi** | No — va al git | `9e5ecaaf8`, branca `catalan-language-support-dev`, local |
-| [SA-25](#sa-25) | 2026-09-30 | saints-app | **codi** | No — va al git | `bdbb1a29b`, local |
-| [SA-26](#sa-26) | 2026-09-30 | saints-app | contingut + codi | Es regenera: `generic-texts/build_literals.py` | `688e9d04a`, local |
+| [SA-24](#sa-24) | 2026-09-30 | saints-app | **codi** | No — va al git | `9e5ecaaf8`, branca `catalan-language-support-dev` |
+| [SA-25](#sa-25) | 2026-09-30 | saints-app | **codi** | No — va al git | `bdbb1a29b` |
+| [SA-26](#sa-26) | 2026-09-30 | saints-app | contingut + codi | Es regenera: `generic-texts/build_literals.py` | `688e9d04a` |
 | [EINA-literals](#eina-literals) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
-| [SA-27](#sa-27) | 2026-09-30 | saints-app | **codi** | No — va al git | `519e122a2`, local |
+| [SA-27](#sa-27) | 2026-09-30 | saints-app | **codi** | No — va al git | `519e122a2` |
+| [SA-28](#sa-28) | 2026-10-01 | saints-app | **dependència** | No — va al git; **desfer quan es publiqui el PR #25** | `e378452ee` |
+| [SA-29](#sa-29) | 2026-10-01 | saints-app | **decisió d'en Pau** + contingut | Es regenera: `generic-texts/ca-literals.json` | `51257fd1c`, `eb2af2bd6` |
+| [SA-30](#sa-30) | 2026-10-01 | saints-app | **codi** (nadiu) | No — va al git | `19b58cd4f` |
+| [SA-31](#sa-31) | 2026-10-01 | saints-app | eina (`make ios-device`) | No — va al git | `1a200ca60` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2324,7 +2328,7 @@ Tres coses que es veien triant el català a saints-app, totes de codi i cap de t
 |---|---|
 | Codi | `src/constants/languages.ts` (bandera i `locale` de cada idioma), `utils/buildDateString.ts`, els dos selectors d'idioma, `InboxPage`/`InboxDetailPage`, `TtsVoiceSelector`; fora `FlagCaIcon.vue`, sense ús des del redisseny de la benvinguda |
 | Test | `tests/unit/utils/buildDateString.spec.ts` (data en català, castellà i italià) |
-| Commit | `9e5ecaaf8` (saints-app, branca `catalan-language-support-dev`, **local, sense pujar**) |
+| Commit | `9e5ecaaf8` (saints-app, branca `catalan-language-support-dev`, pujat l'1-10) |
 
 <a id="sa-25"></a>
 ## SA-25
@@ -2351,7 +2355,7 @@ el contingut (esborrava `textsDownloadedVersion`), i l'app tornava als textos qu
 |---|---|
 | Codi | `services/LanguageFeatures.ts` (`saintOfTheDay`, nova), `router/` (`meta.feature` a 13 rutes i una guarda), `SelectReminderSectionModal.vue`, `HomePage.vue`, i els magatzems de Bíblia, novenes, comentaris i sants, i el lector de cites |
 | Test | `tests/unit/services/LanguageFeatures.spec.ts`, `tests/unit/router/featureRoutes.spec.ts`. La resta de vitest, les mateixes fallades d'abans |
-| Commit | `bdbb1a29b` (local) |
+| Commit | `bdbb1a29b` |
 
 <a id="sa-26"></a>
 ## SA-26
@@ -2369,7 +2373,7 @@ nou ([SA-27](#sa-27)).
 |---|---|
 | Contingut | `generic_texts/ca/literals.json`, generat amb `build_literals.py` ([EINA-literals](#eina-literals)); les claus noves de `es` i `it`, a mà |
 | Test | `tests/unit/catalanLiterals.spec.ts`: falla si el castellà té una clau que el català no té (comprovat contra el fitxer d'abans: en trobava 17) |
-| Commit | `688e9d04a` (local) |
+| Commit | `688e9d04a` |
 
 Les tres pregàries del devocionari que el castellà ha afegit (241, 336, 337) no s'han traduït: el devocionari
 està apagat en català ([SA-25](#sa-25)).
@@ -2411,8 +2415,76 @@ ciutats i catedrals en castellà i italià.
 | Codi | `components/calendar/CalendarTreePicker.vue` (nou, el fan servir la configuració i la benvinguda), `services/calendar/calendarTree.ts`, `config/calendarLanguageRestrictions.ts` |
 | Test | `tests/unit/services/calendar/calendarTree.spec.ts` (amb l'arbre de litcal: cada calendari d'un idioma s'hi pot arribar un sol cop i té nom) i el de restriccions, reescrit. El que fallava d'aquest fitxer ja passa |
 | Comprovat | Captures a Chrome sense cap (web, sense simulador): configuració en català i en castellà, i la benvinguda |
-| Commit | `519e122a2` (local) |
-| Pendent | Que litcal publiqui els calendaris catalans (PR #25). Mentrestant, saints-app porta la 2.4.5 i l'arbre català només es veu amb el `dist/` local de litcal |
+| Commit | `519e122a2` |
+| Pendent | Que litcal publiqui els calendaris catalans (PR #25). Mentrestant, la branca catalana porta litcal empaquetat dins ([SA-28](#sa-28)) |
+
+<a id="sa-28"></a>
+## SA-28
+
+**La branca catalana porta litcal amb els calendaris catalans, sense publicar-lo** · 1 d'octubre de 2026
+
+El PR #25 de litcal espera el vistiplau d'en Fernando, i fusionar-lo publicaria un litcal nou per a totes
+les branques de saints-app. Perquè en Pau pugui provar la branca catalana al mòbil, la branca porta litcal en
+un fitxer (`vendor/litcal/saints-app-litcal-2.5.0-catalan.1.tgz`, 72 kB): `catalan-calendars` (`e580b03`)
+fusionada amb `main` (`4f39f3a`, la 2.4.5, per no perdre la cobertura i les opcions d'Espanya, Itàlia i
+Europa), amb els 139 tests de litcal passant. No es publica res al registre i cap altra branca no canvia.
+
+| | |
+|---|---|
+| Canvi | `package.json` i `bun.lock` apunten al fitxer (el `bun.lock`, editat a mà: el `bun install` local canviava paquets que no hi tenien res a veure); `bun install --frozen-lockfile` l'accepta |
+| Com es refà | `vendor/litcal/README.md` |
+| **Desfer** | Quan es publiqui el PR #25: `package.json` a la versió publicada i fora `vendor/litcal/` |
+| Commit | `e378452ee` |
+
+<a id="sa-29"></a>
+## SA-29
+
+**«Catalunya i Balears» a l'arbre, i el devocionari en català** · 1 d'octubre de 2026
+
+Dues decisions d'en Pau de l'1-10:
+
+- Del calendari `catalonia` de litcal en pengen Mallorca i Menorca. A l'arbre es diu **«Catalunya i
+  Balears»**; a litcal continua sent `catalonia`. Només canvia el literal.
+- «Si tenim traducció, ja es pot veure»: el rosari, l'Àngelus i el Via Crucis es queden, i el **devocionari
+  s'encén** en català (el [SA-25](#sa-25) l'havia apagat). Té 76 de les 79 pregàries; per a les tres que
+  falten (241, 336, 337) l'app ja ensenya l'avís de «no disponible en aquest idioma».
+
+| | |
+|---|---|
+| Contingut | `generic-texts/ca-literals.json` → `build_literals.py` |
+| Codi | `LanguageFeatures.ts` (`devocionario` amb `ca`) i el seu test |
+| Commit | `51257fd1c`, `eb2af2bd6` |
+
+<a id="sa-30"></a>
+## SA-30
+
+**Els avisos del sistema en català, a iOS i Android** · 1 d'octubre de 2026
+
+Amb el mòbil en català, iOS demanava el permís de notificacions i el de seguiment en castellà (la regió de
+desenvolupament de l'app), i Android posava el canal de notificacions del temporitzador en castellà. Ara hi
+ha `ios/App/ca.lproj/InfoPlist.strings` (afegit al projecte d'Xcode) i `android/.../values-ca/strings.xml`.
+Segueixen l'idioma del mòbil, no el de l'app: és com funcionen els dos sistemes.
+
+| | |
+|---|---|
+| Comprovat | `plutil -lint` i `xcodebuild -list` (el projecte es llegeix bé), `xmllint`. Sense compilar l'app |
+| Commit | `19b58cd4f` |
+
+<a id="sa-31"></a>
+## SA-31
+
+**`make ios-device`: la branca, a l'iPhone, al costat de l'ePrex de la botiga** · 1 d'octubre de 2026
+
+Com el «CPL 9» de cpl-app: una app a part, «ePrex CA» (`cpl.eprex.dev`), signada amb l'equip d'en Joan,
+perquè iOS no deixa que una compilació de desenvolupament substitueixi la de l'App Store.
+`scripts/ios-device.sh` canvia la signatura del target de l'app durant la compilació i la torna a deixar com
+era, també si falla (a la línia d'ordres d'`xcodebuild` el bundle id arribaria a tots els frameworks dels
+Pods). Les notificacions push i els enllaços universals no hi funcionen (un altre bundle id).
+
+| | |
+|---|---|
+| Comprovat | `make -n`, `bash -n` i la substitució sobre una còpia del projecte. **No s'ha executat**: cal l'iPhone connectat, i el llança en Pau |
+| Commit | `1a200ca60` |
 
 # Canvis a saints-app
 

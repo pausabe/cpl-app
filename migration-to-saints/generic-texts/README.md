@@ -83,5 +83,5 @@ producció, val la pena que algú amb criteri litúrgic en català ho revisi, es
 ## Fora d'abast
 
 `bible/ca/`, `catecismo/ca/`, `novena/ca/` i `dailySaints/ca/` no existeixen. Des del 30-9-2026
-aquestes funcions estan apagades en català (`LanguageFeatures.ts`, registre SA-25), igual que el
-devocionari, que té `prayers.json` però sense revisar.
+aquestes funcions estan apagades en català (`LanguageFeatures.ts`, registre SA-25). El devocionari
+sí que es veu des de l'1-10 (SA-29): té `prayers.json`, encara sense revisar.
