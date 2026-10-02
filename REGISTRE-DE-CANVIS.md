@@ -131,6 +131,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-32](#sa-32) | 2026-10-02 | saints-app | merge de `dev` (textos de l'1-10) | No — va al git | `cc39f80df` |
 | [MIGRA-023](#migra-023) | 2026-10-02 | eines | codi | No — va al git | `a85cd4f` |
 | [MIGRA-024](#migra-024) | 2026-10-02 | eines | codi | No — va al git | `c680a83` |
+| [SA-33](#sa-33) | 2026-10-02 | saints-app | **codi** | No — va al git | `e7a287951` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -1287,7 +1288,7 @@ dies amb caselles mogudes, contra uns 95 als altres anys, i el join en treia 313
 | Correcció | `PROBE` demana cada hora per a la data i n'espera la càrrega; la pàgina no té temps d'inactivitat |
 | Dossier | [tooling-bugs/MIGRA-016](migration-to-saints/tooling-bugs/MIGRA-016.md) |
 | Commit | `02d5724` |
-| Per a en Fernando | La desduplicació per hora sense data també pot deixar una hora amb el dia d'abans si l'usuari canvia de data mentre carrega |
+| A l'app | El mateix forat podia deixar una hora amb el dia d'abans si l'usuari canviava de data mentre carregava. No es va enviar a en Fernando: corregit per nosaltres a la branca catalana, [SA-33](#sa-33) |
 
 ## MIGRA-017
 
@@ -2572,6 +2573,30 @@ Immaculada el diumenge 8-12-2019 a `cpl-celebrations.json`. Es va refer amb la c
 | Regressió | `out-dir.test.js`, 4 de 4; sense el fix en fallen 4 |
 | Comprovat | `make tests`: 977 tests i els dos detectors; `output/` net després |
 | Dossier | [tooling-bugs/MIGRA-024](migration-to-saints/tooling-bugs/MIGRA-024.md) |
+
+<a id="sa-33"></a>
+## SA-33
+
+**Una hora ja no es queda amb el dia d'abans si es canvia de data mentre carrega** · 2 d'octubre de 2026
+
+El forat que la sonda va trobar a la [MIGRA-016](#migra-016) també el patia l'usuari. saints-app
+desduplicava les càrregues de cada hora sense mirar-ne el dia: si una hora encara s'estava carregant i
+l'usuari canviava de data, la petició del dia nou rebia la càrrega del dia vell, i l'hora es quedava
+amb els textos del dia d'abans sota la data nova fins que en sortia i hi tornava. És més probable just
+en obrir l'app, quan les hores encara es carreguen. A més, la precàrrega en segon pla del dia d'abans
+continuava després del canvi i podia tornar a posar el dia vell a una hora que ja tenia el nou; i una
+càrrega començada abans de canviar d'idioma comptava com a feta. Afecta tots els idiomes. No es va
+arribar a enviar a en Fernando: en Pau el va voler arreglar a la branca catalana (targeta 2 del
+[tauler](#eina-tauler), 2-10).
+
+| | |
+|---|---|
+| Correcció | `src/composables/useRefreshAllStores.ts`: una càrrega només es comparteix entre peticions del mateix dia. La d'un altre dia espera la que corre i després carrega la seva; si mentrestant se n'ha demanat una de més nova, se salta. La precàrrega del dia d'abans s'atura en canviar la data. `clearAllStoresCaches` (idioma o textos nous) canvia una generació que forma part de la clau |
+| Test | `tests/unit/composables/useRefreshAllStores.spec.ts`, 6 de 6; sense la correcció en fallen 5 (el sisè és el que ja feia bé: dues peticions del mateix dia, una sola càrrega). La resta de vitest, les mateixes 9 fallades i 5 fitxers vermells d'abans (findOfficeDeceased, bible-parallels, calendar-comparison, searchPropertyOfDay), comprovat també sense el canvi; `tsc`, `eslint` i `prettier`, nets |
+| Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
+| Commit | `e7a287951` (branca `catalan-language-support-dev`) |
+| A `dev` | No hi és: hi arribarà amb la branca catalana, sense PR a part (decisió d'en Pau, 2-10) |
+| No tocat | Les lectures de la missa (`lecturesStore`) no passen per aquí: `setDate` les demana directament i el store es queda amb la càrrega que acaba l'última, com feien les hores. No s'ha vist fallar mai |
 
 # Canvis a saints-app
 

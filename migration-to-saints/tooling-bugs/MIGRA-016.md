@@ -41,7 +41,9 @@ anterior, i la primera, el d'avui.
 Amb això, la sonda torna a donar el mateix que l'índex en els dies que no tenen cap particularitat,
 i els 2017 deixen de destacar.
 
-## Per a en Fernando
+## A l'app
 
-La desduplicació per hora sense data també afecta l'usuari: si canvia de dia mentre una hora encara
-s'està carregant, aquella hora pot quedar amb el dia d'abans.
+La desduplicació per hora sense data també afectava l'usuari: si canviava de dia mentre una hora
+encara s'estava carregant, aquella hora podia quedar amb el dia d'abans. No es va arribar a enviar a
+en Fernando: es va corregir a la branca catalana de saints-app el 2-10-2026 (`e7a287951`, fitxa SA-33
+del registre).
