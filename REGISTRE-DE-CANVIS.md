@@ -18,6 +18,10 @@ els seus enllaços de GitHub funcionen; els de litcal, a `catalan-calendars`. El
 branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per primer cop el 30-9-2026
 (fins a `fdbcaaaf5`).
 
+**En quin punt és cada qüestió amb en Fernando** (les `EPREX-*` i el que encara no té número) es porta al
+tauler [Saints · temas con Fernando](https://trello.com/b/ydu1iTuk/saints-temas-con-fernando), des del 2-10-2026 ([EINA-tauler](#eina-tauler)). Aquí queda
+la fitxa amb la prova; el tauler diu qui té la pilota.
+
 ---
 
 ## Taula mestra
@@ -39,10 +43,10 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [SA-02](#sa-02) | 2026-08-11 | saints-app | contingut | Es regenera | `abc5c1caf` |
 | [SA-03](#sa-03) | 2026-09-01 | saints-app | contingut | Es regenera | `f28389733` |
 | [LC-01…05](#litcal) | 2026-07-23 → 08-11 | litcal | codi | No | 5 commits |
-| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** | Salmòdia feta; 2a ronda pendent | `43a319267` |
-| [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **proposat** | — pendent d'enviar | — |
-| [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **proposat** | — pendent d'enviar | — |
-| [EPREX-004](#eprex-004) | 2026-09-08 | saints-app | **proposat** | — pendent d'enviar | — |
+| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** (les dues rondes) | Salmòdia (#1722) i 2a ronda (#1731, 9-9); l'oració final és la 207 i no la 1761 proposada: per mirar al volum IV | `43a319267` |
+| [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **acceptat, a mitges** | Enviat el 26-9. El #1757 (28-9) canvia la 1a antífona, però els salms continuen sent els de l'Ascensió | — |
+| [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **corregit per en Fernando** | Vespres al #1726 (5-9); el bessó del 4t dia de l'octava, al #1757 (28-9) | — |
+| [EPREX-004](#eprex-004) | 2026-09-08 | saints-app | **corregit sense que consti enviat** | L'entrada buida desapareix al #1751 (22-9); el forat de `findInStructure` continua | — |
 | [MIGRA-004](#migra-004) | 2026-09-03 | eines | codi | No — va al git | — |
 | [MIGRA-005](#migra-005) | 2026-09-04 | eines | codi | No — va al git | — |
 | [MIGRA-006](#migra-006) | 2026-09-07 | eines | codi | No — va al git | `5ab407c` |
@@ -69,7 +73,7 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [MIGRA-010](#migra-010) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-011](#migra-011) | 2026-09-08 | eines | codi | No — va al git | — |
 | [D-007](#d-007) | 2026-09-08 | — | **decisió oberta** | — decideix en Pau | — |
-| [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **proposat** | — pendent d'enviar | — |
+| [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **acceptat, a mitges** | Codi FEAST2 al #1749 (25-9) i 8 festes passades a FEAST2; la resta espera la 3.30 | — |
 | [SA-15](#sa-15) | 2026-09-08 | saints-app | contingut | Es regenera | — |
 | [EINA-revisio-dia](#eina-revisio-dia) | 2026-09-14 | eines | codi | No — va al git | — |
 | [MIGRA-012](#migra-012) | 2026-09-25 | eines + cpl-app | codi | No — va al git | — |
@@ -104,13 +108,13 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [D-012](#d-012) | 2026-09-30 | eines | **decisió** (dues regles, fetes codi) | No — va al git | el que afegeix la fitxa · saints-app `fdbcaaaf5` |
 | [SA-21](#sa-21) | 2026-09-30 | saints-app | contingut | Es regenera | `fdbcaaaf5` |
 | [EPREX-006](#eprex-006) | 2026-09-30 | saints-app | **acceptat com a limitació** ([D-015](#d-015)) | — no es corregeix | — |
-| [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **corregit per en Fernando** (30-9) | Arriba amb la pròxima exportació | — |
+| [EPREX-007](#eprex-007) | 2026-09-30 | saints-app | **corregit per en Fernando** (30-9) | **Tancat** el 2-10: a la branca catalana ([SA-32](#sa-32)) i treta la còpia de `salmos_textos/12005`, que el join ja prova sol | — |
 | [MIGRA-021](#migra-021) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
 | [SA-22](#sa-22) | 2026-09-30 | saints-app | contingut | Es regenera, **però la 12003 cal esborrar-la a mà** si es torna a partir d'una còpia vella | `a38ce6afa` |
-| [D-013](#d-013) | 2026-09-30 | eines + saints-app | **decisió** (13 caselles, una per una) + codi | Es regenera: `copied-cells.json` | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
+| [D-013](#d-013) | 2026-09-30 | eines + saints-app | **decisió** (13 caselles, una per una; 12 des del 2-10) + codi | Es regenera: `copied-cells.json` | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
 | [MIGRA-022](#migra-022) | 2026-09-30 | eines | codi | No — va al git | el que afegeix la fitxa |
 | [SA-23](#sa-23) | 2026-09-30 | saints-app | contingut | Es regenera | `73d93983e` |
-| [EPREX-008](#eprex-008) | 2026-09-30 | saints-app | **proposat** | — segon missatge per a en Fernando, redactat el 30-9 | — |
+| [EPREX-008](#eprex-008) | 2026-09-30 | saints-app | **proposat** | — missatge redactat el 30-9; no surt al xat de Telegram, i a `dev` tot igual el 2-10 | — |
 | [EPREX-009](#eprex-009) | 2026-09-30 | saints-app | **proposat** | — al mateix missatge que l'EPREX-008 | — |
 | [D-014](#d-014) | 2026-09-30 | eines + saints-app | **decisió** (197 caselles, una per una) | Es regenera: `decided-cells.json` | el que afegeix la fitxa · saints-app `ed7ea84f1` |
 | [D-015](#d-015) | 2026-09-30 | saints-app | **decisió** (limitació acceptada) | — | el que afegeix la fitxa |
@@ -123,6 +127,9 @@ branca `catalan-language-support-dev` de `Saints-App/saints-app`, pujada per pri
 | [SA-29](#sa-29) | 2026-10-01 | saints-app | **decisió d'en Pau** + contingut | Es regenera: `generic-texts/ca-literals.json` | `51257fd1c`, `eb2af2bd6` |
 | [SA-30](#sa-30) | 2026-10-01 | saints-app | **codi** (nadiu) | No — va al git | `19b58cd4f` |
 | [SA-31](#sa-31) | 2026-10-01 | saints-app | eina (`make ios-device`) | No — va al git | `1a200ca60` |
+| [EINA-tauler](#eina-tauler) | 2026-10-02 | eines | **procés** (tauler de Trello) | No | — |
+| [SA-32](#sa-32) | 2026-10-02 | saints-app | merge de `dev` (textos de l'1-10) | No — va al git | `cc39f80df`, local |
+| [MIGRA-023](#migra-023) | 2026-10-02 | eines | codi | No — va al git | el que afegeix la fitxa |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -773,7 +780,7 @@ Era una còpia de la fitxa del diumenge. Afectava **totes les llengües**, caste
 | Verificat | 7-09-2026: els **18 ids** són exactament els proposats. Sonda repassada a les 08:35 i join a les 08:36, tots dos **després** del merge de les 08:28 |
 | Efecte al català | Les tres antífones òrfenes de Vespres (`10964`/`10965`/`10966`) ja tenen text, i també el 1r salm de Vespres, el 1r de Laudes i el càntic d'Isaïes |
 | Preu | **Dos conflictes nous**, tots dos previstos: `salmos_antifonas/906` (empat 10-10 amb el Dissabte Sant) i `/247` (60 contra 10). Volen id propi; quina redacció catalana és la bona només ho diu el volum imprès |
-| **Pendent** | **2a ronda enviada el 7-09-2026, pendent de resposta**: himne, lectura breu i oració final encara vénen del diumenge. Els ids ja existeixen (`3601`/`3602`, `1761`, `3970`) i `1761` **ja la fa servir la mateixa fitxa a Sexta i Nona** |
+| 2a ronda | Enviada el 7-09-2026 i **aplicada al #1731 (9-9)**: lectura breu `3601`, himne `1064` (el mateix text que el `3970`). L'oració final és la `207` («Oh Dios, que resucitaste a tu Hijo…»), no la `1761` proposada: queda per mirar al volum IV quina va |
 
 ## EPREX-002
 
@@ -788,7 +795,7 @@ mateix dia és correcte: el defecte és d'una sola entrada.
 | | |
 |---|---|
 | Dossier | [migration-to-saints/eprex-bugs/EPREX-002.md](migration-to-saints/eprex-bugs/EPREX-002.md) |
-| Estat | **Proposat, pendent d'enviar.** El missatge per a en Fernando és al final del dossier, en castellà |
+| Estat | **Enviat el 26-9, acceptat a mitges.** En Fernando: «El punto 2 lo corrijo. Está heredado de la ascensión». Al #1757 (28-9) la 1a antífona ja és mariana (`11021`), però els salms continuen sent el 112, el 116 i Ap 11; l'himne, el de l'Ascensió ([EPREX-008](#eprex-008)) |
 | Fix | Repunteig d'ids a `all_visperas.json`, entrada `visitation_of_mary__ANY`. Dues antífones sí que demanen contingut nou |
 | Prova | La fitxa és una còpia de les I Vespres de l'Ascensió (16/20 camps idèntics), i cap dels 8 anys no és una Ascensió · l'Assumpció i el Roser ja apunten al Comú de la Mare de Déu (`4577`/`3424`/`11042`) i la Visitació és l'única mariana que no · Al·leluia en temps ordinari (31-05 de 2021, 2022 i 2024) · les antífones bones `11021` i `840` són **òrfenes**, com les `10964`-`10966` d'EPREX-001 |
 | Efecte a la migració | Desbloqueja `salmos_citas/11030`, `salmos_antifonas/9253` i `salmos_textos/11031` — 235 dies del manifest. Es veu el 3-09-2026 |
@@ -807,7 +814,7 @@ sant Joan, duen `11025` (Salm 109) i `54` (Salm 129). Afecta **totes les llengü
 | | |
 |---|---|
 | Dossier | [migration-to-saints/eprex-bugs/EPREX-003.md](migration-to-saints/eprex-bugs/EPREX-003.md) |
-| Estat | **Proposat, pendent d'enviar.** El missatge per a en Fernando és al final del dossier, en castellà i en text pla per a Telegram |
+| Estat | **Corregit per en Fernando**: Vespres al #1726 (5-9), i el bessó `christmas_octave_day_4__ANY` al #1757 (28-9), després que l'hi recordéssim el 26-9 |
 | Entrada | `holy_innocents_martyrs__ANY` (i el seu bessó `christmas_octave_day_4__ANY`, que és el mateix dia i té el mateix contingut) |
 | Fix | `primer_salmo_cita`/`_texto` `11031`/`11032` → **`11025`/`11026`** · `segundo_salmo_cita`/`_texto` `155`/`156` → **`54`/`55`** · `tercer_salmo_cita`/`_texto` `11042`/`11043` → **`11072`/`11073`** |
 | Prova interna | Sant Esteve (26-XII) i sant Joan (27-XII), les dues festes germanes de la mateixa octava i del mateix rang, porten `11025`+`54`+`11072`. Sants Innocents és l'única de les tres que no |
@@ -1444,6 +1451,10 @@ de la finestra fan això.
 Es tanca traient tres línies de l'override. Dossier:
 [eprex-bugs/EPREX-005](migration-to-saints/eprex-bugs/EPREX-005.md).
 
+**Estat (2-10-2026):** enviat el 14-9, amb la Santa Cruz. En Fernando no vol mirar el `-1` i hi va posar un
+tipus nou, FEAST2 (codi al #1749, 25-9). Ja ho són la Santa Cruz, els Arcàngels i sis festes més; les altres
+continuen com a FEAST i perden l'antífona. Segons ell (26-9), no se'n poden passar més fins que surti la 3.30.
+
 <a id="sa-15"></a>
 ## SA-15
 
@@ -1781,6 +1792,9 @@ Comprovat a l'app real en castellà: el 5-IV-2026 `contentByDay` és un **array 
 
 De les set entrades sense lectures que hi ha a l'índex, **només aquesta en tapa una altra**;
 les tres `__EVEN` buides queden darrere del seu germà `__ANY` i són dades mortes.
+
+**Estat (2-10-2026):** corregit a les dades sense que consti que s'hagués enviat: l'entrada buida
+desapareix al #1751 (22-9). El forat de codi (`findInStructure` accepta una entrada buida) continua.
 
 Dossier: [eprex-bugs/EPREX-004](migration-to-saints/eprex-bugs/EPREX-004.md). La sortida
 recomanada és que `findInStructure` no accepti una entrada sense contingut —tres línies a
@@ -2167,7 +2181,7 @@ Troballa F31, veredicte «no és error».
 | Llengües | Totes: és l'índex |
 | Com | Per saints-admin i `chore(texts)`, mai tocant el JSON exportat |
 | Revisió | Troballa F33 |
-| Estat | **Corregit** per en Fernando a saints-admin el 30-9: «corregida sexta de Anunciación del Señor», «corregida tercia de Sta María Madre de Dios». Arriba a saints-app amb la pròxima exportació; llavors el join ja podrà provar el text del 123 de Sexta que la [D-013](#d-013) hi va copiar |
+| Estat | **Corregit** per en Fernando a saints-admin el 30-9: «corregida sexta de Anunciación del Señor», «corregida tercia de Sta María Madre de Dios». A `dev` des del #1758 (1-10) i a la branca catalana des del 2-10 ([SA-32](#sa-32)). El 2-10 es van tornar a sondejar els dies de l'Anunciació, el join ja prova sol el text del 123 de Sexta, i la còpia de la [D-013](#d-013) s'ha tret. **Tancat** |
 | Dossier i missatge | [eprex-bugs/EPREX-006](migration-to-saints/eprex-bugs/EPREX-006.md), el mateix missatge que l'EPREX-006 |
 
 <a id="migra-021"></a>
@@ -2218,6 +2232,7 @@ català: el salteri de la CPL, que té aquests mateixos salms en altres caselles
 | Test | `copied-cells.test.js`: l'origen té català, i la cita i el text són el salm que diu el castellà de la casella |
 | Efecte | Tèrcia i Nona d'aquests 30 dies tenen tots els salms en català. Divergeixen de cpl-app, com és d'esperar: F31 |
 | Commit | el que afegeix la fitxa · saints-app `f4dc2dfd8` |
+| 2-10-2026 | Treta la còpia del text del 123 de Sexta: amb l'[EPREX-007](#eprex-007) corregit, el join el prova sol i hi posa el mateix text ([SA-32](#sa-32)). En queden 12 |
 
 <a id="migra-022"></a>
 ## MIGRA-022
@@ -2256,6 +2271,8 @@ A la Trinitat, Tèrcia, Sexta i Nona apunten als himnes de Quaresma; a les Vespr
 l'himne de durant l'any, i a les de la Visitació, el de l'Ascensió. El llatí i el breviari castellà hi
 donen l'himne ordinari de l'hora, «Benditos son los pies…» i «Y salta el pequeño Juan». En totes les
 llengües. Dossier i missatge: [eprex-bugs/EPREX-008](migration-to-saints/eprex-bugs/EPREX-008.md).
+
+**Estat (2-10-2026):** el missatge no surt al xat de Telegram, i a `dev` tot continua igual. Cal saber si s'ha enviat.
 
 <a id="eprex-009"></a>
 ## EPREX-009
@@ -2485,6 +2502,57 @@ Pods). Les notificacions push i els enllaços universals no hi funcionen (un alt
 |---|---|
 | Comprovat | `make -n`, `bash -n` i la substitució sobre una còpia del projecte. **No s'ha executat**: cal l'iPhone connectat, i el llança en Pau |
 | Commit | `1a200ca60` |
+
+<a id="eina-tauler"></a>
+## EINA-tauler
+
+**Les qüestions amb en Fernando, en un tauler de Trello** · 2 d'octubre de 2026
+
+Les qüestions per a en Fernando es parlen per Telegram, i se n'havia perdut el fil: dossiers que deien
+«pendent d'enviar» i ja estaven corregits (EPREX-003, EPREX-005), i altres que no consten enviats. En Pau
+va passar el xat, es va creuar amb els PR i les dades de `dev` de saints-app, i en va sortir el tauler
+[Saints · temas con Fernando](https://trello.com/b/ydu1iTuk/saints-temas-con-fernando), en castellà, amb una targeta per qüestió (22 el primer dia).
+
+| | |
+|---|---|
+| Columnes | Por enviar · Esperando a Fernando · Te toca a ti (Pau) · Arreglado en dev: traer y quitar parche · Cerrado |
+| Com es porta | En Fernando continua a Telegram (quan se li van oferir tasques a GitHub: «por aquí es ok»). Quan contesta, en Pau passa el missatge a Claude, que mou la targeta i posa al dia el dossier i aquest registre |
+| Com es comprova | Cada exportació de textos arriba a `dev` com un PR «staging-texts»; una qüestió és corregida quan la casella ja hi és bé, no quan en Fernando diu «corregido» |
+| Fi | S'arxiva en acabar la migració |
+
+<a id="sa-32"></a>
+## SA-32
+
+**`dev` de l'1 d'octubre a la branca catalana: tres correccions d'en Fernando** · 2 d'octubre de 2026
+
+Merge d'`origin/dev` a `catalan-language-support-dev`: tres commits (la versió 3.30.0 i els textos del
+#1758). Porta l'[EPREX-007](#eprex-007) (Anunciació a Sexta, 1 de gener a Tèrcia) i el responsori de les
+Vespres de sant Jaume ([MIGRA-017](#migra-017)).
+
+| | |
+|---|---|
+| Conflictes | Cap |
+| Comprovat | A l'índex de la branca: Sexta del 25-3 = `12004`/`12005`/`12006`; Tèrcia de l'1-1 = `12001`/`12002`/`12003`; sant Jaume, sis i sis (`18664`-`18669` i `20230`-`20235`). Totes aquestes caselles ja tenen català. `copied-cells.test.js` passa |
+| Després | Tornats a sondejar els 40 dies que toquen aquests textos (les 10 Anunciacions, els 10 primers de gener i els 24 i 25 de juliol), amb la sonda arreglada ([MIGRA-023](#migra-023)). El join ja prova sol `salmos_textos/12005`, que surt de pendents (1.024 → 1.023), i els responsoris de sant Jaume; el text és el mateix que ja hi havia. Treta la còpia de `12005` de `copied-cells.json` ([D-013](#d-013)) |
+| Exportació | 0 claus noves i 0 canviades: saints-app no canvia. Les set Completes només hi canviaven l'ordre d'una clau (iguals com a JSON) i s'han desfet |
+| Commit | `cc39f80df` (saints-app), **local**: no s'ha pujat |
+
+<a id="migra-023"></a>
+## MIGRA-023
+
+**El primer dia de cada passada de la sonda sortia amb la celebració del dia que corria** · 2 d'octubre de 2026
+
+En arrencar, saints-app fa el seu `setDate(avui)`; si comença després del de la sonda, `setDate` llença el
+resultat de la sonda per vell i `romcalId` es queda amb el d'avui. Les caselles surten bé (la sonda demana
+cada hora a mà); l'etiqueta del dia, no. A la passada sencera del 30-9 va ser l'1-1-2017, que el mapa deia
+`michael_gabriel_and_raphael_archangels`. Ha sortit en tornar a sondejar els dies de l'Anunciació un per un
+(cada dia era el primer d'una passada).
+
+| | |
+|---|---|
+| Correcció | `app-id-probe.js`: si en tornar de `setDate` la data seleccionada no és la demanada, es torna a demanar (fins a cinc cops); si al final encara no ho és, el dia queda com a error |
+| Comprovat | `--range 2026-03-25..2026-03-25 --fresh`: abans `holy_guardian_angels`, després `annunciation_of_the_lord`; caselles iguals i `commons/ca` restaurat |
+| Dossier | [tooling-bugs/MIGRA-023](migration-to-saints/tooling-bugs/MIGRA-023.md) |
 
 # Canvis a saints-app
 

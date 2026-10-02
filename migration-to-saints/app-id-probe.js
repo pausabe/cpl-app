@@ -204,6 +204,13 @@ const PROBE = (date) => `(async () => {
   const dateStore = pinia._s.get('dateStore');
   const when = new Date('${date}T12:00:00');
   await dateStore.setDate(when);
+  // Right after boot the app's own setDate(today) can start after this one and still be in
+  // flight. setDate drops a result whose date is no longer the selected one, so ours is thrown
+  // away and romcalId stays today's: the first date of every run came out labelled with the
+  // celebration of the day the probe ran (MIGRA-023). Ask again until the selected date is ours.
+  for (let i = 0; i < 5 && dateStore.currentDate?.getTime() !== when.getTime(); i++) {
+    await dateStore.setDate(when);
+  }
   // Since dev of 24-9-2026 setDate refreshes only the Hours someone has opened, and an Hour
   // with a load still pending for another date hands back that load instead of this one
   // (useRefreshAllStores, ensureHourLoaded). So each store is asked for this date here, one
@@ -225,6 +232,7 @@ const PROBE = (date) => `(async () => {
     out.hours[hour] = adapt ? (0, eval)('(' + adapt + ')')(raw) : raw;
   }
   const day = pinia._s.get('dateStore');
+  if (day.currentDate?.getTime() !== when.getTime()) throw new Error('dateStore no és al ' + '${date}' + ': ' + day.currentDate);
   out.litcalId = day.romcalId;
   return JSON.stringify(out);
 })()`;

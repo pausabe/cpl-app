@@ -4695,40 +4695,6 @@
    ]
   },
   {
-   "cell": "salmos_citas/3419",
-   "es": "Salmo 128: Esperanza de un pueblo oprimido",
-   "took": {
-    "preview": "Salm 128\nEsperança del poble perseguit",
-    "days": 303
-   },
-   "others": [
-    {
-     "preview": "Salm 124",
-     "days": 8,
-     "score": 0,
-     "tags": [
-      "2018-01-01 (Tercia)",
-      "2019-01-01 (Tercia)",
-      "2020-01-01 (Tercia)",
-      "2021-01-01 (Tercia)",
-      "2022-01-01 (Tercia)",
-      "2024-01-01 (Tercia)",
-      "2025-01-01 (Tercia)",
-      "2026-01-01 (Tercia)"
-     ]
-    },
-    {
-     "preview": "Salm 75 - II",
-     "days": 2,
-     "score": 0,
-     "tags": [
-      "2017-01-01 (Tercia)",
-      "2023-01-01 (Tercia)"
-     ]
-    }
-   ]
-  },
-  {
    "cell": "salmos_citas/12004",
    "es": "Salmo 122: El Señor, esperanza del pueblo",
    "took": {
@@ -4736,23 +4702,6 @@
     "days": 28
    },
    "others": [
-    {
-     "preview": "Salm 123",
-     "days": 10,
-     "score": 0,
-     "tags": [
-      "2017-03-25 (Sexta)",
-      "2018-04-09 (Sexta)",
-      "2019-03-25 (Sexta)",
-      "2020-03-25 (Sexta)",
-      "2021-03-25 (Sexta)",
-      "2022-03-25 (Sexta)",
-      "2023-03-25 (Sexta)",
-      "2024-04-08 (Sexta)",
-      "2025-03-25 (Sexta)",
-      "2026-03-25 (Sexta)"
-     ]
-    },
     {
      "preview": "Salm 22",
      "days": 2,
@@ -4769,7 +4718,7 @@
    "es": "Salmo 123: Nuestro auxilio es el nombre del Señor",
    "took": {
     "preview": "Salm 123",
-    "days": 8
+    "days": 18
    },
    "others": [
     {
@@ -8207,39 +8156,6 @@
    ]
   },
   {
-   "cell": "salmos_textos/3420",
-   "took": {
-    "preview": "Quantes vegades, des de jove, m’han combatut!    * \nQue respongui  el poble d’Israel:\nQuantes vegades, des de jove, m’ha",
-    "days": 303
-   },
-   "others": [
-    {
-     "preview": "El qui confia en el Senyor mai no caurà.    *\nÉs com Sió, incommovible, ferm per sempre.\n\nJerusalem està envoltada de mu",
-     "days": 8,
-     "score": 0,
-     "tags": [
-      "2018-01-01 (Tercia)",
-      "2019-01-01 (Tercia)",
-      "2020-01-01 (Tercia)",
-      "2021-01-01 (Tercia)",
-      "2022-01-01 (Tercia)",
-      "2024-01-01 (Tercia)",
-      "2025-01-01 (Tercia)",
-      "2026-01-01 (Tercia)"
-     ]
-    },
-    {
-     "preview": "Sou temible. Si mai us indigneu,    * \n¿qui es pot encarar amb vós?\n\nDes del cel dicteu la sentència,    * \ni tota la te",
-     "days": 2,
-     "score": 0,
-     "tags": [
-      "2017-01-01 (Tercia)",
-      "2023-01-01 (Tercia)"
-     ]
-    }
-   ]
-  },
-  {
    "cell": "salmos_textos/12004",
    "took": {
     "preview": "A vós, que teniu el tron dalt del cel,    *\naixeco els meus ulls. \nCom l’esclau té els ulls posats    *\nen les mans del ",
@@ -8248,6 +8164,24 @@
    "others": [
     {
      "preview": "El Senyor és el meu pastor, no em manca res,    * \nem fa descansar en prats deliciosos;\nem mena al repòs vora l’aigua,  ",
+     "days": 2,
+     "score": 0,
+     "tags": [
+      "2017-01-01 (Sexta)",
+      "2023-01-01 (Sexta)"
+     ]
+    }
+   ]
+  },
+  {
+   "cell": "salmos_textos/12005",
+   "took": {
+    "preview": "Si el Senyor no hagués estat a favor nostre,    †\n—que respongui el poble d’Israel—,    * \nsi el Senyor no hagués estat ",
+    "days": 28
+   },
+   "others": [
+    {
+     "preview": "Déu s’ha fet conèixer a Judà,    *\na tot Israel és gran la seva anomenada.\nTé a Jerusalem la residència, * \nha posat a S",
      "days": 2,
      "score": 0,
      "tags": [

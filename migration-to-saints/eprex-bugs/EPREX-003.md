@@ -1,7 +1,7 @@
 # EPREX-003 · Sants Innocents porta a Vespres la salmòdia de les I Vespres
 
 **Trobat:** 4 de setembre de 2026, revisant el 4-IX-2026.
-**Estat:** proposat, pendent d'enviar.
+**Estat:** corregit per en Fernando. Vespres al #1726 (5-9-2026); el bessó `christmas_octave_day_4__ANY`, al #1757 (28-9), després que l'hi recordéssim el 26-9.
 **Afecta:** totes les llengües.
 
 ## Què passa

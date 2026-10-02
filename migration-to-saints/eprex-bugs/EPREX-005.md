@@ -1,7 +1,7 @@
 # EPREX-005 · A les hores intermèdies, una festa perd la seva antífona pròpia
 
 **Trobat:** 8 de setembre de 2026, mirant per què el 8-IX la Tèrcia mostrava un error.
-**Estat:** proposat, pendent d'enviar.
+**Estat:** enviat el 14-9-2026, acceptat a mitges. En lloc del `-1`, en Fernando va fer el tipus FEAST2 (codi al #1749, 25-9); ja ho són la Santa Cruz, els Arcàngels i sis festes més. La resta espera la 3.30.
 **Afecta:** totes les llengües, **513 dies** de la finestra 2017-2026.
 
 ## Què passa

@@ -1,7 +1,7 @@
 # EPREX-004 · El diumenge de Pasqua no mostra cap lectura de la missa
 
 **Trobat:** 8 de setembre de 2026, fent la descoberta de la fase 4.
-**Estat:** proposat, pendent d'enviar.
+**Estat:** corregit a les dades sense que consti enviat: `easter_sunday__ANY` desapareix al #1751 (22-9-2026). El forat de `findInStructure` continua.
 **Afecta:** **totes les llengües** — és un bug de castellà i italià, no del català.
 **Gravetat:** la pàgina de lectures queda **buida** el dia més important de l'any.
 

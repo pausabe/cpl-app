@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Estat** | **Salmòdia APLICADA per eprex** el 5-09-2026. Himne, lectura breu i oració final **encara pendents** (2a ronda, sota) |
+| **Estat** | **Salmòdia APLICADA per eprex** el 5-09-2026. 2a ronda **aplicada** al #1731 (9-9): lectura breu i himne bé; l'oració final és la `207`, no la `1761` proposada (per mirar al volum IV) |
 | **Component** | saints-app · `day_specific_texts/all_visperas.json` i `all_laudes.json` |
 | **Gravetat** | Alta — un dia gran, i afecta **totes** les llengües de l'app, castellà inclòs |
 | **Trobat** | 2-3 de setembre de 2026, investigant per què `salmos_citas/11025` quedava retinguda al join |
@@ -117,7 +117,11 @@ el 2 de novembre no en resoldria cap: són conflictes independents i anteriors.
 
 ## 2a ronda: el que encara ve del diumenge
 
-**Enviada a en Fernando el 7 de setembre de 2026. Pendent de resposta.**
+**Enviada a en Fernando el 7 de setembre de 2026. Aplicada al #1731 (9-9-2026)**: lectura breu `3601`,
+himne `1064` (el mateix text que el `3970`) i oració final `207` («Oh Dios, que resucitaste a tu Hijo…»),
+que no és la `1761` que li vam proposar. Quina va, ho ha de dir el volum IV.
+
+El que segueix és l'estat del 7-9, abans de la correcció.
 
 La pregunta 3 del missatge —himne, lectura breu i oració final— **no s'ha tocat**. Les fitxes
 de Laudes i Vespres continuen compartint **7 camps** amb el Diumenge XXXI: `himno`,

@@ -8439,6 +8439,54 @@
       ]
     },
     {
+      "id": "12003",
+      "affectedCount": 30,
+      "variants": [
+        {
+          "preview": "Salm 75 - II",
+          "truncated": false,
+          "tags": [
+            "2017-01-01 (Tercia)",
+            "2023-01-01 (Tercia)"
+          ]
+        },
+        {
+          "preview": "Salm 124\n",
+          "truncated": false,
+          "tags": [
+            "2017-03-25 (Tercia)",
+            "2017-12-08 (Tercia)",
+            "2018-01-01 (Tercia)",
+            "2018-04-09 (Tercia)",
+            "2018-12-08 (Tercia)",
+            "2019-01-01 (Tercia)",
+            "2019-03-25 (Tercia)",
+            "2019-12-09 (Tercia)",
+            "2020-01-01 (Tercia)",
+            "2020-03-25 (Tercia)",
+            "2020-12-08 (Tercia)",
+            "2021-01-01 (Tercia)",
+            "2021-03-25 (Tercia)",
+            "2021-12-08 (Tercia)",
+            "2022-01-01 (Tercia)",
+            "2022-03-25 (Tercia)",
+            "2022-12-08 (Tercia)",
+            "2023-03-25 (Tercia)",
+            "2023-12-08 (Tercia)",
+            "2024-01-01 (Tercia)",
+            "2024-04-08 (Tercia)",
+            "2024-12-09 (Tercia)",
+            "2025-01-01 (Tercia)",
+            "2025-03-25 (Tercia)",
+            "2025-12-08 (Tercia)",
+            "2026-01-01 (Tercia)",
+            "2026-03-25 (Tercia)",
+            "2026-12-08 (Tercia)"
+          ]
+        }
+      ]
+    },
+    {
       "id": "12007",
       "affectedCount": 30,
       "variants": [
@@ -8578,39 +8626,6 @@
             "2026-01-01 (Nona)",
             "2026-03-25 (Nona)",
             "2026-12-08 (Nona)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "12003",
-      "affectedCount": 20,
-      "reason": "anotherPsalm",
-      "variants": [
-        {
-          "preview": "Salm 124\n",
-          "truncated": false,
-          "tags": [
-            "2017-03-25 (Tercia)",
-            "2017-12-08 (Tercia)",
-            "2018-04-09 (Tercia)",
-            "2018-12-08 (Tercia)",
-            "2019-03-25 (Tercia)",
-            "2019-12-09 (Tercia)",
-            "2020-03-25 (Tercia)",
-            "2020-12-08 (Tercia)",
-            "2021-03-25 (Tercia)",
-            "2021-12-08 (Tercia)",
-            "2022-03-25 (Tercia)",
-            "2022-12-08 (Tercia)",
-            "2023-03-25 (Tercia)",
-            "2023-12-08 (Tercia)",
-            "2024-04-08 (Tercia)",
-            "2024-12-09 (Tercia)",
-            "2025-03-25 (Tercia)",
-            "2025-12-08 (Tercia)",
-            "2026-03-25 (Tercia)",
-            "2026-12-08 (Tercia)"
           ]
         }
       ]
@@ -15695,49 +15710,49 @@
       ]
     },
     {
-      "id": "12005",
+      "id": "12003",
       "affectedCount": 30,
       "variants": [
         {
-          "preview": "Déu s’ha fet conèixer a Judà,    *\na tot Israel és gran la seva anomenada.\nTé a Jerusalem la residència, * \nha posat a Sió el seu casal.\n\nHi ha fet trossos les fletxes enceses,    *\nl’escut, l’espasa i les altres armes. \nEntre els munts de botí que han estat presos    *\nresplendeix el vostre esclat;",
+          "preview": "Sou temible. Si mai us indigneu,    * \n¿qui es pot encarar amb vós?\n\nDes del cel dicteu la sentència,    * \ni tota la terra s’espanta i emmudeix\nen veure que Déu s’aixeca a fer justícia    * \ni a salvar els humils de la terra.\n\nLes ciutats d’Edom us faran una gran festa,   * \ni els pocs supervivents",
           "truncated": true,
           "tags": [
-            "2017-01-01 (Sexta)",
-            "2023-01-01 (Sexta)"
+            "2017-01-01 (Tercia)",
+            "2023-01-01 (Tercia)"
           ]
         },
         {
-          "preview": "Si el Senyor no hagués estat a favor nostre,    †\n—que respongui el poble d’Israel—,    * \nsi el Senyor no hagués estat a favor nostre,\nquan els homes intentaven assaltar-nos,    †\nens haurien engolit de viu en viu:    * \ntan gran era la fúria que portaven.\n\nQuan la riuada ens vingué a sobre,    †\ne",
+          "preview": "El qui confia en el Senyor mai no caurà.    *\nÉs com Sió, incommovible, ferm per sempre.\n\nJerusalem està envoltada de muntanyes.    †\nÉs així com el Senyor envolta el seu poble,    * \nara i  per tots els segles.\n\nEl ceptre injust no pesarà més\nsobre la terra dels justos,    *\nno fos que els justos d",
           "truncated": true,
           "tags": [
-            "2017-03-25 (Sexta)",
-            "2017-12-08 (Sexta)",
-            "2018-01-01 (Sexta)",
-            "2018-04-09 (Sexta)",
-            "2018-12-08 (Sexta)",
-            "2019-01-01 (Sexta)",
-            "2019-03-25 (Sexta)",
-            "2019-12-09 (Sexta)",
-            "2020-01-01 (Sexta)",
-            "2020-03-25 (Sexta)",
-            "2020-12-08 (Sexta)",
-            "2021-01-01 (Sexta)",
-            "2021-03-25 (Sexta)",
-            "2021-12-08 (Sexta)",
-            "2022-01-01 (Sexta)",
-            "2022-03-25 (Sexta)",
-            "2022-12-08 (Sexta)",
-            "2023-03-25 (Sexta)",
-            "2023-12-08 (Sexta)",
-            "2024-01-01 (Sexta)",
-            "2024-04-08 (Sexta)",
-            "2024-12-09 (Sexta)",
-            "2025-01-01 (Sexta)",
-            "2025-03-25 (Sexta)",
-            "2025-12-08 (Sexta)",
-            "2026-01-01 (Sexta)",
-            "2026-03-25 (Sexta)",
-            "2026-12-08 (Sexta)"
+            "2017-03-25 (Tercia)",
+            "2017-12-08 (Tercia)",
+            "2018-01-01 (Tercia)",
+            "2018-04-09 (Tercia)",
+            "2018-12-08 (Tercia)",
+            "2019-01-01 (Tercia)",
+            "2019-03-25 (Tercia)",
+            "2019-12-09 (Tercia)",
+            "2020-01-01 (Tercia)",
+            "2020-03-25 (Tercia)",
+            "2020-12-08 (Tercia)",
+            "2021-01-01 (Tercia)",
+            "2021-03-25 (Tercia)",
+            "2021-12-08 (Tercia)",
+            "2022-01-01 (Tercia)",
+            "2022-03-25 (Tercia)",
+            "2022-12-08 (Tercia)",
+            "2023-03-25 (Tercia)",
+            "2023-12-08 (Tercia)",
+            "2024-01-01 (Tercia)",
+            "2024-04-08 (Tercia)",
+            "2024-12-09 (Tercia)",
+            "2025-01-01 (Tercia)",
+            "2025-03-25 (Tercia)",
+            "2025-12-08 (Tercia)",
+            "2026-01-01 (Tercia)",
+            "2026-03-25 (Tercia)",
+            "2026-12-08 (Tercia)"
           ]
         }
       ]
@@ -15882,39 +15897,6 @@
             "2026-01-01 (Nona)",
             "2026-03-25 (Nona)",
             "2026-12-08 (Nona)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "12003",
-      "affectedCount": 20,
-      "reason": "anotherPsalm",
-      "variants": [
-        {
-          "preview": "El qui confia en el Senyor mai no caurà.    *\nÉs com Sió, incommovible, ferm per sempre.\n\nJerusalem està envoltada de muntanyes.    †\nÉs així com el Senyor envolta el seu poble,    * \nara i  per tots els segles.\n\nEl ceptre injust no pesarà més\nsobre la terra dels justos,    *\nno fos que els justos d",
-          "truncated": true,
-          "tags": [
-            "2017-03-25 (Tercia)",
-            "2017-12-08 (Tercia)",
-            "2018-04-09 (Tercia)",
-            "2018-12-08 (Tercia)",
-            "2019-03-25 (Tercia)",
-            "2019-12-09 (Tercia)",
-            "2020-03-25 (Tercia)",
-            "2020-12-08 (Tercia)",
-            "2021-03-25 (Tercia)",
-            "2021-12-08 (Tercia)",
-            "2022-03-25 (Tercia)",
-            "2022-12-08 (Tercia)",
-            "2023-03-25 (Tercia)",
-            "2023-12-08 (Tercia)",
-            "2024-04-08 (Tercia)",
-            "2024-12-09 (Tercia)",
-            "2025-03-25 (Tercia)",
-            "2025-12-08 (Tercia)",
-            "2026-03-25 (Tercia)",
-            "2026-12-08 (Tercia)"
           ]
         }
       ]

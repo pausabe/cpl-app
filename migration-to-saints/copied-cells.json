@@ -7,7 +7,6 @@
     "salmos_textos/12002": { "from": "salmos_textos/4577", "because": "Salm 120, Tèrcia" },
     "salmos_citas/12003": { "from": "salmos_citas/4577", "because": "Salm 121, Tèrcia" },
     "salmos_textos/12003": { "from": "salmos_textos/4578", "because": "Salm 121, Tèrcia" },
-    "salmos_textos/12005": { "from": "salmos_textos/3986", "because": "Salm 123, Sexta: la cita de l'Anunciació apunta a la del 122 (EPREX-007) i el join no el pot provar" },
     "salmos_citas/12007": { "from": "salmos_citas/3423", "because": "Salm 125, Nona" },
     "salmos_textos/12007": { "from": "salmos_textos/3424", "because": "Salm 125, Nona" },
     "salmos_citas/12008": { "from": "salmos_citas/3424", "because": "Salm 126, Nona" },

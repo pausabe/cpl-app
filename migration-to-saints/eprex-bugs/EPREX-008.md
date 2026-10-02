@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Estat** | Proposat. Missatge redactat el 30-9-2026, segon a en Fernando; l'envia en Pau |
+| **Estat** | Proposat. Missatge redactat el 30-9-2026, segon a en Fernando; l'envia en Pau. El 2-10 no surt al xat de Telegram i a `dev` tot continua igual |
 | **Llengües** | Totes: és l'índex |
 | **Trobat** | 30 de setembre de 2026, repassant les caselles retingudes amb un text molt majoritari |
 

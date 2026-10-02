@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Estat** | EPREX-006: **acceptat com a limitació, no es corregeix** (D-015). EPREX-007: **corregit** per en Fernando a saints-admin el 30-9-2026 |
+| **Estat** | EPREX-006: **acceptat com a limitació, no es corregeix** (D-015). EPREX-007: **corregit** per en Fernando a saints-admin el 30-9-2026; a la branca catalana i còpia de la D-013 treta el 2-10 (SA-32) |
 | **Llengües** | Totes: és l'índex (`all_tercia/sexta/nona.json`) |
 | **Trobat** | 30 de setembre de 2026, revisant les celebracions que la D-012 va deixar per mirar una per una |
 | **Revisió** | Troballes F32 (EPREX-006) i F33 (EPREX-007) |

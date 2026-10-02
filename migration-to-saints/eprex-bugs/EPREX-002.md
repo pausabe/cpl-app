@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Estat** | **Proposat** — pendent d'enviar |
+| **Estat** | **Enviat el 26-9-2026, acceptat a mitges.** En Fernando: «El punto 2 lo corrijo. Está heredado de la ascensión». Al #1757 (28-9) la 1a antífona ja és mariana (`11021`), però els salms continuen sent el 112, el 116 i Ap 11, i l'himne el de l'Ascensió (EPREX-008) |
 | **Component** | saints-app · `day_specific_texts/all_visperas.json`, entrada `visitation_of_mary__ANY` |
 | **Gravetat** | Alta — una festa del calendari general, i afecta **totes les llengües**, castellà inclòs |
 | **Trobat** | 3 de setembre de 2026, investigant per què les tres caselles del 3r càntic de Vespres del dijous quedaven retingudes al join |
