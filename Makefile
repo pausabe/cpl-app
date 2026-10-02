@@ -185,7 +185,7 @@ checks: db-is-catalan
 	npx prettier . --check
 	npx eslint .
 	npx tsc --noEmit
-	env -u UPDATE_GOLDEN npx jest --ci --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS)
+	env -u UPDATE_GOLDEN OUT_DIR=$(JEST_OUT) npx jest --ci --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS)
 	@$(MAKE) --no-print-directory db-fixed
 
 # Without the two sweeps against the goldens: the goldens are not in the repository, and when
@@ -215,12 +215,17 @@ format:
 JEST_IGNORED := '/node_modules/' '/__tests__/helpers/'
 DATA_DETECTORS := '/(ImmaculateConceptionTransfer|Psalm66PointingMark)\.test\.js$$'
 
+# The pipeline tests (the join, the celebration probe, the Lauds and Compline extracts) write the
+# migration's output, which is in git and is built from the fixed copy. Run here on the database
+# in place they wrote over it (MIGRA-024), so they write to a scratch directory instead.
+JEST_OUT := $(patsubst %/,%,$(or $(TMPDIR),/tmp))/cpl-jest-out
+
 tests:
-	npx jest --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS)
+	OUT_DIR=$(JEST_OUT) npx jest --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS)
 	@$(MAKE) --no-print-directory db-fixed
 
 tests-fast:
-	npx jest --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS) '/liturgy/(liturgyGolden|yearSweep)' '/screens/prayerTextGolden'
+	OUT_DIR=$(JEST_OUT) npx jest --testPathIgnorePatterns $(JEST_IGNORED) $(DATA_DETECTORS) '/liturgy/(liturgyGolden|yearSweep)' '/screens/prayerTextGolden'
 
 # A golden is what says «this is how it has to come out». It is rewritten only after checking by
 # hand that the liturgy of this build is right: otherwise it stops catching anything. The screens

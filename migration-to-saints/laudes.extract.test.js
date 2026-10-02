@@ -14,7 +14,10 @@ const path = require('path');
 const fs = require('fs');
 const { resolveDayFields } = require('../src/liturgy-export');
 
-const OUTPUT_DIR = path.resolve(__dirname, 'output/raw');
+// OUT_DIR sends it somewhere else: make tests runs it, and output/raw is in git (MIGRA-024).
+const OUTPUT_DIR = process.env.OUT_DIR
+  ? path.resolve(process.env.OUT_DIR, 'raw')
+  : path.resolve(__dirname, 'output/raw');
 
 const SAMPLE_DATES = [
   '2026-07-23', // ordinary_time_16_thursday — a plain ferial Thursday

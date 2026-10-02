@@ -19,7 +19,11 @@ const path = require('path');
 const fs = require('fs');
 
 const MANIFEST_PATH = path.resolve(__dirname, 'webui/run/date-to-key-manifest.json');
-const OUTPUT_PATH = path.resolve(__dirname, 'output/cpl-celebrations.json');
+// OUT_DIR sends it somewhere else, as it does the join: make tests runs it on the database in
+// place, and the real output is built from the fixed copy (MIGRA-024).
+const OUTPUT_PATH = process.env.OUT_DIR
+  ? path.resolve(process.env.OUT_DIR, 'cpl-celebrations.json')
+  : path.resolve(__dirname, 'output/cpl-celebrations.json');
 
 const DIOCESE_NAME = process.env.DIOCESE || 'Barcelona';
 const PRAYING_PLACE = 'Diòcesi';

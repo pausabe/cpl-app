@@ -129,7 +129,8 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-31](#sa-31) | 2026-10-01 | saints-app | eina (`make ios-device`) | No — va al git | `1a200ca60` |
 | [EINA-tauler](#eina-tauler) | 2026-10-02 | eines | **procés** (tauler de Trello) | No | — |
 | [SA-32](#sa-32) | 2026-10-02 | saints-app | merge de `dev` (textos de l'1-10) | No — va al git | `cc39f80df`, local |
-| [MIGRA-023](#migra-023) | 2026-10-02 | eines | codi | No — va al git | el que afegeix la fitxa |
+| [MIGRA-023](#migra-023) | 2026-10-02 | eines | codi | No — va al git | `a85cd4f` |
+| [MIGRA-024](#migra-024) | 2026-10-02 | eines | codi | No — va al git | el que afegeix la fitxa |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2553,6 +2554,23 @@ cada hora a mà); l'etiqueta del dia, no. A la passada sencera del 30-9 va ser l
 | Correcció | `app-id-probe.js`: si en tornar de `setDate` la data seleccionada no és la demanada, es torna a demanar (fins a cinc cops); si al final encara no ho és, el dia queda com a error |
 | Comprovat | `--range 2026-03-25..2026-03-25 --fresh`: abans `holy_guardian_angels`, després `annunciation_of_the_lord`; caselles iguals i `commons/ca` restaurat |
 | Dossier | [tooling-bugs/MIGRA-023](migration-to-saints/tooling-bugs/MIGRA-023.md) |
+
+<a id="migra-024"></a>
+## MIGRA-024
+
+**`make tests` escrivia la sortida de la migració amb la base de dades sense fixos** · 2 d'octubre de 2026
+
+Quatre tests són passos del pipeline (el join, les celebracions, Laudes i Completes) i escriuen a
+`migration-to-saints/output/`, que és al git i es fa amb la còpia amb fixos. `make tests` els executava
+sobre la base de dades in situ i escrivia damunt de la bona: el 2-10, 133 claus menys al join i la
+Immaculada el diumenge 8-12-2019 a `cpl-celebrations.json`. Es va refer amb la còpia abans del commit.
+
+| | |
+|---|---|
+| Correcció | `Makefile`: `OUT_DIR=$(JEST_OUT)` (a `$TMPDIR/cpl-jest-out`) a `tests`, `tests-fast` i `checks`; `celebration-probe.test.js` i `laudes.extract.test.js` respecten `OUT_DIR`, com ja feien el join i les Completes |
+| Regressió | `out-dir.test.js`, 4 de 4; sense el fix en fallen 4 |
+| Comprovat | `make tests`: 977 tests i els dos detectors; `output/` net després |
+| Dossier | [tooling-bugs/MIGRA-024](migration-to-saints/tooling-bugs/MIGRA-024.md) |
 
 # Canvis a saints-app
 
