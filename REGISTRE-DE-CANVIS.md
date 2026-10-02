@@ -126,11 +126,11 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-28](#sa-28) | 2026-10-01 | saints-app | **dependència** | No — va al git; **desfer quan es publiqui el PR #25** | `e378452ee` |
 | [SA-29](#sa-29) | 2026-10-01 | saints-app | **decisió d'en Pau** + contingut | Es regenera: `generic-texts/ca-literals.json` | `51257fd1c`, `eb2af2bd6` |
 | [SA-30](#sa-30) | 2026-10-01 | saints-app | **codi** (nadiu) | No — va al git | `19b58cd4f` |
-| [SA-31](#sa-31) | 2026-10-01 | saints-app | eina (`make ios-device`) | No — va al git | `1a200ca60` |
+| [SA-31](#sa-31) | 2026-10-01 | saints-app | eina (`make ios-device`) | No — va al git | `1a200ca60`, `66ceacfe9`, `1cfbf9cc6` |
 | [EINA-tauler](#eina-tauler) | 2026-10-02 | eines | **procés** (tauler de Trello) | No | — |
-| [SA-32](#sa-32) | 2026-10-02 | saints-app | merge de `dev` (textos de l'1-10) | No — va al git | `cc39f80df`, local |
+| [SA-32](#sa-32) | 2026-10-02 | saints-app | merge de `dev` (textos de l'1-10) | No — va al git | `cc39f80df` |
 | [MIGRA-023](#migra-023) | 2026-10-02 | eines | codi | No — va al git | `a85cd4f` |
-| [MIGRA-024](#migra-024) | 2026-10-02 | eines | codi | No — va al git | el que afegeix la fitxa |
+| [MIGRA-024](#migra-024) | 2026-10-02 | eines | codi | No — va al git | `c680a83` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2503,6 +2503,7 @@ Pods). Les notificacions push i els enllaços universals no hi funcionen (un alt
 |---|---|
 | Comprovat | `make -n`, `bash -n` i la substitució sobre una còpia del projecte. **No s'ha executat**: cal l'iPhone connectat, i el llança en Pau |
 | Commit | `1a200ca60` |
+| L'1-10 | Dos arreglos perquè compili i s'instal·li amb Xcode 27: `66ceacfe9` (els Pods, a iOS 15.0 des del `post_install` del Podfile) i `1cfbf9cc6` (la còpia d'`Info.plist` passa a `App-Info.plist`, fora de la carpeta que Xcode fa servir de derived data, i fora el grup `InfoPlist.strings` buit que creava un cicle de dependències en signar) |
 
 <a id="eina-tauler"></a>
 ## EINA-tauler
@@ -2536,7 +2537,7 @@ Vespres de sant Jaume ([MIGRA-017](#migra-017)).
 | Comprovat | A l'índex de la branca: Sexta del 25-3 = `12004`/`12005`/`12006`; Tèrcia de l'1-1 = `12001`/`12002`/`12003`; sant Jaume, sis i sis (`18664`-`18669` i `20230`-`20235`). Totes aquestes caselles ja tenen català. `copied-cells.test.js` passa |
 | Després | Tornats a sondejar els 40 dies que toquen aquests textos (les 10 Anunciacions, els 10 primers de gener i els 24 i 25 de juliol), amb la sonda arreglada ([MIGRA-023](#migra-023)). El join ja prova sol `salmos_textos/12005`, que surt de pendents (1.024 → 1.023), i els responsoris de sant Jaume; el text és el mateix que ja hi havia. Treta la còpia de `12005` de `copied-cells.json` ([D-013](#d-013)) |
 | Exportació | 0 claus noves i 0 canviades: saints-app no canvia. Les set Completes només hi canviaven l'ordre d'una clau (iguals com a JSON) i s'han desfet |
-| Commit | `cc39f80df` (saints-app), **local**: no s'ha pujat |
+| Commit | `cc39f80df` (saints-app) |
 
 <a id="migra-023"></a>
 ## MIGRA-023
