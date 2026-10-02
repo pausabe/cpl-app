@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Estat** | **Salmòdia APLICADA per eprex** el 5-09-2026. 2a ronda **aplicada** al #1731 (9-9): lectura breu i himne bé; l'oració final és la `207`, no la `1761` proposada (per mirar al volum IV) |
+| **Estat** | **Salmòdia APLICADA per eprex** el 5-09-2026. 2a ronda **aplicada** al #1731 (9-9): lectura breu i himne bé. L'oració final (`207`) és **bona en català**; queda una pregunta del castellà, que el mateix dia hi té dues oracions diferents: **per enviar** des del 2-10 |
 | **Component** | saints-app · `day_specific_texts/all_visperas.json` i `all_laudes.json` |
 | **Gravetat** | Alta — un dia gran, i afecta **totes** les llengües de l'app, castellà inclòs |
 | **Trobat** | 2-3 de setembre de 2026, investigant per què `salmos_citas/11025` quedava retinguda al join |
@@ -119,7 +119,7 @@ el 2 de novembre no en resoldria cap: són conflictes independents i anteriors.
 
 **Enviada a en Fernando el 7 de setembre de 2026. Aplicada al #1731 (9-9-2026)**: lectura breu `3601`,
 himne `1064` (el mateix text que el `3970`) i oració final `207` («Oh Dios, que resucitaste a tu Hijo…»),
-que no és la `1761` que li vam proposar. Quina va, ho ha de dir el volum IV.
+que no és la `1761` que li vam proposar. Revisat el 2-10: vegeu [L'oració final](#loració-final-revisada-el-2-doctubre-de-2026).
 
 El que segueix és l'estat del 7-9, abans de la correcció.
 
@@ -138,6 +138,30 @@ de Laudes i Vespres continuen compartint **7 camps** amb el Diumenge XXXI: `himn
 dels Difunts a Sexta i a Nona**. O sigui que l'app ja sap quina és l'oració d'aquell dia a les
 hores menors, i a Laudes i Vespres continua posant-hi la del diumenge. No cal discutir de
 litúrgia: n'hi ha prou amb ensenyar-los la seva pròpia incoherència.
+
+## L'oració final: revisada el 2 d'octubre de 2026
+
+La pregunta «la `207` o la `1761`?» estava mal plantejada. El número és bo; el que no quadra és el
+**text castellà** de la `207`, que en Fernando va crear el 9-9 (`43cd3c858`, exportació del #1731: abans
+la `207` no tenia castellà).
+
+| llengua | `207` (Ofici, Laudes, Vespres) | `1761` (Tèrcia, Sexta, Nona) |
+|---|---|---|
+| castellà | «Oh Dios, que resucitaste a tu Hijo para que, venciendo la muerte, entrara en tu reino…» | «Escucha, Señor, nuestras súplicas, para que, al confesar la resurrección de Jesucristo…» |
+| italià | «Ascolta, o Dio, la preghiera che la comunità dei credenti…», conclusió llarga | **la mateixa oració**, conclusió curta |
+| català | «Escolteu benvolent, Senyor, aquestes pregàries…» = cpl-app (`diesespecials` 34: Ofici, Laudes i Vespres) | sense text encara |
+
+1. **En català no hi ha res a fer**: la `207` ja diu el que resa la CPL, i el volum imprès català no hi
+   aporta res.
+2. **En castellà, el mateix dia té dues oracions finals.** Un dia té una sola oració a totes les hores, i a
+   l'italià la `207` i la `1761` són la mateixa. El text castellà de la `207` sembla la col·lecta d'una altra
+   de les misses de difunts. Quin text va el decideix el volum IV en castellà, que té en Fernando: és una
+   pregunta per a ell, no una correcció nostra (vegeu la memòria `saints-app-follows-eprex-not-cpl-app`).
+3. **De passada, i no és d'eprex**: la `1761` no té català perquè el 2 de novembre és al grup de dies en què
+   litcal i cpl-app no celebren el mateix (`missing-celebrations.json` del 29-9: 21 caselles retingudes,
+   els 10 anys). És feina de la migració, a part d'aquesta fitxa.
+
+Missatge, a la targeta [14 del tauler](https://trello.com/c/qrkMH74e), columna «Por enviar».
 
 ## Precedent que deixa aquest cas
 

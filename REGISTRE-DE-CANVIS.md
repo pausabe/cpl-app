@@ -43,7 +43,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-02](#sa-02) | 2026-08-11 | saints-app | contingut | Es regenera | `abc5c1caf` |
 | [SA-03](#sa-03) | 2026-09-01 | saints-app | contingut | Es regenera | `f28389733` |
 | [LC-01…05](#litcal) | 2026-07-23 → 08-11 | litcal | codi | No | 5 commits |
-| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** (les dues rondes) | Salmòdia (#1722) i 2a ronda (#1731, 9-9); l'oració final és la 207 i no la 1761 proposada: per mirar al volum IV | `43a319267` |
+| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** (les dues rondes) | Salmòdia (#1722) i 2a ronda (#1731, 9-9). L'oració final, bona en català; el castellà té dues oracions el mateix dia: pregunta per enviar (2-10) | `43a319267` |
 | [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **acceptat, a mitges** | Enviat el 26-9. El #1757 (28-9) canvia la 1a antífona, però els salms continuen sent els de l'Ascensió | — |
 | [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **corregit per en Fernando** | Vespres al #1726 (5-9); el bessó del 4t dia de l'octava, al #1757 (28-9) | — |
 | [EPREX-004](#eprex-004) | 2026-09-08 | saints-app | **corregit sense que consti enviat** | L'entrada buida desapareix al #1751 (22-9); el forat de `findInStructure` continua | — |
@@ -783,7 +783,8 @@ Era una còpia de la fitxa del diumenge. Afectava **totes les llengües**, caste
 | Verificat | 7-09-2026: els **18 ids** són exactament els proposats. Sonda repassada a les 08:35 i join a les 08:36, tots dos **després** del merge de les 08:28 |
 | Efecte al català | Les tres antífones òrfenes de Vespres (`10964`/`10965`/`10966`) ja tenen text, i també el 1r salm de Vespres, el 1r de Laudes i el càntic d'Isaïes |
 | Preu | **Dos conflictes nous**, tots dos previstos: `salmos_antifonas/906` (empat 10-10 amb el Dissabte Sant) i `/247` (60 contra 10). Volen id propi; quina redacció catalana és la bona només ho diu el volum imprès |
-| 2a ronda | Enviada el 7-09-2026 i **aplicada al #1731 (9-9)**: lectura breu `3601`, himne `1064` (el mateix text que el `3970`). L'oració final és la `207` («Oh Dios, que resucitaste a tu Hijo…»), no la `1761` proposada: queda per mirar al volum IV quina va |
+| 2a ronda | Enviada el 7-09-2026 i **aplicada al #1731 (9-9)**: lectura breu `3601`, himne `1064` (el mateix text que el `3970`). L'oració final és la `207` («Oh Dios, que resucitaste a tu Hijo…»), no la `1761` proposada |
+| Oració final (2-10) | **En català, tancat**: la `207` ja diu «Escolteu benvolent, Senyor…», el de cpl-app, i a l'italià la `207` i la `1761` són la mateixa oració. El que no quadra és el text **castellà** de la `207`, que en Fernando va crear el 9-9: el 2-11 hi té dues oracions diferents (Ofici, Laudes i Vespres una; Tèrcia, Sexta i Nona l'altra). Pregunta per a ell, no correcció nostra: [targeta 14](https://trello.com/c/qrkMH74e), «Por enviar». No cal mirar el volum IV català |
 
 ## EPREX-002
 
@@ -1500,6 +1501,7 @@ la fusió deixava cedir sempre un dia sense camps d'I Vespres.
 | Commits | `f1cc32d42` (la fusió), `4709adfe4` (la precedència sola, i `dateStore`) |
 | Test | `firstVespers.spec.ts`, 8 de 8; sense la precedència, en fallen 3. La resta de vitest, els mateixos 10 errors d'abans de la fusió |
 | Comprovat a l'app | La sonda llegeix les I Vespres de l'Assumpció el 14-8-2022, les del diumenge el 7-12-2025 i les de Nadal el 24-12-2023 |
+| A `dev` | No hi és: el 2-10 hi segueix la regla dels camps. Sense PR a part, **decisió d'en Pau** del 2-10 (hi arribarà amb la branca catalana); targeta tancada al [tauler](#eina-tauler). El PR #1756 d'en Fernando («Fix 1v») és neteja, continua decidint pels camps i toca les mateixes línies: xocarà |
 | De rebot | El detector de la [MIGRA-006](#migra-006) comptava amb la disputa del 23-6-2022; ara les dues apps hi resen les Vespres del Baptista, i el test comprova que les nou vigílies escriuen la casella (`f5abb4c`) |
 
 ## SA-17
@@ -1603,7 +1605,7 @@ dels difunts anava a la casella de l'alternativa. Es va prendre primer per un er
 | Decisió | En Pau, 30-9-2026: la casella de l'alternativa (`preces_contenido/9573`) queda sense català; el català mostra les cinc de la CPL |
 | Correcció | `lib/preces-alignment.js`: les llistes decidides, **una per una**, i quina pregària va a cada casella; totes les altres, per posició. El fan servir el join i el comparador de la revisió |
 | Test | `preces-alignment.test.js` |
-| Per a en Fernando | Les hores mostren «id … not found» quan falta un text; cal amagar-lo, com ja fa la missa |
+| «id … not found» | La casella `9573` sense català sortia així a Vespres. Resolt per nosaltres a la [SA-20](#sa-20), **només a les pregàries**: no cal enviar res a en Fernando |
 | Dossier | [tooling-bugs/MIGRA-020](migration-to-saints/tooling-bugs/MIGRA-020.md) |
 | Commit | `7ded8b1` |
 
@@ -1635,6 +1637,7 @@ veure, perquè ens ho reportin.
 | Codi | `src/utils/missingText.ts` (nou): `withoutMissingPreces()`, aplicat a les pregàries de Laudes i Vespres, també a la pestanya ferial; `isMissingTextPlaceholder` s'hi trasllada i `TextService` el continua exportant |
 | Test | `tests/unit/utils/missingText.spec.ts`, 3 de 3. La resta de vitest, les mateixes 10 fallades d'abans (findOfficeDeceased, bible-parallels, calendari); `tsc` sense errors |
 | Commit | `6899c5077` (branca `catalan-language-support-dev`) |
+| A `dev` | No hi és el 2-10: hi arribarà amb la branca catalana, sense PR a part. Al [tauler](#eina-tauler) s'havia apuntat a partir de la fila vella de la MIGRA-020, com si calgués amagar-ho a tot arreu; corregida i tancada el 2-10 |
 
 <a id="migra-007"></a>
 ## MIGRA-007
