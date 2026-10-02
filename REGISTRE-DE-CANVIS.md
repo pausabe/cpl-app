@@ -132,6 +132,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [MIGRA-023](#migra-023) | 2026-10-02 | eines | codi | No — va al git | `a85cd4f` |
 | [MIGRA-024](#migra-024) | 2026-10-02 | eines | codi | No — va al git | `c680a83` |
 | [SA-33](#sa-33) | 2026-10-02 | saints-app | **codi** | No — va al git | `e7a287951` |
+| [SA-34](#sa-34) | 2026-10-02 | saints-app | **codi** | No — va al git | `d0e6d4610` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2596,7 +2597,28 @@ arribar a enviar a en Fernando: en Pau el va voler arreglar a la branca catalana
 | Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
 | Commit | `e7a287951` (branca `catalan-language-support-dev`) |
 | A `dev` | No hi és: hi arribarà amb la branca catalana, sense PR a part (decisió d'en Pau, 2-10) |
-| No tocat | Les lectures de la missa (`lecturesStore`) no passen per aquí: `setDate` les demana directament i el store es queda amb la càrrega que acaba l'última, com feien les hores. No s'ha vist fallar mai |
+| Les lectures | Les de la missa (`lecturesStore`) no passen per aquí i tenien el mateix forat: arreglat a part, [SA-34](#sa-34) |
+
+<a id="sa-34"></a>
+## SA-34
+
+**Les lectures de la missa ja no es queden amb un altre dia si es canvia de data mentre carreguen** · 2 d'octubre de 2026
+
+Revisat en tancar la [SA-33](#sa-33), a petició d'en Pau. `setDate` demana les lectures directament al
+`lecturesStore`, que es quedava amb la càrrega que acabava l'última. Si la data canvia mentre una
+carrega, les dues s'encavalquen, i la vella pot acabar després: litcal munta l'any sencer la primera
+vegada que se li demana un dia d'aquell any, de manera que un dia d'un altre any triga molt més que un
+de l'any que ja té. Qui anava a un dia del 2017 i tornava de seguida a avui podia trobar avui amb les
+lectures del dia del 2017, i la cita de l'Evangeli de la pantalla d'inici amb elles. Afecta tots els
+idiomes. No s'ha vist mai a l'app: ha sortit llegint el codi.
+
+| | |
+|---|---|
+| Correcció | `src/store/stores/lectures/lecturesStore.ts`: cada crida pren un número i només la més nova escriu el store. Una crida vella que no troba dades per al seu dia ho continua reportant (ERR-004), però no posa l'error a la pantalla del dia nou |
+| Test | `tests/unit/store/lecturesStore.spec.ts`, 3 de 3; sense la correcció en fallen 2: avui surt amb les lectures del dissabte I de Quaresma. La resta de vitest, les mateixes 9 fallades d'abans; `tsc`, `eslint` i `prettier`, nets |
+| Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
+| Commit | `d0e6d4610` (branca `catalan-language-support-dev`) |
+| A `dev` | No hi és: hi arribarà amb la branca catalana, com la [SA-33](#sa-33) |
 
 # Canvis a saints-app
 
