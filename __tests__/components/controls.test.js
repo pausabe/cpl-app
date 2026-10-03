@@ -199,15 +199,24 @@ test('the header buttons have a name, fit the bar of the iPhone and are touched 
   expect(onPress).toHaveBeenCalled();
 
   renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i tema" text="Aa" testID="aa" onPress={() => {}} />);
-  // The pill leaves 5 above and below inside the 44 of the bar, with its own border
-  expect(styleOf(screen.getByTestId('aa-pill'))).toMatchObject({ height: 34, borderWidth: 1.5 });
+  // The pill leaves 5 above and below inside the 44 of the bar, with its own border, and is no
+  // wider than "Aa" needs
+  expect(styleOf(screen.getByTestId('aa-pill'))).toMatchObject({ width: 42, height: 34, borderWidth: 1.5 });
+  expect(styleOf(screen.getByRole('button', { name: 'Mida del text i tema' })).marginRight).toBe(8);
 });
 
-test('on iOS 26 the system puts the Aa button in a capsule of glass: the pill carries no border there', () => {
+test('on iOS 26 the system puts the Aa button in a capsule of glass: the pill carries no border, width or margin there', () => {
   const { Platform } = require('react-native');
   jest.spyOn(Platform, 'Version', 'get').mockReturnValue('26.0');
   renderWithTheme(<HeaderButton accessibilityLabel="Mida del text i tema" text="Aa" testID="aa" onPress={() => {}} />);
-  expect(styleOf(screen.getByTestId('aa-pill'))).toMatchObject({ height: 34, borderWidth: 0 });
+  const pill = styleOf(screen.getByTestId('aa-pill'));
+  expect(pill.height).toBe(34);
+  expect(pill.borderWidth ?? 0).toBe(0);
+  // No width or margin of its own: the capsule is as wide as the calendar's and settings'
+  expect(pill.width).toBeUndefined();
+  const button = styleOf(screen.getByRole('button', { name: 'Mida del text i tema' }));
+  expect(button).toMatchObject({ minWidth: 44, marginHorizontal: 4 });
+  expect(button.marginRight).toBeUndefined();
   jest.restoreAllMocks();
 });
 
