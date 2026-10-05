@@ -133,6 +133,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [MIGRA-024](#migra-024) | 2026-10-02 | eines | codi | No — va al git | `c680a83` |
 | [SA-33](#sa-33) | 2026-10-02 | saints-app | **codi** | No — va al git | `e7a287951` |
 | [SA-34](#sa-34) | 2026-10-02 | saints-app | **codi** | No — va al git | `d0e6d4610` |
+| [D-016](#d-016) | 2026-10-05 | cpl-cloud (procés X) + web | **decisió d'en Pau** + codi | No — va al git | cpl-cloud `0bfd380`, `0028b87` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -358,8 +359,8 @@ anys de la base passa el **2019** i el **2024**; la propera vegada serà el **20
 | Prova | La mateixa taula ja sap fer el trasllat i l'aplica bé a sant Josep (2023) i a l'Anunciació (2024): no és un criteri pastoral, és un forat |
 | Efecte a la migració | 98 caselles contestades, 210 observacions reassignades, **45 caselles queden unànimes** |
 
-> Quan es publiqui la taula `anyliturgic` que surt de litcal (el procés X de cpl-cloud), el trasllat ja hi serà
-> i el `.sql` no hi trobarà res a canviar: es podrà deixar d'aplicar.
+> La taula `anyliturgic` que surt de litcal (el procés X de cpl-cloud) no ho arregla: des del [D-016](#d-016)
+> deixa els anys fins al 2026 com són a l'última publicada. Si es vol, el `.sql` es continua aplicant igual.
 
 ## CPL-LIT-003
 
@@ -2331,6 +2332,29 @@ Fernando, el 30-9: «¿Crees que vale la pena meterse en ese lío?»; en Pau: «
 | A favor | societaslaudis també hi posa els graduals: és una simplificació habitual |
 | Revisió | La troballa F32 continua sent un error d'eprex (veredicte 2), però ja sense correcció proposada |
 | Commit | el que afegeix la fitxa |
+
+<a id="d-016"></a>
+## D-016
+
+**La taula que surt de litcal no toca res fins al 2026** · 5 d'octubre de 2026
+
+La CPL encara no ha revisat la proposta, però li sembla bé tirar endavant i anar-la revisant amb l'app a la mà.
+En Pau hi posa una condició: que la taula `anyliturgic` no canviï d'avui a final del 2026, ni cap enrere. Un
+error al 2027 no seria greu; al passat, sí.
+
+El procés X (cpl-cloud, `calendar/`) reescrivia la taula sencera des del 2017. Contra la publicació 5, això eren
+6.651 caselles fins al 31-12-2026, 77 d'elles d'avui a final d'any. Ara els dies de la taula que es feia a mà es
+queden tal com són a la BD d'entrada (l'última publicada, amb el que s'hi hagi corregit a mà), i litcal només
+escriu a partir de l'1-1-2027.
+
+| | |
+|---|---|
+| Comprovat | Amb la publicació 5: les 3.652 files fins al 2026, idèntiques columna per columna (també l'`id`); les 27.028 del 2027 al 2100, iguals que abans del canvi. L'escriptura ho torna a comprovar cada vegada, i si no és així no escriu res |
+| A l'app | Els goldens de dies triats, de pantalles i del 2025, idèntics. El del 2026 només canvia el 30 i el 31 de desembre, que amb la publicació 5 no carreguen (falta la fila de l'endemà) i amb la nova sí |
+| Què no es corregeix | Els 8 dies d'avui a final del 2026 on la taula no diu el que diuen les regles (sant Joan de la Creu a Mallorca i Menorca el 14-12, tres memòries obligatòries com a lliures, dues memòries lliures que no hi són i santa Maria en dissabte el 7 i el 14 de novembre), les diferències dels anys passats de l'annex de la proposta i el trasllat de la Immaculada del [CPL-LIT-002](#cpl-lit-002), que continua sent un `.sql` per reaplicar |
+| Si se n'ha de corregir algun | Es canvia a la BD i es publica a la web de gestió, com sempre: el procés X l'agafarà de l'última publicada. La web ja no avisa que es perdrà un canvi en un dia fins al 2026; del 2027 endavant sí, i envia a la pestanya Calendari o a en Pau |
+| La proposta | La pestanya Calendari comença el 2027 |
+| Commit | cpl-cloud [`0bfd380`](https://github.com/pausabe/cpl-cloud/commit/0bfd380) (procés X) i [`0028b87`](https://github.com/pausabe/cpl-cloud/commit/0028b87) (web), desplegats el 5-10 |
 
 <a id="sa-24"></a>
 ## SA-24
