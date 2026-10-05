@@ -104,6 +104,8 @@ function prepareSimulator(name) {
   }
   run('xcrun', ['simctl', 'bootstatus', device.udid, '-b']);
   run('xcrun', ['simctl', 'install', device.udid, app]);
+  // The app follows the system until the flow picks «Fosc»: the first shots are of the light app
+  run('xcrun', ['simctl', 'ui', device.udid, 'appearance', 'light']);
 
   // A shot of a phone at 07:34 with no coverage and a half battery looks like somebody's
   // screenshot, not like a picture of the app. Apple's own are at 9:41.
@@ -143,6 +145,8 @@ function prepareAndroid() {
     fail('The Android release is not built. `make captures-android` builds it before coming here.');
   }
   run(adb, ['-s', device[0], 'install', '-r', apk]);
+  // As on iOS, the system in light until the flow picks «Fosc»
+  run(adb, ['-s', device[0], 'shell', 'cmd', 'uimode', 'night', 'no']);
 
   // The same clean status bar as on iOS. Android does it with the demo mode of the system UI,
   // which has to be allowed first and stays on until somebody leaves it.
