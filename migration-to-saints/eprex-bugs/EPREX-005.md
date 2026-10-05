@@ -1,8 +1,8 @@
 # EPREX-005 · A les hores intermèdies, una festa perd la seva antífona pròpia
 
 **Trobat:** 8 de setembre de 2026, mirant per què el 8-IX la Tèrcia mostrava un error.
-**Estat:** enviat el 14-9-2026, acceptat a mitges. En lloc del `-1`, en Fernando va fer el tipus FEAST2 (codi al #1749, 25-9); ja ho són la Santa Cruz, els Arcàngels i sis festes més. La resta espera la 3.30.
-**Afecta:** totes les llengües, **513 dies** de la finestra 2017-2026.
+**Estat:** enviat el 14-9-2026, acceptat a mitges. En lloc del `-1`, en Fernando va fer el tipus FEAST2 (codi al #1749, 25-9); ja ho són la Santa Cruz, els Arcàngels i sis festes més. **En queden 4** (revisat el 5-10-2026, vegeu el final), per a la 3.30: targeta T5.
+**Afecta:** totes les llengües. El recompte inicial de **513 dies** era massa: comptava com a pròpies antífones que no ho són (vegeu el final).
 
 ## Què passa
 
@@ -99,3 +99,20 @@ entrades d'`all_tercia.json` tenen aquesta forma.
 
 Idioma qualsevol, **8 de setembre de 2026**, Tèrcia. L'antífona que surt és
 la del dimarts de la setmana III del saltiri, no la del Naixement de la Mare de Déu.
+
+## Revisió del 5-10-2026
+
+Arran del [CPL-LIT-007](../cpl-bugs/CPL-LIT-007.md) (cpl-app posava a les hores menors de les festes l'antífona del
+comú; la CPL va demanar la de la fèria), s'ha tornat a mirar `origin/dev`. De les 27 entrades FEAST de
+`all_tercia.json`:
+
+| Entrades | Què duen a l'índex | Amb FEAST (la fèria) |
+|---|---|---|
+| Conversió de sant Pau (Sexta i Nona), Jesucrist gran sacerdot, Transfiguració, Naixement de la Mare de Déu | una antífona pròpia (p. ex. 4533, «Jesús apareció transfigurado…») | **la perden**: han de passar a FEAST2 |
+| Maties, Marc, Caterina de Siena, Isidor, Felip i Jaume | la 3360, «Aleluya, aleluya, aleluya» | la mateixa: la fèria pasqual també hi diu la 3360 |
+| Presentació, Tomàs | `-1` a les tres hores | res a perdre |
+| Les altres setze | antífones del saltiri | les del dia: correcte (OGLH 232) |
+
+Les quatre que la perden són les mateixes que la base de la CPL té com a pròpies (`antMenorTercia`), a més de la Santa
+Creu, els Arcàngels i els dies de l'octava de Nadal, que ja són FEAST2. Pròxims dies: 25-1-2027 (Conversió de sant
+Pau), 20-5-2027 (Jesucrist gran sacerdot), 6-8-2027 (Transfiguració) i 8-9-2027 (Naixement de la Mare de Déu).

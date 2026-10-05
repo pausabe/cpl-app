@@ -73,7 +73,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [MIGRA-010](#migra-010) | 2026-09-08 | eines | codi | No — va al git | — |
 | [MIGRA-011](#migra-011) | 2026-09-08 | eines | codi | No — va al git | — |
 | [D-007](#d-007) | 2026-09-08 | — | **decisió oberta** | — decideix en Pau | — |
-| [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **acceptat, a mitges** | Codi FEAST2 al #1749 (25-9) i 8 festes passades a FEAST2; la resta espera la 3.30 | — |
+| [EPREX-005](#eprex-005) | 2026-09-08 | saints-app | **acceptat, a mitges** | Codi FEAST2 al #1749 (25-9) i 8 festes passades a FEAST2; en queden 4 (revisat el 5-10, T5), per a la 3.30 | — |
 | [SA-15](#sa-15) | 2026-09-08 | saints-app | contingut | Es regenera | — |
 | [EINA-revisio-dia](#eina-revisio-dia) | 2026-09-14 | eines | codi | No — va al git | — |
 | [MIGRA-012](#migra-012) | 2026-09-25 | eines + cpl-app | codi | No — va al git | — |
@@ -457,7 +457,9 @@ dies de festes i memòries, i «la resta espera la 3.30». Segons l'OGLH 232 i l
 festes amb antífona **pròpia** (la Santa Creu, els Arcàngels, el Naixement de la Mare de Déu…); les que
 l'agafarien del comú, com sant Marc, sant Maties o sant Bartomeu, i les memòries (OGLH 236), hi duen la de la
 fèria. Per la mateixa raó, el grup «Festes amb antífona pròpia a les hores menors» de la [D-014](#d-014) no en té
-de pròpia: la decisió de la casella (l'antífona del saltiri) era la bona.
+de pròpia: la decisió de la casella (l'antífona del saltiri) era la bona. Ara que cpl-app hi diu la fèria, les 11
+caselles que citaven l'EPREX-005 a `decided-cells.json` s'han tret: el join surt idèntic sense elles. Si mai es
+desfés aquest canvi, caldria tornar-les a decidir, i el motiu ja no seria l'EPREX-005 sinó la [D-010](#d-010).
 
 ---
 
@@ -1490,6 +1492,14 @@ Es tanca traient tres línies de l'override. Dossier:
 **Estat (2-10-2026):** enviat el 14-9, amb la Santa Cruz. En Fernando no vol mirar el `-1` i hi va posar un
 tipus nou, FEAST2 (codi al #1749, 25-9). Ja ho són la Santa Cruz, els Arcàngels i sis festes més; les altres
 continuen com a FEAST i perden l'antífona. Segons ell (26-9), no se'n poden passar més fins que surti la 3.30.
+
+**Revisat el 5-10-2026, arran del [CPL-LIT-007](#cpl-lit-007):** els «513 dies» eren massa. Amb `origin/dev`, de
+les 27 entrades FEAST de Tèrcia només **4 festes** tenen antífona pròpia a l'índex i la perden: la Conversió de
+sant Pau (Sexta i Nona; Tèrcia ja és FEAST2), Jesucrist gran sacerdot, la Transfiguració i el Naixement de la Mare
+de Déu, les mateixes que la CPL té com a pròpies. Les cinc de Pasqua (Maties, Marc, Caterina de Siena, Isidor,
+Felip i Jaume) hi porten la 3360, «Aleluya, aleluya, aleluya», que és el mateix que dona la fèria; la Presentació i
+sant Tomàs hi tenen `-1`; i les altres setze, antífones del saltiri. A totes aquestes, que FEAST hi posi la fèria és
+correcte (OGLH 232). El missatge de la targeta T5 ja diu només les quatre; la primera, el 25-1-2027.
 
 <a id="sa-15"></a>
 ## SA-15

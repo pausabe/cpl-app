@@ -165,10 +165,6 @@
       "take": "2026-12-15",
       "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
     },
-    "salmos_antifonas/3434": {
-      "take": "2026-11-16",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Bartomeu cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
     "salmos_antifonas/158": {
       "take": "2026-12-02",
       "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2021-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
@@ -201,42 +197,6 @@
       "take": "2026-12-03",
       "because": "Salteri de la setmana I. Els dimecres, dijous i divendres d'Advent III (2022-12-15) eprex hi apunta i cpl-app hi resa la setmana III (EPREX-009)."
     },
-    "salmos_antifonas/3419": {
-      "take": "2026-11-21",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Sants Simó i Judes cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
-    "salmos_antifonas/3361": {
-      "take": "2026-11-23",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Sants Simó i Judes cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
-    "salmos_antifonas/3381": {
-      "take": "2026-11-27",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Santa Teresa Beneta de la Creu cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
-    "salmos_antifonas/3689": {
-      "take": "2026-10-10",
-      "because": "Antífona del saltiri a les hores menors. Mare de Déu del Pilar: l'antífona pròpia que saints-app no llegeix (EPREX-005); Dedicació de la Basílica del Laterà: només 2019-11-09, 2024-11-09."
-    },
-    "salmos_antifonas/3364": {
-      "take": "2026-11-10",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Santa Brígida, Santa Teresa de Jesús cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
-    "salmos_antifonas/3454": {
-      "take": "2026-11-11",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Visitació de la Benaurada Verge Maria cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
-    "salmos_antifonas/3391": {
-      "take": "2026-11-13",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Lluc, Visitació de la Benaurada Verge Maria cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
-    "salmos_antifonas/3447": {
-      "take": "2026-11-14",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Mateu cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
-    "salmos_antifonas/3427": {
-      "take": "2026-09-07",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Llorenç cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
-    },
     "salmos_antifonas/740": {
       "take": "2026-03-25",
       "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
@@ -268,10 +228,6 @@
     "salmos_antifonas/9": {
       "take": "2026-03-25",
       "because": "Anunciació del Senyor: coincideix amb la resta de dies tots els anys menys 2018-04-09, 2024-04-08."
-    },
-    "salmos_antifonas/3360": {
-      "take": "2026-05-23",
-      "because": "Antífona del saltiri a les hores menors. Els dies de Sant Marc, Sants Felip i Jaume, Sant Maties, Santa Caterina de Siena, Sant Isidor cpl-app hi diu l'antífona pròpia de la festa, que saints-app no llegeix per l'EPREX-005."
     },
     "salmos_antifonas/9926": {
       "take": "2026-03-25",
