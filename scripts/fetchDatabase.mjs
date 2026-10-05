@@ -113,20 +113,32 @@ async function main() {
     );
   }
 
-  if (existsSync(DATABASE_FILE) && md5(DATABASE_FILE) === manifest.md5) {
-    console.log(`Database version ${manifest.version} (${manifest.compat}), already here`);
-    return;
-  }
-
-  console.log(`Downloading database version ${manifest.version} (${Math.round(manifest.bytes / 1000000)} MB)`);
-  await download(manifest);
   const information = {
     version: manifest.version,
     compat: manifest.compat,
     md5: manifest.md5,
     bytes: manifest.bytes,
   };
-  writeFileSync(INFORMATION_FILE, `${JSON.stringify(information, null, 2)}\n`);
+  const described = `${JSON.stringify(information, null, 2)}\n`;
+
+  // The file is already the published one. The two files go together, so if cpl-app.db.json was left
+  // behind (a git checkout puts back the one in the repository) it is written again, without
+  // downloading anything.
+  if (existsSync(DATABASE_FILE) && md5(DATABASE_FILE) === manifest.md5) {
+    if (readFileSync(INFORMATION_FILE, 'utf8') !== described) {
+      writeFileSync(INFORMATION_FILE, described);
+      console.log(
+        `Database version ${manifest.version} (${manifest.compat}), already here; cpl-app.db.json said ${bundled.version}`,
+      );
+      return;
+    }
+    console.log(`Database version ${manifest.version} (${manifest.compat}), already here`);
+    return;
+  }
+
+  console.log(`Downloading database version ${manifest.version} (${Math.round(manifest.bytes / 1000000)} MB)`);
+  await download(manifest);
+  writeFileSync(INFORMATION_FILE, described);
   console.log(`Database version ${manifest.version} (${manifest.compat})`);
 }
 
