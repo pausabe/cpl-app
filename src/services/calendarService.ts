@@ -85,6 +85,24 @@ export async function calendarDay(date: Date, chain: string[]): Promise<Calendar
   return undefined;
 }
 
+// The letters of a whole year in a calendar, by date (2026-10-05): each one from the most concrete
+// calendar of the chain that has the day. A date no calendar of the chain has is left out.
+export async function lettersOfYear(year: number, chain: string[]): Promise<Map<string, string>> {
+  const rows: { date: string; calendar: string; letter: string }[] = await executeQueryAsync(
+    `SELECT date, calendar, letter FROM calendar_days WHERE date >= '${year}-01-01' AND date <= '${year}-12-31' AND calendar IN (${quoted(chain)})`,
+  );
+  const letters = new Map<string, string>();
+  const depth = new Map<string, number>();
+  for (const row of rows) {
+    const level = chain.indexOf(row.calendar);
+    if (!depth.has(row.date) || level < (depth.get(row.date) as number)) {
+      depth.set(row.date, level);
+      letters.set(row.date, row.letter);
+    }
+  }
+  return letters;
+}
+
 // Whether the celebration of this date has been moved to another day of the year, in this calendar
 export async function isMovedAway(date: Date, chain: string[]): Promise<boolean> {
   const code = DatabaseHelper.getDateShortDatabaseCode(date);

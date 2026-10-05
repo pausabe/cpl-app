@@ -6,6 +6,10 @@ import LiturgyDayInformation from '../models/LiturgyDayInformation';
 import CelebrationInformation from '../models/hours-liturgy/CelebrationInformation';
 import HoursLiturgy from '../models/hours-liturgy/HoursLiturgy';
 import MassLiturgy from '../models/MassLiturgy';
+import type { DayMark } from '../services/liturgicalYearService';
+
+export type DayPreview = DataService.DayPreview;
+export type { DayMark };
 
 // The seam between the screens and the rest of the app.
 //
@@ -73,13 +77,30 @@ export function publish(): void {
 let queue: Promise<unknown> = Promise.resolve();
 
 export function reload(date: Date, databaseAsset?: unknown): Promise<void> {
-  const run = queue.then(async () => {
+  return inTurn(async () => {
     await DataService.reloadAllData(date, databaseAsset as any);
     publish();
   });
+}
+
+// The queries of the calendar wait for their turn too: a reload opens the database again under
+// them
+function inTurn<T>(task: () => Promise<T>): Promise<T> {
+  const run = queue.then(task);
   // The next one waits for this one whether it worked or not
   queue = run.catch(() => undefined);
   return run;
+}
+
+// Another day, for the calendar, without changing the one shown: what the home would show of
+// it. Null when, by its turn, the calendar no longer wants it (the reader touched another day).
+export function previewDay(date: Date, stillWanted: () => boolean = () => true): Promise<DayPreview | null> {
+  return inTurn(() => (stillWanted() ? DataService.obtainDayPreview(date) : Promise.resolve(null)));
+}
+
+// The colour, the rank and the season of every day of a year, for the calendar
+export function yearMarks(year: number): Promise<DayMark[]> {
+  return inTurn(() => DataService.obtainYearMarks(year));
 }
 
 // The day being shown: the one to reload after a setting changes.

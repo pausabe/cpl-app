@@ -23,6 +23,13 @@ jest.mock('../../src/services/databaseManagerService', () => {
       ('2026-05-05', 'diocese-barcelona-cathedral', 'S', '03-may', 'holy_cross_title_of_the_cathedral_of_barcelona'),
       ('2026-09-08', 'catalonia', 'F', '-', 'nativity_of_the_blessed_virgin_mary'),
       ('2026-09-08', 'diocese-andorra', 'S', '-', 'our_lady_of_meritxell');
+    CREATE TABLE anyliturgic (any TEXT, mes TEXT, dia TEXT, Color TEXT, temps TEXT, NumSet TEXT,
+      tempsespecific TEXT, anyABC TEXT, BaD TEXT, BaC TEXT, Andorra TEXT);
+    INSERT INTO anyliturgic VALUES
+      ('2026', '5', '5', 'B', 'P_SETMANES', '5', 'Pasqua', 'A', '-', 'L', '-'),
+      ('2026', '5', '4', 'B', 'P_SETMANES', '5', 'Pasqua', 'A', '-', '-', '-'),
+      ('2026', '9', '8', 'B', 'O_ORDINAR', '23', 'Ordinari', 'A', 'F', 'F', 'S'),
+      ('2026', '9', '9', 'V', 'O_ORDINAR', '23', 'Ordinari', 'A', 'M', 'M', 'M');
   `);
   return {
     executeQueryAsync: async (query) => db.prepare(query).all(),
@@ -31,6 +38,7 @@ jest.mock('../../src/services/databaseManagerService', () => {
 });
 
 const CalendarService = require('../../src/services/calendarService');
+const LiturgicalYearService = require('../../src/services/liturgicalYearService');
 
 const settings = (dioceseName, prayingPlace) => ({ dioceseName, prayingPlace });
 
@@ -96,6 +104,51 @@ describe('a day of a calendar', () => {
     expect(andorra.day.celebration).toBe('our_lady_of_meritxell');
     expect(andorra.chain).toEqual(['diocese-andorra', 'diocese-urgell', 'catalonia']);
     expect(await CalendarService.obtainDayOfPlace(new Date(2026, 8, 8), settings('Madrid', 'Diòcesi'))).toBeUndefined();
+  });
+});
+
+describe('a whole year of a calendar', () => {
+  const cathedral = ['diocese-barcelona-cathedral', 'diocese-barcelona-city', 'diocese-barcelona', 'catalonia'];
+
+  it('gives the letter of every day it has, each from the most concrete calendar that has it', async () => {
+    expect(Object.fromEntries(await CalendarService.lettersOfYear(2026, cathedral))).toEqual({
+      '2026-05-03': '-',
+      '2026-05-04': 'F',
+      '2026-05-05': 'S',
+      '2026-09-08': 'F',
+    });
+    expect(
+      Object.fromEntries(await CalendarService.lettersOfYear(2026, ['diocese-andorra', 'diocese-urgell', 'catalonia'])),
+    ).toMatchObject({ '2026-09-08': 'S', '2026-05-05': '-' });
+    expect((await CalendarService.lettersOfYear(2025, cathedral)).size).toBe(0);
+  });
+
+  it('paints the calendar with the letters of the place, and the column of the place where it has no day', async () => {
+    const marks = await LiturgicalYearService.obtainYearMarks(2026, {
+      ...settings('Barcelona', 'Catedral'),
+      dioceseCode: 'BaC',
+    });
+    expect(marks.map((mark) => [mark.date, mark.letter])).toEqual([
+      ['2026-05-04', 'F'],
+      ['2026-05-05', 'S'],
+      ['2026-09-08', 'F'],
+      ['2026-09-09', 'M'],
+    ]);
+    expect(marks[0]).toMatchObject({
+      color: 'B',
+      specificSeason: 'P_SETMANES',
+      season: 'Pasqua',
+      week: '5',
+      yearType: 'A',
+    });
+  });
+
+  it('without a calendar for the place, the column of the place', async () => {
+    const marks = await LiturgicalYearService.obtainYearMarks(2026, {
+      ...settings('Madrid', 'Diòcesi'),
+      dioceseCode: 'BaD',
+    });
+    expect(marks.map((mark) => mark.letter)).toEqual(['-', '-', 'F', 'M']);
   });
 });
 
