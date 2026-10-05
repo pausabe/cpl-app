@@ -43,7 +43,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-02](#sa-02) | 2026-08-11 | saints-app | contingut | Es regenera | `abc5c1caf` |
 | [SA-03](#sa-03) | 2026-09-01 | saints-app | contingut | Es regenera | `f28389733` |
 | [LC-01…05](#litcal) | 2026-07-23 → 08-11 | litcal | codi | No | 5 commits |
-| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** (les dues rondes) | Salmòdia (#1722) i 2a ronda (#1731, 9-9). L'oració final, bona en català; el castellà té dues oracions el mateix dia: pregunta per enviar (2-10) | `43a319267` |
+| [EPREX-001](#eprex-001) | 2026-09-03 | saints-app | **acceptat i aplicat** (les dues rondes) | Salmòdia (#1722) i 2a ronda (#1731, 9-9). L'oració final, bona en català; el castellà té dues oracions el mateix dia: pregunta **enviada el 5-10**, s'espera resposta | `43a319267` |
 | [EPREX-002](#eprex-002) | 2026-09-03 | saints-app | **acceptat, a mitges** | Enviat el 26-9. El #1757 (28-9) canvia la 1a antífona, però els salms continuen sent els de l'Ascensió | — |
 | [EPREX-003](#eprex-003) | 2026-09-04 | saints-app | **corregit per en Fernando** | Vespres al #1726 (5-9); el bessó del 4t dia de l'octava, al #1757 (28-9) | — |
 | [EPREX-004](#eprex-004) | 2026-09-08 | saints-app | **corregit sense que consti enviat** | L'entrada buida desapareix al #1751 (22-9); el forat de `findInStructure` continua | — |

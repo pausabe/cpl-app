@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Estat** | **Salmòdia APLICADA per eprex** el 5-09-2026. 2a ronda **aplicada** al #1731 (9-9): lectura breu i himne bé. L'oració final (`207`) és **bona en català**; queda una pregunta del castellà, que el mateix dia hi té dues oracions diferents: **per enviar** des del 2-10 |
+| **Estat** | **Salmòdia APLICADA per eprex** el 5-09-2026. 2a ronda **aplicada** al #1731 (9-9): lectura breu i himne bé. L'oració final (`207`) és **bona en català**; queda una pregunta del castellà, que el mateix dia hi té dues oracions diferents: **enviada el 5-10-2026**, reescrita perquè digui el dia, les hores i el possible problema; s'espera resposta |
 | **Component** | saints-app · `day_specific_texts/all_visperas.json` i `all_laudes.json` |
 | **Gravetat** | Alta — un dia gran, i afecta **totes** les llengües de l'app, castellà inclòs |
 | **Trobat** | 2-3 de setembre de 2026, investigant per què `salmos_citas/11025` quedava retinguda al join |
