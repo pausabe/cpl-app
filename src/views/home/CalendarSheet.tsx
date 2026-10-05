@@ -251,7 +251,8 @@ export default function CalendarSheet({
           onPick={setSelected}
           onSwipe={(delta) => setShown(shiftMonth(shown.year, shown.month, delta))}
         />
-        {month.color ? <MonthKey color={month.color} /> : null}
+        {/* Green until the year is loaded, the colour of most of the year: the key is always there */}
+        <MonthKey color={month.color ?? 'V'} />
         <DayPreviewCard date={selected} card={previews[isoDate(selected)]} />
       </>
     ) : overview ? (
@@ -262,6 +263,7 @@ export default function CalendarSheet({
     ) : wheel ? (
       <>
         <LiturgicalYearWheel wheel={wheel} onPickDay={(date) => showMonth(date.getFullYear(), date.getMonth())} />
+        <YearKey />
         <MilestoneList
           title={wheelIsToday ? 'Properament' : 'Dates principals'}
           rows={milestones.map((m) => milestoneRow(m, m.kind === 'solemnity' ? titleOf(previews[m.key]) : null))}
