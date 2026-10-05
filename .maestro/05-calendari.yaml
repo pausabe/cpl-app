@@ -3,19 +3,17 @@ name: "The day can be changed with the calendar"
 ---
 - runFlow: subflows/obrir.yaml
 - tapOn: "Calendari"
-# The title of the month opens the list of years: last year, in the same month
+# The calendar is a screen of its own. Its tab «Any», the year before, and the same month in it
+- tapOn: "Any"
+- tapOn: "Any anterior"
 - tapOn:
-    id: "calendar-title"
-- assertVisible:
-    id: "calendar-years"
-- tapOn:
-    id: "calendar-year-${new Date().getFullYear() - 1}"
+    id: "calendar-year-month-${new Date().getMonth() + 1}"
 - assertVisible: ".* de ${new Date().getFullYear() - 1}"
-# The app's calendar, the same on Android and iOS: day 15 of the month it shows, and «Canvia».
-# Each day is a button «dimarts, 15 de setembre» with the number inside: on Android the number
-# is tapped; on iOS, the button.
+# The app's calendar, the same on Android and iOS: day 15 of the month it shows, and «Selecciona».
+# Each day is a button «dimarts, 15 de setembre» (and its rank, if it has one) with the number
+# inside: on Android the number is tapped; on iOS, the button.
 - tapOn: "15|[^ ]+, 15 d.+"
-- tapOn: "Canvia"
+- tapOn: "Selecciona"
 # The date, in words on the day's card
 - extendedWaitUntil:
     visible: "Di[a-z]+, 15 d.+"

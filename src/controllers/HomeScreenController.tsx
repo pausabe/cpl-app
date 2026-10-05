@@ -11,18 +11,19 @@ import StorageKeys from '../services/storage/storageKeys';
 import { useAppUpdateNotice } from '../services/appUpdateService';
 import { SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 import * as LiturgyStore from './liturgyStore';
+import * as CalendarStore from './calendarStore';
 import { followSystemAppearance } from './appearanceSettings';
 import { useTheme } from '../theme';
 import HeaderButton from '../components/HeaderButton';
 import HomeScreen from '../views/home/HomeScreen';
 import LatePrayerDialog from '../views/home/LatePrayerDialog';
-import CalendarSheet from '../views/home/CalendarSheet';
 import WhatsNewSheet from '../views/home/WhatsNewSheet';
 import DioceseSheet from '../views/home/DioceseSheet';
 import WebSheet from '../components/WebSheet';
 import { wasOpenedBefore } from './firstRun';
 import LoadError from '../views/home/LoadError';
 import { buildDayCard } from '../view-models/dayCard';
+import { dateOfIso } from '../view-models/calendar';
 import { buildHours, HourTile } from '../view-models/hours';
 import { buildMass, massChoiceToStore, MassChoice, MassScreenType, resolveMassChoice } from '../view-models/mass';
 import { DioceseOfferTexts, dioceseOfferTexts, latePrayerTexts, LocationStatus } from '../view-models/notices';
@@ -31,9 +32,9 @@ import { autoselectDiocese, shouldOfferAutoselection } from './dioceseAutoselect
 
 // The home. It loads the day when the app opens and when the day changes, and keeps doing what
 // it always did: coming back to the app on another day loads today's liturgy, between midnight
-// and 3 h it asks whether yesterday's is wanted, the calendar changes the day, and the switch of
-// an optional memorial is remembered for the day. It builds what the home shows (ViewModels) and
-// gives it to the view (Views/Home/HomeScreen), which only draws.
+// and 3 h it asks whether yesterday's is wanted, the calendar (a screen of its own) changes the
+// day, and the switch of an optional memorial is remembered for the day. It builds what the home
+// shows (ViewModels) and gives it to the view (Views/Home/HomeScreen), which only draws.
 
 const LOAD_ERROR_MESSAGE =
   "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
@@ -83,7 +84,7 @@ function useCurrentHour(): number {
   return hour;
 }
 
-export default function HomeScreenController({ navigation }: { navigation: any }) {
+export default function HomeScreenController({ navigation, route }: { navigation: any; route?: any }) {
   const theme = useTheme();
   const snapshot = LiturgyStore.useLiturgy();
   const hour = useCurrentHour();
@@ -91,7 +92,6 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   const [databaseAssets, databaseAssetsError] = useAssets([require('../assets/db/cpl-app.db')]);
   const [status, setStatus] = useState<Status>(LiturgyStore.isLoaded() ? 'ready' : 'loading');
   const [latePrayerVisible, setLatePrayerVisible] = useState(false);
-  const [calendarVisible, setCalendarVisible] = useState(false);
   const [whatsNewPending, setWhatsNewPending] = useState(false);
   // The words of the offer to find the diocese, and null while there is nothing to offer
   const [dioceseOffer, setDioceseOffer] = useState<{ texts: DioceseOfferTexts; current: string } | null>(null);
@@ -167,7 +167,6 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       const now = new Date();
       if (!DateManagement.datesAreTheEqual(now, LiturgyStore.lastRefreshDate())) {
         navigation.popToTop();
-        setCalendarVisible(false);
         setLatePrayerVisible(false);
         await load(now);
       }
@@ -191,7 +190,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
           icon="calendar"
           accessibilityLabel="Calendari"
           testID="calendar-button"
-          onPress={() => setCalendarVisible(true)}
+          onPress={() => navigation.navigate('Calendar')}
         />
       ),
       headerRight: () => (
@@ -267,11 +266,24 @@ export default function HomeScreenController({ navigation }: { navigation: any }
 
   // --- What the user does --------------------------------------------------------------------
   const showDate = async (date: Date) => {
-    setCalendarVisible(false);
     setLatePrayerVisible(false);
     if (today && DateManagement.datesAreTheEqual(date, today)) return;
     await load(date);
   };
+
+  // The day chosen in the calendar comes back with the home, and is loaded here as any other
+  const chosenInCalendar: string | undefined = route?.params?.showDate;
+  useEffect(() => {
+    if (!chosenInCalendar) return;
+    navigation.setParams({ showDate: undefined });
+    showDate(dateOfIso(chosenInCalendar));
+  }, [chosenInCalendar]);
+
+  // The colours of the year of the day shown, asked for after every load (one query, in the queue
+  // after the load), so that the calendar opens painted
+  useEffect(() => {
+    if (status === 'ready' && loadedHere) CalendarStore.prefetchShownYear();
+  }, [snapshot.revision, status, loadedHere]);
 
   const onOptionalMemoryChange = async (enabled: boolean) => {
     if (!today) return;
@@ -380,15 +392,6 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         url={DONATION_URL}
         onClose={() => setWebPage(null)}
         testID="donation-sheet"
-      />
-      <CalendarSheet
-        visible={calendarVisible}
-        value={today}
-        minimumDate={snapshot.database.minimumSelectableDate}
-        maximumDate={snapshot.database.maximumSelectableDate}
-        onClose={() => setCalendarVisible(false)}
-        onToday={() => showDate(new Date())}
-        onChange={showDate}
       />
       <LatePrayerDialog
         visible={latePrayerVisible}

@@ -5,12 +5,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreenController from './HomeScreenController';
 import { HoursPrayerController, MassPrayerController } from './PrayerController';
 import SettingsController from './SettingsController';
+import CalendarController from './CalendarController';
 import AppThemeProvider from './AppThemeProvider';
 import { headerOptions, navigationTheme, useTheme } from '../theme';
 
-// One stack, no tabs: the home has everything of every day, and each hour, each reading and the
-// settings open over it. Back always returns to the home. The message and the donation are
-// sheets of the home (HomeScreenController).
+// One stack, no tabs: the home has everything of every day, and each hour, each reading, the
+// calendar and the settings open over it. Back always returns to the home. The message and the
+// donation are sheets of the home (HomeScreenController).
 //
 // The stack is the native one (UINavigationController on iOS, fragments on Android): on iOS the
 // transition and the swipe back are the system's own, at the refresh rate of the screen. The
@@ -62,6 +63,17 @@ function Navigator() {
           name="LDDisplay"
           component={MassPrayerController as any}
           options={({ route }: any) => ({ ...inner, title: route.params?.title ?? 'Missa' })}
+        />
+        <Stack.Screen
+          name="Calendar"
+          component={CalendarController}
+          options={{
+            ...inner,
+            title: 'Calendari',
+            // From iOS 26 a swipe to the right anywhere goes back, and in the calendar that is the
+            // drag to the month before: back only from the left edge, as before iOS 26
+            fullScreenGestureEnabled: false,
+          }}
         />
         <Stack.Screen name="Settings" component={SettingsController} options={{ ...inner, title: 'Configuració' }} />
       </Stack.Navigator>

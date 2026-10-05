@@ -8,6 +8,7 @@ export const LogKeys = {
   DatabaseUpdaterService: { name: 'DatabaseUpdaterService', enabled: true },
   DatabaseDataService: { name: 'DatabaseDataService', enabled: true },
   HomeScreenController: { name: 'HomeScreenController', enabled: true },
+  Calendar: { name: 'Calendar', enabled: true },
   Soul: { name: 'Soul', enabled: true },
   GlobalFunctions: { name: 'GlobalFunctions', enabled: true },
   Screens: { name: 'Screens', enabled: true },

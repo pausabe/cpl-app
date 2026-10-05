@@ -91,6 +91,17 @@ export interface LiturgicalColor {
   // Soft background of the day card, and the colour of its label and links
   tint: string;
   accent: string;
+  calendar: CalendarTones;
+}
+
+// The colour in the calendar, which says the liturgical season and nothing else: every day of a
+// season on its soft tone (day), the candles of the rank of a day (one for a memorial, two for a
+// feast, three for a solemnity) in its strong one (mark), and the squares of the year and the
+// pieces of the wheel in a middle one (square), which a soft tone is too pale for that small.
+export interface CalendarTones {
+  day: string;
+  mark: string;
+  square: string;
 }
 
 const LITURGICAL: Record<
@@ -105,6 +116,30 @@ const LITURGICAL: Record<
   B: { name: 'Blanc', dot: '#FFFFFF', light: ['#F7F1E3', '#7A5F14'], dark: ['#26221A', '#E3C877'] },
 };
 
+// In dark mode the soft tones of the card are almost the background, and dark colours lose their
+// hue: a green or purple day was a dark grey that could not be told from the background nor from
+// the others, and white was brown. The calendar has its own: a day in its colour, a third again as
+// bright as the background and not more (brighter, a month was a block of loud green, the loudest
+// thing on the screen), the letters in the light accent. White is stone and ivory.
+const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTones>> = {
+  R: {
+    light: { day: '#F8E7E5', mark: '#B3261E', square: '#EDB9B3' },
+    dark: { day: '#4D322F', mark: '#F6B3AC', square: '#944B42' },
+  },
+  V: {
+    light: { day: '#DDEEDA', mark: '#2E6B30', square: '#B5D7AE' },
+    dark: { day: '#2C4230', mark: '#9CD39E', square: '#40774B' },
+  },
+  M: {
+    light: { day: '#EFE8F4', mark: '#6A3D9A', square: '#D5C3E8' },
+    dark: { day: '#423750', mark: '#CDB6ED', square: '#6E5095' },
+  },
+  B: {
+    light: { day: '#F7F1E3', mark: '#7A5F14', square: '#E9D9AA' },
+    dark: { day: '#47433B', mark: '#EFE4C8', square: '#807660' },
+  },
+};
+
 export function isLiturgicalColorCode(code: unknown): code is LiturgicalColorCode {
   return typeof code === 'string' && Object.prototype.hasOwnProperty.call(LITURGICAL, code);
 }
@@ -114,5 +149,13 @@ export function liturgicalColor(code: unknown, scheme: ColorSchemeName): Liturgi
   const key: LiturgicalColorCode = isLiturgicalColorCode(code) ? code : 'V';
   const entry = LITURGICAL[key];
   const [tint, accent] = entry[scheme];
-  return { code: key, name: entry.name, dot: entry.dot, dotOutlined: key === 'B', tint, accent };
+  return {
+    code: key,
+    name: entry.name,
+    dot: entry.dot,
+    dotOutlined: key === 'B',
+    tint,
+    accent,
+    calendar: CALENDAR[key][scheme],
+  };
 }

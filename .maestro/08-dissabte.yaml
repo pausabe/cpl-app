@@ -4,15 +4,17 @@ name: "Saturday: the evening Mass and the optional memorial"
 # Next Saturday, with the app's calendar: it has an evening Mass (Sunday's) and, often,
 # the memorial of Saint Mary.
 - runFlow: subflows/obrir.yaml
-- evalScript: ${(function () { var today = new Date(); var add = (6 - today.getDay() + 7) % 7 || 7; var saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + add); output.day = String(saturday.getDate()); output.nextMonth = saturday.getMonth() !== today.getMonth(); })()}
+- evalScript: ${(function () { var today = new Date(); var add = (6 - today.getDay() + 7) % 7 || 7; var saturday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + add); output.day = String(saturday.getDate()); output.nextMonth = saturday.getMonth() !== today.getMonth(); output.month = saturday.getFullYear() + '-' + (saturday.getMonth() + 1); })()}
 - tapOn: "Calendari"
+# Its month, from the row of months over the grid when it is the next one
 - runFlow:
     when:
       true: ${output.nextMonth}
     commands:
-      - tapOn: "Mes següent"
+      - tapOn:
+          id: "calendar-month-${output.month}"
 - tapOn: "${output.day}|[^ ]+, ${output.day} d.+"
-- tapOn: "Canvia"
+- tapOn: "Selecciona"
 - extendedWaitUntil:
     visible: "Dissabte, .+"
     timeout: 15000

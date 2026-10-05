@@ -147,6 +147,12 @@ export function seasonTitle(genericLiturgyTime: string): string {
   return `Temps ${ofName(genericLiturgyTime)}`;
 }
 
+// The day in its season when nothing is celebrated: "Setmana XXVII de durant l'any", "Octava de
+// Nadal", "Temps de Nadal". What the card says of a day without a celebration of its own.
+export function seasonDayTitle(day: DayInput): string {
+  return dayInSeason(day, null, false).title;
+}
+
 // The title of the day in its season, and whether it already names the season ("Octava de
 // Pasqua", "Fèria d’Advent", but not "Diumenge de Rams")
 function dayInSeason(
@@ -180,6 +186,51 @@ function buildCelebration(
     description: hasContent(celebration.description) ? celebration.description : null,
     optionalMemory: optional ? { enabled, caption: optionalMemoryCaption(enabled) } : null,
   };
+}
+
+// What the card of a day says before its celebration is worked out, from the day alone: its colour,
+// the day in its season and the type of its celebration, all but the name. The same as buildDayCard
+// says once the name is there, but for a day whose celebration has no texts in the place (the type
+// goes) or a day of the season with a name of its own (Palm Sunday, the days of Holy Week). An
+// optional memorial is taken as not celebrated, as it is on every day but one.
+export interface CardWithoutName {
+  colorCode: ColorCode;
+  title: string;
+  typeLabel: string | null;
+  muted: boolean;
+}
+
+export function cardWithoutName(day: DayInput): CardWithoutName {
+  const typeLabel = celebrationTypeLabel(day.celebrationType, day.genericLiturgyTime);
+  const { title } = dayInSeason(
+    day,
+    typeLabel ? null : seasonDayName(day),
+    typeLabel !== null && day.celebrationType === CelebrationType.Solemnity,
+  );
+  return { colorCode: colorCode(day.liturgyColor), title, typeLabel, muted: isOptionalMemory(day.celebrationType) };
+}
+
+// The name of a day of the season without a celebration, as the liturgy gives it when it has no
+// other (services/liturgy/celebrationInformationService, buildCelebrationInformation): «Dijous
+// Sant», «Cendra», «Fèria d’Advent». A few Sundays have a name of their own in the texts
+// («Diumenge quart d'Advent»), which only the day worked out knows.
+function seasonDayName(day: DayInput): string | null {
+  switch (day.specificLiturgyTime) {
+    case SpecificLiturgyTimeType.HolyWeek:
+    case SpecificLiturgyTimeType.PaschalTriduum:
+      return `${weekdayName(day.date.getDay())} Sant`;
+    case SpecificLiturgyTimeType.EasterOctave:
+      return 'Octava de Pasqua';
+    case SpecificLiturgyTimeType.ChristmasOctave:
+      return 'Octava de Nadal';
+    case SpecificLiturgyTimeType.LentAshes:
+      return 'Cendra';
+    case SpecificLiturgyTimeType.AdventFairs:
+      return 'Fèria d’Advent';
+    case SpecificLiturgyTimeType.PalmSunday:
+      return 'Diumenge de Rams';
+  }
+  return null;
 }
 
 export function buildDayCard(day: DayInput, celebration: CelebrationInput, settings: PlaceAndOptionsInput): DayCard {

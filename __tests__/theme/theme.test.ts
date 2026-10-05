@@ -108,3 +108,41 @@ test('the scroll bar takes the mode of the app, not the one of the phone', () =>
   expect(createTheme().scrollIndicator).toBe('black');
   expect(createTheme({ dark: true }).scrollIndicator).toBe('white');
 });
+
+// Contrast of two colours as WCAG measures it
+function contrast(one: string, other: string): number {
+  const luminance = (hex: string) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+    const linear = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+  };
+  const [light, dark] = [luminance(one), luminance(other)].sort((a, b) => b - a);
+  return (light + 0.05) / (dark + 0.05);
+}
+
+test('the calendar paints the season, and the number and the letter of any celebration can be read on it', () => {
+  for (const scheme of ['light', 'dark'] as const) {
+    const { text } = palettes[scheme];
+    for (const season of ['R', 'V', 'M', 'B']) {
+      const day = liturgicalColor(season, scheme).calendar.day;
+      expect(contrast(text, day)).toBeGreaterThanOrEqual(4.5);
+      // A red martyr in green October, white Our Lady in purple Advent: the letter is text
+      for (const own of ['R', 'V', 'M', 'B']) {
+        expect(contrast(liturgicalColor(own, scheme).calendar.mark, day)).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  }
+  expect(liturgicalColor('B', 'light').calendar).toMatchObject({ day: '#F7F1E3', mark: '#7A5F14' });
+  expect(liturgicalColor('M', 'dark').calendar).toMatchObject({ mark: '#CDB6ED', square: '#6E5095' });
+});
+
+test('in dark mode a day stands out from the background in its colour, but does not shout', () => {
+  // Dark colours lose their hue: at 1.1 a green or purple day was the background itself; at 1.8 a
+  // month was a block of loud green
+  for (const code of ['R', 'V', 'M', 'B']) {
+    const against = contrast(liturgicalColor(code, 'dark').calendar.day, palettes.dark.sheet);
+    expect(against).toBeGreaterThanOrEqual(1.35);
+    expect(against).toBeLessThanOrEqual(1.7);
+  }
+  expect(liturgicalColor('B', 'dark').calendar).toMatchObject({ day: '#47433B', mark: '#EFE4C8' });
+});
