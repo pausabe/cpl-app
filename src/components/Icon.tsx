@@ -4,7 +4,7 @@ import Svg, { Circle, Path, Rect } from 'react-native-svg';
 // Line icons, drawn in the colour they are given. Decorative: whoever uses them names the
 // button, not the icon.
 export type IconName =
-  'calendar' | 'settings' | 'back' | 'chevronRight' | 'chevronDown' | 'mail' | 'card' | 'check' | 'close';
+  'calendar' | 'settings' | 'back' | 'chevronRight' | 'chevronDown' | 'chevronUp' | 'mail' | 'card' | 'check' | 'close';
 
 interface IconProps {
   name: IconName;
@@ -56,6 +56,12 @@ export default function Icon({ name, size = 24, color, strokeWidth }: IconProps)
       return (
         <Svg {...common} strokeWidth={strokeWidth ?? 2}>
           <Path d="M6 9.5l6 6 6-6" />
+        </Svg>
+      );
+    case 'chevronUp':
+      return (
+        <Svg {...common} strokeWidth={strokeWidth ?? 2}>
+          <Path d="M6 14.5l6-6 6 6" />
         </Svg>
       );
     case 'mail':

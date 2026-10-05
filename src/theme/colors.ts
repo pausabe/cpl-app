@@ -91,6 +91,20 @@ export interface LiturgicalColor {
   // Soft background of the day card, and the colour of its label and links
   tint: string;
   accent: string;
+  calendar: CalendarTones;
+}
+
+// The colour in the calendar, from soft to strong as the rank of the day grows: a day of the
+// month on its own colour, a feast stronger with its number in feastText, a solemnity the
+// strongest with its number in onSolemnity. A square of the year and of the wheel takes the
+// middle tone, and a solemnity the strong one.
+export interface CalendarTones {
+  day: string;
+  feast: string;
+  feastText: string;
+  solemnity: string;
+  onSolemnity: string;
+  square: string;
 }
 
 const LITURGICAL: Record<
@@ -105,6 +119,83 @@ const LITURGICAL: Record<
   B: { name: 'Blanc', dot: '#FFFFFF', light: ['#F7F1E3', '#7A5F14'], dark: ['#26221A', '#E3C877'] },
 };
 
+// In dark mode the soft tones of the card are almost the sheet: the calendar has its own, a step
+// lighter, and the strong ones are the light accents with dark numbers.
+const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTones>> = {
+  R: {
+    light: {
+      day: '#F8E7E5',
+      feast: '#EDB9B3',
+      feastText: '#8E1B15',
+      solemnity: '#B3261E',
+      onSolemnity: '#FFFFFF',
+      square: '#EDB9B3',
+    },
+    dark: {
+      day: '#3A2320',
+      feast: '#6A322C',
+      feastText: '#F8B4AD',
+      solemnity: '#F28B82',
+      onSolemnity: '#0E1413',
+      square: '#7A3B34',
+    },
+  },
+  V: {
+    light: {
+      day: '#DDEEDA',
+      feast: '#B5D7AE',
+      feastText: '#275C29',
+      solemnity: '#2E6B30',
+      onSolemnity: '#FFFFFF',
+      square: '#B5D7AE',
+    },
+    dark: {
+      day: '#1F3424',
+      feast: '#335C38',
+      feastText: '#A9DCAB',
+      solemnity: '#8CC98F',
+      onSolemnity: '#0E1413',
+      square: '#3F6E45',
+    },
+  },
+  M: {
+    light: {
+      day: '#EFE8F4',
+      feast: '#D5C3E8',
+      feastText: '#5A3087',
+      solemnity: '#6A3D9A',
+      onSolemnity: '#FFFFFF',
+      square: '#D5C3E8',
+    },
+    dark: {
+      day: '#2F2540',
+      feast: '#4E3B6C',
+      feastText: '#DCC6F4',
+      solemnity: '#C9A7EB',
+      onSolemnity: '#0E1413',
+      square: '#5F4885',
+    },
+  },
+  B: {
+    light: {
+      day: '#F7F1E3',
+      feast: '#E9D9AA',
+      feastText: '#6B530F',
+      solemnity: '#7A5F14',
+      onSolemnity: '#FFFFFF',
+      square: '#E9D9AA',
+    },
+    dark: {
+      day: '#352E1E',
+      feast: '#5E4D22',
+      feastText: '#EDD99A',
+      solemnity: '#E3C877',
+      onSolemnity: '#0E1413',
+      square: '#7A6630',
+    },
+  },
+};
+
 export function isLiturgicalColorCode(code: unknown): code is LiturgicalColorCode {
   return typeof code === 'string' && Object.prototype.hasOwnProperty.call(LITURGICAL, code);
 }
@@ -114,5 +205,13 @@ export function liturgicalColor(code: unknown, scheme: ColorSchemeName): Liturgi
   const key: LiturgicalColorCode = isLiturgicalColorCode(code) ? code : 'V';
   const entry = LITURGICAL[key];
   const [tint, accent] = entry[scheme];
-  return { code: key, name: entry.name, dot: entry.dot, dotOutlined: key === 'B', tint, accent };
+  return {
+    code: key,
+    name: entry.name,
+    dot: entry.dot,
+    dotOutlined: key === 'B',
+    tint,
+    accent,
+    calendar: CALENDAR[key][scheme],
+  };
 }

@@ -63,7 +63,7 @@ test('the theme options are not broken', () => {
   }
 });
 
-test('the month of the calendar is not broken between the two arrows', () => {
+test('the month of the calendar is not broken in two', () => {
   renderWithTheme(
     <CalendarSheet
       visible={true}
@@ -73,7 +73,7 @@ test('the month of the calendar is not broken between the two arrows', () => {
       onChange={jest.fn()}
     />,
   );
-  expect(label('setembre de 2026').props).toMatchObject({
+  expect(label('Setembre de 2026').props).toMatchObject({
     numberOfLines: 2,
     adjustsFontSizeToFit: true,
     minimumFontScale: 0.7,

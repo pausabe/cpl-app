@@ -108,3 +108,35 @@ test('the scroll bar takes the mode of the app, not the one of the phone', () =>
   expect(createTheme().scrollIndicator).toBe('black');
   expect(createTheme({ dark: true }).scrollIndicator).toBe('white');
 });
+
+// Contrast of two colours as WCAG measures it
+function contrast(one: string, other: string): number {
+  const luminance = (hex: string) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+    const linear = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b);
+  };
+  const [light, dark] = [luminance(one), luminance(other)].sort((a, b) => b - a);
+  return (light + 0.05) / (dark + 0.05);
+}
+
+test('the calendar paints a day stronger as its rank grows, and its number can always be read', () => {
+  for (const scheme of ['light', 'dark'] as const) {
+    const { text } = palettes[scheme];
+    for (const code of ['R', 'V', 'M', 'B']) {
+      const tones = liturgicalColor(code, scheme).calendar;
+      expect(contrast(text, tones.day)).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(tones.feastText, tones.feast)).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(tones.onSolemnity, tones.solemnity)).toBeGreaterThanOrEqual(4.5);
+      // From soft to strong: a feast stands out of the days around it, and a solemnity more
+      expect(contrast(tones.feast, palettes[scheme].sheet)).toBeGreaterThan(
+        contrast(tones.day, palettes[scheme].sheet),
+      );
+      expect(contrast(tones.solemnity, palettes[scheme].sheet)).toBeGreaterThan(
+        contrast(tones.feast, palettes[scheme].sheet),
+      );
+    }
+  }
+  expect(liturgicalColor('B', 'light').calendar).toMatchObject({ day: '#F7F1E3', solemnity: '#7A5F14' });
+  expect(liturgicalColor('M', 'dark').calendar).toMatchObject({ solemnity: '#C9A7EB', onSolemnity: '#0E1413' });
+});

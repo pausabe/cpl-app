@@ -14,6 +14,8 @@ const MONTHS = [
   'novembre',
   'desembre',
 ];
+// The months short, for a row of buttons: the Catalan abbreviations without their full stop
+const SHORT_MONTHS = ['gen', 'febr', 'març', 'abr', 'maig', 'juny', 'jul', 'ag', 'set', 'oct', 'nov', 'des'];
 const APOSTROPHE = '’';
 
 export function weekdayName(day: number): string {
@@ -22,6 +24,10 @@ export function weekdayName(day: number): string {
 
 export function monthName(month: number): string {
   return MONTHS[month] ?? '';
+}
+
+export function shortMonthName(month: number): string {
+  return SHORT_MONTHS[month] ?? '';
 }
 
 // "de Quaresma", "d’Advent": the preposition elides before a vowel

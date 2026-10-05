@@ -147,6 +147,12 @@ export function seasonTitle(genericLiturgyTime: string): string {
   return `Temps ${ofName(genericLiturgyTime)}`;
 }
 
+// The day in its season when nothing is celebrated: "Setmana XXVII de durant l'any", "Octava de
+// Nadal", "Temps de Nadal". What the card says of a day without a celebration of its own.
+export function seasonDayTitle(day: DayInput): string {
+  return dayInSeason(day, null, false).title;
+}
+
 // The title of the day in its season, and whether it already names the season ("Octava de
 // Pasqua", "Fèria d’Advent", but not "Diumenge de Rams")
 function dayInSeason(
