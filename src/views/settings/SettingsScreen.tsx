@@ -242,6 +242,9 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                   </Text>
                 ))}
                 <CopyButton text={() => technicalReport(info)} style={styles.copy} testID="copy-technical-data" />
+                {info.device ? (
+                  <CopyButton text={info.device} label="Copia l'identificador" testID="copy-device-identifier" />
+                ) : null}
                 <Pressable
                   testID="ask-again-for-the-database"
                   accessibilityRole="button"

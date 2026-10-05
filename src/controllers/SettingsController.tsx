@@ -187,7 +187,7 @@ export default function SettingsController() {
   // has it
   const opened = openedDatabaseEdition() ?? DEFAULT_EDITION;
 
-  // What the bottom of the screen shows, and what the «Copia-ho tot» button copies
+  // What the bottom of the screen shows, and what its two buttons copy
   const info = {
     appVersion: `${versionName()} (${ExpoApplication.nativeBuildVersion ?? ''})`,
     databaseVersion: String(database.version ?? ''),
@@ -200,6 +200,7 @@ export default function SettingsController() {
       `Identificador: ${usage?.device ?? 'encara cap'}${usage ? ` (fet el ${usage.madeOn})` : ''}`,
     ],
     logs: SessionLogs,
+    device: usage?.device,
   };
 
   return (

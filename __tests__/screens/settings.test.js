@@ -195,6 +195,26 @@ test('«Copia-ho tot» takes every technical datum to the clipboard, and says it
   await screen.findByRole('button', { name: 'Copiat' });
 });
 
+test("«Copia l'identificador» takes the identifier alone, the one for the list of test phones", async () => {
+  await AsyncStorage.setItem('UsageDevice', '2026-09-01:0123456789abcdef0123456789abcdef');
+  await open();
+  const approval = screen.getByText(/^Text oficial de la Comissió Interdiocesana/);
+  for (let i = 0; i < 10; i++) fireEvent.press(approval);
+
+  fireEvent.press(await screen.findByRole('button', { name: "Copia l'identificador" }));
+  expect(Clipboard.setStringAsync).toHaveBeenLastCalledWith('0123456789abcdef0123456789abcdef');
+  await screen.findByRole('button', { name: 'Copiat' });
+});
+
+test('a phone that has never reported has no identifier to copy', async () => {
+  await open();
+  const approval = screen.getByText(/^Text oficial de la Comissió Interdiocesana/);
+  for (let i = 0; i < 10; i++) fireEvent.press(approval);
+
+  expect(screen.getByText('Identificador: encara cap')).toBeTruthy();
+  expect(screen.queryByRole('button', { name: "Copia l'identificador" })).toBeNull();
+});
+
 test('the hidden button makes the app ask for a new database the next time it opens', async () => {
   await open();
   const approval = screen.getByText(/^Text oficial de la Comissió Interdiocesana/);

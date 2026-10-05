@@ -95,11 +95,11 @@ function getNormalCelebrationHoursLiturgy(
   let hoursLiturgy = new HoursLiturgy();
   switch (liturgyDayInformation.celebrationType) {
     case CelebrationType.Solemnity:
-      hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.saintsSolemnities, settings);
+      hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.saintsSolemnities, settings, false);
       break;
     case CelebrationType.Festivity:
       if (liturgyDayInformation.date.getDay() !== 0) {
-        hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.saintsSolemnities, settings);
+        hoursLiturgy = getSaintsSolemnitiesHoursLiturgy(liturgyMasters.saintsSolemnities, settings, true);
       }
       break;
     case CelebrationType.OptionalMemory:
@@ -265,13 +265,16 @@ function fillLaudes(laudes: Laudes, texts: LaudesTexts) {
 }
 
 // Terce, Sext and None of a celebration: each with its own hymn, antiphon, reading, responsory and
-// prayer, the three with the same psalms. What a saint does not have comes from its common.
+// prayer, the three with the same psalms. What a saint does not have comes from its common, except
+// the antiphon of a feast: a feast says the psalms of the day with their antiphons, unless it has
+// antiphons of its own (OGLH 232). Without one, the hours take the weekday's (hoursService).
 function fillMinorHours(
   hours: Hours,
   parts: { third: HourCommonParts; sixth: HourCommonParts; ninth: HourCommonParts },
   psalms: [Psalm, Psalm, Psalm],
   settings: Settings,
   common?: CommonOffice,
+  antiphonFromCommon = true,
 ) {
   const eachHour = [
     { hour: hours.thirdHour, own: parts.third, ofCommon: (c: CommonOffice) => c.thirdHourParts },
@@ -281,7 +284,9 @@ function fillMinorHours(
   for (const { hour, own, ofCommon } of eachHour) {
     hour.anthem = inLanguage(settings, own.latinAnthem, own.catalanAnthem);
     hour.hasMultipleAntiphons = false;
-    hour.uniqueAntiphon = ownOrCommon(own.antiphon, itself, common, (c) => ofCommon(c).antiphon);
+    hour.uniqueAntiphon = antiphonFromCommon
+      ? ownOrCommon(own.antiphon, itself, common, (c) => ofCommon(c).antiphon)
+      : own.antiphon;
     [hour.firstPsalm, hour.secondPsalm, hour.thirdPsalm] = psalms;
     hour.shortReading = ownOrCommon(own.shortReading, shortReadingText, common, (c) => ofCommon(c).shortReading);
     hour.responsory = ownOrCommon(
@@ -503,7 +508,11 @@ function getSpecialDayHoursLiturgy(specialDaysParts: SpecialDaysParts, settings:
 }
 
 // A solemnity or feast of a saint: what it has of its own, and the rest from its common
-function getSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, settings: Settings): HoursLiturgy {
+function getSaintsSolemnitiesHoursLiturgy(
+  saintsSolemnities: SaintsSolemnities,
+  settings: Settings,
+  isFeast: boolean,
+): HoursLiturgy {
   const saint = saintsSolemnities;
   const common = saint.commonOffices;
   const orCommon = <T>(own: T, textOf: (part: T) => string, fromCommon: (common: CommonOffice) => T) =>
@@ -564,6 +573,7 @@ function getSaintsSolemnitiesHoursLiturgy(saintsSolemnities: SaintsSolemnities, 
     [saint.hoursFirstPsalm, saint.hoursSecondPsalm, saint.hoursThirdPsalm],
     settings,
     common,
+    !isFeast,
   );
 
   fillVespers(hoursLiturgy.vespersOptions.todaySecondVespersWithCelebration, {

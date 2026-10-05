@@ -14,8 +14,8 @@ import {
   openedDatabaseEdition,
   openedDatabaseVersion,
 } from './databaseManagerService';
-import { APP_KEY, appVersion, callApi } from './cplApi';
-import { countOpen, reportUsage } from './usageService';
+import { APP_KEY, DEVICE_HEADER, appVersion, callApi } from './cplApi';
+import { countOpen, currentIdentifier, reportUsage } from './usageService';
 import { checkForNewApp } from './appUpdateService';
 
 // The texts come from the publishing website, not from the app stores: when the CPL corrects a
@@ -161,12 +161,19 @@ async function isTimeToCheck(soon = false): Promise<boolean> {
 
 // null when there is nothing for this app: the server answers 204. The Catalan edition is asked for
 // as it always was, without saying it.
+//
+// The phone says who it is with the identifier it is counted with, the one Configuració shows: a phone
+// on the website's list of test phones also gets the publications that are not for everyone yet. It
+// goes in a header and not in the address, so that it is left in no log, and the website only looks it
+// up in that list. A phone that has never reported has no identifier, and asks like everyone else.
 async function askForNewDatabase(edition: string): Promise<DatabaseManifest | null> {
   const bundled = bundledDatabaseInformation();
   const version = appVersion();
+  const phone = await currentIdentifier();
   const response = await callApi(
     `/v1/db/latest?compat=${bundled.compat}${version ? `&app=${version}` : ''}` +
       (edition === DEFAULT_EDITION ? '' : `&edition=${edition}`),
+    phone ? { headers: { [DEVICE_HEADER]: phone.device } } : {},
   );
   if (response.status === 204) {
     return null;

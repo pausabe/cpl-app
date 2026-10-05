@@ -4,7 +4,8 @@
 //
 // What comes down is the newest publication for the structure this code knows (the compatibility
 // key in cpl-app.db.json), and never one older than the version written there: a build must not
-// ship texts the phones have already replaced. The two files are rewritten together, so the app
+// ship texts the phones have already replaced. It never says which phone it is, so a publication
+// still on trial on the test phones never goes into a build. The two files are rewritten together, so the app
 // always knows which version it carries.
 //
 // It says which version of the app is being built, as the app does: a publication that needs a

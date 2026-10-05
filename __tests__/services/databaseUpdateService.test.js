@@ -117,6 +117,27 @@ test('asks the website with the app key, the structure it can read and its versi
   );
 });
 
+test('a phone that has its identifier says it, so that a test phone gets the publications on trial', async () => {
+  let service;
+  let storage;
+  jest.isolateModules(() => {
+    process.env.EXPO_PUBLIC_CPL_APP_KEY = 'the-app-key';
+    service = require('../../src/services/databaseUpdateService');
+    storage = require('@react-native-async-storage/async-storage');
+  });
+  await storage.setItem('UsageDevice', '2026-09-01:0123456789abcdef0123456789abcdef');
+
+  await service.checkForNewDatabase();
+
+  // In a header, not in the address: the address is left in the logs
+  const [url, request] = global.fetch.mock.calls[0];
+  expect(url).not.toContain('0123456789abcdef');
+  expect(request.headers).toEqual({
+    'X-CPL-App-Key': 'the-app-key',
+    'X-CPL-Device': '0123456789abcdef0123456789abcdef',
+  });
+});
+
 test('without the app key it does not even ask', async () => {
   const service = loadService({ appKey: '' });
 
