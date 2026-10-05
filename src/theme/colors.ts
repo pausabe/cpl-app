@@ -123,7 +123,7 @@ const LITURGICAL: Record<
 const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTones>> = {
   R: {
     light: { day: '#F8E7E5', mark: '#B3261E', square: '#EDB9B3' },
-    dark: { day: '#61332E', mark: '#F09C94', square: '#944B42' },
+    dark: { day: '#61332E', mark: '#F6B3AC', square: '#944B42' },
   },
   V: {
     light: { day: '#DDEEDA', mark: '#2E6B30', square: '#B5D7AE' },

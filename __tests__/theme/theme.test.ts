@@ -120,14 +120,16 @@ function contrast(one: string, other: string): number {
   return (light + 0.05) / (dark + 0.05);
 }
 
-test('the calendar paints the season, and a day and its mark can always be read on it', () => {
+test('the calendar paints the season, and the number and the letter of any celebration can be read on it', () => {
   for (const scheme of ['light', 'dark'] as const) {
     const { text } = palettes[scheme];
-    for (const code of ['R', 'V', 'M', 'B']) {
-      const tones = liturgicalColor(code, scheme).calendar;
-      // The number on the day, as text; the dot or the star on the day, as a drawing
-      expect(contrast(text, tones.day)).toBeGreaterThanOrEqual(4.5);
-      expect(contrast(tones.mark, tones.day)).toBeGreaterThanOrEqual(3);
+    for (const season of ['R', 'V', 'M', 'B']) {
+      const day = liturgicalColor(season, scheme).calendar.day;
+      expect(contrast(text, day)).toBeGreaterThanOrEqual(4.5);
+      // A red martyr in green October, white Our Lady in purple Advent: the letter is text
+      for (const own of ['R', 'V', 'M', 'B']) {
+        expect(contrast(liturgicalColor(own, scheme).calendar.mark, day)).toBeGreaterThanOrEqual(4.5);
+      }
     }
   }
   expect(liturgicalColor('B', 'light').calendar).toMatchObject({ day: '#F7F1E3', mark: '#7A5F14' });

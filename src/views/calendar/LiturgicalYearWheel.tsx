@@ -4,7 +4,6 @@ import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 import { useTheme } from '../../theme';
 import Icon from '../../components/Icon';
 import { dayAtPoint, LiturgicalWheel, MilestoneRow, WHEEL } from '../../view-models/liturgicalYear';
-import RankMark from './RankMark';
 
 // The liturgical year as a wheel, from the first Sunday of Advent at the top, clockwise: its
 // seasons in their colours and named around it, and today marked. A touch on the ring opens that month. Under it, the dates worth going to.
@@ -146,14 +145,8 @@ export function MilestoneList({ title, rows, onPick }: MilestoneListProps) {
             { backgroundColor: colors.chipBackground, borderRadius: theme.radius.tile, opacity: pressed ? 0.7 : 1 },
           ]}
         >
-          {/* A solemnity has its candles, in the colour of its season; the start of a season, its colour */}
-          <View style={styles.badge}>
-            {row.kind === 'solemnity' ? (
-              <RankMark rank="solemnity" color={theme.liturgical(row.color).calendar.mark} size={16} />
-            ) : (
-              <View style={[styles.swatch, { backgroundColor: theme.liturgical(row.color).calendar.square }]} />
-            )}
-          </View>
+          {/* The colour of its season */}
+          <View style={[styles.swatch, { backgroundColor: theme.liturgical(row.color).calendar.square }]} />
           <View style={styles.texts}>
             <Text maxFontSizeMultiplier={scale} numberOfLines={2} style={[styles.rowTitle, { color: colors.text }]}>
               {row.title}
@@ -205,10 +198,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingLeft: 14,
     paddingRight: 10,
-  },
-  badge: {
-    width: 16,
-    alignItems: 'center',
   },
   swatch: {
     width: 12,

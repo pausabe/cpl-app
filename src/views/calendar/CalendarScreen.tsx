@@ -232,7 +232,23 @@ export default function CalendarScreen({
   const body =
     month && ribbon ? (
       <>
-        <View style={styles.header}>{title(month.title, 24)}</View>
+        <View style={styles.header}>
+          {title(month.title, 24)}
+          {/* The seasons of the month, named, each in its colour */}
+          <View testID="calendar-seasons" style={styles.seasons}>
+            {month.seasons.map((season) => (
+              <View
+                key={season.title}
+                style={[styles.season, { backgroundColor: theme.liturgical(season.color).calendar.day }]}
+              >
+                <View style={[styles.seasonDot, { backgroundColor: theme.liturgical(season.color).calendar.mark }]} />
+                <Text maxFontSizeMultiplier={scale} style={[styles.seasonText, { color: colors.text }]}>
+                  {season.title}
+                </Text>
+              </View>
+            ))}
+          </View>
+        </View>
         <MonthRibbon
           months={ribbon}
           onPick={(year, monthIndex) => setShown({ year, month: monthIndex })}
@@ -243,8 +259,7 @@ export default function CalendarScreen({
           onPick={setSelected}
           onSwipe={(delta) => setShown(shiftMonth(shown.year, shown.month, delta))}
         />
-        {/* Green until the year is loaded, the colour of most of the year: the key is always there */}
-        <MonthKey color={month.color ?? 'V'} />
+        <MonthKey />
         <DayPreviewCard date={selected} card={previews[isoDate(selected)]} />
       </>
     ) : overview ? (
@@ -334,6 +349,32 @@ const styles = StyleSheet.create({
   header: {
     minHeight: 40,
     justifyContent: 'center',
+    gap: 6,
+  },
+  seasons: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    // As tall as one, before the year is loaded, so that the month does not move
+    minHeight: 26,
+  },
+  season: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingVertical: 4,
+    paddingLeft: 8,
+    paddingRight: 10,
+    borderRadius: 999,
+  },
+  seasonDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  seasonText: {
+    fontSize: 13,
+    fontWeight: '600',
   },
   stepper: {
     minHeight: 44,

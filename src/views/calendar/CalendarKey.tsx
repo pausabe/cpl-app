@@ -2,12 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LiturgicalColorCode, useTheme } from '../../theme';
 import { DayRank } from '../../view-models/calendar';
-import RankMark from './RankMark';
+import RankLetter from './RankLetter';
 
-// What the calendar says, under the month, the year and the wheel. The colour says only the
-// liturgical season; under the month, the candles say the rank of a day, from the weekday (none)
-// to the solemnity, alone and in the colour most days of the month have, as they are on the days.
-// A screen reader does not need it: every day says its rank, and the home its colour.
+// What the calendar says, under the month, the year and the wheel. Under the month, three things,
+// each one apart: the background is the season; the letter is the celebration (M, F, S); and the
+// colour of the letter is the colour of the celebration. A weekday has no letter, and today is
+// plain to see: neither needs a word. A screen reader does not need any of it: every day says its
+// rank, and the home its colour.
 const SWATCH = 16;
 
 // The seasons by their colour, two to a line
@@ -24,34 +25,51 @@ const RANKS: { rank: DayRank; label: string }[] = [
   { rank: 'solemnity', label: 'Solemnitat' },
 ];
 
-export function MonthKey({ color }: { color: LiturgicalColorCode }) {
+// The liturgical colours a celebration can have, by their name
+const COLORS: { code: LiturgicalColorCode; label: string }[] = [
+  { code: 'B', label: 'Blanc' },
+  { code: 'V', label: 'Verd' },
+  { code: 'M', label: 'Morat' },
+  { code: 'R', label: 'Vermell' },
+];
+
+export function MonthKey() {
   const theme = useTheme();
   const { colors } = theme;
-  const tones = theme.liturgical(color).calendar;
-  // The colour of a season: the soft tone of its days, with a thin edge (white is almost the
-  // background)
-  const day = (tone: string) => <View style={[styles.day, { backgroundColor: tone, borderColor: colors.border }]} />;
+  const heading = (text: string) => (
+    <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.heading, { color: colors.text3 }]}>
+      {text}
+    </Text>
+  );
   return (
-    <View testID="calendar-key" style={styles.lines}>
+    <View testID="calendar-key" style={styles.lines} {...hidden}>
+      {heading('El fons: el temps')}
       <Columns>
         {SEASONS.map(({ code, label }) => (
           <Item key={code} label={label} column={true}>
-            {day(theme.liturgical(code).calendar.day)}
+            <View
+              style={[styles.day, { backgroundColor: theme.liturgical(code).calendar.day, borderColor: colors.border }]}
+            />
           </Item>
         ))}
       </Columns>
+      {heading('La lletra: la celebració')}
       <Row>
-        <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.label, { color: colors.text2 }]}>
-          Fèria, sense marca
-        </Text>
         {RANKS.map(({ rank, label }) => (
           <Item key={label} label={label}>
-            <RankMark rank={rank} color={tones.mark} size={18} />
+            <RankLetter rank={rank} color={colors.text2} size={17} />
           </Item>
         ))}
-        <Item label="Avui">
-          <View style={[styles.today, { borderColor: colors.accentText }]} />
-        </Item>
+      </Row>
+      <Row>
+        <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.label, { color: colors.text2 }]}>
+          Color de la celebració:
+        </Text>
+        {COLORS.map(({ code, label }) => (
+          <Item key={code} label={label}>
+            <View style={[styles.dot, { backgroundColor: theme.liturgical(code).calendar.mark }]} />
+          </Item>
+        ))}
       </Row>
     </View>
   );
@@ -145,12 +163,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: StyleSheet.hairlineWidth,
   },
-  // Today's outline, alone, as on the day
-  today: {
-    width: SWATCH,
-    height: SWATCH,
+  heading: {
+    fontSize: 11.5,
+    fontWeight: '700',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  dot: {
+    width: 10,
+    height: 10,
     borderRadius: 5,
-    borderWidth: 2,
   },
   square: {
     width: 12,

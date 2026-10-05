@@ -8,10 +8,10 @@ import {
   monthAfterSwipe,
   WEEKDAY_INITIALS,
 } from '../../view-models/calendar';
-import RankMark from './RankMark';
+import RankLetter from './RankLetter';
 
-// The days of a month, each on the colour of its liturgical season, and under the number the mark
-// of its rank: candles, one for a memorial, two for a feast, three for a solemnity. Today has
+// The days of a month, each on the colour of its liturgical season, and under the number the letter
+// of its celebration (M, F, S) in the colour of the celebration. Today has
 // an outline and the day chosen a ring around it. Dragging the month sideways goes to the next or the one before; the
 // row of months does it too, for whoever does not drag.
 interface MonthGridProps {
@@ -126,9 +126,13 @@ export default function MonthGrid({ month, onPick, onSwipe }: MonthGridProps) {
             >
               {day.day}
             </Text>
-            {rank && tones ? (
+            {rank && day.look ? (
               <View style={styles.mark}>
-                <RankMark rank={rank} color={tones.mark} testID={`calendar-day-${day.day}-${rank}`} />
+                <RankLetter
+                  rank={rank}
+                  color={theme.liturgical(day.look.own).calendar.mark}
+                  testID={`calendar-day-${day.day}-${rank}`}
+                />
               </View>
             ) : null}
           </View>
@@ -199,13 +203,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontVariant: ['tabular-nums'],
   },
-  // A number with candles goes up a little, to leave them room
+  // A number with a letter goes up a little, to leave it room
   marked: {
-    marginBottom: 9,
+    marginBottom: 11,
   },
   mark: {
     position: 'absolute',
-    bottom: 3,
+    bottom: 2,
     alignItems: 'center',
   },
 });

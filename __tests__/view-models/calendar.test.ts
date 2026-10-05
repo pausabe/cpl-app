@@ -8,10 +8,10 @@ import {
   isoDate,
   isSelectable,
   isSidewaysDrag,
-  mainColor,
   monthAfterSwipe,
   monthRibbon,
   monthTitle,
+  RANK_LETTERS,
   rankLabel,
   sameDay,
   seasonColor,
@@ -98,26 +98,29 @@ test('a day is found in the marks by its local date', () => {
   expect(dateOfIso('2026-12-08')).toEqual(new Date(2026, 11, 8));
 });
 
-describe('every day on the colour of its season, with a mark for its rank', () => {
+describe('every day on the colour of its season, with the letter of its celebration', () => {
   test('the colour is the season, whatever the colour of the day itself', () => {
     // The Immaculate Conception is white, in Advent: purple
     expect(dayLook(mark('2026-12-08', { color: 'B', letter: 'S', season: 'Advent' }))).toEqual({
       color: 'M',
       rank: 'solemnity',
+      own: 'B',
     });
     // Our Lady of the Pillar is white, and St Ignatius of Antioch red, in ordinary time: green
-    expect(dayLook(mark('2026-10-12', { color: 'B', letter: 'F' }))).toEqual({ color: 'V', rank: 'feast' });
-    expect(dayLook(mark('2026-10-17', { color: 'R', letter: 'M' }))).toEqual({ color: 'V', rank: 'memory' });
+    // …and the colour of the celebration is kept for its letter
+    expect(dayLook(mark('2026-10-12', { color: 'B', letter: 'F' }))).toEqual({ color: 'V', rank: 'feast', own: 'B' });
+    expect(dayLook(mark('2026-10-17', { color: 'R', letter: 'M' }))).toEqual({ color: 'V', rank: 'memory', own: 'R' });
     expect(seasonColor(mark('2026-12-26', { color: 'R', season: 'Nadal' }))).toBe('B');
     expect(seasonColor(mark('2026-03-01', { season: 'Quaresma' }))).toBe('M');
     expect(seasonColor(mark('2026-04-12', { season: 'Pasqua' }))).toBe('B');
     expect(seasonColor(mark('2026-04-03', { color: 'R', season: 'Tridu Pasqual' }))).toBe('R');
   });
 
-  test('a solemnity, a feast and a memorial have a mark; an optional memorial and a weekday have not', () => {
-    expect(dayLook(mark('2026-10-06', { letter: 'L' }))).toEqual({ color: 'V', rank: null });
-    expect(dayLook(mark('2026-10-31', { letter: 'V' }))).toEqual({ color: 'V', rank: null });
-    expect(dayLook(mark('2026-10-13'))).toEqual({ color: 'V', rank: null });
+  test('a solemnity, a feast and a memorial have a letter; an optional memorial and a weekday have not', () => {
+    expect(dayLook(mark('2026-10-06', { letter: 'L' }))).toMatchObject({ color: 'V', rank: null });
+    expect(dayLook(mark('2026-10-31', { letter: 'V' }))).toMatchObject({ color: 'V', rank: null });
+    expect(dayLook(mark('2026-10-13'))).toMatchObject({ color: 'V', rank: null });
+    expect(RANK_LETTERS).toEqual({ memory: 'M', feast: 'F', solemnity: 'S' });
   });
 
   test('a season the calendar does not know takes the colour of the day, and green if it has none', () => {
@@ -141,7 +144,7 @@ describe('every day on the colour of its season, with a mark for its rank', () =
     const october = calendarMonth({ year: 2026, month: 9, today: new Date(2026, 9, 5), marks });
     const day = (n: number) => october.weeks.flat().find((d) => d?.day === n)!;
     expect(day(12).label).toBe('dilluns, 12 d’octubre, festa');
-    expect(day(12).look).toEqual({ color: 'V', rank: 'feast' });
+    expect(day(12).look).toEqual({ color: 'V', rank: 'feast', own: 'B' });
     expect(day(6).label).toBe('dimarts, 6 d’octubre, memòria lliure');
     expect(day(5).label).toBe('dilluns, 5 d’octubre, memòria obligatòria, avui');
     // A day not loaded yet: no colour, and its date alone
@@ -149,22 +152,17 @@ describe('every day on the colour of its season, with a mark for its rank', () =
     expect(day(13).label).toBe('dimarts, 13 d’octubre');
   });
 
-  test('the key under the month takes the colour most of its days have', () => {
-    expect(
-      mainColor([
-        { color: 'M', rank: null },
-        { color: 'M', rank: null },
-        { color: 'B', rank: 'solemnity' },
-      ]),
-    ).toBe('M');
-    expect(mainColor([])).toBeNull();
-    expect(calendarMonth({ year: 2026, month: 9, today }).color).toBeNull();
+  test('a month names its seasons under its title, each once and in order', () => {
     const marks = byDate(
-      mark('2026-12-23', { season: 'Advent' }),
-      mark('2026-12-24', { season: 'Advent' }),
-      mark('2026-12-25', { season: 'Nadal' }),
+      mark('2026-11-28', { season: 'Ordinari' }),
+      mark('2026-11-29', { season: 'Advent', color: 'M' }),
+      mark('2026-11-30', { season: 'Advent', color: 'R', letter: 'F' }),
     );
-    expect(calendarMonth({ year: 2026, month: 11, today, marks }).color).toBe('M');
+    expect(calendarMonth({ year: 2026, month: 10, today, marks }).seasons).toEqual([
+      { color: 'V', title: "Durant l'any" },
+      { color: 'M', title: 'Temps d’Advent' },
+    ]);
+    expect(calendarMonth({ year: 2026, month: 9, today }).seasons).toEqual([]);
   });
 });
 

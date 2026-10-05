@@ -1,9 +1,9 @@
 import { dayAndMonth, lowerFirst, monthName, shortMonthName, weekdayName } from './catalanText';
-import { celebrationTypeLabel, colorCode, ColorCode } from './dayCard';
+import { celebrationTypeLabel, colorCode, ColorCode, seasonTitle } from './dayCard';
 
 // The month grid of the calendar: weeks from Monday to Sunday, the day chosen, today, the days
-// outside the database left out, every day on the colour of its liturgical season, and a mark for
-// its rank.
+// outside the database left out, every day on the colour of its liturgical season, and the letter
+// of its celebration in the colour of the celebration.
 
 // Monday first, as in a Catalan calendar
 export const WEEKDAY_INITIALS = ['dl', 'dt', 'dc', 'dj', 'dv', 'ds', 'dg'];
@@ -24,17 +24,23 @@ export interface DayMarkInput {
 // The marks of the years loaded so far, by date
 export type DayMarks = Record<string, DayMarkInput>;
 
-// The colour says the season and nothing else; the rank of a day is a mark: candles, one for a
-// memorial, two for a feast, three for a solemnity. The colour of the day itself (red for a
-// martyr in ordinary time, white for Our Lady) is on its card, not in the grid: in a green October
-// a white day said «Christmas and Easter» to whoever read the key. An optional memorial has no
-// mark: in ordinary time it is every other day, and the day is the weekday's unless the reader
-// turns it on.
+// The background says the season and nothing else. A celebration is its letter, as a printed
+// calendar writes it (M a memorial, F a feast, S a solemnity), in the liturgical colour of the
+// celebration: red for a martyr in a green October, white for Our Lady in Advent. A weekday has
+// no letter, and its colour is the season's. An optional memorial has none either: in ordinary
+// time it is every other day, and the day is the weekday's unless the reader turns it on. (Before,
+// each day was painted in its own colour, and in a green October a white day said «Christmas and
+// Easter» to whoever read the key.)
 export type DayRank = 'solemnity' | 'feast' | 'memory';
 
+export const RANK_LETTERS: Record<DayRank, string> = { memory: 'M', feast: 'F', solemnity: 'S' };
+
 export interface DayLook {
+  // The season
   color: ColorCode;
   rank: DayRank | null;
+  // The colour of the celebration, for its letter
+  own: ColorCode;
 }
 
 // The colour of each season: green the ordinary time, purple Advent and Lent, white Christmas and
@@ -75,8 +81,8 @@ export interface CalendarMonth {
   weeks: (CalendarDay | null)[][];
   canGoBack: boolean;
   canGoForward: boolean;
-  // The colour most of its days have, for the key under the month; null until the year is loaded
-  color: ColorCode | null;
+  // The seasons it has, in order, named under its title: «Temps d’Advent», «Temps de Nadal»
+  seasons: { color: ColorCode; title: string }[];
 }
 
 export interface CalendarInput {
@@ -130,22 +136,13 @@ export function isSelectable(date: Date, minimum?: Date | null, maximum?: Date |
 export function dayLook(mark: DayMarkInput): DayLook {
   const rank: DayRank | null =
     mark.letter === 'S' ? 'solemnity' : mark.letter === 'F' ? 'feast' : mark.letter === 'M' ? 'memory' : null;
-  return { color: seasonColor(mark), rank };
+  return { color: seasonColor(mark), rank, own: colorCode(mark.color) };
 }
 
 // "Solemnitat", "Memòria lliure", "Commemoració": the rank of the day as the day card names it,
 // optional memorials included, or null on a weekday
 export function rankLabel(mark: DayMarkInput): string | null {
   return celebrationTypeLabel(mark.letter, mark.season);
-}
-
-// The colour most days of a list have
-export function mainColor(looks: DayLook[]): ColorCode | null {
-  const counts = new Map<ColorCode, number>();
-  for (const look of looks) counts.set(look.color, (counts.get(look.color) ?? 0) + 1);
-  let best: ColorCode | null = null;
-  for (const [color, count] of counts) if (best === null || count > (counts.get(best) as number)) best = color;
-  return best;
 }
 
 export function calendarMonth({ year, month, selected, today, minimum, maximum, marks }: CalendarInput): CalendarMonth {
@@ -174,7 +171,13 @@ export function calendarMonth({ year, month, selected, today, minimum, maximum, 
   const weeks: (CalendarDay | null)[][] = [];
   for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
 
-  const looks = cells.flatMap((cell) => (cell?.look ? [cell.look] : []));
+  const seasons: { color: ColorCode; title: string }[] = [];
+  for (const cell of cells) {
+    const mark = cell ? marks?.[isoDate(cell.date)] : undefined;
+    if (!mark) continue;
+    const title = seasonTitle(mark.season);
+    if (title && !seasons.some((season) => season.title === title)) seasons.push({ color: seasonColor(mark), title });
+  }
   return {
     year,
     month,
@@ -182,7 +185,7 @@ export function calendarMonth({ year, month, selected, today, minimum, maximum, 
     weeks,
     canGoBack: !minimum || monthKey(year, month) > monthKey(minimum.getFullYear(), minimum.getMonth()),
     canGoForward: !maximum || monthKey(year, month) < monthKey(maximum.getFullYear(), maximum.getMonth()),
-    color: mainColor(looks),
+    seasons,
   };
 }
 

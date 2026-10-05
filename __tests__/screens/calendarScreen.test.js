@@ -4,7 +4,6 @@
 import React from 'react';
 import { screen, fireEvent, within } from '@testing-library/react-native';
 import { renderWithTheme, styleOf, withTheme } from '../helpers/renderWithTheme';
-import { Rect } from 'react-native-svg';
 import CalendarScreen from '../../src/views/calendar/CalendarScreen';
 
 const NOW = new Date(2026, 8, 22, 10, 0);
@@ -98,29 +97,33 @@ describe('the month', () => {
     expect(day('dimarts, 22 de setembre, avui')).toBeTruthy();
   });
 
-  test('every day on the colour of its season, and candles for its rank: one, two, three', () => {
+  test('every day on the colour of its season, and the letter of its celebration in its colour', () => {
     open();
     // All of September is ordinary time: green, whatever the colour of the day itself
     for (const n of [8, 14, 15, 23, 24, 26]) expect(fill(n).backgroundColor).toBe('#DDEEDA');
-    const candles = (n, rank) =>
-      within(screen.getByTestId(`calendar-day-${n}-${rank}`, { includeHiddenElements: true })).UNSAFE_getAllByType(
-        Rect,
-      );
-    expect(candles(15, 'memory')).toHaveLength(1);
-    expect(candles(8, 'feast')).toHaveLength(2);
-    expect(candles(14, 'feast')).toHaveLength(2);
-    expect(candles(24, 'solemnity')).toHaveLength(3);
-    expect(candles(24, 'solemnity')[0].props.fill).toBe('#2E6B30');
+    const letter = (n, rank) => screen.getByTestId(`calendar-day-${n}-${rank}`, { includeHiddenElements: true });
+    // Our Lady of Sorrows, white (gold on a light screen); the Holy Cross, red; Our Lady of Mercy, white
+    expect(letter(15, 'memory').props.children).toBe('M');
+    expect(styleOf(letter(15, 'memory')).color).toBe('#7A5F14');
+    expect(letter(14, 'feast').props.children).toBe('F');
+    expect(styleOf(letter(14, 'feast')).color).toBe('#B3261E');
+    expect(letter(24, 'solemnity').props.children).toBe('S');
     // An optional memorial and a weekday, with none
     expect(screen.queryByTestId('calendar-day-26-memory', { includeHiddenElements: true })).toBeNull();
     expect(screen.queryByTestId('calendar-day-23-feast', { includeHiddenElements: true })).toBeNull();
     expect(day('dissabte, 26 de setembre, memòria lliure')).toBeTruthy();
+    // The season, named under the title
+    expect(within(screen.getByTestId('calendar-seasons')).getByText("Durant l'any")).toBeTruthy();
   });
 
   test('a month across two seasons changes colour where the season changes', () => {
+    // Advent until the 24th, Christmas from the 25th
+    const december = {};
+    for (let d = 1; d <= 31; d++)
+      december[iso(2026, 12, d)] = { color: d < 25 ? 'M' : 'B', season: d < 25 ? 'Advent' : 'Nadal' };
     const marks = yearOfMarks(2026, {
+      ...december,
       '2026-12-08': { color: 'B', letter: 'S', season: 'Advent' },
-      '2026-12-24': { color: 'M', season: 'Advent' },
       '2026-12-25': { color: 'B', letter: 'S', season: 'Nadal' },
       '2026-12-26': { color: 'R', letter: 'F', season: 'Nadal' },
     });
@@ -130,6 +133,11 @@ describe('the month', () => {
     expect(fill(24).backgroundColor).toBe('#EFE8F4');
     expect(fill(25).backgroundColor).toBe('#F7F1E3');
     expect(fill(26).backgroundColor).toBe('#F7F1E3');
+    const stephen = screen.getByTestId('calendar-day-26-feast', { includeHiddenElements: true });
+    expect(styleOf(stephen).color).toBe('#B3261E');
+    // Both seasons, named in order
+    const seasons = within(screen.getByTestId('calendar-seasons'));
+    expect(seasons.getAllByText(/./).map((t) => t.props.children)).toEqual(['Temps d’Advent', 'Temps de Nadal']);
   });
 
   test('before its year is loaded the days are there, without colour, and it asks for the year', () => {
@@ -139,23 +147,33 @@ describe('the month', () => {
     expect(day('dijous, 24 de setembre')).toBeTruthy();
   });
 
-  test('under it, what it says: the colour of each season, and the mark of each rank', () => {
+  test('under it, what it says: the background the season, the letter the celebration, its colour the colour', () => {
     open({ marks: {} });
     const key = screen.getByTestId('calendar-key', { includeHiddenElements: true });
     const words = [
+      'El fons: el temps',
       "Durant l'any",
       'Advent i Quaresma',
       'Nadal i Pasqua',
       'Tridu pasqual',
-      'Fèria, sense marca',
+      'La lletra: la celebració',
+      'M',
       'Memòria',
+      'F',
       'Festa',
+      'S',
       'Solemnitat',
-      'Avui',
+      'Color de la celebració:',
+      'Blanc',
+      'Verd',
+      'Morat',
+      'Vermell',
     ];
     for (const word of words) expect(within(key).getByText(word, { includeHiddenElements: true })).toBeTruthy();
+    // No word for a weekday nor for today, which are plain to see
+    expect(within(key).queryByText(/Fèria|Avui/, { includeHiddenElements: true })).toBeNull();
     // Before the year is loaded too, so that the screen does not jump; a screen reader skips it
-    expect(screen.queryByText('Fèria, sense marca')).toBeNull();
+    expect(screen.queryByText('La lletra: la celebració')).toBeNull();
   });
 
   test('in dark mode, the dark colours', () => {
