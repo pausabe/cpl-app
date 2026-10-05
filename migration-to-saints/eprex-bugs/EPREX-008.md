@@ -21,9 +21,15 @@ Advent III va amb la setmana III del salteri. A `advent_3_wednesday`, `advent_3_
 a Tèrcia el divendres. El breviari castellà del 15-XII-2022 dona el salm 86, Is 40 i el salm 98
 ([Laudes](https://apps.idteologia.org/index.php?fecha=2022-12-15&r=liturgiaDeLasHoras%2Fespanola&rezo=laudes));
 eprex, el 56, Jr 31 i el 47. Els nou camps de la salmòdia han de ser els de `ordinary_time_3_<dia>`.
-Passa quan aquests dies cauen abans del 17 de desembre: 2021, 2022 i, el pròxim, 2027.
+Passa quan aquests dies cauen abans del 17 de desembre: 2021, 2022, **2026** (només el dimecres 16) i 2027
+(el 15 i el 16). El 16-12-2026 no sortia a la llista perquè al calendari català és sant Josep Manyanet; en
+castellà i a la resta és `advent_3_wednesday` i surt amb la setmana I (comprovat a `origin/dev` el 5-10-2026).
 
 ## Missatge per a en Fernando (Telegram, text pla)
+
+> **5-10-2026:** aquest missatge no consta enviat i ja no és el que s'enviarà. Al tauler de Trello s'ha partit
+> en un tema per targeta (Trinitat, sant Lluc, Advent III; l'himne de la Visitació va amb l'EPREX-002), cadascun
+> amb el dia i l'hora, què surt, el possible problema i la pregunta.
 
 Refet dues vegades el 30-9 a petició d'en Pau: amb dates exactes, i cada punt diu quin és el problema, què
 creiem que hi hauria d'anar i acaba amb una pregunta.
