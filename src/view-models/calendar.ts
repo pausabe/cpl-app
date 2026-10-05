@@ -24,8 +24,8 @@ export interface DayMarkInput {
 // The marks of the years loaded so far, by date
 export type DayMarks = Record<string, DayMarkInput>;
 
-// The colour says the season and nothing else; the rank of a day is a mark: a dot for a memorial,
-// a star for a feast and a filled one for a solemnity. The colour of the day itself (red for a
+// The colour says the season and nothing else; the rank of a day is a mark: candles, one for a
+// memorial, two for a feast, three for a solemnity. The colour of the day itself (red for a
 // martyr in ordinary time, white for Our Lady) is on its card, not in the grid: in a green October
 // a white day said «Christmas and Easter» to whoever read the key. An optional memorial has no
 // mark: in ordinary time it is every other day, and the day is the weekday's unless the reader

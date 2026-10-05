@@ -4,6 +4,7 @@
 import React from 'react';
 import { screen, fireEvent, within } from '@testing-library/react-native';
 import { renderWithTheme, styleOf, withTheme } from '../helpers/renderWithTheme';
+import { Rect } from 'react-native-svg';
 import CalendarScreen from '../../src/views/calendar/CalendarScreen';
 
 const NOW = new Date(2026, 8, 22, 10, 0);
@@ -97,17 +98,20 @@ describe('the month', () => {
     expect(day('dimarts, 22 de setembre, avui')).toBeTruthy();
   });
 
-  test('every day on the colour of its season, and a mark for its rank: a dot, a star, a filled star', () => {
+  test('every day on the colour of its season, and candles for its rank: one, two, three', () => {
     open();
     // All of September is ordinary time: green, whatever the colour of the day itself
     for (const n of [8, 14, 15, 23, 24, 26]) expect(fill(n).backgroundColor).toBe('#DDEEDA');
-    expect(screen.getByTestId('calendar-day-24-solemnity', { includeHiddenElements: true })).toBeTruthy();
-    expect(screen.getByTestId('calendar-day-8-feast', { includeHiddenElements: true })).toBeTruthy();
-    expect(screen.getByTestId('calendar-day-14-feast', { includeHiddenElements: true })).toBeTruthy();
-    expect(screen.getByTestId('calendar-day-15-memory', { includeHiddenElements: true }).props.style).toMatchObject({
-      backgroundColor: '#2E6B30',
-    });
-    // An optional memorial and a weekday, with nothing
+    const candles = (n, rank) =>
+      within(screen.getByTestId(`calendar-day-${n}-${rank}`, { includeHiddenElements: true })).UNSAFE_getAllByType(
+        Rect,
+      );
+    expect(candles(15, 'memory')).toHaveLength(1);
+    expect(candles(8, 'feast')).toHaveLength(2);
+    expect(candles(14, 'feast')).toHaveLength(2);
+    expect(candles(24, 'solemnity')).toHaveLength(3);
+    expect(candles(24, 'solemnity')[0].props.fill).toBe('#2E6B30');
+    // An optional memorial and a weekday, with none
     expect(screen.queryByTestId('calendar-day-26-memory', { includeHiddenElements: true })).toBeNull();
     expect(screen.queryByTestId('calendar-day-23-feast', { includeHiddenElements: true })).toBeNull();
     expect(day('dissabte, 26 de setembre, memòria lliure')).toBeTruthy();
@@ -143,7 +147,7 @@ describe('the month', () => {
       'Advent i Quaresma',
       'Nadal i Pasqua',
       'Tridu pasqual',
-      'Fèria',
+      'Fèria, sense marca',
       'Memòria',
       'Festa',
       'Solemnitat',
@@ -151,7 +155,7 @@ describe('the month', () => {
     ];
     for (const word of words) expect(within(key).getByText(word, { includeHiddenElements: true })).toBeTruthy();
     // Before the year is loaded too, so that the screen does not jump; a screen reader skips it
-    expect(screen.queryByText('Fèria')).toBeNull();
+    expect(screen.queryByText('Fèria, sense marca')).toBeNull();
   });
 
   test('in dark mode, the dark colours', () => {

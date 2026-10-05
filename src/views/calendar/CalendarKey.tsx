@@ -5,9 +5,9 @@ import { DayRank } from '../../view-models/calendar';
 import RankMark from './RankMark';
 
 // What the calendar says, under the month, the year and the wheel. The colour says only the
-// liturgical season; under the month, the marks say the rank of a day, from the weekday (no mark)
-// to the solemnity, in the colour most days of the month have. A screen reader does not need it:
-// every day says its rank, and the home its colour.
+// liturgical season; under the month, the candles say the rank of a day, from the weekday (none)
+// to the solemnity, alone and in the colour most days of the month have, as they are on the days.
+// A screen reader does not need it: every day says its rank, and the home its colour.
 const SWATCH = 16;
 
 // The seasons by their colour, two to a line
@@ -18,8 +18,7 @@ const SEASONS: { code: LiturgicalColorCode; label: string }[] = [
   { code: 'R', label: 'Tridu pasqual' },
 ];
 
-const RANKS: { rank: DayRank | null; label: string }[] = [
-  { rank: null, label: 'Fèria' },
+const RANKS: { rank: DayRank; label: string }[] = [
   { rank: 'memory', label: 'Memòria' },
   { rank: 'feast', label: 'Festa' },
   { rank: 'solemnity', label: 'Solemnitat' },
@@ -29,18 +28,9 @@ export function MonthKey({ color }: { color: LiturgicalColorCode }) {
   const theme = useTheme();
   const { colors } = theme;
   const tones = theme.liturgical(color).calendar;
-  // A day in small: the soft tone of its season, with a thin edge (white is almost the background)
-  const day = (tone: string, children?: React.ReactNode, outline?: string) => (
-    <View
-      style={[
-        styles.day,
-        { backgroundColor: tone, borderColor: outline ?? colors.border },
-        outline ? styles.today : null,
-      ]}
-    >
-      {children}
-    </View>
-  );
+  // The colour of a season: the soft tone of its days, with a thin edge (white is almost the
+  // background)
+  const day = (tone: string) => <View style={[styles.day, { backgroundColor: tone, borderColor: colors.border }]} />;
   return (
     <View testID="calendar-key" style={styles.lines}>
       <Columns>
@@ -51,12 +41,17 @@ export function MonthKey({ color }: { color: LiturgicalColorCode }) {
         ))}
       </Columns>
       <Row>
+        <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.label, { color: colors.text2 }]}>
+          Fèria, sense marca
+        </Text>
         {RANKS.map(({ rank, label }) => (
           <Item key={label} label={label}>
-            {day(tones.day, rank ? <RankMark rank={rank} color={tones.mark} size={10} /> : null)}
+            <RankMark rank={rank} color={tones.mark} size={18} />
           </Item>
         ))}
-        <Item label="Avui">{day(tones.day, null, colors.accentText)}</Item>
+        <Item label="Avui">
+          <View style={[styles.today, { borderColor: colors.accentText }]} />
+        </Item>
       </Row>
     </View>
   );
@@ -119,8 +114,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    columnGap: 12,
-    rowGap: 6,
+    alignItems: 'center',
+    columnGap: 14,
+    rowGap: 8,
   },
   columns: {
     flexDirection: 'row',
@@ -148,10 +144,12 @@ const styles = StyleSheet.create({
     height: SWATCH,
     borderRadius: 5,
     borderWidth: StyleSheet.hairlineWidth,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
+  // Today's outline, alone, as on the day
   today: {
+    width: SWATCH,
+    height: SWATCH,
+    borderRadius: 5,
     borderWidth: 2,
   },
   square: {

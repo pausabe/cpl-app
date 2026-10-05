@@ -95,9 +95,9 @@ export interface LiturgicalColor {
 }
 
 // The colour in the calendar, which says the liturgical season and nothing else: every day of a
-// season on its soft tone (day), the marks of the rank of a day (a dot for a memorial, a star for
-// a feast or a solemnity) in its strong one (mark), and the squares of the year and the pieces of
-// the wheel in a middle one (square), which a soft tone is too pale for when it is that small.
+// season on its soft tone (day), the candles of the rank of a day (one for a memorial, two for a
+// feast, three for a solemnity) in its strong one (mark), and the squares of the year and the
+// pieces of the wheel in a middle one (square), which a soft tone is too pale for that small.
 export interface CalendarTones {
   day: string;
   mark: string;

@@ -146,10 +146,10 @@ export function MilestoneList({ title, rows, onPick }: MilestoneListProps) {
             { backgroundColor: colors.chipBackground, borderRadius: theme.radius.tile, opacity: pressed ? 0.7 : 1 },
           ]}
         >
-          {/* A solemnity has its star, in the colour of its season; the start of a season, its colour */}
+          {/* A solemnity has its candles, in the colour of its season; the start of a season, its colour */}
           <View style={styles.badge}>
             {row.kind === 'solemnity' ? (
-              <RankMark rank="solemnity" color={theme.liturgical(row.color).calendar.mark} size={14} />
+              <RankMark rank="solemnity" color={theme.liturgical(row.color).calendar.mark} size={16} />
             ) : (
               <View style={[styles.swatch, { backgroundColor: theme.liturgical(row.color).calendar.square }]} />
             )}
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   badge: {
-    width: 14,
+    width: 16,
     alignItems: 'center',
   },
   swatch: {

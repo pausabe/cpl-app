@@ -11,7 +11,7 @@ import {
 import RankMark from './RankMark';
 
 // The days of a month, each on the colour of its liturgical season, and under the number the mark
-// of its rank: a dot for a memorial, a star for a feast, a filled star for a solemnity. Today has
+// of its rank: candles, one for a memorial, two for a feast, three for a solemnity. Today has
 // an outline and the day chosen a ring around it. Dragging the month sideways goes to the next or the one before; the
 // row of months does it too, for whoever does not drag.
 interface MonthGridProps {
@@ -199,13 +199,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontVariant: ['tabular-nums'],
   },
-  // A number with a mark goes up a little, to leave it room
+  // A number with candles goes up a little, to leave them room
   marked: {
-    marginBottom: 7,
+    marginBottom: 9,
   },
   mark: {
     position: 'absolute',
-    bottom: 4,
+    bottom: 3,
     alignItems: 'center',
   },
 });
