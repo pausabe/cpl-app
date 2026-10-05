@@ -9,7 +9,7 @@ const DataService = require('../../src/services/dataService');
 const DatabaseDataService = require('../../src/services/databaseDataService');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
 const { buildDayCard } = require('../../src/view-models/dayCard');
-const { rankLabel, seasonColor } = require('../../src/view-models/calendar');
+const { previewCard, rankLabel, seasonColor } = require('../../src/view-models/calendar');
 const { colorCode } = require('../../src/view-models/dayCard');
 const { adventSunday, liturgicalWheel } = require('../../src/view-models/liturgicalYear');
 
@@ -26,7 +26,7 @@ function homeCard() {
   return buildDayCard(current.liturgyDayInformation.today, current.celebrationInformation, current.settings);
 }
 
-async function previewCard(iso) {
+async function previewCardOf(iso) {
   const preview = await DataService.obtainDayPreview(dateOf(iso));
   return buildDayCard(preview.day, preview.celebration, preview.settings);
 }
@@ -121,9 +121,35 @@ describe('a day worked out for the calendar', () => {
 
   test.each(DAYS)('%s (%s) says what the home says after changing to it', async (iso, profile) => {
     await loadDay('2026-10-05', profile);
-    const preview = await previewCard(iso);
+    const preview = await previewCardOf(iso);
     await DataService.reloadAllData(dateOf(iso), null);
     expect(preview).toEqual(homeCard());
+  });
+
+  test('what the card says at once is what it says once worked out, but for the name and a few Sundays', async () => {
+    // The colour, the day in its season and the type come from the year; only the name waits. A
+    // few Sundays have a name of their own in the texts, which only the day worked out knows, and
+    // the 24th of December writes its apostrophe straight there.
+    await loadDay('2026-10-05', 'barcelona');
+    const different = [];
+    for (const year of [2026, 2027]) {
+      for (const mark of await DataService.obtainYearMarks(year)) {
+        const date = dateOf(mark.date);
+        const now = previewCard(date, mark, undefined);
+        const later = previewCard(date, mark, await previewCardOf(mark.date));
+        for (const key of ['colorCode', 'title', 'typeLabel', 'muted']) {
+          if (now[key] !== later[key]) different.push(`${mark.date} ${later[key]}`);
+        }
+      }
+    }
+    expect(different).toEqual([
+      '2026-01-04 Diumenge segon després de Nadal',
+      "2026-12-20 Diumenge quart d'Advent",
+      "2026-12-24 Fèria d'Advent",
+      '2027-01-03 Diumenge segon després de Nadal',
+      "2027-12-19 Diumenge quart d'Advent",
+      "2027-12-24 Fèria d'Advent",
+    ]);
   });
 
   test('working it out does not change the day shown', async () => {
@@ -135,21 +161,21 @@ describe('a day worked out for the calendar', () => {
 
   test('an optional memorial is celebrated only on the day the reader turned it on', async () => {
     await loadDay('2026-10-05', 'barcelona');
-    expect((await previewCard('2026-10-06')).celebration).toMatchObject({ typeLabel: 'Memòria lliure', muted: true });
+    expect((await previewCardOf('2026-10-06')).celebration).toMatchObject({ typeLabel: 'Memòria lliure', muted: true });
     await AsyncStorage.setItem(StorageKeys.OptionalFestivity, '6:9:2026');
-    expect((await previewCard('2026-10-06')).celebration).toMatchObject({
+    expect((await previewCardOf('2026-10-06')).celebration).toMatchObject({
       typeLabel: 'Memòria lliure',
       title: 'Sant Bru, prevere',
       muted: false,
     });
-    expect((await previewCard('2026-10-08')).celebration.muted).toBe(true);
+    expect((await previewCardOf('2026-10-08')).celebration.muted).toBe(true);
   });
 
   test('in a whole year of Barcelona, every day is marked with the rank its card says', async () => {
     await loadDay('2026-10-05', 'barcelona');
     const different = [];
     for (const mark of await DataService.obtainYearMarks(2026)) {
-      const card = await previewCard(mark.date);
+      const card = await previewCardOf(mark.date);
       const said = card.celebration?.typeLabel ?? null;
       if (rankLabel(mark) !== said) different.push(mark.date);
     }

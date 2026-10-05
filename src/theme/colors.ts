@@ -118,24 +118,25 @@ const LITURGICAL: Record<
 
 // In dark mode the soft tones of the card are almost the background, and dark colours lose their
 // hue: a green or purple day was a dark grey that could not be told from the background nor from
-// the others, and white was brown. The calendar has its own: a day clearly in its colour (half
-// again as bright as the background), the marks in the light accent. White is stone and ivory.
+// the others, and white was brown. The calendar has its own: a day in its colour, a third again as
+// bright as the background and not more (brighter, a month was a block of loud green, the loudest
+// thing on the screen), the letters in the light accent. White is stone and ivory.
 const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTones>> = {
   R: {
     light: { day: '#F8E7E5', mark: '#B3261E', square: '#EDB9B3' },
-    dark: { day: '#61332E', mark: '#F6B3AC', square: '#944B42' },
+    dark: { day: '#4D322F', mark: '#F6B3AC', square: '#944B42' },
   },
   V: {
     light: { day: '#DDEEDA', mark: '#2E6B30', square: '#B5D7AE' },
-    dark: { day: '#2D5334', mark: '#9CD39E', square: '#40774B' },
+    dark: { day: '#2C4230', mark: '#9CD39E', square: '#40774B' },
   },
   M: {
     light: { day: '#EFE8F4', mark: '#6A3D9A', square: '#D5C3E8' },
-    dark: { day: '#4A3762', mark: '#CDB6ED', square: '#6E5095' },
+    dark: { day: '#423750', mark: '#CDB6ED', square: '#6E5095' },
   },
   B: {
     light: { day: '#F7F1E3', mark: '#7A5F14', square: '#E9D9AA' },
-    dark: { day: '#534D41', mark: '#EFE4C8', square: '#807660' },
+    dark: { day: '#47433B', mark: '#EFE4C8', square: '#807660' },
   },
 };
 

@@ -1,5 +1,5 @@
-import { dayAndMonth, lowerFirst, monthName, shortMonthName, weekdayName } from './catalanText';
-import { celebrationTypeLabel, colorCode, ColorCode, seasonTitle } from './dayCard';
+import { dayAndMonth, longDate, lowerFirst, monthName, shortMonthName, weekdayName } from './catalanText';
+import { cardWithoutName, celebrationTypeLabel, colorCode, ColorCode, DayCard, DayInput, seasonTitle } from './dayCard';
 
 // The month grid of the calendar: weeks from Monday to Sunday, the day chosen, today, the days
 // outside the database left out, every day on the colour of its liturgical season, and the letter
@@ -143,6 +143,68 @@ export function dayLook(mark: DayMarkInput): DayLook {
 // optional memorials included, or null on a weekday
 export function rankLabel(mark: DayMarkInput): string | null {
   return celebrationTypeLabel(mark.letter, mark.season);
+}
+
+// A day of the marks as the day card takes it
+export function dayInput(date: Date, mark: DayMarkInput): DayInput {
+  return {
+    date,
+    celebrationType: mark.letter,
+    liturgyColor: mark.color,
+    genericLiturgyTime: mark.season,
+    specificLiturgyTime: mark.specificSeason,
+    week: mark.week,
+    weekCycle: '',
+    yearType: mark.yearType,
+  };
+}
+
+// The card under the month, of the day touched. What the year already says is there at once (the
+// colour, the day in its season, the type of its celebration); only the name of the celebration
+// waits for the day to be worked out, in a place kept for it, so that nothing goes blank or jumps
+// from one day to the next.
+export interface PreviewCard {
+  // "Dimarts, 8 de desembre"
+  dateText: string;
+  // The colour of the card; null until the year is loaded
+  colorCode: ColorCode | null;
+  // "Temps d’Advent", "Setmana XXVII de durant l'any"
+  title: string | null;
+  // "Solemnitat"
+  typeLabel: string | null;
+  celebrationTitle: string | null;
+  // An optional memorial that is not celebrated: grey
+  muted: boolean;
+  // The name of the celebration is on its way
+  waiting: boolean;
+}
+
+export function previewCard(date: Date, mark: DayMarkInput | undefined, card: DayCard | undefined): PreviewCard {
+  const dateText = longDate(date);
+  if (card) {
+    return {
+      dateText,
+      colorCode: card.colorCode,
+      title: card.title,
+      typeLabel: card.celebration?.typeLabel ?? null,
+      celebrationTitle: card.celebration?.title ?? null,
+      muted: card.celebration?.muted ?? false,
+      waiting: false,
+    };
+  }
+  if (!mark) {
+    return {
+      dateText,
+      colorCode: null,
+      title: null,
+      typeLabel: null,
+      celebrationTitle: null,
+      muted: false,
+      waiting: false,
+    };
+  }
+  const known = cardWithoutName(dayInput(date, mark));
+  return { dateText, ...known, celebrationTitle: null, waiting: known.typeLabel !== null };
 }
 
 export function calendarMonth({ year, month, selected, today, minimum, maximum, marks }: CalendarInput): CalendarMonth {

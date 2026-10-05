@@ -11,6 +11,7 @@ import {
   monthAfterSwipe,
   monthRibbon,
   monthTitle,
+  previewCard,
   RANK_LETTERS,
   rankLabel,
   sameDay,
@@ -163,6 +164,75 @@ describe('every day on the colour of its season, with the letter of its celebrat
       { color: 'M', title: 'Temps d’Advent' },
     ]);
     expect(calendarMonth({ year: 2026, month: 9, today }).seasons).toEqual([]);
+  });
+});
+
+describe('the card of the day touched', () => {
+  const card = {
+    place: 'Barcelona (Diòcesi)',
+    dateText: 'Dijous, 24 de setembre',
+    colorCode: 'B' as const,
+    colorName: 'Blanc',
+    title: "Durant l'any",
+    meta: '',
+    celebration: {
+      typeLabel: 'Solemnitat',
+      title: 'Mare de Déu de la Mercè',
+      muted: false,
+      description: null,
+      optionalMemory: null,
+    },
+  };
+
+  test('says at once what the year knows, and waits only for the name of the celebration', () => {
+    const mercy = mark('2026-09-24', { color: 'B', letter: 'S', week: '25' });
+    expect(previewCard(new Date(2026, 8, 24), mercy, undefined)).toEqual({
+      dateText: 'Dijous, 24 de setembre',
+      colorCode: 'B',
+      // A solemnity takes the whole day: no week, as on the home
+      title: "Durant l'any",
+      typeLabel: 'Solemnitat',
+      celebrationTitle: null,
+      muted: false,
+      waiting: true,
+    });
+    expect(previewCard(new Date(2026, 8, 24), mercy, card)).toMatchObject({
+      celebrationTitle: 'Mare de Déu de la Mercè',
+      waiting: false,
+    });
+  });
+
+  test('a weekday has nothing to wait for, and a day of Holy Week has its name at once', () => {
+    expect(previewCard(new Date(2026, 8, 23), mark('2026-09-23', { week: '25' }), undefined)).toMatchObject({
+      colorCode: 'V',
+      title: "Setmana XXV de durant l'any",
+      typeLabel: null,
+      waiting: false,
+    });
+    const thursday = mark('2026-04-02', { color: 'B', season: 'Quaresma', specificSeason: 'Q_SET_SANTA', week: '6' });
+    expect(previewCard(new Date(2026, 3, 2), thursday, undefined)).toMatchObject({
+      title: 'Dijous Sant',
+      waiting: false,
+    });
+    const ashes = mark('2026-02-19', { color: 'M', season: 'Quaresma', specificSeason: 'Q_CENDRA', week: '0' });
+    expect(previewCard(new Date(2026, 1, 19), ashes, undefined).title).toBe('Cendra');
+  });
+
+  test('an optional memorial is taken as not celebrated, and a day not loaded has its date alone', () => {
+    expect(previewCard(new Date(2026, 9, 6), mark('2026-10-06', { letter: 'L' }), undefined)).toMatchObject({
+      typeLabel: 'Memòria lliure',
+      muted: true,
+      waiting: true,
+    });
+    expect(previewCard(new Date(2026, 9, 6), undefined, undefined)).toEqual({
+      dateText: 'Dimarts, 6 d’octubre',
+      colorCode: null,
+      title: null,
+      typeLabel: null,
+      celebrationTitle: null,
+      muted: false,
+      waiting: false,
+    });
   });
 });
 

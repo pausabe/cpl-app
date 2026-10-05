@@ -161,34 +161,51 @@ describe('the month', () => {
       { dark: true },
     );
     expect(styleOf(screen.getByTestId('calendar')).backgroundColor).toBe('#1B2322');
-    // The ring of the day chosen, the light teal; every day of ordinary time, green
+    // The ring of the day chosen, the light teal; every day of ordinary time, green, and the card of
+    // the day on the tone of its colour, as the days are
     expect(styleOf(screen.getByTestId('calendar-day-21')).borderColor).toBe('#7FD1CC');
-    expect(fill(24).backgroundColor).toBe('#2D5334');
-    expect(fill(23).backgroundColor).toBe('#2D5334');
+    expect(fill(24).backgroundColor).toBe('#2C4230');
+    expect(fill(23).backgroundColor).toBe('#2C4230');
+    expect(styleOf(screen.getByTestId('calendar-preview')).backgroundColor).toBe('#4D322F');
   });
 });
 
 describe('the day touched', () => {
-  test('is chosen, says what it is before going to it, and «Selecciona» goes to it', () => {
+  test('is chosen, says what it is at once, its name when it is worked out, and «Selecciona» goes to it', () => {
     const { onChange, onNeedPreviews, rerender } = open();
-    expect(onNeedPreviews).toHaveBeenLastCalledWith([new Date(2026, 8, 21)]);
+    // The day chosen first, and then, ready for a touch, the days of the month with a celebration
+    expect(onNeedPreviews).toHaveBeenLastCalledWith([21, 8, 14, 15, 24].map((d) => new Date(2026, 8, d)));
     fireEvent.press(day('dijous, 24 de setembre, solemnitat'));
     expect(onChange).not.toHaveBeenCalled();
-    expect(onNeedPreviews).toHaveBeenLastCalledWith([new Date(2026, 8, 24)]);
+    expect(onNeedPreviews).toHaveBeenLastCalledWith([24, 8, 14, 15, 21].map((d) => new Date(2026, 8, d)));
     const preview = () => screen.getByTestId('calendar-preview');
-    // The date at once, the rest when the controller has worked it out
+    // At once, what the year says: the date, the day in its season, the type, the colour; the name
+    // has its place kept
     expect(within(preview()).getByText('Dijous, 24 de setembre')).toBeTruthy();
-    expect(within(preview()).queryByText('Solemnitat')).toBeNull();
+    // A solemnity takes the whole day: its week is not said, as on the home
+    expect(within(preview()).getByText("Durant l'any")).toBeTruthy();
+    expect(within(preview()).getByText('Solemnitat')).toBeTruthy();
+    expect(styleOf(preview()).backgroundColor).toBe('#F7F1E3');
+    expect(screen.getByTestId('calendar-preview-waiting', { includeHiddenElements: true })).toBeTruthy();
     rerender({
       previews: {
-        '2026-09-24': card('Setmana XXV de durant l’any', celebration('Solemnitat', 'Mare de Déu de la Mercè')),
+        '2026-09-24': card("Durant l'any", celebration('Solemnitat', 'Mare de Déu de la Mercè')),
       },
     });
     expect(within(preview()).getByText('Mare de Déu de la Mercè')).toBeTruthy();
-    expect(within(preview()).getByText('Solemnitat')).toBeTruthy();
-    expect(styleOf(preview()).backgroundColor).toBe('#F7F1E3');
+    expect(screen.queryByTestId('calendar-preview-waiting', { includeHiddenElements: true })).toBeNull();
     fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
     expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 24));
+  });
+
+  test('a weekday says it is one at once, with nothing to wait for', () => {
+    open();
+    fireEvent.press(day('dimecres, 23 de setembre'));
+    const preview = screen.getByTestId('calendar-preview');
+    expect(within(preview).getByText('Dimecres, 23 de setembre')).toBeTruthy();
+    expect(within(preview).getByText("Setmana XXV de durant l'any")).toBeTruthy();
+    expect(screen.queryByTestId('calendar-preview-waiting', { includeHiddenElements: true })).toBeNull();
+    expect(styleOf(preview).backgroundColor).toBe('#DDEEDA');
   });
 
   test('an optional memorial that is not celebrated goes grey, as on the home', () => {

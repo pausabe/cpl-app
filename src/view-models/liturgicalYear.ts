@@ -1,6 +1,6 @@
 import { dayAndMonth, lowerFirst, monthName } from './catalanText';
-import { ColorCode, DayInput, seasonDayTitle, seasonName } from './dayCard';
-import { dayLabel, DayMarkInput, DayMarks, isoDate, isSelectable, sameDay, seasonColor } from './calendar';
+import { ColorCode, seasonDayTitle, seasonName } from './dayCard';
+import { dayInput, dayLabel, DayMarkInput, DayMarks, isoDate, isSelectable, sameDay, seasonColor } from './calendar';
 import { SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 
 // The year in the calendar: the twelve months in small, every day a square in the colour of its
@@ -229,19 +229,6 @@ function seasonLabel(text: string, from: number, to: number, avoid: number | nul
     }
   }
   return labelAt(text, middle);
-}
-
-function dayInput(date: Date, mark: DayMarkInput): DayInput {
-  return {
-    date,
-    celebrationType: mark.letter,
-    liturgyColor: mark.color,
-    genericLiturgyTime: mark.season,
-    specificLiturgyTime: mark.specificSeason,
-    week: mark.week,
-    weekCycle: '',
-    yearType: mark.yearType,
-  };
 }
 
 export function liturgicalWheel({ startYear, marks, today, minimum, maximum }: WheelInput): LiturgicalWheel {

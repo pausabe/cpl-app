@@ -3,7 +3,7 @@ import * as LiturgyStore from './liturgyStore';
 import type { DayMark } from './liturgyStore';
 import * as Logger from '../utils/logger';
 import { buildDayCard, DayCard } from '../view-models/dayCard';
-import { DayMarks, isoDate } from '../view-models/calendar';
+import { dateOfIso, DayMarks, isoDate } from '../view-models/calendar';
 
 // What the calendar paints, kept while the data does not change (the same revision of the
 // liturgy store): the colour and the rank of the days of the years it showed, and what the home
@@ -26,7 +26,8 @@ const listeners = new Set<Listener>();
 let data: CalendarData = { revision: -1, marks: {}, previews: {} };
 
 // What was asked for since the data last changed: the years and the days already on their way or
-// there, the days wanted now, and the rank of every day worked out
+// there, the days wanted now (the first first), those that could not be worked out, and the rank of
+// every day worked out
 let asked = newAsked(-1);
 
 function newAsked(revision: number) {
@@ -34,10 +35,14 @@ function newAsked(revision: number) {
     revision,
     years: new Set<number>(),
     days: new Set<string>(),
-    wanted: new Set<string>(),
+    wanted: [] as string[],
+    failed: new Set<string>(),
     letters: new Map<string, string>(),
   };
 }
+
+// Whether a day is being worked out now: one at a time
+let working = false;
 
 function change(next: Partial<CalendarData>) {
   data = { ...data, ...next };
@@ -104,23 +109,29 @@ export function needYears(years: number[]): void {
   }
 }
 
-// One day at a time, in the queue of the store of the liturgy: a day touched and left before its
-// turn is not worked out
+// The days the calendar is about to show, the first first: the day touched, and then, ready for a
+// touch, those of the month with a celebration. One at a time, in the queue of the store of the
+// liturgy, and always the first one still wanted: a day touched does not wait for those of the
+// month, at most for the one being worked out, and a day left before its turn is not worked out.
 export function needPreviews(dates: Date[]): void {
   prepare();
-  const current = asked;
-  current.wanted = new Set(dates.map(isoDate));
-  for (const date of dates) {
-    const key = isoDate(date);
-    if (current.days.has(key)) continue;
-    current.days.add(key);
-    LiturgyStore.previewDay(date, () => asked === current && current.wanted.has(key))
-      .then((preview) => {
-        if (asked !== current) return;
-        if (!preview) {
-          current.days.delete(key);
-          return;
-        }
+  asked.wanted = dates.map(isoDate);
+  workOut();
+}
+
+async function workOut(): Promise<void> {
+  if (working) return;
+  working = true;
+  try {
+    for (;;) {
+      const current = asked;
+      const key = current.wanted.find((day) => !current.days.has(day) && !current.failed.has(day));
+      if (key === undefined) return;
+      current.days.add(key);
+      try {
+        const preview = await LiturgyStore.previewDay(dateOfIso(key));
+        // The data changed meanwhile: what was worked out is of before
+        if (asked !== current || !preview) continue;
         const letter = preview.day.celebrationType;
         current.letters.set(key, letter);
         const mark = data.marks[key];
@@ -128,11 +139,14 @@ export function needPreviews(dates: Date[]): void {
           previews: { ...data.previews, [key]: buildDayCard(preview.day, preview.celebration, preview.settings) },
           ...(mark && mark.letter !== letter ? { marks: { ...data.marks, [key]: { ...mark, letter } } } : {}),
         });
-      })
-      .catch((error) => {
+      } catch (error) {
         current.days.delete(key);
+        current.failed.add(key);
         Logger.logError(Logger.LogKeys.Calendar, 'needPreviews', error);
-      });
+      }
+    }
+  } finally {
+    working = false;
   }
 }
 

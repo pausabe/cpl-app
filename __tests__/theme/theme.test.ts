@@ -136,10 +136,13 @@ test('the calendar paints the season, and the number and the letter of any celeb
   expect(liturgicalColor('M', 'dark').calendar).toMatchObject({ mark: '#CDB6ED', square: '#6E5095' });
 });
 
-test('in dark mode a weekday stands out from the background in its colour, and white is not brown', () => {
-  // Dark colours lose their hue: at 1.1 a green or purple weekday was the background itself
+test('in dark mode a day stands out from the background in its colour, but does not shout', () => {
+  // Dark colours lose their hue: at 1.1 a green or purple day was the background itself; at 1.8 a
+  // month was a block of loud green
   for (const code of ['R', 'V', 'M', 'B']) {
-    expect(contrast(liturgicalColor(code, 'dark').calendar.day, palettes.dark.sheet)).toBeGreaterThanOrEqual(1.5);
+    const against = contrast(liturgicalColor(code, 'dark').calendar.day, palettes.dark.sheet);
+    expect(against).toBeGreaterThanOrEqual(1.35);
+    expect(against).toBeLessThanOrEqual(1.7);
   }
-  expect(liturgicalColor('B', 'dark').calendar).toMatchObject({ day: '#534D41', mark: '#EFE4C8' });
+  expect(liturgicalColor('B', 'dark').calendar).toMatchObject({ day: '#47433B', mark: '#EFE4C8' });
 });

@@ -6,7 +6,15 @@ import ActionButton from '../../components/ActionButton';
 import EdgeFade from '../../components/EdgeFade';
 import Icon from '../../components/Icon';
 import SegmentedControl from '../../components/SegmentedControl';
-import { calendarMonth, dateOfIso, DayMarks, isoDate, monthRibbon, shiftMonth } from '../../view-models/calendar';
+import {
+  calendarMonth,
+  dateOfIso,
+  DayMarks,
+  isoDate,
+  monthRibbon,
+  previewCard,
+  shiftMonth,
+} from '../../view-models/calendar';
 import { DayCard } from '../../view-models/dayCard';
 import {
   keyDates,
@@ -156,10 +164,16 @@ export default function CalendarScreen({
     [tab, wheelIsToday, marks, today, wheelYear],
   );
 
-  // The days whose card is about to be shown: the one chosen, and the solemnities under the wheel
-  const daysKey = [selected, ...milestones.filter((m) => m.kind === 'solemnity').map((m) => m.date)]
-    .map(isoDate)
-    .join(',');
+  // The days whose card is about to be shown, the first first: the one chosen; then, ready for a
+  // touch, those of the month that have a celebration; and the solemnities under the wheel
+  const celebrated = month
+    ? month.weeks.flat().flatMap((day) => (day?.look?.rank && !day.disabled ? [day.date] : []))
+    : [];
+  const daysKey = [
+    ...new Set(
+      [selected, ...celebrated, ...milestones.filter((m) => m.kind === 'solemnity').map((m) => m.date)].map(isoDate),
+    ),
+  ].join(',');
   useEffect(() => {
     onNeedPreviews?.(daysKey.split(',').map(dateOfIso));
   }, [daysKey, onNeedPreviews]);
@@ -259,7 +273,7 @@ export default function CalendarScreen({
           onPick={setSelected}
           onSwipe={(delta) => setShown(shiftMonth(shown.year, shown.month, delta))}
         />
-        <DayPreviewCard date={selected} card={previews[isoDate(selected)]} />
+        <DayPreviewCard preview={previewCard(selected, marks[isoDate(selected)], previews[isoDate(selected)])} />
       </>
     ) : overview ? (
       <>
