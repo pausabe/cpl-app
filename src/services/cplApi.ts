@@ -10,6 +10,9 @@ import * as ExpoApplication from 'expo-application';
 export const API_URL = process.env.EXPO_PUBLIC_CPL_API_URL ?? 'https://cpl-api.canmartorell.dev';
 export const APP_KEY = process.env.EXPO_PUBLIC_CPL_APP_KEY ?? '';
 export const APP_KEY_HEADER = 'X-CPL-App-Key';
+// Which phone asks, said only when it asks for a new database: the publishing website gives the
+// phones on its list of test phones the publications that are not for everyone yet
+export const DEVICE_HEADER = 'X-CPL-Device';
 
 // A copy built to be tried out, not to be prayed with: the ones that run on a simulator, on an
 // emulator or under the Maestro flows. It reports no use, because a phone that opens the app fifty
