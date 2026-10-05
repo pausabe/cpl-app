@@ -107,10 +107,20 @@ describe('the month', () => {
     expect(day('dijous, 24 de setembre')).toBeTruthy();
   });
 
-  test('under it, what every colour means: the four colours, and from the weekday to the solemnity', () => {
+  test('under it, what every colour means: the four colours by their liturgical name, and from the weekday to the solemnity', () => {
     open({ marks: {} });
     const key = screen.getByTestId('calendar-key', { includeHiddenElements: true });
-    const words = ['Verd', 'Blanc', 'Morat', 'Vermell', 'Fèria', 'Memòria', 'Festa', 'Solemnitat', 'Avui'];
+    const words = [
+      "Durant l'any",
+      'Advent i Quaresma',
+      'Nadal i Pasqua',
+      'Màrtirs i Pentecosta',
+      'Fèria',
+      'Memòria',
+      'Festa',
+      'Solemnitat',
+      'Avui',
+    ];
     for (const word of words) expect(within(key).getByText(word, { includeHiddenElements: true })).toBeTruthy();
     // Before the year is loaded too, so that the sheet does not jump; a screen reader skips it
     expect(screen.queryByText('Fèria')).toBeNull();
@@ -290,7 +300,8 @@ describe('the wheel of the liturgical year', () => {
       new Date(2026, 10, 1),
     ]);
     expect(screen.getByText('Properament')).toBeTruthy();
-    expect(screen.getByTestId('calendar-year-key', { includeHiddenElements: true })).toBeTruthy();
+    const yearKey = screen.getByTestId('calendar-year-key', { includeHiddenElements: true });
+    expect(within(yearKey).getByText('Advent i Quaresma', { includeHiddenElements: true })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Solemnitat, Dijous, 24 de setembre' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Solemnitat, Diumenge, 1 de novembre' })).toBeTruthy();
     view.rerender(

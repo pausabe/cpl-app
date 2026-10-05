@@ -2,18 +2,21 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LiturgicalColorCode, useTheme } from '../../../theme';
 
-// What the colours mean, under the month, the year and the wheel. Under the month, two lines: the
-// four liturgical colours, each with its tones from soft to strong, and what makes a day of that
-// colour stronger, from the weekday to the solemnity, in the colour most days of the month have.
-// A screen reader does not need it: every day says its rank, and the home its colour.
+// What the colours mean, under the month, the year and the wheel. Under the month: the four
+// liturgical colours, each with its tones from soft to strong and named by what most of its days
+// are, and what makes a day of a colour stronger, from the weekday to the solemnity, in the colour
+// most days of the month have. A screen reader does not need it: every day says its rank, and the
+// home its colour.
 const SWATCH = 14;
 
-// In the order of the year: most days green, then white, purple and red
+// A short name each, in two columns. Short means incomplete: white is also the Lord, Our Lady and
+// the saints who are not martyrs, and red the Passion and the apostles (General Instruction of
+// the Roman Missal, 346), but one line each was preferred.
 const COLORS: { code: LiturgicalColorCode; label: string }[] = [
-  { code: 'V', label: 'Verd' },
-  { code: 'B', label: 'Blanc' },
-  { code: 'M', label: 'Morat' },
-  { code: 'R', label: 'Vermell' },
+  { code: 'V', label: "Durant l'any" },
+  { code: 'M', label: 'Advent i Quaresma' },
+  { code: 'B', label: 'Nadal i Pasqua' },
+  { code: 'R', label: 'Màrtirs i Pentecosta' },
 ];
 
 export function MonthKey({ color }: { color: LiturgicalColorCode }) {
@@ -22,11 +25,11 @@ export function MonthKey({ color }: { color: LiturgicalColorCode }) {
   const tones = theme.liturgical(color).calendar;
   return (
     <View testID="calendar-key" style={styles.lines}>
-      <Row>
+      <Columns>
         {COLORS.map(({ code, label }) => {
           const ramp = theme.liturgical(code).calendar;
           return (
-            <Item key={code} label={label}>
+            <Item key={code} label={label} column={true}>
               <View style={[styles.ramp, { borderColor: colors.border }]}>
                 <View style={[styles.step, { backgroundColor: ramp.day }]} />
                 <View style={[styles.step, { backgroundColor: ramp.feast }]} />
@@ -35,7 +38,7 @@ export function MonthKey({ color }: { color: LiturgicalColorCode }) {
             </Item>
           );
         })}
-      </Row>
+      </Columns>
       <Row>
         <Item label="Fèria">
           <View style={[styles.swatch, { backgroundColor: tones.day }]} />
@@ -64,41 +67,54 @@ export function MonthKey({ color }: { color: LiturgicalColorCode }) {
 export function YearKey() {
   const theme = useTheme();
   return (
-    <Row testID="calendar-year-key">
-      {COLORS.map(({ code, label }) => (
-        <Item key={code} label={label}>
-          <View style={[styles.square, { backgroundColor: theme.liturgical(code).calendar.square }]} />
+    <View testID="calendar-year-key" style={styles.lines}>
+      <Columns>
+        {COLORS.map(({ code, label }) => (
+          <Item key={code} label={label} column={true}>
+            <View style={[styles.square, { backgroundColor: theme.liturgical(code).calendar.square }]} />
+          </Item>
+        ))}
+      </Columns>
+      <Row>
+        <Item label="Solemnitat">
+          <View style={styles.pair}>
+            <View style={[styles.square, { backgroundColor: theme.liturgical('B').calendar.solemnity }]} />
+            <View style={[styles.square, { backgroundColor: theme.liturgical('M').calendar.solemnity }]} />
+          </View>
         </Item>
-      ))}
-      <Item label="Solemnitat">
-        <View style={styles.pair}>
-          <View style={[styles.square, { backgroundColor: theme.liturgical('B').calendar.solemnity }]} />
-          <View style={[styles.square, { backgroundColor: theme.liturgical('M').calendar.solemnity }]} />
-        </View>
-      </Item>
-    </Row>
+      </Row>
+    </View>
   );
 }
 
-function Row({ children, testID }: { children: React.ReactNode; testID?: string }) {
+const hidden = { accessibilityElementsHidden: true, importantForAccessibility: 'no-hide-descendants' } as const;
+
+function Row({ children }: { children: React.ReactNode }) {
   return (
-    <View
-      testID={testID}
-      style={styles.row}
-      accessibilityElementsHidden={true}
-      importantForAccessibility="no-hide-descendants"
-    >
+    <View style={styles.row} {...hidden}>
       {children}
     </View>
   );
 }
 
-function Item({ label, children }: { label: string; children: React.ReactNode }) {
+// Two to a line, each in half the width, so that the names line up
+function Columns({ children }: { children: React.ReactNode }) {
+  return (
+    <View style={styles.columns} {...hidden}>
+      {children}
+    </View>
+  );
+}
+
+function Item({ label, children, column = false }: { label: string; children: React.ReactNode; column?: boolean }) {
   const theme = useTheme();
   return (
-    <View style={styles.item}>
+    <View style={[styles.item, column ? styles.column : null]}>
       {children}
-      <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.label, { color: theme.colors.text2 }]}>
+      <Text
+        maxFontSizeMultiplier={theme.maxFontScaleForLabels}
+        style={[styles.label, column ? styles.columnLabel : null, { color: theme.colors.text2 }]}
+      >
         {label}
       </Text>
     </View>
@@ -115,13 +131,26 @@ const styles = StyleSheet.create({
     columnGap: 12,
     rowGap: 6,
   },
+  columns: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    rowGap: 6,
+  },
   item: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 5,
   },
+  column: {
+    width: '50%',
+    paddingRight: 8,
+  },
   label: {
     fontSize: 12.5,
+  },
+  // On a narrow phone a long name goes on to a second line inside its column
+  columnLabel: {
+    flexShrink: 1,
   },
   swatch: {
     width: SWATCH,
