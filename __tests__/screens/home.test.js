@@ -265,9 +265,11 @@ test('the calendar paints the year of the place and says what a day is before go
   // The day shown, at once, with the card of the home
   const preview = await screen.findByTestId('calendar-preview');
   expect(within(preview).getByText('Sant Mateu, apòstol i evangelista')).toBeTruthy();
-  // St Matthew, a feast in red; Our Lady of Mercy, solemnity in Barcelona
+  // Ordinary time, green; St Matthew a feast (a star), Our Lady of Mercy a solemnity in Barcelona
   const mercy = await screen.findByRole('button', { name: 'dijous, 24 de setembre, solemnitat' }, { timeout: 15000 });
-  expect(styleOf(screen.getByTestId('calendar-day-21-fill')).backgroundColor).toBe('#EDB9B3');
+  expect(styleOf(screen.getByTestId('calendar-day-21-fill')).backgroundColor).toBe('#DDEEDA');
+  expect(screen.getByTestId('calendar-day-21-feast', { includeHiddenElements: true })).toBeTruthy();
+  expect(screen.getByTestId('calendar-day-24-solemnity', { includeHiddenElements: true })).toBeTruthy();
   fireEvent.press(mercy);
   expect(await within(screen.getByTestId('calendar-preview')).findByText('Mare de Déu de la Mercè')).toBeTruthy();
   expect(within(screen.getByTestId('calendar-preview')).getByText('Solemnitat')).toBeTruthy();
@@ -295,7 +297,7 @@ test('a day the home prays as a weekday is painted as one in the calendar, once 
       await screen.findByRole('button', { name: 'dijous, 24 de setembre, solemnitat' }, { timeout: 15000 }),
     );
     expect(await screen.findByRole('button', { name: 'dijous, 24 de setembre' })).toBeTruthy();
-    expect(styleOf(screen.getByTestId('calendar-day-24-fill')).backgroundColor).toBe('#DDEEDA');
+    expect(screen.queryByTestId('calendar-day-24-solemnity', { includeHiddenElements: true })).toBeNull();
     expect(within(screen.getByTestId('calendar-preview')).queryByText('Solemnitat')).toBeNull();
   } finally {
     spy.mockRestore();

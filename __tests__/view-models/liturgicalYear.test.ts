@@ -55,9 +55,9 @@ describe('the first Sunday of Advent', () => {
 
 describe('the twelve months in small', () => {
   const marks = byDate(
-    mark('2026-12-08', { color: 'B', letter: 'S' }),
-    mark('2026-12-07', { color: 'B', letter: 'M' }),
-    mark('2026-12-01', { color: 'M' }),
+    mark('2026-12-08', { color: 'B', letter: 'S', season: 'Advent' }),
+    mark('2026-12-25', { color: 'B', letter: 'S', season: 'Nadal' }),
+    mark('2026-12-01', { color: 'M', season: 'Advent' }),
     mark('2026-10-05', { color: 'B', letter: 'M' }),
   );
   const year = yearOverview({ year: 2026, marks, today, shown: { year: 2026, month: 11 } });
@@ -84,11 +84,12 @@ describe('the twelve months in small', () => {
     expect(year.months[1].days).toHaveLength(28);
   });
 
-  test('a square in its colour, strong for a solemnity, and none before the year is loaded', () => {
+  test('a square in the colour of its season, whatever the day, and none before the year is loaded', () => {
     const december = year.months[11].days;
-    expect(december[7]).toMatchObject({ color: 'B', solemnity: true });
-    expect(december[6]).toMatchObject({ color: 'B', solemnity: false });
-    expect(december[0]).toMatchObject({ color: 'M', solemnity: false });
+    // The Immaculate Conception, white, is a day of Advent; Christmas, of Christmas
+    expect(december[7]).toMatchObject({ color: 'M' });
+    expect(december[24]).toMatchObject({ color: 'B' });
+    expect(december[0]).toMatchObject({ color: 'M' });
     expect(december[1].color).toBeNull();
   });
 
@@ -167,11 +168,9 @@ describe('the wheel of the liturgical year', () => {
     expect(wheel.label).toBe('L’any litúrgic 2025–2026, any A');
   });
 
-  test('every run of one colour is a piece of the ring, and every solemnity a strong mark', () => {
-    // The Immaculate Conception is white in the middle of Advent, and All Saints in ordinary time
-    expect(wheel.arcs.map((arc) => arc.color)).toEqual(['M', 'B', 'M', 'B', 'V', 'M', 'R', 'B', 'V', 'B', 'V']);
-    expect(wheel.solemnities).toHaveLength(4);
-    expect(wheel.solemnities.every((s) => s.color === 'B')).toBe(true);
+  test('every season is a piece of the ring in its colour, whatever the colour of its days', () => {
+    // The Immaculate Conception is white and All Saints too: the ring keeps the colour of their season
+    expect(wheel.arcs.map((arc) => arc.color)).toEqual(['M', 'B', 'V', 'M', 'R', 'B', 'V']);
   });
 
   test('the seasons are named around it, inside the box; the Triduum is too short to be named', () => {
@@ -262,10 +261,12 @@ describe('the dates under the wheel', () => {
 
   test('each one in a row: the name of a solemnity once its day is worked out, and the date', () => {
     const [allSaints] = upcomingMilestones(marks, today);
+    // All Saints is white, in ordinary time: its row has the colour of the season
     expect(milestoneRow(allSaints, null)).toMatchObject({
       title: 'Solemnitat',
       subtitle: 'Diumenge, 1 de novembre',
-      color: 'B',
+      color: 'V',
+      kind: 'solemnity',
     });
     expect(milestoneRow(allSaints, 'Tots Sants')).toMatchObject({
       title: 'Tots Sants',
@@ -277,6 +278,7 @@ describe('the dates under the wheel', () => {
       title: 'Diumenge I d’Advent',
       subtitle: 'Comença l’any B · 29 de novembre',
       color: 'M',
+      kind: 'advent',
     });
     const easter = {
       key: '2027-03-28',

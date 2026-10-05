@@ -1,10 +1,11 @@
 import { dayAndMonth, lowerFirst, monthName } from './catalanText';
-import { colorCode, ColorCode, DayInput, seasonDayTitle, seasonName } from './dayCard';
-import { dayLabel, DayMarkInput, DayMarks, isoDate, isSelectable, sameDay } from './calendar';
+import { ColorCode, DayInput, seasonDayTitle, seasonName } from './dayCard';
+import { dayLabel, DayMarkInput, DayMarks, isoDate, isSelectable, sameDay, seasonColor } from './calendar';
 import { SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 
-// The year in the calendar: the twelve months in small, every day a square of its colour, and the
-// liturgical year as a wheel, from the first Sunday of Advent to the week of Christ the King.
+// The year in the calendar: the twelve months in small, every day a square in the colour of its
+// season, and the liturgical year as a wheel of its seasons, from the first Sunday of Advent to the
+// week of Christ the King. What a day is, its rank, is for the month and for the list of dates.
 
 const dayKey = (date: Date) => date.getFullYear() * 10000 + date.getMonth() * 100 + date.getDate();
 const addDays = (date: Date, days: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
@@ -14,9 +15,8 @@ const daysBetween = (from: Date, to: Date) => Math.round((to.getTime() - from.ge
 
 export interface MiniDay {
   key: string;
-  // Null until the year is loaded, and outside the database
+  // The colour of its season; null until the year is loaded, and outside the database
   color: ColorCode | null;
-  solemnity: boolean;
   today: boolean;
 }
 
@@ -67,8 +67,7 @@ export function yearOverview({ year, marks, today, shown, minimum, maximum }: Ye
       const mark = isSelectable(date, minimum, maximum) ? marks[isoDate(date)] : undefined;
       days.push({
         key: String(day),
-        color: mark ? colorCode(mark.color) : null,
-        solemnity: mark?.letter === 'S',
+        color: mark ? seasonColor(mark) : null,
         today: sameDay(date, today),
       });
     }
@@ -137,10 +136,8 @@ export interface LiturgicalWheel {
   first: Date;
   // 364 or 371
   days: number;
-  // The ring, in runs of one colour
+  // The ring, in runs of one colour: the seasons
   arcs: WheelPath[];
-  // The solemnities, on top, in the strong tone
-  solemnities: WheelPath[];
   // A thin cut where a season begins
   cuts: string[];
   seasons: WheelLabel[];
@@ -261,19 +258,12 @@ export function liturgicalWheel({ startYear, marks, today, minimum, maximum }: W
       index++;
       continue;
     }
-    const color = colorCode(mark.color);
+    const color = seasonColor(mark);
     let end = index + 1;
-    while (end < days && marksOfYear[end] && colorCode(marksOfYear[end]!.color) === color) end++;
+    while (end < days && marksOfYear[end] && seasonColor(marksOfYear[end]!) === color) end++;
     arcs.push({ d: sectorPath(angle(index), angle(end)), color });
     index = end;
   }
-
-  // A day is a degree: a solemnity is drawn a little wider, so that it can be seen
-  const solemnities: WheelPath[] = marksOfYear.flatMap((mark, index) =>
-    mark?.letter === 'S'
-      ? [{ d: sectorPath(angle(index + 0.5) - 0.9, angle(index + 0.5) + 0.9), color: colorCode(mark.color) }]
-      : [],
-  );
 
   const todayIndex = dayKey(today) >= dayKey(first) && dayKey(today) < dayKey(next) ? daysBetween(first, today) : null;
   const todayAngle = todayIndex === null ? null : angle(todayIndex + 0.5);
@@ -304,7 +294,6 @@ export function liturgicalWheel({ startYear, marks, today, minimum, maximum }: W
     first,
     days,
     arcs,
-    solemnities,
     cuts: [...new Set(cuts)],
     seasons,
     today:
@@ -341,7 +330,7 @@ const milestone = (mark: DayMarkInput, kind: MilestoneKind, date: Date): Milesto
   key: mark.date,
   date,
   kind,
-  color: colorCode(mark.color),
+  color: seasonColor(mark),
   yearType: mark.yearType,
 });
 
@@ -377,6 +366,7 @@ export function keyDates(startYear: number, marks: DayMarks): Milestone[] {
 export interface MilestoneRow {
   key: string;
   date: Date;
+  kind: MilestoneKind;
   color: ColorCode;
   title: string;
   subtitle: string;
@@ -412,5 +402,13 @@ export function milestoneRow(milestone: Milestone, celebrationTitle: string | nu
       subtitle = withYear;
       break;
   }
-  return { key: milestone.key, date, color: milestone.color, title, subtitle, label: `${title}, ${subtitle}` };
+  return {
+    key: milestone.key,
+    date,
+    kind: milestone.kind,
+    color: milestone.color,
+    title,
+    subtitle,
+    label: `${title}, ${subtitle}`,
+  };
 }

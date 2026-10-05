@@ -97,18 +97,35 @@ describe('the month', () => {
     expect(day('dimarts, 22 de setembre, avui')).toBeTruthy();
   });
 
-  test('every day on its colour: a solemnity filled, a feast less, a memorial with a dot', () => {
+  test('every day on the colour of its season, and a mark for its rank: a dot, a star, a filled star', () => {
     open();
-    expect(fill(24).backgroundColor).toBe('#7A5F14');
-    expect(fill(8).backgroundColor).toBe('#E9D9AA');
-    expect(fill(14).backgroundColor).toBe('#EDB9B3');
-    expect(fill(15).backgroundColor).toBe('#F7F1E3');
-    expect(screen.getByTestId('calendar-day-15-memory')).toBeTruthy();
-    // An optional memorial and a weekday, on the soft green, with nothing
-    expect(fill(26).backgroundColor).toBe('#DDEEDA');
-    expect(screen.queryByTestId('calendar-day-26-memory')).toBeNull();
+    // All of September is ordinary time: green, whatever the colour of the day itself
+    for (const n of [8, 14, 15, 23, 24, 26]) expect(fill(n).backgroundColor).toBe('#DDEEDA');
+    expect(screen.getByTestId('calendar-day-24-solemnity', { includeHiddenElements: true })).toBeTruthy();
+    expect(screen.getByTestId('calendar-day-8-feast', { includeHiddenElements: true })).toBeTruthy();
+    expect(screen.getByTestId('calendar-day-14-feast', { includeHiddenElements: true })).toBeTruthy();
+    expect(screen.getByTestId('calendar-day-15-memory', { includeHiddenElements: true }).props.style).toMatchObject({
+      backgroundColor: '#2E6B30',
+    });
+    // An optional memorial and a weekday, with nothing
+    expect(screen.queryByTestId('calendar-day-26-memory', { includeHiddenElements: true })).toBeNull();
+    expect(screen.queryByTestId('calendar-day-23-feast', { includeHiddenElements: true })).toBeNull();
     expect(day('dissabte, 26 de setembre, memòria lliure')).toBeTruthy();
-    expect(fill(23).backgroundColor).toBe('#DDEEDA');
+  });
+
+  test('a month across two seasons changes colour where the season changes', () => {
+    const marks = yearOfMarks(2026, {
+      '2026-12-08': { color: 'B', letter: 'S', season: 'Advent' },
+      '2026-12-24': { color: 'M', season: 'Advent' },
+      '2026-12-25': { color: 'B', letter: 'S', season: 'Nadal' },
+      '2026-12-26': { color: 'R', letter: 'F', season: 'Nadal' },
+    });
+    open({ marks, value: new Date(2026, 11, 1) });
+    // The Immaculate Conception, a white solemnity, is a day of Advent; St Stephen, red, of Christmas
+    expect(fill(8).backgroundColor).toBe('#EFE8F4');
+    expect(fill(24).backgroundColor).toBe('#EFE8F4');
+    expect(fill(25).backgroundColor).toBe('#F7F1E3');
+    expect(fill(26).backgroundColor).toBe('#F7F1E3');
   });
 
   test('before its year is loaded the days are there, without colour, and it asks for the year', () => {
@@ -118,14 +135,14 @@ describe('the month', () => {
     expect(day('dijous, 24 de setembre')).toBeTruthy();
   });
 
-  test('under it, what every colour means: the four colours by their liturgical name, and from the weekday to the solemnity', () => {
+  test('under it, what it says: the colour of each season, and the mark of each rank', () => {
     open({ marks: {} });
     const key = screen.getByTestId('calendar-key', { includeHiddenElements: true });
     const words = [
       "Durant l'any",
       'Advent i Quaresma',
       'Nadal i Pasqua',
-      'Màrtirs i Pentecosta',
+      'Tridu pasqual',
       'Fèria',
       'Memòria',
       'Festa',
@@ -143,9 +160,9 @@ describe('the month', () => {
       { dark: true },
     );
     expect(styleOf(screen.getByTestId('calendar')).backgroundColor).toBe('#1B2322');
-    // The ring of the day chosen, the light teal; a solemnity, ivory; a weekday, green
+    // The ring of the day chosen, the light teal; every day of ordinary time, green
     expect(styleOf(screen.getByTestId('calendar-day-21')).borderColor).toBe('#7FD1CC');
-    expect(fill(24).backgroundColor).toBe('#EFE4C8');
+    expect(fill(24).backgroundColor).toBe('#2D5334');
     expect(fill(23).backgroundColor).toBe('#2D5334');
   });
 });

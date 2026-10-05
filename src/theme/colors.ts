@@ -94,16 +94,13 @@ export interface LiturgicalColor {
   calendar: CalendarTones;
 }
 
-// The colour in the calendar, from soft to strong as the rank of the day grows: a day of the
-// month on its own colour, a feast stronger with its number in feastText, a solemnity the
-// strongest with its number in onSolemnity. A square of the year and of the wheel takes the
-// middle tone, and a solemnity the strong one.
+// The colour in the calendar, which says the liturgical season and nothing else: every day of a
+// season on its soft tone (day), the marks of the rank of a day (a dot for a memorial, a star for
+// a feast or a solemnity) in its strong one (mark), and the squares of the year and the pieces of
+// the wheel in a middle one (square), which a soft tone is too pale for when it is that small.
 export interface CalendarTones {
   day: string;
-  feast: string;
-  feastText: string;
-  solemnity: string;
-  onSolemnity: string;
+  mark: string;
   square: string;
 }
 
@@ -120,82 +117,25 @@ const LITURGICAL: Record<
 };
 
 // In dark mode the soft tones of the card are almost the background, and dark colours lose their
-// hue: a weekday, green or purple, was a dark grey that could not be told from the background nor
-// from the others, and white was brown. The calendar has its own: a weekday clearly in its colour
-// (half again as bright as the background), a feast a step up, a solemnity the light one with a
-// dark number. White goes from stone to ivory.
+// hue: a green or purple day was a dark grey that could not be told from the background nor from
+// the others, and white was brown. The calendar has its own: a day clearly in its colour (half
+// again as bright as the background), the marks in the light accent. White is stone and ivory.
 const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTones>> = {
   R: {
-    light: {
-      day: '#F8E7E5',
-      feast: '#EDB9B3',
-      feastText: '#8E1B15',
-      solemnity: '#B3261E',
-      onSolemnity: '#FFFFFF',
-      square: '#EDB9B3',
-    },
-    dark: {
-      day: '#61332E',
-      feast: '#8F453D',
-      feastText: '#FCE6E3',
-      solemnity: '#F09C94',
-      onSolemnity: '#0E1413',
-      square: '#944B42',
-    },
+    light: { day: '#F8E7E5', mark: '#B3261E', square: '#EDB9B3' },
+    dark: { day: '#61332E', mark: '#F09C94', square: '#944B42' },
   },
   V: {
-    light: {
-      day: '#DDEEDA',
-      feast: '#B5D7AE',
-      feastText: '#275C29',
-      solemnity: '#2E6B30',
-      onSolemnity: '#FFFFFF',
-      square: '#B5D7AE',
-    },
-    dark: {
-      day: '#2D5334',
-      feast: '#387043',
-      feastText: '#E1F4E5',
-      solemnity: '#9CD39E',
-      onSolemnity: '#0E1413',
-      square: '#40774B',
-    },
+    light: { day: '#DDEEDA', mark: '#2E6B30', square: '#B5D7AE' },
+    dark: { day: '#2D5334', mark: '#9CD39E', square: '#40774B' },
   },
   M: {
-    light: {
-      day: '#EFE8F4',
-      feast: '#D5C3E8',
-      feastText: '#5A3087',
-      solemnity: '#6A3D9A',
-      onSolemnity: '#FFFFFF',
-      square: '#D5C3E8',
-    },
-    dark: {
-      day: '#4A3762',
-      feast: '#694B91',
-      feastText: '#EEE7F9',
-      solemnity: '#CDB6ED',
-      onSolemnity: '#0E1413',
-      square: '#6E5095',
-    },
+    light: { day: '#EFE8F4', mark: '#6A3D9A', square: '#D5C3E8' },
+    dark: { day: '#4A3762', mark: '#CDB6ED', square: '#6E5095' },
   },
   B: {
-    light: {
-      day: '#F7F1E3',
-      feast: '#E9D9AA',
-      feastText: '#6B530F',
-      solemnity: '#7A5F14',
-      onSolemnity: '#FFFFFF',
-      square: '#E9D9AA',
-    },
-    dark: {
-      day: '#534D41',
-      feast: '#706751',
-      feastText: '#F9F3E7',
-      solemnity: '#EFE4C8',
-      onSolemnity: '#0E1413',
-      square: '#807660',
-    },
+    light: { day: '#F7F1E3', mark: '#7A5F14', square: '#E9D9AA' },
+    dark: { day: '#534D41', mark: '#EFE4C8', square: '#807660' },
   },
 };
 

@@ -2,7 +2,8 @@ import { dayAndMonth, lowerFirst, monthName, shortMonthName, weekdayName } from 
 import { celebrationTypeLabel, colorCode, ColorCode } from './dayCard';
 
 // The month grid of the calendar: weeks from Monday to Sunday, the day chosen, today, the days
-// outside the database left out, and every day on its liturgical colour, as strong as its rank.
+// outside the database left out, every day on the colour of its liturgical season, and a mark for
+// its rank.
 
 // Monday first, as in a Catalan calendar
 export const WEEKDAY_INITIALS = ['dl', 'dt', 'dc', 'dj', 'dv', 'ds', 'dg'];
@@ -23,14 +24,33 @@ export interface DayMarkInput {
 // The marks of the years loaded so far, by date
 export type DayMarks = Record<string, DayMarkInput>;
 
-// How strong a day is painted: a solemnity fills it, a feast less, a memorial is a dot. An
-// optional memorial is not painted: in ordinary time it is every other day, and the day is the
-// weekday's unless the reader turns it on.
+// The colour says the season and nothing else; the rank of a day is a mark: a dot for a memorial,
+// a star for a feast and a filled one for a solemnity. The colour of the day itself (red for a
+// martyr in ordinary time, white for Our Lady) is on its card, not in the grid: in a green October
+// a white day said «Christmas and Easter» to whoever read the key. An optional memorial has no
+// mark: in ordinary time it is every other day, and the day is the weekday's unless the reader
+// turns it on.
 export type DayRank = 'solemnity' | 'feast' | 'memory';
 
 export interface DayLook {
   color: ColorCode;
   rank: DayRank | null;
+}
+
+// The colour of each season: green the ordinary time, purple Advent and Lent, white Christmas and
+// Easter, red the Triduum
+const SEASON_COLORS: Record<string, ColorCode> = {
+  Ordinari: 'V',
+  Advent: 'M',
+  Quaresma: 'M',
+  Nadal: 'B',
+  Pasqua: 'B',
+  'Tridu Pasqual': 'R',
+};
+
+// The colour of the season of a day; a season the calendar does not know, the colour of the day
+export function seasonColor(mark: DayMarkInput): ColorCode {
+  return SEASON_COLORS[mark.season] ?? colorCode(mark.color);
 }
 
 export interface CalendarDay {
@@ -110,7 +130,7 @@ export function isSelectable(date: Date, minimum?: Date | null, maximum?: Date |
 export function dayLook(mark: DayMarkInput): DayLook {
   const rank: DayRank | null =
     mark.letter === 'S' ? 'solemnity' : mark.letter === 'F' ? 'feast' : mark.letter === 'M' ? 'memory' : null;
-  return { color: colorCode(mark.color), rank };
+  return { color: seasonColor(mark), rank };
 }
 
 // "Solemnitat", "Memòria lliure", "Commemoració": the rank of the day as the day card names it,

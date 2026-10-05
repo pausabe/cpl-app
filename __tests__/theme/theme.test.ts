@@ -120,25 +120,18 @@ function contrast(one: string, other: string): number {
   return (light + 0.05) / (dark + 0.05);
 }
 
-test('the calendar paints a day stronger as its rank grows, and its number can always be read', () => {
+test('the calendar paints the season, and a day and its mark can always be read on it', () => {
   for (const scheme of ['light', 'dark'] as const) {
     const { text } = palettes[scheme];
     for (const code of ['R', 'V', 'M', 'B']) {
       const tones = liturgicalColor(code, scheme).calendar;
+      // The number on the day, as text; the dot or the star on the day, as a drawing
       expect(contrast(text, tones.day)).toBeGreaterThanOrEqual(4.5);
-      expect(contrast(tones.feastText, tones.feast)).toBeGreaterThanOrEqual(4.5);
-      expect(contrast(tones.onSolemnity, tones.solemnity)).toBeGreaterThanOrEqual(4.5);
-      // From soft to strong: a feast stands out of the days around it, and a solemnity more
-      expect(contrast(tones.feast, palettes[scheme].sheet)).toBeGreaterThan(
-        contrast(tones.day, palettes[scheme].sheet),
-      );
-      expect(contrast(tones.solemnity, palettes[scheme].sheet)).toBeGreaterThan(
-        contrast(tones.feast, palettes[scheme].sheet),
-      );
+      expect(contrast(tones.mark, tones.day)).toBeGreaterThanOrEqual(3);
     }
   }
-  expect(liturgicalColor('B', 'light').calendar).toMatchObject({ day: '#F7F1E3', solemnity: '#7A5F14' });
-  expect(liturgicalColor('M', 'dark').calendar).toMatchObject({ solemnity: '#CDB6ED', onSolemnity: '#0E1413' });
+  expect(liturgicalColor('B', 'light').calendar).toMatchObject({ day: '#F7F1E3', mark: '#7A5F14' });
+  expect(liturgicalColor('M', 'dark').calendar).toMatchObject({ mark: '#CDB6ED', square: '#6E5095' });
 });
 
 test('in dark mode a weekday stands out from the background in its colour, and white is not brown', () => {
@@ -146,5 +139,5 @@ test('in dark mode a weekday stands out from the background in its colour, and w
   for (const code of ['R', 'V', 'M', 'B']) {
     expect(contrast(liturgicalColor(code, 'dark').calendar.day, palettes.dark.sheet)).toBeGreaterThanOrEqual(1.5);
   }
-  expect(liturgicalColor('B', 'dark').calendar).toMatchObject({ day: '#534D41', solemnity: '#EFE4C8' });
+  expect(liturgicalColor('B', 'dark').calendar).toMatchObject({ day: '#534D41', mark: '#EFE4C8' });
 });

@@ -8,10 +8,11 @@ import {
   monthAfterSwipe,
   WEEKDAY_INITIALS,
 } from '../../view-models/calendar';
+import RankMark from './RankMark';
 
-// The days of a month, each on its liturgical colour: a solemnity filled with it, a feast in a
-// middle tone, a memorial with a dot, the other days soft. Today has an outline and the day
-// chosen a ring around it. Dragging the month sideways goes to the next or the one before; the
+// The days of a month, each on the colour of its liturgical season, and under the number the mark
+// of its rank: a dot for a memorial, a star for a feast, a filled star for a solemnity. Today has
+// an outline and the day chosen a ring around it. Dragging the month sideways goes to the next or the one before; the
 // row of months does it too, for whoever does not drag.
 interface MonthGridProps {
   month: CalendarMonth;
@@ -80,15 +81,6 @@ export default function MonthGrid({ month, onPick, onSwipe }: MonthGridProps) {
     if (!day) return <View key={`blank-${index}`} style={[styles.cell, { height: cell }]} />;
     const tones = day.look ? theme.liturgical(day.look.color).calendar : null;
     const rank = day.look?.rank ?? null;
-    const background = !tones
-      ? colors.chipBackground
-      : rank === 'solemnity'
-        ? tones.solemnity
-        : rank === 'feast'
-          ? tones.feast
-          : tones.day;
-    const color =
-      tones && rank === 'solemnity' ? tones.onSolemnity : tones && rank === 'feast' ? tones.feastText : colors.text;
     const strong = rank === 'solemnity' || rank === 'feast' || day.today || day.selected || day.date.getDay() === 0;
     const inner = cell - 2 * (RING + GAP);
     return (
@@ -115,18 +107,29 @@ export default function MonthGrid({ month, onPick, onSwipe }: MonthGridProps) {
             testID={`calendar-day-${day.day}-fill`}
             style={[
               styles.day,
-              { width: inner, height: inner, borderRadius: inner * 0.28, backgroundColor: background },
+              {
+                width: inner,
+                height: inner,
+                borderRadius: inner * 0.28,
+                backgroundColor: tones ? tones.day : colors.chipBackground,
+              },
               day.today ? { borderWidth: 2, borderColor: colors.accentText } : null,
             ]}
           >
-            <Text maxFontSizeMultiplier={1.3} style={[styles.dayText, { color, fontWeight: strong ? '700' : '400' }]}>
+            <Text
+              maxFontSizeMultiplier={1.3}
+              style={[
+                styles.dayText,
+                { color: colors.text, fontWeight: strong ? '700' : '400' },
+                rank && tones ? styles.marked : null,
+              ]}
+            >
               {day.day}
             </Text>
-            {rank === 'memory' && tones ? (
-              <View
-                testID={`calendar-day-${day.day}-memory`}
-                style={[styles.dot, { backgroundColor: tones.solemnity }]}
-              />
+            {rank && tones ? (
+              <View style={styles.mark}>
+                <RankMark rank={rank} color={tones.mark} testID={`calendar-day-${day.day}-${rank}`} />
+              </View>
             ) : null}
           </View>
         </Pressable>
@@ -196,11 +199,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontVariant: ['tabular-nums'],
   },
-  dot: {
+  // A number with a mark goes up a little, to leave it room
+  marked: {
+    marginBottom: 7,
+  },
+  mark: {
     position: 'absolute',
-    bottom: 5,
-    width: 5,
-    height: 5,
-    borderRadius: 2.5,
+    bottom: 4,
+    alignItems: 'center',
   },
 });

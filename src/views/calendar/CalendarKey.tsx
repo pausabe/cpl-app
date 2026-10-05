@@ -1,88 +1,79 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LiturgicalColorCode, useTheme } from '../../theme';
+import { DayRank } from '../../view-models/calendar';
+import RankMark from './RankMark';
 
-// What the colours mean, under the month, the year and the wheel. Under the month: the four
-// liturgical colours, each with its tones from soft to strong and named by what most of its days
-// are, and what makes a day of a colour stronger, from the weekday to the solemnity, in the colour
-// most days of the month have. A screen reader does not need it: every day says its rank, and the
-// home its colour.
-const SWATCH = 14;
+// What the calendar says, under the month, the year and the wheel. The colour says only the
+// liturgical season; under the month, the marks say the rank of a day, from the weekday (no mark)
+// to the solemnity, in the colour most days of the month have. A screen reader does not need it:
+// every day says its rank, and the home its colour.
+const SWATCH = 16;
 
-// A short name each, in two columns. Short means incomplete: white is also the Lord, Our Lady and
-// the saints who are not martyrs, and red the Passion and the apostles (General Instruction of
-// the Roman Missal, 346), but one line each was preferred.
-const COLORS: { code: LiturgicalColorCode; label: string }[] = [
+// The seasons by their colour, two to a line
+const SEASONS: { code: LiturgicalColorCode; label: string }[] = [
   { code: 'V', label: "Durant l'any" },
   { code: 'M', label: 'Advent i Quaresma' },
   { code: 'B', label: 'Nadal i Pasqua' },
-  { code: 'R', label: 'Màrtirs i Pentecosta' },
+  { code: 'R', label: 'Tridu pasqual' },
+];
+
+const RANKS: { rank: DayRank | null; label: string }[] = [
+  { rank: null, label: 'Fèria' },
+  { rank: 'memory', label: 'Memòria' },
+  { rank: 'feast', label: 'Festa' },
+  { rank: 'solemnity', label: 'Solemnitat' },
 ];
 
 export function MonthKey({ color }: { color: LiturgicalColorCode }) {
   const theme = useTheme();
   const { colors } = theme;
   const tones = theme.liturgical(color).calendar;
+  // A day in small: the soft tone of its season, with a thin edge (white is almost the background)
+  const day = (tone: string, children?: React.ReactNode, outline?: string) => (
+    <View
+      style={[
+        styles.day,
+        { backgroundColor: tone, borderColor: outline ?? colors.border },
+        outline ? styles.today : null,
+      ]}
+    >
+      {children}
+    </View>
+  );
   return (
     <View testID="calendar-key" style={styles.lines}>
       <Columns>
-        {COLORS.map(({ code, label }) => {
-          const ramp = theme.liturgical(code).calendar;
-          return (
-            <Item key={code} label={label} column={true}>
-              <View style={[styles.ramp, { borderColor: colors.border }]}>
-                <View style={[styles.step, { backgroundColor: ramp.day }]} />
-                <View style={[styles.step, { backgroundColor: ramp.feast }]} />
-                <View style={[styles.step, { backgroundColor: ramp.solemnity }]} />
-              </View>
-            </Item>
-          );
-        })}
+        {SEASONS.map(({ code, label }) => (
+          <Item key={code} label={label} column={true}>
+            {day(theme.liturgical(code).calendar.day)}
+          </Item>
+        ))}
       </Columns>
       <Row>
-        <Item label="Fèria">
-          <View style={[styles.swatch, { backgroundColor: tones.day }]} />
-        </Item>
-        <Item label="Memòria">
-          <View style={[styles.swatch, styles.memory, { backgroundColor: tones.day }]}>
-            <View style={[styles.dot, { backgroundColor: tones.solemnity }]} />
-          </View>
-        </Item>
-        <Item label="Festa">
-          <View style={[styles.swatch, { backgroundColor: tones.feast }]} />
-        </Item>
-        <Item label="Solemnitat">
-          <View style={[styles.swatch, { backgroundColor: tones.solemnity }]} />
-        </Item>
-        <Item label="Avui">
-          <View style={[styles.swatch, { borderWidth: 2, borderColor: colors.accentText }]} />
-        </Item>
+        {RANKS.map(({ rank, label }) => (
+          <Item key={label} label={label}>
+            {day(tones.day, rank ? <RankMark rank={rank} color={tones.mark} size={10} /> : null)}
+          </Item>
+        ))}
+        <Item label="Avui">{day(tones.day, null, colors.accentText)}</Item>
       </Row>
     </View>
   );
 }
 
-// The squares of the year and of the wheel: the middle tone of each colour, and the strong one for
-// a solemnity
+// The squares of the year and the pieces of the wheel: the middle tone of each season
 export function YearKey() {
   const theme = useTheme();
   return (
-    <View testID="calendar-year-key" style={styles.lines}>
+    <View testID="calendar-year-key">
       <Columns>
-        {COLORS.map(({ code, label }) => (
+        {SEASONS.map(({ code, label }) => (
           <Item key={code} label={label} column={true}>
             <View style={[styles.square, { backgroundColor: theme.liturgical(code).calendar.square }]} />
           </Item>
         ))}
       </Columns>
-      <Row>
-        <Item label="Solemnitat">
-          <View style={styles.pair}>
-            <View style={[styles.square, { backgroundColor: theme.liturgical('B').calendar.solemnity }]} />
-            <View style={[styles.square, { backgroundColor: theme.liturgical('M').calendar.solemnity }]} />
-          </View>
-        </Item>
-      </Row>
     </View>
   );
 }
@@ -123,7 +114,7 @@ function Item({ label, children, column = false }: { label: string; children: Re
 
 const styles = StyleSheet.create({
   lines: {
-    gap: 7,
+    gap: 8,
   },
   row: {
     flexDirection: 'row',
@@ -152,39 +143,20 @@ const styles = StyleSheet.create({
   columnLabel: {
     flexShrink: 1,
   },
-  swatch: {
+  day: {
     width: SWATCH,
     height: SWATCH,
-    borderRadius: 4,
-  },
-  // The three tones of a colour, joined: the soft one has a thin edge, white is almost the background
-  ramp: {
-    flexDirection: 'row',
-    borderRadius: 4,
+    borderRadius: 5,
     borderWidth: StyleSheet.hairlineWidth,
-    overflow: 'hidden',
-  },
-  step: {
-    width: 9,
-    height: SWATCH,
-  },
-  memory: {
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 2,
+    justifyContent: 'center',
   },
-  dot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
+  today: {
+    borderWidth: 2,
   },
   square: {
     width: 12,
     height: 12,
     borderRadius: 3,
-  },
-  pair: {
-    flexDirection: 'row',
-    gap: 2,
   },
 });

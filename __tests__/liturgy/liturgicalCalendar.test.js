@@ -9,7 +9,7 @@ const DataService = require('../../src/services/dataService');
 const DatabaseDataService = require('../../src/services/databaseDataService');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
 const { buildDayCard } = require('../../src/view-models/dayCard');
-const { dayLook, rankLabel } = require('../../src/view-models/calendar');
+const { rankLabel } = require('../../src/view-models/calendar');
 const { adventSunday, liturgicalWheel } = require('../../src/view-models/liturgicalYear');
 
 PROFILES.barcelonaCathedral = { diocesis: 'Barcelona', lloc: 'Catedral' };
@@ -130,14 +130,13 @@ describe('a day worked out for the calendar', () => {
     expect((await previewCard('2026-10-08')).celebration.muted).toBe(true);
   });
 
-  test('in a whole year of Barcelona, every day is painted with the rank its card says', async () => {
+  test('in a whole year of Barcelona, every day is marked with the rank its card says', async () => {
     await loadDay('2026-10-05', 'barcelona');
     const different = [];
     for (const mark of await DataService.obtainYearMarks(2026)) {
       const card = await previewCard(mark.date);
-      const painted = rankLabel(mark);
       const said = card.celebration?.typeLabel ?? null;
-      if (painted !== said || dayLook(mark).color !== card.colorCode) different.push(mark.date);
+      if (rankLabel(mark) !== said) different.push(mark.date);
     }
     expect(different).toEqual([]);
   });
@@ -170,7 +169,8 @@ describe('the liturgical year of the database', () => {
     ]);
     expect(wheel.today).not.toBeNull();
     expect(wheel.todayTitle).toBe("Setmana XXVII de durant l'any");
-    // Christmas, Epiphany, Easter, Pentecost, All Saints, Christ the King…
-    expect(wheel.solemnities.length).toBeGreaterThan(12);
+    // Its seasons in their colours: Advent, Christmas, ordinary time, Lent, the Triduum, Easter
+    // and ordinary time again, one piece each, whatever the colour of their days
+    expect(wheel.arcs.map((arc) => arc.color)).toEqual(['M', 'B', 'V', 'M', 'R', 'B', 'V']);
   });
 });

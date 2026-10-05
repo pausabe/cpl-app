@@ -4,10 +4,10 @@ import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 import { useTheme } from '../../theme';
 import Icon from '../../components/Icon';
 import { dayAtPoint, LiturgicalWheel, MilestoneRow, WHEEL } from '../../view-models/liturgicalYear';
+import RankMark from './RankMark';
 
-// The liturgical year as a wheel, from the first Sunday of Advent at the top, clockwise: every
-// day in its colour, the solemnities in the strong one, the seasons named around it and today
-// marked. A touch on the ring opens that month. Under it, the dates worth going to.
+// The liturgical year as a wheel, from the first Sunday of Advent at the top, clockwise: its
+// seasons in their colours and named around it, and today marked. A touch on the ring opens that month. Under it, the dates worth going to.
 interface LiturgicalYearWheelProps {
   wheel: LiturgicalWheel;
   // As wide as the screen, up to this
@@ -52,9 +52,6 @@ export default function LiturgicalYearWheel({ wheel, maxWidth = WHEEL.width, onP
             />
             {wheel.arcs.map((arc, index) => (
               <Path key={`arc-${index}`} d={arc.d} fill={theme.liturgical(arc.color).calendar.square} />
-            ))}
-            {wheel.solemnities.map((mark, index) => (
-              <Path key={`solemnity-${index}`} d={mark.d} fill={theme.liturgical(mark.color).calendar.solemnity} />
             ))}
             {wheel.cuts.map((cut) => (
               <Path key={cut} d={cut} stroke={colors.sheet} strokeWidth={2.5} />
@@ -149,7 +146,14 @@ export function MilestoneList({ title, rows, onPick }: MilestoneListProps) {
             { backgroundColor: colors.chipBackground, borderRadius: theme.radius.tile, opacity: pressed ? 0.7 : 1 },
           ]}
         >
-          <View style={[styles.swatch, { backgroundColor: theme.liturgical(row.color).calendar.solemnity }]} />
+          {/* A solemnity has its star, in the colour of its season; the start of a season, its colour */}
+          <View style={styles.badge}>
+            {row.kind === 'solemnity' ? (
+              <RankMark rank="solemnity" color={theme.liturgical(row.color).calendar.mark} size={14} />
+            ) : (
+              <View style={[styles.swatch, { backgroundColor: theme.liturgical(row.color).calendar.square }]} />
+            )}
+          </View>
           <View style={styles.texts}>
             <Text maxFontSizeMultiplier={scale} numberOfLines={2} style={[styles.rowTitle, { color: colors.text }]}>
               {row.title}
@@ -201,6 +205,10 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingLeft: 14,
     paddingRight: 10,
+  },
+  badge: {
+    width: 14,
+    alignItems: 'center',
   },
   swatch: {
     width: 12,

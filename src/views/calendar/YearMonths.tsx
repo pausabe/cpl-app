@@ -3,9 +3,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../theme';
 import { MiniMonth, YearOverview } from '../../view-models/liturgicalYear';
 
-// The twelve months of a year in small, three or four in a row, every day a square of its colour
-// and the solemnities in the strong one: Lent, Easter and Advent can be seen at a glance. A touch
-// opens the month. The month the calendar was showing is framed, and the month of today has its
+// The twelve months of a year in small, three or four in a row, every day a square in the colour of
+// its season: Advent, Christmas, Lent and Easter can be seen at a glance. A touch opens the month. The month the calendar was showing is framed, and the month of today has its
 // name in colour and today's square outlined.
 interface YearMonthsProps {
   overview: YearOverview;
@@ -75,7 +74,7 @@ function MiniMonthTile({ month, width, onPick }: MiniMonthTileProps) {
                 <View
                   style={[
                     styles.square,
-                    { backgroundColor: tones ? (day.solemnity ? tones.solemnity : tones.square) : colors.divider },
+                    { backgroundColor: tones ? tones.square : colors.divider },
                     day.today ? { borderWidth: 1.5, borderColor: colors.accentText } : null,
                   ]}
                 />

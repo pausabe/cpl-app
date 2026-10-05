@@ -14,6 +14,7 @@ import {
   monthTitle,
   rankLabel,
   sameDay,
+  seasonColor,
   shiftMonth,
   WEEKDAY_INITIALS,
 } from '../../src/view-models/calendar';
@@ -97,18 +98,31 @@ test('a day is found in the marks by its local date', () => {
   expect(dateOfIso('2026-12-08')).toEqual(new Date(2026, 11, 8));
 });
 
-describe('every day on its colour, as strong as its rank', () => {
-  test('a solemnity, a feast and a memorial are painted; an optional memorial and a weekday are not', () => {
-    expect(dayLook(mark('2026-12-08', { color: 'B', letter: 'S' }))).toEqual({ color: 'B', rank: 'solemnity' });
-    expect(dayLook(mark('2026-10-12', { color: 'B', letter: 'F' }))).toEqual({ color: 'B', rank: 'feast' });
-    expect(dayLook(mark('2026-10-17', { color: 'R', letter: 'M' }))).toEqual({ color: 'R', rank: 'memory' });
+describe('every day on the colour of its season, with a mark for its rank', () => {
+  test('the colour is the season, whatever the colour of the day itself', () => {
+    // The Immaculate Conception is white, in Advent: purple
+    expect(dayLook(mark('2026-12-08', { color: 'B', letter: 'S', season: 'Advent' }))).toEqual({
+      color: 'M',
+      rank: 'solemnity',
+    });
+    // Our Lady of the Pillar is white, and St Ignatius of Antioch red, in ordinary time: green
+    expect(dayLook(mark('2026-10-12', { color: 'B', letter: 'F' }))).toEqual({ color: 'V', rank: 'feast' });
+    expect(dayLook(mark('2026-10-17', { color: 'R', letter: 'M' }))).toEqual({ color: 'V', rank: 'memory' });
+    expect(seasonColor(mark('2026-12-26', { color: 'R', season: 'Nadal' }))).toBe('B');
+    expect(seasonColor(mark('2026-03-01', { season: 'Quaresma' }))).toBe('M');
+    expect(seasonColor(mark('2026-04-12', { season: 'Pasqua' }))).toBe('B');
+    expect(seasonColor(mark('2026-04-03', { color: 'R', season: 'Tridu Pasqual' }))).toBe('R');
+  });
+
+  test('a solemnity, a feast and a memorial have a mark; an optional memorial and a weekday have not', () => {
     expect(dayLook(mark('2026-10-06', { letter: 'L' }))).toEqual({ color: 'V', rank: null });
     expect(dayLook(mark('2026-10-31', { letter: 'V' }))).toEqual({ color: 'V', rank: null });
     expect(dayLook(mark('2026-10-13'))).toEqual({ color: 'V', rank: null });
   });
 
-  test('a colour the database does not use is green, as on the day card', () => {
-    expect(dayLook(mark('2026-10-13', { color: 'X' })).color).toBe('V');
+  test('a season the calendar does not know takes the colour of the day, and green if it has none', () => {
+    expect(seasonColor(mark('2026-10-13', { season: '', color: 'R' }))).toBe('R');
+    expect(dayLook(mark('2026-10-13', { season: '', color: 'X' })).color).toBe('V');
   });
 
   test('the rank is named as the day card names it: a memorial in Lent is a commemoration', () => {
@@ -127,7 +141,7 @@ describe('every day on its colour, as strong as its rank', () => {
     const october = calendarMonth({ year: 2026, month: 9, today: new Date(2026, 9, 5), marks });
     const day = (n: number) => october.weeks.flat().find((d) => d?.day === n)!;
     expect(day(12).label).toBe('dilluns, 12 d’octubre, festa');
-    expect(day(12).look).toEqual({ color: 'B', rank: 'feast' });
+    expect(day(12).look).toEqual({ color: 'V', rank: 'feast' });
     expect(day(6).label).toBe('dimarts, 6 d’octubre, memòria lliure');
     expect(day(5).label).toBe('dilluns, 5 d’octubre, memòria obligatòria, avui');
     // A day not loaded yet: no colour, and its date alone
@@ -145,8 +159,12 @@ describe('every day on its colour, as strong as its rank', () => {
     ).toBe('M');
     expect(mainColor([])).toBeNull();
     expect(calendarMonth({ year: 2026, month: 9, today }).color).toBeNull();
-    const marks = byDate(mark('2026-10-01', { color: 'B' }), mark('2026-10-02', { color: 'B' }), mark('2026-10-03'));
-    expect(calendarMonth({ year: 2026, month: 9, today, marks }).color).toBe('B');
+    const marks = byDate(
+      mark('2026-12-23', { season: 'Advent' }),
+      mark('2026-12-24', { season: 'Advent' }),
+      mark('2026-12-25', { season: 'Nadal' }),
+    );
+    expect(calendarMonth({ year: 2026, month: 11, today, marks }).color).toBe('M');
   });
 });
 
