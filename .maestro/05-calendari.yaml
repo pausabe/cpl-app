@@ -9,11 +9,11 @@ name: "The day can be changed with the calendar"
 - tapOn:
     id: "calendar-year-month-${new Date().getMonth() + 1}"
 - assertVisible: ".* de ${new Date().getFullYear() - 1}"
-# The app's calendar, the same on Android and iOS: day 15 of the month it shows, and «Mostra aquest
-# dia». Each day is a button «dimarts, 15 de setembre» (and its rank, if it has one) with the number
+# The app's calendar, the same on Android and iOS: day 15 of the month it shows, and «Selecciona».
+# Each day is a button «dimarts, 15 de setembre» (and its rank, if it has one) with the number
 # inside: on Android the number is tapped; on iOS, the button.
 - tapOn: "15|[^ ]+, 15 d.+"
-- tapOn: "Mostra aquest dia"
+- tapOn: "Selecciona"
 # The date, in words on the day's card
 - extendedWaitUntil:
     visible: "Di[a-z]+, 15 d.+"

@@ -222,7 +222,7 @@ async function leaveCalendar() {
 
 const calendarTitle = () => screen.getByTestId('calendar-title').props.children;
 
-test('the calendar is a screen of its own: back changes nothing, «Mostra aquest dia» changes the day', async () => {
+test('the calendar is a screen of its own: back changes nothing, «Selecciona» changes the day', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   expect(await screen.findByTestId('calendar')).toBeTruthy();
@@ -234,7 +234,7 @@ test('the calendar is a screen of its own: back changes nothing, «Mostra aquest
 
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   fireEvent.press(await screen.findByRole('button', { name: /^dimarts, 15 de setembre/ }));
-  fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+  fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
   await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dimarts, 15 de setembre');
 });
@@ -245,7 +245,7 @@ test('in the calendar you move from month to month, and «Avui» goes back to to
   fireEvent.press(await screen.findByRole('button', { name: 'octubre de 2026' }));
   expect(calendarTitle()).toBe('Octubre de 2026');
   fireEvent.press(screen.getByRole('button', { name: /^dissabte, 31 d’octubre/ }));
-  fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+  fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
   await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dissabte, 31 d’octubre');
 
@@ -312,7 +312,7 @@ test('the whole year and the wheel of the liturgical year, in their tabs', async
     await screen.findByRole('button', { name: 'Tots Sants, Solemnitat · diumenge, 1 de novembre' }, { timeout: 15000 }),
   ).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: /^Tots Sants/ }));
-  fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+  fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
   await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Diumenge, 1 de novembre');
 });

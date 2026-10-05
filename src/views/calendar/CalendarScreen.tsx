@@ -27,7 +27,7 @@ import LiturgicalYearWheel, { MilestoneList } from './LiturgicalYearWheel';
 // painted on it. Three tabs on top:
 // - Mes: every day on its liturgical colour, as strong as its rank, and under the month what the
 //   day touched is, before going to it. Another month is a drag sideways or a touch on the row
-//   of months. At the bottom, always in sight, «Avui» and «Mostra aquest dia».
+//   of months. At the bottom, always in sight, «Avui» and «Selecciona».
 // - Any: the twelve months in small, a square of colour per day, with arrows from year to year;
 //   a touch opens the month.
 // - Any litúrgic: the year as a wheel from Advent, today marked, with the dates that come next.
@@ -306,7 +306,7 @@ export default function CalendarScreen({
             ]}
           >
             <ActionButton label="Avui" variant="outlined" onPress={onToday} style={styles.action} />
-            <ActionButton label="Mostra aquest dia" onPress={() => onChange(selected)} style={styles.action} />
+            <ActionButton label="Selecciona" onPress={() => onChange(selected)} style={styles.action} />
           </View>
         </View>
       ) : null}

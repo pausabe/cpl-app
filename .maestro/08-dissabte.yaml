@@ -14,7 +14,7 @@ name: "Saturday: the evening Mass and the optional memorial"
       - tapOn:
           id: "calendar-month-${output.month}"
 - tapOn: "${output.day}|[^ ]+, ${output.day} d.+"
-- tapOn: "Mostra aquest dia"
+- tapOn: "Selecciona"
 - extendedWaitUntil:
     visible: "Dissabte, .+"
     timeout: 15000

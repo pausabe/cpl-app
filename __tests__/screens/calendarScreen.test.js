@@ -150,7 +150,7 @@ describe('the month', () => {
 });
 
 describe('the day touched', () => {
-  test('is chosen, says what it is before going to it, and «Mostra aquest dia» goes to it', () => {
+  test('is chosen, says what it is before going to it, and «Selecciona» goes to it', () => {
     const { onChange, onNeedPreviews, rerender } = open();
     expect(onNeedPreviews).toHaveBeenLastCalledWith([new Date(2026, 8, 21)]);
     fireEvent.press(day('dijous, 24 de setembre, solemnitat'));
@@ -168,7 +168,7 @@ describe('the day touched', () => {
     expect(within(preview()).getByText('Mare de Déu de la Mercè')).toBeTruthy();
     expect(within(preview()).getByText('Solemnitat')).toBeTruthy();
     expect(styleOf(preview()).backgroundColor).toBe('#F7F1E3');
-    fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
     expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 24));
   });
 
@@ -214,7 +214,7 @@ describe('the row of months', () => {
     expect(screen.queryByRole('button', { name: 'agost de 2026' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'octubre de 2026' })).toBeNull();
     fireEvent.press(day('dissabte, 26 de setembre, memòria lliure'));
-    fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
     expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 21));
   });
 });
@@ -298,7 +298,7 @@ describe('the wheel of the liturgical year', () => {
     fireEvent.press(screen.getByRole('button', { name: 'Solemnitat, Diumenge, 1 de novembre' }));
     expect(title()).toBe('Novembre de 2026');
     expect(day('diumenge, 1 de novembre, solemnitat').props.accessibilityState.selected).toBe(true);
-    fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
     expect(onChange).toHaveBeenCalledWith(new Date(2026, 10, 1));
   });
 
