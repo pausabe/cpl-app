@@ -4,12 +4,10 @@ import { LiturgicalColorCode, useTheme } from '../../theme';
 import { DayRank } from '../../view-models/calendar';
 import RankLetter from './RankLetter';
 
-// What the calendar says, under the month, the year and the wheel. Under the month, three things,
-// each one apart: the background is the season; the letter is the celebration (M, F, S); and the
-// colour of the letter is the colour of the celebration. A weekday has no letter, and today is
-// plain to see: neither needs a word. A screen reader does not need any of it: every day says its
-// rank, and the home its colour.
-const SWATCH = 16;
+// What the calendar says that cannot be seen. Under the month, only what the letters mean: the
+// season is named over the month, the colour of a letter is plain to see, and so are a weekday
+// and today. Under the year, the colours of the seasons, which are not named there. A screen
+// reader does not need any of it: every day says its rank, and the home its colour.
 
 // The seasons by their colour, two to a line
 const SEASONS: { code: LiturgicalColorCode; label: string }[] = [
@@ -25,49 +23,14 @@ const RANKS: { rank: DayRank; label: string }[] = [
   { rank: 'solemnity', label: 'Solemnitat' },
 ];
 
-// The liturgical colours a celebration can have, by their name
-const COLORS: { code: LiturgicalColorCode; label: string }[] = [
-  { code: 'B', label: 'Blanc' },
-  { code: 'V', label: 'Verd' },
-  { code: 'M', label: 'Morat' },
-  { code: 'R', label: 'Vermell' },
-];
-
 export function MonthKey() {
   const theme = useTheme();
-  const { colors } = theme;
-  const heading = (text: string) => (
-    <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.heading, { color: colors.text3 }]}>
-      {text}
-    </Text>
-  );
   return (
-    <View testID="calendar-key" style={styles.lines} {...hidden}>
-      {heading('El fons: el temps')}
-      <Columns>
-        {SEASONS.map(({ code, label }) => (
-          <Item key={code} label={label} column={true}>
-            <View
-              style={[styles.day, { backgroundColor: theme.liturgical(code).calendar.day, borderColor: colors.border }]}
-            />
-          </Item>
-        ))}
-      </Columns>
-      {heading('La lletra: la celebració')}
+    <View testID="calendar-key" {...hidden}>
       <Row>
         {RANKS.map(({ rank, label }) => (
           <Item key={label} label={label}>
-            <RankLetter rank={rank} color={colors.text2} size={17} />
-          </Item>
-        ))}
-      </Row>
-      <Row>
-        <Text maxFontSizeMultiplier={theme.maxFontScaleForLabels} style={[styles.label, { color: colors.text2 }]}>
-          Color de la celebració:
-        </Text>
-        {COLORS.map(({ code, label }) => (
-          <Item key={code} label={label}>
-            <View style={[styles.dot, { backgroundColor: theme.liturgical(code).calendar.mark }]} />
+            <RankLetter rank={rank} color={theme.colors.text2} size={17} />
           </Item>
         ))}
       </Row>
@@ -126,9 +89,6 @@ function Item({ label, children, column = false }: { label: string; children: Re
 }
 
 const styles = StyleSheet.create({
-  lines: {
-    gap: 8,
-  },
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -156,23 +116,6 @@ const styles = StyleSheet.create({
   // On a narrow phone a long name goes on to a second line inside its column
   columnLabel: {
     flexShrink: 1,
-  },
-  day: {
-    width: SWATCH,
-    height: SWATCH,
-    borderRadius: 5,
-    borderWidth: StyleSheet.hairlineWidth,
-  },
-  heading: {
-    fontSize: 11.5,
-    fontWeight: '700',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-  },
-  dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
   },
   square: {
     width: 12,

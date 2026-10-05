@@ -275,12 +275,12 @@ export default function CalendarScreen({
         {stepper(wheel.title, 'Any litúrgic', wheel.canGoBack, wheel.canGoForward, (delta) =>
           setWheelYear(wheelYear + delta),
         )}
+        {/* Its seasons are named around it: no key */}
         <LiturgicalYearWheel
           wheel={wheel}
           maxWidth={WHEEL_MAX_WIDTH}
           onPickDay={(date) => showMonth(date.getFullYear(), date.getMonth())}
         />
-        <YearKey />
         <MilestoneList
           title={wheelIsToday ? 'Properament' : 'Dates principals'}
           rows={milestones.map((m) => milestoneRow(m, m.kind === 'solemnity' ? titleOf(previews[m.key]) : null))}

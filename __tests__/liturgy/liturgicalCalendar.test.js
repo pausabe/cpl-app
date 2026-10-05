@@ -9,7 +9,8 @@ const DataService = require('../../src/services/dataService');
 const DatabaseDataService = require('../../src/services/databaseDataService');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
 const { buildDayCard } = require('../../src/view-models/dayCard');
-const { rankLabel } = require('../../src/view-models/calendar');
+const { rankLabel, seasonColor } = require('../../src/view-models/calendar');
+const { colorCode } = require('../../src/view-models/dayCard');
 const { adventSunday, liturgicalWheel } = require('../../src/view-models/liturgicalYear');
 
 PROFILES.barcelonaCathedral = { diocesis: 'Barcelona', lloc: 'Catedral' };
@@ -60,6 +61,20 @@ describe('the marks of a year', () => {
       const day = await DatabaseDataService.obtainLiturgySpecificDayInformation(dateOf(mark.date), settings);
       expect([mark.date, mark.letter, mark.color]).toEqual([mark.date, day.celebrationType, day.liturgyColor]);
     }
+  });
+
+  test('a day without a letter has the colour of its season, but for three days of Holy Week', async () => {
+    // The background of a day says its season and the letter its celebration: a day without one
+    // shows no colour of its own. Only Palm Sunday (red), Holy Thursday (white) and Holy Saturday
+    // (purple) have one that is not their season's; their card says it.
+    const own = marks.filter(
+      (mark) => !['S', 'F', 'M'].includes(mark.letter) && colorCode(mark.color) !== seasonColor(mark),
+    );
+    expect(own.map((mark) => [mark.date, mark.color])).toEqual([
+      ['2026-03-29', 'R'],
+      ['2026-04-02', 'B'],
+      ['2026-04-04', 'M'],
+    ]);
   });
 
   test('another place, another rank: Our Lady of Mercy is a feast in Terrassa', async () => {

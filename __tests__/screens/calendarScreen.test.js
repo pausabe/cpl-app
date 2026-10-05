@@ -147,33 +147,20 @@ describe('the month', () => {
     expect(day('dijous, 24 de setembre')).toBeTruthy();
   });
 
-  test('under it, what it says: the background the season, the letter the celebration, its colour the colour', () => {
+  test('under it, only what the letters mean: the season is named over it, and colours are plain to see', () => {
     open({ marks: {} });
     const key = screen.getByTestId('calendar-key', { includeHiddenElements: true });
-    const words = [
-      'El fons: el temps',
-      "Durant l'any",
-      'Advent i Quaresma',
-      'Nadal i Pasqua',
-      'Tridu pasqual',
-      'La lletra: la celebració',
-      'M',
-      'Memòria',
-      'F',
-      'Festa',
-      'S',
-      'Solemnitat',
-      'Color de la celebració:',
-      'Blanc',
-      'Verd',
-      'Morat',
-      'Vermell',
-    ];
-    for (const word of words) expect(within(key).getByText(word, { includeHiddenElements: true })).toBeTruthy();
-    // No word for a weekday nor for today, which are plain to see
-    expect(within(key).queryByText(/Fèria|Avui/, { includeHiddenElements: true })).toBeNull();
+    for (const word of ['M', 'Memòria', 'F', 'Festa', 'S', 'Solemnitat']) {
+      expect(within(key).getByText(word, { includeHiddenElements: true })).toBeTruthy();
+    }
+    // No seasons, no colours, no word for a weekday nor for today
+    expect(
+      within(key).queryByText(/Durant|Advent|Nadal|Tridu|Color|Blanc|Vermell|Fèria|Avui/, {
+        includeHiddenElements: true,
+      }),
+    ).toBeNull();
     // Before the year is loaded too, so that the screen does not jump; a screen reader skips it
-    expect(screen.queryByText('La lletra: la celebració')).toBeNull();
+    expect(screen.queryByText('Memòria')).toBeNull();
   });
 
   test('in dark mode, the dark colours', () => {
@@ -273,6 +260,11 @@ describe('the whole year', () => {
     expect(months[8].props.accessibilityState.selected).toBe(true);
     expect(screen.queryByTestId('calendar-day-21')).toBeNull();
     expect(screen.queryByTestId('calendar-footer')).toBeNull();
+    // The seasons are not named here: their colours are, under the months
+    const yearKey = screen.getByTestId('calendar-year-key', { includeHiddenElements: true });
+    for (const season of ["Durant l'any", 'Advent i Quaresma', 'Nadal i Pasqua', 'Tridu pasqual']) {
+      expect(within(yearKey).getByText(season, { includeHiddenElements: true })).toBeTruthy();
+    }
   });
 
   test('arrows go from year to year, and a month opens with a touch', () => {
@@ -321,8 +313,8 @@ describe('the wheel of the liturgical year', () => {
       new Date(2026, 10, 22),
     ]);
     expect(screen.getByText('Properament')).toBeTruthy();
-    const yearKey = screen.getByTestId('calendar-year-key', { includeHiddenElements: true });
-    expect(within(yearKey).getByText('Advent i Quaresma', { includeHiddenElements: true })).toBeTruthy();
+    // Its seasons are named around it: no key
+    expect(screen.queryByTestId('calendar-year-key', { includeHiddenElements: true })).toBeNull();
     expect(screen.getByRole('button', { name: 'Solemnitat, Dijous, 24 de setembre' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Solemnitat, Diumenge, 1 de novembre' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Solemnitat, Diumenge, 22 de novembre' })).toBeTruthy();
