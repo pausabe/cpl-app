@@ -7,6 +7,10 @@ export interface TechnicalData {
   databaseVersion: string;
   technical: string[];
   logs: string;
+  // The identifier this phone is counted with, on its own: it is what goes on the publishing
+  // website's list of test phones, and picking it out of the whole report was a chore. A phone
+  // that has never reported has none.
+  device?: string;
 }
 
 // The two versions, which are in plain sight without touching anything. The second one is not a
