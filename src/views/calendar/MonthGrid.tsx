@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, PanResponder, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../../theme';
+import { useTheme } from '../../theme';
 import {
   CalendarDay,
   CalendarMonth,
   isSidewaysDrag,
   monthAfterSwipe,
   WEEKDAY_INITIALS,
-} from '../../../view-models/calendar';
+} from '../../view-models/calendar';
 
 // The days of a month, each on its liturgical colour: a solemnity filled with it, a feast in a
 // middle tone, a memorial with a dot, the other days soft. Today has an outline and the day
@@ -41,7 +41,7 @@ export default function MonthGrid({ month, onPick, onSwipe }: MonthGridProps) {
   const [swipe] = useState(() => {
     const settle = () => Animated.spring(shift, { toValue: 0, bounciness: 0, useNativeDriver: true }).start();
     return PanResponder.create({
-      // Only sideways: a touch chooses a day, and a drag down is the sheet's
+      // Only sideways: a touch chooses a day, and a drag up or down scrolls the screen
       onMoveShouldSetPanResponderCapture: (_, gesture) => isSidewaysDrag(gesture.dx, gesture.dy),
       onPanResponderMove: (_, gesture) => {
         const { canGoBack, canGoForward } = latest.current;

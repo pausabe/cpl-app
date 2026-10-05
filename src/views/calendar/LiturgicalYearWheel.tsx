@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import { GestureResponderEvent, Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
-import { useTheme } from '../../../theme';
-import Icon from '../../../components/Icon';
-import { dayAtPoint, LiturgicalWheel, MilestoneRow, WHEEL } from '../../../view-models/liturgicalYear';
+import { useTheme } from '../../theme';
+import Icon from '../../components/Icon';
+import { dayAtPoint, LiturgicalWheel, MilestoneRow, WHEEL } from '../../view-models/liturgicalYear';
 
 // The liturgical year as a wheel, from the first Sunday of Advent at the top, clockwise: every
 // day in its colour, the solemnities in the strong one, the seasons named around it and today
 // marked. A touch on the ring opens that month. Under it, the dates worth going to.
 interface LiturgicalYearWheelProps {
   wheel: LiturgicalWheel;
+  // As wide as the screen, up to this
+  maxWidth?: number;
   onPickDay: (date: Date) => void;
 }
 
-export default function LiturgicalYearWheel({ wheel, onPickDay }: LiturgicalYearWheelProps) {
+export default function LiturgicalYearWheel({ wheel, maxWidth = WHEEL.width, onPickDay }: LiturgicalYearWheelProps) {
   const theme = useTheme();
   const { colors } = theme;
-  const [width, setWidth] = useState(WHEEL.width);
+  const [width, setWidth] = useState(Math.min(WHEEL.width, maxWidth));
   const height = (width * WHEEL.height) / WHEEL.width;
   const scale = width / WHEEL.width;
 
@@ -29,8 +31,8 @@ export default function LiturgicalYearWheel({ wheel, onPickDay }: LiturgicalYear
   };
 
   return (
-    <View style={styles.frame} onLayout={(event) => setWidth(Math.min(WHEEL.width, event.nativeEvent.layout.width))}>
-      {/* One image for a screen reader, which reaches the months from «Mesos» */}
+    <View style={styles.frame} onLayout={(event) => setWidth(Math.min(maxWidth, event.nativeEvent.layout.width))}>
+      {/* One image for a screen reader, which reaches the months from «Any» */}
       <View
         testID="calendar-wheel"
         accessible={true}

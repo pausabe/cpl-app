@@ -6,7 +6,7 @@ import React from 'react';
 import { screen, within, fireEvent } from '@testing-library/react-native';
 import { renderWithTheme, styleOf } from '../helpers/renderWithTheme';
 import HoursGrid from '../../src/views/home/HoursGrid';
-import CalendarSheet from '../../src/views/home/CalendarSheet';
+import CalendarScreen from '../../src/views/calendar/CalendarScreen';
 import SegmentedControl from '../../src/components/SegmentedControl';
 import { buildHours } from '../../src/view-models/hours';
 import { fitLabel } from '../../src/theme';
@@ -64,15 +64,7 @@ test('the theme options are not broken', () => {
 });
 
 test('the month of the calendar is not broken in two', () => {
-  renderWithTheme(
-    <CalendarSheet
-      visible={true}
-      value={new Date(2026, 8, 21)}
-      onClose={jest.fn()}
-      onToday={jest.fn()}
-      onChange={jest.fn()}
-    />,
-  );
+  renderWithTheme(<CalendarScreen value={new Date(2026, 8, 21)} onToday={jest.fn()} onChange={jest.fn()} />);
   expect(label('Setembre de 2026').props).toMatchObject({
     numberOfLines: 2,
     adjustsFontSizeToFit: true,

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../../theme';
-import { longDate } from '../../../view-models/catalanText';
-import { DayCard } from '../../../view-models/dayCard';
+import { useTheme } from '../../theme';
+import { longDate } from '../../view-models/catalanText';
+import { DayCard } from '../../view-models/dayCard';
 
 // The day touched, before changing to it: what the home will say of it, on its colour. The date
 // is there at once; the rest as soon as the day has been worked out. An optional memorial that
@@ -63,7 +63,7 @@ export default function DayPreviewCard({ date, card }: DayPreviewCardProps) {
 }
 
 const styles = StyleSheet.create({
-  // As tall as a day with a celebration on one line, so that the sheet does not jump from one day
+  // As tall as a day with a celebration on one line, so that the screen does not jump from one day
   // to the next
   card: {
     minHeight: 100,

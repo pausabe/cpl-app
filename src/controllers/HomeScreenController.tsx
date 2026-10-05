@@ -11,20 +11,19 @@ import StorageKeys from '../services/storage/storageKeys';
 import { useAppUpdateNotice } from '../services/appUpdateService';
 import { SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 import * as LiturgyStore from './liturgyStore';
+import * as CalendarStore from './calendarStore';
 import { followSystemAppearance } from './appearanceSettings';
 import { useTheme } from '../theme';
 import HeaderButton from '../components/HeaderButton';
 import HomeScreen from '../views/home/HomeScreen';
 import LatePrayerDialog from '../views/home/LatePrayerDialog';
-import CalendarSheet from '../views/home/CalendarSheet';
 import WhatsNewSheet from '../views/home/WhatsNewSheet';
 import DioceseSheet from '../views/home/DioceseSheet';
 import WebSheet from '../components/WebSheet';
 import { wasOpenedBefore } from './firstRun';
 import LoadError from '../views/home/LoadError';
-import { buildDayCard, DayCard } from '../view-models/dayCard';
-import { DayMarks, isoDate } from '../view-models/calendar';
-import type { DayMark } from './liturgyStore';
+import { buildDayCard } from '../view-models/dayCard';
+import { dateOfIso } from '../view-models/calendar';
 import { buildHours, HourTile } from '../view-models/hours';
 import { buildMass, massChoiceToStore, MassChoice, MassScreenType, resolveMassChoice } from '../view-models/mass';
 import { DioceseOfferTexts, dioceseOfferTexts, latePrayerTexts, LocationStatus } from '../view-models/notices';
@@ -33,9 +32,9 @@ import { autoselectDiocese, shouldOfferAutoselection } from './dioceseAutoselect
 
 // The home. It loads the day when the app opens and when the day changes, and keeps doing what
 // it always did: coming back to the app on another day loads today's liturgy, between midnight
-// and 3 h it asks whether yesterday's is wanted, the calendar changes the day, and the switch of
-// an optional memorial is remembered for the day. It builds what the home shows (ViewModels) and
-// gives it to the view (Views/Home/HomeScreen), which only draws.
+// and 3 h it asks whether yesterday's is wanted, the calendar (a screen of its own) changes the
+// day, and the switch of an optional memorial is remembered for the day. It builds what the home
+// shows (ViewModels) and gives it to the view (Views/Home/HomeScreen), which only draws.
 
 const LOAD_ERROR_MESSAGE =
   "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
@@ -53,30 +52,6 @@ const DIOCESE_OFFER_SEEN_KEY = 'DioceseOfferSeen';
 const DIOCESES = Object.values(DioceseName) as string[];
 
 type Status = 'loading' | 'ready' | 'error';
-
-// What the calendar asked for since the data last changed: the years and the days already on
-// their way or there, and the days it wants now. And the rank of every day worked out, which is
-// the one the calendar paints: where the database gives a place a celebration it has no texts
-// for, the day is a weekday on the home, and so in the calendar once it is known.
-function newCalendarCache(revision: number) {
-  return {
-    revision,
-    years: new Set<number>(),
-    days: new Set<string>(),
-    wanted: new Set<string>(),
-    letters: new Map<string, string>(),
-  };
-}
-
-// The marks of a year with the ranks already worked out
-function withLetters(before: DayMarks, marks: DayMark[], letters: Map<string, string>): DayMarks {
-  const next = { ...before };
-  for (const mark of marks) {
-    const letter = letters.get(mark.date);
-    next[mark.date] = letter === undefined ? mark : { ...mark, letter };
-  }
-  return next;
-}
 
 function isLatePrayer(): boolean {
   const hour = new Date().getHours();
@@ -109,7 +84,7 @@ function useCurrentHour(): number {
   return hour;
 }
 
-export default function HomeScreenController({ navigation }: { navigation: any }) {
+export default function HomeScreenController({ navigation, route }: { navigation: any; route?: any }) {
   const theme = useTheme();
   const snapshot = LiturgyStore.useLiturgy();
   const hour = useCurrentHour();
@@ -117,13 +92,6 @@ export default function HomeScreenController({ navigation }: { navigation: any }
   const [databaseAssets, databaseAssetsError] = useAssets([require('../assets/db/cpl-app.db')]);
   const [status, setStatus] = useState<Status>(LiturgyStore.isLoaded() ? 'ready' : 'loading');
   const [latePrayerVisible, setLatePrayerVisible] = useState(false);
-  const [calendarVisible, setCalendarVisible] = useState(false);
-  // What the calendar paints: the colour and rank of the days of the years it showed, and what the
-  // home would show of the days touched. Kept while the data does not change (the same revision).
-  const [calendarMarks, setCalendarMarks] = useState<DayMarks>({});
-  const [calendarPreviews, setCalendarPreviews] = useState<Record<string, DayCard>>({});
-  const calendarCache = useRef(newCalendarCache(-1));
-  const shownDayCard = useRef<{ key: string; card: DayCard; letter: string } | null>(null);
   const [whatsNewPending, setWhatsNewPending] = useState(false);
   // The words of the offer to find the diocese, and null while there is nothing to offer
   const [dioceseOffer, setDioceseOffer] = useState<{ texts: DioceseOfferTexts; current: string } | null>(null);
@@ -199,7 +167,6 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       const now = new Date();
       if (!DateManagement.datesAreTheEqual(now, LiturgyStore.lastRefreshDate())) {
         navigation.popToTop();
-        setCalendarVisible(false);
         setLatePrayerVisible(false);
         await load(now);
       }
@@ -215,80 +182,16 @@ export default function HomeScreenController({ navigation }: { navigation: any }
     };
   }, [navigation, load]);
 
-  // --- The calendar ----------------------------------------------------------------------------
-  // It opens with what it already had, unless the data changed since (another day, a setting, a
-  // new database), and with the card of the day shown, which needs no working out
-  const prepareCalendar = useCallback(() => {
-    const { revision } = LiturgyStore.getSnapshot();
-    const shownCard = shownDayCard.current;
-    if (calendarCache.current.revision === revision) return;
-    calendarCache.current = newCalendarCache(revision);
-    setCalendarMarks({});
-    setCalendarPreviews(shownCard ? { [shownCard.key]: shownCard.card } : {});
-    if (shownCard) {
-      calendarCache.current.days.add(shownCard.key);
-      calendarCache.current.letters.set(shownCard.key, shownCard.letter);
-    }
-  }, []);
-
-  const openCalendar = useCallback(() => {
-    prepareCalendar();
-    setCalendarVisible(true);
-  }, [prepareCalendar]);
-
-  const needCalendarYears = useCallback((years: number[]) => {
-    const cache = calendarCache.current;
-    for (const year of years) {
-      if (cache.years.has(year)) continue;
-      cache.years.add(year);
-      LiturgyStore.yearMarks(year)
-        .then((marks) => {
-          if (calendarCache.current !== cache) return;
-          setCalendarMarks((before) => withLetters(before, marks, cache.letters));
-        })
-        .catch((error) => {
-          cache.years.delete(year);
-          Logger.logError(Logger.LogKeys.HomeScreenController, 'needCalendarYears', error);
-        });
-    }
-  }, []);
-
-  // One day at a time, in the queue of the store: a day touched and left before its turn is not
-  // worked out
-  const needCalendarPreviews = useCallback((dates: Date[]) => {
-    const cache = calendarCache.current;
-    cache.wanted = new Set(dates.map(isoDate));
-    for (const date of dates) {
-      const key = isoDate(date);
-      if (cache.days.has(key)) continue;
-      cache.days.add(key);
-      LiturgyStore.previewDay(date, () => calendarCache.current === cache && cache.wanted.has(key))
-        .then((preview) => {
-          if (calendarCache.current !== cache) return;
-          if (!preview) {
-            cache.days.delete(key);
-            return;
-          }
-          const card = buildDayCard(preview.day, preview.celebration, preview.settings);
-          const letter = preview.day.celebrationType;
-          cache.letters.set(key, letter);
-          setCalendarPreviews((before) => ({ ...before, [key]: card }));
-          setCalendarMarks((before) =>
-            before[key] && before[key].letter !== letter ? { ...before, [key]: { ...before[key], letter } } : before,
-          );
-        })
-        .catch((error) => {
-          cache.days.delete(key);
-          Logger.logError(Logger.LogKeys.HomeScreenController, 'needCalendarPreviews', error);
-        });
-    }
-  }, []);
-
   // --- Top bar: calendar on the left, settings on the right, as always -------------------
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <HeaderButton icon="calendar" accessibilityLabel="Calendari" testID="calendar-button" onPress={openCalendar} />
+        <HeaderButton
+          icon="calendar"
+          accessibilityLabel="Calendari"
+          testID="calendar-button"
+          onPress={() => navigation.navigate('Calendar')}
+        />
       ),
       headerRight: () => (
         <HeaderButton
@@ -299,7 +202,7 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         />
       ),
     });
-  }, [navigation, openCalendar]);
+  }, [navigation]);
 
   const today: Date | undefined = snapshot.day.today.date;
   const todayKey = today ? DateManagement.getDateKeyToBeStored(today) : '';
@@ -360,28 +263,27 @@ export default function HomeScreenController({ navigation }: { navigation: any }
       mass: buildMass({ today: day.today, tomorrow: day.tomorrow, mass, choice }),
     };
   }, [snapshot, status, hour, choice]);
-  // The card of the day shown, for the calendar when it opens
-  useEffect(() => {
-    shownDayCard.current =
-      model && today ? { key: isoDate(today), card: model.day, letter: snapshot.day.today.celebrationType } : null;
-  }, [model, today, snapshot]);
-
-  // The colours of the year of the day shown, asked for after every load (one query, in the queue
-  // after the load), so that the calendar opens painted
-  const shownYear = model && today ? today.getFullYear() : null;
-  useEffect(() => {
-    if (shownYear === null) return;
-    prepareCalendar();
-    needCalendarYears([shownYear]);
-  }, [snapshot.revision, shownYear, prepareCalendar, needCalendarYears]);
 
   // --- What the user does --------------------------------------------------------------------
   const showDate = async (date: Date) => {
-    setCalendarVisible(false);
     setLatePrayerVisible(false);
     if (today && DateManagement.datesAreTheEqual(date, today)) return;
     await load(date);
   };
+
+  // The day chosen in the calendar comes back with the home, and is loaded here as any other
+  const chosenInCalendar: string | undefined = route?.params?.showDate;
+  useEffect(() => {
+    if (!chosenInCalendar) return;
+    navigation.setParams({ showDate: undefined });
+    showDate(dateOfIso(chosenInCalendar));
+  }, [chosenInCalendar]);
+
+  // The colours of the year of the day shown, asked for after every load (one query, in the queue
+  // after the load), so that the calendar opens painted
+  useEffect(() => {
+    if (status === 'ready' && loadedHere) CalendarStore.prefetchShownYear();
+  }, [snapshot.revision, status, loadedHere]);
 
   const onOptionalMemoryChange = async (enabled: boolean) => {
     if (!today) return;
@@ -490,19 +392,6 @@ export default function HomeScreenController({ navigation }: { navigation: any }
         url={DONATION_URL}
         onClose={() => setWebPage(null)}
         testID="donation-sheet"
-      />
-      <CalendarSheet
-        visible={calendarVisible}
-        value={today}
-        minimumDate={snapshot.database.minimumSelectableDate}
-        maximumDate={snapshot.database.maximumSelectableDate}
-        marks={calendarMarks}
-        previews={calendarPreviews}
-        onNeedYears={needCalendarYears}
-        onNeedPreviews={needCalendarPreviews}
-        onClose={() => setCalendarVisible(false)}
-        onToday={() => showDate(new Date())}
-        onChange={showDate}
       />
       <LatePrayerDialog
         visible={latePrayerVisible}

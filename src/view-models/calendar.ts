@@ -224,7 +224,7 @@ export function monthAfterSwipe(distance: number, velocity: number, width: numbe
   return distance < 0 ? 1 : -1;
 }
 
-// Whether a drag is sideways enough to be a change of month and not a touch or a pull of the sheet
+// Whether a drag is sideways enough to be a change of month and not a touch or a scroll of the screen
 export function isSidewaysDrag(dx: number, dy: number): boolean {
   return Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5;
 }

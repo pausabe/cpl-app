@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../../theme';
-import EdgeFade from '../../../components/EdgeFade';
-import { RibbonMonth } from '../../../view-models/calendar';
+import { useTheme } from '../../theme';
+import EdgeFade from '../../components/EdgeFade';
+import { RibbonMonth } from '../../view-models/calendar';
 
 // The months in a row over the grid: one touch goes to any of them, without arrows, and the row
 // scrolls on to the year before and the next. The month shown is filled and kept in sight; the
@@ -10,7 +10,7 @@ import { RibbonMonth } from '../../../view-models/calendar';
 interface MonthRibbonProps {
   months: RibbonMonth[];
   onPick: (year: number, month: number) => void;
-  // How far the row reaches out to the edges of the sheet
+  // How far the row reaches out to the edges of the screen
   bleed: number;
 }
 

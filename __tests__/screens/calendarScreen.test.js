@@ -1,10 +1,10 @@
-// The calendar of the home, on its own: the month painted with the liturgical year, the day touched
-// before changing to it, the row of months, the whole year in small and the wheel of the
-// liturgical year, the limits of the database, and the sheet it comes up in.
+// The calendar on its own: the month painted with the liturgical year, the day touched before going
+// to it, the row of months, the three tabs (the month, the whole year in small and the wheel of the
+// liturgical year), and the limits of the database.
 import React from 'react';
 import { screen, fireEvent, within } from '@testing-library/react-native';
 import { renderWithTheme, styleOf, withTheme } from '../helpers/renderWithTheme';
-import CalendarSheet from '../../src/views/home/CalendarSheet';
+import CalendarScreen from '../../src/views/calendar/CalendarScreen';
 
 const NOW = new Date(2026, 8, 22, 10, 0);
 
@@ -58,27 +58,38 @@ const card = (title, celebration = null) => ({
   celebration,
 });
 
+const celebration = (typeLabel, title, muted = false) => ({
+  typeLabel,
+  title,
+  muted,
+  description: null,
+  optionalMemory: null,
+});
+
 function open(props = {}) {
   const handlers = {
-    onClose: jest.fn(),
     onToday: jest.fn(),
     onChange: jest.fn(),
     onNeedYears: jest.fn(),
     onNeedPreviews: jest.fn(),
   };
-  const view = renderWithTheme(
-    <CalendarSheet visible={true} value={new Date(2026, 8, 21, 10, 0)} marks={MARKS} {...handlers} {...props} />,
-  );
-  return { ...handlers, view };
+  const all = { value: new Date(2026, 8, 21, 10, 0), marks: MARKS, ...handlers, ...props };
+  const view = renderWithTheme(<CalendarScreen {...all} />);
+  // The same screen with other data from its controller, keeping what the reader did on it
+  const rerender = (more) => view.rerender(withTheme(<CalendarScreen {...all} {...more} />));
+  return { ...handlers, rerender };
 }
 
 const day = (name) => screen.getByRole('button', { name });
 const fill = (n) => styleOf(screen.getByTestId(`calendar-day-${n}-fill`));
+const tab = (name) => fireEvent.press(screen.getByRole('radio', { name }));
+const title = () => screen.getByTestId('calendar-title').props.children;
 
 describe('the month', () => {
   test('it opens on the month of the day being shown, with that day chosen and today marked', () => {
     open();
-    expect(screen.getByRole('button', { name: 'Setembre de 2026' })).toBeTruthy();
+    expect(screen.getByRole('radio', { name: 'Mes' }).props.accessibilityState.checked).toBe(true);
+    expect(screen.getByRole('header', { name: 'Setembre de 2026' })).toBeTruthy();
     expect(day('dilluns, 21 de setembre, festa').props.accessibilityState.selected).toBe(true);
     expect(styleOf(screen.getByTestId('calendar-day-21')).borderColor).toBe('#007B80');
     expect(styleOf(screen.getByTestId('calendar-day-20')).borderColor).toBe('transparent');
@@ -122,22 +133,16 @@ describe('the month', () => {
       'Avui',
     ];
     for (const word of words) expect(within(key).getByText(word, { includeHiddenElements: true })).toBeTruthy();
-    // Before the year is loaded too, so that the sheet does not jump; a screen reader skips it
+    // Before the year is loaded too, so that the screen does not jump; a screen reader skips it
     expect(screen.queryByText('Fèria')).toBeNull();
   });
 
   test('in dark mode, the dark colours', () => {
     renderWithTheme(
-      <CalendarSheet
-        visible={true}
-        value={new Date(2026, 8, 21)}
-        marks={MARKS}
-        onClose={() => {}}
-        onToday={() => {}}
-        onChange={() => {}}
-      />,
+      <CalendarScreen value={new Date(2026, 8, 21)} marks={MARKS} onToday={() => {}} onChange={() => {}} />,
       { dark: true },
     );
+    expect(styleOf(screen.getByTestId('calendar')).backgroundColor).toBe('#1B2322');
     expect(styleOf(screen.getByTestId('calendar-day-21')).borderColor).toBe('#1F7F7B');
     expect(fill(24).backgroundColor).toBe('#E3C877');
     expect(fill(23).backgroundColor).toBe('#1F3424');
@@ -145,67 +150,43 @@ describe('the month', () => {
 });
 
 describe('the day touched', () => {
-  test('is chosen, says what it is before changing to it, and «Canvia» applies it', () => {
-    const { onChange, onNeedPreviews, view } = open();
+  test('is chosen, says what it is before going to it, and «Mostra aquest dia» goes to it', () => {
+    const { onChange, onNeedPreviews, rerender } = open();
     expect(onNeedPreviews).toHaveBeenLastCalledWith([new Date(2026, 8, 21)]);
     fireEvent.press(day('dijous, 24 de setembre, solemnitat'));
     expect(onChange).not.toHaveBeenCalled();
     expect(onNeedPreviews).toHaveBeenLastCalledWith([new Date(2026, 8, 24)]);
-    const preview = screen.getByTestId('calendar-preview');
+    const preview = () => screen.getByTestId('calendar-preview');
     // The date at once, the rest when the controller has worked it out
-    expect(within(preview).getByText('Dijous, 24 de setembre')).toBeTruthy();
-    expect(within(preview).queryByText('Solemnitat')).toBeNull();
-    view.rerender(
-      withTheme(
-        <CalendarSheet
-          visible={true}
-          value={new Date(2026, 8, 21, 10, 0)}
-          marks={MARKS}
-          previews={{
-            '2026-09-24': card('Setmana XXV de durant l’any', {
-              typeLabel: 'Solemnitat',
-              title: 'Mare de Déu de la Mercè',
-              muted: false,
-              description: null,
-              optionalMemory: null,
-            }),
-          }}
-          onClose={() => {}}
-          onToday={() => {}}
-          onChange={onChange}
-        />,
-      ),
-    );
-    expect(within(screen.getByTestId('calendar-preview')).getByText('Mare de Déu de la Mercè')).toBeTruthy();
-    expect(within(screen.getByTestId('calendar-preview')).getByText('Solemnitat')).toBeTruthy();
-    expect(styleOf(screen.getByTestId('calendar-preview')).backgroundColor).toBe('#F7F1E3');
-    fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+    expect(within(preview()).getByText('Dijous, 24 de setembre')).toBeTruthy();
+    expect(within(preview()).queryByText('Solemnitat')).toBeNull();
+    rerender({
+      previews: {
+        '2026-09-24': card('Setmana XXV de durant l’any', celebration('Solemnitat', 'Mare de Déu de la Mercè')),
+      },
+    });
+    expect(within(preview()).getByText('Mare de Déu de la Mercè')).toBeTruthy();
+    expect(within(preview()).getByText('Solemnitat')).toBeTruthy();
+    expect(styleOf(preview()).backgroundColor).toBe('#F7F1E3');
+    fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
     expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 24));
   });
 
   test('an optional memorial that is not celebrated goes grey, as on the home', () => {
     open({
       previews: {
-        '2026-09-21': card('Setmana XXV de durant l’any', {
-          typeLabel: 'Memòria lliure',
-          title: 'Sant Mateu',
-          muted: true,
-          description: null,
-          optionalMemory: null,
-        }),
+        '2026-09-21': card('Setmana XXV de durant l’any', celebration('Memòria lliure', 'Sant Mateu', true)),
       },
     });
     const preview = screen.getByTestId('calendar-preview');
     expect(styleOf(within(preview).getByText('Sant Mateu')).color).toBe('#475756');
   });
 
-  test('«Avui» goes back to today, and touching outside closes it without changing the day', () => {
-    const { onToday, onClose, onChange } = open();
+  test('«Avui» goes back to today, and the buttons stay at the bottom of the month', () => {
+    const { onToday, onChange } = open();
+    expect(screen.getByTestId('calendar-footer')).toBeTruthy();
     fireEvent.press(screen.getByRole('button', { name: 'Avui' }));
     expect(onToday).toHaveBeenCalled();
-    fireEvent.press(day('dissabte, 26 de setembre, memòria lliure'));
-    fireEvent.press(screen.getByTestId('calendar-backdrop', { includeHiddenElements: true }));
-    expect(onClose).toHaveBeenCalled();
     expect(onChange).not.toHaveBeenCalled();
   });
 });
@@ -217,11 +198,11 @@ describe('the row of months', () => {
       screen.getByRole('button', { name: 'setembre de 2026, el mes d’avui' }).props.accessibilityState.selected,
     ).toBe(true);
     fireEvent.press(screen.getByRole('button', { name: 'desembre de 2026' }));
-    expect(screen.getByRole('button', { name: 'Desembre de 2026' })).toBeTruthy();
+    expect(title()).toBe('Desembre de 2026');
     // At the end of the year, the next one is asked for, ready for a drag
     expect(onNeedYears).toHaveBeenLastCalledWith([2026, 2027]);
     fireEvent.press(screen.getByRole('button', { name: 'gener de 2027' }));
-    expect(screen.getByRole('button', { name: 'Gener de 2027' })).toBeTruthy();
+    expect(title()).toBe('Gener de 2027');
     expect(within(screen.getByTestId('calendar-month-2027-1')).getByText('2027')).toBeTruthy();
     expect(onNeedYears).toHaveBeenLastCalledWith([2026, 2027]);
   });
@@ -233,7 +214,7 @@ describe('the row of months', () => {
     expect(screen.queryByRole('button', { name: 'agost de 2026' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'octubre de 2026' })).toBeNull();
     fireEvent.press(day('dissabte, 26 de setembre, memòria lliure'));
-    fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
     expect(onChange).toHaveBeenCalledWith(new Date(2026, 8, 21));
   });
 });
@@ -241,45 +222,45 @@ describe('the row of months', () => {
 describe('the whole year', () => {
   const limits = { minimumDate: new Date(2017, 0, 3), maximumDate: new Date(2100, 11, 29) };
 
-  test('the title of the month opens it: twelve months in small, the one shown framed', () => {
-    open(limits);
-    const title = screen.getByRole('button', { name: 'Setembre de 2026' });
-    expect(title.props.accessibilityHint).toBe('Mostra l’any sencer');
-    fireEvent.press(title);
-    expect(screen.getByRole('button', { name: '2026' }).props.accessibilityHint).toBe('Torna al mes');
+  test('its tab shows twelve months in small, the one shown framed, and no buttons at the bottom', () => {
+    const { onNeedYears } = open(limits);
+    tab('Any');
+    expect(title()).toBe('2026');
+    expect(onNeedYears).toHaveBeenLastCalledWith([2026]);
     const months = within(screen.getByTestId('calendar-year')).getAllByRole('button');
     expect(months).toHaveLength(12);
     expect(months[8].props.accessibilityLabel).toBe('setembre de 2026, el mes d’avui');
     expect(months[8].props.accessibilityState.selected).toBe(true);
-    // No days and no row of months while the year shows
     expect(screen.queryByTestId('calendar-day-21')).toBeNull();
-    expect(screen.queryByTestId('calendar-months')).toBeNull();
+    expect(screen.queryByTestId('calendar-footer')).toBeNull();
   });
 
   test('arrows go from year to year, and a month opens with a touch', () => {
     const { onNeedYears } = open(limits);
-    fireEvent.press(screen.getByRole('button', { name: 'Setembre de 2026' }));
+    tab('Any');
     fireEvent.press(screen.getByRole('button', { name: 'Any següent' }));
-    expect(screen.getByRole('button', { name: '2027' })).toBeTruthy();
+    expect(title()).toBe('2027');
     expect(onNeedYears).toHaveBeenLastCalledWith([2027]);
     fireEvent.press(screen.getByRole('button', { name: 'Any anterior' }));
     fireEvent.press(screen.getByRole('button', { name: 'Any anterior' }));
     fireEvent.press(screen.getByRole('button', { name: 'març de 2025' }));
-    expect(screen.getByRole('button', { name: 'Març de 2025' })).toBeTruthy();
+    expect(screen.getByRole('radio', { name: 'Mes' }).props.accessibilityState.checked).toBe(true);
+    expect(title()).toBe('Març de 2025');
     expect(screen.getByTestId('calendar-day-21')).toBeTruthy();
   });
 
-  test('touching the title again goes back to the month, without changing it', () => {
+  test('going back to the month keeps the month and the day chosen', () => {
     open(limits);
-    fireEvent.press(screen.getByRole('button', { name: 'Setembre de 2026' }));
-    fireEvent.press(screen.getByRole('button', { name: '2026' }));
-    expect(screen.getByRole('button', { name: 'Setembre de 2026' })).toBeTruthy();
+    tab('Any');
+    fireEvent.press(screen.getByRole('button', { name: 'Any següent' }));
+    tab('Mes');
+    expect(title()).toBe('Setembre de 2026');
     expect(day('dilluns, 21 de setembre, festa').props.accessibilityState.selected).toBe(true);
   });
 
   test('at the first and the last year of the database, the arrows stop', () => {
     open({ ...limits, value: new Date(2017, 5, 1) });
-    fireEvent.press(screen.getByRole('button', { name: 'Juny de 2017' }));
+    tab('Any');
     expect(screen.getByRole('button', { name: 'Any anterior' }).props.accessibilityState.disabled).toBe(true);
     expect(screen.getByRole('button', { name: 'Any següent' }).props.accessibilityState.disabled).toBe(false);
   });
@@ -287,55 +268,37 @@ describe('the whole year', () => {
 
 describe('the wheel of the liturgical year', () => {
   test('the year as a wheel, from Advent, with what comes next and its names', () => {
-    const { onNeedYears, onNeedPreviews, view } = open();
-    fireEvent.press(screen.getByRole('button', { name: 'Setembre de 2026' }));
-    fireEvent.press(screen.getByRole('radio', { name: 'Any litúrgic' }));
-    expect(screen.getByRole('button', { name: '2025–2026' })).toBeTruthy();
+    const { onNeedYears, onNeedPreviews, rerender } = open();
+    tab('Any litúrgic');
+    expect(title()).toBe('2025–2026');
     expect(screen.getByLabelText('L’any litúrgic 2025–2026, any A')).toBeTruthy();
     expect(onNeedYears).toHaveBeenLastCalledWith([2025, 2026, 2027]);
-    // The next solemnities after today, 22 September: their names are asked for
+    // The next three solemnities after today, 22 September: their names are asked for
     expect(onNeedPreviews).toHaveBeenLastCalledWith([
       new Date(2026, 8, 21),
       new Date(2026, 8, 24),
       new Date(2026, 10, 1),
+      new Date(2026, 10, 22),
     ]);
     expect(screen.getByText('Properament')).toBeTruthy();
     const yearKey = screen.getByTestId('calendar-year-key', { includeHiddenElements: true });
     expect(within(yearKey).getByText('Advent i Quaresma', { includeHiddenElements: true })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Solemnitat, Dijous, 24 de setembre' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Solemnitat, Diumenge, 1 de novembre' })).toBeTruthy();
-    view.rerender(
-      withTheme(
-        <CalendarSheet
-          visible={true}
-          value={new Date(2026, 8, 21, 10, 0)}
-          marks={MARKS}
-          previews={{
-            '2026-11-01': card('Setmana XXXI de durant l’any', {
-              typeLabel: 'Solemnitat',
-              title: 'Tots Sants',
-              muted: false,
-              description: null,
-              optionalMemory: null,
-            }),
-          }}
-          onClose={() => {}}
-          onToday={() => {}}
-          onChange={() => {}}
-        />,
-      ),
-    );
+    expect(screen.getByRole('button', { name: 'Solemnitat, Diumenge, 22 de novembre' })).toBeTruthy();
+    rerender({
+      previews: { '2026-11-01': card('Setmana XXXI de durant l’any', celebration('Solemnitat', 'Tots Sants')) },
+    });
     expect(screen.getByRole('button', { name: 'Tots Sants, Solemnitat · diumenge, 1 de novembre' })).toBeTruthy();
   });
 
   test('a date under the wheel opens its month with that day chosen', () => {
     const { onChange } = open();
-    fireEvent.press(screen.getByRole('button', { name: 'Setembre de 2026' }));
-    fireEvent.press(screen.getByRole('radio', { name: 'Any litúrgic' }));
+    tab('Any litúrgic');
     fireEvent.press(screen.getByRole('button', { name: 'Solemnitat, Diumenge, 1 de novembre' }));
-    expect(screen.getByRole('button', { name: 'Novembre de 2026' })).toBeTruthy();
+    expect(title()).toBe('Novembre de 2026');
     expect(day('diumenge, 1 de novembre, solemnitat').props.accessibilityState.selected).toBe(true);
-    fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+    fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
     expect(onChange).toHaveBeenCalledWith(new Date(2026, 10, 1));
   });
 
@@ -348,22 +311,26 @@ describe('the wheel of the liturgical year', () => {
       }),
     };
     open({ marks });
-    fireEvent.press(screen.getByRole('button', { name: 'Setembre de 2026' }));
-    fireEvent.press(screen.getByRole('radio', { name: 'Any litúrgic' }));
+    tab('Any litúrgic');
     fireEvent.press(screen.getByRole('button', { name: 'Any litúrgic següent' }));
-    expect(screen.getByRole('button', { name: '2026–2027' })).toBeTruthy();
+    expect(title()).toBe('2026–2027');
     expect(screen.getByText('Dates principals')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Dimecres de Cendra, 10 de febrer de 2027' })).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Diumenge de Pasqua, 28 de març de 2027' })).toBeTruthy();
   });
 
-  test('the year goes from one tab to the other: 2026 is 2025–2026 and back', () => {
+  test('each tab opens on the year of the one before: 2025 is 2024–2025, and the month of today, today’s', () => {
     open();
-    fireEvent.press(screen.getByRole('button', { name: 'Setembre de 2026' }));
+    tab('Any');
     fireEvent.press(screen.getByRole('button', { name: 'Any anterior' }));
-    fireEvent.press(screen.getByRole('radio', { name: 'Any litúrgic' }));
-    expect(screen.getByRole('button', { name: '2024–2025' })).toBeTruthy();
-    fireEvent.press(screen.getByRole('radio', { name: 'Mesos' }));
-    expect(screen.getByRole('button', { name: '2025' })).toBeTruthy();
+    tab('Any litúrgic');
+    expect(title()).toBe('2024–2025');
+    tab('Any');
+    expect(title()).toBe('2025');
+    tab('Mes');
+    fireEvent.press(screen.getByRole('button', { name: 'desembre de 2026' }));
+    tab('Any litúrgic');
+    // December 2026 is already the next liturgical year
+    expect(title()).toBe('2026–2027');
   });
 });

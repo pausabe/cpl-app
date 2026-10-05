@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { LiturgicalColorCode, useTheme } from '../../../theme';
+import { LiturgicalColorCode, useTheme } from '../../theme';
 
 // What the colours mean, under the month, the year and the wheel. Under the month: the four
 // liturgical colours, each with its tones from soft to strong and named by what most of its days
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     height: SWATCH,
     borderRadius: 4,
   },
-  // The three tones of a colour, joined: the soft one has a thin edge, white is almost the sheet
+  // The three tones of a colour, joined: the soft one has a thin edge, white is almost the background
   ramp: {
     flexDirection: 'row',
     borderRadius: 4,

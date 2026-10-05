@@ -1,32 +1,40 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { useTheme } from '../../../theme';
-import { MiniMonth, YearOverview } from '../../../view-models/liturgicalYear';
+import { useTheme } from '../../theme';
+import { MiniMonth, YearOverview } from '../../view-models/liturgicalYear';
 
-// The twelve months of a year in small, four in a row, every day a square of its colour and the
-// solemnities in the strong one: Lent, Easter and Advent can be seen at a glance. A touch opens
-// the month. The month the calendar was showing is framed, and the month of today has its name
-// in colour and today's square outlined.
+// The twelve months of a year in small, three or four in a row, every day a square of its colour
+// and the solemnities in the strong one: Lent, Easter and Advent can be seen at a glance. A touch
+// opens the month. The month the calendar was showing is framed, and the month of today has its
+// name in colour and today's square outlined.
 interface YearMonthsProps {
   overview: YearOverview;
+  columns?: number;
   onPick: (year: number, month: number) => void;
 }
 
-export default function YearMonths({ overview, onPick }: YearMonthsProps) {
+export default function YearMonths({ overview, columns = 4, onPick }: YearMonthsProps) {
+  const width = `${100 / columns}%` as const;
   return (
     <View testID="calendar-year" style={styles.grid}>
       {overview.months.map((month) => (
-        <MiniMonthTile key={month.key} month={month} onPick={onPick} />
+        <MiniMonthTile key={month.key} month={month} width={width} onPick={onPick} />
       ))}
     </View>
   );
 }
 
-function MiniMonthTile({ month, onPick }: { month: MiniMonth; onPick: (year: number, month: number) => void }) {
+interface MiniMonthTileProps {
+  month: MiniMonth;
+  width: `${number}%`;
+  onPick: (year: number, month: number) => void;
+}
+
+function MiniMonthTile({ month, width, onPick }: MiniMonthTileProps) {
   const theme = useTheme();
   const { colors } = theme;
   return (
-    <View style={styles.slot}>
+    <View style={[styles.slot, { width }]}>
       <Pressable
         testID={`calendar-year-month-${month.month + 1}`}
         accessibilityRole="button"
@@ -87,7 +95,6 @@ const styles = StyleSheet.create({
     marginHorizontal: -3,
   },
   slot: {
-    width: '25%',
     padding: 3,
   },
   month: {

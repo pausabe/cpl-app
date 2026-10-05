@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Linking } from 'react-native';
 import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react-native';
 import App from '../../App';
+import { navigationRef } from '../../src/controllers/NavigationController';
 import * as DataService from '../../src/services/dataService';
 import { styleOf } from '../helpers/renderWithTheme';
 import { wasOpenedBefore } from '../../src/controllers/firstRun';
@@ -212,19 +213,29 @@ test('at midnight, «No, la d’avui» stays on the day', async () => {
   expect(screen.getByText('Dimarts, 22 de setembre')).toBeTruthy();
 });
 
-test('the calendar changes the day; touching outside closes it without changing it', async () => {
+// The calendar is a screen of its own: it is left with the back arrow of the system, through the
+// navigator, and waited for until it is really gone
+async function leaveCalendar() {
+  act(() => navigationRef.goBack());
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
+}
+
+const calendarTitle = () => screen.getByTestId('calendar-title').props.children;
+
+test('the calendar is a screen of its own: back changes nothing, «Mostra aquest dia» changes the day', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   expect(await screen.findByTestId('calendar')).toBeTruthy();
-  expect(screen.getByText('Setembre de 2026')).toBeTruthy();
+  expect(navigationRef.getCurrentOptions().title).toBe('Calendari');
+  expect(calendarTitle()).toBe('Setembre de 2026');
   fireEvent.press(screen.getByRole('button', { name: /^dimarts, 15 de setembre/ }));
-  fireEvent.press(screen.getByTestId('calendar-backdrop', { includeHiddenElements: true }));
-  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull());
+  await leaveCalendar();
   expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
 
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   fireEvent.press(await screen.findByRole('button', { name: /^dimarts, 15 de setembre/ }));
-  fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+  fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dimarts, 15 de setembre');
 });
 
@@ -232,18 +243,21 @@ test('in the calendar you move from month to month, and «Avui» goes back to to
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   fireEvent.press(await screen.findByRole('button', { name: 'octubre de 2026' }));
-  expect(screen.getByText('Octubre de 2026')).toBeTruthy();
+  expect(calendarTitle()).toBe('Octubre de 2026');
   fireEvent.press(screen.getByRole('button', { name: /^dissabte, 31 d’octubre/ }));
-  fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+  fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dissabte, 31 d’octubre');
 
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
-  expect(await screen.findByText('Octubre de 2026')).toBeTruthy();
+  await screen.findByTestId('calendar');
+  expect(calendarTitle()).toBe('Octubre de 2026');
   fireEvent.press(screen.getByRole('button', { name: 'Avui' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dilluns, 21 de setembre');
 });
 
-test('the calendar paints the year of the place and says what a day is before changing to it', async () => {
+test('the calendar paints the year of the place and says what a day is before going to it', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   // The day shown, at once, with the card of the home
@@ -256,8 +270,7 @@ test('the calendar paints the year of the place and says what a day is before ch
   expect(await within(screen.getByTestId('calendar-preview')).findByText('Mare de Déu de la Mercè')).toBeTruthy();
   expect(within(screen.getByTestId('calendar-preview')).getByText('Solemnitat')).toBeTruthy();
   // The day shown has not changed
-  fireEvent.press(screen.getByTestId('calendar-backdrop', { includeHiddenElements: true }));
-  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull());
+  await leaveCalendar();
   expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
 });
 
@@ -287,10 +300,10 @@ test('a day the home prays as a weekday is painted as one in the calendar, once 
   }
 });
 
-test('the whole year and the wheel of the liturgical year, from the title of the month', async () => {
+test('the whole year and the wheel of the liturgical year, in their tabs', async () => {
   await openAt(new Date(2026, 9, 5, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
-  fireEvent.press(await screen.findByRole('button', { name: 'Octubre de 2026' }));
+  fireEvent.press(await screen.findByRole('radio', { name: 'Any' }));
   expect(screen.getByRole('button', { name: 'octubre de 2026, el mes d’avui' })).toBeTruthy();
   fireEvent.press(screen.getByRole('radio', { name: 'Any litúrgic' }));
   expect(screen.getByLabelText(/^L’any litúrgic 2025–2026/)).toBeTruthy();
@@ -299,7 +312,8 @@ test('the whole year and the wheel of the liturgical year, from the title of the
     await screen.findByRole('button', { name: 'Tots Sants, Solemnitat · diumenge, 1 de novembre' }, { timeout: 15000 }),
   ).toBeTruthy();
   fireEvent.press(screen.getByRole('button', { name: /^Tots Sants/ }));
-  fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+  fireEvent.press(screen.getByRole('button', { name: 'Mostra aquest dia' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Diumenge, 1 de novembre');
 });
 
