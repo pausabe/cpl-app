@@ -64,7 +64,17 @@ function Navigator() {
           component={MassPrayerController as any}
           options={({ route }: any) => ({ ...inner, title: route.params?.title ?? 'Missa' })}
         />
-        <Stack.Screen name="Calendar" component={CalendarController} options={{ ...inner, title: 'Calendari' }} />
+        <Stack.Screen
+          name="Calendar"
+          component={CalendarController}
+          options={{
+            ...inner,
+            title: 'Calendari',
+            // From iOS 26 a swipe to the right anywhere goes back, and in the calendar that is the
+            // drag to the month before: back only from the left edge, as before iOS 26
+            fullScreenGestureEnabled: false,
+          }}
+        />
         <Stack.Screen name="Settings" component={SettingsController} options={{ ...inner, title: 'Configuració' }} />
       </Stack.Navigator>
     </NavigationContainer>

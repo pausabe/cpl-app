@@ -227,6 +227,8 @@ test('the calendar is a screen of its own: back changes nothing, «Selecciona» 
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   expect(await screen.findByTestId('calendar')).toBeTruthy();
   expect(navigationRef.getCurrentOptions().title).toBe('Calendari');
+  // Back only from the edge: a drag to the right in the middle is the month before
+  expect(navigationRef.getCurrentOptions().fullScreenGestureEnabled).toBe(false);
   expect(calendarTitle()).toBe('Setembre de 2026');
   fireEvent.press(screen.getByRole('button', { name: /^dimarts, 15 de setembre/ }));
   await leaveCalendar();
