@@ -138,5 +138,13 @@ test('the calendar paints a day stronger as its rank grows, and its number can a
     }
   }
   expect(liturgicalColor('B', 'light').calendar).toMatchObject({ day: '#F7F1E3', solemnity: '#7A5F14' });
-  expect(liturgicalColor('M', 'dark').calendar).toMatchObject({ solemnity: '#C9A7EB', onSolemnity: '#0E1413' });
+  expect(liturgicalColor('M', 'dark').calendar).toMatchObject({ solemnity: '#CDB6ED', onSolemnity: '#0E1413' });
+});
+
+test('in dark mode a weekday stands out from the background in its colour, and white is not brown', () => {
+  // Dark colours lose their hue: at 1.1 a green or purple weekday was the background itself
+  for (const code of ['R', 'V', 'M', 'B']) {
+    expect(contrast(liturgicalColor(code, 'dark').calendar.day, palettes.dark.sheet)).toBeGreaterThanOrEqual(1.5);
+  }
+  expect(liturgicalColor('B', 'dark').calendar).toMatchObject({ day: '#534D41', solemnity: '#EFE4C8' });
 });

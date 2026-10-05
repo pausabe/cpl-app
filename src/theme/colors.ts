@@ -119,8 +119,11 @@ const LITURGICAL: Record<
   B: { name: 'Blanc', dot: '#FFFFFF', light: ['#F7F1E3', '#7A5F14'], dark: ['#26221A', '#E3C877'] },
 };
 
-// In dark mode the soft tones of the card are almost the sheet: the calendar has its own, a step
-// lighter, and the strong ones are the light accents with dark numbers.
+// In dark mode the soft tones of the card are almost the background, and dark colours lose their
+// hue: a weekday, green or purple, was a dark grey that could not be told from the background nor
+// from the others, and white was brown. The calendar has its own: a weekday clearly in its colour
+// (half again as bright as the background), a feast a step up, a solemnity the light one with a
+// dark number. White goes from stone to ivory.
 const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTones>> = {
   R: {
     light: {
@@ -132,12 +135,12 @@ const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTone
       square: '#EDB9B3',
     },
     dark: {
-      day: '#3A2320',
-      feast: '#6A322C',
-      feastText: '#F8B4AD',
-      solemnity: '#F28B82',
+      day: '#61332E',
+      feast: '#8F453D',
+      feastText: '#FCE6E3',
+      solemnity: '#F09C94',
       onSolemnity: '#0E1413',
-      square: '#7A3B34',
+      square: '#944B42',
     },
   },
   V: {
@@ -150,12 +153,12 @@ const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTone
       square: '#B5D7AE',
     },
     dark: {
-      day: '#1F3424',
-      feast: '#335C38',
-      feastText: '#A9DCAB',
-      solemnity: '#8CC98F',
+      day: '#2D5334',
+      feast: '#387043',
+      feastText: '#E1F4E5',
+      solemnity: '#9CD39E',
       onSolemnity: '#0E1413',
-      square: '#3F6E45',
+      square: '#40774B',
     },
   },
   M: {
@@ -168,12 +171,12 @@ const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTone
       square: '#D5C3E8',
     },
     dark: {
-      day: '#2F2540',
-      feast: '#4E3B6C',
-      feastText: '#DCC6F4',
-      solemnity: '#C9A7EB',
+      day: '#4A3762',
+      feast: '#694B91',
+      feastText: '#EEE7F9',
+      solemnity: '#CDB6ED',
       onSolemnity: '#0E1413',
-      square: '#5F4885',
+      square: '#6E5095',
     },
   },
   B: {
@@ -186,12 +189,12 @@ const CALENDAR: Record<LiturgicalColorCode, Record<ColorSchemeName, CalendarTone
       square: '#E9D9AA',
     },
     dark: {
-      day: '#352E1E',
-      feast: '#5E4D22',
-      feastText: '#EDD99A',
-      solemnity: '#E3C877',
+      day: '#534D41',
+      feast: '#706751',
+      feastText: '#F9F3E7',
+      solemnity: '#EFE4C8',
       onSolemnity: '#0E1413',
-      square: '#7A6630',
+      square: '#807660',
     },
   },
 };

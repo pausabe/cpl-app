@@ -143,9 +143,10 @@ describe('the month', () => {
       { dark: true },
     );
     expect(styleOf(screen.getByTestId('calendar')).backgroundColor).toBe('#1B2322');
-    expect(styleOf(screen.getByTestId('calendar-day-21')).borderColor).toBe('#1F7F7B');
-    expect(fill(24).backgroundColor).toBe('#E3C877');
-    expect(fill(23).backgroundColor).toBe('#1F3424');
+    // The ring of the day chosen, the light teal; a solemnity, ivory; a weekday, green
+    expect(styleOf(screen.getByTestId('calendar-day-21')).borderColor).toBe('#7FD1CC');
+    expect(fill(24).backgroundColor).toBe('#EFE4C8');
+    expect(fill(23).backgroundColor).toBe('#2D5334');
   });
 });
 

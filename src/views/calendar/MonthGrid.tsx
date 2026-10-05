@@ -73,6 +73,9 @@ export default function MonthGrid({ month, onPick, onSwipe }: MonthGridProps) {
     });
   });
 
+  // The ring of the day chosen: the light teal in dark mode, where the dark one is lost
+  const ring = theme.dark ? colors.accentText : colors.accentFill;
+
   const dayCell = (day: CalendarDay | null, index: number) => {
     if (!day) return <View key={`blank-${index}`} style={[styles.cell, { height: cell }]} />;
     const tones = day.look ? theme.liturgical(day.look.color).calendar : null;
@@ -103,7 +106,7 @@ export default function MonthGrid({ month, onPick, onSwipe }: MonthGridProps) {
               width: cell,
               height: cell,
               borderRadius: cell * 0.3,
-              borderColor: day.selected ? colors.accentFill : 'transparent',
+              borderColor: day.selected ? ring : 'transparent',
               opacity: day.disabled ? 0.35 : pressed ? 0.7 : 1,
             },
           ]}
