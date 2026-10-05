@@ -77,8 +77,10 @@ lectura breu i el responsori de les festes també.
 
 ## Efecte sobre la migració
 
-A les hores menors d'aquestes festes, cpl-app diu ara el mateix que l'app de saints-app llegeix (la fèria): les
-caselles que el join es deixava d'observar per aquest motiu (MIGRA-009) ja no hi entren en conflicte.
+Cap text. El join amb la còpia corregida (`make db-fixed`) deixa `commons-ca/` idèntic: a les hores menors d'aquestes
+festes cpl-app diu ara el mateix que l'app de saints-app llegeix (la fèria). Només canvia el recompte de tres
+caselles retingudes d'antífones del saltiri (`salmos_antifonas` 19, 38 i 77), que hi sumen 43 dies de festa que
+ara coincideixen; continuen retingudes per les altres raons.
 
 I toca l'[EPREX-005](../eprex-bugs/EPREX-005.md): allà es va demanar que la festa no perdés la seva antífona a les
 hores menors, per a 513 dies («gairebé totes les festes i memòries amb ofici propi»). Segons l'OGLH 232 i la CPL,

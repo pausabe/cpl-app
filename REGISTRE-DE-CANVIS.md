@@ -450,7 +450,7 @@ santa Teresa (15-10), sant Simó i sant Judes (28-10) i el Laterà (9-11).
 | Test | `__tests__/liturgy/feastMinorHours.test.js` |
 | Reaplicar | **No** — és codi, va al git. Goldens regravats: 31 dies canvien, tots festes, només en les antífones de les hores menors |
 | Prova | L'OGLH 232 ([text llatí](https://breviar.sk/la/docs/smernice_lh.htm)) i el full de la CPL, on la fila bona de cada festa és, paraula per paraula, el que l'app resa aquell dia sense la festa |
-| Efecte a la migració | No mesurat encara. A les hores menors d'aquestes festes cpl-app diu ara el mateix que l'app de saints-app llegeix (la fèria), o sigui que el que el [MIGRA-009](#migra-009) es deixava d'observar ja no hi discrepa |
+| Efecte a la migració | Cap text: el join amb la còpia corregida deixa `commons-ca/` idèntic. A les hores menors d'aquestes festes cpl-app diu ara el mateix que l'app de saints-app llegeix (la fèria), i tres caselles retingudes d'antífones del saltiri (`salmos_antifonas` 19, 38 i 77) hi sumen 43 dies de festa que ara coincideixen; continuen retingudes per les altres raons |
 
 Toca l'[EPREX-005](#eprex-005): s'hi va demanar que la festa conservés la seva antífona a les hores menors, en 513
 dies de festes i memòries, i «la resta espera la 3.30». Segons l'OGLH 232 i la CPL, només l'han de conservar les
