@@ -147,20 +147,12 @@ describe('the month', () => {
     expect(day('dijous, 24 de setembre')).toBeTruthy();
   });
 
-  test('under it, only what the letters mean: the season is named over it, and colours are plain to see', () => {
-    open({ marks: {} });
-    const key = screen.getByTestId('calendar-key', { includeHiddenElements: true });
-    for (const word of ['M', 'Memòria', 'F', 'Festa', 'S', 'Solemnitat']) {
-      expect(within(key).getByText(word, { includeHiddenElements: true })).toBeTruthy();
-    }
-    // No seasons, no colours, no word for a weekday nor for today
-    expect(
-      within(key).queryByText(/Durant|Advent|Nadal|Tridu|Color|Blanc|Vermell|Fèria|Avui/, {
-        includeHiddenElements: true,
-      }),
-    ).toBeNull();
-    // Before the year is loaded too, so that the screen does not jump; a screen reader skips it
-    expect(screen.queryByText('Memòria')).toBeNull();
+  test('it has no key: its seasons are named over it, and the card of a day says what its letter is', () => {
+    open({ previews: { '2026-09-21': card('Setmana XXV de durant l’any', celebration('Festa', 'Sant Mateu')) } });
+    expect(screen.queryByTestId('calendar-key', { includeHiddenElements: true })).toBeNull();
+    // The F of St Matthew, and «Festa» on its card
+    expect(screen.getByTestId('calendar-day-21-feast', { includeHiddenElements: true }).props.children).toBe('F');
+    expect(within(screen.getByTestId('calendar-preview')).getByText('Festa')).toBeTruthy();
   });
 
   test('in dark mode, the dark colours', () => {

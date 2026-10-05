@@ -1,13 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LiturgicalColorCode, useTheme } from '../../theme';
-import { DayRank } from '../../view-models/calendar';
-import RankLetter from './RankLetter';
 
-// What the calendar says that cannot be seen. Under the month, only what the letters mean: the
-// season is named over the month, the colour of a letter is plain to see, and so are a weekday
-// and today. Under the year, the colours of the seasons, which are not named there. A screen
-// reader does not need any of it: every day says its rank, and the home its colour.
+// What the calendar says that cannot be seen: under the year in small, the colours of the seasons,
+// which are not named there. The month needs no key: its seasons are named over it, and the letter
+// of a celebration (M, F, S) is read on the card of the day as soon as it is touched. A screen
+// reader does not need it: every day says its rank.
 
 // The seasons by their colour, two to a line
 const SEASONS: { code: LiturgicalColorCode; label: string }[] = [
@@ -17,28 +15,7 @@ const SEASONS: { code: LiturgicalColorCode; label: string }[] = [
   { code: 'R', label: 'Tridu pasqual' },
 ];
 
-const RANKS: { rank: DayRank; label: string }[] = [
-  { rank: 'memory', label: 'Memòria' },
-  { rank: 'feast', label: 'Festa' },
-  { rank: 'solemnity', label: 'Solemnitat' },
-];
-
-export function MonthKey() {
-  const theme = useTheme();
-  return (
-    <View testID="calendar-key" {...hidden}>
-      <Row>
-        {RANKS.map(({ rank, label }) => (
-          <Item key={label} label={label}>
-            <RankLetter rank={rank} color={theme.colors.text2} size={17} />
-          </Item>
-        ))}
-      </Row>
-    </View>
-  );
-}
-
-// The squares of the year and the pieces of the wheel: the middle tone of each season
+// The squares of the year: the middle tone of each season
 export function YearKey() {
   const theme = useTheme();
   return (
@@ -55,14 +32,6 @@ export function YearKey() {
 }
 
 const hidden = { accessibilityElementsHidden: true, importantForAccessibility: 'no-hide-descendants' } as const;
-
-function Row({ children }: { children: React.ReactNode }) {
-  return (
-    <View style={styles.row} {...hidden}>
-      {children}
-    </View>
-  );
-}
 
 // Two to a line, each in half the width, so that the names line up
 function Columns({ children }: { children: React.ReactNode }) {
@@ -89,13 +58,6 @@ function Item({ label, children, column = false }: { label: string; children: Re
 }
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    columnGap: 14,
-    rowGap: 8,
-  },
   columns: {
     flexDirection: 'row',
     flexWrap: 'wrap',

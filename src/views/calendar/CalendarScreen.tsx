@@ -19,7 +19,7 @@ import {
 import MonthRibbon from './MonthRibbon';
 import MonthGrid from './MonthGrid';
 import DayPreviewCard from './DayPreviewCard';
-import { MonthKey, YearKey } from './CalendarKey';
+import { YearKey } from './CalendarKey';
 import YearMonths from './YearMonths';
 import LiturgicalYearWheel, { MilestoneList } from './LiturgicalYearWheel';
 
@@ -259,7 +259,6 @@ export default function CalendarScreen({
           onPick={setSelected}
           onSwipe={(delta) => setShown(shiftMonth(shown.year, shown.month, delta))}
         />
-        <MonthKey />
         <DayPreviewCard date={selected} card={previews[isoDate(selected)]} />
       </>
     ) : overview ? (
