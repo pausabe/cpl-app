@@ -86,6 +86,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [CPL-LIT-005](#cpl-lit-005) | 2026-09-28 | cpl-app | codi | No — va al git | `1bd79cc`, branca `litcal-sweep`, local |
 | [CPL-LIT-006](#cpl-lit-006) | 2026-09-28 | cpl-app | codi | No — va al git | `1ea6f96`, branca `litcal-sweep`, local |
 | [CPL-LIT-001c](#cpl-lit-001c) | 2026-09-29 | cpl-app | codi (**recaiguda**, aturada a la fusió) | No — va al git | `50eed05` |
+| [CPL-LIT-007](#cpl-lit-007) | 2026-10-05 | cpl-app | codi | No — va al git | `39b5e89`, a `master` i a `catalan-migration` |
 | [EINA-calendari](#eina-calendari) | 2026-09-29 | eines | codi | No — va al git | `3193fb5`, `2a66094` |
 | [EINA-db-fixed](#eina-db-fixed) | 2026-09-29 | eines | codi | No — va al git | `1dbfce3`, `38a2547` |
 | [SA-16](#sa-16) | 2026-09-29 | saints-app | **codi** | No — va al git | `f1cc32d42`, `4709adfe4` |
@@ -427,6 +428,36 @@ els trasllats per a tothom (`*`).
 La taula que surt de litcal diu, a més, per a qui val cada trasllat lloc per lloc a `Mogut` («Ba Gi Ll SF So Ta
 Te To Ur Vi Andorra» per a Sant Jordi, que no es trasllada a Mallorca ni a Menorca), i l'app ho llegeix; les
 versions d'abans continuen llegint `diocesiMogut`.
+
+## CPL-LIT-007
+
+**A les hores menors de les festes, l'antífona del comú en lloc de la de la fèria** · 5 d'octubre de 2026
+
+En una festa sense antífones pròpies per a Tèrcia, Sexta i Nona, l'app hi posava les del comú, com a les
+solemnitats. L'OGLH 232 diu que a les festes els salms del dia es diuen amb les seves antífones, de la fèria,
+llevat que el llibre en doni una de pròpia a la festa. La CPL ho va enviar el 27-11-2025 amb quatre exemples: el
+Beat Ramon Llull a Mallorca (les antífones del comú de sants en lloc de les dels salms del dijous), sant Pacià a la
+catedral de Barcelona (les del comú de pastors en lloc de les de Quaresma), sant Maties (les del comú d'apòstols en
+lloc de l'al·leluia de Pasqua) i la Dedicació de la Catedral de Terrassa a la diòcesi (les de la dedicació en lloc
+de les d'Advent). Unes 25 festes l'any per a tothom i unes 20 de locals; les pròximes, el Pilar (12-10-2026),
+santa Teresa (15-10), sant Simó i sant Judes (28-10) i el Laterà (9-11).
+
+| | |
+|---|---|
+| Dossier | [migration-to-saints/cpl-bugs/CPL-LIT-007.md](migration-to-saints/cpl-bugs/CPL-LIT-007.md) |
+| Commit | [`39b5e89`](https://github.com/pausabe/cpl-app/commit/39b5e89) a `master`, fusionat a `catalan-migration` |
+| Fix | Codi: `src/services/liturgy/celebrationHoursLiturgyService.ts` (`fillMinorHours`, `getSaintsSolemnitiesHoursLiturgy`) |
+| Test | `__tests__/liturgy/feastMinorHours.test.js` |
+| Reaplicar | **No** — és codi, va al git. Goldens regravats: 31 dies canvien, tots festes, només en les antífones de les hores menors |
+| Prova | L'OGLH 232 ([text llatí](https://breviar.sk/la/docs/smernice_lh.htm)) i el full de la CPL, on la fila bona de cada festa és, paraula per paraula, el que l'app resa aquell dia sense la festa |
+| Efecte a la migració | No mesurat encara. A les hores menors d'aquestes festes cpl-app diu ara el mateix que l'app de saints-app llegeix (la fèria), o sigui que el que el [MIGRA-009](#migra-009) es deixava d'observar ja no hi discrepa |
+
+Toca l'[EPREX-005](#eprex-005): s'hi va demanar que la festa conservés la seva antífona a les hores menors, en 513
+dies de festes i memòries, i «la resta espera la 3.30». Segons l'OGLH 232 i la CPL, només l'han de conservar les
+festes amb antífona **pròpia** (la Santa Creu, els Arcàngels, el Naixement de la Mare de Déu…); les que
+l'agafarien del comú, com sant Marc, sant Maties o sant Bartomeu, i les memòries (OGLH 236), hi duen la de la
+fèria. Per la mateixa raó, el grup «Festes amb antífona pròpia a les hores menors» de la [D-014](#d-014) no en té
+de pròpia: la decisió de la casella (l'antífona del saltiri) era la bona.
 
 ---
 
