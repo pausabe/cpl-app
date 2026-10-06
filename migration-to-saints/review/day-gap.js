@@ -39,6 +39,15 @@ const pct = (a, b) => (b ? Math.round((100 * a) / b) : 0);
 const cell = (r) => `${r.table}/${r.id}`;
 const findingById = new Map(FINDINGS.map((f) => [f.id, f]));
 
+// What filling a held cell would cost. day-check's impactFor() counts from THIS day's text, and
+// from the majority only when the day was not observed; the label has to say which (MIGRA-025).
+const heldImpact = (im) => {
+  if (!im || !im.days) return '';
+  return im.dateNotObserved
+    ? ` · triar la majoritària trenca ${im.breakDays} de ${im.days} dies`
+    : ` · amb el text d’aquest dia, ${im.agreeDays} de ${im.days} dies bé i ${im.breakDays} malament`;
+};
+
 function day(d) {
   const out = [];
   const say = (s = '') => out.push(s);
@@ -93,7 +102,7 @@ function day(d) {
     const variants = (k.variants || []).map((v) => `${v.count}×«${clip(v.preview, 40)}»`).join(' / ');
     say(`  retingudes ×${rows.length} — ${k.cause || 'conflicte'} · decisió ${k.decision || '?'}`
       + ` · ${k.variantCount || '?'} variants (${variants})`
-      + (im.days ? ` · triar la majoritària trenca ${im.breakDays} de ${im.days} dies` : ''));
+      + heldImpact(im));
     say(`      ${rows.map((r) => `${HOUR_LABELS[r.hour]} ${r.label} ${cell(r)}`).join(' · ')}`);
   }
   // A cell left without Catalan by one of Pau's decisions is not a gap: one line, not a row each.

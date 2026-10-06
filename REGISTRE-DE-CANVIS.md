@@ -135,6 +135,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-33](#sa-33) | 2026-10-02 | saints-app | **codi** | No — va al git | `e7a287951` |
 | [SA-34](#sa-34) | 2026-10-02 | saints-app | **codi** | No — va al git | `d0e6d4610` |
 | [D-016](#d-016) | 2026-10-05 | cpl-cloud (procés X) + web | **decisió d'en Pau** + codi | No — va al git | cpl-cloud `0bfd380`, `0028b87` |
+| [MIGRA-025](#migra-025) | 2026-10-06 | eines | codi | No — va al git | — |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2688,6 +2689,23 @@ idiomes. No s'ha vist mai a l'app: ha sortit llegint el codi.
 | Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
 | Commit | `d0e6d4610` (branca `catalan-language-support-dev`) |
 | A `dev` | No hi és: hi arribarà amb la branca catalana, com la [SA-33](#sa-33) |
+
+<a id="migra-025"></a>
+## MIGRA-025
+
+**La revisió d'un dia deia «triar la majoritària trenca N dies» amb el compte del text del dia** · 6 d'octubre de 2026
+
+Per a cada casella retinguda, la revisió al terminal deia quants dies trencaria «triar la majoritària», però
+el número era el dels dies que trencaria **el text que vol aquell dia**. A un dia que vol la variant
+minoritària deia el contrari: el 6-10-2026, el salm responsorial de la missa, «la majoritària trenca 10 de
+15», quan la majoritària (la de sant Joan Baptista) en trenca 5 i la del dia, 10. El panell ja ho deia bé.
+
+| | |
+|---|---|
+| Correcció | `review/day-gap.js`: `heldImpact()` diu de quin text surt el compte (el del dia; el majoritari, només si el dia no s'ha vist) |
+| Regressió | `review/day-gap.test.js`, 2 de 2; sense el fix en falla 1 |
+| Comprovat | `day-gap.js 2026-10-06`: «amb el text d'aquest dia, 5 de 15 dies bé i 10 malament» |
+| Dossier | [tooling-bugs/MIGRA-025](migration-to-saints/tooling-bugs/MIGRA-025.md) |
 
 # Canvis a saints-app
 
