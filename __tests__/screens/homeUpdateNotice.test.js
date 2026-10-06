@@ -1,5 +1,5 @@
-// The notice of a newer app in the store, on the home: one quiet line above Missatge and Donatiu
-// that opens the store, and a cross that puts it away until a newer version comes. The whole app,
+// The notice of a newer app in the store, on the home: a card above the day with a button that
+// opens the store, and a cross that puts it away until a newer version comes. The whole app,
 // as in home.test.js; what the store has is what the last check left written on the phone.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('expo-asset', () => {
@@ -23,7 +23,7 @@ jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0' }));
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Linking } from 'react-native';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react-native';
 import App from '../../App';
 import StorageKeys from '../../src/services/storage/storageKeys';
 
@@ -44,12 +44,12 @@ afterAll(() => {
   jest.useRealTimers();
 });
 
-test('with a newer app in the store, the home says so and the line opens the App Store', async () => {
+test('with a newer app in the store, the home says so and the button opens the App Store', async () => {
   const openURL = jest.spyOn(Linking, 'openURL').mockResolvedValue(true);
   await openWithStoreAt('9.1.0');
 
-  const notice = await screen.findByRole('link', { name: 'Hi ha una versió nova de l’aplicació. Actualitza-la' });
-  fireEvent.press(notice);
+  expect(await screen.findByRole('header', { name: 'Hi ha una versió nova' })).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: 'Actualitza-la' }));
 
   expect(openURL).toHaveBeenCalledWith('https://apps.apple.com/app/id1283136025');
 });
@@ -60,6 +60,14 @@ test('with the same version, or none known, there is nothing to say', async () =
     expect(screen.queryByTestId('update-notice')).toBeNull();
     screen.unmount();
   }
+});
+
+test('the card is the first thing on the home, above the day', async () => {
+  await openWithStoreAt('9.1.0');
+  const notice = await screen.findByTestId('update-notice');
+  const inOrder = within(screen.getByTestId('home-column')).getAllByTestId(/^(update-notice|day-card)$/);
+  expect(inOrder.map((element) => element.props.testID)).toEqual(['update-notice', 'day-card']);
+  expect(screen.getByTestId('home-footer')).not.toContainElement(notice);
 });
 
 test('the cross puts it away, and it does not come back for that version', async () => {

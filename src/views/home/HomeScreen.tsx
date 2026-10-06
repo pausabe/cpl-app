@@ -31,7 +31,7 @@ export interface HomeScreenProps {
   onOptionalMemoryChange: (enabled: boolean) => void;
   onMessage: () => void;
   onDonation: () => void;
-  // A newer app in the store: one quiet line above Message and Donation
+  // A newer app in the store: a card above the day
   update?: { onOpen: () => void; onDismiss: () => void } | null;
 }
 
@@ -54,6 +54,16 @@ export default function HomeScreen(props: HomeScreenProps) {
         indicatorStyle={theme.scrollIndicator}
       >
         <View testID="home-column" style={[styles.column, { maxWidth: theme.layout.homeMaxWidth }]}>
+          {props.update ? (
+            <UpdateNotice
+              title={APP_UPDATE.title}
+              text={APP_UPDATE.text}
+              action={APP_UPDATE.action}
+              dismissLabel={APP_UPDATE.dismiss}
+              onOpen={props.update.onOpen}
+              onDismiss={props.update.onDismiss}
+            />
+          ) : null}
           <DayCard
             day={props.day}
             onOptionalMemoryChange={props.onOptionalMemoryChange}
@@ -67,15 +77,6 @@ export default function HomeScreen(props: HomeScreenProps) {
       <View testID="home-footer" style={styles.footer} pointerEvents="box-none" onLayout={onFooterLayout}>
         <EdgeFade color={theme.colors.homeBackground} height={FADE_HEIGHT} />
         <View style={{ backgroundColor: theme.colors.homeBackground, paddingBottom: Math.max(insets.bottom, 6) }}>
-          {props.update ? (
-            <UpdateNotice
-              text={APP_UPDATE.text}
-              action={APP_UPDATE.action}
-              dismissLabel={APP_UPDATE.dismiss}
-              onOpen={props.update.onOpen}
-              onDismiss={props.update.onDismiss}
-            />
-          ) : null}
           <HomeFooter onMessage={props.onMessage} onDonation={props.onDonation} />
         </View>
       </View>
