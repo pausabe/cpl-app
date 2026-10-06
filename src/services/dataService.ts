@@ -8,7 +8,7 @@ import StorageKeys from './storage/storageKeys';
 import * as Logger from '../utils/logger';
 import { Settings } from '../models/Settings';
 import DatabaseInformation from '../models/DatabaseInformation';
-import LiturgyDayInformation from '../models/LiturgyDayInformation';
+import LiturgyDayInformation, { LiturgySpecificDayInformation } from '../models/LiturgyDayInformation';
 import { obtainHoursLiturgy } from './liturgy/hoursLiturgyService';
 import { obtainLiturgyDayInformation } from './liturgy/liturgyDayInformationService';
 import { obtainLiturgyMasters } from './liturgy/liturgyMastersService';
@@ -104,7 +104,7 @@ export async function obtainDayPreview(date: Date): Promise<DayPreview> {
     ...current.settings,
     optionalFestivityEnabled: await determineOptionalFestivityEnabled(date),
   };
-  const dayInformation = await obtainCurrentLiturgyDayInformation(date, settings);
+  const dayInformation = await obtainLiturgyDayInformation(date, settings);
   const masters = await obtainLiturgyMasters(dayInformation, settings);
   const celebration = CelebrationInformationService.obtainCelebrationInformation(
     dayInformation.today,
