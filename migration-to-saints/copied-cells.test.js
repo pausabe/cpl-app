@@ -24,13 +24,14 @@ test('every source has Catalan text', () => {
   }
 });
 
-test('a copied Mass reference is the one the Spanish of its cell says', () => {
-  // The Rosary's Gospel (Lc 1,26-38) takes the Catalan of a cell the Spanish says word for word.
+test('a copied Mass reading is the one the Spanish of its cell says', () => {
+  // The Rosary's Gospel reference (Lc 1,26-38) and its Magnificat take the Catalan of a cell the
+  // Spanish says word for word.
   const bare = (s) => String(s).replace(/_/g, '').replace(/\s+/g, ' ').trim();
   for (const [cell, { from }] of Object.entries(cells)) {
-    if (!cell.startsWith('lecturas_referencia/')) continue;
-    const es = table('es', 'lecturas_referencia');
-    expect([cell, bare(es[from.split('/')[1]])]).toEqual([cell, bare(es[cell.split('/')[1]])]);
+    const [t, id] = cell.split('/');
+    if (t !== 'lecturas_referencia' && t !== 'lecturas_texto') continue;
+    expect([cell, bare(table('es', t)[from.split('/')[1]])]).toEqual([cell, bare(table('es', t)[id])]);
   }
 });
 

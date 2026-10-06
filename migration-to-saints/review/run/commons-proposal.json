@@ -2,19 +2,8 @@
   "days": [
     {
       "date": "2026-10-07",
-      "title": "Mare de Déu del Roser",
-      "common": {
-        "categoria": "02aO",
-        "name": "COMÚ DE LA MARE DE DÉU",
-        "pickedBy": "title+citation",
-        "family": [
-          "02aO"
-        ],
-        "titleWouldSay": "Comú de la Mare de Déu"
-      },
-      "missing": 4,
+      "missing": 0,
       "covered": 0,
-      "citationChecks": [],
       "proposals": []
     }
   ]

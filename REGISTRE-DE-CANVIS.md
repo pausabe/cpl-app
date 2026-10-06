@@ -139,6 +139,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [D-017](#d-017) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** + codi | Es regenera: el join i `decided-cells.json` | el que afegeix la fitxa · saints-app `773351aea`, `46608970b` |
 | [SA-35](#sa-35) | 2026-10-06 | saints-app | **codi** | No — va al git | `47a3838a8` |
 | [D-018](#d-018) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (10 caselles, una per una, i 2 còpies) | Es regenera: `decided-cells.json`, `copied-cells.json` | el que afegeix la fitxa · saints-app `ca4cc737f` |
+| [D-019](#d-019) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (la missa pròpia del Roser) | Es regenera: `static-translations/`, `copied-cells.json` | el que afegeix la fitxa · saints-app `09a01bfe0` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2447,6 +2448,25 @@ compartides per les festes de la Mare de Déu. En Pau, el 6-10: «endavant».
 | Efecte | El 7-10-2026, del 89% al **97%** (137 de 141). De 438.124 a **438.804** textos-dia i de 161 a **163** dies sencers |
 | Sostre del 7-10 | La 1a lectura (Fets 1,12-14) i el salm (el Magnificat) de la missa pròpia del Roser: a les memòries cpl-app llegeix les de la fèria i no els té. Només es poden treure del Leccionari |
 | Commit | el que afegeix la fitxa · saints-app `ca4cc737f` |
+
+<a id="d-019"></a>
+## D-019
+
+**La missa pròpia del Roser, amb textos de la CPL** · 6 d'octubre de 2026
+
+Després de la [D-018](#d-018), al 7-10 només li faltava la primera lectura i el salm de la missa pròpia, que
+saints-app mostra al costat de la del dia. cpl-app no la té: a les memòries llegeix les lectures de la fèria.
+Com a la missa de sant Jeroni ([D-011](#d-011)), es fa amb textos de la CPL que cpl-app sí que té. En Pau, el
+6-10: «endavant amb tot. I això últim, tria a».
+
+| | |
+|---|---|
+| 1a lectura, Fets 1,12-14 (`lecturas_referencia/327`, `lecturas_texto/407`) | El text de la Mare de l'Església (`LDSantoral` 112), el mateix que el de Montserrat llevat de les comes, amb el seu subtítol: «Tots assistien unànimement a la pregària, amb Maria, la mare de Jesús». El Pilar acaba «i els seus germans» i la Mare de Déu del Toro diu «van tornar»; aquesta és la majoritària |
+| Salm, el Magnificat (`lecturas_texto/408`) | Còpia de `lecturas_texto/3511` (dissabte XII, anys senars): el castellà de les dues caselles és el mateix text |
+| La seva cita, amb la resposta (`lecturas_referencia/328`) | `Lc 1,46-48a.48b-49a.49b-50 i 53.54-55 (R.: 49): _El Totpoderós obra en mi meravelles: el seu nom és sant._` La resposta no és enlloc de cpl-app com a resposta de missa; és el vers 49 del mateix Magnificat de la CPL, com el castellà pren la seva del vers 49 («El Poderoso ha hecho obras grandes por mí: su nombre es santo»). La cita és la dels versos que du el text copiat |
+| On | `static-translations/lecturas_referencia.ca.json` (327, 328), `lecturas_texto.ca.json` (407) i `copied-cells.json` (408). `copied-cells.test.js` comprova que una lectura de missa copiada té el mateix castellà que la seva casella |
+| Efecte | El 7-10-2026, al **100%** (141 de 141). De 438.804 a **438.857** textos-dia i de 163 a **167** dies sencers |
+| Commit | el que afegeix la fitxa · saints-app `09a01bfe0` |
 
 <a id="sa-24"></a>
 ## SA-24
