@@ -322,23 +322,52 @@ function massContent(v: unknown): string | null {
 // apart — `quote` and `comment` — so the separator goes between them, spelled the way `es` spells it
 // ("Ez 9, 17; 10, 18-22: _La marca en la frente…_").
 //
-// The psalm is the exception, and deliberately. In `es` the subtitle of a psalm is its RESPONSE and
-// the body carries none (917 of 918 psalms have no `R.` line); cpl-app does the opposite — the
-// response is inside the body, repeated after each stanza, which is how the Catalan volume prints it
-// and how cpl-app's own screen shows it. `formatTextLecture()` turns those `R.` into `℟` on its own,
-// so copying the body as it is renders correctly and no surgery on a liturgical text is needed. The
-// reference is then just the citation.
-//
 // cpl-app leaves the book name off a psalm ("112,1-2.3-4.5-6 (R.: 4b)") because its screen prints
 // "Salm responsorial" before it, so `Sl ` is prefixed here — but only to a citation that really
 // starts with a psalm number, never to a canticle ("Ex 15, 1-2…") standing in for one, which the
-// Easter Vigil uses twice.
+// Easter Vigil uses twice. A psalm's subtitle is its response: see `splitPsalmResponse`.
 export function massCitation(part: { quote?: string; comment?: string } | null, isPsalm?: boolean): string | null {
   const quote = massContent(part && part.quote);
   if (isPsalm) return quote && /^\d/.test(quote) ? `Sl ${quote}` : quote;
   const comment = massContent(part && part.comment);
   if (quote && comment) return `${quote}: _${comment}_`;
   return quote || comment || null;
+}
+
+// The response of a responsorial psalm goes where the index keeps it in every language: in the
+// reference, as its subtitle ("Sal 138, 1-3.13-15: _Guíame, Señor, por el camino eterno._"), with the
+// body marking each stanza with a bare `R.`. cpl-app prints it as the volume does, as a paragraph of
+// its own after the first stanza. Left there, one psalm prayed with two responses (Ps 138 on the
+// Tuesday of week 27 and on St John the Baptist) is two Catalan texts for one shared body cell, and
+// the cell stays empty in Catalan both days. Pau chose this on 6 October 2026 (D-017); until then the
+// body went as it was, response and all (PLAN §18.2).
+//
+// The response is said once, after the first stanza, and the stanzas after it end in `R.`: as a
+// paragraph of its own (905 of cpl-app's 921 Mass psalms), or as one line inside the text (the
+// Easter Vigil's Ps 18, the canticle of Daniel). A psalm that spells the response out after every
+// stanza (Ps 135) or has none (Ps 111) goes as it is: there is no single response to move. Line
+// breaks inside the response are layout, so it becomes one line, as in `es`.
+export function splitPsalmResponse(text: string): { response: string; body: string } | null {
+  const lines = text.split('\n');
+  const blank = (line: string) => line.trim() === '';
+  const opens = lines.flatMap((line, i) => (/^R\.\s*\S/.test(line.trim()) ? [i] : []));
+  if (opens.length !== 1) return null;
+  const at = opens[0];
+  let last = at - 1;
+  while (last >= 0 && blank(lines[last])) last--;
+  if (last < 0 || lines.slice(0, at).some((line) => /(^|\s)R\.?\s*$/.test(line))) return null;
+  // A paragraph of its own runs to the next blank line; inside a stanza it is that one line.
+  let end = at + 1;
+  if (blank(lines[at - 1])) while (end < lines.length && !blank(lines[end])) end++;
+  const rest = lines.slice(end);
+  if (!rest.some((line) => /(^|\s)R\.?\s*$/.test(line))) return null;
+  const response = lines
+    .slice(at, end)
+    .map((line) => line.trim())
+    .join(' ')
+    .replace(/^R\.\s*/, '');
+  // The first stanza takes the mark the others already have.
+  return { response, body: [...lines.slice(0, last), `${lines[last].trimEnd()} R.`, ...rest].join('\n') };
 }
 
 // One Mass of cpl-app, keyed by the index's role names. `title` ("Lectura de la profecia d'Ezequiel")
@@ -350,13 +379,15 @@ export function extractMassFields(dayMass: DayMassLiturgy | null | undefined): I
   for (const [roleName, spec] of Object.entries(MASS_ROLES)) {
     const part: MassPart | undefined = dayMass[spec.part];
     if (!part) continue;
-    if (!('noRef' in spec && spec.noRef)) {
-      const ref = massCitation(part, 'psalm' in spec && spec.psalm);
-      if (ref) out[`${roleName}_ref`] = ref;
-    }
+    const isPsalm = 'psalm' in spec && spec.psalm;
     // The name was checked against the model where MASS_ROLES is declared; here it is a lookup.
     const body = massContent((part as unknown as Record<string, unknown>)[spec.body]);
-    if (body) out[`${roleName}_texto`] = body;
+    const split = isPsalm && body ? splitPsalmResponse(body) : null;
+    if (!('noRef' in spec && spec.noRef)) {
+      const ref = massCitation(part, isPsalm);
+      if (ref) out[`${roleName}_ref`] = split ? `${ref}: _${split.response}_` : ref;
+    }
+    if (body) out[`${roleName}_texto`] = split ? split.body : body;
   }
   return out;
 }

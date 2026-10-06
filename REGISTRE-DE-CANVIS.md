@@ -136,6 +136,8 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-34](#sa-34) | 2026-10-02 | saints-app | **codi** | No — va al git | `d0e6d4610` |
 | [D-016](#d-016) | 2026-10-05 | cpl-cloud (procés X) + web | **decisió d'en Pau** + codi | No — va al git | cpl-cloud `0bfd380`, `0028b87` |
 | [MIGRA-025](#migra-025) | 2026-10-06 | eines | codi | No — va al git | `918d7a9` |
+| [D-017](#d-017) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** + codi | Es regenera: el join | el que afegeix la fitxa · saints-app `773351aea` |
+| [SA-35](#sa-35) | 2026-10-06 | saints-app | **codi** | No — va al git | `47a3838a8` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2398,6 +2400,28 @@ escriu a partir de l'1-1-2027.
 | La proposta | La pestanya Calendari comença el 2027 |
 | Commit | cpl-cloud [`0bfd380`](https://github.com/pausabe/cpl-cloud/commit/0bfd380) (procés X) i [`0028b87`](https://github.com/pausabe/cpl-cloud/commit/0028b87) (web), desplegats el 5-10 |
 
+<a id="d-017"></a>
+## D-017
+
+**La resposta del salm de la missa, a la cita i no dins del text** · 6 d'octubre de 2026
+
+L'índex compartit guarda la resposta del salm responsorial a la cita («Sal 138, 1-3.13-15: _Guíame, Señor, por
+el camino eterno._»), i un sol text del salm per a tots els dies que en diuen els mateixos versos. cpl-app la
+imprimeix dins del text, com el volum, i fins ara es migrava així (decidit el 8-9, [PLAN §18.2](migration-to-saints/PLAN.md)).
+Quan un mateix salm es resa amb dues respostes, en català eren dos textos per a una sola casella, i la casella
+quedava buida. Per exemple, el Sl 138: el dimarts de la setmana 27 dels anys parells, «Guieu-me, Senyor, per
+camins eterns»; el 24 de juny, sant Joan Baptista, «Us dono gràcies per haver-me fet tan admirable». En Pau,
+el 6-10, entre tres opcions (la majoritària, la del dia o fer com el castellà): «fes la C».
+
+| | |
+|---|---|
+| Com | `src/liturgy-export/indexFields.ts`, `splitPsalmResponse`: la resposta surt del text i va a la cita, darrere de `_`; el text es queda amb la marca `R.` a cada estrofa, també la primera. Només quan la resposta es diu una vegada, després de la primera estrofa (908 dels 921 salms de la missa). Els que la repeteixen a cada estrofa (el càntic de Daniel, el Sl 135) o no en tenen (el Sl 111) van com eren. A `lib/held-resolution.js`, la resposta d'una cita segueix la regla de les variants lleugeres de la prosa; la cita de davant, no |
+| Test | `mass-fields.test.js` (13 de 13) i `held-resolution.test.js` (23 de 23) |
+| Efecte | 590 cites guanyen la resposta i 412 textos la perden, sense cap altre canvi (comprovat un per un). 41 textos i 10 cites en català per primer cop; retinguts, 144 → 104 textos i 60 → 53 cites. De 437.185 a **438.124** textos-dia i de 119 a **161** dies sencers. El 6-10-2026, al 100% |
+| Queda retingut | 4 caselles: la resposta de 3 salms que cpl-app diu de dues maneres (Sl 104 «Recordeu les meravelles del Senyor» / «…que Déu obrà»; Sl 143 «la roca que em salva» / «la meva roca»; Sl 17, empat de 3 dies a 3, només de puntuació) i el text del Sl 66 de sant Jaume, que abans passava per variant lleugera i ara, més curt, ja no. Pendents d'en Pau, una per una |
+| A saints-app | La resposta es veu com a ℟ sota la cita amb la [SA-35](#sa-35). Les 4 retingudes conserven el que hi havia: tres cites sense resposta i el text de sant Jaume amb la resposta a dins |
+| Commit | el que afegeix la fitxa · saints-app `773351aea` |
+
 <a id="sa-24"></a>
 ## SA-24
 
@@ -2707,6 +2731,22 @@ minoritària deia el contrari: el 6-10-2026, el salm responsorial de la missa, �
 | Comprovat | `day-gap.js 2026-10-06`: «amb el text d'aquest dia, 5 de 15 dies bé i 10 malament» |
 | Commit | `918d7a9` |
 | Dossier | [tooling-bugs/MIGRA-025](migration-to-saints/tooling-bugs/MIGRA-025.md) |
+
+<a id="sa-35"></a>
+## SA-35
+
+**El salm català («Sl …») es pinta com a salm, amb la resposta com a ℟** · 6 d'octubre de 2026
+
+`isPsalm()` coneixia «Sal», «Lectura Sálmica» i «Lettura Salmica». Un salm responsorial català queia per la
+branca de les lectures i es pintava «cita • resposta». Amb la [D-017](#d-017), la resposta va a la cita com en
+castellà, i ara surt sota la cita com a ℟, igual que en les altres llengües.
+
+| | |
+|---|---|
+| Correcció | `src/utils/formatters/formatTextLecture.ts`: «Sl » a la llista |
+| Test | `tests/unit/utils/formatTextLecture.spec.ts`, 3 de 3; sense el canvi en falla 1. La resta de vitest, les mateixes 9 fallades d'abans; `prettier`, net |
+| Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
+| Commit | `47a3838a8` (branca `catalan-language-support-dev`) |
 
 # Canvis a saints-app
 

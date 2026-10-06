@@ -423,7 +423,8 @@ que queden fora d'abast en català.
 2. **La tornada de l'aclamació** → **[D-006](decisions/D-006-la-tornada-de-l-aclamacio.md)**, amb
    una taula de 14 línies perquè en Pau les ompli amb el Missal. No me les invento.
 3. **On va la resposta del salm** → decidit: **el cos de cpl-app tal com és**, que ja du la
-   resposta on la imprimeix el volum, i la referència només amb la cita. Zero cirurgia.
+   resposta on la imprimeix el volum, i la referència només amb la cita. Zero cirurgia. **Canviat el 6-10-2026
+   ([D-017](../REGISTRE-DE-CANVIS.md#d-017))**: la resposta va a la referència, com en castellà.
 
 ### Els forats que queden, i per què
 

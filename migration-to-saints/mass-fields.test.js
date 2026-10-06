@@ -6,8 +6,8 @@
 // which goes where, so the join reads it off the citation already in the cell. These tests pin
 // the two things that would break that silently:
 //
-//   1. the reference cell keeps the `_` the components split on, and the psalm deliberately
-//      does NOT get a subtitle (its response lives inside the body, PLAN §18.2);
+//   1. the reference cell keeps the `_` the components split on, and the psalm's subtitle is its
+//      response, taken out of the body, as the index keeps it in every language (D-017);
 //   2. a Catalan citation and its Spanish twin fingerprint to the same token — including the
 //      psalm, which the two languages abbreviate differently ("Sl" / "Sal"), and the canticle
 //      that stands in for one ("Lectura Sálmica  Ex 15, …").
@@ -17,6 +17,7 @@
 jest.mock('../src/services/databaseManagerService', () => require('../__tests__/helpers/mockDatabaseManager'));
 
 const { buildSettings, resolveDay, extractMassFields, massCitation } = require('./lib/cpl-day-resolver');
+const { splitPsalmResponse } = require('../src/liturgy-export/indexFields');
 const { fingerprint } = require('./lib/citation-key');
 
 // A plain even-year weekday of Ordinary Time, the one the mapping was worked out against
@@ -46,15 +47,52 @@ test('a reading keeps the `_` the components split on', () => {
   expect(ref.split('_')).toHaveLength(3);
 });
 
-test('the psalm gets the book name and NO subtitle', () => {
+test('the psalm gets the book name, and its response as the subtitle', () => {
   const ref = resolved[WEEKDAY].rendered.PSALM_ref;
   // cpl-app leaves the book off because its own screen prints "Salm responsorial" before it.
-  expect(ref).toBe('Sl 112,1-2.3-4.5-6 (R.: 4b)');
-  // No `_`: the response is inside the body, where cpl-app and the printed volume keep it,
-  // and `formatTextLecture()` turns its `R.` into `℟`. Adding a subtitle here would print it
-  // twice; stripping it from the body would be surgery on a liturgical text.
-  expect(ref).not.toContain('_');
-  expect(resolved[WEEKDAY].rendered.PSALM_texto).toMatch(/(^|\n)R\./);
+  expect(ref).toMatch(/^Sl 112,1-2\.3-4\.5-6 \(R\.: 4b\): _.+_$/);
+  expect(ref.split('_')).toHaveLength(3);
+  // The body keeps a bare `R.` after every stanza, the first one too, and the response nowhere.
+  const body = resolved[WEEKDAY].rendered.PSALM_texto;
+  const response = ref.split('_')[1];
+  expect(body).not.toContain(response);
+  expect(body).not.toMatch(/(^|\n)R\.\s*\S/);
+  expect(body.split(/\n\s*\n/).every((stanza) => /\sR\.?$/.test(stanza.trimEnd()))).toBe(true);
+});
+
+describe('the response comes out of the body only where there is one to take (D-017)', () => {
+  // Ps 138 on the Tuesday of week 27, even years: the response is a paragraph of its own.
+  const TUESDAY_XXVII = 'Heu penetrat els meus secrets, Senyor,\ni em coneixeu,\n'
+    + 'us són coneguts tots els meus passos.\n\nR. Guieu-me, Senyor, per camins eterns.\n\n'
+    + 'Vós heu creat el meu interior,\nm’heu teixit en les entranyes de la mare. R.';
+
+  test('a paragraph of its own, and the first stanza takes the mark', () => {
+    expect(splitPsalmResponse(TUESDAY_XXVII)).toEqual({
+      response: 'Guieu-me, Senyor, per camins eterns.',
+      body: 'Heu penetrat els meus secrets, Senyor,\ni em coneixeu,\nus són coneguts tots els meus passos. R.\n\n'
+        + 'Vós heu creat el meu interior,\nm’heu teixit en les entranyes de la mare. R.',
+    });
+  });
+
+  test('a response of several lines becomes one', () => {
+    const ps8 = 'Quan miro el cel.\n\nR. Senyor, sobirà nostre,\nque n’és, de gloriós,\nel vostre nom!\n\nGairebé l’heu igualat als àngels. R.';
+    expect(splitPsalmResponse(ps8).response).toBe('Senyor, sobirà nostre, que n’és, de gloriós, el vostre nom!');
+  });
+
+  test('one line inside the text, as the Easter Vigil prints Ps 18', () => {
+    const ps18 = 'dona seny als ignorants.\nR. Senyor, vós teniu paraules de vida eterna.\nEls preceptes del Senyor són planers,\nil·luminen els ulls. R.';
+    expect(splitPsalmResponse(ps18)).toEqual({
+      response: 'Senyor, vós teniu paraules de vida eterna.',
+      body: 'dona seny als ignorants. R.\nEls preceptes del Senyor són planers,\nil·luminen els ulls. R.',
+    });
+  });
+
+  test('a response spelled out after every stanza stays where it is', () => {
+    const ps135 = 'Enaltiu el Senyor: que n’és, de bo.\nR. Perdura eternament el seu amor.\n\n'
+      + 'Quan vam sofrir humiliacions,\nes recordà de nosaltres.\nR. Perdura eternament el seu amor.';
+    expect(splitPsalmResponse(ps135)).toBeNull();
+    expect(splitPsalmResponse('Feliç l’home que venera el Senyor.')).toBeNull();
+  });
 });
 
 test('a canticle standing in for the psalm is not given a psalm number', () => {

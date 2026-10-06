@@ -1713,6 +1713,10 @@ tal com és, es pinta bé**. La decisió recomanada és aquesta: referència = `
 cos sencer de cpl-app. **Zero cirurgia sobre el text litúrgic**; l'única diferència amb `es`
 és que la resposta no surt també a la capçalera, perquè ja surt on toca.
 
+> **Canviat el 6-10-2026 ([D-017](../REGISTRE-DE-CANVIS.md#d-017)).** Un salm resat amb dues respostes
+> era dos textos catalans per a una sola casella, i quedava buida. Ara la resposta va a la referència,
+> com en castellà (`Sl {Quote}: _{resposta}_`), i el cos es queda amb les marques `R.`.
+
 ### 18.3 L'aclamació: la tornada no és cap dada de cpl-app
 
 `ACCLAMATION.ref` **no és la cita bíblica**: és la tornada. Dels 747 dies, 685 diuen

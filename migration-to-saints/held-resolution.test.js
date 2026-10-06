@@ -62,6 +62,17 @@ describe('the same text, copied with a detail of difference', () => {
     expect(lightVariant('He 13, 20-21', 'He 13,20-21', 'lectura_breve_citas')).toBeTruthy();
     expect(lightVariant('Is 12,2-3.4bcd.5-6 (R.: 3)', 'Is 12,2.3-4bcd.5-6 (R.: 3)', 'lecturas_referencia')).toBeNull();
   });
+
+  test('the response after the `_` of a psalm reference is prose (D-017)', () => {
+    const cite = 'Sl 116,1.2 (R.: Mc 16,15)';
+    expect(lightVariant(`${cite}: _Aneu, anuncieu l’evangeli per tot el món._`,
+      `${cite}: _Aneu, anuncieu l'evangeli per tot el món._`, 'lecturas_referencia')).toBeTruthy();
+    // Another response is another text, even with the citation the same.
+    expect(lightVariant('Sl 17,2-3a.3bc-4.47 i 51ab: _Beneït sigui el Senyor, la roca que em salva._',
+      'Sl 17,2-3a.3bc-4.47 i 51ab: _Beneït sigui el Senyor, la meva roca._', 'lecturas_referencia')).toBeNull();
+    // And the citation in front of it keeps every sign.
+    expect(lightVariant('Sl 116,1.2: _Aneu._', 'Sl 116,1-2: _Aneu._', 'lecturas_referencia')).toBeNull();
+  });
 });
 
 describe('the psalm the Spanish of the cell names', () => {

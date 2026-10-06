@@ -20,7 +20,7 @@
         "type": "L",
         "litcalId": "ordinary_time_27_tuesday",
         "litcalIsFerial": true,
-        "minorityCells": 1,
+        "minorityCells": 0,
         "verdict": "not-applied",
         "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
         "group": {
@@ -37,115 +37,40 @@
               "-"
             ]
           },
-          "cellsBlamed": 3,
+          "cellsBlamed": 2,
           "cellsSole": 0,
-          "contestedDays": 3,
+          "contestedDays": 1,
           "dates": [
-            "2018-10-06",
-            "2020-10-06",
-            "2026-10-06"
+            "2018-10-06"
           ]
         }
       },
       "coverage": {
-        "ok": 134,
+        "ok": 135,
         "notInAppYet": 0,
-        "conflict": 1,
+        "conflict": 0,
         "missing": 0,
-        "have": 134,
+        "have": 135,
         "reachable": 135,
         "unreachable": 0,
         "total": 135,
-        "percent": 99,
-        "percentOfReachable": 99
+        "percent": 100,
+        "percentOfReachable": 100
       },
       "migration": {
-        "ok": 134,
-        "conflict": 1,
+        "ok": 135,
+        "conflict": 0,
         "missing": 0,
         "notInAppYet": 0,
         "total": 135,
-        "percent": 99
+        "percent": 100
       },
       "tabsDiffer": false,
       "ferialFieldCount": {
         "Laudes": 19,
         "Vespers": 19
       },
-      "blameSummary": [
-        {
-          "title": "Sants Dionís, bisbe, i companys, màrtirs",
-          "verdict": "not-applied",
-          "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-          "ranks": [
-            "Memòria lliure"
-          ],
-          "inLitcal": {
-            "id": "denis_of_paris_bishop_and_companions_martyrs",
-            "origin": "romcal",
-            "places": [
-              "-"
-            ]
-          },
-          "sole": false,
-          "fields": 1,
-          "soleFields": 0
-        },
-        {
-          "title": "Sant Bru, prevere",
-          "verdict": "not-applied",
-          "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-          "ranks": [
-            "Memòria lliure"
-          ],
-          "inLitcal": {
-            "id": "bruno_of_cologne_priest",
-            "origin": "romcal",
-            "places": [
-              "-"
-            ]
-          },
-          "sole": false,
-          "fields": 1,
-          "soleFields": 0
-        },
-        {
-          "title": "Sant Francesc d’Assís",
-          "verdict": "memorial",
-          "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-          "ranks": [
-            "Memòria obligatòria"
-          ],
-          "inLitcal": {
-            "id": "francis_of_assisi",
-            "origin": "italy",
-            "places": [
-              "-"
-            ]
-          },
-          "sole": false,
-          "fields": 1,
-          "soleFields": 0
-        },
-        {
-          "title": "Santa Faustina Kowalska, verge",
-          "verdict": "not-applied",
-          "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-          "ranks": [
-            "Memòria lliure"
-          ],
-          "inLitcal": {
-            "id": "faustina_kowalska_virgin",
-            "origin": "romcal",
-            "places": [
-              "-"
-            ]
-          },
-          "sole": false,
-          "fields": 1,
-          "soleFields": 0
-        }
-      ],
+      "blameSummary": [],
       "rows": [
         {
           "hour": "Office",
@@ -3997,11 +3922,11 @@
           "fromFerial": false,
           "altModeMatch": false,
           "noProperText": false,
-          "cpl": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b)",
-          "ca": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b)",
+          "cpl": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b): _Guieu-me, Senyor, per camins eterns._",
+          "ca": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b): _Guieu-me, Senyor, per camins eterns._",
           "es": "Sal 138, 1-3.13-15: _Guíame, Señor, por el camino eterno._",
-          "cplClean": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b)",
-          "caClean": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b)",
+          "cplClean": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b): Guieu-me, Senyor, per camins eterns.",
+          "caClean": "Sl 138,1-3.13-14ab.14c-15 (R.: 24b): Guieu-me, Senyor, per camins eterns.",
           "esClean": "Sal 138, 1-3.13-15: Guíame, Señor, por el camino eterno.",
           "fp": {
             "cpl": {
@@ -4038,116 +3963,27 @@
           "label": "Salm responsorial — text",
           "table": "lecturas_texto",
           "id": "885",
-          "status": "conflict",
-          "verdictCa": "onlyCpl",
-          "channel": "C2",
-          "match": "prose",
+          "status": "ok",
+          "verdictCa": "same",
+          "channel": "C1",
+          "match": "sameLight",
           "expectedNoSource": false,
           "fromFerial": false,
           "altModeMatch": false,
           "noProperText": false,
-          "cpl": "Heu penetrat els meus secrets, Senyor,\ni em coneixeu,\nvós veieu quan m’assec o quan m’aixeco,\ndescobriu de lluny estant els meus propòsits,\nsabeu bé si camino o si reposo,\nus són coneguts tots les meus passos.\n\nR. Guieu-me, Senyor, per camins eterns.\n\nVós heu creat el meu interior,\nm’heu teixit en les entranyes de la mare.\nUs dono gràcies\nper haver-me fet tan admirable,\nés meravellosa la vostra obra. R.\n\nUs era tot jo ben conegut,\nres de meu no us passava per alt\nquan jo m’anava fent secretament,\ncom un brodat, aquí baix a la terra. R.",
-          "ca": null,
+          "cpl": "Heu penetrat els meus secrets, Senyor,\ni em coneixeu,\nvós veieu quan m’assec o quan m’aixeco,\ndescobriu de lluny estant els meus propòsits,\nsabeu bé si camino o si reposo,\nus són coneguts tots les meus passos. R.\n\nVós heu creat el meu interior,\nm’heu teixit en les entranyes de la mare.\nUs dono gràcies\nper haver-me fet tan admirable,\nés meravellosa la vostra obra. R.\n\nUs era tot jo ben conegut,\nres de meu no us passava per alt\nquan jo m’anava fent secretament,\ncom un brodat, aquí baix a la terra. R.",
+          "ca": "Heu penetrat els meus secrets, Senyor, i em coneixeu,\nvós veieu quan m’assec o quan m’aixeco,\ndescobriu de lluny estant els meus propòsits,\nsabeu bé si camino o si reposo,\nus són coneguts tots els meus passos. R.\n\nVós heu creat el meu interior,\nm’heu teixit en les entranyes de la mare.\nUs dono gràcies per haver-me fet tan admirable,\nés meravellosa la vostra obra. R.\n\nUs era tot jo ben conegut,\nres de meu no us passava per alt\nquan jo m’anava fent secretament,\ncom un brodat, aquí baix a la terra. R.",
           "es": "Señor, tú me sondeas y me conoces.\nMe conoces cuando me siento o me levanto, \nde lejos penetras mis pensamientos;\ndistingues mi camino y mi descanso, \ntodas mis sendas te son familiares. R.\n\nTú has creado mis entrañas, \nme has tejido en el seno materno.\nTe doy gracias porque me has plasmado portentosamente, \nporque son admirables tus obras. R.\n\nMi alma lo reconoce agradecida,\nno desconocías mis huesos. \nCuando, en lo oculto, me iba formando, \ny entretejiendo en lo profundo de la tierra. R.\n",
-          "cplClean": "Heu penetrat els meus secrets, Senyor, i em coneixeu, vós veieu quan m’assec o quan m’aixeco, descobriu de lluny estant els meus propòsits, sabeu bé si camino o si reposo, us són coneguts tots les meus passos. R. Guieu-me, Senyor, per camins eterns. Vós heu creat el meu interior, m’heu teixit en les entranyes de la mare. Us dono gràcies per haver-me fet tan admirable, és meravellosa la vostra obra. R. Us era tot jo ben conegut, res de meu no us passava per alt quan jo m’anava fent secretament, com un brodat, aquí baix a la terra. R.",
-          "caClean": null,
+          "cplClean": "Heu penetrat els meus secrets, Senyor, i em coneixeu, vós veieu quan m’assec o quan m’aixeco, descobriu de lluny estant els meus propòsits, sabeu bé si camino o si reposo, us són coneguts tots les meus passos. R. Vós heu creat el meu interior, m’heu teixit en les entranyes de la mare. Us dono gràcies per haver-me fet tan admirable, és meravellosa la vostra obra. R. Us era tot jo ben conegut, res de meu no us passava per alt quan jo m’anava fent secretament, com un brodat, aquí baix a la terra. R.",
+          "caClean": "Heu penetrat els meus secrets, Senyor, i em coneixeu, vós veieu quan m’assec o quan m’aixeco, descobriu de lluny estant els meus propòsits, sabeu bé si camino o si reposo, us són coneguts tots els meus passos. R. Vós heu creat el meu interior, m’heu teixit en les entranyes de la mare. Us dono gràcies per haver-me fet tan admirable, és meravellosa la vostra obra. R. Us era tot jo ben conegut, res de meu no us passava per alt quan jo m’anava fent secretament, com un brodat, aquí baix a la terra. R.",
           "esClean": "Señor, tú me sondeas y me conoces. Me conoces cuando me siento o me levanto, de lejos penetras mis pensamientos; distingues mi camino y mi descanso, todas mis sendas te son familiares. R. Tú has creado mis entrañas, me has tejido en el seno materno. Te doy gracias porque me has plasmado portentosamente, porque son admirables tus obras. R. Mi alma lo reconoce agradecida, no desconocías mis huesos. Cuando, en lo oculto, me iba formando, y entretejiendo en lo profundo de la tierra. R.",
           "fp": {
             "cpl": null,
             "es": null,
             "ca": null
           },
-          "conflict": {
-            "cause": "Casella compartida per 3 celebracions",
-            "bundleId": "shared|francis_of_assisi__MEMORY_FERIAL2,nativity_of_john_the_baptist__ANY,ordinary_time_27_tuesday__ANY",
-            "variantCount": 2,
-            "affectedCount": 15,
-            "decision": "pending",
-            "impact": {
-              "days": 15,
-              "agreeDays": 5,
-              "breakDays": 10,
-              "dateNotObserved": false
-            },
-            "variants": [
-              {
-                "preview": "Heu penetrat els meus secrets, Senyor, i em coneixeu,\nvós veieu quan m’assec o quan m’aixeco,\ndescobriu de lluny estant els meus propòsits,\nsabeu bé si camino o si reposo,\nus són coneguts tots els meus passos.\n\nR. Us dono gràcies\nper haver-me fet tan admirable.\n\nVós heu creat el meu interior,\nm’heu ",
-                "truncated": true,
-                "count": 10
-              },
-              {
-                "preview": "Heu penetrat els meus secrets, Senyor,\ni em coneixeu,\nvós veieu quan m’assec o quan m’aixeco,\ndescobriu de lluny estant els meus propòsits,\nsabeu bé si camino o si reposo,\nus són coneguts tots les meus passos.\n\nR. Guieu-me, Senyor, per camins eterns.\n\nVós heu creat el meu interior,\nm’heu teixit en l",
-                "truncated": true,
-                "count": 5
-              }
-            ]
-          },
-          "blame": [
-            {
-              "title": "Sants Dionís, bisbe, i companys, màrtirs",
-              "verdict": "not-applied",
-              "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-              "ranks": [
-                "Memòria lliure"
-              ],
-              "inLitcal": {
-                "id": "denis_of_paris_bishop_and_companions_martyrs",
-                "origin": "romcal",
-                "places": [
-                  "-"
-                ]
-              },
-              "sole": false
-            },
-            {
-              "title": "Sant Bru, prevere",
-              "verdict": "not-applied",
-              "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-              "ranks": [
-                "Memòria lliure"
-              ],
-              "inLitcal": {
-                "id": "bruno_of_cologne_priest",
-                "origin": "romcal",
-                "places": [
-                  "-"
-                ]
-              },
-              "sole": false
-            },
-            {
-              "title": "Sant Francesc d’Assís",
-              "verdict": "memorial",
-              "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-              "ranks": [
-                "Memòria obligatòria"
-              ],
-              "inLitcal": {
-                "id": "francis_of_assisi",
-                "origin": "italy",
-                "places": [
-                  "-"
-                ]
-              },
-              "sole": false
-            },
-            {
-              "title": "Santa Faustina Kowalska, verge",
-              "verdict": "not-applied",
-              "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-              "ranks": [
-                "Memòria lliure"
-              ],
-              "inLitcal": {
-                "id": "faustina_kowalska_virgin",
-                "origin": "romcal",
-                "places": [
-                  "-"
-                ]
-              },
-              "sole": false
-            }
-          ]
+          "conflict": null,
+          "blame": null
         },
         {
           "hour": "Mass",

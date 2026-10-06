@@ -92,14 +92,24 @@ function wordEdits(a, b, limit) {
 //   - in a prose table, up to one word in fifty (at least one) added, removed or changed,
 //     unless one of them is «al·leluia» or a responsory mark;
 //   - in a table of references, only blanks and capitals: there the punctuation says which
-//     verses ("Is 12,2-3.4" and "Is 12,2.3-4" are not the same list).
+//     verses ("Is 12,2-3.4" and "Is 12,2.3-4" are not the same list). A Mass reference also
+//     carries prose after its `_` (a reading's subtitle, a psalm's response since D-017): the
+//     citation is held to that, the prose after it to the prose rule.
 // Returns { edits, changed } when it is, null when it is not.
 function lightVariant(a, b, table) {
   // A reference keeps its punctuation: "2-3.4" and "2.3-4" are other verses.
   if (CITATION_TABLES.has(table)) {
     const bare = (s) => String(s == null ? '' : s).replace(/\s+/g, '').toLowerCase();
-    return bare(a) === bare(b) ? { edits: 0, changed: [] } : null;
+    const [citeA, ...proseA] = String(a == null ? '' : a).split('_');
+    const [citeB, ...proseB] = String(b == null ? '' : b).split('_');
+    if (bare(citeA) !== bare(citeB)) return null;
+    if (!proseA.join('').trim() && !proseB.join('').trim()) return { edits: 0, changed: [] };
+    return lightProse(proseA.join(' '), proseB.join(' '));
   }
+  return lightProse(a, b);
+}
+
+function lightProse(a, b) {
   const wa = looseWords(a);
   const wb = looseWords(b);
   if (wa.join(' ') === wb.join(' ')) return { edits: 0, changed: [] };
