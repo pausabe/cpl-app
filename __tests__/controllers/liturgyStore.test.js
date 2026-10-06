@@ -28,6 +28,22 @@ jest.mock('../../src/services/dataService', () => {
       current.liturgyDayInformation = { today: { date: date } };
       state.running--;
     }),
+    obtainDayPreview: jest.fn(async (date) => {
+      state.running++;
+      state.maxRunning = Math.max(state.maxRunning, state.running);
+      state.calls.push(['preview', date]);
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      state.running--;
+      return { day: { date }, celebration: {}, settings: {} };
+    }),
+    obtainYearMarks: jest.fn(async (year) => {
+      state.running++;
+      state.maxRunning = Math.max(state.maxRunning, state.running);
+      state.calls.push(['year', year]);
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      state.running--;
+      return [];
+    }),
   };
   return module;
 });
@@ -108,4 +124,24 @@ test('it knows whether there is data already and when it was loaded', async () =
   await LiturgyStore.reload(new Date(2026, 8, 26));
   expect(LiturgyStore.isLoaded()).toBe(true);
   expect(LiturgyStore.lastRefreshDate()).toEqual(new Date(2026, 8, 21));
+});
+
+test('the calendar waits for its turn: never while a reload opens the database again', async () => {
+  const day = new Date(2026, 8, 21);
+  const other = new Date(2026, 11, 8);
+  await Promise.all([LiturgyStore.reload(day), LiturgyStore.previewDay(other), LiturgyStore.yearMarks(2026)]);
+  expect(DataService.__state.calls).toEqual([day, ['preview', other], ['year', 2026]]);
+  expect(DataService.__state.maxRunning).toBe(1);
+  // The day shown is still the one reloaded
+  expect(LiturgyStore.currentDate()).toBe(day);
+});
+
+test('a day the calendar no longer wants by its turn is not worked out', async () => {
+  let wanted = true;
+  const first = LiturgyStore.previewDay(new Date(2026, 8, 24));
+  const second = LiturgyStore.previewDay(new Date(2026, 8, 25), () => wanted);
+  wanted = false;
+  await expect(first).resolves.toMatchObject({ day: { date: new Date(2026, 8, 24) } });
+  await expect(second).resolves.toBeNull();
+  expect(DataService.__state.calls).toEqual([['preview', new Date(2026, 8, 24)]]);
 });

@@ -27,6 +27,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Linking } from 'react-native';
 import { render, screen, fireEvent, waitFor, act, within } from '@testing-library/react-native';
 import App from '../../App';
+import { navigationRef } from '../../src/controllers/NavigationController';
 import * as DataService from '../../src/services/dataService';
 import { styleOf } from '../helpers/renderWithTheme';
 import { wasOpenedBefore } from '../../src/controllers/firstRun';
@@ -212,35 +213,112 @@ test('at midnight, «No, la d’avui» stays on the day', async () => {
   expect(screen.getByText('Dimarts, 22 de setembre')).toBeTruthy();
 });
 
-test('the calendar changes the day; touching outside closes it without changing it', async () => {
+// The calendar is a screen of its own: it is left with the back arrow of the system, through the
+// navigator, and waited for until it is really gone
+async function leaveCalendar() {
+  act(() => navigationRef.goBack());
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
+}
+
+const calendarTitle = () => screen.getByTestId('calendar-title').props.children;
+
+test('the calendar is a screen of its own: back changes nothing, «Selecciona» changes the day', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
   expect(await screen.findByTestId('calendar')).toBeTruthy();
-  expect(screen.getByText('setembre de 2026')).toBeTruthy();
-  fireEvent.press(screen.getByRole('button', { name: 'dimarts, 15 de setembre' }));
-  fireEvent.press(screen.getByTestId('calendar-backdrop', { includeHiddenElements: true }));
-  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull());
+  expect(navigationRef.getCurrentOptions().title).toBe('Calendari');
+  // Back only from the edge: a drag to the right in the middle is the month before
+  expect(navigationRef.getCurrentOptions().fullScreenGestureEnabled).toBe(false);
+  expect(calendarTitle()).toBe('Setembre de 2026');
+  fireEvent.press(screen.getByRole('button', { name: /^dimarts, 15 de setembre/ }));
+  await leaveCalendar();
   expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
 
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
-  fireEvent.press(await screen.findByRole('button', { name: 'dimarts, 15 de setembre' }));
-  fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+  fireEvent.press(await screen.findByRole('button', { name: /^dimarts, 15 de setembre/ }));
+  fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dimarts, 15 de setembre');
 });
 
 test('in the calendar you move from month to month, and «Avui» goes back to today', async () => {
   await openAt(new Date(2026, 8, 21, 10, 0));
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
-  fireEvent.press(await screen.findByRole('button', { name: 'Mes següent' }));
-  expect(screen.getByText('octubre de 2026')).toBeTruthy();
-  fireEvent.press(screen.getByRole('button', { name: 'dissabte, 31 d’octubre' }));
-  fireEvent.press(screen.getByRole('button', { name: 'Canvia' }));
+  fireEvent.press(await screen.findByRole('button', { name: 'octubre de 2026' }));
+  expect(calendarTitle()).toBe('Octubre de 2026');
+  fireEvent.press(screen.getByRole('button', { name: /^dissabte, 31 d’octubre/ }));
+  fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dissabte, 31 d’octubre');
 
   fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
-  expect(await screen.findByText('octubre de 2026')).toBeTruthy();
+  await screen.findByTestId('calendar');
+  expect(calendarTitle()).toBe('Octubre de 2026');
   fireEvent.press(screen.getByRole('button', { name: 'Avui' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
   await findText('Dilluns, 21 de setembre');
+});
+
+test('the calendar paints the year of the place and says what a day is before going to it', async () => {
+  await openAt(new Date(2026, 8, 21, 10, 0));
+  fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
+  // The day shown, at once, with the card of the home
+  const preview = await screen.findByTestId('calendar-preview');
+  expect(within(preview).getByText('Sant Mateu, apòstol i evangelista')).toBeTruthy();
+  // Ordinary time, green; St Matthew a feast (a star), Our Lady of Mercy a solemnity in Barcelona
+  const mercy = await screen.findByRole('button', { name: 'dijous, 24 de setembre, solemnitat' }, { timeout: 15000 });
+  expect(styleOf(screen.getByTestId('calendar-day-21-fill')).backgroundColor).toBe('#DDEEDA');
+  expect(screen.getByTestId('calendar-day-21-feast', { includeHiddenElements: true })).toBeTruthy();
+  expect(screen.getByTestId('calendar-day-24-solemnity', { includeHiddenElements: true })).toBeTruthy();
+  fireEvent.press(mercy);
+  expect(await within(screen.getByTestId('calendar-preview')).findByText('Mare de Déu de la Mercè')).toBeTruthy();
+  expect(within(screen.getByTestId('calendar-preview')).getByText('Solemnitat')).toBeTruthy();
+  // The day shown has not changed
+  await leaveCalendar();
+  expect(screen.getByText('Dilluns, 21 de setembre')).toBeTruthy();
+});
+
+test('a day the home prays as a weekday is painted as one in the calendar, once it is worked out', async () => {
+  // As in a place whose calendar gives it a celebration the database has no texts for
+  const actual = DataService.obtainDayPreview;
+  const spy = jest.spyOn(DataService, 'obtainDayPreview').mockImplementation(async (date) => {
+    const preview = await actual(date);
+    if (date.getDate() !== 24) return preview;
+    return {
+      ...preview,
+      day: { ...preview.day, celebrationType: '-' },
+      celebration: { ...preview.celebration, title: '' },
+    };
+  });
+  try {
+    await openAt(new Date(2026, 8, 21, 10, 0));
+    fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
+    fireEvent.press(
+      await screen.findByRole('button', { name: 'dijous, 24 de setembre, solemnitat' }, { timeout: 15000 }),
+    );
+    expect(await screen.findByRole('button', { name: 'dijous, 24 de setembre' })).toBeTruthy();
+    expect(screen.queryByTestId('calendar-day-24-solemnity', { includeHiddenElements: true })).toBeNull();
+    expect(within(screen.getByTestId('calendar-preview')).queryByText('Solemnitat')).toBeNull();
+  } finally {
+    spy.mockRestore();
+  }
+});
+
+test('the whole year and the wheel of the liturgical year, in their tabs', async () => {
+  await openAt(new Date(2026, 9, 5, 10, 0));
+  fireEvent.press(screen.getByRole('button', { name: 'Calendari' }));
+  fireEvent.press(await screen.findByRole('radio', { name: 'Any' }));
+  expect(screen.getByRole('button', { name: 'octubre de 2026, el mes d’avui' })).toBeTruthy();
+  fireEvent.press(screen.getByRole('radio', { name: 'Any litúrgic' }));
+  expect(screen.getByLabelText(/^L’any litúrgic 2025–2026/)).toBeTruthy();
+  // What comes next, with the names the home would give them
+  expect(
+    await screen.findByRole('button', { name: 'Tots Sants, Solemnitat · diumenge, 1 de novembre' }, { timeout: 15000 }),
+  ).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: /^Tots Sants/ }));
+  fireEvent.press(screen.getByRole('button', { name: 'Selecciona' }));
+  await waitFor(() => expect(screen.queryByTestId('calendar')).toBeNull(), { timeout: 15000 });
+  await findText('Diumenge, 1 de novembre');
 });
 
 test('with dark mode turned on, the home is dark too', async () => {

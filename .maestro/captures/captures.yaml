@@ -1,5 +1,5 @@
 appId: cpl.cpl
-name: "The six screenshots the stores show"
+name: "The eight screenshots the stores show"
 ---
 # The screenshots of the App Store and of Google Play, taken from the app itself. It is not a
 # test: nothing is asserted beyond what has to be on screen before pressing the shutter, and a
@@ -12,11 +12,41 @@ name: "The six screenshots the stores show"
 # that points anywhere else.
 #
 # The day is today's. To use another one, open the app first, pick the day in the calendar and
-# run this flow without `clearState` — the calendar is the one thing the flow does not touch.
+# run this flow without `clearState`: the flow opens the calendar only to photograph it, and
+# leaves without picking a day.
 - runFlow: ../subflows/obrir.yaml
 
 # 1. The home screen: the whole day in one screen
 - takeScreenshot: 01-inici
+
+# 7 and 8. The calendar: the month painted with the liturgical year, and the year as a wheel.
+# The shot waits for the ranks of the month, which come after the grid, and for the name of the
+# day on its card.
+- tapOn: "Calendari"
+- extendedWaitUntil:
+    visible:
+      id: "calendar-day-[0-9]+-(memory|feast|solemnity)"
+    timeout: 15000
+- extendedWaitUntil:
+    notVisible:
+      id: "calendar-preview-waiting"
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: 07-calendari
+- tapOn: "Any litúrgic"
+- extendedWaitUntil:
+    visible:
+      id: "calendar-milestone-.*"
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: 08-any-liturgic
+# Back with today picked, the same on Android and iOS: on the calendar a swipe to the right turns
+# the month, and only the very edge goes back
+- tapOn: "Mes"
+- tapOn: "Selecciona"
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 15000
 
 # 2. Laudes: the text, the same one as in the books
 - tapOn: "Laudes"

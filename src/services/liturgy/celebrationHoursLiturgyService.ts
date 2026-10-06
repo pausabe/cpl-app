@@ -7,6 +7,7 @@ import LiturgyDayInformation, {
 import { Settings } from '../../models/Settings';
 import { CelebrationType, YearType } from '../databaseEnums';
 import Vespers from '../../models/hours-liturgy/Vespers';
+import CelebrationInformation from '../../models/hours-liturgy/CelebrationInformation';
 import Office from '../../models/hours-liturgy/Office';
 import Laudes from '../../models/hours-liturgy/Laudes';
 import Hours from '../../models/hours-liturgy/Hours';
@@ -51,6 +52,16 @@ export function obtainCelebrationHoursLiturgy(
     settings,
   );
   return hoursLiturgy;
+}
+
+// The celebration of one day on its own, without the next one: what the calendar says of a day
+// before changing to it
+export function obtainDayCelebrationInformation(
+  liturgyMasters: LiturgyMasters,
+  liturgySpecificDayInformation: LiturgySpecificDayInformation,
+  settings: Settings,
+): CelebrationInformation {
+  return buildHoursLiturgy(liturgyMasters, liturgySpecificDayInformation, settings).todayCelebrationInformation;
 }
 
 function buildHoursLiturgy(

@@ -13,8 +13,9 @@
 // What comes out lands in store/<target>/, which is not in the repository: it is 20 MB of PNG
 // that is remade from the app whenever the app changes.
 //
-// The day is the day the shots are taken. What the app shows changes with it, so the six shots
-// of one run belong together and a store listing is always uploaded with a whole run.
+// The day is the day the shots are taken. What the app shows changes with it, so the shots
+// of one run belong together and a store listing is always uploaded with a whole run. Eight is
+// as many as Google Play takes for a phone (the App Store takes ten).
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -36,9 +37,11 @@ const DARK = { background: '#0E1413', text: '#E6ECEB' };
 // on it: whoever reads it is deciding whether to install the app, not looking for a feature.
 const SHOTS = [
   { file: '01-inici', caption: 'Tot el dia, en una pantalla', theme: LIGHT },
+  { file: '07-calendari', caption: 'Cada dia, amb el seu temps i les seves festes', theme: LIGHT },
   { file: '02-laudes', caption: 'Els textos complets, sense connexió', theme: LIGHT },
   { file: '04-evangeli', caption: "L'evangeli del dia, a un toc", theme: LIGHT },
   { file: '03-lletra', caption: 'La lletra, com la necessitis', theme: LIGHT },
+  { file: '08-any-liturgic', caption: "Tot l'any litúrgic, d'un cop d'ull", theme: LIGHT },
   { file: '05-completes-fosc', caption: 'De nit, sense enlluernar', theme: DARK },
   { file: '06-inici-fosc', caption: "El mode fosc, a tota l'app", theme: DARK },
 ];
@@ -101,6 +104,8 @@ function prepareSimulator(name) {
   }
   run('xcrun', ['simctl', 'bootstatus', device.udid, '-b']);
   run('xcrun', ['simctl', 'install', device.udid, app]);
+  // The app follows the system until the flow picks «Fosc»: the first shots are of the light app
+  run('xcrun', ['simctl', 'ui', device.udid, 'appearance', 'light']);
 
   // A shot of a phone at 07:34 with no coverage and a half battery looks like somebody's
   // screenshot, not like a picture of the app. Apple's own are at 9:41.
@@ -140,6 +145,8 @@ function prepareAndroid() {
     fail('The Android release is not built. `make captures-android` builds it before coming here.');
   }
   run(adb, ['-s', device[0], 'install', '-r', apk]);
+  // As on iOS, the system in light until the flow picks «Fosc»
+  run(adb, ['-s', device[0], 'shell', 'cmd', 'uimode', 'night', 'no']);
 
   // The same clean status bar as on iOS. Android does it with the demo mode of the system UI,
   // which has to be allowed first and stays on until somebody leaves it.
@@ -210,6 +217,12 @@ function compose(target, raw, out) {
   const browser = chrome();
   const [width, height] = TARGETS[target].canvas;
   mkdirSync(out, { recursive: true });
+  // The shots of an earlier run go: with other names, or more of them, they would be uploaded too
+  for (const name of readdirSync(out)) {
+    if (name.endsWith('.png')) {
+      rmSync(join(out, name));
+    }
+  }
   let order = 1;
   for (const shot of SHOTS) {
     const source = findShot(raw, shot.file);

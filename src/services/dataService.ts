@@ -21,6 +21,10 @@ import { getDioceseCodeFromDioceseName } from './databaseDataHelper';
 import * as CalendarService from './calendarService';
 import { Asset } from 'expo-asset';
 import { DioceseCode } from './databaseEnums';
+import * as CelebrationHoursLiturgyService from './liturgy/celebrationHoursLiturgyService';
+import * as CelebrationInformationService from './liturgy/celebrationInformationService';
+import * as LiturgicalYearService from './liturgicalYearService';
+import { DayMark } from './liturgicalYearService';
 
 // The liturgy of the day being shown, with the settings it was loaded with. Only the services and
 // the store (controllers/liturgyStore) read it: the screens get it from the store, as props.
@@ -83,6 +87,35 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
     'Total time reloading data: ',
     DateManagement.differenceBetweenDatesInSeconds(current.lastRefreshDate, new Date()) + 's',
   );
+}
+
+// Another day, for the calendar: its information and its celebration, worked out as a reload
+// would, so that the calendar says of it what the home will say after changing to it. Nothing
+// of the day being shown changes. With the settings of the day shown, except the optional
+// memorial, which is kept for one day.
+export interface DayPreview {
+  day: LiturgySpecificDayInformation;
+  celebration: CelebrationInformation;
+  settings: Settings;
+}
+
+export async function obtainDayPreview(date: Date): Promise<DayPreview> {
+  const settings: Settings = {
+    ...current.settings,
+    optionalFestivityEnabled: await determineOptionalFestivityEnabled(date),
+  };
+  const dayInformation = await obtainCurrentLiturgyDayInformation(date, settings);
+  const masters = await obtainLiturgyMasters(dayInformation, settings);
+  const celebration = CelebrationInformationService.obtainCelebrationInformation(
+    dayInformation.today,
+    CelebrationHoursLiturgyService.obtainDayCelebrationInformation(masters, dayInformation.today, settings),
+  );
+  return { day: dayInformation.today, celebration, settings };
+}
+
+// The colour, the rank and the season of every day of a year, in the place of the day shown
+export function obtainYearMarks(year: number): Promise<DayMark[]> {
+  return LiturgicalYearService.obtainYearMarks(year, current.settings);
 }
 
 async function obtainCurrentSettings(date: Date): Promise<Settings> {
