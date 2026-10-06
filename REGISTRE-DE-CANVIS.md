@@ -141,6 +141,10 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [D-018](#d-018) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (10 caselles, una per una, i 2 còpies) | Es regenera: `decided-cells.json`, `copied-cells.json` | el que afegeix la fitxa · saints-app `ca4cc737f` |
 | [D-019](#d-019) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (la missa pròpia del Roser) | Es regenera: `static-translations/`, `copied-cells.json` | el que afegeix la fitxa · saints-app `09a01bfe0` |
 | [D-020](#d-020) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (1 casella) | Es regenera: `decided-cells.json` | el que afegeix la fitxa · saints-app `6f3a19b90` |
+| [MIGRA-026](#migra-026) | 2026-10-06 | eines | codi | No — va al git | el que afegeix la fitxa |
+| [D-021](#d-021) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** + codi | Es regenera: el join | el que afegeix la fitxa · saints-app `33f5b7763` |
+| [D-022](#d-022) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (12 caselles, una per una, i 1 llista de precs) | Es regenera: `decided-cells.json`, `lib/preces-alignment.js` | el que afegeix la fitxa · saints-app `33f5b7763` |
+| [SA-36](#sa-36) | 2026-10-06 | saints-app | **codi** | No — va al git | `6be00a8d8` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2486,6 +2490,46 @@ aquesta, per dia de la setmana (el problema conegut dels dies després de l'Epif
 | Efecte | El 8-10-2026, al **100%**. De 438.857 a **438.924** textos-dia (el **95%**) i de 167 a **186** dies sencers: era l'únic que faltava a 19 dijous de la setmana III |
 | Commit | el que afegeix la fitxa · saints-app `6f3a19b90` |
 
+<a id="d-021"></a>
+## D-021
+
+**Les antífones del Benedictus i del Magnificat dels diumenges, amb els tres cicles a la casella** · 6 d'octubre de 2026
+
+El castellà i l'italià guarden en una sola casella les tres antífones de l'evangeli del diumenge («Año A: … /
+Año B: … / Año C: …»), i cpl-app en diu una per any. La casella catalana quedava retinguda per desacord entre anys,
+que és el que l'índex vol (parany 6 de la revisió). Ara es fa igual que en castellà, amb el text de cpl-app de
+cada cicle i l'etiqueta que fa servir cpl-app: «Any A». No es tria cap text. En Pau, el 6-10: «endavant».
+
+| | |
+|---|---|
+| Com | `lib/held-resolution.js`, `composeCycles` i `sundayCycle`: el cicle surt de la data (l'any comença el diumenge I d'Advent; les Vespres compten des de l'endemà, o sigui que les primeres vespres d'Advent ja són de l'any nou). Només quan cada text de cpl-app cau en un sol cicle i tots els cicles que el castellà anomena en tenen un. `cycleLine` fa que la revisió i el panell comparin la línia del cicle del dia |
+| Test | `held-resolution.test.js` (27 de 27) |
+| Efecte | 96 caselles de diumenges i solemnitats, totes les de l'any que complien les condicions |
+| Commit | el que afegeix la fitxa · saints-app `33f5b7763` |
+
+<a id="d-022"></a>
+## D-022
+
+**La setmana del 5 a l'11 d'octubre: 12 caselles decidides una per una, i les pregàries de Laudes del dissabte III** · 6 d'octubre de 2026
+
+En Pau va demanar tota la setmana al 100%. En totes, el text de la casella és el de la majoria, que és el que mostra
+el castellà; els pocs dies que discrepen, el català diu el mateix que el castellà (criteri de la [D-014](#d-014)).
+
+| Casella | Text | Els dies que discrepen |
+|---|---|---|
+| Vespres del divendres III, 1a antífona | «El Senyor és gran… més gran que tots els déus» (32) | 5 de gener i diumenge II després de Nadal: «…més excels que tota la creació» (10) |
+| Vespres del divendres III, 3a antífona | «Tots els pobles, Senyor, vindran a fer-vos homenatge» (96) | Epifania: «Tots els pobles que heu creat…» (10) |
+| Primeres vespres del dissabte IV: himne, 3 antífones, lectura breu (2Pe 1,19-21), introducció i resposta de les pregàries (8) | Les del dissabte IV (56) | El 12 d'octubre: eprex fa servir aquestes caselles per al Pilar ([T25](https://trello.com/c/FXmXIE2q) al tauler) |
+| Laudes del diumenge IV, 1a antífona | «Enaltiu el Senyor, perdura eternament el seu amor, al·leluia» (56) | Els dilluns IV, sense al·leluia (30) |
+| Ofici del diumenge IV, 2a antífona | «Pobles, beneïu el nostre Déu, que ens preserva la vida, al·leluia» (65) | Dimarts de Pasqua: «que m'ha preservat» (10) |
+| Laudes del dissabte III, pregàries | La CPL en té tres, com el llatí; el castellà n'afegeix una (la concepció per obra de l'Esperit Sant). La de la creu va a la seva casella i la del castellà queda buida per decisió | `lib/preces-alignment.js`; `preces-alignment.test.js` (4 de 4) |
+
+| | |
+|---|---|
+| Efecte | Del 6 a l'11 d'octubre de 2026, tots al **100%** i resant el mateix que cpl-app. Amb la [MIGRA-026](#migra-026) i la [D-021](#d-021): de 438.924 a **436.385** textos-dia (el 94%, ara sense textos vells) i de 186 a **224** dies sencers |
+| El dilluns 5 | Les Témpores no tenen entrada a l'índex: amb la [SA-36](#sa-36) es resa la fèria; l'ofici propi depèn de la [T26](https://trello.com/c/Ud5nxZXj) |
+| Commit | el que afegeix la fitxa · saints-app `33f5b7763` |
+
 <a id="sa-24"></a>
 ## SA-24
 
@@ -2811,6 +2855,42 @@ castellà, i ara surt sota la cita com a ℟, igual que en les altres llengües.
 | Test | `tests/unit/utils/formatTextLecture.spec.ts`, 3 de 3; sense el canvi en falla 1. La resta de vitest, les mateixes 9 fallades d'abans; `prettier`, net |
 | Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
 | Commit | `47a3838a8` (branca `catalan-language-support-dev`) |
+
+<a id="migra-026"></a>
+## MIGRA-026
+
+**Les caselles retingudes conservaven a saints-app el text d'una exportació antiga** · 6 d'octubre de 2026
+
+L'exportació barreja i no treia mai res. Quan el join deixava de donar per bona una casella (la retenia perquè els dies
+que la comparteixen discrepen), el text que una exportació anterior hi havia escrit s'hi quedava. El 6-10 eren 192
+caselles: 102 amb el text de la majoria, 74 amb el d'una minoria i 16 amb un text que ja no és de cap variant, unes
+1.500 vegades un text que no toca. La més visible: les primeres vespres del dissabte 10-10 mostraven l'himne, la
+lectura i les pregàries del Pilar. I el comptador les comptava com a fetes. A més, el comptador comptava com a «falta»
+la casella que en Pau va decidir deixar buida (MIGRA-020), i aquells dimecres no podien arribar al 100%.
+
+| | |
+|---|---|
+| Correcció | `export-to-saints-app.js`, `clearHeld`: una casella retinguda, o buida per decisió, queda sense català; les còpies i les traduccions fixes s'hi tornen a posar després. `day-check.js`: una casella buida per decisió compta com a feta |
+| Regressió | `export-held.test.js`, 3 de 3 |
+| Efecte | 198 caselles buidades. El percentatge baixa gairebé un punt i ara és el real |
+| Dossier | aquesta fitxa |
+
+<a id="sa-36"></a>
+## SA-36
+
+**Un dia la celebració del qual no és a l'índex resa la fèria, no un error** · 6 d'octubre de 2026
+
+Els calendaris catalans porten celebracions que l'índex encara no té: les Témpores (5-10), Montserrat, la Mercè,
+sant Jordi, santa Eulàlia… unes 17 per any. Cada hora i la missa buscaven el dia només per la celebració i, sense
+trobar-la, mostraven NO_LITURGICAL_DATA.
+
+| | |
+|---|---|
+| Correcció | `src/utils/structureHelpers.ts`, `findDayEntry` / `findDayEntryInCycles`: si la celebració no hi és, la fèria del dia, que litcal dona amb tota celebració que no ho sigui. A l'Ofici, Laudes, les hores menors, Vespres, l'invitatori i les lectures de la missa |
+| Test | `tests/unit/utils/findDayEntry.spec.ts`, 4 de 4; sense el canvi fallen tots. La resta de vitest, les mateixes 9 fallades d'abans |
+| Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
+| Commit | `6be00a8d8` (branca `catalan-language-support-dev`) |
+| Pendent | L'ofici propi d'aquests dies: [T26](https://trello.com/c/Ud5nxZXj) |
 
 # Canvis a saints-app
 

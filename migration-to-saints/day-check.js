@@ -20,6 +20,7 @@ const path = require('path');
 const { classify } = require('./review-queue');
 const { explainDate } = require('./missing-celebrations');
 const memorialFerial = require('./lib/memorial-ferial');
+const { DECIDED_EMPTY } = require('./lib/preces-alignment');
 
 const MIGRATION_DIR = __dirname;
 const MANIFEST_PATH = path.join(MIGRATION_DIR, 'webui/run/date-to-key-manifest.json');
@@ -281,7 +282,10 @@ function describeCell(ctx, table, id) {
   const inLocal = ctx.localTables[table] && Object.prototype.hasOwnProperty.call(ctx.localTables[table], sid);
   const conflict = ctx.conflicts[`${table}/${sid}`];
 
-  const status = inApp ? 'ok' : inLocal ? 'notInAppYet' : conflict ? 'conflict' : 'missing';
+  // A cell Pau decided to leave without Catalan (an intercession only the Spanish prints) is done,
+  // not missing: counted as one, a day that has it could never reach 100% (MIGRA-026).
+  const decidedEmpty = !inApp && DECIDED_EMPTY.has(`${table}/${sid}`);
+  const status = inApp || decidedEmpty ? 'ok' : inLocal ? 'notInAppYet' : conflict ? 'conflict' : 'missing';
   const stored = inApp ? ctx.appTables[table][sid] : inLocal ? ctx.localTables[table][sid] : null;
   return {
     table,

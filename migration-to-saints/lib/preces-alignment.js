@@ -18,6 +18,15 @@ const DECIDED = [
     cells: ['9569', '9570', '9571', '9572', '9573', '9574'],
     cpl: [0, 1, 2, 3, null, 4],
   },
+  {
+    // Saturday III Lauds (the psalter, Ordinary Time). The Latin has three intercessions (the
+    // Father who gave us Mary as mother, Mary attentive to the word, Mary standing by the cross)
+    // and the CPL gives those three; the Spanish adds a third of its own (Mary who conceived by
+    // the Holy Spirit), four cells. Pairing by position put the CPL's cross in that cell and left
+    // the cross's empty. Pau, 6-10-2026, reviewing the week of 5 October: «endavant».
+    cells: ['2284', '2285', '2286', '2287'],
+    cpl: [0, 1, null, 2],
+  },
 ];
 
 const byCells = new Map(DECIDED.map((d) => [d.cells.join(','), d]));

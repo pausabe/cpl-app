@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { DECIDED_EMPTY } = require('./lib/preces-alignment');
 
 const CPL_APP_ROOT = path.resolve(__dirname, '..');
 const SAINTS_APP_ROOT = '/Users/pau/projects/saints/saints-app';
@@ -29,11 +30,28 @@ const STATIC_TRANSLATIONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/sta
 const COPIED_CELLS = path.join(CPL_APP_ROOT, 'migration-to-saints/copied-cells.json');
 const COMMONS_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/output/commons-ca');
 const COMMON_SOURCED = path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-common-sourced.json');
+// The cells the join holds: dates sharing the id disagree, so it leaves them out (MIGRA-026).
+const PENDING = path.join(CPL_APP_ROOT, 'migration-to-saints/output/join-pending-review.json');
 // Compline does not live in day_specific_texts: seven files per language, one per weekday.
 // No shared id space, so it is a plain file copy rather than a merge — there is nothing in
 // the destination that could be someone else's work (see FASES.md, fase 2).
 const COMPLINE_DIR = path.join(CPL_APP_ROOT, 'migration-to-saints/output/compline-ca');
 const SAINTS_APP_COMPLINE_CA = path.join(SAINTS_APP_ROOT, 'src/store/db/compline/ca');
+
+// A held cell has no Catalan: the join leaves it out because the days sharing it disagree, and
+// the export used to merge without ever taking a key away, so a text an earlier run had written
+// stayed in saints-app after the join stopped vouching for it. On 6 October 2026 that was 192
+// cells: the Saturday IV first Vespers of 10 October showed Our Lady of the Pillar's (MIGRA-026).
+// A copied cell or a static translation is put back afterwards, and wins.
+function clearHeld(dest, heldIds, resolved) {
+  const cleared = [];
+  for (const id of heldIds) {
+    if (id in resolved || !(id in dest)) continue;
+    delete dest[id];
+    cleared.push(id);
+  }
+  return cleared;
+}
 
 function readJsonSafe(p) {
   try {
@@ -58,8 +76,9 @@ function readJsonSafe(p) {
 // reports the disagreement.
 function exportResolvedContentToSaintsApp({ dryRun = false } = {}) {
   if (!dryRun) fs.mkdirSync(SAINTS_APP_COMMONS_CA, { recursive: true });
-  const report = { filesWritten: [], keysAdded: 0, keysChanged: 0, commonHeld: [], perFile: {}, dryRun };
+  const report = { filesWritten: [], keysAdded: 0, keysChanged: 0, keysCleared: 0, commonHeld: [], perFile: {}, dryRun };
   const commonSourced = readJsonSafe(COMMON_SOURCED) || {};
+  const pending = readJsonSafe(PENDING) || {};
 
   const write = (destPath, dest, name) => {
     if (!dryRun) fs.writeFileSync(destPath, JSON.stringify(dest, null, 2), 'utf8');
@@ -87,6 +106,11 @@ function exportResolvedContentToSaintsApp({ dryRun = false } = {}) {
         }
         dest[k] = v;
       }
+      // And the cells Pau decided to leave without Catalan, which the join never writes either.
+      const decidedEmpty = [...DECIDED_EMPTY].filter((c) => c.startsWith(`${table}/`)).map((c) => c.split('/')[1]);
+      const cleared = clearHeld(dest, [...(pending[table] || []).map((x) => String(x.id)), ...decidedEmpty], src);
+      before.cleared = cleared.length;
+      report.keysCleared += cleared.length;
       report.perFile[f] = { ...before, after: Object.keys(dest).length };
       write(destPath, dest, f);
     }
@@ -152,7 +176,7 @@ function exportResolvedContentToSaintsApp({ dryRun = false } = {}) {
   return report;
 }
 
-module.exports = { exportResolvedContentToSaintsApp, SAINTS_APP_COMMONS_CA };
+module.exports = { exportResolvedContentToSaintsApp, clearHeld, SAINTS_APP_COMMONS_CA };
 
 if (require.main === module) {
   const dryRun = process.argv.includes('--dry-run');
@@ -163,10 +187,11 @@ if (require.main === module) {
       s.added ? `+${s.added} noves` : '',
       s.changed ? `${s.changed} canviades` : '',
       s.held ? `${s.held} del Comú retingudes (la casella ja tenia text)` : '',
+      s.cleared ? `${s.cleared} buidades (retingudes)` : '',
     ].filter(Boolean).join(' · ') || 'sense canvis';
     console.log(`  ${f.replace('.json', '').padEnd(30)} ${String(s.total).padStart(5)} → ${String(s.after).padStart(5)}   ${delta}`);
   }
-  console.log(`\n${r.filesWritten.length} fitxers · ${r.keysAdded} claus noves · ${r.keysChanged} actualitzades`);
+  console.log(`\n${r.filesWritten.length} fitxers · ${r.keysAdded} claus noves · ${r.keysChanged} actualitzades · ${r.keysCleared} buidades`);
   if (r.copyMissing.length) {
     console.log(`\n${r.copyMissing.length} còpies sense text a l'origen, no escrites: ` +
       r.copyMissing.map((c) => `${c.cell} ← ${c.from}`).join(', '));

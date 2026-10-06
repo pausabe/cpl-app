@@ -35,7 +35,7 @@ const { fingerprint, readingMatch } = require('./lib/citation-key');
 const { alignPreces } = require('./lib/preces-alignment');
 // Held cells with an answer that is not a matter of taste: copies of one text, and the psalm
 // the Spanish of the cell names (D-012).
-const { resolveHeld, psalmScore, lightVariant, anotherPsalm } = require('./lib/held-resolution');
+const { resolveHeld, psalmScore, lightVariant, anotherPsalm, composeCycles } = require('./lib/held-resolution');
 // The comparator's flattener, reused so "which fields did cpl-app take from the weekday"
 // is answered in the same vocabulary the join observes in — and can't drift from it.
 const {
@@ -965,7 +965,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     // --- Resolve: single distinct value per id -> write it. Multiple -> pending. ---
     const commons = {};
     const pending = {};
-    const heldResolved = { light: [], psalm: [] };
+    const heldResolved = { light: [], psalm: [], cycles: [] };
     for (const table of TABLES) {
       commons[table] = {};
       pending[table] = [];
@@ -985,7 +985,11 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         const autoGroups = byValue.size > 1 && !decidedGroup
           ? [...byValue.values()].map((g) => ({ group: g, value: representative(g), count: g.tags.length, psalmScores: g.psalmScores }))
           : null;
-        const auto = autoGroups
+        // A Sunday Gospel canticle antiphon: one cell with the three cycles, each cpl-app's own (D-021).
+        const cycles = autoGroups && table === 'cantico_evangelico_antifonas'
+          ? composeCycles(esTable(table)[id], autoGroups.map((g) => ({ value: g.value, tags: g.group.tags })))
+          : null;
+        const auto = autoGroups && !cycles
           ? resolveHeld({ table, groups: autoGroups, esCitation: table === 'salmos_citas' ? esTable('salmos_citas')[id] : null })
           : null;
         // A psalm cpl-app says on every day it is asked, but not the one the Spanish of the cell
@@ -1004,6 +1008,12 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           commons[table][id] = representative(lone);
         } else if (decidedGroup) {
           commons[table][id] = representative(decidedGroup);
+        } else if (cycles) {
+          commons[table][id] = cycles.value;
+          heldResolved.cycles.push({
+            cell: `${table}/${id}`,
+            cycles: Object.fromEntries(Object.entries(cycles.byCycle).map(([c, g]) => [c, { preview: g.value.slice(0, 120), days: g.tags.length }])),
+          });
         } else if (auto) {
           const taken = autoGroups[auto.take];
           commons[table][id] = taken.value;
@@ -1133,7 +1143,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
       console.log(`  ${table}: ${Object.keys(commons[table]).length} resolved, ${pending[table].length} pending`);
     }
     console.log(`Total: ${totalResolved} resolved, ${totalPending} pending review (see ${PENDING_PATH})`);
-    console.log(`Held cells written by D-012: ${heldResolved.light.length} copies of one text, ${heldResolved.psalm.length} psalms the Spanish names (see ${HELD_RESOLVED_PATH})`);
+    console.log(`Held cells written by D-012: ${heldResolved.light.length} copies of one text, ${heldResolved.psalm.length} psalms the Spanish names; by D-021: ${heldResolved.cycles.length} Sunday antiphons by cycle (see ${HELD_RESOLVED_PATH})`);
 
     expect(processed).toBeGreaterThan(0);
   }, 300000);

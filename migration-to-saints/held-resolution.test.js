@@ -3,7 +3,7 @@
 //
 //   npx jest migration-to-saints/held-resolution.test.js
 
-const { lightVariant, psalmPart, psalmScore, resolveHeld, anotherPsalm } = require('./lib/held-resolution');
+const { lightVariant, psalmPart, psalmScore, resolveHeld, anotherPsalm, sundayCycle, composeCycles, cycleLine } = require('./lib/held-resolution');
 
 describe('the same text, copied with a detail of difference', () => {
   test('a quote mark on the other side of the full stop is the same psalm', () => {
@@ -205,4 +205,42 @@ describe('a psalm cpl-app always says, in another psalm\'s cell (MIGRA-021)', ()
     expect(anotherPsalm({ table: 'salmos_textos', value: 'x' })).toBe(false);
     expect(anotherPsalm({ table: 'himnos', value: 'x' })).toBe(false);
   });
+});
+
+describe('the Sunday Gospel canticle antiphons, one cell with the three cycles (D-021)', () => {
+  test('the cycle of a day, and the first Vespers of Advent already in the new one', () => {
+    expect(sundayCycle('2026-10-11 (Laudes)')).toBe('A');
+    expect(sundayCycle('2024-10-13 (Laudes)')).toBe('B');
+    expect(sundayCycle('2025-10-12 (Laudes)')).toBe('C');
+    // 28-11-2026 is the Saturday before Advent: its Vespers are the first of year B.
+    expect(sundayCycle('2026-11-28 (Laudes)')).toBe('A');
+    expect(sundayCycle('2026-11-28 (Vespers)')).toBe('B');
+  });
+
+  const ES = '$ Año A: $_Id a los cruces de los caminos…_\n$Año B: $_Invoqué, y vino a mí…_\n$Año C: $_Si perseveramos con Cristo…_';
+  const groups = [
+    { value: 'Digueu als convidats…', tags: ['2017-10-15 (Laudes)', '2020-10-11 (Laudes)', '2026-10-11 (Laudes)'] },
+    { value: 'Per als qui són rics…', tags: ['2018-10-14 (Laudes)', '2024-10-13 (Laudes)'] },
+    { value: 'Un dels deu leprosos…', tags: ['2019-10-13 (Laudes)', '2025-10-12 (Laudes)'] },
+  ];
+
+  test('the three cycles, each with cpl-app\'s own text, as the Spanish lays them out', () => {
+    expect(composeCycles(ES, groups).value).toBe(
+      '$ Any A: $_Digueu als convidats…_\n$ Any B: $_Per als qui són rics…_\n$ Any C: $_Un dels deu leprosos…_',
+    );
+  });
+
+  test('held as it was when a text spans two cycles, or a cycle has none', () => {
+    const mixed = [{ ...groups[0], tags: [...groups[0].tags, '2018-10-14 (Laudes)'] }, groups[2]];
+    expect(composeCycles(ES, mixed)).toBeNull();
+    expect(composeCycles(ES, groups.slice(0, 2))).toBeNull();
+    expect(composeCycles('_Sin ciclos._', groups)).toBeNull();
+  });
+});
+
+test('the review reads the line of the day\'s cycle, and anything else as it is (D-021)', () => {
+  const cell = '$ Any A: $_Digueu als convidats…_\n$ Any B: $_Per als qui són rics…_\n$ Any C: $_Un dels deu leprosos…_';
+  expect(cycleLine(cell, '2026-10-11 (Laudes)')).toBe('Digueu als convidats…');
+  expect(cycleLine(cell, '2025-10-12 (Vespers)')).toBe('Un dels deu leprosos…');
+  expect(cycleLine('Una antífona.', '2026-10-11 (Laudes)')).toBe('Una antífona.');
 });

@@ -24,7 +24,7 @@ const fs = require('fs');
 const path = require('path');
 const dayCheck = require('./day-check');
 const { alignPreces } = require('./lib/preces-alignment');
-const { lightVariant } = require('./lib/held-resolution');
+const { lightVariant, cycleLine } = require('./lib/held-resolution');
 
 const { DAY_TEXTS_DIR, LOCAL_COMMONS_DIR } = dayCheck.PATHS;
 const readJsonSafe = dayCheck.readJsonSafe;
@@ -57,8 +57,9 @@ function verdictFor(cpl, app, table) {
   return norm(cpl) === norm(app) || lightVariant(cpl, app, table) ? 'same' : 'diff';
 }
 
-function makeRow({ key, label, cpl, appField, index = 0, count = 1, noProperText = false }) {
-  const app = appField ? appField.value : null;
+function makeRow({ key, label, cpl, appField, index = 0, count = 1, noProperText = false, tag = null }) {
+  // A Sunday Gospel canticle antiphon holds the three cycles (D-021): the day prays its own line.
+  const app = appField ? (tag ? cycleLine(appField.value, tag) : appField.value) : null;
   // `ferial` is not a gap: saints-app is not supposed to have its own text here, so it
   // must not be counted (or coloured) like an empty cell that still needs migrating.
   const verdict = noProperText && app == null ? 'ferial' : verdictFor(cpl, app, appField ? appField.table : null);
@@ -106,7 +107,7 @@ function makeRow({ key, label, cpl, appField, index = 0, count = 1, noProperText
 // One Hour: walk the field vocabulary in reading order and pair each app cell with the
 // matching piece of cpl-app's text. List fields (responsory parts, intercessions) pair by
 // position, and a side with more entries than the other still gets its rows.
-function compareHour(hour, appHour, cplFields) {
+function compareHour(hour, appHour, cplFields, dateStr = null) {
   const appByKey = new Map();
   for (const f of (appHour && appHour.fields) || []) {
     if (!f.key) continue;
@@ -137,6 +138,7 @@ function compareHour(hour, appHour, cplFields) {
           index: i,
           count,
           noProperText: ferial.has(key),
+          tag: dateStr ? `${dateStr} (${hour})` : null,
         })
       );
     }
@@ -240,7 +242,7 @@ function compareDay(dateStr, cplDay, dayCheckResult, { language = 'ca' } = {}) {
 
   for (const appHour of dayCheckResult.hours) {
     const cplFields = cplDay && cplDay.hours ? cplDay.hours[appHour.hour] : null;
-    result.hours.push(compareHour(appHour.hour, appHour, cplFields));
+    result.hours.push(compareHour(appHour.hour, appHour, cplFields, dateStr));
   }
 
   for (const h of result.hours) {

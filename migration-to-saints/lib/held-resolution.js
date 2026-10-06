@@ -211,4 +211,61 @@ function anotherPsalm({ table, value, psalmScores, esCitation }) {
   return false;
 }
 
-module.exports = { looseWords, lightVariant, psalmPart, psalmScore, resolveHeld, anotherPsalm, CITATION_TABLES };
+// The Sunday cycle (A, B or C) a day's text belongs to. The year of the cycle starts on the First
+// Sunday of Advent; Vespers count from the next day, so the Saturday before Advent, the first
+// Vespers of the new year, already takes the new cycle.
+function adventSunday(year) {
+  const christmas = new Date(Date.UTC(year, 11, 25));
+  const fourth = new Date(christmas - (christmas.getUTCDay() || 7) * 864e5);
+  return new Date(fourth - 21 * 864e5);
+}
+
+function sundayCycle(tag) {
+  const m = /^(\d{4}-\d{2}-\d{2})(?: \((\w+)\))?/.exec(tag);
+  if (!m) return null;
+  let day = new Date(`${m[1]}T12:00:00Z`);
+  if (m[2] === 'Vespers') day = new Date(+day + 864e5);
+  const year = day.getUTCFullYear();
+  const litYear = day >= adventSunday(year) ? year + 1 : year;
+  return ['C', 'A', 'B'][litYear % 3];
+}
+
+// A Sunday Gospel canticle antiphon is one cell with the three cycles in it, as the Spanish keeps
+// it ("$ Año A: $_…_\n$Año B: $_…_\n$Año C: $_…_"), and cpl-app says each cycle's on its own days.
+// When every text cpl-app gives falls in one cycle, and every cycle the Spanish names has one,
+// the Catalan cell is the same three lines with cpl-app's texts, labelled as cpl-app labels the
+// year ("Any A"). No text is chosen: each cycle keeps its own (D-021).
+function composeCycles(es, groups) {
+  const named = [...String(es || '').matchAll(/A[ñn]o ([ABC])\b/g)].map((m) => m[1]);
+  if (!named.length) return null;
+  const byCycle = {};
+  for (const g of groups) {
+    const cycles = new Set(g.tags.map(sundayCycle));
+    if (cycles.size !== 1) return null;
+    const [c] = cycles;
+    if (!c || byCycle[c]) return null;
+    byCycle[c] = g;
+  }
+  if (named.some((c) => !byCycle[c]) || Object.keys(byCycle).some((c) => !named.includes(c))) return null;
+  return {
+    value: named.map((c) => `$ Any ${c}: $_${byCycle[c].value.trim()}_`).join('\n'),
+    byCycle,
+  };
+}
+
+// The line of a three-cycle cell a given day prays: what the review and the panel compare with
+// cpl-app's single antiphon for that day. Any other value comes back as it is.
+const CYCLE_LINE = /^\$\s*Any ([ABC]):\s*\$/;
+function cycleLine(value, tag) {
+  if (value == null) return value;
+  const lines = String(value).split('\n');
+  if (!lines.some((l) => CYCLE_LINE.test(l))) return value;
+  const cycle = sundayCycle(tag);
+  const line = lines.find((l) => (CYCLE_LINE.exec(l) || [])[1] === cycle);
+  return line ? line.replace(CYCLE_LINE, '').trim().replace(/^_([\s\S]*)_$/, '$1') : value;
+}
+
+module.exports = {
+  looseWords, lightVariant, psalmPart, psalmScore, resolveHeld, anotherPsalm, sundayCycle, composeCycles, cycleLine,
+  CITATION_TABLES,
+};

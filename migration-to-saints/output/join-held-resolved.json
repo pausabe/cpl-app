@@ -12690,5 +12690,1639 @@
     }
    ]
   }
+ ],
+ "cycles": [
+  {
+   "cell": "cantico_evangelico_antifonas/2400",
+   "cycles": {
+    "A": {
+     "preview": "Mireu l’Anyell de Déu, que pren damunt seu el pecat del món, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Quan els dos deixebles van sentir el que Joan deia, van seguir Jesús i li digueren: Rabí, ¿on us allotgeu? Jesús els res",
+     "days": 3
+    },
+    "C": {
+     "preview": "Se celebrà un casament a Canà de Galilea, i hi havia Jesús amb la seva mare.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2401",
+   "cycles": {
+    "A": {
+     "preview": "Aquest és el testimoni de Joan: Després de mi ve un home que m’ha passat davant, perquè, abans que jo, ell ja existia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Els deixebles van veure on Jesús s’allotjava i es quedaren amb ell aquell dia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "La mare de Jesús diu als qui servien: Feu tot el que ell us digui. I Jesús manà omplir les piques d’aigua que es tornà v",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2402",
+   "cycles": {
+    "A": {
+     "preview": "L’Esperit baixà del cel com un colom i es posà damunt de Jesús: Aquest és el qui bateja amb l’Esperit Sant.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Andreu digué al seu germà Simó: Hem trobat el Messies. I l’acompanyà on era Jesús.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús començà els seus miracles a Canà de Galilea; així manifestà la seva glòria, i els deixebles cregueren en ell.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2403",
+   "cycles": {
+    "A": {
+     "preview": "Convertiu-vos, diu el Senyor, que el Regne del cel és a prop.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús es presentà a Galilea predicant la Bona Nova de Déu; deia: Ha arribat l’hora i el Regne de Déu és a prop. Converti",
+     "days": 3
+    },
+    "C": {
+     "preview": "Vingué Jesús, ple del poder de l’Esperit Sant, i ensenyava en les sinagogues el dissabte, i tothom el lloava.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2404",
+   "cycles": {
+    "A": {
+     "preview": "Tot vorejant el llac de Galilea, veié dos germans, que estaven tirant el filat a l’aigua, i els cridà. Immediatament aba",
+     "days": 4
+    },
+    "B": {
+     "preview": "Veniu amb mi, diu el Senyor, i us faré pescadors d’homes.",
+     "days": 3
+    },
+    "C": {
+     "preview": "L’Esperit del Senyor reposa sobre meu; m’ha ungit per portar la Bona Nova als desvalguts.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2405",
+   "cycles": {
+    "A": {
+     "preview": "Jesús predicava la Bona Nova del Regne i guaria tota malaltia en el poble.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Immediatament abandonaren les xarxes i se n’anaren amb el Senyor i Redemptor, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús plegà el volum i començà dient-los: Això que avui sentiu contar de mi és el compliment d’aquestes paraules de l’Es",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2406",
+   "cycles": {
+    "A": {
+     "preview": "En veure Jesús les multituds, pujà a la muntanya, i se li acostaren els deixebles. Llavors es posà a parlar i els instru",
+     "days": 3
+    },
+    "B": {
+     "preview": "Jesús ensenyava amb autoritat i tots, escoltant-lo, quedaven intrigats.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Tots s’admiraven de les paraules de gràcia sortides de la boca de Jesús.",
+     "days": 1
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2407",
+   "cycles": {
+    "A": {
+     "preview": "Diu el Senyor: Feliços els nets de cor: són ells els qui veuran Déu.",
+     "days": 3
+    },
+    "B": {
+     "preview": "Es preguntaven entre ells: ¿Què vol dir tot això? Ensenya amb autoritat una doctrina nova i fins i tot mana als esperits",
+     "days": 3
+    },
+    "C": {
+     "preview": "Us ho dic amb tota veritat: No hi ha cap profeta que sigui ben rebut al seu país natal.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2408",
+   "cycles": {
+    "A": {
+     "preview": "Diu el Senyor: Feliços els qui posen pau: Déu els reconeixerà com a fills.",
+     "days": 2
+    },
+    "B": {
+     "preview": "L’anomenada de Jesús s’estengué per tota Galilea, i tots glorificaven Déu.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Tragueren Jesús del poble per estimbar-lo. Però ell se n’anà, passant entremig d’ells.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2409",
+   "cycles": {
+    "A": {
+     "preview": "Vosaltres sou la sal de la terra. Si la sal ha perdut el gust, ¿amb què la tornarien salada?, diu el Senyor als seus dei",
+     "days": 4
+    },
+    "B": {
+     "preview": "Al vespre, quan el sol s’havia post, portaren a Jesús malalts i endimoniats, i ell els va curar.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús pujà a la barca, s’assegué i ensenyava la gent.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2410",
+   "cycles": {
+    "A": {
+     "preview": "Vosaltres sou la llum del món: la vostra llum ha de resplendir davant la gent. En veure el bé que heu obrat, glorificara",
+     "days": 4
+    },
+    "B": {
+     "preview": "De bon matí, Jesús es llevà, se n’anà en un lloc solitari i s’hi quedà pregant.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Mestre, ens hem escarrassat tota la nit i no hem pescat res, però ja que vós ho dieu, calaré les xarxes.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2411",
+   "cycles": {
+    "A": {
+     "preview": "Que resplendeixi la vostra llum com la d’una llumenera posada en un lloc alt i que fa llum a tots els qui són a la casa.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Simó amb els seus companys li digueren: tothom us està buscant. Ell els digué: anem a d’altres llocs, i també hi predica",
+     "days": 3
+    },
+    "C": {
+     "preview": "Senyor, allunyeu-vos de mi, que sóc un pecador. No tinguis por, Simó Pere, des d’ara seràs pescador d’homes.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2412",
+   "cycles": {
+    "A": {
+     "preview": "Aquell que compleixi i ensenyi els meus manaments serà tingut per gran en el Regne del cel.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Si voleu, Senyor, em podeu purificar. Jesús li digué: Sí que ho vull: queda pur.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Feliços els pobres: el Regne de Déu és per a vosaltres. Feliços els qui ara passeu fam: vindrà el dia que sereu saciats.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2413",
+   "cycles": {
+    "A": {
+     "preview": "Si no sou més justos del que ho són els mestres de la Llei i els fariseus, no entrareu al Regne del cel.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús, compadit, tocà amb la mà el leprós i a l’instant la lepra desaparegué i quedà pur.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Feliços els qui ara ploreu: vindrà el dia que riureu, diu el Senyor.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2414",
+   "cycles": {
+    "A": {
+     "preview": "Ni que et trobis ja a l’altar, a punt de presentar l’ofrena, si allà et recordes que un teu germà té alguna cosa contra ",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús recomanà al leprós de no dir-ho a ningú, sinó d’anar al sacerdot i certificar així que ja era pur. Però ell, així ",
+     "days": 3
+    },
+    "C": {
+     "preview": "Feliços vosaltres quan, per causa del Fill de l’home, la gent us odiarà: alegreu-vos i feu festa, perquè la vostra recom",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2496",
+   "cycles": {
+    "A": {
+     "preview": "El qui begui de l’aigua que jo li donaré, diu el Senyor, mai més no tindrà set.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús digué: Traieu això d’aquí; no conver­tiu en mercat la casa del meu Pare.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús ens diu: Us asseguro que tots us per­dreu, si no us convertiu.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2497",
+   "cycles": {
+    "A": {
+     "preview": "S’acosta l’hora, més ben dit, és ara mateix, que els bons adoradors adoraran el Pare en esperit i en veritat. Aquests só",
+     "days": 4
+    },
+    "B": {
+     "preview": "Destruïu aquest temple, i el reconstruiré en tres dies. El Senyor es referia al santuari del seu cos.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Ara que ja som justos, com a creients que som, estem en pau amb Déu, gràcies a Jesucrist, el nos­tre Senyor.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2498",
+   "cycles": {
+    "A": {
+     "preview": "Molts dels samaritans van creure i deien a la dona: Ara ja no creiem només pel que tu deies; nos­altres mateixos l’hem s",
+     "days": 4
+    },
+    "B": {
+     "preview": "Durant l’estada de Jesús a Jerusalem en oca­sió de la peregrinació de Pasqua, molts, veient els mi­racles que feia, creg",
+     "days": 3
+    },
+    "C": {
+     "preview": "Senyor, no talleu encara aquest any la figue­ra. Cavaré la terra i l’adobaré, a veure si fa fruit d’ara endavant.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2499",
+   "cycles": {
+    "A": {
+     "preview": "Rabí, ¿qui va pecar, que naixés cec aquest home, ell o els seus pares? Jesús contestà: Això no ha estat perquè vagi peca",
+     "days": 4
+    },
+    "B": {
+     "preview": "Així com Moisès, en el desert, enlairà la serp, també el Fill de l’home ha de ser enlairat, perquè tots els qui creuen e",
+     "days": 3
+    },
+    "C": {
+     "preview": "Aniré a trobar el meu pare i li diré: Pare, he pecat contra el cel i contra tu; ja no mereixo que em diguin fill teu.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2500",
+   "cycles": {
+    "A": {
+     "preview": "Aquell home que es diu Jesús va fer una mi­ca de fang i me’l va estendre sobre els ulls. Hi he anat i, així que m’he ren",
+     "days": 4
+    },
+    "B": {
+     "preview": "Déu estima tant el món, que ha donat el seu Fill únic, perquè no es perdi ningú dels qui creuen en ell, sinó que tinguin",
+     "days": 3
+    },
+    "C": {
+     "preview": "Porteu de pressa el vestit millor i vestiu-lo, poseu-li un anell i calçat, perquè aquest fill meu, que ja donava per mor",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2501",
+   "cycles": {
+    "A": {
+     "preview": "D’ençà que el món existeix no s’ha sentit dir mai que ningú hagi obert els ulls a un cec de naixement, si no és el Crist",
+     "days": 4
+    },
+    "B": {
+     "preview": "Els qui viuen d’acord amb la veritat busquen la plena llum, i que tothom vegi què fan, ja que ho fan segons Déu.\n",
+     "days": 3
+    },
+    "C": {
+     "preview": "Fill, tu sempre ets amb mi, i tot el que jo tinc és teu. Però ara hem d’alegrar-nos i fer festa, perquè aquest germà teu",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2502",
+   "cycles": {
+    "A": {
+     "preview": "Llàtzer, el nostre amic, s’ha adormit; anem a despertar-lo.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Si el gra de blat, quan cau a terra, no mor, queda sol, però si mor, dóna molt de fruit.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús s’ajupí i s’entretenia dibuixant a terra amb el dit. Aquell de vosaltres que no tingui cap pecat que comenci a tir",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2503",
+   "cycles": {
+    "A": {
+     "preview": "Jo sóc la resurrecció i la vida. Els qui creuen en mi, encara que morin, viuran, i tots els qui viuen i creuen en mi no ",
+     "days": 4
+    },
+    "B": {
+     "preview": "Si algú es vol fer servidor meu, que em se­gueixi, i s’estarà on jo m’estic.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Els acusadors, quan van sentir Jesús, s’ana­ren retirant l’un darrere l’altre, començant pels més vells. Jesús es quedà ",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2504",
+   "cycles": {
+    "A": {
+     "preview": "Jo crec que vós sou el Messies, el Fill de Déu, que havia de venir al món.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Quan seré enlairat damunt la terra, atrauré tothom cap a mi.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Dona: ¿On són? ¿Ningú no t’ha condemnat? Ella contestà: Ningú, Senyor. Tampoc jo no et condem­no. Vés-te’n, i d’ara enda",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2505",
+   "cycles": {
+    "A": {
+     "preview": "Quedeu-vos amb nosaltres, que ja es fa tard i el dia ha començat a declinar, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús es presentà enmig dels deixebles i els digué: Pau a vosaltres, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús digué als seus deixebles: Porteu pei­xos dels que acabeu de pescar. Simó Pere pujà a la bar­ca i estirà cap a terr",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2506",
+   "cycles": {
+    "A": {
+     "preview": "Calia que el Messies morís i ressuscités al tercer dia, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Mireu-me les mans i els peus: Sóc jo mateix. Palpeu-me i mireu bé, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús s’acostà, prengué el pa i els el donava. Igual va fer amb el peix. Era la tercera vegada que Je­sús s’apareixia al",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2507",
+   "cycles": {
+    "A": {
+     "preview": "Quan s’hagué posat amb ells a taula, pren­gué el pa, digué la benedicció, el partí i els el donava. En aquell moment se’",
+     "days": 4
+    },
+    "B": {
+     "preview": "Així ho diuen les Escriptures: El Messies ha­via de patir i de ressuscitar el tercer dia, i calia predi­car en nom d’ell",
+     "days": 3
+    },
+    "C": {
+     "preview": "Simó, fill de Joan, ¿m’estimes? Senyor, vós ho sabeu tot, ja ho sabeu que us estimo. Li diu Jesús: Pastura les meves ove",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2508",
+   "cycles": {
+    "A": {
+     "preview": "Vaig a preparar-vos estada; tornaré i us pren­dré a casa meva, perquè també vosaltres visqueu allà on jo estic, al·lelui",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jo sóc el cep veritable, i el meu Pare és el vinyater. La sarment que dóna fruit, l’esporga perquè encara en doni més, a",
+     "days": 3
+    },
+    "C": {
+     "preview": "El Fill de l’home és glorificat, i Déu és glori­ficat en ell, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2509",
+   "cycles": {
+    "A": {
+     "preview": "Jo sóc el camí, la veritat i la vida: ningú no arriba al Pare, si no hi va per mi, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Si algú està en mi i jo en ell, dóna molt de fruit, diu el Senyor, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Us dono un manament nou, diu el Senyor: que us estimeu els uns als altres tal com jo us he esti­mat, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2510",
+   "cycles": {
+    "A": {
+     "preview": "Senyor, mostreu-nos el Pare, i no ens cal res més. Jesús li diu: Felip, fa tant de temps que estic amb vosaltres, ¿i enc",
+     "days": 4
+    },
+    "B": {
+     "preview": "La glòria del meu Pare és que vosaltres do­neu molt de fruit i sigueu deixebles meus, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Tothom coneixerà si sou deixebles meus per l’estimació que us tindreu entre vosaltres, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2511",
+   "cycles": {
+    "A": {
+     "preview": "Jo pregaré el Pare que us donarà un altre Defensor, perquè es quedi amb vosaltres per sempre, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jo us estimo tal com el Pare m’estima; manteniu-vos en l’amor que us tinc, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Qui m’estima farà cas de les meves parau­les, el meu Pare l’estimarà i vindrem a fer estada en ell, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2512",
+   "cycles": {
+    "A": {
+     "preview": "No us deixaré orfes: me’n vaig, però tornaré i el vostre cor s’alegrarà, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Us he dit tot això perquè tingueu l’alegria que jo tinc, una alegria ben plena, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "L’Esperit que el Pare enviarà en nom meu us ho ensenyarà tot i us farà recordar tot el que jo us he dit, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2513",
+   "cycles": {
+    "A": {
+     "preview": "Qui m’estima el meu Pare l’estimarà, i jo tam­bé l’estimaré i me li faré conèixer clarament, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "El meu manament és que us estimeu els uns als altres tal com jo us he estimat. Ningú no té un amor més gran que el qui d",
+     "days": 3
+    },
+    "C": {
+     "preview": "Us deixo la pau, us dono la meva pau. Jo us la dono no com la dóna el món. No us torbeu ni tin­gueu por, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2433",
+   "cycles": {
+    "A": {
+     "preview": "Qui no pren la seva creu i m’acompanya, no és bo per venir amb mi, diu el Senyor.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Una dona malalta pensava: Només que li toqui el vestit que porta, ja em posaré bona.",
+     "days": 2
+    },
+    "C": {
+     "preview": "Les guineus tenen caus, i els ocells, nius, però el Fill de l’home no té on reposar el cap.",
+     "days": 1
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2434",
+   "cycles": {
+    "A": {
+     "preview": "Qui us acull a vosaltres, m’acull a mi, diu el Senyor; i qui m’acull a mi, acull el qui m’ha enviat.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús es va girar i, veient la dona, li digué: Tingues confiança, filla; la teva fe t’ha salvat i vés-te’n en pau.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Deixa que els morts enterrin els seus morts, i tu vés a anunciar el Regne de Déu.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2435",
+   "cycles": {
+    "A": {
+     "preview": "Tothom qui doni un vas d’aigua fresca a un d’aquests petits, només perquè és el meu deixeble, us ho dic amb tota veritat",
+     "days": 2
+    },
+    "B": {
+     "preview": "Entrant a casa, Jesús diu: La teva filla no és morta, sinó que dorm. Li dóna la mà i li diu: Noia, aixeca’t.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Ningú que mira enrere quan ja té la mà a l’arada no és apte per al Regne de Déu.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2436",
+   "cycles": {
+    "A": {
+     "preview": "Us enalteixo, Pare, Senyor del cel i de la terra, perquè heu revelat als senzills tot això que heu amagat als savis i en",
+     "days": 4
+    },
+    "B": {
+     "preview": "Tothom, en sentir-lo, se n’estranyava i deia: ¿D’on li ve tot això? ¿Què és aquest do de saviesa? ¿No és el fuster, el f",
+     "days": 3
+    },
+    "C": {
+     "preview": "La collita és abundant, però hi ha pocs segadors: demaneu a l’amo dels sembrats que hi faci anar més homes a segar-los.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2437",
+   "cycles": {
+    "A": {
+     "preview": "Accepteu el meu jou, feu-vos deixebles meus, que jo sóc benèvol i humil de cor, i trobareu el repòs que tant desitjàveu.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Els profetes només són mal rebuts en el seu poble.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Quan entreu en una casa, digueu: Pau, i la pau davallarà sobre aquella casa.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2438",
+   "cycles": {
+    "A": {
+     "preview": "El meu jou és suau, i la meva càrrega lleugera, diu el Senyor.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús, sortint del seu poble, recorria les viles i els pobles, i ensenyava.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Els deixebles tornaren tots contents i deien: Fins els dimonis se’ns sotmeten. Jesús els digué: Alegreu-vos que els vost",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2439",
+   "cycles": {
+    "A": {
+     "preview": "Jesús parlà llargament a la gent en paràboles: El sembrador va sortir a sembrar.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús cridà els dotze i els donà poder sobre els esperits malignes.",
+     "days": 3
+    },
+    "C": {
+     "preview": "A la Llei hi ha escrit: Estima el Senyor, el teu Déu, amb tot el cor, i els altres com a tu mateix.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2440",
+   "cycles": {
+    "A": {
+     "preview": "Jesús digué als seus deixebles: Déu us fa a vosaltres el do de conèixer els misteris del Regne.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Els dotze se’n van anar i predicaven a la gent que es convertissin.",
+     "days": 3
+    },
+    "C": {
+     "preview": "El bon samarità s’acostà a un home mig mort, se’n compadí i li embenà les ferides.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2441",
+   "cycles": {
+    "A": {
+     "preview": "La llavor és la Paraula de Déu, el sembrador és Crist; tothom qui el troba viurà per sempre.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Enviats pel Senyor, treien molts dimonis i ungien amb oli molts malalts, que es posaven bons.",
+     "days": 3
+    },
+    "C": {
+     "preview": "¿Qui et sembla que va veure l’altre que hem d’estimar en l’home que havia caigut en mans de lladres? Ell respongué: El q",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2442",
+   "cycles": {
+    "A": {
+     "preview": "Colliu primer el jull i feu-ne feixos per cremar-lo; després colliu el blat i porteu-lo al meu graner, diu el Senyor.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Els apòstols es reuniren amb Jesús i li parlaren de tot el que havien fet i ensenyat.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús entrà en un poblet, i Marta l’acollí a casa i el servia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2443",
+   "cycles": {
+    "A": {
+     "preview": "Amb el Regne del cel passa com amb el llevat, que una dona amaga dintre la pasta de mig sac de farina, i espera, fins qu",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús diu: Veniu ara tots sols en un lloc despoblat i reposeu una mica.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Una germana de Marta que es deia Maria, asseguda als peus del Senyor, escoltava la seva paraula.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2444",
+   "cycles": {
+    "A": {
+     "preview": "A la fi del món, el Fill de l’home separarà el blat del jull. Llavors els justos, en el Regne del seu Pare, resplendiran",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús veié una gran gentada i se’n compadí, perquè eren com ovelles sense pastor.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Només hi ha una cosa necessària. La part que Maria ha escollit és la millor, i no li serà pas presa.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2445",
+   "cycles": {
+    "A": {
+     "preview": "Passa amb el Regne del cel com amb un comerciant que buscava perles fines. El dia que en trobà una de molt preu, anà a v",
+     "days": 2
+    },
+    "B": {
+     "preview": "Jesús veié la gentada que anava arribant i preguntà a Felip: ¿On comprarem pa perquè puguin menjar tots?",
+     "days": 2
+    },
+    "C": {
+     "preview": "Jesús, un dia, va pregar llargament. Quan hagué acabat, els deixebles li demanaren: Mestre, ensenyeu-nos una pregària.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2446",
+   "cycles": {
+    "A": {
+     "preview": "Passa amb el Regne del cel com amb aquelles xarxes tirades a l’aigua. Quan són plenes, les treuen a la platja i separen ",
+     "days": 4
+    },
+    "B": {
+     "preview": "El Senyor assadollà cinc mil homes amb cinc pans i dos peixos.",
+     "days": 2
+    },
+    "C": {
+     "preview": "Demaneu, i Déu us donarà; cerqueu, i trobareu; truqueu, i us obrirà, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2447",
+   "cycles": {
+    "A": {
+     "preview": "Els mestres de la Llei que es fan deixebles del Regne del cel són com aquells caps de casa que treuen del seu cofre joie",
+     "days": 4
+    },
+    "B": {
+     "preview": "Quan la gent s’adonà del prodigi que Jesús havia fet, començà a dir: Aquest home és el Profeta que havia de venir al món",
+     "days": 2
+    },
+    "C": {
+     "preview": "Si vosaltres, que sou dolents, sabeu donar coses bones als vostres fills, molt més el Pare del cel donarà l’Esperit Sant",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2451",
+   "cycles": {
+    "A": {
+     "preview": "Al vespre, Jesús pujà a la muntanya per pregar, i era allà tot sol.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Ningú no pot venir a mi si no l’atreu el Pare que m’ha enviat. I els qui vénen a mi jo els ressuscitaré el darrer dia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "On teniu el vostre tresor, hi tindreu el vostre cor, diu el Senyor.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2452",
+   "cycles": {
+    "A": {
+     "preview": "A la matinada, Jesús anà caminant sobre l’aigua i digué als seus deixebles: No tingueu por, que sóc jo.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Us ho dic amb tota veritat: els qui creuen en mi tenen vida eterna, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Feliços els criats que l’amo trobarà vetllant al moment de la seva arribada: Els farà seure a taula, i ell mateix passar",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2453",
+   "cycles": {
+    "A": {
+     "preview": "Senyor, maneu-me que vingui caminant sobre l’aigua, exclamà Pere. Jesús va donar la mà a Pere i li va dir: Quina poca fe",
+     "days": 4
+    },
+    "B": {
+     "preview": "Aquest és el pa que baixa del cel perquè no mori ningú dels qui en mengen.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Estigueu a punt com els que esperen, vetllant de nit, quan tornarà el seu amo.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2454",
+   "cycles": {
+    "A": {
+     "preview": "Sortí una dona cananea cridant: Senyor, fill de David, compadiu-vos de mi: la meva filla està endimoniada.",
+     "days": 2
+    },
+    "B": {
+     "preview": "Jo sóc el pa viu, baixat del cel. Qui menja aquest pa viurà per sempre, al·leluia.",
+     "days": 2
+    },
+    "C": {
+     "preview": "He vingut a calar foc a la terra. Com voldria ja veure-la cremar!",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2455",
+   "cycles": {
+    "A": {
+     "preview": "Una dona cananea es prosternà davant Jesús i li digué: Senyor, ajudeu-me. ",
+     "days": 4
+    },
+    "B": {
+     "preview": "La meva carn és un veritable menjar, i la meva sang és una veritable beguda. Qui menja la meva carn i beu la meva sang t",
+     "days": 2
+    },
+    "C": {
+     "preview": "He de passar la prova d’un baptisme. Com em sento el cor oprimit fins que no l’hauré passada!",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2456",
+   "cycles": {
+    "A": {
+     "preview": "Dona, quina fe que tens! Que sigui tal com vols. ",
+     "days": 4
+    },
+    "B": {
+     "preview": "A mi m’ha enviat el Pare que viu, i jo visc gràcies al Pare; igualment, els qui em mengen a mi viuran gràcies a mi.",
+     "days": 2
+    },
+    "C": {
+     "preview": "¿Us penseu que he vingut a portar la pau a la terra? Us asseguro que no. És la divisió, el que he vingut a portar.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2457",
+   "cycles": {
+    "A": {
+     "preview": "Vós sou el Messies, el Fill del Déu viu. Sortós de tu, Simó, fill de Jonàs.",
+     "days": 4
+    },
+    "B": {
+     "preview": "L’Esperit és el qui dóna la vida; la carn no serveix de res. Les paraules que jo us he dit són Esperit i són vida.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Mireu d’entrar per la porta estreta, diu el Senyor; us asseguro que molts voldran entrar-hi i no podran.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2458",
+   "cycles": {
+    "A": {
+     "preview": "Tu ets Pere. Sobre aquesta pedra jo edificaré la meva Església.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Ningú no pot venir a mi si el Pare no li concedeix aquest do, diu el Senyor.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Vindrà gent d’orient i d’occident i s’asseuran a la taula del Regne de Déu amb Abraham, Isaac i Jacob.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2459",
+   "cycles": {
+    "A": {
+     "preview": "Tot allò que lliguis a la terra quedarà lligat al cel, i tot allò que deslliguis a la terra quedarà deslligat al cel, di",
+     "days": 4
+    },
+    "B": {
+     "preview": "Senyor, ¿a qui aniríem? Només vós teniu paraules de vida eterna, i nosaltres hem cregut i sabem que sou el Crist, Fill d",
+     "days": 3
+    },
+    "C": {
+     "preview": "Ara són darrers els qui llavors seran primers, i són primers els qui llavors seran darrers, diu el Senyor.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2460",
+   "cycles": {
+    "A": {
+     "preview": "Jesús començà a deixar entendre als deixebles que havia d’anar a Jerusalem, que havia de patir molt, que havia de ser mo",
+     "days": 4
+    },
+    "B": {
+     "preview": "Compliu els manaments del Senyor. Si ho feu així, tots els pobles us tindran per assenyats i molt intel·ligents.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Quan algú et convida a un dinar de casament, vés a ocupar el lloc darrer; i quan entrarà el qui t’haurà convidat et dirà",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2461",
+   "cycles": {
+    "A": {
+     "preview": "¿Què en traurà l’home de guanyar tot el món si perd la seva ànima?",
+     "days": 4
+    },
+    "B": {
+     "preview": "Acolliu amb docilitat la paraula plantada en vosaltres. És una paraula que té el poder de salvar-vos.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Tothom qui s’enalteix serà humiliat, però el qui s’humilia serà enaltit.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2462",
+   "cycles": {
+    "A": {
+     "preview": "El Fill de l’home ha de venir en la glòria del seu Pare, i pagarà cadascú segons les seves obres.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Escolteu i enteneu bé tot això que el Senyor us ha dit.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Convida a la teva taula els pobres que no tenen res per a recompensar-t’ho, i Déu t’ho recompensarà quan ressuscitaran e",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2463",
+   "cycles": {
+    "A": {
+     "preview": "Si el teu germà peca, parleu-ne vosaltres dos. Si te’n fa cas, t’hauràs guanyat el germà.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús, tornant del territori de Tir, li portaren un sord, que a penes sabia parlar, i li demanaren que li imposés les ma",
+     "days": 3
+    },
+    "C": {
+     "preview": "Si algú vol venir amb mi i no m’estima més que la pròpia vida, no pot ser deixeble meu.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2464",
+   "cycles": {
+    "A": {
+     "preview": "Si dos de vosaltres aquí a la terra s’avenen a demanar alguna cosa, el meu Pare del cel els la concedirà.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús aixecà els ulls al cel, sospirà i digué: «Efatà», que vol dir «obre’t».",
+     "days": 3
+    },
+    "C": {
+     "preview": "Qui no porta la seva creu per venir amb mi, no pot ser deixeble meu, diu el Senyor.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2465",
+   "cycles": {
+    "A": {
+     "preview": "On n’hi ha dos o tres de reunits en el meu nom, jo sóc enmig d’ells, diu el Senyor.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Tot ho ha fet bé: fa que els sords hi sentin i que els muts parlin, al·leluia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Ningú de vosaltres no pot ser deixeble meu si no renuncia a tot el que té.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2466",
+   "cycles": {
+    "A": {
+     "preview": "Jesús digué a Pere: No et dic que perdonis set vegades, sinó setanta vegades set.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Vosaltres, ¿qui dieu que sóc? Pere li respon: Vós sou el Messies, al·leluia.",
+     "days": 2
+    },
+    "C": {
+     "preview": "¿Qui de vosaltres, si tenia cent ovelles i en perdia una, no deixaria en el desert les noranta-nou i aniria a buscar la ",
+     "days": 1
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2467",
+   "cycles": {
+    "A": {
+     "preview": "El rei se’n compadí, el deixà lliure i li perdonà el deute.",
+     "days": 4
+    },
+    "B": {
+     "preview": "El Fill de l’home ha de patir molt: els notables l’han de rebutjar, ha de ser mort, i al cap de tres dies ressuscitarà.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Us asseguro que hi ha una gran alegria entre els àngels de Déu per un sol pecador convertit.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2468",
+   "cycles": {
+    "A": {
+     "preview": "Que n’ets, de mal home! Quan tu em vas suplicar, et vaig perdonar tot aquell deute. ¿No t’havies de compadir del teu col",
+     "days": 2
+    },
+    "B": {
+     "preview": "El qui perdi la seva vida per mi i per l’Evangeli, la salvarà, diu el Senyor.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Si una dona tenia deu monedes de plata i en perdia una, ¿no encendria el llum, i la buscaria amb tot l’interès fins que ",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2472",
+   "cycles": {
+    "A": {
+     "preview": "Si el pecador es converteix, deixa de fer el mal i obra amb justícia i bondat, salvarà la seva vida, diu el Senyor.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Ningú que en nom meu faci miracles no podrà després malparlar de mi. Qui no és contra nosaltres és amb nosaltres.",
+     "days": 3
+    },
+    "C": {
+     "preview": "El pobre morí, i els àngels el portaren a la falda d’Abraham.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2473",
+   "cycles": {
+    "A": {
+     "preview": "Us dic amb tota veritat que els publicans i les dones de mala vida us passen al davant cap al Regne de Déu, perquè han c",
+     "days": 4
+    },
+    "B": {
+     "preview": "Tothom qui us doni un vas d’aigua pel meu nom, perquè sou de Crist, us dic amb tota veritat que no quedarà sense recompe",
+     "days": 3
+    },
+    "C": {
+     "preview": "Fill meu, recorda’t que en vida et van tocar béns de tota mena, i a Llàtzer mals, però ara ell ha trobat consol i tu, so",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2474",
+   "cycles": {
+    "A": {
+     "preview": "No entrarà al Regne del cel tothom qui em diu: Senyor, Senyor; hi entraran només els qui compleixen la voluntat del meu ",
+     "days": 4
+    },
+    "B": {
+     "preview": "Val més que entris a la vida sense mà, i no que vagis amb totes dues mans a l’infern, diu el Senyor.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Feliços els pobres: el Regne de Déu és per a vosaltres. Feliços els qui ara passeu fam: vindrà el dia que sereu saciats.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2475",
+   "cycles": {
+    "A": {
+     "preview": "Quan s’acostava el temps de la verema, envià els seus homes per recollir-ne els fruits.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Els fariseus preguntaren a Jesús si el marit es pot divorciar de la seva dona. Ell els digué: Allò que Déu ha unit, l’ho",
+     "days": 3
+    },
+    "C": {
+     "preview": "Els apòstols digueren al Senyor: Doneu-nos més fe, al·leluia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2476",
+   "cycles": {
+    "A": {
+     "preview": "Farà matar aquells mals homes i passarà la vinya a uns altres que li donin els fruits al temps de la verema.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Deixeu venir a mi els nens, perquè el Regne del cel és dels qui són com ells.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Només que tinguéssiu una fe menuda com un gra de mostassa, si dèieu a aquesta morera: Arrenca’t de soca-rel i planta’t a",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2477",
+   "cycles": {
+    "A": {
+     "preview": "La pedra que rebutjaven els constructors és la pedra angular que ara corona l’edifici de la casa de Déu.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Qui no rebi el Regne de Déu com el rep un nen, no entrarà pas a la casa del meu Pare.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Quan haureu complert tot allò que Déu us mana, digueu: Som servents sense cap mèrit: no hem fet altra cosa que complir e",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2478",
+   "cycles": {
+    "A": {
+     "preview": "Passa amb el Regne del cel com amb un rei que celebrava el casament del seu fill i envià els seus homes a avisar els con",
+     "days": 4
+    },
+    "B": {
+     "preview": "Encara et falta una cosa: vés a vendre tot el que tens i dóna-ho als pobres, i tindràs un tresor guardat en el cel.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Deu leprosos, que s’aturaren un tros lluny, cridaren: Jesús, Mestre, apiadeu-vos de nosaltres!",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2479",
+   "cycles": {
+    "A": {
+     "preview": "Digueu als convidats: Ja tinc preparat el banquet, veniu a la festa.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Per als qui són rics, que n’és, de difícil, d’entrar al Regne de Déu.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Un dels deu leprosos purificats per Jesús, quan s’adonà que estava bo, tornà enrere donant glòria a Déu amb grans crits,",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2480",
+   "cycles": {
+    "A": {
+     "preview": "El banquet de casament és a punt, però els convidats no se’l mereixien. Per tant, aneu a les sortides dels camins i conv",
+     "days": 4
+    },
+    "B": {
+     "preview": "Vosaltres, que ho heu deixat tot per venir amb mi, rebreu el cent per u i tindreu la vida eterna.",
+     "days": 3
+    },
+    "C": {
+     "preview": "¿Només aquest estranger ha tornat per donar glòria a Déu? Aixeca’t i vés-te’n. La teva fe t’ha salvat.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2481",
+   "cycles": {
+    "A": {
+     "preview": "Jesús, Mestre, vós sempre dieu la veritat i ensenyeu de debò els camins de Déu, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Vosaltres beureu el calze que jo beuré i sereu batejats amb el baptisme amb què jo seré batejat, diu el Senyor.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jesús deia als deixebles que hem de pregar sempre, sense perdre mai l’esperança.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2482",
+   "cycles": {
+    "A": {
+     "preview": "De llevant fins a ponent no hi ha cap altre Déu fora de mi. Jo sóc el Senyor. No n’hi ha d’altre.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Qui vulgui ser important, entre vosaltres, ha de ser el vostre servidor, i qui vulgui ser el primer ha de ser l’esclau d",
+     "days": 3
+    },
+    "C": {
+     "preview": "Déu farà justícia als seus elegits que li reclamen nit i dia.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2483",
+   "cycles": {
+    "A": {
+     "preview": "Retorneu al Cèsar això que és del Cèsar, i a Déu allò que és de Déu, al·leluia.",
+     "days": 4
+    },
+    "B": {
+     "preview": "El Fill de l’home no ha vingut per a fer-se servir, sinó a servir els altres i a donar la seva vida com a preu de rescat",
+     "days": 3
+    },
+    "C": {
+     "preview": "Quan el Fill de l’home vindrà, ¿creieu que trobarà fe a la terra?\n",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2484",
+   "cycles": {
+    "A": {
+     "preview": "Mestre, ¿quin és el manament més gran de la Llei? Jesús li contestà: Estima el Senyor, el teu Déu, amb tot el cor.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Passant Jesús, prop de Jericó, un cec el cridava perquè esperava rebre la llum.\n",
+     "days": 3
+    },
+    "C": {
+     "preview": "Un cobrador d’impostos, que ni gosava aixecar els ulls al cel, es donava cops al pit i deia: Déu meu, sigueu-me propici,",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2485",
+   "cycles": {
+    "A": {
+     "preview": "Estima els altres com a tu mateix, digué Jesús als seus deixebles.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Fill de David, compadiu-vos de mi. Jesús li preguntà: ¿Què vols que et faci? El cec va respondre: Senyor, feu que hi veg",
+     "days": 3
+    },
+    "C": {
+     "preview": "El publicà tornà perdonat a casa seva, i el que es refiava d’ell mateix no.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2486",
+   "cycles": {
+    "A": {
+     "preview": "Estima el Senyor, el teu Déu; estima els altres com a tu mateix. Tots els manaments de la Llei i dels Profetes vénen d’a",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús digué al cec: Vés, la teva fe t’ha salvat. A l’instant hi veié, i el seguia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Tothom qui s’enalteix serà humiliat, però el qui s’humilia serà enaltit.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2487",
+   "cycles": {
+    "A": {
+     "preview": "Tots vosaltres sou germans; de pare, només en teniu un, el del cel.",
+     "days": 2
+    },
+    "B": {
+     "preview": "Estima el Senyor, el teu Déu, amb tot el cor. Estima els altres com a tu mateix. Més gran que aquests no hi ha cap altre",
+     "days": 2
+    },
+    "C": {
+     "preview": "Zaqueu, baixa de pressa, que avui m’he de quedar a casa teva. Zaqueu baixà de seguida i el rebé tot content.",
+     "days": 1
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2488",
+   "cycles": {
+    "A": {
+     "preview": "De mestre, només en teniu un: Crist, el Senyor. ",
+     "days": 2
+    },
+    "B": {
+     "preview": "El Senyor és el nostre Déu, el Senyor és l’únic. Estima el Senyor, el teu Déu, amb tota l’ànima.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Avui s’ha salvat aquesta casa, ja que aquest home també és un fill d’Abraham.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2489",
+   "cycles": {
+    "A": {
+     "preview": "El més important de vosaltres ha de ser servidor vostre. Tothom qui s’enaltirà serà humiliat, però tothom qui s’humiliar",
+     "days": 2
+    },
+    "B": {
+     "preview": "Jesús, en sentir la resposta tan assenyada del mestre de la Llei, li digué: No ets lluny del Regne de Déu.",
+     "days": 2
+    },
+    "C": {
+     "preview": "El Fill de l‘home ha vingut a buscar i a salvar allò que s’havia perdut.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2490",
+   "cycles": {
+    "A": {
+     "preview": "Verges prudents, prepareu les torxes. L’Espòs és aquí, sortiu a rebre’l.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Jesús, assegut davant la sala del tresor, mirava com una viuda pobra hi tirà dues monedes de les més petites: tot el que",
+     "days": 2
+    },
+    "C": {
+     "preview": "Els qui Déu considerarà dignes de tenir un lloc en la resurrecció dels morts són iguals que els àngels i són fills de Dé",
+     "days": 1
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2491",
+   "cycles": {
+    "A": {
+     "preview": "A mitjanit, se sentí cridar: L’Espòs és aquí, sortiu a rebre’l.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Us dic amb tota veritat que aquesta viuda pobra és la que ha donat més de tots.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Que els morts han de ressuscitar, Moisès mateix ho deixa entendre en el passatge de la Bardissa, quan diu que el Senyor ",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2492",
+   "cycles": {
+    "A": {
+     "preview": "Vetlleu, perquè no sabeu ni el dia ni l’hora.",
+     "days": 2
+    },
+    "B": {
+     "preview": "Aquella viuda pobra, que ho necessitava per a viure, ha donat tot el que tenia.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Déu no és Déu de morts, sinó de vius, perquè per a ell tots viuen, al·leluia.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2493",
+   "cycles": {
+    "A": {
+     "preview": "Senyor, m’havíeu confiat cinc talents i n’he guanyats cinc més.",
+     "days": 4
+    },
+    "B": {
+     "preview": "Veuran venir el Fill de l’home sobre els núvols amb gran poder i majestat.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Quan sentireu parlar de guerres i de revoltes, no us alarmeu; això ha de succeir primer, però la fi no vindrà de seguida",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2494",
+   "cycles": {
+    "A": {
+     "preview": "Molt bé, administrador bo i de tota confiança, el que t’havia encomanat ho has administrat fidelment. Ara t’encomanaré m",
+     "days": 4
+    },
+    "B": {
+     "preview": "El Senyor enviarà els seus àngels per reunir els seus elegits, des dels extrems més llunyans de la terra i del cel.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Jo mateix us donaré una eloqüència i una saviesa, i cap dels vostres acusadors no serà capaç de resistir-les.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2495",
+   "cycles": {
+    "A": {
+     "preview": "Molt bé, administrador bo i de tota confiança, entra a celebrar-ho amb el teu Senyor.",
+     "days": 4
+    },
+    "B": {
+     "preview": "El cel i la terra passaran, però les meves paraules no passaran.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Sofrint amb constància, us guanyareu la vida eterna, diu el Senyor.",
+     "days": 3
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2448",
+   "cycles": {
+    "B": {
+     "preview": "No heu de treballar per un menjar que es fa malbé, sinó pel menjar que es conserva sempre i dóna la vida eterna.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Guardeu-vos de tota ambició de posseir riqueses, perquè ni que algú tingués diners de sobres, els seus béns no li podrie",
+     "days": 3
+    },
+    "A": {
+     "preview": "Hi havia molta gent amb Jesús i no tenien res per menjar, Jesús cridà els seus deixebles i els digué: Tinc compassió d’a",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2449",
+   "cycles": {
+    "B": {
+     "preview": "Moisès no us va donar pas el blat celestial, però el meu Pare sí que us dóna el pa que és realment del cel.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Val més que reuniu tresors al cel; aquells no s’arnen ni es rovellen.",
+     "days": 3
+    },
+    "A": {
+     "preview": "Amb cinc pans i dos peixos el Senyor assacià cinc mil homes.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2469",
+   "cycles": {
+    "B": {
+     "preview": "Si algú vol ser el primer, ha de ser el darrer i el servidor de tots.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Guanyeu-vos amics a costa de la riquesa enganyosa, perquè, quan desaparegui, trobeu qui us rebi eternament a casa seva.",
+     "days": 3
+    },
+    "A": {
+     "preview": "Aneu també vosaltres a la meva vinya; us pagaré el que sigui just.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2470",
+   "cycles": {
+    "B": {
+     "preview": "Qui m’acull a mi, no m’acull a mi, sinó el qui m’ha enviat.",
+     "days": 3
+    },
+    "C": {
+     "preview": "Sigueu fidels en els béns que valen poc, i Déu us confiarà les riqueses veritables.",
+     "days": 3
+    },
+    "A": {
+     "preview": "Amb el Regne del cel passa com amb un propietari que sortí de bon matí a llogar treballadors per a la seva vinya, diu el",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2450",
+   "cycles": {
+    "C": {
+     "preview": "Si voleu ser rics de debò, germans, estimeu la riquesa veritable.",
+     "days": 3
+    },
+    "A": {
+     "preview": "Tothom en menjà tant com volgué i recolliren dotze coves plens de les sobres.",
+     "days": 2
+    },
+    "B": {
+     "preview": "Jo sóc el pa que dóna la vida: els qui vénen a mi no passaran fam, els qui creuen en mi no tindran mai set.",
+     "days": 2
+    }
+   }
+  },
+  {
+   "cell": "cantico_evangelico_antifonas/2471",
+   "cycles": {
+    "C": {
+     "preview": "No podeu servir dos amos, no podeu ser servidors de Déu i de les riqueses.",
+     "days": 3
+    },
+    "A": {
+     "preview": "Crida els treballadors i paga’ls el jornal, diu el Senyor.",
+     "days": 2
+    },
+    "B": {
+     "preview": "Qui acull un d’aquests nois perquè porta el meu nom, m’acull a mi.",
+     "days": 2
+    }
+   }
+  }
  ]
 }

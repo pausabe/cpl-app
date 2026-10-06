@@ -38,3 +38,21 @@ test('any other list still pairs by position', () => {
   // And the decided list too, if the CPL ever gives a count the decision did not count on.
   expect(alignPreces(CELLS, ['a', 'b', 'c', 'd', 'e', 'f'])).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
 });
+
+describe('Saturday III Lauds: the CPL follows the Latin, three; the Spanish adds a fourth', () => {
+  const SATURDAY_III = ['2284', '2285', '2286', '2287'];
+  let lauds;
+  beforeAll(async () => {
+    // Saturday of week 27, 10-10-2026: cpl-app prays the weekday's Lauds, Saturday III.
+    const day = await resolveDayForComparison('2026-10-10', { hours: ['Laudes'] });
+    lauds = day.hours.Laudes.preces_contenido;
+  }, 180000);
+
+  test('the cross goes in the cross\'s cell, and the Spanish one\'s cell gets nothing', () => {
+    expect(lauds).toHaveLength(3);
+    const aligned = alignPreces(SATURDAY_III, lauds);
+    expect(aligned[1]).toMatch(/^Per Maria, atenta a la vostra paraula/);
+    expect(aligned[2]).toBeUndefined();
+    expect(aligned[3]).toMatch(/^Vós l’enfortíreu perquè estigués dreta al costat de la creu/);
+  });
+});
