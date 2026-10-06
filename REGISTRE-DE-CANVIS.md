@@ -136,7 +136,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-34](#sa-34) | 2026-10-02 | saints-app | **codi** | No — va al git | `d0e6d4610` |
 | [D-016](#d-016) | 2026-10-05 | cpl-cloud (procés X) + web | **decisió d'en Pau** + codi | No — va al git | cpl-cloud `0bfd380`, `0028b87` |
 | [MIGRA-025](#migra-025) | 2026-10-06 | eines | codi | No — va al git | `918d7a9` |
-| [D-017](#d-017) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** + codi | Es regenera: el join | el que afegeix la fitxa · saints-app `773351aea` |
+| [D-017](#d-017) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** + codi | Es regenera: el join i `decided-cells.json` | el que afegeix la fitxa · saints-app `773351aea`, `46608970b` |
 | [SA-35](#sa-35) | 2026-10-06 | saints-app | **codi** | No — va al git | `47a3838a8` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
@@ -2418,9 +2418,9 @@ el 6-10, entre tres opcions (la majoritària, la del dia o fer com el castellà)
 | Com | `src/liturgy-export/indexFields.ts`, `splitPsalmResponse`: la resposta surt del text i va a la cita, darrere de `_`; el text es queda amb la marca `R.` a cada estrofa, també la primera. Només quan la resposta es diu una vegada, després de la primera estrofa (908 dels 921 salms de la missa). Els que la repeteixen a cada estrofa (el càntic de Daniel, el Sl 135) o no en tenen (el Sl 111) van com eren. A `lib/held-resolution.js`, la resposta d'una cita segueix la regla de les variants lleugeres de la prosa; la cita de davant, no |
 | Test | `mass-fields.test.js` (13 de 13) i `held-resolution.test.js` (23 de 23) |
 | Efecte | 590 cites guanyen la resposta i 412 textos la perden, sense cap altre canvi (comprovat un per un). 41 textos i 10 cites en català per primer cop; retinguts, 144 → 104 textos i 60 → 53 cites. De 437.185 a **438.124** textos-dia i de 119 a **161** dies sencers. El 6-10-2026, al 100% |
-| Queda retingut | 4 caselles: la resposta de 3 salms que cpl-app diu de dues maneres (Sl 104 «Recordeu les meravelles del Senyor» / «…que Déu obrà»; Sl 143 «la roca que em salva» / «la meva roca»; Sl 17, empat de 3 dies a 3, només de puntuació) i el text del Sl 66 de sant Jaume, que abans passava per variant lleugera i ara, més curt, ja no. Pendents d'en Pau, una per una |
-| A saints-app | La resposta es veu com a ℟ sota la cita amb la [SA-35](#sa-35). Les 4 retingudes conserven el que hi havia: tres cites sense resposta i el text de sant Jaume amb la resposta a dins |
-| Commit | el que afegeix la fitxa · saints-app `773351aea` |
+| Les 4 que quedaven retingudes | La resposta de 3 salms que cpl-app diu de dues maneres i el text del Sl 66 de sant Jaume, que abans passava per variant lleugera i ara, més curt, ja no. En Pau m'ho va delegar («decideix tu»), i són a `decided-cells.json` amb el perquè: Sl 143 «la meva roca» (9 dies de 13, i la més propera al castellà); Sl 104 «Recordeu les meravelles del Senyor» (10 de 14); Sl 17 «Us estimo, Senyor, vós m'enfortiu» (empat de puntuació, la que diu el text del salm); el Sl 66, el del 25 de juliol, com abans. Ja tenien text a saints-app, el d'abans de la D-017, i per això el total no es mou: ara hi és la resposta, i a sant Jaume no surt dues vegades |
+| A saints-app | La resposta es veu com a ℟ sota la cita amb la [SA-35](#sa-35) |
+| Commit | el que afegeix la fitxa · saints-app `773351aea`; les 4 decisions, el següent · saints-app `46608970b` |
 
 <a id="sa-24"></a>
 ## SA-24

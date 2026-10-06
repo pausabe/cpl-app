@@ -812,6 +812,22 @@
     "oficio_textos/655": {
       "take": "2026-12-13",
       "because": "diumenge III d'Advent: coincideix amb la resta de dies tots els anys menys 2017-12-17, 2023-12-17."
+    },
+    "lecturas_referencia/259": {
+      "take": "2026-10-29",
+      "because": "En Pau m'ho va delegar el 6-10-2026 («decideix tu»), després de la D-017. Sl 143: «Beneït sigui el Senyor, la meva roca» (9 dies, octubre i novembre) i no «…la roca que em salva» (4 dies, gener): la majoritària i la més propera al castellà de la casella («¡Bendito el Señor, mi alcázar!»)."
+    },
+    "lecturas_texto/817": {
+      "take": "2026-07-25",
+      "because": "En Pau m'ho va delegar el 6-10-2026 («decideix tu»), després de la D-017. Sl 66 de sant Jaume: «i veuran tots els pobles la salvació» (10 dies, el 25 de juliol) i no «i tots els pobles veuran la salvació» (5 dies). Només canvia l'ordre de dues paraules; és el que la casella ja tenia abans de la D-017, quan passava per variant lleugera."
+    },
+    "lecturas_referencia/120": {
+      "take": "2026-03-06",
+      "because": "En Pau m'ho va delegar el 6-10-2026 («decideix tu»), després de la D-017. Sl 104: «Recordeu les meravelles del Senyor» (10 dies, el divendres II de Quaresma) i no «…que Déu obrà» (4 dies, juliol): la majoritària. El castellà («Recordad las maravillas que hizo el Señor») no desempata."
+    },
+    "lecturas_referencia/3155": {
+      "take": "2024-11-03",
+      "because": "En Pau m'ho va delegar el 6-10-2026 («decideix tu»), després de la D-017. Sl 17: «Us estimo, Senyor, vós m'enfortiu» i no «Us estimo, Senyor. Vós m'enfortiu»: només hi canvia la puntuació i és un empat de 3 dies a 3; la de la coma és com comença el text del salm de la mateixa casella (3615)."
     }
   }
 }

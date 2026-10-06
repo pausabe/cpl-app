@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-10-06T08:56:50.121Z",
+ "generatedAt": "2026-10-06T09:10:28.805Z",
  "diocese": "Barcelona",
- "probeGeneratedAt": "2026-10-06T08:56:49.829Z",
+ "probeGeneratedAt": "2026-10-06T09:10:28.278Z",
  "litcalCalendarsRead": true,
  "totals": {
-  "contestedCells": 976,
+  "contestedCells": 972,
   "missing": 0,
   "notApplied": 90,
   "mismatch": 34,
@@ -3125,58 +3125,6 @@
    ]
   },
   {
-   "key": "ferial|ordinary_time_31_sunday",
-   "title": null,
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
-   "cellsBlamed": 4,
-   "cellsSole": 3,
-   "contestedDays": 7,
-   "totalDays": 7,
-   "litcalIds": [
-    "ordinary_time_31_sunday"
-   ],
-   "dates": [
-    {
-     "date": "2018-11-04",
-     "litcalId": "ordinary_time_31_sunday",
-     "minorityCells": 3
-    },
-    {
-     "date": "2024-11-03",
-     "litcalId": "ordinary_time_31_sunday",
-     "minorityCells": 3
-    },
-    {
-     "date": "2019-11-03",
-     "litcalId": "ordinary_time_31_sunday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2021-10-31",
-     "litcalId": "ordinary_time_31_sunday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2022-10-30",
-     "litcalId": "ordinary_time_31_sunday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2017-11-05",
-     "litcalId": "ordinary_time_31_sunday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2023-11-05",
-     "litcalId": "ordinary_time_31_sunday",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
    "key": "ferial|ordinary_time_33_sunday",
    "title": null,
    "verdict": "ferial-drift",
@@ -5095,6 +5043,58 @@
      "date": "2024-09-29",
      "litcalId": "ordinary_time_26_sunday",
      "minorityCells": 2
+    }
+   ]
+  },
+  {
+   "key": "ferial|ordinary_time_31_sunday",
+   "title": null,
+   "verdict": "ferial-drift",
+   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
+   "ranks": [],
+   "inLitcal": null,
+   "cellsBlamed": 3,
+   "cellsSole": 2,
+   "contestedDays": 7,
+   "totalDays": 7,
+   "litcalIds": [
+    "ordinary_time_31_sunday"
+   ],
+   "dates": [
+    {
+     "date": "2018-11-04",
+     "litcalId": "ordinary_time_31_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2019-11-03",
+     "litcalId": "ordinary_time_31_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2022-10-30",
+     "litcalId": "ordinary_time_31_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2024-11-03",
+     "litcalId": "ordinary_time_31_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2017-11-05",
+     "litcalId": "ordinary_time_31_sunday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2021-10-31",
+     "litcalId": "ordinary_time_31_sunday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2023-11-05",
+     "litcalId": "ordinary_time_31_sunday",
+     "minorityCells": 1
     }
    ]
   },
@@ -7707,66 +7707,6 @@
    ]
   },
   {
-   "key": "cel|Sant Ignasi de Loiola, prevere",
-   "title": "Sant Ignasi de Loiola, prevere",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Memòria obligatòria"
-   ],
-   "inLitcal": {
-    "id": "ignatius_of_loyola_priest",
-    "origin": "romcal",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 3,
-   "cellsSole": 1,
-   "contestedDays": 7,
-   "totalDays": 9,
-   "litcalIds": [
-    "ignatius_of_loyola_priest"
-   ],
-   "dates": [
-    {
-     "date": "2019-07-31",
-     "litcalId": "ignatius_of_loyola_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2021-07-31",
-     "litcalId": "ignatius_of_loyola_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2024-07-31",
-     "litcalId": "ignatius_of_loyola_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2018-07-31",
-     "litcalId": "ignatius_of_loyola_priest",
-     "minorityCells": 1
-    },
-    {
-     "date": "2020-07-31",
-     "litcalId": "ignatius_of_loyola_priest",
-     "minorityCells": 1
-    },
-    {
-     "date": "2025-07-31",
-     "litcalId": "ignatius_of_loyola_priest",
-     "minorityCells": 1
-    },
-    {
-     "date": "2026-07-31",
-     "litcalId": "ignatius_of_loyola_priest",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
    "key": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "verdict": "memorial",
@@ -8361,61 +8301,6 @@
    ]
   },
   {
-   "key": "cel|Sant Vicenç, diaca i màrtir",
-   "title": "Sant Vicenç, diaca i màrtir",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Memòria obligatòria"
-   ],
-   "inLitcal": {
-    "id": "vincent_of_saragossa_deacon",
-    "origin": "spain",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 3,
-   "cellsSole": 1,
-   "contestedDays": 6,
-   "totalDays": 8,
-   "litcalIds": [
-    "vincent_of_saragossa_deacon"
-   ],
-   "dates": [
-    {
-     "date": "2020-01-22",
-     "litcalId": "vincent_of_saragossa_deacon",
-     "minorityCells": 2
-    },
-    {
-     "date": "2022-01-22",
-     "litcalId": "vincent_of_saragossa_deacon",
-     "minorityCells": 2
-    },
-    {
-     "date": "2019-01-22",
-     "litcalId": "vincent_of_saragossa_deacon",
-     "minorityCells": 1
-    },
-    {
-     "date": "2021-01-22",
-     "litcalId": "vincent_of_saragossa_deacon",
-     "minorityCells": 1
-    },
-    {
-     "date": "2025-01-22",
-     "litcalId": "vincent_of_saragossa_deacon",
-     "minorityCells": 1
-    },
-    {
-     "date": "2026-01-22",
-     "litcalId": "vincent_of_saragossa_deacon",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
    "key": "cel|Santa Àgata, verge i màrtir",
    "title": "Santa Àgata, verge i màrtir",
    "verdict": "memorial",
@@ -8609,6 +8494,66 @@
      "date": "2022-02-16",
      "litcalId": "ordinary_time_6_wednesday",
      "minorityCells": 2
+    }
+   ]
+  },
+  {
+   "key": "cel|Sant Ignasi de Loiola, prevere",
+   "title": "Sant Ignasi de Loiola, prevere",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Memòria obligatòria"
+   ],
+   "inLitcal": {
+    "id": "ignatius_of_loyola_priest",
+    "origin": "romcal",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 1,
+   "contestedDays": 7,
+   "totalDays": 9,
+   "litcalIds": [
+    "ignatius_of_loyola_priest"
+   ],
+   "dates": [
+    {
+     "date": "2019-07-31",
+     "litcalId": "ignatius_of_loyola_priest",
+     "minorityCells": 2
+    },
+    {
+     "date": "2024-07-31",
+     "litcalId": "ignatius_of_loyola_priest",
+     "minorityCells": 2
+    },
+    {
+     "date": "2018-07-31",
+     "litcalId": "ignatius_of_loyola_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2020-07-31",
+     "litcalId": "ignatius_of_loyola_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2021-07-31",
+     "litcalId": "ignatius_of_loyola_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2025-07-31",
+     "litcalId": "ignatius_of_loyola_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2026-07-31",
+     "litcalId": "ignatius_of_loyola_priest",
+     "minorityCells": 1
     }
    ]
   },
@@ -8863,6 +8808,61 @@
     {
      "date": "2026-12-26",
      "litcalId": "stephen_the_first_martyr",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Sant Vicenç, diaca i màrtir",
+   "title": "Sant Vicenç, diaca i màrtir",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Memòria obligatòria"
+   ],
+   "inLitcal": {
+    "id": "vincent_of_saragossa_deacon",
+    "origin": "spain",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 1,
+   "contestedDays": 6,
+   "totalDays": 8,
+   "litcalIds": [
+    "vincent_of_saragossa_deacon"
+   ],
+   "dates": [
+    {
+     "date": "2022-01-22",
+     "litcalId": "vincent_of_saragossa_deacon",
+     "minorityCells": 2
+    },
+    {
+     "date": "2019-01-22",
+     "litcalId": "vincent_of_saragossa_deacon",
+     "minorityCells": 1
+    },
+    {
+     "date": "2020-01-22",
+     "litcalId": "vincent_of_saragossa_deacon",
+     "minorityCells": 1
+    },
+    {
+     "date": "2021-01-22",
+     "litcalId": "vincent_of_saragossa_deacon",
+     "minorityCells": 1
+    },
+    {
+     "date": "2025-01-22",
+     "litcalId": "vincent_of_saragossa_deacon",
+     "minorityCells": 1
+    },
+    {
+     "date": "2026-01-22",
+     "litcalId": "vincent_of_saragossa_deacon",
      "minorityCells": 1
     }
    ]
@@ -13704,107 +13704,6 @@
    ]
   },
   {
-   "key": "cel|Sant Antoni, abat",
-   "title": "Sant Antoni, abat",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Memòria obligatòria"
-   ],
-   "inLitcal": {
-    "id": "anthony_of_egypt_abbot",
-    "origin": "romcal",
-    "places": [
-     "-",
-     "MeD"
-    ]
-   },
-   "cellsBlamed": 4,
-   "cellsSole": 0,
-   "contestedDays": 7,
-   "totalDays": 9,
-   "litcalIds": [
-    "anthony_of_egypt_abbot"
-   ],
-   "dates": [
-    {
-     "date": "2018-01-17",
-     "litcalId": "anthony_of_egypt_abbot",
-     "minorityCells": 2
-    },
-    {
-     "date": "2022-01-17",
-     "litcalId": "anthony_of_egypt_abbot",
-     "minorityCells": 2
-    },
-    {
-     "date": "2024-01-17",
-     "litcalId": "anthony_of_egypt_abbot",
-     "minorityCells": 2
-    },
-    {
-     "date": "2026-01-17",
-     "litcalId": "anthony_of_egypt_abbot",
-     "minorityCells": 2
-    },
-    {
-     "date": "2017-01-17",
-     "litcalId": "anthony_of_egypt_abbot",
-     "minorityCells": 1
-    },
-    {
-     "date": "2019-01-17",
-     "litcalId": "anthony_of_egypt_abbot",
-     "minorityCells": 1
-    },
-    {
-     "date": "2023-01-17",
-     "litcalId": "anthony_of_egypt_abbot",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Santa Agnès, verge i màrtir",
-   "title": "Santa Agnès, verge i màrtir",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Memòria obligatòria"
-   ],
-   "inLitcal": {
-    "id": "agnes_of_rome_virgin",
-    "origin": "romcal",
-    "places": [
-     "MaD"
-    ]
-   },
-   "cellsBlamed": 4,
-   "cellsSole": 0,
-   "contestedDays": 3,
-   "totalDays": 8,
-   "litcalIds": [
-    "agnes_of_rome_virgin"
-   ],
-   "dates": [
-    {
-     "date": "2019-01-19",
-     "litcalId": "agnes_of_rome_virgin",
-     "minorityCells": 2
-    },
-    {
-     "date": "2022-01-19",
-     "litcalId": "agnes_of_rome_virgin",
-     "minorityCells": 1
-    },
-    {
-     "date": "2026-01-19",
-     "litcalId": "agnes_of_rome_virgin",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
    "key": "cel|Sant Blai, bisbe i màrtir",
    "title": "Sant Blai, bisbe i màrtir",
    "verdict": "not-applied",
@@ -15106,6 +15005,102 @@
    ]
   },
   {
+   "key": "cel|Sant Antoni, abat",
+   "title": "Sant Antoni, abat",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Memòria obligatòria"
+   ],
+   "inLitcal": {
+    "id": "anthony_of_egypt_abbot",
+    "origin": "romcal",
+    "places": [
+     "-",
+     "MeD"
+    ]
+   },
+   "cellsBlamed": 3,
+   "cellsSole": 0,
+   "contestedDays": 7,
+   "totalDays": 9,
+   "litcalIds": [
+    "anthony_of_egypt_abbot"
+   ],
+   "dates": [
+    {
+     "date": "2022-01-17",
+     "litcalId": "anthony_of_egypt_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2026-01-17",
+     "litcalId": "anthony_of_egypt_abbot",
+     "minorityCells": 2
+    },
+    {
+     "date": "2017-01-17",
+     "litcalId": "anthony_of_egypt_abbot",
+     "minorityCells": 1
+    },
+    {
+     "date": "2018-01-17",
+     "litcalId": "anthony_of_egypt_abbot",
+     "minorityCells": 1
+    },
+    {
+     "date": "2019-01-17",
+     "litcalId": "anthony_of_egypt_abbot",
+     "minorityCells": 1
+    },
+    {
+     "date": "2023-01-17",
+     "litcalId": "anthony_of_egypt_abbot",
+     "minorityCells": 1
+    },
+    {
+     "date": "2024-01-17",
+     "litcalId": "anthony_of_egypt_abbot",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Santa Agnès, verge i màrtir",
+   "title": "Santa Agnès, verge i màrtir",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Memòria obligatòria"
+   ],
+   "inLitcal": {
+    "id": "agnes_of_rome_virgin",
+    "origin": "romcal",
+    "places": [
+     "MaD"
+    ]
+   },
+   "cellsBlamed": 3,
+   "cellsSole": 0,
+   "contestedDays": 2,
+   "totalDays": 8,
+   "litcalIds": [
+    "agnes_of_rome_virgin"
+   ],
+   "dates": [
+    {
+     "date": "2019-01-19",
+     "litcalId": "agnes_of_rome_virgin",
+     "minorityCells": 2
+    },
+    {
+     "date": "2026-01-19",
+     "litcalId": "agnes_of_rome_virgin",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
    "key": "ferial|lent_2_monday",
    "title": null,
    "verdict": "ferial-drift",
@@ -15354,156 +15349,6 @@
     {
      "date": "2025-07-05",
      "litcalId": "ordinary_time_13_saturday",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Sant Enric",
-   "title": "Sant Enric",
-   "verdict": "not-applied",
-   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-   "ranks": [
-    "Memòria lliure"
-   ],
-   "inLitcal": {
-    "id": "henry_ii_emperor",
-    "origin": "romcal",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 3,
-   "cellsSole": 0,
-   "contestedDays": 4,
-   "totalDays": 9,
-   "litcalIds": [
-    "ordinary_time_14_friday",
-    "ordinary_time_14_saturday",
-    "ordinary_time_14_thursday",
-    "ordinary_time_15_monday",
-    "ordinary_time_15_tuesday",
-    "ordinary_time_15_wednesday"
-   ],
-   "dates": [
-    {
-     "date": "2017-07-13",
-     "litcalId": "ordinary_time_14_thursday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2023-07-13",
-     "litcalId": "ordinary_time_14_thursday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2019-07-13",
-     "litcalId": "ordinary_time_14_saturday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2024-07-13",
-     "litcalId": "ordinary_time_14_saturday",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Sant Eusebi de Vercel·li, bisbe",
-   "title": "Sant Eusebi de Vercel·li, bisbe",
-   "verdict": "not-applied",
-   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-   "ranks": [
-    "Memòria lliure"
-   ],
-   "inLitcal": {
-    "id": "eusebius_of_vercelli_bishop",
-    "origin": "romcal",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 3,
-   "cellsSole": 0,
-   "contestedDays": 3,
-   "totalDays": 8,
-   "litcalIds": [
-    "ordinary_time_17_friday",
-    "ordinary_time_17_saturday",
-    "ordinary_time_17_thursday",
-    "ordinary_time_17_wednesday",
-    "ordinary_time_18_monday",
-    "ordinary_time_18_tuesday"
-   ],
-   "dates": [
-    {
-     "date": "2025-08-02",
-     "litcalId": "ordinary_time_17_saturday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2017-08-02",
-     "litcalId": "ordinary_time_17_wednesday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2023-08-02",
-     "litcalId": "ordinary_time_17_wednesday",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Dedicació de la Basílica de Santa Maria",
-   "title": "Dedicació de la Basílica de Santa Maria",
-   "verdict": "not-applied",
-   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-   "ranks": [
-    "Memòria lliure"
-   ],
-   "inLitcal": {
-    "id": "dedication_of_the_basilica_of_saint_mary_major",
-    "origin": "romcal",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 3,
-   "cellsSole": 0,
-   "contestedDays": 5,
-   "totalDays": 9,
-   "litcalIds": [
-    "ordinary_time_17_saturday",
-    "ordinary_time_18_friday",
-    "ordinary_time_18_monday",
-    "ordinary_time_18_thursday",
-    "ordinary_time_18_tuesday",
-    "ordinary_time_18_wednesday"
-   ],
-   "dates": [
-    {
-     "date": "2017-08-05",
-     "litcalId": "ordinary_time_17_saturday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2020-08-05",
-     "litcalId": "ordinary_time_18_wednesday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2022-08-05",
-     "litcalId": "ordinary_time_18_friday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2023-08-05",
-     "litcalId": "ordinary_time_17_saturday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2026-08-05",
-     "litcalId": "ordinary_time_18_wednesday",
      "minorityCells": 1
     }
    ]
@@ -16781,6 +16626,56 @@
    ]
   },
   {
+   "key": "cel|Sant Enric",
+   "title": "Sant Enric",
+   "verdict": "not-applied",
+   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
+   "ranks": [
+    "Memòria lliure"
+   ],
+   "inLitcal": {
+    "id": "henry_ii_emperor",
+    "origin": "romcal",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 0,
+   "contestedDays": 4,
+   "totalDays": 9,
+   "litcalIds": [
+    "ordinary_time_14_friday",
+    "ordinary_time_14_saturday",
+    "ordinary_time_14_thursday",
+    "ordinary_time_15_monday",
+    "ordinary_time_15_tuesday",
+    "ordinary_time_15_wednesday"
+   ],
+   "dates": [
+    {
+     "date": "2017-07-13",
+     "litcalId": "ordinary_time_14_thursday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2019-07-13",
+     "litcalId": "ordinary_time_14_saturday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2023-07-13",
+     "litcalId": "ordinary_time_14_thursday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2024-07-13",
+     "litcalId": "ordinary_time_14_saturday",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
    "key": "cel|Sant Camil de Lel·lis, prevere",
    "title": "Sant Camil de Lel·lis, prevere",
    "verdict": "not-applied",
@@ -16882,6 +16777,96 @@
      "date": "2026-07-22",
      "litcalId": "mary_magdalene",
      "minorityCells": 2
+    }
+   ]
+  },
+  {
+   "key": "cel|Sant Eusebi de Vercel·li, bisbe",
+   "title": "Sant Eusebi de Vercel·li, bisbe",
+   "verdict": "not-applied",
+   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
+   "ranks": [
+    "Memòria lliure"
+   ],
+   "inLitcal": {
+    "id": "eusebius_of_vercelli_bishop",
+    "origin": "romcal",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 0,
+   "contestedDays": 3,
+   "totalDays": 8,
+   "litcalIds": [
+    "ordinary_time_17_friday",
+    "ordinary_time_17_saturday",
+    "ordinary_time_17_thursday",
+    "ordinary_time_17_wednesday",
+    "ordinary_time_18_monday",
+    "ordinary_time_18_tuesday"
+   ],
+   "dates": [
+    {
+     "date": "2017-08-02",
+     "litcalId": "ordinary_time_17_wednesday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2023-08-02",
+     "litcalId": "ordinary_time_17_wednesday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2025-08-02",
+     "litcalId": "ordinary_time_17_saturday",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Dedicació de la Basílica de Santa Maria",
+   "title": "Dedicació de la Basílica de Santa Maria",
+   "verdict": "not-applied",
+   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
+   "ranks": [
+    "Memòria lliure"
+   ],
+   "inLitcal": {
+    "id": "dedication_of_the_basilica_of_saint_mary_major",
+    "origin": "romcal",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 0,
+   "contestedDays": 3,
+   "totalDays": 9,
+   "litcalIds": [
+    "ordinary_time_17_saturday",
+    "ordinary_time_18_friday",
+    "ordinary_time_18_monday",
+    "ordinary_time_18_thursday",
+    "ordinary_time_18_tuesday",
+    "ordinary_time_18_wednesday"
+   ],
+   "dates": [
+    {
+     "date": "2020-08-05",
+     "litcalId": "ordinary_time_18_wednesday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2022-08-05",
+     "litcalId": "ordinary_time_18_friday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2026-08-05",
+     "litcalId": "ordinary_time_18_wednesday",
+     "minorityCells": 1
     }
    ]
   },
@@ -17594,33 +17579,6 @@
    ]
   },
   {
-   "key": "ferial|ordinary_time_14_thursday",
-   "title": null,
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
-   "cellsBlamed": 2,
-   "cellsSole": 0,
-   "contestedDays": 2,
-   "totalDays": 4,
-   "litcalIds": [
-    "ordinary_time_14_thursday"
-   ],
-   "dates": [
-    {
-     "date": "2021-07-08",
-     "litcalId": "ordinary_time_14_thursday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2025-07-10",
-     "litcalId": "ordinary_time_14_thursday",
-     "minorityCells": 2
-    }
-   ]
-  },
-  {
    "key": "ferial|ordinary_time_22_friday",
    "title": null,
    "verdict": "ferial-drift",
@@ -17761,28 +17719,6 @@
     {
      "date": "2019-03-04",
      "litcalId": "ordinary_time_8_monday",
-     "minorityCells": 2
-    }
-   ]
-  },
-  {
-   "key": "ferial|ordinary_time_17_saturday",
-   "title": null,
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
-   "cellsBlamed": 2,
-   "cellsSole": 0,
-   "contestedDays": 1,
-   "totalDays": 1,
-   "litcalIds": [
-    "ordinary_time_17_saturday"
-   ],
-   "dates": [
-    {
-     "date": "2019-08-03",
-     "litcalId": "ordinary_time_17_saturday",
      "minorityCells": 2
     }
    ]
@@ -19591,6 +19527,33 @@
    ]
   },
   {
+   "key": "ferial|ordinary_time_14_thursday",
+   "title": null,
+   "verdict": "ferial-drift",
+   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
+   "ranks": [],
+   "inLitcal": null,
+   "cellsBlamed": 1,
+   "cellsSole": 0,
+   "contestedDays": 2,
+   "totalDays": 4,
+   "litcalIds": [
+    "ordinary_time_14_thursday"
+   ],
+   "dates": [
+    {
+     "date": "2021-07-08",
+     "litcalId": "ordinary_time_14_thursday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2025-07-10",
+     "litcalId": "ordinary_time_14_thursday",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
    "key": "cel|Témpores d’acció de gràcies i de petició",
    "title": "Témpores d’acció de gràcies i de petició",
    "verdict": "mismatch",
@@ -19858,6 +19821,28 @@
     {
      "date": "2019-07-12",
      "litcalId": "ordinary_time_14_friday",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "ferial|ordinary_time_17_saturday",
+   "title": null,
+   "verdict": "ferial-drift",
+   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
+   "ranks": [],
+   "inLitcal": null,
+   "cellsBlamed": 1,
+   "cellsSole": 0,
+   "contestedDays": 1,
+   "totalDays": 1,
+   "litcalIds": [
+    "ordinary_time_17_saturday"
+   ],
+   "dates": [
+    {
+     "date": "2019-08-03",
+     "litcalId": "ordinary_time_17_saturday",
      "minorityCells": 1
     }
    ]
@@ -22110,7 +22095,7 @@
    "date": "2017-07-13",
    "litcalId": "ordinary_time_14_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "L",
    "title": "Sant Enric",
    "group": "cel|Sant Enric"
@@ -22317,7 +22302,7 @@
    "date": "2017-08-05",
    "litcalId": "ordinary_time_17_saturday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "L",
    "title": "Dedicació de la Basílica de Santa Maria",
    "group": "cel|Dedicació de la Basílica de Santa Maria"
@@ -23802,7 +23787,7 @@
    "date": "2018-01-17",
    "litcalId": "anthony_of_egypt_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Antoni, abat",
    "group": "cel|Sant Antoni, abat"
@@ -26421,7 +26406,7 @@
    "date": "2018-11-04",
    "litcalId": "ordinary_time_31_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_31_sunday"
@@ -28869,7 +28854,7 @@
    "date": "2019-08-03",
    "litcalId": "ordinary_time_17_saturday",
    "litcalIsFerial": true,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_17_saturday"
@@ -30417,7 +30402,7 @@
    "date": "2020-01-22",
    "litcalId": "vincent_of_saragossa_deacon",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Vicenç, diaca i màrtir",
    "group": "cel|Sant Vicenç, diaca i màrtir"
@@ -35214,7 +35199,7 @@
    "date": "2021-07-08",
    "litcalId": "ordinary_time_14_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_14_thursday"
@@ -35421,7 +35406,7 @@
    "date": "2021-07-31",
    "litcalId": "ignatius_of_loyola_priest",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Ignasi de Loiola, prevere",
    "group": "cel|Sant Ignasi de Loiola, prevere"
@@ -36249,7 +36234,7 @@
    "date": "2021-10-31",
    "litcalId": "ordinary_time_31_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_31_sunday"
@@ -36969,7 +36954,7 @@
    "date": "2022-01-19",
    "litcalId": "agnes_of_rome_virgin",
    "litcalIsFerial": false,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "M",
    "title": "Santa Agnès, verge i màrtir",
    "group": "cel|Santa Agnès, verge i màrtir"
@@ -41829,7 +41814,7 @@
    "date": "2023-07-13",
    "litcalId": "ordinary_time_14_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "L",
    "title": "Sant Enric",
    "group": "cel|Sant Enric"
@@ -42036,7 +42021,7 @@
    "date": "2023-08-05",
    "litcalId": "ordinary_time_17_saturday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "L",
    "title": "Dedicació de la Basílica de Santa Maria",
    "group": "cel|Dedicació de la Basílica de Santa Maria"
@@ -43521,7 +43506,7 @@
    "date": "2024-01-17",
    "litcalId": "anthony_of_egypt_abbot",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Antoni, abat",
    "group": "cel|Sant Antoni, abat"
@@ -46140,7 +46125,7 @@
    "date": "2024-11-03",
    "litcalId": "ordinary_time_31_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_31_sunday"
@@ -48381,7 +48366,7 @@
    "date": "2025-07-10",
    "litcalId": "ordinary_time_14_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_14_thursday"
@@ -48588,7 +48573,7 @@
    "date": "2025-08-02",
    "litcalId": "ordinary_time_17_saturday",
    "litcalIsFerial": true,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "L",
    "title": "Sant Eusebi de Vercel·li, bisbe",
    "group": "cel|Sant Eusebi de Vercel·li, bisbe"
@@ -56748,10 +56733,6 @@
    "cel|Sant Antoni, abat",
    "cel|Santa Agnès, verge i màrtir"
   ],
-  "lecturas_referencia/120": [
-   "cel|Sant Enric",
-   "ferial|ordinary_time_14_thursday"
-  ],
   "lecturas_referencia/719": [
    "ferial|advent_4_sunday"
   ],
@@ -56820,9 +56801,6 @@
    "cel|Santíssim Nom de Maria",
    "ferial|ordinary_time_23_wednesday"
   ],
-  "lecturas_referencia/3155": [
-   "ferial|ordinary_time_31_sunday"
-  ],
   "lecturas_referencia/1358": [
    "cel|Sant Joan Crisòstom, bisbe i doctor de l’Església",
    "cel|Beats Domènec Castellet i Vinyals i Lluís Eixarc i Bertran, preveres i màrtirs",
@@ -56854,11 +56832,6 @@
   ],
   "lecturas_referencia/2274": [
    "ferial|advent_1_monday"
-  ],
-  "lecturas_referencia/259": [
-   "cel|Sant Antoni, abat",
-   "cel|Sant Vicenç, diaca i màrtir",
-   "cel|Santa Agnès, verge i màrtir"
   ],
   "lecturas_referencia/3602": [
    "ferial|ordinary_time_11_sunday"
@@ -57255,12 +57228,6 @@
    "cel|Sants Pau Miki i companys, màrtirs",
    "cel|Sant Blai, bisbe i màrtir",
    "cel|Santa Àgata, verge i màrtir"
-  ],
-  "lecturas_texto/817": [
-   "cel|Dedicació de la Basílica de Santa Maria",
-   "ferial|ordinary_time_17_saturday",
-   "cel|Sant Ignasi de Loiola, prevere",
-   "cel|Sant Eusebi de Vercel·li, bisbe"
   ],
   "lecturas_texto/169": [
    "ferial|lent_3_sunday"

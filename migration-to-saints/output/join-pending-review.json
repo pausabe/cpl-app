@@ -43949,38 +43949,6 @@
       ]
     },
     {
-      "id": "120",
-      "affectedCount": 14,
-      "variants": [
-        {
-          "preview": "Sl 104,16-17.18-19.20-21 (R.: 5a): _Recordeu les meravelles del Senyor._",
-          "truncated": false,
-          "tags": [
-            "2017-03-17 (Mass)",
-            "2018-03-02 (Mass)",
-            "2019-03-22 (Mass)",
-            "2020-03-13 (Mass)",
-            "2021-03-05 (Mass)",
-            "2022-03-18 (Mass)",
-            "2023-03-10 (Mass)",
-            "2024-03-01 (Mass)",
-            "2025-03-21 (Mass)",
-            "2026-03-06 (Mass)"
-          ]
-        },
-        {
-          "preview": "Sl 104,16-17.18-19.20-21 (R.: 5a): _Recordeu les meravelles que Déu obrà._",
-          "truncated": false,
-          "tags": [
-            "2017-07-13 (Mass)",
-            "2021-07-08 (Mass)",
-            "2023-07-13 (Mass)",
-            "2025-07-10 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "719",
       "affectedCount": 14,
       "variants": [
@@ -44515,30 +44483,6 @@
       ]
     },
     {
-      "id": "3155",
-      "affectedCount": 6,
-      "variants": [
-        {
-          "preview": "Sl 17,2-3a.3bc-4.47 i 51ab (R.: 2): _Us estimo, Senyor. Vós m’enfortiu._",
-          "truncated": false,
-          "tags": [
-            "2017-08-12 (Mass)",
-            "2021-08-07 (Mass)",
-            "2023-08-12 (Mass)"
-          ]
-        },
-        {
-          "preview": "Sl 17,2-3a.3bc-4.47 i 51ab (R.: 2): _Us estimo, Senyor, vós m’enfortiu._",
-          "truncated": false,
-          "tags": [
-            "2018-11-04 (Mass)",
-            "2021-10-31 (Mass)",
-            "2024-11-03 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
       "id": "1358",
       "affectedCount": 8,
       "variants": [
@@ -44778,37 +44722,6 @@
             "2019-12-02 (Mass)",
             "2022-11-28 (Mass)",
             "2025-12-01 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "259",
-      "affectedCount": 13,
-      "variants": [
-        {
-          "preview": "Sl 143,1.2.9-10 (R.: 1a): _Beneït sigui el Senyor, la roca que em salva._",
-          "truncated": false,
-          "tags": [
-            "2018-01-17 (Mass)",
-            "2020-01-22 (Mass)",
-            "2022-01-19 (Mass)",
-            "2024-01-17 (Mass)"
-          ]
-        },
-        {
-          "preview": "Sl 143,1.2.9-10 (R.: 1a): _Beneït sigui el Senyor, la meva roca._",
-          "truncated": false,
-          "tags": [
-            "2018-11-24 (Mass)",
-            "2020-10-29 (Mass)",
-            "2020-11-21 (Mass)",
-            "2022-10-27 (Mass)",
-            "2022-11-19 (Mass)",
-            "2024-10-31 (Mass)",
-            "2024-11-23 (Mass)",
-            "2026-10-29 (Mass)",
-            "2026-11-21 (Mass)"
           ]
         }
       ]
@@ -47679,39 +47592,6 @@
             "2022-02-03 (Mass)",
             "2024-02-01 (Mass)",
             "2026-02-05 (Mass)"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "817",
-      "affectedCount": 15,
-      "variants": [
-        {
-          "preview": "Que Déu s’apiadi de nosaltres i ens beneeixi,\nque ens faci veure la claror de la seva mirada.\nLa terra coneixerà els vostres designis,\ni veuran tots els pobles la salvació. R.\n\nQue s’alegrin els pobles i cridin de goig.\nVós regiu el món amb justícia,\nregiu les nacions amb rectitud,\ni guieu els poble",
-          "truncated": true,
-          "tags": [
-            "2017-07-25 (Mass)",
-            "2018-07-25 (Mass)",
-            "2019-07-25 (Mass)",
-            "2020-07-25 (Mass)",
-            "2021-07-25 (Mass)",
-            "2022-07-25 (Mass)",
-            "2023-07-25 (Mass)",
-            "2024-07-25 (Mass)",
-            "2025-07-25 (Mass)",
-            "2026-07-25 (Mass)"
-          ]
-        },
-        {
-          "preview": "Que Déu s’apiadi de nosaltres i ens beneeixi,\nque ens faci veure la claror de la seva mirada.\nLa terra coneixerà els vostres designis,\ni tots els pobles veuran la salvació. R.\n\nQue s’alegrin els pobles i cridin de goig.\nVós regiu el món amb justícia,\nregiu les nacions amb rectitud,\ni guieu els poble",
-          "truncated": true,
-          "tags": [
-            "2017-08-05 (Mass)",
-            "2019-08-03 (Mass)",
-            "2021-07-31 (Mass)",
-            "2023-08-05 (Mass)",
-            "2025-08-02 (Mass)"
           ]
         }
       ]
