@@ -135,7 +135,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-33](#sa-33) | 2026-10-02 | saints-app | **codi** | No — va al git | `e7a287951` |
 | [SA-34](#sa-34) | 2026-10-02 | saints-app | **codi** | No — va al git | `d0e6d4610` |
 | [D-016](#d-016) | 2026-10-05 | cpl-cloud (procés X) + web | **decisió d'en Pau** + codi | No — va al git | cpl-cloud `0bfd380`, `0028b87` |
-| [MIGRA-025](#migra-025) | 2026-10-06 | eines | codi | No — va al git | — |
+| [MIGRA-025](#migra-025) | 2026-10-06 | eines | codi | No — va al git | `918d7a9` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2705,6 +2705,7 @@ minoritària deia el contrari: el 6-10-2026, el salm responsorial de la missa, �
 | Correcció | `review/day-gap.js`: `heldImpact()` diu de quin text surt el compte (el del dia; el majoritari, només si el dia no s'ha vist) |
 | Regressió | `review/day-gap.test.js`, 2 de 2; sense el fix en falla 1 |
 | Comprovat | `day-gap.js 2026-10-06`: «amb el text d'aquest dia, 5 de 15 dies bé i 10 malament» |
+| Commit | `918d7a9` |
 | Dossier | [tooling-bugs/MIGRA-025](migration-to-saints/tooling-bugs/MIGRA-025.md) |
 
 # Canvis a saints-app
