@@ -828,6 +828,46 @@
     "lecturas_referencia/3155": {
       "take": "2024-11-03",
       "because": "En Pau m'ho va delegar el 6-10-2026 («decideix tu»), després de la D-017. Sl 17: «Us estimo, Senyor, vós m'enfortiu» i no «Us estimo, Senyor. Vós m'enfortiu»: només hi canvia la puntuació i és un empat de 3 dies a 3; la de la coma és com comença el text del salm de la mateixa casella (3615)."
+    },
+    "lectura_breve_citas/129": {
+      "take": "2026-11-21",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Laudes, lectura breu. Comú de la Mare de Déu: la Mare de l'Església, on cpl-app resa la fèria (cada any una), és l'únic que discrepa; els altres dies de la Mare de Déu diuen el text del Comú, que és el que mostra eprex. Totes dues coses són lícites (OGLH 235): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/130": {
+      "take": "2026-11-21",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Laudes, lectura breu. Comú de la Mare de Déu: la Mare de l'Església, on cpl-app resa la fèria (cada any una), és l'únic que discrepa; els altres dies de la Mare de Déu diuen el text del Comú, que és el que mostra eprex. Totes dues coses són lícites (OGLH 235): mana eprex (D-010)."
+    },
+    "preces_intro/64": {
+      "take": "2026-12-08",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Laudes, pregàries. Comú de la Mare de Déu: la Mare de l'Església, on cpl-app resa la fèria (cada any una), és l'únic que discrepa; els altres dies de la Mare de Déu diuen el text del Comú, que és el que mostra eprex. Totes dues coses són lícites (OGLH 235): mana eprex (D-010)."
+    },
+    "preces_respuesta/64": {
+      "take": "2026-12-08",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Laudes, resposta de les pregàries: «…intercedeixi per nosaltres, Senyor.» (34 dies, les festes) i no «…per nosaltres. Senyor.» (43, el Comú), que només hi té un punt de més. La resta, la Mare de l'Església, com a les altres caselles del Comú."
+    },
+    "lectura_breve_citas/3399": {
+      "take": "2026-12-24",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Vespres, lectura breu. Comú de la Mare de Déu: la Mare de l'Església, on cpl-app resa la fèria (cada any una), és l'únic que discrepa; els altres dies de la Mare de Déu diuen el text del Comú, que és el que mostra eprex. Totes dues coses són lícites (OGLH 235): mana eprex (D-010)."
+    },
+    "lectura_breve_textos/3400": {
+      "take": "2026-12-24",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Vespres, lectura breu. Comú de la Mare de Déu: la Mare de l'Església, on cpl-app resa la fèria (cada any una), és l'únic que discrepa; els altres dies de la Mare de Déu diuen el text del Comú, que és el que mostra eprex. Totes dues coses són lícites (OGLH 235): mana eprex (D-010)."
+    },
+    "preces_intro/1145": {
+      "take": "2026-12-08",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Vespres, pregàries. Comú de la Mare de Déu: la Mare de l'Església, on cpl-app resa la fèria (cada any una), és l'únic que discrepa; els altres dies de la Mare de Déu diuen el text del Comú, que és el que mostra eprex. Totes dues coses són lícites (OGLH 235): mana eprex (D-010). L'Assumpció només hi canvia «fill» per «Fill»."
+    },
+    "preces_respuesta/1145": {
+      "take": "2026-12-08",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Vespres, resposta de les pregàries: «Que la plena de gràcia pregui per nosaltres» (58 dies). L'Assumpció (15-8 i les primeres vespres del 14-8) en té una de pròpia en català, «Mireu la plena de gràcia i escolteu-nos»; aquells dies sortirà la del Comú, com en castellà («Que la llena de gracia interceda por nosotros»). Comú de la Mare de Déu: la Mare de l'Església, on cpl-app resa la fèria (cada any una), és l'únic que discrepa; els altres dies de la Mare de Déu diuen el text del Comú, que és el que mostra eprex. Totes dues coses són lícites (OGLH 235): mana eprex (D-010)."
+    },
+    "lecturas_texto/6047": {
+      "take": "2026-10-07",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Missa, vers de l'al·leluia (Rm 8,15): «Heu rebut un esperit que ens ha fet fills» (17 dies, comptant les variants de majúscules i cometes) i no «…que ens fa fills» (3, el diumenge XVII del cicle C)."
+    },
+    "lecturas_texto/67": {
+      "take": "2026-03-25",
+      "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Missa, evangeli de l'Anunciació (Lc 1,26-38), també el propi del Roser: el de l'Anunciació. La Immaculada en té el mateix amb una altra puntuació (empat de 10 a 10) i el 20 de desembre hi canvia el començament («El sisè mes» per «En aquell temps»)."
     }
   }
 }

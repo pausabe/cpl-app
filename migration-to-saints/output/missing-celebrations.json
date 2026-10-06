@@ -1,15 +1,15 @@
 {
- "generatedAt": "2026-10-06T09:10:28.805Z",
+ "generatedAt": "2026-10-06T09:33:44.196Z",
  "diocese": "Barcelona",
- "probeGeneratedAt": "2026-10-06T09:10:28.278Z",
+ "probeGeneratedAt": "2026-10-06T09:33:43.918Z",
  "litcalCalendarsRead": true,
  "totals": {
-  "contestedCells": 972,
+  "contestedCells": 962,
   "missing": 0,
   "notApplied": 90,
   "mismatch": 34,
   "memorial": 93,
-  "ferialDrift": 193,
+  "ferialDrift": 192,
   "cellsSoleMissing": 0
  },
  "groups": [
@@ -20,7 +20,7 @@
    "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
    "ranks": [],
    "inLitcal": null,
-   "cellsBlamed": 64,
+   "cellsBlamed": 63,
    "cellsSole": 51,
    "contestedDays": 10,
    "totalDays": 10,
@@ -36,22 +36,22 @@
     {
      "date": "2017-12-24",
      "litcalId": "advent_4_sunday",
-     "minorityCells": 35
+     "minorityCells": 34
     },
     {
      "date": "2023-12-24",
      "litcalId": "advent_4_sunday",
-     "minorityCells": 35
+     "minorityCells": 34
     },
     {
      "date": "2020-12-20",
      "litcalId": "advent_4_sunday",
-     "minorityCells": 23
+     "minorityCells": 22
     },
     {
      "date": "2026-12-20",
      "litcalId": "advent_4_sunday",
-     "minorityCells": 23
+     "minorityCells": 22
     },
     {
      "date": "2021-12-19",
@@ -95,9 +95,9 @@
      "-"
     ]
    },
-   "cellsBlamed": 46,
-   "cellsSole": 40,
-   "contestedDays": 10,
+   "cellsBlamed": 38,
+   "cellsSole": 35,
+   "contestedDays": 7,
    "totalDays": 10,
    "litcalIds": [
     "boniface_of_mainz_bishop",
@@ -105,54 +105,39 @@
    ],
    "dates": [
     {
-     "date": "2018-05-21",
-     "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 27
-    },
-    {
-     "date": "2020-06-01",
-     "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 27
-    },
-    {
-     "date": "2024-05-20",
-     "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 27
-    },
-    {
      "date": "2017-06-05",
      "litcalId": "boniface_of_mainz_bishop",
      "minorityCells": 19
     },
     {
+     "date": "2018-05-21",
+     "litcalId": "mary_mother_of_the_church",
+     "minorityCells": 19
+    },
+    {
+     "date": "2020-06-01",
+     "litcalId": "mary_mother_of_the_church",
+     "minorityCells": 19
+    },
+    {
+     "date": "2024-05-20",
+     "litcalId": "mary_mother_of_the_church",
+     "minorityCells": 19
+    },
+    {
      "date": "2021-05-24",
      "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 17
+     "minorityCells": 9
     },
     {
      "date": "2023-05-29",
      "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 17
+     "minorityCells": 9
     },
     {
      "date": "2026-05-25",
      "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 17
-    },
-    {
-     "date": "2019-06-10",
-     "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 8
-    },
-    {
-     "date": "2022-06-06",
-     "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 8
-    },
-    {
-     "date": "2025-06-09",
-     "litcalId": "mary_mother_of_the_church",
-     "minorityCells": 8
+     "minorityCells": 9
     }
    ]
   },
@@ -171,7 +156,7 @@
      "-"
     ]
    },
-   "cellsBlamed": 40,
+   "cellsBlamed": 39,
    "cellsSole": 33,
    "contestedDays": 8,
    "totalDays": 8,
@@ -182,42 +167,42 @@
     {
      "date": "2018-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 33
+     "minorityCells": 32
     },
     {
      "date": "2021-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 33
+     "minorityCells": 32
     },
     {
      "date": "2024-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 33
+     "minorityCells": 32
     },
     {
      "date": "2023-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 23
+     "minorityCells": 22
     },
     {
      "date": "2017-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 12
+     "minorityCells": 11
     },
     {
      "date": "2019-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 12
+     "minorityCells": 11
     },
     {
      "date": "2022-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 12
+     "minorityCells": 11
     },
     {
      "date": "2025-05-31",
      "litcalId": "visitation_of_mary",
-     "minorityCells": 10
+     "minorityCells": 9
     }
    ]
   },
@@ -1745,82 +1730,6 @@
    ]
   },
   {
-   "key": "cel|Immaculada Concepció de la Benaurada Verge Maria",
-   "title": "Immaculada Concepció de la Benaurada Verge Maria",
-   "verdict": "mismatch",
-   "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
-   "ranks": [
-    "Solemnitat"
-   ],
-   "inLitcal": {
-    "id": "immaculate_conception_of_the_blessed_virgin_mary",
-    "origin": "romcal",
-    "places": [
-     "-",
-     "MaD"
-    ]
-   },
-   "cellsBlamed": 7,
-   "cellsSole": 4,
-   "contestedDays": 10,
-   "totalDays": 10,
-   "litcalIds": [
-    "immaculate_conception_of_the_blessed_virgin_mary"
-   ],
-   "dates": [
-    {
-     "date": "2018-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 7
-    },
-    {
-     "date": "2017-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2019-12-09",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2020-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2021-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2022-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2023-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2024-12-09",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2025-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    },
-    {
-     "date": "2026-12-08",
-     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
-     "minorityCells": 6
-    }
-   ]
-  },
-  {
    "key": "ferial|ordinary_time_4_sunday",
    "title": null,
    "verdict": "ferial-drift",
@@ -2049,44 +1958,78 @@
    ]
   },
   {
-   "key": "ferial|ordinary_time_20_sunday",
-   "title": null,
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
+   "key": "cel|Immaculada Concepció de la Benaurada Verge Maria",
+   "title": "Immaculada Concepció de la Benaurada Verge Maria",
+   "verdict": "mismatch",
+   "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
+   "ranks": [
+    "Solemnitat"
+   ],
+   "inLitcal": {
+    "id": "immaculate_conception_of_the_blessed_virgin_mary",
+    "origin": "romcal",
+    "places": [
+     "-",
+     "MaD"
+    ]
+   },
    "cellsBlamed": 5,
    "cellsSole": 4,
-   "contestedDays": 5,
-   "totalDays": 9,
+   "contestedDays": 10,
+   "totalDays": 10,
    "litcalIds": [
-    "ordinary_time_20_sunday"
+    "immaculate_conception_of_the_blessed_virgin_mary"
    ],
    "dates": [
     {
-     "date": "2019-08-18",
-     "litcalId": "ordinary_time_20_sunday",
+     "date": "2018-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 5
+    },
+    {
+     "date": "2017-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
      "minorityCells": 4
     },
     {
-     "date": "2022-08-14",
-     "litcalId": "ordinary_time_20_sunday",
+     "date": "2019-12-09",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
      "minorityCells": 4
     },
     {
-     "date": "2025-08-17",
-     "litcalId": "ordinary_time_20_sunday",
+     "date": "2020-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
      "minorityCells": 4
     },
     {
-     "date": "2018-08-19",
-     "litcalId": "ordinary_time_20_sunday",
-     "minorityCells": 2
+     "date": "2021-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 4
     },
     {
-     "date": "2024-08-18",
-     "litcalId": "ordinary_time_20_sunday",
-     "minorityCells": 2
+     "date": "2022-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 4
+    },
+    {
+     "date": "2023-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 4
+    },
+    {
+     "date": "2024-12-09",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 4
+    },
+    {
+     "date": "2025-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 4
+    },
+    {
+     "date": "2026-12-08",
+     "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
+     "minorityCells": 4
     }
    ]
   },
@@ -2225,6 +2168,48 @@
    ]
   },
   {
+   "key": "ferial|ordinary_time_20_sunday",
+   "title": null,
+   "verdict": "ferial-drift",
+   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
+   "ranks": [],
+   "inLitcal": null,
+   "cellsBlamed": 4,
+   "cellsSole": 4,
+   "contestedDays": 5,
+   "totalDays": 9,
+   "litcalIds": [
+    "ordinary_time_20_sunday"
+   ],
+   "dates": [
+    {
+     "date": "2019-08-18",
+     "litcalId": "ordinary_time_20_sunday",
+     "minorityCells": 4
+    },
+    {
+     "date": "2025-08-17",
+     "litcalId": "ordinary_time_20_sunday",
+     "minorityCells": 4
+    },
+    {
+     "date": "2022-08-14",
+     "litcalId": "ordinary_time_20_sunday",
+     "minorityCells": 3
+    },
+    {
+     "date": "2018-08-19",
+     "litcalId": "ordinary_time_20_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2024-08-18",
+     "litcalId": "ordinary_time_20_sunday",
+     "minorityCells": 2
+    }
+   ]
+  },
+  {
    "key": "cel|Sant Lluís Gonzaga, religiós",
    "title": "Sant Lluís Gonzaga, religiós",
    "verdict": "memorial",
@@ -2239,7 +2224,7 @@
      "-"
     ]
    },
-   "cellsBlamed": 12,
+   "cellsBlamed": 11,
    "cellsSole": 3,
    "contestedDays": 8,
    "totalDays": 8,
@@ -2258,11 +2243,6 @@
      "minorityCells": 7
     },
     {
-     "date": "2018-06-21",
-     "litcalId": "aloysius_gonzaga_religious",
-     "minorityCells": 7
-    },
-    {
      "date": "2022-06-21",
      "litcalId": "aloysius_gonzaga_religious",
      "minorityCells": 7
@@ -2271,6 +2251,11 @@
      "date": "2023-06-21",
      "litcalId": "aloysius_gonzaga_religious",
      "minorityCells": 7
+    },
+    {
+     "date": "2018-06-21",
+     "litcalId": "aloysius_gonzaga_religious",
+     "minorityCells": 6
     },
     {
      "date": "2019-06-21",
@@ -4751,48 +4736,6 @@
    ]
   },
   {
-   "key": "ferial|ordinary_time_17_sunday",
-   "title": null,
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
-   "cellsBlamed": 3,
-   "cellsSole": 2,
-   "contestedDays": 5,
-   "totalDays": 9,
-   "litcalIds": [
-    "ordinary_time_17_sunday"
-   ],
-   "dates": [
-    {
-     "date": "2019-07-28",
-     "litcalId": "ordinary_time_17_sunday",
-     "minorityCells": 3
-    },
-    {
-     "date": "2025-07-27",
-     "litcalId": "ordinary_time_17_sunday",
-     "minorityCells": 3
-    },
-    {
-     "date": "2018-07-29",
-     "litcalId": "ordinary_time_17_sunday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2022-07-24",
-     "litcalId": "ordinary_time_17_sunday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2024-07-28",
-     "litcalId": "ordinary_time_17_sunday",
-     "minorityCells": 2
-    }
-   ]
-  },
-  {
    "key": "ferial|ordinary_time_19_sunday",
    "title": null,
    "verdict": "ferial-drift",
@@ -5335,6 +5278,48 @@
      "date": "2025-07-06",
      "litcalId": "ordinary_time_14_sunday",
      "minorityCells": 2
+    }
+   ]
+  },
+  {
+   "key": "ferial|ordinary_time_17_sunday",
+   "title": null,
+   "verdict": "ferial-drift",
+   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
+   "ranks": [],
+   "inLitcal": null,
+   "cellsBlamed": 2,
+   "cellsSole": 2,
+   "contestedDays": 5,
+   "totalDays": 9,
+   "litcalIds": [
+    "ordinary_time_17_sunday"
+   ],
+   "dates": [
+    {
+     "date": "2018-07-29",
+     "litcalId": "ordinary_time_17_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2019-07-28",
+     "litcalId": "ordinary_time_17_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2024-07-28",
+     "litcalId": "ordinary_time_17_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2025-07-27",
+     "litcalId": "ordinary_time_17_sunday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2022-07-24",
+     "litcalId": "ordinary_time_17_sunday",
+     "minorityCells": 1
     }
    ]
   },
@@ -7707,76 +7692,6 @@
    ]
   },
   {
-   "key": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir",
-   "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Memòria obligatòria"
-   ],
-   "inLitcal": {
-    "id": "maximilian_mary_raymund_kolbe_priest",
-    "origin": "romcal",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 3,
-   "cellsSole": 1,
-   "contestedDays": 9,
-   "totalDays": 9,
-   "litcalIds": [
-    "maximilian_mary_raymund_kolbe_priest"
-   ],
-   "dates": [
-    {
-     "date": "2020-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 3
-    },
-    {
-     "date": "2026-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 3
-    },
-    {
-     "date": "2018-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2019-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2021-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2024-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2025-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 2
-    },
-    {
-     "date": "2017-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 1
-    },
-    {
-     "date": "2023-08-14",
-     "litcalId": "maximilian_mary_raymund_kolbe_priest",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
    "key": "cel|Santa Teresa Jornet, verge",
    "title": "Santa Teresa Jornet, verge",
    "verdict": "memorial",
@@ -7843,80 +7758,6 @@
      "date": "2026-08-26",
      "litcalId": "teresa_of_jesus_jornet_ibars_virgin",
      "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "cel|Naixement de la Benaurada Verge Maria",
-   "title": "Naixement de la Benaurada Verge Maria",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Festivitat"
-   ],
-   "inLitcal": {
-    "id": "nativity_of_the_blessed_virgin_mary",
-    "origin": "romcal",
-    "places": [
-     "BaD",
-     "GiD",
-     "LlD",
-     "MaD",
-     "SFD",
-     "SoD",
-     "TaD",
-     "TeD",
-     "ToD",
-     "ViD"
-    ]
-   },
-   "cellsBlamed": 3,
-   "cellsSole": 1,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "nativity_of_the_blessed_virgin_mary"
-   ],
-   "dates": [
-    {
-     "date": "2018-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 3
-    },
-    {
-     "date": "2017-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 2
-    },
-    {
-     "date": "2020-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 2
-    },
-    {
-     "date": "2021-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 2
-    },
-    {
-     "date": "2022-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 2
-    },
-    {
-     "date": "2023-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 2
-    },
-    {
-     "date": "2025-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 2
-    },
-    {
-     "date": "2026-09-08",
-     "litcalId": "nativity_of_the_blessed_virgin_mary",
-     "minorityCells": 2
     }
    ]
   },
@@ -8613,6 +8454,140 @@
     {
      "date": "2026-08-08",
      "litcalId": "dominic_de_guzman_priest",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir",
+   "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Memòria obligatòria"
+   ],
+   "inLitcal": {
+    "id": "maximilian_mary_raymund_kolbe_priest",
+    "origin": "romcal",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 1,
+   "contestedDays": 7,
+   "totalDays": 9,
+   "litcalIds": [
+    "maximilian_mary_raymund_kolbe_priest"
+   ],
+   "dates": [
+    {
+     "date": "2020-08-14",
+     "litcalId": "maximilian_mary_raymund_kolbe_priest",
+     "minorityCells": 2
+    },
+    {
+     "date": "2026-08-14",
+     "litcalId": "maximilian_mary_raymund_kolbe_priest",
+     "minorityCells": 2
+    },
+    {
+     "date": "2018-08-14",
+     "litcalId": "maximilian_mary_raymund_kolbe_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2019-08-14",
+     "litcalId": "maximilian_mary_raymund_kolbe_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2021-08-14",
+     "litcalId": "maximilian_mary_raymund_kolbe_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2024-08-14",
+     "litcalId": "maximilian_mary_raymund_kolbe_priest",
+     "minorityCells": 1
+    },
+    {
+     "date": "2025-08-14",
+     "litcalId": "maximilian_mary_raymund_kolbe_priest",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
+   "key": "cel|Naixement de la Benaurada Verge Maria",
+   "title": "Naixement de la Benaurada Verge Maria",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
+   "ranks": [
+    "Festivitat"
+   ],
+   "inLitcal": {
+    "id": "nativity_of_the_blessed_virgin_mary",
+    "origin": "romcal",
+    "places": [
+     "BaD",
+     "GiD",
+     "LlD",
+     "MaD",
+     "SFD",
+     "SoD",
+     "TaD",
+     "TeD",
+     "ToD",
+     "ViD"
+    ]
+   },
+   "cellsBlamed": 2,
+   "cellsSole": 1,
+   "contestedDays": 8,
+   "totalDays": 8,
+   "litcalIds": [
+    "nativity_of_the_blessed_virgin_mary"
+   ],
+   "dates": [
+    {
+     "date": "2018-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 2
+    },
+    {
+     "date": "2017-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2020-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2021-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2022-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2023-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2025-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2026-09-08",
+     "litcalId": "nativity_of_the_blessed_virgin_mary",
      "minorityCells": 1
     }
    ]
@@ -11995,61 +11970,6 @@
    ]
   },
   {
-   "key": "cel|Sant Romuald, abat",
-   "title": "Sant Romuald, abat",
-   "verdict": "not-applied",
-   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
-   "ranks": [
-    "Memòria lliure"
-   ],
-   "inLitcal": {
-    "id": "romuald_of_ravenna_abbot",
-    "origin": "romcal",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 6,
-   "cellsSole": 0,
-   "contestedDays": 5,
-   "totalDays": 8,
-   "litcalIds": [
-    "ordinary_time_11_friday",
-    "ordinary_time_11_monday",
-    "ordinary_time_11_saturday",
-    "ordinary_time_11_thursday",
-    "ordinary_time_11_tuesday",
-    "ordinary_time_11_wednesday"
-   ],
-   "dates": [
-    {
-     "date": "2018-06-19",
-     "litcalId": "ordinary_time_11_tuesday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2021-06-19",
-     "litcalId": "ordinary_time_11_saturday",
-     "minorityCells": 2
-    },
-    {
-     "date": "2019-06-19",
-     "litcalId": "ordinary_time_11_wednesday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2024-06-19",
-     "litcalId": "ordinary_time_11_wednesday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2025-06-19",
-     "litcalId": "ordinary_time_11_thursday",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
    "key": "cel|Sant Josepmaria Escrivà de Balaguer, prevere",
    "title": "Sant Josepmaria Escrivà de Balaguer, prevere",
    "verdict": "not-applied",
@@ -13143,6 +13063,56 @@
    ]
   },
   {
+   "key": "cel|Sant Romuald, abat",
+   "title": "Sant Romuald, abat",
+   "verdict": "not-applied",
+   "verdictLabel": "la celebració ja és al calendari, però litcal no l’aplica en aquestes dates",
+   "ranks": [
+    "Memòria lliure"
+   ],
+   "inLitcal": {
+    "id": "romuald_of_ravenna_abbot",
+    "origin": "romcal",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 5,
+   "cellsSole": 0,
+   "contestedDays": 4,
+   "totalDays": 8,
+   "litcalIds": [
+    "ordinary_time_11_friday",
+    "ordinary_time_11_monday",
+    "ordinary_time_11_saturday",
+    "ordinary_time_11_thursday",
+    "ordinary_time_11_tuesday",
+    "ordinary_time_11_wednesday"
+   ],
+   "dates": [
+    {
+     "date": "2018-06-19",
+     "litcalId": "ordinary_time_11_tuesday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2021-06-19",
+     "litcalId": "ordinary_time_11_saturday",
+     "minorityCells": 2
+    },
+    {
+     "date": "2019-06-19",
+     "litcalId": "ordinary_time_11_wednesday",
+     "minorityCells": 1
+    },
+    {
+     "date": "2024-06-19",
+     "litcalId": "ordinary_time_11_wednesday",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
    "key": "cel|Sants protomàrtirs de l’Església romana",
    "title": "Sants protomàrtirs de l’Església romana",
    "verdict": "not-applied",
@@ -13420,63 +13390,6 @@
     {
      "date": "2026-12-18",
      "litcalId": "advent_december_18",
-     "minorityCells": 4
-    }
-   ]
-  },
-  {
-   "key": "ferial|advent_december_20",
-   "title": "Fèria d’Advent",
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
-   "cellsBlamed": 5,
-   "cellsSole": 0,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "advent_december_20"
-   ],
-   "dates": [
-    {
-     "date": "2025-12-20",
-     "litcalId": "advent_december_20",
-     "minorityCells": 5
-    },
-    {
-     "date": "2017-12-20",
-     "litcalId": "advent_december_20",
-     "minorityCells": 4
-    },
-    {
-     "date": "2018-12-20",
-     "litcalId": "advent_december_20",
-     "minorityCells": 4
-    },
-    {
-     "date": "2019-12-20",
-     "litcalId": "advent_december_20",
-     "minorityCells": 4
-    },
-    {
-     "date": "2021-12-20",
-     "litcalId": "advent_december_20",
-     "minorityCells": 4
-    },
-    {
-     "date": "2022-12-20",
-     "litcalId": "advent_december_20",
-     "minorityCells": 4
-    },
-    {
-     "date": "2023-12-20",
-     "litcalId": "advent_december_20",
-     "minorityCells": 4
-    },
-    {
-     "date": "2024-12-20",
-     "litcalId": "advent_december_20",
      "minorityCells": 4
     }
    ]
@@ -14202,71 +14115,6 @@
    ]
   },
   {
-   "key": "cel|Mare de Déu dels Dolors",
-   "title": "Mare de Déu dels Dolors",
-   "verdict": "memorial",
-   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
-   "ranks": [
-    "Memòria obligatòria"
-   ],
-   "inLitcal": {
-    "id": "our_lady_of_sorrows",
-    "origin": "romcal",
-    "places": [
-     "-"
-    ]
-   },
-   "cellsBlamed": 4,
-   "cellsSole": 0,
-   "contestedDays": 8,
-   "totalDays": 8,
-   "litcalIds": [
-    "our_lady_of_sorrows"
-   ],
-   "dates": [
-    {
-     "date": "2018-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 4
-    },
-    {
-     "date": "2017-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 3
-    },
-    {
-     "date": "2020-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 3
-    },
-    {
-     "date": "2021-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 3
-    },
-    {
-     "date": "2022-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 3
-    },
-    {
-     "date": "2023-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 3
-    },
-    {
-     "date": "2025-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 3
-    },
-    {
-     "date": "2026-09-15",
-     "litcalId": "our_lady_of_sorrows",
-     "minorityCells": 3
-    }
-   ]
-  },
-  {
    "key": "cel|Sant Martí de Porres, religiós",
    "title": "Sant Martí de Porres, religiós",
    "verdict": "not-applied",
@@ -14475,6 +14323,63 @@
     {
      "date": "2025-12-19",
      "litcalId": "advent_december_19",
+     "minorityCells": 3
+    }
+   ]
+  },
+  {
+   "key": "ferial|advent_december_20",
+   "title": "Fèria d’Advent",
+   "verdict": "ferial-drift",
+   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
+   "ranks": [],
+   "inLitcal": null,
+   "cellsBlamed": 4,
+   "cellsSole": 0,
+   "contestedDays": 8,
+   "totalDays": 8,
+   "litcalIds": [
+    "advent_december_20"
+   ],
+   "dates": [
+    {
+     "date": "2025-12-20",
+     "litcalId": "advent_december_20",
+     "minorityCells": 4
+    },
+    {
+     "date": "2017-12-20",
+     "litcalId": "advent_december_20",
+     "minorityCells": 3
+    },
+    {
+     "date": "2018-12-20",
+     "litcalId": "advent_december_20",
+     "minorityCells": 3
+    },
+    {
+     "date": "2019-12-20",
+     "litcalId": "advent_december_20",
+     "minorityCells": 3
+    },
+    {
+     "date": "2021-12-20",
+     "litcalId": "advent_december_20",
+     "minorityCells": 3
+    },
+    {
+     "date": "2022-12-20",
+     "litcalId": "advent_december_20",
+     "minorityCells": 3
+    },
+    {
+     "date": "2023-12-20",
+     "litcalId": "advent_december_20",
+     "minorityCells": 3
+    },
+    {
+     "date": "2024-12-20",
+     "litcalId": "advent_december_20",
      "minorityCells": 3
     }
    ]
@@ -15404,15 +15309,15 @@
    ]
   },
   {
-   "key": "cel|Assumpció de la Benaurada Verge Maria",
-   "title": "Assumpció de la Benaurada Verge Maria",
-   "verdict": "mismatch",
-   "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
+   "key": "cel|Mare de Déu dels Dolors",
+   "title": "Mare de Déu dels Dolors",
+   "verdict": "memorial",
+   "verdictLabel": "les dues apps hi celebren la memòria: saints-app ofereix memòria i fèria, cpl-app només resa la fèria",
    "ranks": [
-    "Solemnitat"
+    "Memòria obligatòria"
    ],
    "inLitcal": {
-    "id": "assumption_of_the_blessed_virgin_mary",
+    "id": "our_lady_of_sorrows",
     "origin": "romcal",
     "places": [
      "-"
@@ -15420,61 +15325,51 @@
    },
    "cellsBlamed": 3,
    "cellsSole": 0,
-   "contestedDays": 10,
-   "totalDays": 10,
+   "contestedDays": 8,
+   "totalDays": 8,
    "litcalIds": [
-    "assumption_of_the_blessed_virgin_mary"
+    "our_lady_of_sorrows"
    ],
    "dates": [
     {
-     "date": "2017-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "date": "2018-09-15",
+     "litcalId": "our_lady_of_sorrows",
      "minorityCells": 3
     },
     {
-     "date": "2018-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
+     "date": "2017-09-15",
+     "litcalId": "our_lady_of_sorrows",
+     "minorityCells": 2
     },
     {
-     "date": "2019-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
+     "date": "2020-09-15",
+     "litcalId": "our_lady_of_sorrows",
+     "minorityCells": 2
     },
     {
-     "date": "2020-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
+     "date": "2021-09-15",
+     "litcalId": "our_lady_of_sorrows",
+     "minorityCells": 2
     },
     {
-     "date": "2021-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
+     "date": "2022-09-15",
+     "litcalId": "our_lady_of_sorrows",
+     "minorityCells": 2
     },
     {
-     "date": "2022-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
+     "date": "2023-09-15",
+     "litcalId": "our_lady_of_sorrows",
+     "minorityCells": 2
     },
     {
-     "date": "2023-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
+     "date": "2025-09-15",
+     "litcalId": "our_lady_of_sorrows",
+     "minorityCells": 2
     },
     {
-     "date": "2024-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
-    },
-    {
-     "date": "2025-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
-    },
-    {
-     "date": "2026-08-15",
-     "litcalId": "assumption_of_the_blessed_virgin_mary",
-     "minorityCells": 3
+     "date": "2026-09-15",
+     "litcalId": "our_lady_of_sorrows",
+     "minorityCells": 2
     }
    ]
   },
@@ -18842,6 +18737,81 @@
    ]
   },
   {
+   "key": "cel|Assumpció de la Benaurada Verge Maria",
+   "title": "Assumpció de la Benaurada Verge Maria",
+   "verdict": "mismatch",
+   "verdictLabel": "litcal i cpl-app no celebren el mateix aquest dia (trasllat o precedència)",
+   "ranks": [
+    "Solemnitat"
+   ],
+   "inLitcal": {
+    "id": "assumption_of_the_blessed_virgin_mary",
+    "origin": "romcal",
+    "places": [
+     "-"
+    ]
+   },
+   "cellsBlamed": 1,
+   "cellsSole": 0,
+   "contestedDays": 10,
+   "totalDays": 10,
+   "litcalIds": [
+    "assumption_of_the_blessed_virgin_mary"
+   ],
+   "dates": [
+    {
+     "date": "2017-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2018-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2019-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2020-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2021-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2022-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2023-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2024-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2025-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    },
+    {
+     "date": "2026-08-15",
+     "litcalId": "assumption_of_the_blessed_virgin_mary",
+     "minorityCells": 1
+    }
+   ]
+  },
+  {
    "key": "ferial|ordinary_time_19_friday",
    "title": null,
    "verdict": "ferial-drift",
@@ -19698,53 +19668,6 @@
     {
      "date": "2025-12-31",
      "litcalId": "christmas_octave_day_7",
-     "minorityCells": 1
-    }
-   ]
-  },
-  {
-   "key": "ferial|ordinary_time_11_thursday",
-   "title": null,
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
-   "cellsBlamed": 1,
-   "cellsSole": 0,
-   "contestedDays": 6,
-   "totalDays": 6,
-   "litcalIds": [
-    "ordinary_time_11_thursday"
-   ],
-   "dates": [
-    {
-     "date": "2019-06-20",
-     "litcalId": "ordinary_time_11_thursday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2020-06-18",
-     "litcalId": "ordinary_time_11_thursday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2021-06-17",
-     "litcalId": "ordinary_time_11_thursday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2022-06-16",
-     "litcalId": "ordinary_time_11_thursday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2024-06-20",
-     "litcalId": "ordinary_time_11_thursday",
-     "minorityCells": 1
-    },
-    {
-     "date": "2026-06-18",
-     "litcalId": "ordinary_time_11_thursday",
      "minorityCells": 1
     }
    ]
@@ -21708,7 +21631,7 @@
    "date": "2017-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -22383,7 +22306,7 @@
    "date": "2017-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -22392,7 +22315,7 @@
    "date": "2017-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -22608,7 +22531,7 @@
    "date": "2017-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -22671,7 +22594,7 @@
    "date": "2017-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -23427,7 +23350,7 @@
    "date": "2017-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -23535,7 +23458,7 @@
    "date": "2017-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -23571,7 +23494,7 @@
    "date": "2017-12-24",
    "litcalId": "advent_4_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 35,
+   "minorityCells": 34,
    "type": "-",
    "title": "Diumenge quart d'Advent",
    "group": "ferial|advent_4_sunday"
@@ -24903,7 +24826,7 @@
    "date": "2018-05-21",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 27,
+   "minorityCells": 19,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -24993,7 +24916,7 @@
    "date": "2018-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 33,
+   "minorityCells": 32,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -25182,7 +25105,7 @@
    "date": "2018-06-21",
    "litcalId": "aloysius_gonzaga_religious",
    "litcalIsFerial": false,
-   "minorityCells": 7,
+   "minorityCells": 6,
    "type": "M",
    "title": "Sant Lluís Gonzaga, religiós",
    "group": "cel|Sant Lluís Gonzaga, religiós"
@@ -25668,7 +25591,7 @@
    "date": "2018-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -25677,7 +25600,7 @@
    "date": "2018-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -25893,7 +25816,7 @@
    "date": "2018-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -25956,7 +25879,7 @@
    "date": "2018-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -26712,7 +26635,7 @@
    "date": "2018-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 7,
+   "minorityCells": 5,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -26820,7 +26743,7 @@
    "date": "2018-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -28278,7 +28201,7 @@
    "date": "2019-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -28368,7 +28291,7 @@
    "date": "2019-06-10",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 8,
+   "minorityCells": 0,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -28458,7 +28381,7 @@
    "date": "2019-06-20",
    "litcalId": "ordinary_time_11_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_11_thursday"
@@ -28800,7 +28723,7 @@
    "date": "2019-07-28",
    "litcalId": "ordinary_time_17_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_17_sunday"
@@ -28953,7 +28876,7 @@
    "date": "2019-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -28962,7 +28885,7 @@
    "date": "2019-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -30006,7 +29929,7 @@
    "date": "2019-12-09",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -30105,7 +30028,7 @@
    "date": "2019-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -31581,7 +31504,7 @@
    "date": "2020-06-01",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 27,
+   "minorityCells": 19,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -31734,7 +31657,7 @@
    "date": "2020-06-18",
    "litcalId": "ordinary_time_11_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_11_thursday"
@@ -32247,7 +32170,7 @@
    "date": "2020-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -32256,7 +32179,7 @@
    "date": "2020-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -32472,7 +32395,7 @@
    "date": "2020-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -32535,7 +32458,7 @@
    "date": "2020-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -33291,7 +33214,7 @@
    "date": "2020-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -33399,7 +33322,7 @@
    "date": "2020-12-20",
    "litcalId": "advent_4_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 23,
+   "minorityCells": 22,
    "type": "-",
    "title": "Diumenge quart d'Advent",
    "group": "ferial|advent_4_sunday"
@@ -34794,7 +34717,7 @@
    "date": "2021-05-24",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 9,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -34857,7 +34780,7 @@
    "date": "2021-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 33,
+   "minorityCells": 32,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -35010,7 +34933,7 @@
    "date": "2021-06-17",
    "litcalId": "ordinary_time_11_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_11_thursday"
@@ -35532,7 +35455,7 @@
    "date": "2021-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -35541,7 +35464,7 @@
    "date": "2021-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -35757,7 +35680,7 @@
    "date": "2021-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -35820,7 +35743,7 @@
    "date": "2021-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -36576,7 +36499,7 @@
    "date": "2021-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -36684,7 +36607,7 @@
    "date": "2021-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -38142,7 +38065,7 @@
    "date": "2022-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 12,
+   "minorityCells": 11,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -38196,7 +38119,7 @@
    "date": "2022-06-06",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 8,
+   "minorityCells": 0,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -38286,7 +38209,7 @@
    "date": "2022-06-16",
    "litcalId": "ordinary_time_11_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_11_thursday"
@@ -38628,7 +38551,7 @@
    "date": "2022-07-24",
    "litcalId": "ordinary_time_17_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_17_sunday"
@@ -38817,7 +38740,7 @@
    "date": "2022-08-14",
    "litcalId": "ordinary_time_20_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_20_sunday"
@@ -38826,7 +38749,7 @@
    "date": "2022-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -39042,7 +38965,7 @@
    "date": "2022-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -39105,7 +39028,7 @@
    "date": "2022-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -39861,7 +39784,7 @@
    "date": "2022-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -39969,7 +39892,7 @@
    "date": "2022-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -41409,7 +41332,7 @@
    "date": "2023-05-29",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 9,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -41427,7 +41350,7 @@
    "date": "2023-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 23,
+   "minorityCells": 22,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -42102,7 +42025,7 @@
    "date": "2023-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -42111,7 +42034,7 @@
    "date": "2023-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -42327,7 +42250,7 @@
    "date": "2023-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -42390,7 +42313,7 @@
    "date": "2023-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -43146,7 +43069,7 @@
    "date": "2023-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -43254,7 +43177,7 @@
    "date": "2023-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -43290,7 +43213,7 @@
    "date": "2023-12-24",
    "litcalId": "advent_4_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 35,
+   "minorityCells": 34,
    "type": "-",
    "title": "Diumenge quart d'Advent",
    "group": "ferial|advent_4_sunday"
@@ -44622,7 +44545,7 @@
    "date": "2024-05-20",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 27,
+   "minorityCells": 19,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -44721,7 +44644,7 @@
    "date": "2024-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 33,
+   "minorityCells": 32,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -44901,7 +44824,7 @@
    "date": "2024-06-20",
    "litcalId": "ordinary_time_11_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_11_thursday"
@@ -45396,7 +45319,7 @@
    "date": "2024-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -45405,7 +45328,7 @@
    "date": "2024-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -46449,7 +46372,7 @@
    "date": "2024-12-09",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -46548,7 +46471,7 @@
    "date": "2024-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 4,
+   "minorityCells": 3,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -48006,7 +47929,7 @@
    "date": "2025-05-31",
    "litcalId": "visitation_of_mary",
    "litcalIsFerial": false,
-   "minorityCells": 10,
+   "minorityCells": 9,
    "type": "F",
    "title": "Visitació de la Benaurada Verge Maria",
    "group": "cel|Visitació de la Benaurada Verge Maria"
@@ -48087,7 +48010,7 @@
    "date": "2025-06-09",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 8,
+   "minorityCells": 0,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -48177,7 +48100,7 @@
    "date": "2025-06-19",
    "litcalId": "ordinary_time_11_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "L",
    "title": "Sant Romuald, abat",
    "group": "cel|Sant Romuald, abat"
@@ -48519,7 +48442,7 @@
    "date": "2025-07-27",
    "litcalId": "ordinary_time_17_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_17_sunday"
@@ -48681,7 +48604,7 @@
    "date": "2025-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -48690,7 +48613,7 @@
    "date": "2025-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -48906,7 +48829,7 @@
    "date": "2025-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -48969,7 +48892,7 @@
    "date": "2025-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -49725,7 +49648,7 @@
    "date": "2025-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -49833,7 +49756,7 @@
    "date": "2025-12-20",
    "litcalId": "advent_december_20",
    "litcalIsFerial": true,
-   "minorityCells": 5,
+   "minorityCells": 4,
    "type": "-",
    "title": "Fèria d’Advent",
    "group": "ferial|advent_december_20"
@@ -51237,7 +51160,7 @@
    "date": "2026-05-25",
    "litcalId": "mary_mother_of_the_church",
    "litcalIsFerial": false,
-   "minorityCells": 17,
+   "minorityCells": 9,
    "type": "M",
    "title": "Benaurada Verge Maria, Mare de l'Església",
    "group": "cel|Benaurada Verge Maria, Mare de l'Església"
@@ -51453,7 +51376,7 @@
    "date": "2026-06-18",
    "litcalId": "ordinary_time_11_thursday",
    "litcalIsFerial": true,
-   "minorityCells": 1,
+   "minorityCells": 0,
    "type": "-",
    "title": "",
    "group": "ferial|ordinary_time_11_thursday"
@@ -51966,7 +51889,7 @@
    "date": "2026-08-14",
    "litcalId": "maximilian_mary_raymund_kolbe_priest",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Sant Maximilià Maria Kolbe, prevere i màrtir",
    "group": "cel|Sant Maximilià Maria Kolbe, prevere i màrtir"
@@ -51975,7 +51898,7 @@
    "date": "2026-08-15",
    "litcalId": "assumption_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 1,
    "type": "S",
    "title": "Assumpció de la Benaurada Verge Maria",
    "group": "cel|Assumpció de la Benaurada Verge Maria"
@@ -52191,7 +52114,7 @@
    "date": "2026-09-08",
    "litcalId": "nativity_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 2,
+   "minorityCells": 1,
    "type": "F",
    "title": "Naixement de la Benaurada Verge Maria",
    "group": "cel|Naixement de la Benaurada Verge Maria"
@@ -52254,7 +52177,7 @@
    "date": "2026-09-15",
    "litcalId": "our_lady_of_sorrows",
    "litcalIsFerial": false,
-   "minorityCells": 3,
+   "minorityCells": 2,
    "type": "M",
    "title": "Mare de Déu dels Dolors",
    "group": "cel|Mare de Déu dels Dolors"
@@ -53010,7 +52933,7 @@
    "date": "2026-12-08",
    "litcalId": "immaculate_conception_of_the_blessed_virgin_mary",
    "litcalIsFerial": false,
-   "minorityCells": 6,
+   "minorityCells": 4,
    "type": "S",
    "title": "Immaculada Concepció de la Benaurada Verge Maria",
    "group": "cel|Immaculada Concepció de la Benaurada Verge Maria"
@@ -53118,7 +53041,7 @@
    "date": "2026-12-20",
    "litcalId": "advent_4_sunday",
    "litcalIsFerial": false,
-   "minorityCells": 23,
+   "minorityCells": 22,
    "type": "-",
    "title": "Diumenge quart d'Advent",
    "group": "ferial|advent_4_sunday"
@@ -54271,9 +54194,6 @@
   "salmos_textos/12009": [
    "cel|Solemnitat de Santa Maria Mare de Déu"
   ],
-  "lectura_breve_citas/3399": [
-   "cel|Benaurada Verge Maria, Mare de l'Església"
-  ],
   "lectura_breve_citas/2191": [
    "cel|Santíssim Nom de Jesús",
    "ferial|thursday_after_epiphany"
@@ -54372,9 +54292,6 @@
   "lectura_breve_citas/1832": [
    "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa"
   ],
-  "lectura_breve_citas/129": [
-   "cel|Benaurada Verge Maria, Mare de l'Església"
-  ],
   "lectura_breve_citas/451": [
    "ferial|ordinary_time_32_sunday"
   ],
@@ -54440,9 +54357,6 @@
   "lectura_breve_citas/3741": [
    "ferial|friday_after_epiphany",
    "cel|Sant Eulogi de Còrdova, prevere i màrtir"
-  ],
-  "lectura_breve_textos/3400": [
-   "cel|Benaurada Verge Maria, Mare de l'Església"
   ],
   "lectura_breve_textos/2192": [
    "cel|Santíssim Nom de Jesús",
@@ -54605,9 +54519,6 @@
   ],
   "lectura_breve_textos/3417": [
    "cel|Sant Lluc, evangelista"
-  ],
-  "lectura_breve_textos/130": [
-   "cel|Benaurada Verge Maria, Mare de l'Església"
   ],
   "lectura_breve_textos/452": [
    "ferial|ordinary_time_32_sunday"
@@ -55897,9 +55808,6 @@
   "preces_intro/1208": [
    "cel|Visitació de la Benaurada Verge Maria"
   ],
-  "preces_intro/64": [
-   "cel|Benaurada Verge Maria, Mare de l'Església"
-  ],
   "preces_intro/1203": [
    "cel|Sant Justí, màrtir",
    "cel|Sant Lluís Gonzaga, religiós"
@@ -55911,10 +55819,6 @@
    "cel|Santa Isabel d’Hongria, religiosa",
    "cel|Santa Mònica",
    "cel|Santa Maria Magdalena"
-  ],
-  "preces_intro/1145": [
-   "cel|Assumpció de la Benaurada Verge Maria",
-   "cel|Benaurada Verge Maria, Mare de l'Església"
   ],
   "preces_intro/65": [
    "cel|Sants arcàngels Miquel, Gabriel i Rafael"
@@ -56026,13 +55930,6 @@
   "preces_respuesta/112": [
    "cel|Visitació de la Benaurada Verge Maria"
   ],
-  "preces_respuesta/64": [
-   "cel|Visitació de la Benaurada Verge Maria",
-   "cel|Naixement de la Benaurada Verge Maria",
-   "cel|Mare de Déu dels Dolors",
-   "cel|Immaculada Concepció de la Benaurada Verge Maria",
-   "cel|Benaurada Verge Maria, Mare de l'Església"
-  ],
   "preces_respuesta/1203": [
    "cel|Sant Justí, màrtir",
    "cel|Sant Lluís Gonzaga, religiós"
@@ -56044,12 +55941,6 @@
    "cel|Santa Isabel d’Hongria, religiosa",
    "cel|Santa Mònica",
    "cel|Santa Maria Magdalena"
-  ],
-  "preces_respuesta/1145": [
-   "cel|Sant Maximilià Maria Kolbe, prevere i màrtir",
-   "cel|Assumpció de la Benaurada Verge Maria",
-   "ferial|ordinary_time_20_sunday",
-   "cel|Benaurada Verge Maria, Mare de l'Església"
   ],
   "preces_respuesta/77": [
    "cel|Mare de Déu del Pilar",
@@ -57048,11 +56939,6 @@
    "cel|Sant Enric",
    "ferial|ordinary_time_14_thursday"
   ],
-  "lecturas_texto/67": [
-   "cel|Immaculada Concepció de la Benaurada Verge Maria",
-   "ferial|advent_december_20",
-   "ferial|advent_4_sunday"
-  ],
   "lecturas_texto/905": [
    "cel|Dedicació de la Basílica del Laterà"
   ],
@@ -57297,12 +57183,6 @@
   ],
   "lecturas_texto/6152": [
    "ferial|ordinary_time_29_sunday"
-  ],
-  "lecturas_texto/6047": [
-   "cel|Sant Lluís Gonzaga, religiós",
-   "ferial|ordinary_time_11_thursday",
-   "cel|Sant Romuald, abat",
-   "ferial|ordinary_time_17_sunday"
   ],
   "lecturas_texto/1048": [
    "ferial|ordinary_time_20_sunday"

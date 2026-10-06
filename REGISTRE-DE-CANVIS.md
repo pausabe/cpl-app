@@ -138,6 +138,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [MIGRA-025](#migra-025) | 2026-10-06 | eines | codi | No — va al git | `918d7a9` |
 | [D-017](#d-017) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** + codi | Es regenera: el join i `decided-cells.json` | el que afegeix la fitxa · saints-app `773351aea`, `46608970b` |
 | [SA-35](#sa-35) | 2026-10-06 | saints-app | **codi** | No — va al git | `47a3838a8` |
+| [D-018](#d-018) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (10 caselles, una per una, i 2 còpies) | Es regenera: `decided-cells.json`, `copied-cells.json` | el que afegeix la fitxa · saints-app `ca4cc737f` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2421,6 +2422,31 @@ el 6-10, entre tres opcions (la majoritària, la del dia o fer com el castellà)
 | Les 4 que quedaven retingudes | La resposta de 3 salms que cpl-app diu de dues maneres i el text del Sl 66 de sant Jaume, que abans passava per variant lleugera i ara, més curt, ja no. En Pau m'ho va delegar («decideix tu»), i són a `decided-cells.json` amb el perquè: Sl 143 «la meva roca» (9 dies de 13, i la més propera al castellà); Sl 104 «Recordeu les meravelles del Senyor» (10 de 14); Sl 17 «Us estimo, Senyor, vós m'enfortiu» (empat de puntuació, la que diu el text del salm); el Sl 66, el del 25 de juliol, com abans. Ja tenien text a saints-app, el d'abans de la D-017, i per això el total no es mou: ara hi és la resposta, i a sant Jaume no surt dues vegades |
 | A saints-app | La resposta es veu com a ℟ sota la cita amb la [SA-35](#sa-35) |
 | Commit | el que afegeix la fitxa · saints-app `773351aea`; les 4 decisions, el següent · saints-app `46608970b` |
+
+<a id="d-018"></a>
+## D-018
+
+**El Comú de la Mare de Déu, decidit casella per casella a partir del Roser** · 6 d'octubre de 2026
+
+Revisant el 7-10-2026 (Mare de Déu del Roser), que era al 89%. Tot el que hi faltava eren caselles
+compartides per les festes de la Mare de Déu. En Pau, el 6-10: «endavant».
+
+| Casella | Text que s'hi posa | Per què |
+|---|---|---|
+| Laudes i Vespres: lectura breu (Is 61,10 i Ga 4,4-5) i introducció de les pregàries | El del Comú de la Mare de Déu | Només la Mare de l'Església discrepa, perquè cpl-app hi resa la fèria; totes dues coses són lícites (OGLH 235) i mana eprex ([D-010](#d-010)) |
+| Laudes, resposta de les pregàries | «Que la vostra Mare intercedeixi per nosaltres, Senyor.» (34 dies) | La del Comú (43 dies) només hi té un punt de més: «…per nosaltres. Senyor.» |
+| Vespres, resposta de les pregàries | «Que la plena de gràcia pregui per nosaltres.» (58 dies) | L'Assumpció en té una de pròpia en català, «Mireu la plena de gràcia i escolteu-nos»; el 15-8 i les primeres vespres del 14-8 en català sortirà la del Comú, com en castellà |
+| Missa, vers de l'al·leluia (Rm 8,15) | «Heu rebut un esperit que ens ha fet fills» (17 dies) | El diumenge XVII del cicle C diu «que ens fa fills» (3 dies) |
+| Missa, evangeli de l'Anunciació (Lc 1,26-38), també el propi del Roser | El de l'Anunciació | La Immaculada el té igual amb una altra puntuació (empat de 10 a 10); el 20 de desembre hi canvia el començament |
+| Himne de l'Ofici del Roser (còpia) | El de l'Ofici del Comú de la Mare de Déu, «Aquell que terra i mar i estels…» | eprex hi té un himne propi en castellà que l'edició catalana no té; cpl-app hi resa el del dia de la setmana |
+| Cita de l'evangeli propi del Roser (còpia) | La d'una casella amb el mateix castellà | — |
+
+| | |
+|---|---|
+| Com | 10 entrades a `decided-cells.json` i 2 a `copied-cells.json`, cadascuna amb el perquè. `copied-cells.test.js` ja llegeix qualsevol taula i comprova que una cita de la missa copiada té el mateix castellà que la seva casella |
+| Efecte | El 7-10-2026, del 89% al **97%** (137 de 141). De 438.124 a **438.804** textos-dia i de 161 a **163** dies sencers |
+| Sostre del 7-10 | La 1a lectura (Fets 1,12-14) i el salm (el Magnificat) de la missa pròpia del Roser: a les memòries cpl-app llegeix les de la fèria i no els té. Només es poden treure del Leccionari |
+| Commit | el que afegeix la fitxa · saints-app `ca4cc737f` |
 
 <a id="sa-24"></a>
 ## SA-24

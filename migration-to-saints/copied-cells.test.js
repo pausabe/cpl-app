@@ -12,13 +12,25 @@ const COMMONS = '/Users/pau/projects/saints/saints-app/src/store/db/day_specific
 const read = (lang, table) => JSON.parse(fs.readFileSync(path.join(COMMONS, lang, `${table}.json`), 'utf8'));
 const { cells } = JSON.parse(fs.readFileSync(path.join(__dirname, 'copied-cells.json'), 'utf8'));
 
-const ca = { salmos_citas: read('ca', 'salmos_citas'), salmos_textos: read('ca', 'salmos_textos') };
-const esCitas = read('es', 'salmos_citas');
+const tables = {};
+const table = (lang, name) => (tables[`${lang}/${name}`] ??= read(lang, name));
+const ca = { salmos_citas: table('ca', 'salmos_citas'), salmos_textos: table('ca', 'salmos_textos') };
+const esCitas = table('es', 'salmos_citas');
 
 test('every source has Catalan text', () => {
   for (const { from } of Object.values(cells)) {
     const [t, id] = from.split('/');
-    expect([from, typeof ca[t][id]]).toEqual([from, 'string']);
+    expect([from, typeof table('ca', t)[id]]).toEqual([from, 'string']);
+  }
+});
+
+test('a copied Mass reference is the one the Spanish of its cell says', () => {
+  // The Rosary's Gospel (Lc 1,26-38) takes the Catalan of a cell the Spanish says word for word.
+  const bare = (s) => String(s).replace(/_/g, '').replace(/\s+/g, ' ').trim();
+  for (const [cell, { from }] of Object.entries(cells)) {
+    if (!cell.startsWith('lecturas_referencia/')) continue;
+    const es = table('es', 'lecturas_referencia');
+    expect([cell, bare(es[from.split('/')[1]])]).toEqual([cell, bare(es[cell.split('/')[1]])]);
   }
 });
 
