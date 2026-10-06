@@ -868,6 +868,10 @@
     "lecturas_texto/67": {
       "take": "2026-03-25",
       "because": "En Pau, el 6-10-2026, revisant el 7-10 (Mare de Déu del Roser): «endavant». Missa, evangeli de l'Anunciació (Lc 1,26-38), també el propi del Roser: el de l'Anunciació. La Immaculada en té el mateix amb una altra puntuació (empat de 10 a 10) i el 20 de desembre hi canvia el començament («El sisè mes» per «En aquell temps»)."
+    },
+    "lectura_breve_textos/1345": {
+      "take": "2026-10-08",
+      "because": "En Pau, el 6-10-2026, revisant el 8-10: «em sembla bé, fes-ho». Sexta, lectura breu Dt 4,7 (64 dies). Només discrepa el dimecres després de l'Epifania (9-1-2019, 8-1-2020, 8-1-2025), on cpl-app hi diu la lectura pròpia per data i eprex aquesta, per dia de la setmana; el castellà hi mostra aquesta. Criteri de la D-014 (anys solts)."
     }
   }
 }

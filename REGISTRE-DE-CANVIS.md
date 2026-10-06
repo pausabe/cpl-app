@@ -140,6 +140,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-35](#sa-35) | 2026-10-06 | saints-app | **codi** | No — va al git | `47a3838a8` |
 | [D-018](#d-018) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (10 caselles, una per una, i 2 còpies) | Es regenera: `decided-cells.json`, `copied-cells.json` | el que afegeix la fitxa · saints-app `ca4cc737f` |
 | [D-019](#d-019) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (la missa pròpia del Roser) | Es regenera: `static-translations/`, `copied-cells.json` | el que afegeix la fitxa · saints-app `09a01bfe0` |
+| [D-020](#d-020) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (1 casella) | Es regenera: `decided-cells.json` | el que afegeix la fitxa · saints-app `6f3a19b90` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2467,6 +2468,23 @@ Com a la missa de sant Jeroni ([D-011](#d-011)), es fa amb textos de la CPL que 
 | On | `static-translations/lecturas_referencia.ca.json` (327, 328), `lecturas_texto.ca.json` (407) i `copied-cells.json` (408). `copied-cells.test.js` comprova que una lectura de missa copiada té el mateix castellà que la seva casella |
 | Efecte | El 7-10-2026, al **100%** (141 de 141). De 438.804 a **438.857** textos-dia i de 163 a **167** dies sencers |
 | Commit | el que afegeix la fitxa · saints-app `09a01bfe0` |
+
+<a id="d-020"></a>
+## D-020
+
+**La lectura breu de Sexta del dijous III (Dt 4,7)** · 6 d'octubre de 2026
+
+Revisant el 8-10-2026, l'única casella que faltava. La comparteixen 67 dies; només discrepa el dimecres
+després de l'Epifania (9-1-2019, 8-1-2020, 8-1-2025), on cpl-app diu la lectura pròpia per data i eprex
+aquesta, per dia de la setmana (el problema conegut dels dies després de l'Epifania). Criteri de la
+[D-014](#d-014) per als anys solts. En Pau: «em sembla bé, fes-ho».
+
+| | |
+|---|---|
+| Com | `decided-cells.json`: `lectura_breve_textos/1345`, el text del 8-10-2026 |
+| Conseqüència visible | El dimecres després de l'Epifania, en català, Sexta diu Dt 4,7, com en castellà (el pròxim, el 8-1-2031) |
+| Efecte | El 8-10-2026, al **100%**. De 438.857 a **438.924** textos-dia (el **95%**) i de 167 a **186** dies sencers: era l'únic que faltava a 19 dijous de la setmana III |
+| Commit | el que afegeix la fitxa · saints-app `6f3a19b90` |
 
 <a id="sa-24"></a>
 ## SA-24

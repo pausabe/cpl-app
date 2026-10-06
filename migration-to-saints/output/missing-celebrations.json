@@ -1,10 +1,10 @@
 {
- "generatedAt": "2026-10-06T09:33:44.196Z",
+ "generatedAt": "2026-10-06T10:01:06.040Z",
  "diocese": "Barcelona",
- "probeGeneratedAt": "2026-10-06T09:33:43.918Z",
+ "probeGeneratedAt": "2026-10-06T10:01:05.768Z",
  "litcalCalendarsRead": true,
  "totals": {
-  "contestedCells": 962,
+  "contestedCells": 961,
   "missing": 0,
   "notApplied": 90,
   "mismatch": 34,
@@ -221,7 +221,7 @@
      "-"
     ]
    },
-   "cellsBlamed": 126,
+   "cellsBlamed": 125,
    "cellsSole": 24,
    "contestedDays": 7,
    "totalDays": 9,
@@ -247,7 +247,7 @@
     {
      "date": "2019-01-09",
      "litcalId": "wednesday_after_epiphany",
-     "minorityCells": 31
+     "minorityCells": 30
     },
     {
      "date": "2020-01-09",
@@ -11814,33 +11814,6 @@
    ]
   },
   {
-   "key": "ferial|wednesday_after_epiphany",
-   "title": null,
-   "verdict": "ferial-drift",
-   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
-   "ranks": [],
-   "inLitcal": null,
-   "cellsBlamed": 7,
-   "cellsSole": 0,
-   "contestedDays": 2,
-   "totalDays": 2,
-   "litcalIds": [
-    "wednesday_after_epiphany"
-   ],
-   "dates": [
-    {
-     "date": "2020-01-08",
-     "litcalId": "wednesday_after_epiphany",
-     "minorityCells": 7
-    },
-    {
-     "date": "2025-01-08",
-     "litcalId": "wednesday_after_epiphany",
-     "minorityCells": 7
-    }
-   ]
-  },
-  {
    "key": "cel|Santa Àngela de Mèrici, verge",
    "title": "Santa Àngela de Mèrici, verge",
    "verdict": "not-applied",
@@ -12340,6 +12313,33 @@
      "date": "2023-05-16",
      "litcalId": "easter_time_6_tuesday",
      "minorityCells": 5
+    }
+   ]
+  },
+  {
+   "key": "ferial|wednesday_after_epiphany",
+   "title": null,
+   "verdict": "ferial-drift",
+   "verdictLabel": "cap celebració pel mig: el text de la fèria varia per si sol",
+   "ranks": [],
+   "inLitcal": null,
+   "cellsBlamed": 6,
+   "cellsSole": 0,
+   "contestedDays": 2,
+   "totalDays": 2,
+   "litcalIds": [
+    "wednesday_after_epiphany"
+   ],
+   "dates": [
+    {
+     "date": "2020-01-08",
+     "litcalId": "wednesday_after_epiphany",
+     "minorityCells": 6
+    },
+    {
+     "date": "2025-01-08",
+     "litcalId": "wednesday_after_epiphany",
+     "minorityCells": 6
     }
    ]
   },
@@ -26923,7 +26923,7 @@
    "date": "2019-01-09",
    "litcalId": "wednesday_after_epiphany",
    "litcalIsFerial": true,
-   "minorityCells": 31,
+   "minorityCells": 30,
    "type": "L",
    "title": "Sant Eulogi de Còrdova, prevere i màrtir",
    "group": "cel|Sant Eulogi de Còrdova, prevere i màrtir"
@@ -30199,7 +30199,7 @@
    "date": "2020-01-08",
    "litcalId": "wednesday_after_epiphany",
    "litcalIsFerial": true,
-   "minorityCells": 7,
+   "minorityCells": 6,
    "type": "-",
    "title": "",
    "group": "ferial|wednesday_after_epiphany"
@@ -46642,7 +46642,7 @@
    "date": "2025-01-08",
    "litcalId": "wednesday_after_epiphany",
    "litcalIsFerial": true,
-   "minorityCells": 7,
+   "minorityCells": 6,
    "type": "-",
    "title": "",
    "group": "ferial|wednesday_after_epiphany"
@@ -54421,10 +54421,6 @@
    "cel|Santa Teresa Beneta de la Creu, verge i màrtir, patrona d’Europa",
    "cel|Memòria de Santa Maria en dissabte",
    "cel|Sant Andreu, apòstol"
-  ],
-  "lectura_breve_textos/1345": [
-   "cel|Sant Eulogi de Còrdova, prevere i màrtir",
-   "ferial|wednesday_after_epiphany"
   ],
   "lectura_breve_textos/3384": [
    "cel|Mare de Déu del Pilar"
