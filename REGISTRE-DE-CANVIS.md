@@ -145,6 +145,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [D-021](#d-021) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** + codi | Es regenera: el join | el que afegeix la fitxa · saints-app `33f5b7763` |
 | [D-022](#d-022) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (12 caselles, una per una, i 1 llista de precs) | Es regenera: `decided-cells.json`, `lib/preces-alignment.js` | el que afegeix la fitxa · saints-app `33f5b7763` |
 | [SA-36](#sa-36) | 2026-10-06 | saints-app | **codi** | No — va al git | `6be00a8d8` |
+| [APP-002](#app-002) | 2026-10-07 | cpl-app | codi (iOS, «Aa») | No — va al git | `37871d3`, a `master` i a `catalan-migration` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -253,6 +254,36 @@ demana Node 22.13 o superior i un `eas-cli` recent (pas 11 del wiki).
   evangèlica, les pregàries ni l'oració final. Altres forats d'un sol dia: Sexta i Nona de
   Pentecosta sense himne, i el 3 de desembre sense segona lectura de missa. Pendent de revisar
   com a possibles CPL-LIT.
+
+## APP-002
+
+**A l'iPhone, en fer el text més petit des de «Aa», quedava un espai sota cada paràgraf** · 7 d'octubre de 2026
+
+Dins d'una oració, amb el botó «Aa» de dalt: fent el text més gran creixia bé, però en tornar-lo
+més petit les lletres s'empetitien i cada bloc de text conservava l'alçada de la mida anterior,
+amb un espai estrany fins al següent. Sortint a l'inici i tornant a entrar es veia bé. Ho va
+trobar en Pau a l'iPhone. No és un error del contingut de la CPL: el vam introduir nosaltres a la
+9.0.1 (`f473f98`, 23-9-2026), quan a iOS el text de la pregària va passar a ser una vista de text
+de només lectura (un `TextInput`) perquè es pogués seleccionar a trossos. Hi és a la 9.0.1 fins a
+la 9.1.2.
+
+La causa és de React Native (0.86, Nova Arquitectura): un `TextInput` es mesura amb el text que
+tenia **abans** de l'últim canvi, perquè el guarda a l'estat de la vista i no l'actualitza fins
+després de mesurar-la (`BaseTextInputShadowNode`: `measureContent` llegeix l'estat i
+`updateStateIfNeeded` el posa al dia a `layout()`, que va després). Cada bloc anava un pas
+endarrere: en fer el text més petit es mesurava amb la mida gran (l'espai); en fer-lo més gran,
+amb la petita, i el bloc quedava curt, cosa que es nota menys. Tornant a obrir l'oració les vistes
+es creaven de nou i es mesuraven bé. Pel mateix camí, un text que canvia sense sortir de l'oració
+(un altre salm de l'invitatori) es mesurava amb el d'abans. Android no fa servir aquesta vista i
+no en tenia.
+
+| | |
+|---|---|
+| Commit | [`37871d3`](https://github.com/pausabe/cpl-app/commit/37871d3) a `master`, fusionat a `catalan-migration` |
+| Fix | Codi: `src/components/PrayerText.tsx` (`measuredWith`). A iOS la vista de text es torna a crear quan canvia allò amb què es mesura (les paraules i la mida i l'interlineat de cada tros); el color (el mode fosc) no la refà |
+| Test | `__tests__/components/prayerText.test.js` («the text view is measured with what it shows now»): sense el fix fallen els dos primers (la vista no es refà en canviar la mida ni el text) |
+| Verificat | `make tests` (1.101 tests, 3 omesos), `make types` i `make lint` sense avisos nous; el `make checks` del pre-push, a `master`. **Pendent que en Pau ho provi a l'iPhone**: a Jest no hi ha el mesurament natiu |
+| Reaplicar | **No** — és codi, va al git |
 
 ## CPL-LIT-001
 
