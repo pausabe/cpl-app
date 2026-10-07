@@ -96,3 +96,51 @@ test('the line of a rubric keeps its two colours', () => {
     expect(styleOf(screen.getByText('Lloeu el Senyor')).color).toBe('#182322');
   });
 });
+
+// React Native measures a text view of iOS with the text it showed before the last change, not
+// with the one it has just been given: it keeps that text in the view's state and only updates it
+// after laying it out (BaseTextInputShadowNode). Making the text smaller in the «Aa» sheet left
+// each paragraph as tall as it was with the bigger size, with a space under it, until the prayer
+// was opened again. So the view is made anew whenever what it is measured with changes.
+describe('the text view is measured with what it shows now', () => {
+  const { withTheme } = require('../helpers/renderWithTheme');
+  const { prayerTextStyles, useTheme } = require('../../src/theme');
+
+  function Verse({ children = 'Lloeu el Senyor, tots els pobles' }) {
+    const styles = prayerTextStyles(useTheme());
+    return (
+      <PrayerText selectable={true} testID="prayer" style={styles.black}>
+        {children}
+      </PrayerText>
+    );
+  }
+
+  test('a smaller text in the «Aa» sheet makes it anew, so it does not keep the height of the bigger one', () => {
+    onPlatform('ios', () => {
+      const view = renderWithTheme(<Verse />, { textSize: '5' });
+      const before = screen.getByTestId('prayer');
+      view.rerender(withTheme(<Verse />, { textSize: '4' }));
+      const after = screen.getByTestId('prayer');
+      expect(styleOf(after).fontSize).toBe(24);
+      expect(after).not.toBe(before);
+    });
+  });
+
+  test('so does other text in the same place (another psalm of the invitatory)', () => {
+    onPlatform('ios', () => {
+      const view = renderWithTheme(<Verse>{'Veniu, cantem amb joia al Senyor'}</Verse>);
+      const before = screen.getByTestId('prayer');
+      view.rerender(withTheme(<Verse>{'Que Déu s’apiadi de nosaltres'}</Verse>));
+      expect(screen.getByTestId('prayer')).not.toBe(before);
+    });
+  });
+
+  test('but not what does not change its size: the dark mode keeps the same view', () => {
+    onPlatform('ios', () => {
+      const view = renderWithTheme(<Verse />);
+      const before = screen.getByTestId('prayer');
+      view.rerender(withTheme(<Verse />, { dark: true }));
+      expect(screen.getByTestId('prayer')).toBe(before);
+    });
+  });
+});
