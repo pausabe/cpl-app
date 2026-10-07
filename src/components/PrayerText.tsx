@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from 'react';
-import { Platform, StyleSheet, Text, TextInput, TextInputProps, TextProps } from 'react-native';
+import React, { createContext, ReactNode, useContext } from 'react';
+import { Platform, StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextProps, TextStyle } from 'react-native';
 
 // Inside a text that is already being selected there is no second view: the parts of a line in
 // two colours (Rubric, the «Al·leluia» of the Glòria) are pieces of the same text.
@@ -32,6 +32,7 @@ export default function PrayerText({ selectable, style, children, ...rest }: Tex
   return (
     <InsideSelectableText.Provider value={true}>
       <TextInput
+        key={measuredWith(style, children)}
         editable={false}
         multiline={true}
         scrollEnabled={false}
@@ -45,6 +46,40 @@ export default function PrayerText({ selectable, style, children, ...rest }: Tex
       </TextInput>
     </InsideSelectableText.Provider>
   );
+}
+
+// React Native measures a text view of iOS with the text it showed before the last change, not
+// with the one it has just been given: it keeps that text in the view's state and only updates it
+// after laying the view out (BaseTextInputShadowNode). Making the text smaller in the «Aa» sheet
+// left each paragraph as tall as it was with the bigger size, with a space under it, until the
+// prayer was opened again; another psalm in the same place would keep the height of the last one.
+// So the view is made anew whenever what it is measured with changes: the words, and the size and
+// line height of each piece. The colour (the dark mode) does not change it.
+function measuredWith(style: StyleProp<TextStyle>, children: ReactNode): string {
+  const parts: string[] = [];
+  const metrics = (pieceStyle: StyleProp<TextStyle>) => {
+    const { fontSize, lineHeight } = StyleSheet.flatten(pieceStyle) ?? {};
+    parts.push(`[${fontSize ?? ''}/${lineHeight ?? ''}]`);
+  };
+  const walk = (nodes: ReactNode) =>
+    React.Children.forEach(nodes, (child) => {
+      if (typeof child === 'string' || typeof child === 'number') {
+        parts.push(String(child));
+      } else if (React.isValidElement<TextProps>(child)) {
+        metrics(child.props.style);
+        walk(child.props.children);
+      }
+    });
+  metrics(style);
+  walk(children);
+  return hashOf(parts.join(''));
+}
+
+// A short key for a long text (djb2)
+function hashOf(text: string): string {
+  let hash = 5381;
+  for (let i = 0; i < text.length; i++) hash = ((hash << 5) + hash + text.charCodeAt(i)) | 0;
+  return (hash >>> 0).toString(36);
 }
 
 const styles = StyleSheet.create({

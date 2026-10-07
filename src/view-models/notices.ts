@@ -26,9 +26,10 @@ export const WHATS_NEW = {
   button: 'D’acord',
 };
 
-// At the bottom of the home, quiet, when the store already has a newer app than this one
+// On top of the home, when the store already has a newer app than this one
 export const APP_UPDATE = {
-  text: 'Hi ha una versió nova de l’aplicació.',
+  title: 'Hi ha una versió nova',
+  text: 'Actualitza l’aplicació per tenir les últimes millores i correccions.',
   action: 'Actualitza-la',
   dismiss: 'Amaga l’avís',
 };
