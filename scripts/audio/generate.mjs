@@ -6,18 +6,26 @@
 //
 //   --env <file>          Azure Speech key and region (default ~/.config/cpl/azure-speech.env)
 //   --lexicon <file>      the words whose stress the voices get wrong (default scripts/audio/lexicon.json)
+//   --as-written <file>   the words the voices take for abbreviations before a full stop
+//                         (default scripts/audio/asWritten.json)
 //   --until <YYYY-MM-DD>  only the pieces first needed up to that day
 //   --max-chars <n>       stop after sending this many characters to Azure (never more)
 //   --bucket <name>       R2 bucket (default cpl-cloud-audio); --no-upload to keep them only here
 //   --wrangler <path>     wrangler of cpl-cloud (default ../cpl-cloud/node_modules/.bin/wrangler)
 //   --concurrency <n>     pieces made at once (default 8; the free F0 resource takes 1)
+//   --redo <keys.json>    pieces to make again although they are there: the words are the same but
+//                         they are said better now (the lexicon, an abbreviation). cpl-cloud is told,
+//                         and the phones that have them let them go (audio_changes).
+//   --register-all        tell cpl-cloud of every piece uploaded so far, not only of this run's
 //
 // It can be stopped and run again: what is in the cache folder is not made again, and what was
 // uploaded (uploaded.jsonl) is not uploaded again. It stops by itself if Azure says no (the credit or
-// the free characters of the month are over): nothing is ever paid for, it just stops.
+// the free characters of the month are over): nothing is ever paid for, it just stops. At the end it
+// writes in cpl-cloud's database which pieces are in the bucket (audio_pieces), so that its queue
+// knows what is missing (scripts/audio/plan.mjs).
 import { Buffer } from 'node:buffer';
 import { spawn } from 'node:child_process';
-import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -38,12 +46,15 @@ if (!piecesFile || !cache) {
 }
 const envFile = opt('env', join(homedir(), '.config/cpl/azure-speech.env'));
 const lexiconFile = opt('lexicon', join(here, 'lexicon.json'));
+const asWrittenFile = opt('as-written', join(here, 'asWritten.json'));
 const until = opt('until', '9999-12-31');
 const maxChars = parseInt(opt('max-chars', '0'), 10) || Infinity;
 const bucket = opt('bucket', 'cpl-cloud-audio');
 const upload = !flag('no-upload');
 const wrangler = opt('wrangler', resolve(here, '../../../cpl-cloud/node_modules/.bin/wrangler'));
 const concurrency = parseInt(opt('concurrency', '8'), 10);
+const redo = new Set(opt('redo') ? JSON.parse(readFileSync(opt('redo'), 'utf8')) : []);
+const registerAll = flag('register-all');
 // Cloudflare's API slows down whoever sends too much at once (1,200 requests in 5 minutes)
 const uploadConcurrency = 8;
 
@@ -55,6 +66,9 @@ const env = Object.fromEntries(
 );
 const URL = `https://${env.AZURE_SPEECH_REGION}.tts.speech.microsoft.com/cognitiveservices/v1`;
 const lexicon = existsSync(lexiconFile) ? JSON.parse(readFileSync(lexiconFile, 'utf8')) : {};
+const written = existsSync(asWrittenFile) ? JSON.parse(readFileSync(asWrittenFile, 'utf8')) : [];
+const both = written.filter((w) => Object.keys(lexicon).some((l) => l.toLowerCase() === w.toLowerCase()));
+if (both.length) throw new Error(`In the lexicon and said as written at once: ${both.join(', ')}`);
 
 mkdirSync(resolve(cache), { recursive: true });
 const uploadedLog = join(resolve(cache), 'uploaded.jsonl');
@@ -66,6 +80,12 @@ const uploaded = new Set(
         .map((line) => JSON.parse(line).key)
     : [],
 );
+// The pieces to redo are made and uploaded again: away from the cache and from what was uploaded
+for (const key of redo) {
+  const file = join(resolve(cache), `${key}.mp3`);
+  if (existsSync(file)) rmSync(file);
+  uploaded.delete(key);
+}
 
 const escape = (text) =>
   text
@@ -79,9 +99,20 @@ const escape = (text) =>
 // Roman numeral: «Primera a tu, infant». In small letters it says «i». cpl-cloud does the same.
 export const lowerI = (text) => text.replace(/(?<![\wÀ-ÿ·’'])I(?![\wÀ-ÿ·’'])/g, 'i');
 
+// Words Azure takes for abbreviations when a full stop follows them («vol.» → «volum», «cos.» →
+// «cosinus», «part.» → «particular»), found by saying every word that ends a sentence and listening
+// back (October 2026): wrapped in <sub>, they are said as they are written. cpl-cloud does the same.
+export const sayAsWritten = (body, words = written) =>
+  words.length
+    ? body.replace(
+        new RegExp(`(?<![\\wÀ-ÿ·\u00AD])(${words.join('|')})(?=\\.)`, 'gi'),
+        (m) => `<sub alias='${m}'>${m}</sub>`,
+      )
+    : body;
+
 // The words, with the lexicon's ones wrapped in their pronunciation; and which ones they were
 function bodyOf(text) {
-  let body = escape(lowerI(text));
+  let body = sayAsWritten(escape(lowerI(text)));
   const used = [];
   for (const [word, ipa] of Object.entries(lexicon)) {
     const pattern = new RegExp(`(?<![\\wÀ-ÿ])(${word})(?![\\wÀ-ÿ])`, 'gi');
@@ -95,7 +126,7 @@ function bodyOf(text) {
 
 const all = JSON.parse(readFileSync(piecesFile, 'utf8'));
 const todo = Object.entries(all)
-  .filter(([, p]) => p.firstDay <= until)
+  .filter(([key, p]) => p.firstDay <= until || redo.has(key))
   .sort((a, b) => a[1].firstDay.localeCompare(b[1].firstDay));
 
 let charsSent = 0;
@@ -105,6 +136,7 @@ let stopped = null;
 const uploads = [];
 let uploadedNow = 0;
 let bytesUploaded = 0;
+const uploadedThisRun = new Map();
 
 async function synthesize(key, piece) {
   const file = join(resolve(cache), `${key}.mp3`);
@@ -194,6 +226,7 @@ async function uploader() {
     uploaded.add(key);
     uploadedNow++;
     bytesUploaded += bytes;
+    uploadedThisRun.set(key, bytes);
   }
 }
 
@@ -208,6 +241,38 @@ async function maker() {
       console.log(
         `${index}/${todo.length} pieces · ${made} made, ${charsSent} characters · ${uploadedNow} uploaded (${(bytesUploaded / 1e6).toFixed(1)} MB) · up to ${piece.firstDay}`,
       );
+  }
+}
+
+// cpl-cloud makes the missing pieces on the spot and from its queue: the same lexicon and the same words
+// said as written as here
+if (upload) {
+  for (const [name, file] of [
+    ['lexicon.json', lexiconFile],
+    ['as-written.json', asWrittenFile],
+  ]) {
+    if (!existsSync(file)) continue;
+    const error = await new Promise((done) => {
+      const child = spawn(
+        wrangler,
+        [
+          'r2',
+          'object',
+          'put',
+          `${bucket}/config/${name}`,
+          '--file',
+          file,
+          '--content-type',
+          'application/json',
+          '--remote',
+        ],
+        { stdio: ['ignore', 'ignore', 'pipe'] },
+      );
+      let err = '';
+      child.stderr.on('data', (d) => (err += d));
+      child.on('exit', (code) => done(code === 0 ? null : err.slice(-300)));
+    });
+    if (error) console.error(`could not upload ${name}: ${error}`);
   }
 }
 
@@ -227,5 +292,82 @@ const summary = {
   bytesUploaded,
   stoppedBecause: stopped,
 };
+// --- What cpl-cloud is told ---------------------------------------------------------------------
+
+function d1(args) {
+  return new Promise((done) => {
+    const child = spawn(wrangler, ['d1', 'execute', 'cpl-cloud', '--remote', '-c', 'wrangler.admin.jsonc', ...args], {
+      cwd: resolve(dirname(wrangler), '../..'),
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    let out = '';
+    child.stdout.on('data', (d) => (out += d));
+    child.stderr.on('data', (d) => (out += d));
+    child.on('exit', (code) => done(code === 0 ? out : null));
+  });
+}
+
+const sqlText = (s) => `'${String(s).replace(/'/g, "''")}'`;
+
+// The pieces in the bucket, in rows of a few hundred at a time
+async function register(entries) {
+  const now = new Date().toISOString();
+  for (let at = 0; at < entries.length; at += 2000) {
+    const statements = [];
+    const chunk = entries.slice(at, at + 2000);
+    for (let i = 0; i < chunk.length; i += 400) {
+      const values = chunk
+        .slice(i, i + 400)
+        .map(([key, bytes]) => `(${sqlText(key)}, ${all[key]?.text.length ?? 0}, ${bytes}, ${sqlText(now)})`)
+        .join(',\n');
+      statements.push(
+        `INSERT INTO audio_pieces (key, chars, bytes, made_at) VALUES\n${values}\n` +
+          'ON CONFLICT(key) DO UPDATE SET chars = excluded.chars, bytes = excluded.bytes, made_at = excluded.made_at;',
+      );
+    }
+    const file = join(resolve(cache), 'register.sql');
+    writeFileSync(file, statements.join('\n'));
+    if ((await d1(['--file', file, '-y'])) === null) return false;
+  }
+  return true;
+}
+
+// Every piece once, with its last size (a piece made again is in uploaded.jsonl twice)
+const toRegister = registerAll
+  ? [
+      ...new Map(
+        readFileSync(uploadedLog, 'utf8')
+          .split('\n')
+          .filter(Boolean)
+          .map((line) => JSON.parse(line))
+          .map(({ key, bytes }) => [key, bytes]),
+      ),
+    ]
+  : [...uploadedThisRun];
+summary.registered = toRegister.length && upload ? ((await register(toRegister)) ? toRegister.length : 'failed') : 0;
+
+// The pieces remade with another sound: a new version, which the phones see the next time they ask
+const redone = [...redo].filter((key) => uploadedThisRun.has(key));
+if (redone.length) {
+  const answer = await d1(['--json', '--command', 'SELECT COALESCE(MAX(version), 0) AS v FROM audio_changes']);
+  const version = answer ? JSON.parse(answer.slice(answer.indexOf('[')))[0].results[0].v + 1 : null;
+  if (version) {
+    const statements = [];
+    for (let i = 0; i < redone.length; i += 400) {
+      const values = redone
+        .slice(i, i + 400)
+        .map((key) => `(${version}, ${sqlText(key)})`)
+        .join(', ');
+      statements.push(`INSERT OR IGNORE INTO audio_changes (version, key) VALUES ${values};`);
+    }
+    const file = join(resolve(cache), 'changes.sql');
+    writeFileSync(file, statements.join('\n'));
+    summary.changesVersion = (await d1(['--file', file, '-y'])) === null ? 'failed' : version;
+  } else {
+    summary.changesVersion = 'failed';
+  }
+  summary.redone = redone.length;
+}
+
 appendFileSync(join(resolve(cache), 'runs.jsonl'), JSON.stringify(summary) + '\n');
 console.log(JSON.stringify(summary, null, 1));

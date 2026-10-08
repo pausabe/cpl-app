@@ -115,11 +115,13 @@ export function pieceKey(voice: string, text: string): string {
   return sha256(`${voice}\n${text}`).slice(0, 24);
 }
 
-// The words as they are said: one line, no pause marks of the psalms, no stray spaces
+// The words as they are said: one line, no pause marks of the psalms, no stray spaces, and of a
+// response inside a canticle, «(R. Al·leluia.)», only the response
 export function spoken(text: string): string {
   return text
     .replace(/\t/g, ' ')
     .replace(/[*†]/g, '')
+    .replace(/\(R\.\s*/g, '(')
     .replace(/^\s*—\s*/, '')
     .trim()
     .replace(/\s*\n\s*/g, ' ')
@@ -137,9 +139,32 @@ export function strophes(text: string): string[] {
     .filter((s) => s !== '');
 }
 
+// The Passion, as the liturgy reads it, in three voices: the chronicler («C.»), Christ («+») and the
+// others who speak («S.»). The marks say who reads each part and are not read. Null for a text
+// without them.
+const PASSION_ROLES: Record<string, SpeechRole> = { 'C.': 'lector', '+': 'president', 'S.': 'cor2' };
+
+export function passionParts(text: string): { role: SpeechRole; text: string }[] | null {
+  if (!/(?:^|\s)C\.\s/.test(text) || !/(?:^|\s)(?:\+|S\.)\s/.test(text)) return null;
+  const parts: { role: SpeechRole; text: string }[] = [];
+  let role: SpeechRole = 'president';
+  let at = 0;
+  for (const mark of text.matchAll(/(?:^|\s)(C\.|S\.|\+)\s+/g)) {
+    const before = text.slice(at, mark.index).trim();
+    if (before) parts.push({ role, text: before });
+    role = PASSION_ROLES[mark[1]];
+    at = (mark.index ?? 0) + mark[0].length;
+  }
+  const rest = text.slice(at).trim();
+  if (rest) parts.push({ role, text: rest });
+  return parts;
+}
+
 function isReference(line: string): boolean {
   const l = line.trim();
   if (l.startsWith('Salm ') || l.startsWith('Càntic')) return false;
+  // «Cf. Mt 7, 24; 1Pe 2, 22»: where the words come from, however long
+  if (/^cf\.\s/i.test(l)) return true;
   return /\d/.test(l) && l.length < 40 && !/[a-zà-ú]{5,}\s+[a-zà-ú]{4,}/.test(l);
 }
 
@@ -194,6 +219,19 @@ class Builder {
     });
   }
 
+  // A text with responses inside, «… mai errades. R. Al·leluia.» or a whole «R. Perdura eternament el
+  // seu amor.»: the text by whoever says it, and each response by the people, without the «R.»
+  sayWithResponses(role: SpeechRole, text: string, pause: number, kind: string) {
+    const parts = text.split(/(?:^|\s)R\.\s+/);
+    if (parts.length === 1) return this.say(role, text, pause, kind);
+    parts.forEach((part, i) => {
+      const last = i === parts.length - 1;
+      if (i === 0) {
+        if (part.trim()) this.say(role, part, PAUSES.half, kind);
+      } else this.say('cor2', part, last ? pause : PAUSES.half, 'resposta');
+    });
+  }
+
   pause(seconds: number) {
     const last = this.out[this.out.length - 1];
     if (last) last.pause = Math.max(last.pause, seconds);
@@ -211,7 +249,7 @@ class Builder {
         this.gloria(s.includes('Al·leluia'));
         continue;
       }
-      this.say(this.choir, s, PAUSES.strophe, kind);
+      this.sayWithResponses(this.choir, s, PAUSES.strophe, kind);
       this.choir = this.choir === 'cor1' ? 'cor2' : 'cor1';
     }
   }
@@ -348,7 +386,9 @@ class Builder {
       this.say('cor2', 'Al·leluia.', PAUSES.end, 'aclamació');
       this.section = 'Evangeli';
     } else if (section === 'Evangeli') {
-      this.say('president', t, PAUSES.strophe, 'evangeli');
+      const passion = passionParts(t);
+      if (passion) for (const part of passion) this.say(part.role, part.text, PAUSES.half, 'evangeli');
+      else this.say('president', t, PAUSES.strophe, 'evangeli');
       if (t.trim().startsWith('En aquell temps') || t.length > 400) this.pause(PAUSES.reading);
     } else if (
       ['LECTURA BREU', 'Lectura primera', 'Lectura segona'].includes(section) ||
@@ -357,13 +397,13 @@ class Builder {
     ) {
       for (const [i, s] of strophes(t).entries()) {
         this.stropheIndex = i;
-        this.say('lector', s, PAUSES.strophe, 'lectura');
+        this.sayWithResponses('lector', s, PAUSES.strophe, 'lectura');
       }
       if (t.length > 200) this.pause(PAUSES.reading);
     } else if (section === '' && this.hour === 'Completes' && t.startsWith('Jo confesso')) {
       this.say('cor2', t, PAUSES.end, 'confessió');
     } else {
-      this.say('lector', t, PAUSES.strophe, 'text');
+      this.sayWithResponses('lector', t, PAUSES.strophe, 'text');
     }
   }
 }

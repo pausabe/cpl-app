@@ -42,6 +42,12 @@ describe('the words as they are said', () => {
     );
     expect(spoken('—\ti la segona part')).toBe('i la segona part');
   });
+
+  test('of a response inside a canticle, only the response: the «R.» is not read', () => {
+    expect(spoken('tots els seus servents (R. Al·leluia.)\ni els qui el temen')).toBe(
+      'tots els seus servents (Al·leluia.) i els qui el temen',
+    );
+  });
 });
 
 describe('a psalm', () => {
@@ -173,6 +179,58 @@ test('the Gospel at Mass: the acclamation by the choirs and the Gospel by the pr
     ['president', 'Lectura de l’evangeli segons sant Lluc'],
     ['president', 'En aquell temps, el text de l’evangeli.'],
   ]);
+});
+
+test('the Passion in three voices: the chronicler, Christ and the others, without the marks', () => {
+  expect(
+    script('Missa', [
+      [R('Evangeli')],
+      [T('Lectura de la passió de nostre Senyor Jesucrist segons sant Marc')],
+      [
+        T(
+          'C. Quan faltaven dos dies, deien: S. «No a la festa». C. Però Jesús digué: + «Deixeu-la estar». C. I se n’anà.',
+        ),
+      ],
+    ]),
+  ).toEqual([
+    ['lector', 'Evangeli.'],
+    ['president', 'Lectura de la passió de nostre Senyor Jesucrist segons sant Marc'],
+    ['lector', 'Quan faltaven dos dies, deien:'],
+    ['cor2', '«No a la festa».'],
+    ['lector', 'Però Jesús digué:'],
+    ['president', '«Deixeu-la estar».'],
+    ['lector', 'I se n’anà.'],
+  ]);
+});
+
+test('a response inside a canticle is said by the people, without its «R.»', () => {
+  expect(
+    script('Laudes', [
+      [R('SALMÒDIA')],
+      [R('Ant. 1'), T('Beneïu el Senyor.')],
+      [
+        T(
+          'Beneïu el Senyor, totes les obres. R. Canteu-li lloances per sempre.\n\nÀngels del Senyor, beneïu-lo. R. Canteu-li lloances per sempre.',
+        ),
+      ],
+    ]),
+  ).toEqual([
+    ['lector', 'Salmòdia.'],
+    ['cor1', 'Beneïu el Senyor.'],
+    ['cor1', 'Beneïu el Senyor, totes les obres.'],
+    ['cor2', 'Canteu-li lloances per sempre.'],
+    ['cor2', 'Àngels del Senyor, beneïu-lo.'],
+    ['cor2', 'Canteu-li lloances per sempre.'],
+  ]);
+  expect(script('Missa', [[T('R. Guardeu-me, Déu meu, en vós trobo refugi.')]])).toEqual([
+    ['cor2', 'Guardeu-me, Déu meu, en vós trobo refugi.'],
+  ]);
+});
+
+test('a «Cf.» reference is not read, however long', () => {
+  expect(
+    script('Ofici', [[R('RESPONSORI')], [R('Cf. Mt 7, 24; 1Pe 2, 22; 1S 2, 28; Sir 44, 16-17.')], [T('Text.')]]),
+  ).not.toContainEqual(['lector', expect.stringContaining('Cf.')]);
 });
 
 describe('a long paragraph', () => {
