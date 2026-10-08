@@ -5,8 +5,8 @@ import { useTheme } from '../theme';
 import Icon from './Icon';
 
 // The small player at the foot of the prayer while an hour is being read aloud: play or pause, the
-// part being said, how far it is, and the jump to the next part. Touching the rest opens the
-// sheet with everything (ListenSheet).
+// part being said, how far it is, the jump to the next part, and the cross that stops it and takes
+// it away. Touching the rest opens the sheet with everything (ListenSheet).
 interface ListenBarProps {
   playing: boolean;
   // The part being said («Salm 50. Oració de penediment») and what goes under it
@@ -17,9 +17,19 @@ interface ListenBarProps {
   onToggle: () => void;
   onNext: () => void;
   onOpen: () => void;
+  onClose: () => void;
 }
 
-export default function ListenBar({ playing, title, subtitle, progress, onToggle, onNext, onOpen }: ListenBarProps) {
+export default function ListenBar({
+  playing,
+  title,
+  subtitle,
+  progress,
+  onToggle,
+  onNext,
+  onOpen,
+  onClose,
+}: ListenBarProps) {
   const theme = useTheme();
   const { colors } = theme;
   const insets = useSafeAreaInsets();
@@ -69,6 +79,16 @@ export default function ListenBar({ playing, title, subtitle, progress, onToggle
         >
           <Icon name="next" size={24} color={colors.text2} />
         </Pressable>
+        <Pressable
+          testID="listen-close"
+          accessibilityRole="button"
+          accessibilityLabel="Deixa d'escoltar"
+          hitSlop={8}
+          onPress={onClose}
+          style={({ pressed }) => [styles.next, pressed && styles.pressed]}
+        >
+          <Icon name="close" size={22} color={colors.text2} />
+        </Pressable>
       </View>
     </View>
   );
@@ -93,7 +113,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 8,
   },
   toggle: {
     width: 44,

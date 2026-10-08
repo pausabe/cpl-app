@@ -85,7 +85,10 @@ function useListening(hour: string, title: string) {
   const active = state.phase !== 'idle';
   useEffect(() => {
     Listen.refreshListenAvailability();
-  }, []);
+    Listen.loadSpeed();
+    // Leaving the prayer stops it: otherwise Laudes would open reading Completes
+    return () => Listen.leftHour(hour);
+  }, [hour]);
   const onListen = () => {
     // Not yet: it says so, and nothing else happens
     if (!availability.enabled && !active) {
@@ -112,8 +115,11 @@ function useListening(hour: string, title: string) {
       onToggle={Listen.toggle}
       onNext={Listen.nextPart}
       onOpen={() => setSheetOpen(true)}
+      onClose={Listen.stop}
     />
   ) : null;
+  const parts = Listen.partsOf(state.pieces);
+  const currentPart = [...parts].reverse().find((p) => p.index <= state.index)?.index ?? -1;
   const sheet = (
     <ListenSheet
       visible={sheetOpen && active}
@@ -124,10 +130,16 @@ function useListening(hour: string, title: string) {
       progress={labels.progress}
       playing={playing}
       notice={state.notice}
+      parts={parts}
+      currentPart={currentPart}
       speed={state.speed}
+      minSpeed={Listen.MIN_SPEED}
+      maxSpeed={Listen.MAX_SPEED}
+      speedStep={Listen.SPEED_STEP}
       onToggle={Listen.toggle}
       onPrevious={Listen.previousPart}
       onNext={Listen.nextPart}
+      onPart={Listen.jump}
       onSpeed={Listen.setSpeed}
       onStop={() => {
         Listen.stop();

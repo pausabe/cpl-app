@@ -1,20 +1,12 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { fontFamilies, useTheme } from '../theme';
 import BottomSheet from './BottomSheet';
-import SegmentedControl from './SegmentedControl';
 import ActionButton from './ActionButton';
 import Icon from './Icon';
 
-// Everything of the hour being read aloud: where it is, the parts back and forth, the pace, and
-// stopping. The voice is synthetic and the sheet says so (Azure asks it of whoever uses its voices).
-export type ListenSpeedChoice = 'slow' | 'normal' | 'fast';
-
-const SPEEDS: { value: ListenSpeedChoice; label: string }[] = [
-  { value: 'slow', label: 'Lenta' },
-  { value: 'normal', label: 'Normal' },
-  { value: 'fast', label: 'Ràpida' },
-];
+// Everything of the hour being read aloud: where it is, the parts to go to (one by one, or any of
+// them from the list), the pace, and stopping.
 
 interface ListenSheetProps {
   visible: boolean;
@@ -29,16 +21,24 @@ interface ListenSheetProps {
   playing: boolean;
   // Why the phone's own voice is reading, if it is
   notice: string | null;
-  speed: ListenSpeedChoice;
+  // The parts of the hour, and which one is being said
+  parts: { index: number; title: string }[];
+  currentPart: number;
+  // Percentage of the normal pace, and its limits
+  speed: number;
+  minSpeed: number;
+  maxSpeed: number;
+  speedStep: number;
   onToggle: () => void;
   onPrevious: () => void;
   onNext: () => void;
-  onSpeed: (speed: ListenSpeedChoice) => void;
+  onPart: (index: number) => void;
+  onSpeed: (speed: number) => void;
   onStop: () => void;
 }
 
 export default function ListenSheet(props: ListenSheetProps) {
-  const { visible, onClose, hour, part, time, progress, playing, notice, speed } = props;
+  const { visible, onClose, hour, part, time, progress, playing, notice, parts, currentPart, speed } = props;
   const theme = useTheme();
   const { colors } = theme;
   const control = (name: 'previous' | 'next', label: string, onPress: () => void) => (
@@ -52,6 +52,28 @@ export default function ListenSheet(props: ListenSheetProps) {
       <Icon name={name} size={30} color={colors.text} />
     </Pressable>
   );
+  const step = (sign: 1 | -1) => {
+    const next = speed + sign * props.speedStep;
+    const disabled = next < props.minSpeed || next > props.maxSpeed;
+    return (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={sign > 0 ? 'Més de pressa' : 'Més a poc a poc'}
+        accessibilityState={{ disabled }}
+        disabled={disabled}
+        hitSlop={8}
+        onPress={() => props.onSpeed(next)}
+        style={({ pressed }) => [
+          styles.stepper,
+          { borderColor: colors.border, backgroundColor: colors.chipBackground },
+          disabled && styles.disabled,
+          pressed && styles.pressed,
+        ]}
+      >
+        <Text style={[styles.stepperText, { color: colors.text }]}>{sign > 0 ? '+' : '−'}</Text>
+      </Pressable>
+    );
+  };
   return (
     <BottomSheet visible={visible} onClose={onClose} accessibilityLabel={`Escoltant ${hour}`} testID="listen-sheet">
       <View style={styles.content}>
@@ -81,21 +103,59 @@ export default function ListenSheet(props: ListenSheetProps) {
           {control('next', 'Part següent', props.onNext)}
         </View>
         {notice ? <Text style={[styles.notice, { color: colors.text2 }]}>{notice}</Text> : null}
-        <Text accessibilityRole="header" style={[styles.label, { color: colors.text }]}>
-          Velocitat
-        </Text>
-        <SegmentedControl
-          segments={SPEEDS}
-          value={speed}
-          onChange={props.onSpeed}
-          accessibilityLabel="Velocitat"
-          minHeight={theme.touch.comfortable}
-        />
+        {parts.length > 1 ? (
+          <>
+            <Text accessibilityRole="header" style={[styles.label, { color: colors.text }]}>
+              Parts
+            </Text>
+            <ScrollView style={[styles.parts, { borderColor: colors.border }]} nestedScrollEnabled>
+              {parts.map((p) => {
+                const current = p.index === currentPart;
+                return (
+                  <Pressable
+                    key={p.index}
+                    testID={`listen-part-${p.index}`}
+                    accessibilityRole="button"
+                    accessibilityState={{ selected: current }}
+                    accessibilityLabel={`Ves a ${p.title}`}
+                    onPress={() => props.onPart(p.index)}
+                    style={({ pressed }) => [
+                      styles.partRow,
+                      { borderBottomColor: colors.divider },
+                      current && { backgroundColor: colors.chipBackground },
+                      pressed && styles.pressed,
+                    ]}
+                  >
+                    <Text
+                      numberOfLines={2}
+                      style={[
+                        styles.partText,
+                        { color: current ? colors.accentText : colors.text },
+                        current && styles.partCurrent,
+                      ]}
+                    >
+                      {p.title}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </ScrollView>
+          </>
+        ) : null}
+        <View style={styles.speedRow}>
+          <Text accessibilityRole="header" style={[styles.label, { color: colors.text }]}>
+            Velocitat
+          </Text>
+          <View style={styles.stepperRow}>
+            {step(-1)}
+            <Text style={[styles.speed, { color: colors.text }]}>{`${speed} %`}</Text>
+            {step(1)}
+          </View>
+        </View>
         <View style={styles.buttons}>
           <ActionButton label="Atura" variant="outlined" onPress={props.onStop} style={styles.button} />
           <ActionButton label="Fet" onPress={onClose} style={styles.button} />
         </View>
-        <Text style={[styles.disclosure, { color: colors.text3 }]}>Veu sintètica</Text>
       </View>
     </BottomSheet>
   );
@@ -153,6 +213,55 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: '700',
   },
+  parts: {
+    maxHeight: 220,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderRadius: 12,
+    marginTop: -4,
+  },
+  partRow: {
+    minHeight: 44,
+    justifyContent: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  partText: {
+    fontSize: 15.5,
+  },
+  partCurrent: {
+    fontWeight: '700',
+  },
+  speedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  stepperRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  stepper: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: StyleSheet.hairlineWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stepperText: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginTop: -2,
+  },
+  speed: {
+    fontSize: 17,
+    fontWeight: '600',
+    minWidth: 62,
+    textAlign: 'center',
+    fontVariant: ['tabular-nums'],
+  },
   buttons: {
     flexDirection: 'row',
     gap: 10,
@@ -161,9 +270,8 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
   },
-  disclosure: {
-    fontSize: 12.5,
-    textAlign: 'center',
+  disabled: {
+    opacity: 0.35,
   },
   pressed: {
     opacity: 0.6,

@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAudioPlayer, setAudioModeAsync, type AudioPlayer, type AudioStatus } from 'expo-audio';
 import { Asset } from 'expo-asset';
 import { StorageFullError, filePieceStore, type PieceStore } from '../services/audio/pieceStore';
@@ -24,9 +25,14 @@ import type { SpeechPiece } from '../view-models/speech/script';
 // not exist, it goes on with the phone's own voice from where it was, and says so.
 
 export type ListenPhase = 'idle' | 'preparing' | 'playing' | 'paused' | 'waiting' | 'finished';
-export type ListenSpeed = 'slow' | 'normal' | 'fast';
-// Pau found the voices' own pace a little slow: «normal» is a touch faster (8 October 2026)
-export const SPEED_RATES: Record<ListenSpeed, number> = { slow: 0.95, normal: 1.05, fast: 1.2 };
+// The pace, as a percentage of the normal one, in steps of 5, kept for the next time. Pau found the
+// voices' own pace a little slow: 100 % is a touch faster than Azure's (8 October 2026).
+export const NORMAL_RATE = 1.05;
+export const SPEED_STEP = 5;
+export const MIN_SPEED = 75;
+export const MAX_SPEED = 150;
+const SPEED_KEY = 'listenSpeed';
+export const rateOf = (percent: number) => (NORMAL_RATE * percent) / 100;
 
 export interface ListenState {
   phase: ListenPhase;
@@ -43,7 +49,8 @@ export interface ListenState {
   mode: 'audio' | 'device';
   // Why the phone's own voice is reading, in a sentence
   notice: string | null;
-  speed: ListenSpeed;
+  // Percentage of the normal pace
+  speed: number;
 }
 
 const IDLE: ListenState = {
@@ -57,7 +64,7 @@ const IDLE: ListenState = {
   progress: 0,
   mode: 'audio',
   notice: null,
-  speed: 'normal',
+  speed: 100,
 };
 
 // It starts as soon as these many pieces from the beginning are here (or all of them, if fewer)
@@ -237,8 +244,36 @@ function indexAt(position: number): number {
   return i;
 }
 
+// The lock screen and the car skip 10 seconds forward or back, natively, without telling the app;
+// the app notices the jump and turns it into a jump to the next or the previous part
+export const REMOTE_SKIP_SECONDS = 10;
+let lastPosition = 0;
+let lastAt = 0;
+let ownSeekUntil = 0;
+
+function remoteSkip(status: AudioStatus): 'next' | 'previous' | null {
+  const now = Date.now();
+  const elapsed = status.playing && lastAt ? ((now - lastAt) / 1000) * rateOf(state.speed) : 0;
+  const jumped = status.currentTime - (lastPosition + elapsed);
+  const before = lastPosition;
+  lastPosition = status.currentTime;
+  lastAt = now;
+  if (now < ownSeekUntil) return null;
+  if (Math.abs(Math.abs(jumped) - REMOTE_SKIP_SECONDS) > 1.5) return null;
+  // Undone where it was, so that «previous» is decided from there
+  lastPosition = before;
+  return jumped > 0 ? 'next' : 'previous';
+}
+
 function onStatus(status: AudioStatus) {
   if (!session || state.mode !== 'audio' || !session.file) return;
+  const skip = remoteSkip(status);
+  if (skip) {
+    set({ position: lastPosition, index: indexAt(lastPosition) });
+    if (skip === 'next') nextPart();
+    else previousPart();
+    return;
+  }
   const index = indexAt(status.currentTime);
   if (index !== state.index && player) {
     try {
@@ -263,7 +298,9 @@ async function load(file: HourFile, at: number, play: boolean) {
   const previous = session?.file?.uri ?? null;
   if (session) session.file = file;
   p.replace({ uri: file.uri });
-  p.setPlaybackRate(SPEED_RATES[state.speed]);
+  p.setPlaybackRate(rateOf(state.speed));
+  ownSeekUntil = Date.now() + 1500;
+  lastPosition = at;
   if (at > 0) await p.seekTo(at);
   if (play) p.play();
   if (previous && previous !== file.uri) forgetHourFile(previous);
@@ -315,7 +352,7 @@ function startDevice(from: number, notice: string) {
     current.pieces.map((p, i) => ({ text: p.text, pause: p.pause, male: state.pieces[i]?.voice.includes('Enric') })),
     from,
     {
-      rate: SPEED_RATES[state.speed],
+      rate: rateOf(state.speed),
       onPiece: (index) => current === session && set({ index }),
       onDone: () => current === session && set({ phase: 'finished' }),
     },
@@ -408,6 +445,8 @@ export function jump(index: number) {
   }
   const file = session.file;
   if (!player || !file || target >= file.count) return;
+  ownSeekUntil = Date.now() + 1500;
+  lastPosition = file.starts[target];
   player.seekTo(file.starts[target]);
   set({ index: target, position: file.starts[target] });
 }
@@ -427,11 +466,36 @@ export function previousPart() {
   jump(into > 3 ? current : before);
 }
 
-export function setSpeed(speed: ListenSpeed) {
+export function setSpeed(percent: number) {
+  const speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, Math.round(percent / SPEED_STEP) * SPEED_STEP));
   set({ speed });
+  AsyncStorage.setItem(SPEED_KEY, String(speed)).catch(() => undefined);
   if (state.mode === 'device') {
     if (state.phase === 'playing') startDevice(state.index, state.notice ?? NOTICES.offline);
-  } else player?.setPlaybackRate(SPEED_RATES[speed]);
+  } else player?.setPlaybackRate(rateOf(speed));
+}
+
+// The pace chosen last time
+export async function loadSpeed() {
+  try {
+    const saved = parseInt((await AsyncStorage.getItem(SPEED_KEY)) ?? '', 10);
+    if (saved >= MIN_SPEED && saved <= MAX_SPEED) set({ speed: saved });
+  } catch {
+    // The normal pace
+  }
+}
+
+// The parts of the hour, for choosing where to go: the title the reader says and where it starts
+export function partsOf(pieces: SpeechPiece[]): { index: number; title: string }[] {
+  return partStarts(pieces)
+    .filter((i) => pieces[i] && (pieces[i].kind === 'secció' || pieces[i].kind === 'títol'))
+    .map((index) => ({ index, title: pieces[index].text.replace(/\.$/, '') }));
+}
+
+// The screen of an hour was left: if that hour is the one being read, it stops (otherwise, opening
+// Laudes would go on reading Completes)
+export function leftHour(hour: string) {
+  if (state.hour === hour) stop();
 }
 
 export function stop() {

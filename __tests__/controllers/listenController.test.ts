@@ -61,7 +61,7 @@ test('an hour the phone already has plays at once, with the part on the lock scr
   expect(state.mode).toBe('audio');
   expect(state.seconds).toBeCloseTo(12 * 1.488, 0);
   expect(player().calls.map((c: unknown[]) => c[0])).toEqual(['replace', 'rate', 'play']);
-  expect(player().playbackRate).toBe(Listen.SPEED_RATES.normal);
+  expect(player().playbackRate).toBe(Listen.NORMAL_RATE);
   // The part being said, the hour, and the CPL icon as the picture (on the lock screen and in the car)
   expect(player().lockScreen).toMatchObject({ title: 'Part 0', artist: 'CPL', albumTitle: 'Laudes' });
   expect(player().lockScreen.artworkUrl).toEqual(expect.any(String));
@@ -135,6 +135,63 @@ test('stopping lets everything go: the lock screen and the file of the hour', as
   expect(Listen.getListenState().phase).toBe('idle');
   expect(player().lockScreen).toBeNull();
   expect(jest.requireMock('expo-file-system').__files.has(file)).toBe(false);
+});
+
+test('the parts of the hour, to choose where to go', () => {
+  expect(Listen.partsOf(script(12))).toEqual([
+    { index: 0, title: 'Part 0' },
+    { index: 5, title: 'Part 1' },
+    { index: 10, title: 'Part 2' },
+  ]);
+});
+
+test('leaving the prayer that is being read stops it; leaving another one does not', async () => {
+  const pieces = script(10);
+  for (const p of pieces) store.write(p.key, second());
+  await Listen.listen('Completes', 'Completes', pieces);
+
+  Listen.leftHour('Laudes');
+  expect(Listen.getListenState().phase).toBe('playing');
+  Listen.leftHour('Completes');
+  expect(Listen.getListenState().phase).toBe('idle');
+});
+
+test('the pace goes in steps of 5 %, within its limits, and is kept', async () => {
+  const pieces = script(10);
+  for (const p of pieces) store.write(p.key, second());
+  await Listen.listen('Laudes', 'Laudes', pieces);
+
+  Listen.setSpeed(112);
+  expect(Listen.getListenState().speed).toBe(110);
+  expect(player().playbackRate).toBeCloseTo(Listen.rateOf(110));
+  Listen.setSpeed(400);
+  expect(Listen.getListenState().speed).toBe(Listen.MAX_SPEED);
+  const AsyncStorage = jest.requireMock('@react-native-async-storage/async-storage');
+  expect(await AsyncStorage.getItem('listenSpeed')).toBe(String(Listen.MAX_SPEED));
+});
+
+test('the 10 seconds the lock screen or the car skip become a jump to the next or the previous part', async () => {
+  const pieces = script(15);
+  for (const p of pieces) store.write(p.key, second());
+  const now = jest.spyOn(Date, 'now');
+  let clock = 1_000_000;
+  now.mockImplementation(() => clock);
+  await Listen.listen('Laudes', 'Laudes', pieces);
+  player().playing = false;
+
+  clock += 5000;
+  player().emit({ currentTime: 2, playing: false });
+  // The lock screen skips 10 seconds forward: it goes to the next part instead
+  clock += 500;
+  player().emit({ currentTime: 12, playing: false });
+  expect(Listen.getListenState().index).toBe(5);
+  // And 10 back, at the start of a part: to the one before
+  clock += 5000;
+  player().emit({ currentTime: Listen.getListenState().position, playing: false });
+  clock += 500;
+  player().emit({ currentTime: Listen.getListenState().position - 10, playing: false });
+  expect(Listen.getListenState().index).toBe(0);
+  now.mockRestore();
 });
 
 describe('whether it can be heard', () => {

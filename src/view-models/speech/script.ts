@@ -43,7 +43,8 @@ export interface SpeechPiece {
 export const PAUSES = {
   // Between two pieces of one long paragraph
   sentence: 0.3,
-  strophe: 0.7,
+  // A little less than at first: Pau found the strophes too far apart (8 October 2026)
+  strophe: 0.5,
   versicle: 0.45,
   antiphon: 0.9,
   title: 0.6,

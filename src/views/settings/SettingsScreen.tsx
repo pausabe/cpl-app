@@ -234,6 +234,10 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               Política de privacitat
             </Text>
             <Text style={[styles.footerText, { color: colors.text3 }]}>{versionLines(info)}</Text>
+            {/* Azure asks that whoever uses its voices says they are synthetic: here, out of the way */}
+            <Text style={[styles.footerText, { color: colors.text3 }]}>
+              Les veus de la pregària escoltada són sintètiques (Microsoft Azure).
+            </Text>
             {technicalVisible ? (
               <View testID="technical-data">
                 {info.technical.map((line) => (
