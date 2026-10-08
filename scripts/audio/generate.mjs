@@ -74,9 +74,13 @@ const escape = (text) =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&apos;');
 
+// A capital «I» on its own is the conjunction at the start of a sentence, but Azure reads it as the
+// Roman numeral: «Primera a tu, infant». In small letters it says «i». cpl-cloud does the same.
+export const lowerI = (text) => text.replace(/(?<![\wÀ-ÿ·’'])I(?![\wÀ-ÿ·’'])/g, 'i');
+
 // The words, with the lexicon's ones wrapped in their pronunciation; and which ones they were
 function bodyOf(text) {
-  let body = escape(text);
+  let body = escape(lowerI(text));
   const used = [];
   for (const [word, ipa] of Object.entries(lexicon)) {
     const pattern = new RegExp(`(?<![\\wÀ-ÿ])(${word})(?![\\wÀ-ÿ])`, 'gi');
