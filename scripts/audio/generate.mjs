@@ -44,7 +44,8 @@ const bucket = opt('bucket', 'cpl-cloud-audio');
 const upload = !flag('no-upload');
 const wrangler = opt('wrangler', resolve(here, '../../../cpl-cloud/node_modules/.bin/wrangler'));
 const concurrency = parseInt(opt('concurrency', '8'), 10);
-const uploadConcurrency = 16;
+// Cloudflare's API slows down whoever sends too much at once (1,200 requests in 5 minutes)
+const uploadConcurrency = 8;
 
 const env = Object.fromEntries(
   readFileSync(envFile, 'utf8')
@@ -177,7 +178,13 @@ async function uploader() {
     }
     const [key, file] = next;
     let error = await put(key, file);
-    if (error) error = await put(key, file);
+    // Told to slow down, it waits longer each time; anything else is tried once more
+    for (let attempt = 0; error && attempt < 5; attempt++) {
+      const throttled = /throttl|429|rate limit/i.test(error);
+      if (!throttled && attempt > 0) break;
+      await new Promise((r) => setTimeout(r, throttled ? 15000 * 2 ** attempt : 2000));
+      error = await put(key, file);
+    }
     if (error) {
       console.error(`upload failed ${key}: ${error}`);
       continue;
