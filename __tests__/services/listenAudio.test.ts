@@ -6,7 +6,12 @@ jest.mock('expo-file-system', () => require('../helpers/fakeFileSystem'));
 import { FRAME_SECONDS, SILENCE_FRAME, joinHour, mp3Seconds, silence } from '../../src/services/audio/mp3';
 import { AudioLimitError, AudioNetworkError, unpackPieces } from '../../src/services/audio/pieceClient';
 import { downloadPieces, readyFromStart } from '../../src/services/audio/hourAudio';
-import { filePieceStore, MAX_STORED_BYTES } from '../../src/services/audio/pieceStore';
+import {
+  FREE_SPACE_FLOOR,
+  MAX_STORED_BYTES,
+  StorageFullError,
+  filePieceStore,
+} from '../../src/services/audio/pieceStore';
 
 const { Directory } = jest.requireMock('expo-file-system');
 
@@ -147,5 +152,41 @@ describe('the pieces kept on the phone', () => {
     expect(store.has('c'.repeat(24))).toBe(false);
     expect(store.has('e'.repeat(24))).toBe(true);
     expect(store.bytes()).toBeLessThanOrEqual(MAX_STORED_BYTES);
+  });
+});
+
+describe('a phone short of space', () => {
+  const MB = 1024 * 1024;
+
+  test('the pieces never leave it with less than the floor free: the oldest make way', () => {
+    // 260 MB free and the floor at 200: room for 60 MB of pieces
+    let free = 260 * MB;
+    const store = filePieceStore(new Directory('mem:/document/audio-short'), () => free);
+    const piece = new Uint8Array(20 * MB);
+    const now = jest.spyOn(Date, 'now');
+    now.mockReturnValue(1);
+    store.write('a'.repeat(24), piece);
+    free -= 20 * MB;
+    now.mockReturnValue(2);
+    store.write('b'.repeat(24), piece);
+    free -= 20 * MB;
+    now.mockReturnValue(3);
+    store.write('c'.repeat(24), piece);
+    free -= 20 * MB;
+    // The phone is now at the floor: a new piece takes the place of the oldest ones
+    now.mockReturnValue(4);
+    store.write('d'.repeat(24), piece);
+    now.mockRestore();
+
+    expect(store.bytes()).toBeLessThanOrEqual(260 * MB - FREE_SPACE_FLOOR);
+    expect(store.has('d'.repeat(24))).toBe(true);
+    expect(store.has('c'.repeat(24))).toBe(true);
+    expect(store.has('a'.repeat(24))).toBe(false);
+  });
+
+  test('with no room at all, it says so instead of filling the phone', () => {
+    const store = filePieceStore(new Directory('mem:/document/audio-full'), () => FREE_SPACE_FLOOR - 1);
+    expect(() => store.write('a'.repeat(24), new Uint8Array(1024))).toThrow(StorageFullError);
+    expect(store.has('a'.repeat(24))).toBe(false);
   });
 });
