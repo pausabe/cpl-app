@@ -1,15 +1,18 @@
 import { useSyncExternalStore } from 'react';
 import { createAudioPlayer, setAudioModeAsync, type AudioPlayer, type AudioStatus } from 'expo-audio';
-import { filePieceStore, type PieceStore } from '../services/audio/pieceStore';
+import { Asset } from 'expo-asset';
+import { StorageFullError, filePieceStore, type PieceStore } from '../services/audio/pieceStore';
 import {
   downloadPieces,
   forgetHourFile,
+  forgetOldHourFiles,
   readyFromStart,
   writeHourFile,
   type HourFile,
   type ScriptPiece,
 } from '../services/audio/hourAudio';
 import { readWithDeviceVoice, type DeviceReading } from '../services/audio/deviceVoice';
+import { STATUS_MAX_AGE, fetchAudioStatus, savedAudioStatus } from '../services/audio/audioStatus';
 import type { SpeechPiece } from '../view-models/speech/script';
 
 // The prayer read aloud: one hour at a time, for the whole app, so that it goes on when the screen
@@ -64,6 +67,7 @@ export const NOTICES = {
   offline: 'Sense connexió: ho llegeix la veu del telèfon.',
   limited: "Ara no es pot baixar l'àudio: ho llegeix la veu del telèfon.",
   missing: "Aquesta hora encara no té tot l'àudio: ho llegeix la veu del telèfon.",
+  noSpace: "El mòbil no té prou espai lliure per a l'àudio: ho llegeix la veu del telèfon.",
 };
 
 // --- The store the screens read ---------------------------------------------------------------
@@ -86,6 +90,46 @@ export function subscribeListen(listener: Listener) {
 }
 export const useListen = () => useSyncExternalStore(subscribeListen, getListenState, getListenState);
 
+// --- Whether it can be heard ----------------------------------------------------------------
+
+// cpl-api says whether the prayer can be heard (services/audio/audioStatus); until it has said
+// anything, it can (with no network, the phone's own voice reads it)
+export interface ListenAvailability {
+  enabled: boolean;
+  message: string | null;
+}
+
+const availabilityListeners = new Set<Listener>();
+let availability: ListenAvailability = { enabled: true, message: null };
+let lastCheck = -Infinity;
+
+function setAvailability(next: ListenAvailability) {
+  if (next.enabled === availability.enabled && next.message === availability.message) return;
+  availability = next;
+  availabilityListeners.forEach((listener) => listener());
+}
+
+export const getListenAvailability = () => availability;
+export function subscribeListenAvailability(listener: Listener) {
+  availabilityListeners.add(listener);
+  return () => {
+    availabilityListeners.delete(listener);
+  };
+}
+export const useListenAvailability = () =>
+  useSyncExternalStore(subscribeListenAvailability, getListenAvailability, getListenAvailability);
+
+// What was last heard from cpl-api, and a new question if it is a few hours old
+export async function refreshListenAvailability(now = Date.now()) {
+  if (now - lastCheck < STATUS_MAX_AGE) return;
+  lastCheck = now;
+  const saved = await savedAudioStatus();
+  if (saved) setAvailability({ enabled: saved.enabled, message: saved.message });
+  if (saved && now - saved.checkedAt < STATUS_MAX_AGE) return;
+  const fresh = await fetchAudioStatus(now);
+  if (fresh) setAvailability({ enabled: fresh.enabled, message: fresh.message });
+}
+
 // --- What it plays with ---------------------------------------------------------------------
 
 interface Session {
@@ -106,7 +150,13 @@ let store: PieceStore | null = null;
 let player: AudioPlayer | null = null;
 let session: Session | null = null;
 
-const pieceStore = () => (store ??= filePieceStore());
+function pieceStore(): PieceStore {
+  if (!store) {
+    store = filePieceStore();
+    forgetOldHourFiles();
+  }
+  return store;
+}
 
 function audioPlayer(): AudioPlayer {
   if (player) return player;
@@ -125,12 +175,37 @@ export function resetListen(testStore?: PieceStore) {
   store = testStore ?? null;
   player = null;
   state = IDLE;
+  availability = { enabled: true, message: null };
+  lastCheck = -Infinity;
 }
 
 // Where each part of the hour starts (the titles the reader says), for jumping from part to part
 function partStarts(pieces: SpeechPiece[]): number[] {
   const starts = pieces.map((p, i) => (p.kind === 'secció' || p.kind === 'títol' ? i : -1)).filter((i) => i >= 0);
   return starts.length && starts[0] === 0 ? starts : [0, ...starts];
+}
+
+// The picture of the lock screen and the car: the CPL icon, as a file of the phone
+let artwork: string | null = null;
+async function loadArtwork(): Promise<string> {
+  if (artwork !== null) return artwork;
+  try {
+    const asset = Asset.fromModule(require('../assets/icon/icon.png'));
+    await asset.downloadAsync();
+    artwork = asset.localUri ?? asset.uri ?? '';
+  } catch {
+    artwork = '';
+  }
+  return artwork;
+}
+
+function metadata(index: number) {
+  return {
+    title: partTitle(index),
+    artist: 'CPL',
+    albumTitle: state.title,
+    ...(artwork ? { artworkUrl: artwork } : {}),
+  };
 }
 
 // What the lock screen and the car say: the part being said
@@ -146,11 +221,7 @@ function lockScreen(active: boolean) {
   if (!player) return;
   try {
     if (active) {
-      player.setActiveForLockScreen(
-        true,
-        { title: partTitle(state.index), artist: 'CPL', albumTitle: state.title },
-        { showSeekForward: true, showSeekBackward: true },
-      );
+      player.setActiveForLockScreen(true, metadata(state.index), { showSeekForward: true, showSeekBackward: true });
     } else {
       player.clearLockScreenControls();
     }
@@ -171,7 +242,7 @@ function onStatus(status: AudioStatus) {
   const index = indexAt(status.currentTime);
   if (index !== state.index && player) {
     try {
-      player.updateLockScreenMetadata({ title: partTitle(index), artist: 'CPL', albumTitle: state.title });
+      player.updateLockScreenMetadata(metadata(index));
     } catch {
       // The lock screen keeps the title it had
     }
@@ -205,7 +276,13 @@ async function grow(current: Session) {
   if (current !== session || !current.file || ready <= current.file.count) return;
   const waiting = state.phase === 'waiting';
   const at = waiting ? current.file.seconds : (player?.currentTime ?? state.position);
-  const file = await writeHourFile(current.pieces, ready, pieceStore());
+  let file: HourFile;
+  try {
+    file = await writeHourFile(current.pieces, ready, pieceStore());
+  } catch (error) {
+    if (error instanceof StorageFullError) return startDevice(state.index, NOTICES.noSpace);
+    throw error;
+  }
   if (current !== session) return forgetHourFile(file.uri);
   await load(file, at, waiting || state.phase === 'playing');
   if (waiting) set({ phase: 'playing' });
@@ -213,8 +290,15 @@ async function grow(current: Session) {
 
 async function startAudio(current: Session) {
   const ready = readyFromStart(current.pieces, pieceStore());
-  const file = await writeHourFile(current.pieces, ready, pieceStore());
+  let file: HourFile;
+  try {
+    file = await writeHourFile(current.pieces, ready, pieceStore());
+  } catch (error) {
+    if (error instanceof StorageFullError) return startDevice(0, NOTICES.noSpace);
+    throw error;
+  }
   if (current !== session) return forgetHourFile(file.uri);
+  await loadArtwork();
   await load(file, 0, true);
   set({ phase: 'playing', index: 0, position: 0 });
   lockScreen(true);
@@ -278,7 +362,14 @@ export async function listen(hour: string, title: string, pieces: SpeechPiece[])
   if (current !== session) return;
   if (readyFromStart(script, pieceStore()) === script.length) return;
   // Something will not come: from where it is, the phone's own voice
-  const notice = download.offline ? NOTICES.offline : download.limited ? NOTICES.limited : NOTICES.missing;
+  if (state.mode === 'device') return;
+  const notice = download.noSpace
+    ? NOTICES.noSpace
+    : download.offline
+      ? NOTICES.offline
+      : download.limited
+        ? NOTICES.limited
+        : NOTICES.missing;
   startDevice(started ? state.index : 0, notice);
 }
 

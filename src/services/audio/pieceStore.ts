@@ -4,7 +4,30 @@ import { Directory, File, Paths } from 'expo-file-system';
 // downloaded again, and so that an hour that is all here plays with no network. They are kept in the
 // app's documents (the system does not empty them by itself), up to a ceiling: past it, the pieces
 // not heard for longest go first. An index says how big each one is and when it was last used.
+//
+// The phone's own space comes first: the pieces never leave it with less than FREE_SPACE_FLOOR free.
+// On a full phone the oldest pieces make room for the new ones, and if there is still no room (or the
+// system refuses to write) the hour is read with the phone's own voice (StorageFullError).
 export const MAX_STORED_BYTES = 150 * 1024 * 1024;
+export const FREE_SPACE_FLOOR = 200 * 1024 * 1024;
+
+export class StorageFullError extends Error {}
+
+// How much the pieces may take: the ceiling, or less if the phone is short of space. What they take
+// already counts as room, because the oldest ones can make way for new ones.
+export function allowedBytes(stored: number, free: number): number {
+  return Math.min(MAX_STORED_BYTES, stored + Math.max(0, free - FREE_SPACE_FLOOR));
+}
+
+// What the system says is free; if it cannot say, as if there were plenty (the ceiling still holds)
+function freeSpace(): number {
+  try {
+    const free = Paths.availableDiskSpace;
+    return typeof free === 'number' && free >= 0 ? free : Number.MAX_SAFE_INTEGER;
+  } catch {
+    return Number.MAX_SAFE_INTEGER;
+  }
+}
 
 export interface PieceStore {
   has(key: string): boolean;
@@ -19,7 +42,10 @@ export interface PieceStore {
 
 type Index = Record<string, [bytes: number, usedAt: number]>;
 
-export function filePieceStore(folder: Directory = new Directory(Paths.document, 'audio')): PieceStore {
+export function filePieceStore(
+  folder: Directory = new Directory(Paths.document, 'audio'),
+  free: () => number = freeSpace,
+): PieceStore {
   let index: Index | null = null;
   const indexFile = () => new File(folder, 'index.json');
   const pieceFile = (key: string) => new File(folder, `${key}.mp3`);
@@ -56,15 +82,15 @@ export function filePieceStore(folder: Directory = new Directory(Paths.document,
     },
     write(key, bytes, keep = new Set()) {
       const entries = load();
-      pieceFile(key).write(bytes);
-      entries[key] = [bytes.length, Date.now()];
       let size = total();
-      if (size > MAX_STORED_BYTES) {
+      const allowed = allowedBytes(size, free());
+      // Room first, from the pieces not heard for longest (never those of the hour)
+      if (size + bytes.length > allowed) {
         const oldest = Object.entries(entries)
           .filter(([k]) => !keep.has(k) && k !== key)
           .sort((a, b) => a[1][1] - b[1][1]);
         for (const [k, [b]] of oldest) {
-          if (size <= MAX_STORED_BYTES * 0.9) break;
+          if (size + bytes.length <= allowed * 0.9) break;
           try {
             pieceFile(k).delete();
           } catch {
@@ -73,7 +99,15 @@ export function filePieceStore(folder: Directory = new Directory(Paths.document,
           delete entries[k];
           size -= b;
         }
+        save();
+        if (size + bytes.length > allowed) throw new StorageFullError('no room for the audio');
       }
+      try {
+        pieceFile(key).write(bytes);
+      } catch (error) {
+        throw new StorageFullError(String(error));
+      }
+      entries[key] = [bytes.length, Date.now()];
       save();
     },
     touch(keys) {

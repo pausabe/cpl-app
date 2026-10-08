@@ -1,6 +1,6 @@
 import { File, Paths } from 'expo-file-system';
 import { joinHour } from './mp3';
-import type { PieceStore } from './pieceStore';
+import { StorageFullError, type PieceStore } from './pieceStore';
 import {
   AudioLimitError,
   AudioNetworkError,
@@ -24,6 +24,8 @@ export interface Download {
   // cpl-api said it has reached a limit, or the network was not there
   limited: boolean;
   offline: boolean;
+  // The phone has no room for it
+  noSpace?: boolean;
 }
 
 const RETRIES = 2;
@@ -58,6 +60,10 @@ export async function downloadPieces(
         result.missing.push(...missing);
         break;
       } catch (error) {
+        if (error instanceof StorageFullError) {
+          result.noSpace = true;
+          return result;
+        }
         if (error instanceof AudioLimitError) {
           result.limited = true;
           return result;
@@ -105,9 +111,24 @@ export async function writeHourFile(pieces: ScriptPiece[], count: number, store:
   const joined = joinHour(parts);
   // A new name each time: the player keeps the file it was given open
   const file = new File(Paths.cache, `hour-${Date.now()}-${generation++}.mp3`);
-  file.write(joined.bytes);
+  try {
+    file.write(joined.bytes);
+  } catch (error) {
+    throw new StorageFullError(String(error));
+  }
   store.touch(pieces.slice(0, parts.length).map((p) => p.key));
   return { uri: file.uri, starts: joined.starts, seconds: joined.seconds, count: parts.length };
+}
+
+// The files of hours left behind by an app that was closed while playing
+export function forgetOldHourFiles() {
+  try {
+    for (const entry of Paths.cache.list()) {
+      if (entry instanceof File && /\/hour-[^/]*\.mp3$/.test(entry.uri)) entry.delete();
+    }
+  } catch {
+    // Nothing to clean
+  }
 }
 
 // The files of hours played before, which nobody needs any more

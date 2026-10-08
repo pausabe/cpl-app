@@ -17,9 +17,11 @@ interface HeaderButtonProps {
   icon?: IconName;
   text?: string;
   testID?: string;
+  // Faded, for what cannot be done yet: it can still be touched, and it says why
+  dimmed?: boolean;
 }
 
-export default function HeaderButton({ accessibilityLabel, onPress, icon, text, testID }: HeaderButtonProps) {
+export default function HeaderButton({ accessibilityLabel, onPress, icon, text, testID, dimmed }: HeaderButtonProps) {
   const theme = useTheme();
   const color = theme.colors.onHeader;
   const inSystemCapsule = Platform.OS === 'ios' && parseInt(String(Platform.Version), 10) >= 26;
@@ -33,6 +35,7 @@ export default function HeaderButton({ accessibilityLabel, onPress, icon, text, 
       style={({ pressed }) => [
         styles.button,
         text && !inSystemCapsule ? styles.withPill : null,
+        dimmed ? styles.dimmed : null,
         pressed ? styles.pressed : null,
       ]}
     >
@@ -68,6 +71,9 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.6,
+  },
+  dimmed: {
+    opacity: 0.45,
   },
   pill: {
     height: 34,

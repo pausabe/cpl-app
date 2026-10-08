@@ -60,7 +60,9 @@ test('an hour the phone already has plays at once, with the part on the lock scr
   expect(state.seconds).toBeCloseTo(12 * 1.488, 0);
   expect(player().calls.map((c: unknown[]) => c[0])).toEqual(['replace', 'rate', 'play']);
   expect(player().playbackRate).toBe(Listen.SPEED_RATES.normal);
-  expect(player().lockScreen).toEqual({ title: 'Part 0', artist: 'CPL', albumTitle: 'Laudes' });
+  // The part being said, the hour, and the CPL icon as the picture (on the lock screen and in the car)
+  expect(player().lockScreen).toMatchObject({ title: 'Part 0', artist: 'CPL', albumTitle: 'Laudes' });
+  expect(player().lockScreen.artworkUrl).toEqual(expect.any(String));
   expect(fakeAudio.__modes[0]).toMatchObject({ shouldPlayInBackground: true, playsInSilentMode: true });
 });
 
@@ -131,4 +133,29 @@ test('stopping lets everything go: the lock screen and the file of the hour', as
   expect(Listen.getListenState().phase).toBe('idle');
   expect(player().lockScreen).toBeNull();
   expect(jest.requireMock('expo-file-system').__files.has(file)).toBe(false);
+});
+
+describe('whether it can be heard', () => {
+  const AsyncStorage = jest.requireMock('@react-native-async-storage/async-storage');
+  const answer = (body: unknown) =>
+    jest.spyOn(global, 'fetch').mockResolvedValue({ ok: true, json: async () => body } as Response);
+
+  afterEach(() => jest.restoreAllMocks());
+
+  test('cpl-api says it is off: it stays off, with its message, and is not asked again for hours', async () => {
+    await AsyncStorage.clear();
+    const ask = answer({ enabled: false, message: 'Arriba aviat.' });
+
+    await Listen.refreshListenAvailability(1_000_000);
+    expect(Listen.getListenAvailability()).toEqual({ enabled: false, message: 'Arriba aviat.' });
+    await Listen.refreshListenAvailability(1_000_000 + 60_000);
+    expect(ask).toHaveBeenCalledTimes(1);
+  });
+
+  test('with no answer yet (no network), it can: the phone’s own voice reads then', async () => {
+    await AsyncStorage.clear();
+    jest.spyOn(global, 'fetch').mockRejectedValue(new Error('offline'));
+    await Listen.refreshListenAvailability(2_000_000);
+    expect(Listen.getListenAvailability().enabled).toBe(true);
+  });
 });

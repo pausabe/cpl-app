@@ -10,6 +10,7 @@ import { useTextSettings } from './appearanceSettings';
 import { SpeechSink } from '../components/SpeechSink';
 import ListenBar from '../components/ListenBar';
 import ListenSheet from '../components/ListenSheet';
+import ListenUnavailableDialog from '../components/ListenUnavailableDialog';
 import { clearScreenSpeech, getScreenSpeech, setScreenSpeech } from './speechStore';
 import * as Listen from './listenController';
 import { speechScript } from '../view-models/speech/script';
@@ -39,8 +40,9 @@ export interface MassRouteParams {
   useVespersTexts: boolean;
 }
 
-// The two buttons of the top bar: alike, side by side (on iOS 26, in one capsule of glass)
-function useHeaderButtons(navigation: any, onListen: () => void) {
+// The two buttons of the top bar: alike, side by side (on iOS 26, in one capsule of glass). The
+// headphones are faded while the prayer cannot be heard yet.
+function useHeaderButtons(navigation: any, onListen: () => void, listenDimmed: boolean) {
   const [open, setOpen] = useState(false);
   const textSettings = useTextSettings();
   // The bar is set up once; what the headphones do changes with what is playing
@@ -56,6 +58,7 @@ function useHeaderButtons(navigation: any, onListen: () => void) {
             icon="headphones"
             accessibilityLabel="Escolta la pregària"
             testID="listen-button"
+            dimmed={listenDimmed}
             onPress={() => listen.current()}
           />
           <HeaderButton
@@ -67,7 +70,7 @@ function useHeaderButtons(navigation: any, onListen: () => void) {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, listenDimmed]);
   return <TextSettingsSheet visible={open} onClose={() => setOpen(false)} {...textSettings} />;
 }
 
@@ -76,9 +79,19 @@ function useHeaderButtons(navigation: any, onListen: () => void) {
 // they open the sheet.
 function useListening(hour: string, title: string) {
   const state = Listen.useListen();
+  const availability = Listen.useListenAvailability();
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [unavailable, setUnavailable] = useState(false);
   const active = state.phase !== 'idle';
+  useEffect(() => {
+    Listen.refreshListenAvailability();
+  }, []);
   const onListen = () => {
+    // Not yet: it says so, and nothing else happens
+    if (!availability.enabled && !active) {
+      setUnavailable(true);
+      return;
+    }
     if (active && state.hour === hour && state.phase !== 'finished') {
       setSheetOpen(true);
       return;
@@ -122,7 +135,14 @@ function useListening(hour: string, title: string) {
       }}
     />
   );
-  return { onListen, bar, sheet };
+  const notice = (
+    <ListenUnavailableDialog
+      visible={unavailable}
+      message={availability.message}
+      onDismiss={() => setUnavailable(false)}
+    />
+  );
+  return { onListen, bar, sheet, notice, dimmed: !availability.enabled && !active };
 }
 
 // The sink the PrayerFlow of the screen hands its paragraphs to, kept under the name of the hour
@@ -148,7 +168,7 @@ function chooseVirginAntiphon(antiphon: string) {
 export function HoursPrayerController({ route, navigation }: { route: { params: HoursRouteParams }; navigation: any }) {
   const { hours, day, settings } = useLiturgy();
   const listening = useListening(route.params.type, route.params.title);
-  const sheet = useHeaderButtons(navigation, listening.onListen);
+  const sheet = useHeaderButtons(navigation, listening.onListen, listening.dimmed);
   const sink = useSpeechSink(route.params.type);
   return (
     <SpeechSink.Provider value={sink}>
@@ -166,6 +186,7 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
       </View>
       {sheet}
       {listening.sheet}
+      {listening.notice}
     </SpeechSink.Provider>
   );
 }
@@ -173,7 +194,7 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
 export function MassPrayerController({ route, navigation }: { route: { params: MassRouteParams }; navigation: any }) {
   const { mass, day } = useLiturgy();
   const listening = useListening('Missa', 'Lectures de la missa');
-  const sheet = useHeaderButtons(navigation, listening.onListen);
+  const sheet = useHeaderButtons(navigation, listening.onListen, listening.dimmed);
   const sink = useSpeechSink('Missa');
   const [showVideos, setShowVideos] = useState(false);
   useEffect(() => {
@@ -198,6 +219,7 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
       </View>
       {sheet}
       {listening.sheet}
+      {listening.notice}
     </SpeechSink.Provider>
   );
 }
