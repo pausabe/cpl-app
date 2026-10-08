@@ -20,6 +20,7 @@ import {
   USE_MY_LOCATION,
 } from '../../view-models/notices';
 import { TechnicalData, technicalReport, versionLines } from '../../view-models/technicalData';
+import { DAY_AUDIO_HELP, type DayAudioLabels } from '../../view-models/speech/dayAudioLabels';
 
 // Configuració: the same six options as always, in three groups. Everything comes from its
 // controller (Controllers/SettingsController), which also saves the changes.
@@ -60,6 +61,9 @@ export interface SettingsScreenProps {
   onShowVideosChange: (enabled: boolean) => void;
   onAskAgainForTheDatabase: () => void;
   onPrivacy: () => void;
+  // Today's audio on the phone beforehand, to pray with no network; null while it cannot be heard
+  dayAudio: DayAudioLabels | null;
+  onDownloadDayAudio: () => void;
 }
 
 const APPROVAL =
@@ -213,6 +217,56 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                   style={[styles.switchRow, styles.tallSwitchRow]}
                 />
               </Card>
+
+              {props.dayAudio ? (
+                <>
+                  {groupLabel('Escoltar la pregària')}
+                  <Card radius={theme.radius.tile}>
+                    <View style={styles.block}>
+                      <Text style={[styles.rowLabel, { color: colors.text }]}>{"Àudio d'avui"}</Text>
+                      <Text style={[styles.help, { color: colors.text3 }]}>{DAY_AUDIO_HELP}</Text>
+                      {props.dayAudio.progress !== null ? (
+                        <View style={[styles.track, { backgroundColor: colors.chipBackground }]}>
+                          <View
+                            style={[
+                              styles.fill,
+                              {
+                                backgroundColor: colors.accentFill,
+                                width: `${Math.round(props.dayAudio.progress * 100)}%`,
+                              },
+                            ]}
+                          />
+                        </View>
+                      ) : null}
+                      {props.dayAudio.status ? (
+                        <Text
+                          testID="day-audio-status"
+                          accessibilityLiveRegion="polite"
+                          style={[styles.dayAudioStatus, { color: colors.text2 }]}
+                        >
+                          {props.dayAudio.status}
+                        </Text>
+                      ) : null}
+                    </View>
+                    {props.dayAudio.action ? (
+                      <Pressable
+                        testID="download-day-audio"
+                        accessibilityRole="button"
+                        onPress={props.onDownloadDayAudio}
+                        style={({ pressed }) => [
+                          styles.locationRow,
+                          { minHeight: theme.touch.min },
+                          pressed ? { backgroundColor: colors.chipBackground } : null,
+                        ]}
+                      >
+                        <Text style={[styles.locationLabel, { color: colors.accentText }]}>
+                          {props.dayAudio.action}
+                        </Text>
+                      </Pressable>
+                    ) : null}
+                  </Card>
+                </>
+              ) : null}
             </View>
           ) : null}
 
@@ -394,6 +448,18 @@ const styles = StyleSheet.create({
   },
   locationLabel: {
     fontSize: 16,
+  },
+  track: {
+    height: 5,
+    borderRadius: 3,
+    overflow: 'hidden',
+  },
+  fill: {
+    height: 5,
+  },
+  dayAudioStatus: {
+    fontSize: 15,
+    lineHeight: 20,
   },
   locationNotice: {
     fontSize: 14,

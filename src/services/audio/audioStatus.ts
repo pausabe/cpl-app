@@ -9,6 +9,8 @@ export interface AudioStatus {
   enabled: boolean;
   // What to say when it is off, if cpl-api wants to say something of its own
   message: string | null;
+  // How many times pieces have been remade with another sound (audioChanges)
+  version: number;
   checkedAt: number;
 }
 
@@ -30,10 +32,11 @@ export async function fetchAudioStatus(now = Date.now()): Promise<AudioStatus | 
   try {
     const response = await callApi('/v1/audio/status');
     if (!response.ok) return null;
-    const body = (await response.json()) as { enabled?: unknown; message?: unknown };
+    const body = (await response.json()) as { enabled?: unknown; message?: unknown; version?: unknown };
     const status: AudioStatus = {
       enabled: body.enabled === true,
       message: typeof body.message === 'string' && body.message.trim() ? body.message.trim() : null,
+      version: Number.isInteger(body.version) && (body.version as number) > 0 ? (body.version as number) : 0,
       checkedAt: now,
     };
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(status));

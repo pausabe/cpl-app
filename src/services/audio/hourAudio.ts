@@ -15,6 +15,8 @@ import {
 // heard before).
 
 export interface ScriptPiece extends WantedPiece {
+  voice: string;
+  text: string;
   pause: number;
 }
 
@@ -31,7 +33,7 @@ export interface Download {
 const RETRIES = 2;
 
 export async function downloadPieces(
-  pieces: ScriptPiece[],
+  pieces: WantedPiece[],
   store: PieceStore,
   {
     onProgress,

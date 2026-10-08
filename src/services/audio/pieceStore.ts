@@ -36,6 +36,8 @@ export interface PieceStore {
   write(key: string, bytes: Uint8Array, keep?: Set<string>): void;
   // Heard now: the last to go
   touch(keys: string[]): void;
+  // Remade with another sound (audioChanges): they will be downloaded again when they are needed
+  forget(keys: string[]): void;
   bytes(): number;
   clear(): void;
 }
@@ -115,6 +117,21 @@ export function filePieceStore(
       const now = Date.now();
       for (const key of keys) if (entries[key]) entries[key][1] = now;
       save();
+    },
+    forget(keys) {
+      const entries = load();
+      let changed = false;
+      for (const key of keys) {
+        if (!(key in entries)) continue;
+        try {
+          pieceFile(key).delete();
+        } catch {
+          // Already gone
+        }
+        delete entries[key];
+        changed = true;
+      }
+      if (changed) save();
     },
     bytes: total,
     clear() {

@@ -14,6 +14,7 @@ import {
 } from '../services/audio/hourAudio';
 import { readWithDeviceVoice, type DeviceReading } from '../services/audio/deviceVoice';
 import { STATUS_MAX_AGE, fetchAudioStatus, savedAudioStatus } from '../services/audio/audioStatus';
+import { forgetChangedPieces } from '../services/audio/audioChanges';
 import type { SpeechPiece } from '../view-models/speech/script';
 
 // The prayer read aloud: one hour at a time, for the whole app, so that it goes on when the screen
@@ -126,7 +127,8 @@ export function subscribeListenAvailability(listener: Listener) {
 export const useListenAvailability = () =>
   useSyncExternalStore(subscribeListenAvailability, getListenAvailability, getListenAvailability);
 
-// What was last heard from cpl-api, and a new question if it is a few hours old
+// What was last heard from cpl-api, and a new question if it is a few hours old. The answer also
+// says whether pieces the phone may have were remade with another sound: those go.
 export async function refreshListenAvailability(now = Date.now()) {
   if (now - lastCheck < STATUS_MAX_AGE) return;
   lastCheck = now;
@@ -134,7 +136,9 @@ export async function refreshListenAvailability(now = Date.now()) {
   if (saved) setAvailability({ enabled: saved.enabled, message: saved.message });
   if (saved && now - saved.checkedAt < STATUS_MAX_AGE) return;
   const fresh = await fetchAudioStatus(now);
-  if (fresh) setAvailability({ enabled: fresh.enabled, message: fresh.message });
+  if (!fresh) return;
+  setAvailability({ enabled: fresh.enabled, message: fresh.message });
+  await forgetChangedPieces(fresh.version, pieceStore()).catch(() => undefined);
 }
 
 // --- What it plays with ---------------------------------------------------------------------
@@ -157,7 +161,9 @@ let store: PieceStore | null = null;
 let player: AudioPlayer | null = null;
 let session: Session | null = null;
 
-function pieceStore(): PieceStore {
+// The pieces kept on the phone: those of the hours heard, and those of a day downloaded beforehand
+// (dayAudioController)
+export function pieceStore(): PieceStore {
   if (!store) {
     store = filePieceStore();
     forgetOldHourFiles();

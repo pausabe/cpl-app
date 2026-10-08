@@ -25,6 +25,8 @@ import * as Clipboard from 'expo-clipboard';
 import AppThemeProvider from '../../src/controllers/AppThemeProvider';
 import { loadDay } from '../helpers/liturgyDay';
 import { METRICS, styleOf } from '../helpers/renderWithTheme';
+import * as DayAudio from '../../src/controllers/dayAudioController';
+import * as Listen from '../../src/controllers/listenController';
 
 async function open() {
   LiturgyStore.publish();
@@ -321,4 +323,26 @@ test('finding the diocese they already had changes nothing and says so', async (
 
   expect(await screen.findByText('Ja tenies la diòcesi d’on ets ara.')).toBeTruthy();
   expect(await AsyncStorage.getItem('diocesis')).toBe('Girona');
+});
+
+test("today's audio is downloaded from here, to pray with no network, while the prayer can be heard", async () => {
+  const download = jest.spyOn(DayAudio, 'downloadDayAudio').mockResolvedValue(undefined);
+  await open();
+
+  expect(screen.getByRole('header', { name: 'Escoltar la pregària' })).toBeTruthy();
+  expect(screen.getByText(/per escoltar-les sense connexió/)).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: "Baixa l'àudio d'avui" }));
+
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  expect(download).toHaveBeenCalledWith(`${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`);
+  download.mockRestore();
+});
+
+test('while the prayer cannot be heard (cpl-api has it off), there is nothing to download', async () => {
+  jest.spyOn(Listen, 'useListenAvailability').mockReturnValue({ enabled: false, message: null });
+  await open();
+
+  expect(screen.queryByRole('header', { name: 'Escoltar la pregària' })).toBeNull();
+  jest.restoreAllMocks();
 });

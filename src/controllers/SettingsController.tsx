@@ -25,6 +25,9 @@ import { askAgainOnTheNextOpening, knownEditions, prepareEdition } from '../serv
 import { useTextSettings } from './appearanceSettings';
 import { autoselectDiocese } from './dioceseAutoselection';
 import { obtainPlaceOptions, PlaceOptions, resolvePlace } from '../services/calendarService';
+import { dayAudioLabels } from '../view-models/speech/dayAudioLabels';
+import { refreshListenAvailability, useListenAvailability } from './listenController';
+import { checkDayAudio, downloadDayAudio, useDayAudio } from './dayAudioController';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
 // (SettingsService). The language of the texts, the Latin hymns, the diocese and the place change
@@ -32,6 +35,12 @@ import { obtainPlaceOptions, PlaceOptions, resolvePlace } from '../services/cale
 // at once.
 
 const PRIVACY_URL = 'https://www.cpl.es/politica-de-privacidad/';
+
+// Today on the phone, as cpl-api names the days of the audio
+function todayName(now = new Date()): string {
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
 
 // The dioceses and places of before; a database with calendars brings its own (see calendarService)
 const DIOCESES = Object.values(DioceseName) as string[];
@@ -118,6 +127,14 @@ export default function SettingsController() {
   const [options, setOptions] = useState<PlaceOptions>(FIXED_OPTIONS);
   const [editions, setEditions] = useState<string[]>([]);
   const [editionStatus, setEditionStatus] = useState<EditionStatus>('idle');
+  // Today's audio, downloaded beforehand: only while the prayer can be heard
+  const listenAvailability = useListenAvailability();
+  const dayAudio = useDayAudio();
+  const today = todayName();
+  useEffect(() => {
+    refreshListenAvailability().catch(() => undefined);
+    checkDayAudio(today).catch(() => undefined);
+  }, [today]);
 
   const show = ({ others: values, options: fromDatabase, editions: choices }: Loaded) => {
     setOthers(values);
@@ -253,6 +270,14 @@ export default function SettingsController() {
           askAgainOnTheNextOpening().catch(() => undefined);
         }}
         onPrivacy={() => setPrivacyVisible(true)}
+        dayAudio={
+          listenAvailability.enabled
+            ? dayAudioLabels(dayAudio.day === today ? dayAudio.phase : 'idle', dayAudio.progress)
+            : null
+        }
+        onDownloadDayAudio={() => {
+          downloadDayAudio(today).catch(() => undefined);
+        }}
       />
       <WebSheet
         visible={privacyVisible}

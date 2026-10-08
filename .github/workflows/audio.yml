@@ -1,0 +1,68 @@
+# Keeps the audio of the prayer read aloud up to date, without paying anything: it finds every piece
+# the days ahead will need, with the database the phones have, and tells cpl-api. Those it does not
+# have go to its queue, and its cron makes them a few thousand characters a day with Azure's free
+# resource (F0), which says no when the month's characters are over and never charges.
+#
+# It runs every Monday, and the publishing website (cpl-cloud) starts it when a database is
+# published for everyone. Nothing secret is printed: the logs of this repository are public.
+
+name: Audio
+
+on:
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: Why it is run
+        type: string
+        default: a mà
+      days:
+        description: How many days ahead
+        type: string
+        default: '120'
+  schedule:
+    - cron: '17 2 * * 1'
+
+concurrency:
+  group: audio
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    name: Plan the audio
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      EXPO_PUBLIC_CPL_APP_KEY: ${{ secrets.CPL_APP_KEY }}
+      DAYS: ${{ inputs.days || '120' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      # The newest publication for everyone: the texts the phones are praying with
+      - name: Bring the published database
+        run: node scripts/fetchDatabase.mjs
+
+      # A second time for the blocks of days that failed, if any: the days done are not opened again
+      - name: Every piece the days ahead need
+        env:
+          REASON: ${{ inputs.reason || 'cada dilluns' }}
+        run: |
+          echo "Why: $REASON"
+          node scripts/speechSweep.mjs sweep "$(date -u +%F)" "$DAYS"
+          node scripts/speechSweep.mjs sweep "$(date -u +%F)" "$DAYS"
+
+      - name: Tell cpl-api
+        env:
+          CPL_AUDIO_PLAN_TOKEN: ${{ secrets.AUDIO_PLAN_TOKEN }}
+        run: |
+          node scripts/audio/plan.mjs --sweep sweep \
+            --database-version "$(node -p "require('./src/assets/db/cpl-app.db.json').version")"

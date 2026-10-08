@@ -3,15 +3,16 @@ import { API_URL, APP_KEY, APP_KEY_HEADER } from '../cplApi';
 // Asks cpl-api for pieces of audio, up to 30 at once, and reads its answer: every piece one after
 // the other, each with its name, whether it is there and its MP3 (cpl-cloud, src/shared/audio.ts).
 // The voice and the words go with each name, so that a piece that is not there yet is made on the
-// spot. A piece that is still not there comes back as missing.
+// spot. A piece that is still not there comes back as missing. A day downloaded beforehand
+// (dayAudio) asks by name only.
 export const PIECES_PER_REQUEST = 30;
 // An answer is up to a couple of MB: on a slow network it takes more than the usual 15 seconds
 const REQUEST_TIMEOUT = 45000;
 
 export interface WantedPiece {
   key: string;
-  voice: string;
-  text: string;
+  voice?: string;
+  text?: string;
 }
 
 export interface FetchedPieces {
