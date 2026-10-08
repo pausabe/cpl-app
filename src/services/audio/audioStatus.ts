@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { callApi } from '../cplApi';
+import { APP_KEY, callApi } from '../cplApi';
 
 // Whether the prayer can be heard: cpl-api says it (cpl-cloud, audio_config), so that it can be
 // turned on when the audio is ready and off if something goes wrong, without a new app. The phone
@@ -25,6 +25,8 @@ export async function savedAudioStatus(): Promise<AudioStatus | null> {
 }
 
 export async function fetchAudioStatus(now = Date.now()): Promise<AudioStatus | null> {
+  // A build without the key of the app (the tests, a local build) does not ask
+  if (!APP_KEY) return null;
   try {
     const response = await callApi('/v1/audio/status');
     if (!response.ok) return null;

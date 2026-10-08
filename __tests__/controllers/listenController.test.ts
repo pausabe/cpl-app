@@ -2,6 +2,8 @@
 // beginning when the network is slow and grows the file as the rest arrives, and goes on with the
 // phone's own voice, saying so, when there is no network or cpl-api has reached a limit.
 jest.mock('expo-file-system', () => require('../helpers/fakeFileSystem'));
+// A build with the key of the app, which does ask cpl-api whether the prayer can be heard
+jest.mock('../../src/services/cplApi', () => ({ ...jest.requireActual('../../src/services/cplApi'), APP_KEY: 'test' }));
 jest.mock('../../src/services/audio/pieceClient', () => {
   const actual = jest.requireActual('../../src/services/audio/pieceClient');
   return { ...actual, fetchPieces: jest.fn() };
