@@ -41,6 +41,8 @@ export interface SpeechPiece {
 
 // Seconds of silence after each kind of piece
 export const PAUSES = {
+  // Between two pieces of one long paragraph
+  sentence: 0.3,
   strophe: 0.7,
   versicle: 0.45,
   antiphon: 0.9,
@@ -75,6 +77,34 @@ const MASS_TITLES = ['Evangeli', 'Salm responsorial', 'Lectura primera', 'Lectur
 
 const GLORIA_1 = "Glòria al Pare i al Fill i a l'Esperit Sant.";
 const GLORIA_2 = 'Com era al principi, ara i sempre i pels segles dels segles. Amén.';
+
+// A piece is at most this long: a long paragraph of a reading goes in several, cut where a sentence
+// ends. Azure makes up to 10 minutes of audio at a time, and a short piece is quicker to download,
+// to jump to and to keep.
+export const MAX_PIECE_CHARS = 1200;
+
+// The words of a paragraph in pieces no longer than MAX_PIECE_CHARS, cut after a full stop (or a
+// question, a colon, a semicolon), and after a comma only if a sentence is still too long
+export function splitWords(words: string): string[] {
+  if (words.length <= MAX_PIECE_CHARS) return [words];
+  const group = (parts: string[]) => {
+    const out: string[] = [];
+    let current = '';
+    for (const part of parts) {
+      if (current && (current + part).length > MAX_PIECE_CHARS) {
+        out.push(current.trim());
+        current = '';
+      }
+      current += part;
+    }
+    if (current.trim()) out.push(current.trim());
+    return out;
+  };
+  const sentences = words.match(/[^.!?;:]+(?:[.!?;:]+[»”"’)]*\s*|$)/g) ?? [words];
+  return group(sentences).flatMap((piece) =>
+    piece.length <= MAX_PIECE_CHARS ? [piece] : group(piece.match(/[^,]+(?:,\s*|$)/g) ?? [piece]),
+  );
+}
 
 export function pieceKey(voice: string, text: string): string {
   return sha256(`${voice}\n${text}`).slice(0, 24);
@@ -137,7 +167,19 @@ class Builder {
     const words = spoken(text);
     if (!words) return;
     const voice = VOICES[role];
-    this.out.push({ role, voice, text: words, pause, kind, section: this.section, key: pieceKey(voice, words) });
+    const pieces = splitWords(words);
+    pieces.forEach((piece, i) => {
+      const after = i === pieces.length - 1 ? pause : PAUSES.sentence;
+      this.out.push({
+        role,
+        voice,
+        text: piece,
+        pause: after,
+        kind,
+        section: this.section,
+        key: pieceKey(voice, piece),
+      });
+    });
   }
 
   pause(seconds: number) {

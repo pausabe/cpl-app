@@ -17,7 +17,7 @@ const { HOURS, openHour, openMass, press } = require('../helpers/prayerScreens')
 const DataService = require('../../src/services/dataService');
 const LiturgyStore = require('../../src/controllers/liturgyStore');
 const { getScreenSpeech } = require('../../src/controllers/speechStore');
-const { speechScript } = require('../../src/view-models/speech/script');
+const { MAX_PIECE_CHARS, pieceKey, speechScript, splitWords } = require('../../src/view-models/speech/script');
 const { SpecificLiturgyTimeType } = require('../../src/services/celebrationTimeEnums');
 const { StringManagement } = require('../../src/utils/StringManagement');
 
@@ -136,3 +136,20 @@ async function dayPieces(day, profile, into, everyAntiphon) {
   },
   24 * 3600 * 1000,
 );
+
+// A list of pieces made before long paragraphs were cut (MAX_PIECE_CHARS), cut now the way the app
+// cuts them: SPEECH_SPLIT_IN (pieces.json) and SPEECH_SPLIT_OUT
+(process.env.SPEECH_SPLIT_IN ? test : test.skip)('long pieces cut as the app cuts them', () => {
+  const pieces = JSON.parse(fs.readFileSync(process.env.SPEECH_SPLIT_IN, 'utf8'));
+  const out = {};
+  for (const [key, piece] of Object.entries(pieces)) {
+    if (piece.text.length <= MAX_PIECE_CHARS) {
+      out[key] = piece;
+      continue;
+    }
+    for (const text of splitWords(piece.text)) {
+      out[pieceKey(piece.voice, text)] = { voice: piece.voice, text, firstDay: piece.firstDay };
+    }
+  }
+  fs.writeFileSync(process.env.SPEECH_SPLIT_OUT, JSON.stringify(out));
+});

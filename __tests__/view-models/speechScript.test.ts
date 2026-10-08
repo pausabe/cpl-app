@@ -1,7 +1,15 @@
 // Who says each piece of an hour read aloud, and what is said: the rules Pau chose by ear on
 // 8 October 2026 (view-models/speech/script.ts), with made-up words in the places of the real ones.
 import { createHash } from 'crypto';
-import { pieceKey, speechScript, spoken, PAUSES, VOICES } from '../../src/view-models/speech/script';
+import {
+  MAX_PIECE_CHARS,
+  pieceKey,
+  speechScript,
+  splitWords,
+  spoken,
+  PAUSES,
+  VOICES,
+} from '../../src/view-models/speech/script';
 import { sha256 } from '../../src/view-models/speech/sha256';
 import type { SpeechParagraph } from '../../src/view-models/speech/paragraph';
 
@@ -165,4 +173,37 @@ test('the Gospel at Mass: the acclamation by the choirs and the Gospel by the pr
     ['president', 'Lectura de l’evangeli segons sant Lluc'],
     ['president', 'En aquell temps, el text de l’evangeli.'],
   ]);
+});
+
+describe('a long paragraph', () => {
+  const sentence = (n: number) => `Aquesta és la frase número ${n}, que té unes quantes paraules per fer gruix. `;
+  const long = Array.from({ length: 30 }, (_, i) => sentence(i))
+    .join('')
+    .trim();
+
+  test('goes in pieces no longer than the limit, cut where a sentence ends', () => {
+    const pieces = splitWords(long);
+    expect(pieces.length).toBeGreaterThan(1);
+    for (const p of pieces) {
+      expect(p.length).toBeLessThanOrEqual(MAX_PIECE_CHARS);
+      expect(p.endsWith('.')).toBe(true);
+    }
+    expect(pieces.join(' ')).toBe(long);
+  });
+
+  test('a sentence longer than the limit is cut after a comma', () => {
+    const endless = Array.from({ length: 160 }, (_, i) => `clàusula ${i}`).join(', ') + '.';
+    const pieces = splitWords(endless);
+    expect(pieces.length).toBeGreaterThan(1);
+    for (const p of pieces) expect(p.length).toBeLessThanOrEqual(MAX_PIECE_CHARS);
+    expect(pieces.join(' ')).toBe(endless);
+  });
+
+  test('a short silence between its pieces, and the reading’s own after the last', () => {
+    const pieces = speechScript('Ofici', [[R('LECTURES')], [T(long)]], OUR_FATHER);
+    const reading = pieces.filter((p) => p.kind === 'lectura');
+    expect(reading.length).toBeGreaterThan(1);
+    expect(reading.slice(0, -1).every((p) => p.pause === PAUSES.sentence)).toBe(true);
+    expect(reading[reading.length - 1].pause).toBe(PAUSES.reading);
+  });
 });
