@@ -232,15 +232,19 @@ async function uploader() {
 
 let synthesisDone = false;
 let index = 0;
+let reported = 0;
 async function maker() {
   while (index < todo.length && !stopped) {
     const [key, piece] = todo[index++];
     const file = await synthesize(key, piece);
     if (file && upload && !uploaded.has(key)) uploads.push([key, file]);
-    if ((made + 1) % 200 === 0)
+    // Every 200 pieces made, once (while none is made, it says nothing)
+    if (file && made > reported && made % 200 === 0) {
+      reported = made;
       console.log(
         `${index}/${todo.length} pieces · ${made} made, ${charsSent} characters · ${uploadedNow} uploaded (${(bytesUploaded / 1e6).toFixed(1)} MB) · up to ${piece.firstDay}`,
       );
+    }
   }
 }
 
