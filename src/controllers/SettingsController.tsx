@@ -34,7 +34,7 @@ import { checkDayAudio, downloadDayAudio, useDayAudio } from './dayAudioControll
 // the liturgy: the day being shown is loaded again with them. The text size and the dark mode apply
 // at once.
 
-const PRIVACY_URL = 'https://www.cpl.es/politica-de-privacidad/';
+export const PRIVACY_URL = 'https://www.cpl.es/politica-de-privacidad/';
 
 // Today on the phone, as cpl-api names the days of the audio
 function todayName(now = new Date()): string {

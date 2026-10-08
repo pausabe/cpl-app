@@ -100,13 +100,13 @@ test('it opens on today and the whole app can be walked through', async () => {
   await waitFor(() => expect(queryAllPrayerText(gospel).length).toBeGreaterThan(0));
   await goBack(gospel);
 
-  // Home: the contact page opens in a sheet with the web, and "Tanca" closes it; the donation
+  // Home: the message is written in a sheet of the app, and "Tanca" closes it; the donation
   // goes to Stripe in the browser (the tests run as iOS; on Android it is a sheet too)
   fireEvent.press(await findText('Missatge'));
   const sheet = await screen.findByTestId('message-sheet', {}, { timeout: 15000 });
-  expect(within(sheet).getByTestId('webview').props.source).toEqual({ uri: 'https://www.cpl.es/contacto/' });
-  fireEvent.press(within(sheet).getByRole('button', { name: 'Tanca' }));
-  await waitFor(() => expect(screen.queryByTestId('webview')).toBeNull(), { timeout: 15000 });
+  expect(within(sheet).getByTestId('message-text')).toBeTruthy();
+  fireEvent.press(within(sheet).getByTestId('message-sheet-close'));
+  await waitFor(() => expect(screen.queryByTestId('message-text')).toBeNull(), { timeout: 15000 });
   await act(async () => {
     jest.advanceTimersByTime(2000);
   });

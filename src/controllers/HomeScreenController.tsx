@@ -20,6 +20,9 @@ import LatePrayerDialog from '../views/home/LatePrayerDialog';
 import WhatsNewSheet from '../views/home/WhatsNewSheet';
 import DioceseSheet from '../views/home/DioceseSheet';
 import WebSheet from '../components/WebSheet';
+import MessageSheet, { MessageFields, MessageStatus } from '../components/MessageSheet';
+import { emailLooksRight, sendMessage } from '../services/messageService';
+import { PRIVACY_URL } from './SettingsController';
 import { wasOpenedBefore } from './firstRun';
 import LoadError from '../views/home/LoadError';
 import { buildDayCard } from '../view-models/dayCard';
@@ -38,7 +41,8 @@ import { autoselectDiocese, shouldOfferAutoselection } from './dioceseAutoselect
 
 const LOAD_ERROR_MESSAGE =
   "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
-const MESSAGE_URL = 'https://www.cpl.es/contacto/';
+// The message is written in the app and goes to cpl-cloud (MessageSheet), not to the website's form
+const EMPTY_MESSAGE: MessageFields = { text: '', name: '', email: '' };
 const DONATION_URL = 'https://buy.stripe.com/6oE16v3LV6oa7VC4gg';
 
 // The notice "Ara ho tens tot a l'inici", once. Set to false to stop showing it.
@@ -97,6 +101,23 @@ export default function HomeScreenController({ navigation, route }: { navigation
   const [dioceseOffer, setDioceseOffer] = useState<{ texts: DioceseOfferTexts; current: string } | null>(null);
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
   const [webPage, setWebPage] = useState<'message' | 'donation' | null>(null);
+  // What is being written stays if the sheet is closed before sending it, and goes once sent
+  const [message, setMessage] = useState<MessageFields>(EMPTY_MESSAGE);
+  const [messageStatus, setMessageStatus] = useState<MessageStatus>('idle');
+  const sendTheMessage = async () => {
+    if (messageStatus === 'sending' || !message.text.trim()) return;
+    if (!emailLooksRight(message.email)) {
+      setMessageStatus('badEmail');
+      return;
+    }
+    setMessageStatus('sending');
+    setMessageStatus(await sendMessage(message));
+  };
+  const closeMessage = () => {
+    setWebPage(null);
+    if (messageStatus === 'sent') setMessage(EMPTY_MESSAGE);
+    setMessageStatus('idle');
+  };
   const [massChoice, setMassChoice] = useState<{ day: string; choice: MassChoice } | null>(null);
   // Whether this home has loaded the day itself: until then the store may still hold a day
   // loaded before (in the tests, the previous test's), which must not decide the Mass
@@ -379,12 +400,17 @@ export default function HomeScreenController({ navigation, route }: { navigation
         onDonation={onDonation}
         update={appUpdate ? { onOpen: appUpdate.open, onDismiss: appUpdate.dismiss } : null}
       />
-      <WebSheet
+      <MessageSheet
         visible={webPage === 'message'}
-        title="Missatge"
-        url={MESSAGE_URL}
-        onClose={() => setWebPage(null)}
-        testID="message-sheet"
+        onClose={closeMessage}
+        fields={message}
+        onChange={(fields) => {
+          setMessage(fields);
+          if (messageStatus !== 'sending') setMessageStatus('idle');
+        }}
+        status={messageStatus}
+        onSend={sendTheMessage}
+        onPrivacy={() => Linking.openURL(PRIVACY_URL).catch(() => undefined)}
       />
       <WebSheet
         visible={webPage === 'donation'}

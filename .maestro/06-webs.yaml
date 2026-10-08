@@ -1,8 +1,8 @@
 appId: cpl.cpl
-name: "The contact and donation web pages open"
+name: "The message form and the donation web page open"
 ---
 - runFlow: subflows/obrir.yaml
-# A sheet comes up with the website's contact page; «Tanca» closes it. It is tapped by id: the
+# A sheet comes up with the form to write to the CPL; «Tanca» closes it. It is tapped by id: the
 # backdrop behind the sheet is also called «Tanca» (for screen readers) and the sheet covers it.
 - tapOn: "Missatge"
 - assertVisible:

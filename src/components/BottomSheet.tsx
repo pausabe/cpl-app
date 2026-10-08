@@ -1,5 +1,15 @@
-import React, { useLayoutEffect, useRef } from 'react';
-import { Animated, Modal, PanResponder, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  Animated,
+  Keyboard,
+  Modal,
+  PanResponder,
+  Platform,
+  Pressable,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../theme';
 
@@ -7,6 +17,8 @@ import { useTheme } from '../theme';
 // by touching outside it, by pulling it down by the top (where the handle is), with the back
 // button on Android, or with whatever the content offers ("Tanca", "Fet"). It takes 80 % of the
 // height at most: a long content scrolls inside it. A web page takes 92 %, edge to edge (tall).
+// A sheet with something to write in it (avoidKeyboard) sits above the keyboard while it is up,
+// as tall as the room left.
 interface BottomSheetProps {
   visible: boolean;
   onClose: () => void;
@@ -14,6 +26,25 @@ interface BottomSheetProps {
   children?: React.ReactNode;
   testID?: string;
   tall?: boolean;
+  avoidKeyboard?: boolean;
+}
+
+// How tall the keyboard is while it is up, 0 while it is not
+function useKeyboardHeight(enabled: boolean): number {
+  const [keyboard, setKeyboard] = useState(0);
+  useEffect(() => {
+    if (!enabled) return;
+    const show = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hide = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+    const shown = Keyboard.addListener(show, (event) => setKeyboard(event.endCoordinates.height));
+    const hidden = Keyboard.addListener(hide, () => setKeyboard(0));
+    return () => {
+      shown.remove();
+      hidden.remove();
+      setKeyboard(0);
+    };
+  }, [enabled]);
+  return keyboard;
 }
 
 const TALL_HEIGHT_RATIO = 0.92;
@@ -31,10 +62,12 @@ export default function BottomSheet({
   children,
   testID,
   tall = false,
+  avoidKeyboard = false,
 }: BottomSheetProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
+  const keyboard = useKeyboardHeight(avoidKeyboard && visible);
   const rise = useRef(new Animated.Value(0)).current;
   const drag = useRef(new Animated.Value(0)).current;
   // The gesture is created once: it reads these when it is let go
@@ -81,7 +114,7 @@ export default function BottomSheet({
       statusBarTranslucent={true}
       navigationBarTranslucent={true}
     >
-      <View style={styles.root}>
+      <View style={[styles.root, keyboard ? { paddingBottom: keyboard } : null]}>
         <Pressable
           style={[StyleSheet.absoluteFill, { backgroundColor: theme.colors.backdrop }]}
           onPress={onClose}
@@ -98,13 +131,17 @@ export default function BottomSheet({
             {
               ...(tall
                 ? { height: height * TALL_HEIGHT_RATIO }
-                : { maxHeight: height * theme.layout.sheetMaxHeightRatio }),
+                : {
+                    maxHeight: keyboard
+                      ? height - keyboard - insets.top - 12
+                      : height * theme.layout.sheetMaxHeightRatio,
+                  }),
               maxWidth: theme.layout.sheetMaxWidth,
               backgroundColor: theme.colors.sheet,
               borderTopLeftRadius: theme.radius.sheet,
               borderTopRightRadius: theme.radius.sheet,
               paddingHorizontal: padding,
-              paddingBottom: tall ? insets.bottom : Math.max(insets.bottom, 12) + 18,
+              paddingBottom: tall ? insets.bottom : keyboard ? 12 : Math.max(insets.bottom, 12) + 18,
               opacity: rise,
               transform: [
                 {
