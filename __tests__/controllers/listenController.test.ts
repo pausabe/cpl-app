@@ -31,6 +31,8 @@ function script(n: number): SpeechPiece[] {
     kind: i % 5 === 0 ? 'secció' : 'estrofa',
     section: null,
     key: key(i),
+    paragraph: i,
+    strophe: 0,
   }));
 }
 const second = () => silence(1).slice(0, Math.round(1 / FRAME_SECONDS) * 144);

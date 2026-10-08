@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import HoursLiturgyPrayerScreen from '../views/hours-liturgy/HoursLiturgyPrayerScreen';
 import MassLiturgyPrayerScreen from '../views/mass-liturgy/MassLiturgyPrayerScreen';
@@ -8,6 +8,7 @@ import SettingsService from '../services/SettingsService';
 import { getSnapshot, updateSettings, useLiturgy } from './liturgyStore';
 import { useTextSettings } from './appearanceSettings';
 import { SpeechSink } from '../components/SpeechSink';
+import { SpeechFollow } from '../components/SpeechFollow';
 import ListenBar from '../components/ListenBar';
 import ListenSheet from '../components/ListenSheet';
 import ListenUnavailableDialog from '../components/ListenUnavailableDialog';
@@ -105,6 +106,11 @@ function useListening(hour: string, title: string) {
     if (pieces.length) Listen.listen(hour, title, pieces);
   };
   const labels = listenLabels(state);
+  // The paragraph and strophe being read, for the screen to mark them and keep them in sight
+  const reading = active && state.hour === hour && state.phase !== 'finished' ? state.pieces[state.index] : undefined;
+  const paragraph = reading?.paragraph ?? -1;
+  const strophe = reading?.strophe ?? 0;
+  const follow = useMemo(() => (paragraph >= 0 ? { paragraph, strophe } : null), [paragraph, strophe]);
   const playing = state.phase === 'playing' || state.phase === 'preparing' || state.phase === 'waiting';
   const bar = active ? (
     <ListenBar
@@ -154,7 +160,7 @@ function useListening(hour: string, title: string) {
       onDismiss={() => setUnavailable(false)}
     />
   );
-  return { onListen, bar, sheet, notice, dimmed: !availability.enabled && !active };
+  return { onListen, bar, sheet, notice, follow, dimmed: !availability.enabled && !active };
 }
 
 // The sink the PrayerFlow of the screen hands its paragraphs to, kept under the name of the hour
@@ -185,15 +191,17 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
   return (
     <SpeechSink.Provider value={sink}>
       <View style={styles.screen}>
-        <HoursLiturgyPrayerScreen
-          type={route.params.type}
-          celebration={route.params.subtitle}
-          hours={hours}
-          today={day.today}
-          settings={settings}
-          onInvitationPsalmChange={chooseInvitationPsalm}
-          onVirginAntiphonChange={chooseVirginAntiphon}
-        />
+        <SpeechFollow.Provider value={listening.follow}>
+          <HoursLiturgyPrayerScreen
+            type={route.params.type}
+            celebration={route.params.subtitle}
+            hours={hours}
+            today={day.today}
+            settings={settings}
+            onInvitationPsalmChange={chooseInvitationPsalm}
+            onVirginAntiphonChange={chooseVirginAntiphon}
+          />
+        </SpeechFollow.Provider>
         {listening.bar}
       </View>
       {sheet}
@@ -219,14 +227,16 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
   return (
     <SpeechSink.Provider value={sink}>
       <View style={styles.screen}>
-        <MassLiturgyPrayerScreen
-          type={route.params.type}
-          needSecondReading={route.params.needSecondReading}
-          useVespersTexts={route.params.useVespersTexts}
-          mass={mass}
-          today={day.today}
-          showVideos={showVideos}
-        />
+        <SpeechFollow.Provider value={listening.follow}>
+          <MassLiturgyPrayerScreen
+            type={route.params.type}
+            needSecondReading={route.params.needSecondReading}
+            useVespersTexts={route.params.useVespersTexts}
+            mass={mass}
+            today={day.today}
+            showVideos={showVideos}
+          />
+        </SpeechFollow.Provider>
         {listening.bar}
       </View>
       {sheet}

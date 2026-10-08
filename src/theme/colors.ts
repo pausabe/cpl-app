@@ -30,6 +30,8 @@ export interface Palette {
   rubric: string;
   // Behind a sheet or a dialog
   backdrop: string;
+  // Behind the piece of the prayer being read aloud
+  listenHighlight: string;
 }
 
 export const palettes: Record<ColorSchemeName, Palette> = {
@@ -54,6 +56,7 @@ export const palettes: Record<ColorSchemeName, Palette> = {
     switchOff: '#B9C6C5',
     rubric: '#B3261E',
     backdrop: 'rgba(0,0,0,0.42)',
+    listenHighlight: 'rgba(0,123,128,0.12)',
   },
   dark: {
     header: '#006064',
@@ -76,6 +79,7 @@ export const palettes: Record<ColorSchemeName, Palette> = {
     switchOff: '#3A4645',
     rubric: '#F28B82',
     backdrop: 'rgba(0,0,0,0.55)',
+    listenHighlight: 'rgba(127,209,204,0.16)',
   },
 };
 

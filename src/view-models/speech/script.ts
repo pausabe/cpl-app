@@ -37,6 +37,10 @@ export interface SpeechPiece {
   section: string | null;
   // The name of its audio: the same words in the same voice are the same audio anywhere
   key: string;
+  // Where it is on the screen, for following it while it plays: the paragraph it comes from (in the
+  // order the screen hands them) and the strophe of that paragraph (0 if it is not one of several)
+  paragraph: number;
+  strophe: number;
 }
 
 // Seconds of silence after each kind of piece
@@ -124,7 +128,9 @@ export function spoken(text: string): string {
     .trim();
 }
 
-function strophes(text: string): string[] {
+// The strophes of a paragraph: what goes between blank lines. The screen splits them the same way to
+// mark the one being read.
+export function strophes(text: string): string[] {
   return text
     .split(/\n\s*\n/)
     .map((s) => s.trim())
@@ -158,6 +164,9 @@ class Builder {
   section: string | null = null;
   afterTitle = false;
   choir: SpeechRole = 'cor1';
+  // Which paragraph and which of its strophes is being turned into pieces
+  paragraphIndex = 0;
+  stropheIndex = 0;
 
   constructor(
     private hour: string,
@@ -179,6 +188,8 @@ class Builder {
         kind,
         section: this.section,
         key: pieceKey(voice, piece),
+        paragraph: this.paragraphIndex,
+        strophe: this.stropheIndex,
       });
     });
   }
@@ -194,7 +205,8 @@ class Builder {
   }
 
   alternate(text: string, kind: string) {
-    for (const s of strophes(text)) {
+    for (const [i, s] of strophes(text).entries()) {
+      this.stropheIndex = i;
       if (spoken(s).startsWith('Glòria al Pare')) {
         this.gloria(s.includes('Al·leluia'));
         continue;
@@ -305,7 +317,8 @@ class Builder {
     } else if (section === 'MARE DE DÉU') {
       this.say('cor2', t, PAUSES.end, 'antífona');
     } else if (section === 'PREGÀRIES') {
-      for (const s of strophes(t)) {
+      for (const [i, s] of strophes(t).entries()) {
+        this.stropheIndex = i;
         // The presider says the first part and the people the second, after the dash (OGLH 193)
         const dash = /\n\s*—/.exec(s);
         const firstPart = dash ? s.slice(0, dash.index) : s;
@@ -317,7 +330,8 @@ class Builder {
       this.say('president', t, t.trim() === 'Preguem.' ? PAUSES.half : PAUSES.strophe, 'oració');
     } else if (section === 'Salm responsorial') {
       let response: string | null = null;
-      for (let s of strophes(t)) {
+      for (let [i, s] of strophes(t).entries()) {
+        this.stropheIndex = i;
         const r = /^R\.\s*([\s\S]+)$/.exec(s.trim());
         if (r) {
           response = r[1];
@@ -341,7 +355,10 @@ class Builder {
       this.hour === 'Missa' ||
       this.hour === 'Ofici'
     ) {
-      for (const s of strophes(t)) this.say('lector', s, PAUSES.strophe, 'lectura');
+      for (const [i, s] of strophes(t).entries()) {
+        this.stropheIndex = i;
+        this.say('lector', s, PAUSES.strophe, 'lectura');
+      }
       if (t.length > 200) this.pause(PAUSES.reading);
     } else if (section === '' && this.hour === 'Completes' && t.startsWith('Jo confesso')) {
       this.say('cor2', t, PAUSES.end, 'confessió');
@@ -354,6 +371,10 @@ class Builder {
 // The script of one hour («Laudes», «Missa»…) from its paragraphs
 export function speechScript(hour: string, paragraphs: SpeechParagraph[], ourFather: string): SpeechPiece[] {
   const builder = new Builder(hour, ourFather);
-  for (const runs of paragraphs) if (runs.length) builder.paragraph(runs);
+  paragraphs.forEach((runs, i) => {
+    builder.paragraphIndex = i;
+    builder.stropheIndex = 0;
+    if (runs.length) builder.paragraph(runs);
+  });
   return builder.out;
 }

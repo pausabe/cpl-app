@@ -7,6 +7,8 @@ import SectionTitle from './SectionTitle';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../theme';
 import { speechParagraphs } from './speechParagraphs';
 import { SpeechSink } from './SpeechSink';
+import { SpeechFollow } from './SpeechFollow';
+import ListeningFlow from './ListeningFlow';
 
 // Prayer that is selected in one go, from wherever to wherever.
 //
@@ -141,6 +143,16 @@ export default function PrayerFlow({ children, style }: PrayerFlowProps) {
   useEffect(() => {
     if (sink) sink(speechParagraphs(children, theme.colors.rubric));
   });
+
+  // While this prayer is read aloud, each paragraph and strophe on its own, the one read marked
+  const follow = useContext(SpeechFollow);
+  if (follow) {
+    return (
+      <View style={style}>
+        <ListeningFlow follow={follow}>{children}</ListeningFlow>
+      </View>
+    );
+  }
 
   const drawn: ReactNode[] = [];
   let i = 0;

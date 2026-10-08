@@ -20,7 +20,17 @@ function flatten(style: unknown): Style {
 }
 
 export function speechParagraphs(children: ReactNode, rubricColor: string): SpeechParagraph[] {
+  return speechParagraphElements(children, rubricColor).paragraphs;
+}
+
+// The same, with the element of the screen each paragraph comes from, in the same order: what the
+// screen marks while that paragraph is read (ListeningFlow)
+export function speechParagraphElements(
+  children: ReactNode,
+  rubricColor: string,
+): { paragraphs: SpeechParagraph[]; elements: React.ReactElement[] } {
   const paragraphs: SpeechParagraph[] = [];
+  const elements: React.ReactElement[] = [];
 
   // The runs of one text and of the texts inside it, with the look each one inherits
   const runsOf = (node: ReactNode, style: Style, into: SpeechRun[]) => {
@@ -44,8 +54,11 @@ export function speechParagraphs(children: ReactNode, rubricColor: string): Spee
     });
   };
 
-  const add = (runs: SpeechRun[]) => {
-    if (runs.some((run) => run.text.trim() !== '')) paragraphs.push(runs);
+  const add = (runs: SpeechRun[], element: React.ReactElement) => {
+    if (runs.some((run) => run.text.trim() !== '')) {
+      paragraphs.push(runs);
+      elements.push(element);
+    }
   };
 
   const visit = (node: ReactNode) => {
@@ -57,21 +70,21 @@ export function speechParagraphs(children: ReactNode, rubricColor: string): Spee
       } else if (child.type === SectionTitle) {
         const runs: SpeechRun[] = [];
         runsOf(props.children, { color: rubricColor }, runs);
-        add(runs);
+        add(runs, child);
       } else if (child.type === Rubric) {
         const runs: SpeechRun[] = [];
         runsOf(props.label, { color: rubricColor, ...flatten(props.labelStyle) }, runs);
         runsOf(props.children, flatten(props.textStyle), runs);
-        add(runs);
+        add(runs, child);
       } else if (child.type === Text || child.type === PrayerText) {
         const runs: SpeechRun[] = [];
         runsOf(props.children, flatten(props.style), runs);
-        add(runs);
+        add(runs, child);
       }
       // Anything else (a line, a button, a chooser, a video) has nothing to be read
     });
   };
 
   visit(children);
-  return paragraphs;
+  return { paragraphs, elements };
 }
