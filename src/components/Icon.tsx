@@ -4,7 +4,21 @@ import Svg, { Circle, Path, Rect } from 'react-native-svg';
 // Line icons, drawn in the colour they are given. Decorative: whoever uses them names the
 // button, not the icon.
 export type IconName =
-  'calendar' | 'settings' | 'back' | 'chevronRight' | 'chevronDown' | 'chevronUp' | 'mail' | 'card' | 'check' | 'close';
+  | 'calendar'
+  | 'settings'
+  | 'back'
+  | 'chevronRight'
+  | 'chevronDown'
+  | 'chevronUp'
+  | 'mail'
+  | 'card'
+  | 'check'
+  | 'close'
+  | 'headphones'
+  | 'play'
+  | 'pause'
+  | 'next'
+  | 'previous';
 
 interface IconProps {
   name: IconName;
@@ -88,6 +102,41 @@ export default function Icon({ name, size = 24, color, strokeWidth }: IconProps)
       return (
         <Svg {...common} strokeWidth={strokeWidth ?? 2.2}>
           <Path d="M6 6l12 12M18 6L6 18" />
+        </Svg>
+      );
+    case 'headphones':
+      return (
+        <Svg {...common} strokeWidth={strokeWidth ?? 1.8}>
+          <Path d="M3.5 17v-4.5a8.5 8.5 0 0 1 17 0V17" />
+          <Path d="M20.5 18.5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3.5 18.5a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2h-3z" />
+        </Svg>
+      );
+    // Play, pause and the jumps are filled: they are read at a glance, often from a car
+    case 'play':
+      return (
+        <Svg {...common} stroke="none">
+          <Path fill={color} d="M7 4.6v14.8a1 1 0 0 0 1.5.87l12.4-7.4a1 1 0 0 0 0-1.73L8.5 3.73A1 1 0 0 0 7 4.6z" />
+        </Svg>
+      );
+    case 'pause':
+      return (
+        <Svg {...common} stroke="none">
+          <Rect fill={color} x="5.5" y="4" width="4.6" height="16" rx="1.3" />
+          <Rect fill={color} x="13.9" y="4" width="4.6" height="16" rx="1.3" />
+        </Svg>
+      );
+    case 'next':
+      return (
+        <Svg {...common} stroke="none">
+          <Path fill={color} d="M5 5.4v13.2a.9.9 0 0 0 1.4.75l9.5-6.6a.9.9 0 0 0 0-1.5L6.4 4.65A.9.9 0 0 0 5 5.4z" />
+          <Rect fill={color} x="17" y="4.6" width="2.6" height="14.8" rx="1" />
+        </Svg>
+      );
+    case 'previous':
+      return (
+        <Svg {...common} stroke="none">
+          <Path fill={color} d="M19 5.4v13.2a.9.9 0 0 1-1.4.75l-9.5-6.6a.9.9 0 0 1 0-1.5l9.5-6.6A.9.9 0 0 1 19 5.4z" />
+          <Rect fill={color} x="4.4" y="4.6" width="2.6" height="14.8" rx="1" />
         </Svg>
       );
   }

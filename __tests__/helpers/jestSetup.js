@@ -13,3 +13,8 @@ jest.mock('expo-font', () => ({
   isLoaded: () => true,
   loadAsync: async () => {},
 }));
+
+// The prayer read aloud plays with expo-audio and, without network, reads with expo-speech: neither
+// has a native side under Jest. These stand-ins keep what they were asked, for the tests to look at.
+jest.mock('expo-audio', () => require('./fakeAudio'));
+jest.mock('expo-speech', () => require('./fakeSpeech'));

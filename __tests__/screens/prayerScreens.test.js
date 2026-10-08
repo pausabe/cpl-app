@@ -40,9 +40,12 @@ async function open(Controller, params) {
   return { view, headerRight: options.headerRight };
 }
 
-// The header belongs to the navigator: the button the screen asks for is pressed as it is given
+// The header belongs to the navigator: the button the screen asks for is pressed as it is given.
+// There are two, side by side: the headphones (the prayer read aloud) and «Aa».
 async function pressHeaderButton(headerRight) {
-  const button = headerRight();
+  const buttons = React.Children.toArray(headerRight().props.children);
+  expect(buttons.map((b) => b.props.accessibilityLabel)).toEqual(['Escolta la pregària', 'Mida del text i tema']);
+  const button = buttons[1];
   expect(button.props.accessibilityLabel).toBe('Mida del text i tema');
   expect(button.props.text).toBe('Aa');
   await act(async () => {

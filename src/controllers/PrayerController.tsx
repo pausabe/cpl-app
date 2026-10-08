@@ -1,17 +1,25 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import HoursLiturgyPrayerScreen from '../views/hours-liturgy/HoursLiturgyPrayerScreen';
 import MassLiturgyPrayerScreen from '../views/mass-liturgy/MassLiturgyPrayerScreen';
 import HeaderButton from '../components/HeaderButton';
 import TextSettingsSheet from '../components/TextSettingsSheet';
 import SettingsService from '../services/SettingsService';
-import { updateSettings, useLiturgy } from './liturgyStore';
+import { getSnapshot, updateSettings, useLiturgy } from './liturgyStore';
 import { useTextSettings } from './appearanceSettings';
 import { SpeechSink } from '../components/SpeechSink';
-import { clearScreenSpeech, setScreenSpeech } from './speechStore';
+import ListenBar from '../components/ListenBar';
+import ListenSheet from '../components/ListenSheet';
+import { clearScreenSpeech, getScreenSpeech, setScreenSpeech } from './speechStore';
+import * as Listen from './listenController';
+import { speechScript } from '../view-models/speech/script';
+import { listenLabels } from '../view-models/speech/listenLabels';
 import type { SpeechParagraph } from '../view-models/speech/paragraph';
 
-// The prayer (LHDisplay) and the readings (LDDisplay): they get the day's data from here, and
-// the "Aa" button in the top bar opens the sheet with the text size and the dark mode.
+// The prayer (LHDisplay) and the readings (LDDisplay): they get the day's data from here. In the top
+// bar, the headphones read the prayer aloud (listenController) and the "Aa" button opens the sheet
+// with the text size and the dark mode. While an hour is read aloud, a small player stays at the
+// foot of every prayer.
 
 export interface HoursRouteParams {
   // "Ofici", "Laudes", "Tèrcia"… (HourTile.screenType)
@@ -31,22 +39,90 @@ export interface MassRouteParams {
   useVespersTexts: boolean;
 }
 
-function useTextSettingsButton(navigation: any) {
+// The two buttons of the top bar: alike, side by side (on iOS 26, in one capsule of glass)
+function useHeaderButtons(navigation: any, onListen: () => void) {
   const [open, setOpen] = useState(false);
   const textSettings = useTextSettings();
+  // The bar is set up once; what the headphones do changes with what is playing
+  const listen = useRef(onListen);
+  useLayoutEffect(() => {
+    listen.current = onListen;
+  });
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderButton
-          text="Aa"
-          accessibilityLabel="Mida del text i tema"
-          testID="text-settings-button"
-          onPress={() => setOpen(true)}
-        />
+        <View style={styles.headerButtons}>
+          <HeaderButton
+            icon="headphones"
+            accessibilityLabel="Escolta la pregària"
+            testID="listen-button"
+            onPress={() => listen.current()}
+          />
+          <HeaderButton
+            text="Aa"
+            accessibilityLabel="Mida del text i tema"
+            testID="text-settings-button"
+            onPress={() => setOpen(true)}
+          />
+        </View>
       ),
     });
   }, [navigation]);
   return <TextSettingsSheet visible={open} onClose={() => setOpen(false)} {...textSettings} />;
+}
+
+// Reading the prayer of the screen aloud: what the headphones do, the small player at the foot and
+// its sheet. The headphones start the hour of the screen; if it is already the one being read,
+// they open the sheet.
+function useListening(hour: string, title: string) {
+  const state = Listen.useListen();
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const active = state.phase !== 'idle';
+  const onListen = () => {
+    if (active && state.hour === hour && state.phase !== 'finished') {
+      setSheetOpen(true);
+      return;
+    }
+    const speech = getScreenSpeech();
+    if (!speech || speech.hour !== hour) return;
+    const pieces = speechScript(hour, speech.paragraphs, getSnapshot().ourFather);
+    if (pieces.length) Listen.listen(hour, title, pieces);
+  };
+  const labels = listenLabels(state);
+  const playing = state.phase === 'playing' || state.phase === 'preparing' || state.phase === 'waiting';
+  const bar = active ? (
+    <ListenBar
+      playing={playing}
+      title={labels.part}
+      subtitle={labels.subtitle}
+      progress={labels.progress}
+      onToggle={Listen.toggle}
+      onNext={Listen.nextPart}
+      onOpen={() => setSheetOpen(true)}
+    />
+  ) : null;
+  const sheet = (
+    <ListenSheet
+      visible={sheetOpen && active}
+      onClose={() => setSheetOpen(false)}
+      hour={state.title}
+      part={labels.part}
+      time={labels.time}
+      progress={labels.progress}
+      playing={playing}
+      notice={state.notice}
+      speed={state.speed}
+      onToggle={Listen.toggle}
+      onPrevious={Listen.previousPart}
+      onNext={Listen.nextPart}
+      onSpeed={Listen.setSpeed}
+      onStop={() => {
+        Listen.stop();
+        setSheetOpen(false);
+      }}
+    />
+  );
+  return { onListen, bar, sheet };
 }
 
 // The sink the PrayerFlow of the screen hands its paragraphs to, kept under the name of the hour
@@ -71,27 +147,33 @@ function chooseVirginAntiphon(antiphon: string) {
 
 export function HoursPrayerController({ route, navigation }: { route: { params: HoursRouteParams }; navigation: any }) {
   const { hours, day, settings } = useLiturgy();
-  const sheet = useTextSettingsButton(navigation);
+  const listening = useListening(route.params.type, route.params.title);
+  const sheet = useHeaderButtons(navigation, listening.onListen);
   const sink = useSpeechSink(route.params.type);
   return (
     <SpeechSink.Provider value={sink}>
-      <HoursLiturgyPrayerScreen
-        type={route.params.type}
-        celebration={route.params.subtitle}
-        hours={hours}
-        today={day.today}
-        settings={settings}
-        onInvitationPsalmChange={chooseInvitationPsalm}
-        onVirginAntiphonChange={chooseVirginAntiphon}
-      />
+      <View style={styles.screen}>
+        <HoursLiturgyPrayerScreen
+          type={route.params.type}
+          celebration={route.params.subtitle}
+          hours={hours}
+          today={day.today}
+          settings={settings}
+          onInvitationPsalmChange={chooseInvitationPsalm}
+          onVirginAntiphonChange={chooseVirginAntiphon}
+        />
+        {listening.bar}
+      </View>
       {sheet}
+      {listening.sheet}
     </SpeechSink.Provider>
   );
 }
 
 export function MassPrayerController({ route, navigation }: { route: { params: MassRouteParams }; navigation: any }) {
   const { mass, day } = useLiturgy();
-  const sheet = useTextSettingsButton(navigation);
+  const listening = useListening('Missa', 'Lectures de la missa');
+  const sheet = useHeaderButtons(navigation, listening.onListen);
   const sink = useSpeechSink('Missa');
   const [showVideos, setShowVideos] = useState(false);
   useEffect(() => {
@@ -103,15 +185,30 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
   }, []);
   return (
     <SpeechSink.Provider value={sink}>
-      <MassLiturgyPrayerScreen
-        type={route.params.type}
-        needSecondReading={route.params.needSecondReading}
-        useVespersTexts={route.params.useVespersTexts}
-        mass={mass}
-        today={day.today}
-        showVideos={showVideos}
-      />
+      <View style={styles.screen}>
+        <MassLiturgyPrayerScreen
+          type={route.params.type}
+          needSecondReading={route.params.needSecondReading}
+          useVespersTexts={route.params.useVespersTexts}
+          mass={mass}
+          today={day.today}
+          showVideos={showVideos}
+        />
+        {listening.bar}
+      </View>
       {sheet}
+      {listening.sheet}
     </SpeechSink.Provider>
   );
 }
+
+const styles = StyleSheet.create({
+  // The prayer above, and the small player at its foot while an hour is read aloud
+  screen: {
+    flex: 1,
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+});
