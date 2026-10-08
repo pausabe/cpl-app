@@ -1,10 +1,12 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode, useContext, useEffect } from 'react';
 import { Platform, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 import Gap, { GapSize } from './Gap';
 import PrayerText from './PrayerText';
 import Rubric, { RubricProps, rubricSpans } from './Rubric';
 import SectionTitle from './SectionTitle';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../theme';
+import { speechParagraphs } from './speechParagraphs';
+import { SpeechSink } from './SpeechSink';
 
 // Prayer that is selected in one go, from wherever to wherever.
 //
@@ -133,6 +135,12 @@ export default function PrayerFlow({ children, style }: PrayerFlowProps) {
   const theme = useTheme();
   const styles = prayerTextStyles(theme);
   const pieces = piecesOf(children, styles, theme.prayer.gap);
+
+  // What the voice reads is what is drawn: the screen that wants it is handed the paragraphs
+  const sink = useContext(SpeechSink);
+  useEffect(() => {
+    if (sink) sink(speechParagraphs(children, theme.colors.rubric));
+  });
 
   const drawn: ReactNode[] = [];
   let i = 0;

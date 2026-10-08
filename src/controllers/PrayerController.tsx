@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import HoursLiturgyPrayerScreen from '../views/hours-liturgy/HoursLiturgyPrayerScreen';
 import MassLiturgyPrayerScreen from '../views/mass-liturgy/MassLiturgyPrayerScreen';
 import HeaderButton from '../components/HeaderButton';
@@ -6,6 +6,9 @@ import TextSettingsSheet from '../components/TextSettingsSheet';
 import SettingsService from '../services/SettingsService';
 import { updateSettings, useLiturgy } from './liturgyStore';
 import { useTextSettings } from './appearanceSettings';
+import { SpeechSink } from '../components/SpeechSink';
+import { clearScreenSpeech, setScreenSpeech } from './speechStore';
+import type { SpeechParagraph } from '../view-models/speech/paragraph';
 
 // The prayer (LHDisplay) and the readings (LDDisplay): they get the day's data from here, and
 // the "Aa" button in the top bar opens the sheet with the text size and the dark mode.
@@ -46,6 +49,13 @@ function useTextSettingsButton(navigation: any) {
   return <TextSettingsSheet visible={open} onClose={() => setOpen(false)} {...textSettings} />;
 }
 
+// The sink the PrayerFlow of the screen hands its paragraphs to, kept under the name of the hour
+// («Laudes», «Missa»…) for the voice; they go when the screen is closed.
+function useSpeechSink(hour: string) {
+  useEffect(() => () => clearScreenSpeech(hour), [hour]);
+  return useCallback((paragraphs: SpeechParagraph[]) => setScreenSpeech(hour, paragraphs), [hour]);
+}
+
 // The invitatory psalm and the Marian antiphon chosen in a prayer are kept for the next time, as
 // always. The screens call these while they draw, so they only change the loaded settings in
 // place and save them: nothing else has to redraw.
@@ -62,8 +72,9 @@ function chooseVirginAntiphon(antiphon: string) {
 export function HoursPrayerController({ route, navigation }: { route: { params: HoursRouteParams }; navigation: any }) {
   const { hours, day, settings } = useLiturgy();
   const sheet = useTextSettingsButton(navigation);
+  const sink = useSpeechSink(route.params.type);
   return (
-    <>
+    <SpeechSink.Provider value={sink}>
       <HoursLiturgyPrayerScreen
         type={route.params.type}
         celebration={route.params.subtitle}
@@ -74,13 +85,14 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
         onVirginAntiphonChange={chooseVirginAntiphon}
       />
       {sheet}
-    </>
+    </SpeechSink.Provider>
   );
 }
 
 export function MassPrayerController({ route, navigation }: { route: { params: MassRouteParams }; navigation: any }) {
   const { mass, day } = useLiturgy();
   const sheet = useTextSettingsButton(navigation);
+  const sink = useSpeechSink('Missa');
   const [showVideos, setShowVideos] = useState(false);
   useEffect(() => {
     let active = true;
@@ -90,7 +102,7 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
     };
   }, []);
   return (
-    <>
+    <SpeechSink.Provider value={sink}>
       <MassLiturgyPrayerScreen
         type={route.params.type}
         needSecondReading={route.params.needSecondReading}
@@ -100,6 +112,6 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
         showVideos={showVideos}
       />
       {sheet}
-    </>
+    </SpeechSink.Provider>
   );
 }

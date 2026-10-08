@@ -40,6 +40,8 @@ export interface CurrentLiturgy {
   celebrationInformation: CelebrationInformation;
   hoursLiturgy: HoursLiturgy;
   massLiturgy: MassLiturgy;
+  // The Lord's Prayer whole: the hours show only «Pare nostre.», and the voice says all of it
+  ourFatherPrayer: string;
 }
 
 const current: CurrentLiturgy = {
@@ -50,6 +52,7 @@ const current: CurrentLiturgy = {
   celebrationInformation: new CelebrationInformation(),
   hoursLiturgy: new HoursLiturgy(),
   massLiturgy: new MassLiturgy(),
+  ourFatherPrayer: '',
 };
 
 // Every reload replaces its parts, one after the other; nobody else can. The settings can be
@@ -77,6 +80,7 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
     current.liturgyDayInformation,
     current.settings,
   );
+  current.ourFatherPrayer = todayLiturgyMasters.various.ourFatherPrayer ?? '';
   current.celebrationInformation = obtainCurrentCelebrationInformation(current.hoursLiturgy);
   current.massLiturgy = await obtainMassLiturgy(
     current.liturgyDayInformation,

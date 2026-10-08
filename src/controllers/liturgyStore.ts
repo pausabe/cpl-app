@@ -28,6 +28,8 @@ export interface LiturgySnapshot {
   celebration: CelebrationInformation;
   hours: HoursLiturgy;
   mass: MassLiturgy;
+  // For the voice, which says «Pare nostre.» whole
+  ourFather: string;
 }
 
 type Listener = () => void;
@@ -46,6 +48,7 @@ function take(): LiturgySnapshot {
     celebration: current.celebrationInformation,
     hours: current.hoursLiturgy,
     mass: current.massLiturgy,
+    ourFather: current.ourFatherPrayer,
   };
 }
 
