@@ -146,6 +146,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [D-022](#d-022) | 2026-10-06 | eines + saints-app | **decisió d'en Pau** (12 caselles, una per una, i 1 llista de precs) | Es regenera: `decided-cells.json`, `lib/preces-alignment.js` | el que afegeix la fitxa · saints-app `33f5b7763` |
 | [SA-36](#sa-36) | 2026-10-06 | saints-app | **codi** | No — va al git | `6be00a8d8` |
 | [APP-002](#app-002) | 2026-10-07 | cpl-app | codi (iOS, «Aa») | No — va al git | `37871d3`, a `master` i a `catalan-migration` |
+| [APP-003](#app-003) | 2026-10-08 | cpl-app + cpl-cloud | **funció nova** (escoltar la pregària) | No — va al git; l'àudio viu a R2 | cpl-app `7c8f283`…`e25b1f0` a `master` · cpl-cloud `4ae8d03`, `3796d4a` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -284,6 +285,41 @@ no en tenia.
 | Test | `__tests__/components/prayerText.test.js` («the text view is measured with what it shows now»): sense el fix fallen els dos primers (la vista no es refà en canviar la mida ni el text) |
 | Verificat | `make tests` (1.101 tests, 3 omesos), `make types` i `make lint` sense avisos nous; el `make checks` del pre-push, a `master`. **Pendent que en Pau ho provi a l'iPhone**: a Jest no hi ha el mesurament natiu |
 | Reaplicar | **No** — és codi, va al git |
+
+## APP-003
+
+**Escoltar la pregària: els auriculars al costat de «Aa»** · 8 d'octubre de 2026
+
+Funció nova, demanada per en Pau: qualsevol hora o lectura de la missa es pot escoltar, també amb el
+mòbil bloquejat i al cotxe (CarPlay, a través de «Now Playing»). Els auriculars van a la barra de dalt,
+iguals que «Aa»; mentre sona, un reproductor petit es queda al peu de cada pregària, i tocant-lo s'obre
+un full amb les parts endavant i enrere, la velocitat (Lenta, Normal, Ràpida) i Atura. No és cap
+correcció de contingut de la CPL.
+
+Com sona, ho va decidir en Pau d'oïda amb un dia sencer de prova (9-10-2026):
+
+- **Veus d'Azure**: Enric (cor 1 i qui presideix), Joana (cor 2 i el poble), Alba (lectora i títols).
+  Res de dues veus alhora: no li va agradar.
+- **Dos cors** que s'alternen les estrofes; qui diu l'antífona comença el salm i la torna a dir al
+  final; l'invitatori, responsorial (OGLH 34, 122-123, 193, 196, 256, 260).
+- No es llegeixen «Ant.», «V.», «R.», les cites ni les rúbriques; «Glòria.» i «Pare nostre.» es diuen
+  sencers (el Pare nostre, de la base de dades, `diversos`).
+- **Pronunciació**: les veus catalanes d'Azure posen l'accent a la penúltima en formes poc freqüents
+  acabades en -iu/-eu (e-NAL-tiu). Un detector (la frase amb l'accent bo i amb el dolent, comparades
+  amb el que diu Azure) en va trobar 20 de les 150 més freqüents; en Pau les va escoltar i totes les
+  correccions eren bones. Van a un lèxic amb la pronunciació en IPA (`scripts/audio/lexicon.json`).
+
+| | |
+|---|---|
+| Commits | cpl-app a `master`: `7c8f283` (el guió), `f491a75` (el generador), `90a570c`/`92673ef` (el reproductor), `40d7a77` (paràgrafs llargs en trossos), `b326a83`/`946111f` (interruptor, espai del mòbil, caràtula). cpl-cloud a `master`: `4ae8d03`, `3796d4a` |
+| Com funciona | El guió surt del mateix que dibuixa la pantalla (`PrayerFlow` → `view-models/speech/script.ts`) i cada tros d'àudio es diu pel SHA-256 de la veu i les paraules: el mòbil demana exactament el que el generador ha fet. Els trossos es generen un sol cop amb Azure i es guarden a R2 (`cpl-cloud-audio`); el mòbil en baixa els que no té, se'ls guarda (fins a 150 MB i mai deixant menys de 200 MB lliures) i en fa un sol MP3 per hora (`expo-audio`) |
+| Sense connexió | Una hora ja escoltada sona sense xarxa. Amb una xarxa lenta comença amb el principi i el fitxer creix. Sense xarxa, passat un topall o sense espai, continua amb la veu del telèfon (`expo-speech`) i ho diu |
+| Que no costi res | Workers Free no cobra; R2 té topalls propis per sota del gratuït (40.000 peticions d'àudio al dia, 8 M lectures al mes) i, passats, l'API diu que no i el mòbil fa servir la seva veu. Azure: compte de prova amb límit de despesa (no pot cobrar); la tanda gran es fa amb el crèdit de benvinguda i després, cada mes, amb el recurs gratuït (0,5 M caràcters). Indicadors a la pestanya Espai de cpl-cloud |
+| Interruptor | `GET /v1/audio/status`: mentre és aturat, els auriculars surten esvaïts i diuen que aviat es podrà escoltar. Es posa en marxa i s'atura des d'Espai |
+| Test | Que la veu rep exactament el text de la pantalla, hora a hora, en 7 dies de tots els temps (`__tests__/screens/speechScript.test.js`); les regles del guió; el reproductor (hora al mòbil, xarxa lenta, sense xarxa, topall, mòbil ple); a cpl-cloud, la ruta, els topalls i l'interruptor |
+| Verificat | `make checks` del pre-push a `master` (993 tests); cpl-cloud 273 tests i desplegat. **Pendent que en Pau ho provi a TestFlight (9.2.0)**: a Jest no hi ha ni so, ni pantalla bloquejada, ni CarPlay |
+| Pendent | Android Auto (cal un servei de catàleg natiu i la revisió de Google); marcar el paràgraf que sona; baixar les hores amb wifi; esborrar l'àudio des de Configuració |
+| Reaplicar | **No** — és codi; l'àudio és a R2 i es regenera amb `scripts/speechSweep.mjs` i `scripts/audio/generate.mjs` |
 
 ## CPL-LIT-001
 
