@@ -112,3 +112,78 @@ describe('the prayer read aloud, against the screen', () => {
     expect(diffPaths(golden[day], resolved[day])).toEqual([]);
   });
 });
+
+// «Evangeli del dia a Laudes» (Configuració): the Gospel of the Mass after the short responsory.
+// The voice reads it as it reads it at Mass, so its audio is the one already made for the Mass
+// (the sweep of the audio does not draw Lauds with it for that reason). On Palm Sunday, the Gospel
+// of the blessing (as on the home); on Holy Saturday, none.
+describe('Lauds with the Gospel of the day', () => {
+  const AsyncStorage = require('@react-native-async-storage/async-storage');
+  const { SpecificLiturgyTimeType } = require('../../src/services/celebrationTimeEnums');
+  const GOSPEL_DAYS = ['2026-10-09', '2026-08-15', '2026-03-29', '2026-04-03', '2026-04-05'];
+  const plain = (text) => text.replace(/\s+/g, ' ').trim();
+
+  // The setting is read when the prayer opens
+  async function openLaudes(day, withGospel) {
+    await loadDay(day, 'barcelona');
+    if (withGospel) await AsyncStorage.setItem('laudesGospel', 'true');
+    await openHour('Laudes');
+    await RNTL.act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    });
+  }
+
+  function fullScript(hour) {
+    return speechScript(hour, getScreenSpeech().paragraphs, LiturgyStore.getSnapshot().ourFather);
+  }
+
+  // The Mass of the day opened at its Gospel, as the home opens it (the blessing on Palm Sunday)
+  async function massGospelKeys(day) {
+    await loadDay(day, 'barcelona');
+    const { massLiturgy: mass, liturgyDayInformation: info } = DataService.currentLiturgy();
+    const palms = info.today.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday;
+    await openMass(
+      palms ? 'Rams' : 'Evangeli',
+      false,
+      StringManagement.hasLiturgyContent(mass.today.secondReading.reading),
+    );
+    return new Set(fullScript('Missa').map((p) => p.key));
+  }
+
+  test.each(GOSPEL_DAYS)('%s: after the short responsory, read as at Mass', async (day) => {
+    await openLaudes(day, true);
+    const text = runs().join('\n');
+    const at = (pattern) => text.indexOf(pattern);
+    expect(at('RESPONSORI BREU')).toBeGreaterThan(-1);
+    expect(at('EVANGELI')).toBeGreaterThan(at('RESPONSORI BREU'));
+    expect(at('CÀNTIC DE ZACARIES')).toBeGreaterThan(at('EVANGELI'));
+    expect(JSON.stringify(handed())).toBe(JSON.stringify(drawn()));
+
+    const gospel = fullScript('Laudes').filter((p) => p.section === 'EVANGELI');
+    expect(gospel[0]).toMatchObject({ role: 'lector', text: 'Evangeli.', kind: 'secció' });
+    expect(gospel.length).toBeGreaterThan(2);
+
+    // The same words in the same voices as at Mass (the presider, or the three of the Passion)
+    const mass = await massGospelKeys(day);
+    expect(gospel.filter((p) => !mass.has(p.key)).map((p) => p.text)).toEqual([]);
+  });
+
+  test('on Palm Sunday, the blessing of the palms and not the Passion', async () => {
+    await openLaudes('2026-03-29', true);
+    const text = plain(runs().join(' '));
+    expect(text).toContain('Mt 21,1-11');
+    expect(text).not.toContain('Mt 26,14');
+  });
+
+  test('on Holy Saturday, none', async () => {
+    await openLaudes('2026-04-04', true);
+    expect(has('EVANGELI')).toBe(false);
+    expect(fullScript('Laudes').some((p) => p.section === 'EVANGELI')).toBe(false);
+  });
+
+  test('with the setting off (as it starts), Lauds as always', async () => {
+    await openLaudes('2026-10-09', false);
+    expect(has('EVANGELI')).toBe(false);
+    expect(fullScript('Laudes').some((p) => p.section === 'EVANGELI')).toBe(false);
+  });
+});

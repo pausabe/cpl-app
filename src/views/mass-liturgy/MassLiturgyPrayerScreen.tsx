@@ -15,6 +15,7 @@ import { GenericLiturgyTimeType, SpecificLiturgyTimeType } from '../../services/
 import { palmSundayGospel } from '../../view-models/palmSundayGospel';
 import { youtubeVideoId } from '../../view-models/video';
 import GospelVideo from './GospelVideo';
+import { gospelReading } from './gospelReading';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../../theme';
 import { useKeepAwake } from '../keepAwake';
 import type MassLiturgy from '../../models/MassLiturgy';
@@ -306,7 +307,7 @@ export default function MassLiturgyPrayerScreen({
           />
         ) : null}
 
-        <View>{gospelType === 'normal' ? dayGospel(styles, mass) : emmausGospel(styles)}</View>
+        <View>{gospelType === 'normal' ? gospelReading(styles, mass.gospel) : emmausGospel(styles)}</View>
         {mass.hasCreed ? (
           <View>
             <Gap />
@@ -379,34 +380,6 @@ function gloria(styles: PrayerTextStyles) {
     <Text selectable={true} style={styles.blackJustified}>
       {GLORIA}
     </Text>
-  );
-}
-
-// The Gospel of the day, with the phrase that sums it up when it has one
-function dayGospel(styles: PrayerTextStyles, mass: DayMassLiturgy) {
-  const comment = trim(mass.gospel.comment);
-  return (
-    <View style={{ flex: 1 }}>
-      <Text selectable={true} style={styles.reference}>
-        {trim(mass.gospel.quote)}
-      </Text>
-      <Gap />
-      {comment === '-' ? null : (
-        <View>
-          <Text selectable={true} style={styles.comment}>
-            {comment}
-          </Text>
-          <Gap />
-        </View>
-      )}
-      <Text selectable={true} style={styles.black}>
-        {trim(mass.gospel.title)}
-      </Text>
-      <Gap />
-      <Text selectable={true} style={styles.blackJustified}>
-        {trim(mass.gospel.gospel)}
-      </Text>
-    </View>
   );
 }
 

@@ -11,6 +11,9 @@ import type { SpeechParagraph } from './paragraph';
 //  - The presider: the opening verse, the intercessions, the prayer and the blessing (OGLH 256).
 //  - The people (the second choir): the responses, the second part of each intercession and the
 //    Lord's Prayer (OGLH 193, 196).
+//  - The Gospel of the day that Lauds can take (Configuració), as at Mass: announced by the reader
+//    and read by the presider (the Passion, in its three voices), so that it is the audio already
+//    made for the Mass.
 //  - Not read: «Ant.», «V.» and «R.», the biblical references, the rubrics and the sentence under
 //    each psalm title. «Glòria.» and «Pare nostre.» are said whole.
 //
@@ -64,6 +67,7 @@ const SECTION_NAMES: Record<string, string> = {
   SALMÒDIA: 'Salmòdia',
   'LECTURA BREU': 'Lectura breu',
   'RESPONSORI BREU': 'Responsori breu',
+  EVANGELI: 'Evangeli',
   'CÀNTIC DE ZACARIES': 'Càntic de Zacaries',
   'CÀNTIC DE MARIA': 'Càntic de Maria',
   'CÀNTIC DE SIMEÓ': 'Càntic de Simeó',
@@ -385,7 +389,7 @@ class Builder {
       this.say('cor1', t, PAUSES.half, 'aclamació');
       this.say('cor2', 'Al·leluia.', PAUSES.end, 'aclamació');
       this.section = 'Evangeli';
-    } else if (section === 'Evangeli') {
+    } else if (section === 'Evangeli' || section === 'EVANGELI') {
       const passion = passionParts(t);
       if (passion) for (const part of passion) this.say(part.role, part.text, PAUSES.half, 'evangeli');
       else this.say('president', t, PAUSES.strophe, 'evangeli');

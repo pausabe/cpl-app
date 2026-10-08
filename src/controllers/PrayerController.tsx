@@ -16,6 +16,7 @@ import { clearScreenSpeech, getScreenSpeech, setScreenSpeech } from './speechSto
 import * as Listen from './listenController';
 import { speechScript } from '../view-models/speech/script';
 import { listenLabels } from '../view-models/speech/listenLabels';
+import { laudesGospel } from '../view-models/laudesGospel';
 import type { SpeechParagraph } from '../view-models/speech/paragraph';
 
 // The prayer (LHDisplay) and the readings (LDDisplay): they get the day's data from here. In the top
@@ -183,11 +184,30 @@ function chooseVirginAntiphon(antiphon: string) {
   SettingsService.setSettingVirginAntiphon(antiphon);
 }
 
+// A setting that is on or off, read when the prayer opens: it changes nothing else, so it does not
+// go through the loaded settings (and the liturgy is not loaded again when it changes)
+function useSwitchSetting(read: () => Promise<string>): boolean {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    let active = true;
+    read().then((value) => active && setOn(value === 'true'));
+    return () => {
+      active = false;
+    };
+  }, [read]);
+  return on;
+}
+
 export function HoursPrayerController({ route, navigation }: { route: { params: HoursRouteParams }; navigation: any }) {
-  const { hours, day, settings } = useLiturgy();
+  const { hours, day, settings, mass } = useLiturgy();
   const listening = useListening(route.params.type, route.params.title);
   const sheet = useHeaderButtons(navigation, listening.onListen, listening.dimmed);
   const sink = useSpeechSink(route.params.type);
+  const withGospel = useSwitchSetting(SettingsService.getSettingLaudesGospel);
+  const gospel =
+    withGospel && route.params.type === 'Laudes'
+      ? laudesGospel({ today: day.today, tomorrow: day.tomorrow, gospel: mass.today.gospel })
+      : null;
   return (
     <SpeechSink.Provider value={sink}>
       <View style={styles.screen}>
@@ -198,6 +218,7 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
             hours={hours}
             today={day.today}
             settings={settings}
+            laudesGospel={gospel}
             onInvitationPsalmChange={chooseInvitationPsalm}
             onVirginAntiphonChange={chooseVirginAntiphon}
           />
@@ -216,14 +237,7 @@ export function MassPrayerController({ route, navigation }: { route: { params: M
   const listening = useListening('Missa', 'Lectures de la missa');
   const sheet = useHeaderButtons(navigation, listening.onListen, listening.dimmed);
   const sink = useSpeechSink('Missa');
-  const [showVideos, setShowVideos] = useState(false);
-  useEffect(() => {
-    let active = true;
-    SettingsService.getSettingShowVideos().then((value) => active && setShowVideos(value === 'true'));
-    return () => {
-      active = false;
-    };
-  }, []);
+  const showVideos = useSwitchSetting(SettingsService.getSettingShowVideos);
   return (
     <SpeechSink.Provider value={sink}>
       <View style={styles.screen}>

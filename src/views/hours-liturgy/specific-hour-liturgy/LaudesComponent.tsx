@@ -23,17 +23,26 @@ import {
   shortResponsory,
   useInvitatory,
 } from '../hourBlocks';
+import { gospelReading } from '../../mass-liturgy/gospelReading';
 import type { InvitatoryHourProps } from './hourProps';
+import type { MassGospel } from '../../../models/MassLiturgy';
 
-// Lauds. Gets through props the hours of the day (hours), the day (today), the settings and the
-// titles of the day's psalms (titles); a new invitatory psalm goes to onInvitationPsalmChange.
+interface LaudesProps extends InvitatoryHourProps {
+  // The Gospel of the day, when «Evangeli del dia a Laudes» is on (ViewModels/laudesGospel)
+  gospel?: MassGospel | null;
+}
+
+// Lauds. Gets through props the hours of the day (hours), the day (today), the settings, the
+// titles of the day's psalms (titles) and the Gospel of the day to read after the short
+// responsory (gospel), if any; a new invitatory psalm goes to onInvitationPsalmChange.
 export default function LaudesComponent({
   hours,
   today,
   settings,
   titles,
   onInvitationPsalmChange,
-}: InvitatoryHourProps) {
+  gospel = null,
+}: LaudesProps) {
   const styles = prayerTextStyles(useTheme());
   const invitatory = useInvitatory(settings, titles, onInvitationPsalmChange);
 
@@ -62,6 +71,7 @@ export default function LaudesComponent({
           {section('SALMÒDIA', psalmody(styles, [laudes.firstPsalm, laudes.secondPsalm, laudes.thirdPsalm]))}
           {section('LECTURA BREU', shortReading(styles, laudes.shortReading))}
           {section('RESPONSORI BREU', shortResponsory(laudes.shortResponsory))}
+          {gospel ? section('EVANGELI', gospelReading(styles, gospel)) : null}
           {section(
             'CÀNTIC DE ZACARIES',
             antiphonedPsalm(

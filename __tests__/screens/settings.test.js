@@ -28,6 +28,8 @@ import { METRICS, styleOf } from '../helpers/renderWithTheme';
 import * as DayAudio from '../../src/controllers/dayAudioController';
 import * as Listen from '../../src/controllers/listenController';
 
+const LAUDES_GOSPEL = 'Evangeli del dia. L’Evangeli de la missa, després del responsori breu.';
+
 async function open() {
   LiturgyStore.publish();
   render(
@@ -45,9 +47,9 @@ beforeEach(async () => {
   currentPosition.mockReset();
 });
 
-test('three groups with the usual six options, and the saved values', async () => {
+test('four groups with their options, and the saved values', async () => {
   await open();
-  for (const group of ['Lectura', 'Calendari', 'Missa'])
+  for (const group of ['Lectura', 'Calendari', 'Laudes', 'Missa'])
     expect(screen.getByRole('header', { name: group })).toBeTruthy();
   expect(screen.getByRole('button', { name: 'Diòcesi: Barcelona' })).toBeTruthy();
   expect(screen.getByRole('button', { name: 'Lloc: Diòcesi' })).toBeTruthy();
@@ -58,6 +60,7 @@ test('three groups with the usual six options, and the saved values', async () =
   expect(
     screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' }).props.accessibilityState.checked,
   ).toBe(false);
+  expect(screen.getByRole('switch', { name: LAUDES_GOSPEL }).props.accessibilityState.checked).toBe(false);
   expect(styleOf(screen.getByTestId('text-size-preview', { includeHiddenElements: true })).fontSize).toBe(21);
   await waitFor(() =>
     expect(screen.getByRole('radio', { name: 'Automàtic' }).props.accessibilityState.checked).toBe(true),
@@ -110,6 +113,15 @@ test('the sign language video is saved', async () => {
     fireEvent.press(screen.getByRole('switch', { name: 'Vídeo de llengua de signes a l’Evangeli' }));
   });
   expect(await AsyncStorage.getItem('showVideos')).toBe('true');
+});
+
+test('the Gospel of the day in Lauds is saved', async () => {
+  await open();
+  await act(async () => {
+    fireEvent.press(screen.getByRole('switch', { name: LAUDES_GOSPEL }));
+  });
+  expect(await AsyncStorage.getItem('laudesGospel')).toBe('true');
+  expect(screen.getByRole('switch', { name: LAUDES_GOSPEL }).props.accessibilityState.checked).toBe(true);
 });
 
 test('the theme, Automàtic, Clar or Fosc, is applied at once and saved as always', async () => {

@@ -87,6 +87,7 @@ async function load(): Promise<Loaded> {
       edition: chosen,
       ...(fromDatabase ? resolvePlace(fromDatabase, saved.diocese, saved.place) : saved),
       showVideos: (await SettingsService.getSettingShowVideos()) === 'true',
+      laudesGospel: (await SettingsService.getSettingLaudesGospel()) === 'true',
     },
     options: fromDatabase ?? FIXED_OPTIONS,
     editions: editionsOffered() ? editionChoices(await knownEditions(), chosen) : [],
@@ -265,6 +266,10 @@ export default function SettingsController() {
         onShowVideosChange={async (enabled) => {
           change({ showVideos: enabled });
           await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false');
+        }}
+        onLaudesGospelChange={async (enabled) => {
+          change({ laudesGospel: enabled });
+          await SettingsService.setSettingLaudesGospel(enabled ? 'true' : 'false');
         }}
         onAskAgainForTheDatabase={() => {
           askAgainOnTheNextOpening().catch(() => undefined);

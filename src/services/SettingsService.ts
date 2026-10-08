@@ -76,6 +76,7 @@ const defaultSettings = {
   antMare: VirginAntiphonOption.Antiphon1,
   darkMode: DarkModeOption.System,
   showVideos: 'false',
+  laudesGospel: 'false',
   edicio: DEFAULT_EDITION,
 };
 
@@ -167,6 +168,10 @@ export default class SettingsService {
     return storedValue('showVideos');
   }
 
+  static getSettingLaudesGospel(): Promise<string> {
+    return storedValue('laudesGospel');
+  }
+
   static setSettingUseLatin(value: string): Promise<void> {
     return storeIfValid('useLatin', value, isBoolean);
   }
@@ -220,5 +225,9 @@ export default class SettingsService {
 
   static setSettingShowVideos(value: string): Promise<void> {
     return storeIfValid('showVideos', value, isBoolean);
+  }
+
+  static setSettingLaudesGospel(value: string): Promise<void> {
+    return storeIfValid('laudesGospel', value, isBoolean);
   }
 }

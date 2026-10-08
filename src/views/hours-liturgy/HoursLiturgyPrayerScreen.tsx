@@ -12,21 +12,25 @@ import EdgeToEdgeScrollView from '../../components/EdgeToEdgeScrollView';
 import { prayerTextStyles, useTheme } from '../../theme';
 import { useKeepAwake } from '../keepAwake';
 import type HoursLiturgy from '../../models/hours-liturgy/HoursLiturgy';
+import type { MassGospel } from '../../models/MassLiturgy';
 import type { HourProps } from './specific-hour-liturgy/hourProps';
 
 interface HoursLiturgyPrayerScreenProps extends HourProps {
   // "Ofici", "Laudes", "Tèrcia"…
   type: string;
   celebration?: string;
+  // Lauds only: the Gospel of the day to read after the short responsory, when the setting is on
+  laudesGospel?: MassGospel | null;
   onInvitationPsalmChange: (psalmNumber: string) => void;
   onVirginAntiphonChange: (antiphonNumber: string) => void;
 }
 
 // One hour of the Liturgy of the Hours. Everything comes through props from its controller
-// (Controllers/PrayerController): the hours of the day (hours), the day (today), the settings and
-// what to do when the user picks another invitatory psalm or Marian antiphon. When the home says
-// something under the name of the hour (celebration: the first Vespers of tomorrow's feast), it
-// goes on top, whole, as the heading of the prayer.
+// (Controllers/PrayerController): the hours of the day (hours), the day (today), the settings, the
+// Gospel Lauds takes when it is asked to (laudesGospel) and what to do when the user picks another
+// invitatory psalm or Marian antiphon. When the home says something under the name of the hour
+// (celebration: the first Vespers of tomorrow's feast), it goes on top, whole, as the heading of
+// the prayer.
 export default function HoursLiturgyPrayerScreen(props: HoursLiturgyPrayerScreenProps) {
   const theme = useTheme();
   useKeepAwake('hours-prayer');
@@ -77,6 +81,7 @@ function Hour({
   hours,
   today,
   settings,
+  laudesGospel,
   onInvitationPsalmChange,
   onVirginAntiphonChange,
 }: HoursLiturgyPrayerScreenProps) {
@@ -87,7 +92,14 @@ function Hour({
       return <OfficeComponent {...common} titles={titlesOf(hours)} onInvitationPsalmChange={onInvitationPsalmChange} />;
 
     case 'Laudes':
-      return <LaudesComponent {...common} titles={titlesOf(hours)} onInvitationPsalmChange={onInvitationPsalmChange} />;
+      return (
+        <LaudesComponent
+          {...common}
+          titles={titlesOf(hours)}
+          onInvitationPsalmChange={onInvitationPsalmChange}
+          gospel={laudesGospel}
+        />
+      );
 
     case 'Vespres':
       return <VespersComponent {...common} />;

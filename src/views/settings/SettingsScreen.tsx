@@ -22,8 +22,8 @@ import {
 import { TechnicalData, technicalReport, versionLines } from '../../view-models/technicalData';
 import { DAY_AUDIO_HELP, type DayAudioLabels } from '../../view-models/speech/dayAudioLabels';
 
-// Configuració: the same six options as always, in three groups. Everything comes from its
-// controller (Controllers/SettingsController), which also saves the changes.
+// Configuració: the options, in groups. Everything comes from its controller
+// (Controllers/SettingsController), which also saves the changes.
 
 export interface SettingsValues {
   textSizeStep: number;
@@ -34,6 +34,8 @@ export interface SettingsValues {
   diocese: string;
   place: string;
   showVideos: boolean;
+  // The Gospel of the day in Lauds, after the short responsory
+  laudesGospel: boolean;
 }
 
 // The versions in plain sight, and behind ten touches on the approval text the technical lines
@@ -59,6 +61,7 @@ export interface SettingsScreenProps {
   onOpenPhoneSettings: () => void;
   onPlaceChange: (place: string) => void;
   onShowVideosChange: (enabled: boolean) => void;
+  onLaudesGospelChange: (enabled: boolean) => void;
   onAskAgainForTheDatabase: () => void;
   onPrivacy: () => void;
   // Today's audio on the phone beforehand, to pray with no network; null while it cannot be heard
@@ -205,6 +208,18 @@ export default function SettingsScreen(props: SettingsScreenProps) {
                     )}
                   </>
                 ) : null}
+              </Card>
+
+              {groupLabel('Laudes')}
+              <Card radius={theme.radius.tile}>
+                <SwitchRow
+                  label="Evangeli del dia"
+                  caption="L’Evangeli de la missa, després del responsori breu."
+                  labelSize={17}
+                  value={values.laudesGospel}
+                  onValueChange={props.onLaudesGospelChange}
+                  style={[styles.switchRow, styles.tallSwitchRow]}
+                />
               </Card>
 
               {groupLabel('Missa')}
