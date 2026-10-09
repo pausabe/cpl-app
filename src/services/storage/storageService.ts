@@ -9,6 +9,14 @@ export async function storeData(storageKey: string, value: string | number | boo
   }
 }
 
+export async function removeData(storageKey: string): Promise<void> {
+  try {
+    await AsyncStorage.removeItem(storageKey);
+  } catch (e) {
+    Logger.logError(Logger.LogKeys.StorageService, 'removeData', e as Error);
+  }
+}
+
 export async function getData(storageKey: string, defaultValue?: string): Promise<string | undefined> {
   try {
     const value = await AsyncStorage.getItem(storageKey);

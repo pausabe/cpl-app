@@ -11,5 +11,10 @@ let StorageKeys = {
   AppInStore: 'AppInStore',
   AppUpdateDismissed: 'AppUpdateDismissed',
   KnownEditions: 'KnownEditions',
+  // What went wrong, waiting to reach cpl-cloud (services/health)
+  HealthProblems: 'HealthProblems',
+  HealthSent: 'HealthSent',
+  HealthSession: 'HealthSession',
+  HealthLastFailure: 'HealthLastFailure',
 };
 export default StorageKeys;

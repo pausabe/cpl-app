@@ -1,3 +1,5 @@
+import type { ProblemPlace } from '../services/health/problems';
+
 const LogsEnabled = true;
 const MessageCharacterLimit = 500;
 export let SessionLogs = '';
@@ -24,9 +26,27 @@ export const LogKeys = {
   DeviceLocationService: { name: 'DeviceLocationService', enabled: true },
   Car: { name: 'Car', enabled: true },
   Widgets: { name: 'Widgets', enabled: true },
+  Health: { name: 'Health', enabled: true },
 };
 
 export type LogKey = { name: string; enabled: boolean };
+
+// The views can only reach the logger (__tests__/architecture). What leaves someone without what they
+// wanted, like a prayer that comes out blank, goes on from here to services/health, which plugs itself
+// in when it is loaded. Until then, and in the tests of a lone view, it only goes to the log.
+let problemSink: ((place: ProblemPlace, thrown: unknown) => void) | null = null;
+
+export function setProblemSink(sink: typeof problemSink) {
+  problemSink = sink;
+}
+
+export function reportProblem(place: ProblemPlace, thrown?: unknown) {
+  try {
+    problemSink?.(place, thrown);
+  } catch {
+    // Telling of an error must never be another one
+  }
+}
 
 export function debug(message: string, param?: unknown) {
   log(LogKeys.Debug, '', message, param);

@@ -4,6 +4,12 @@ import { useDatabaseUpdates } from './src/services/databaseUpdateService';
 import NavigationController from './src/controllers/NavigationController';
 import { useAppFonts } from './src/theme/fonts';
 import { wireCar } from './src/controllers/carController';
+import { startHealthMonitoring } from './src/services/health/healthMonitor';
+import RenderCrashGuard from './src/controllers/RenderCrashGuard';
+
+// Before anything else can fail: the errors and the unexpected closings of the app reach cpl-cloud,
+// where Pau sees them (the «Salut» tab of the publishing website)
+startHealthMonitoring();
 
 // The splash stays until the home has the day drawn: HomeScreenController hides it. Without this
 // it went away at once, and for a moment the home showed empty and light, even in dark mode.
@@ -27,5 +33,9 @@ export default function App() {
   if (!fontsReady) {
     return null;
   }
-  return <NavigationController />;
+  return (
+    <RenderCrashGuard>
+      <NavigationController />
+    </RenderCrashGuard>
+  );
 }
