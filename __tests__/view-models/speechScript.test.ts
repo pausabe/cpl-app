@@ -161,7 +161,7 @@ test('a short reading: the reader, without its reference', () => {
   ]);
 });
 
-test('the Gospel at Mass: the acclamation by the choirs and the Gospel by the presider', () => {
+test('the Gospel at Mass: the acclamation by the choirs, as written, and the Gospel by the presider', () => {
   expect(
     script('Missa', [
       [R('Evangeli')],
@@ -176,7 +176,6 @@ test('the Gospel at Mass: the acclamation by the choirs and the Gospel by the pr
     ['lector', 'Evangeli.'],
     ['cor2', 'Al·leluia.'],
     ['cor1', 'El vers de l’aclamació.'],
-    ['cor2', 'Al·leluia.'],
     ['president', 'Lectura de l’evangeli segons sant Lluc'],
     ['president', 'En aquell temps, el text de l’evangeli.'],
   ]);

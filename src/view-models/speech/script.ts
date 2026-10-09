@@ -396,8 +396,9 @@ class Builder {
         if (endsWithResponse && response) this.say('cor2', response, PAUSES.strophe, 'resposta');
       }
     } else if (section === 'AL·LELUIA') {
-      this.say('cor1', t, PAUSES.half, 'aclamació');
-      this.say('cor2', 'Al·leluia.', PAUSES.end, 'aclamació');
+      // Only what the screen shows: the Al·leluia after the verse is sung, but it is not written,
+      // and Pau heard it as one too many (9 October 2026)
+      this.say('cor1', t, PAUSES.end, 'aclamació');
       this.section = 'Evangeli';
     } else if (section === 'Evangeli' || section === 'EVANGELI') {
       const passion = passionParts(t);
