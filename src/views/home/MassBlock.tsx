@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { fitLabel, useTheme } from '../../theme';
+import { useTheme } from '../../theme';
+import FitLabel from '../../components/FitLabel';
 import Card from '../../components/Card';
 import SegmentedControl from '../../components/SegmentedControl';
 import { MassBlock as MassBlockModel, MassChoice, MassScreenType } from '../../view-models/mass';
@@ -63,13 +64,9 @@ export default function MassBlock({ mass, onOpen, onChoose }: MassBlockProps) {
             onPress={() => onOpen(mass.extra!.opens)}
             style={({ pressed }) => [chip, { opacity: pressed ? 0.7 : 1 }]}
           >
-            <Text
-              maxFontSizeMultiplier={scale}
-              {...fitLabel(mass.extra.label)}
-              style={[styles.chipText, { color: colors.text }]}
-            >
+            <FitLabel maxFontSizeMultiplier={scale} style={[styles.chipText, { color: colors.text }]}>
               {mass.extra.label}
-            </Text>
+            </FitLabel>
           </Pressable>
         ) : null}
         <View style={styles.readings}>
@@ -80,13 +77,9 @@ export default function MassBlock({ mass, onOpen, onChoose }: MassBlockProps) {
               onPress={() => onOpen(reading.opens)}
               style={({ pressed }) => [chip, styles.reading, { opacity: pressed ? 0.7 : 1 }]}
             >
-              <Text
-                maxFontSizeMultiplier={scale}
-                {...fitLabel(reading.label)}
-                style={[styles.chipText, { color: colors.text }]}
-              >
+              <FitLabel maxFontSizeMultiplier={scale} style={[styles.chipText, { color: colors.text }]}>
                 {reading.label}
-              </Text>
+              </FitLabel>
             </Pressable>
           ))}
         </View>

@@ -104,8 +104,17 @@ test('Sunday: four readings, which on a narrow phone get smaller before breaking
   for (const reading of ['Primera lectura', 'Salm', 'Segona lectura', 'Evangeli']) {
     expect(screen.getByRole('button', { name: reading })).toBeTruthy();
   }
-  expect(screen.getByText('Primera lectura').props).toMatchObject({ numberOfLines: 2, adjustsFontSizeToFit: true });
-  expect(screen.getByText('Evangeli').props).toMatchObject({ numberOfLines: 1, adjustsFontSizeToFit: true });
+  expect(screen.getByText('Primera lectura').props.numberOfLines).toBe(2);
+  expect(screen.getByText('Evangeli').props.numberOfLines).toBe(1);
+  // A chip narrower than its widest word: the word smaller, not broken (components/FitLabel)
+  const chip = screen.getByRole('button', { name: 'Segona lectura' });
+  const layout = (testID, width) =>
+    fireEvent(within(chip).getByTestId(testID, { includeHiddenElements: true }), 'layout', {
+      nativeEvent: { layout: { x: 0, y: 0, width, height: 34 } },
+    });
+  layout('fit-label-needed', 60);
+  layout('fit-label-room', 54);
+  expect(styleOf(screen.getByText('Segona lectura')).fontSize).toBeCloseTo(14.5 * 0.9);
 });
 
 test('an optional memorial: the switch makes it celebrated, and it is remembered for the day', async () => {

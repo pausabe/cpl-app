@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { LayoutChangeEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { fitLabel, useTheme } from '../../theme';
+import { useTheme } from '../../theme';
+import FitLabel from '../../components/FitLabel';
 import ActionButton from '../../components/ActionButton';
 import EdgeFade from '../../components/EdgeFade';
 import Icon from '../../components/Icon';
@@ -217,16 +218,15 @@ export default function CalendarScreen({
   );
 
   const title = (text: string, size: number) => (
-    <Text
+    <FitLabel
       testID="calendar-title"
       accessibilityRole="header"
       accessibilityLiveRegion="polite"
       maxFontSizeMultiplier={scale}
-      {...fitLabel(text)}
       style={[styles.title, { fontSize: size, color: colors.text, fontFamily: theme.fonts.serifSemiBold }]}
     >
       {text}
-    </Text>
+    </FitLabel>
   );
 
   const stepper = (

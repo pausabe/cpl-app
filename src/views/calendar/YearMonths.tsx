@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../theme';
+import FitLabel from '../../components/FitLabel';
 import { MiniMonth, YearOverview } from '../../view-models/liturgicalYear';
 
 // The twelve months of a year in small, three or four in a row, every day a square in the colour of
@@ -51,18 +52,16 @@ function MiniMonthTile({ month, width, onPick }: MiniMonthTileProps) {
           },
         ]}
       >
-        <Text
+        <FitLabel
           maxFontSizeMultiplier={theme.maxFontScaleForLabels}
-          numberOfLines={1}
-          adjustsFontSizeToFit={true}
-          minimumFontScale={0.8}
+          minimumScale={0.8}
           style={[
             styles.name,
             { color: month.current ? colors.accentText : colors.text, fontWeight: month.current ? '700' : '600' },
           ]}
         >
           {month.name}
-        </Text>
+        </FitLabel>
         <View style={styles.squares}>
           {Array.from({ length: month.blanks }, (_, index) => (
             <View key={`blank-${index}`} style={styles.place} />

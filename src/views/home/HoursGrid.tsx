@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
-import { fitLabel, useTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import HourIcon from '../../components/HourIcon';
 import { HourTile } from '../../view-models/hours';
 import SectionLabel from './SectionLabel';
 import TourTarget from '../../components/TourTarget';
+import FitLabel from '../../components/FitLabel';
 
 // The seven hours in three rows (Ofici de lectura · Laudes / Tèrcia · Sexta · Nona / Vespres ·
 // Completes). The one of now is filled, and says "Ara" next to the name when there is room for
@@ -97,13 +98,12 @@ function Tile({ tile, compact, onOpen }: { tile: HourTile; compact: boolean; onO
       <HourIcon hour={tile.key} color={now ? colors.onAccent : colors.accentText} />
       <View style={compact ? styles.compactLabels : styles.labels}>
         <View testID={`hour-${tile.key}-title`} style={styles.titleLine} onLayout={withBadge ? measureLine : undefined}>
-          <Text
+          <FitLabel
             maxFontSizeMultiplier={scale}
-            {...fitLabel(tile.label)}
             style={[styles.label, { color: foreground, fontWeight: now ? '700' : '500' }]}
           >
             {tile.label}
-          </Text>
+          </FitLabel>
           {badgeFits ? badge('hour-now-badge') : null}
         </View>
         {tile.subtitle ? (
@@ -174,8 +174,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
   },
-  // Growing from the width of the name, never from nothing: from a width of 0 (flex: 1), iOS fitted
-  // «Vespres» and «Completes» to it and left them tiny (9.2.4, Pau's iPhone)
   labels: {
     flexGrow: 1,
     flexShrink: 1,

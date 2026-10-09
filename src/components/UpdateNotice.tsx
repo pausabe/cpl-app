@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { fitLabel, useTheme } from '../theme';
+import { useTheme } from '../theme';
+import FitLabel from './FitLabel';
 import Card from './Card';
 import Icon from './Icon';
 
@@ -57,9 +58,9 @@ export default function UpdateNotice({ title, text, action, dismissLabel, onOpen
           },
         ]}
       >
-        <Text maxFontSizeMultiplier={scale} {...fitLabel(action)} style={[styles.action, { color: colors.onAccent }]}>
+        <FitLabel maxFontSizeMultiplier={scale} style={[styles.action, { color: colors.onAccent }]}>
           {action}
-        </Text>
+        </FitLabel>
       </Pressable>
     </Card>
   );
