@@ -24,6 +24,8 @@ function memorialColorsDatabase() {
   const copy = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'cpl-memorial-colors-')), 'cpl-app.db');
   fs.copyFileSync(path.resolve(__dirname, '../../src/assets/db/cpl-app.db'), copy);
   const database = new DatabaseSync(copy);
+  // The published databases already carry the table (from publication 9): these rows, and only these
+  database.exec('DROP TABLE IF EXISTS _celebration_colors');
   database.exec('CREATE TABLE _celebration_colors (sants_memories_id INTEGER PRIMARY KEY, color TEXT NOT NULL)');
   const insert = database.prepare('INSERT INTO _celebration_colors (sants_memories_id, color) VALUES (?, ?)');
   for (const [row, color] of MEMORIAL_COLORS) insert.run(row, color);

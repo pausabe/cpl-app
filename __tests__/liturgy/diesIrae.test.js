@@ -10,6 +10,9 @@ const { DatabaseSync } = require('node:sqlite');
 const copy = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'cpl-dies-irae-')), 'cpl-app.db');
 fs.copyFileSync(path.resolve(__dirname, '../../src/assets/db/cpl-app.db'), copy);
 const database = new DatabaseSync(copy);
+// The published databases already have the real rows (from publication 8): they go, so that the
+// rows the tests read are these
+database.exec("DELETE FROM diversos WHERE concepte LIKE 'Himne Dies ir%'");
 const insert = database.prepare('INSERT INTO diversos (concepte, oracio) VALUES (?, ?)');
 for (const hour of ['Ofici de lectura', 'Laudes', 'Vespres']) {
   insert.run(`Himne Dies iræ, ${hour} (setmana XXXIV)`, `Dies iræ en llatí, ${hour}`);
