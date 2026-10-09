@@ -1,7 +1,8 @@
-El redisseny de l'app.
+Escolta la pregària.
 
-• Tot el dia en una sola pantalla: el dia litúrgic, les set hores i les lectures de la missa.
-• L'hora que toca ara surt marcada.
-• Mode fosc a tota l'app, i la mida de la lletra a mà des de la mateixa pregària.
-• La pantalla ja no s'apaga mentre reses.
-• El vermell de les rúbriques, més llegible.
+• Les hores i la missa, llegides en veu alta a dos cors. Toca els auriculars, al costat de «Aa».
+• La pantalla segueix la veu, i tries la part i la velocitat.
+• També amb la pantalla bloquejada, i sense connexió si baixes l'àudio d'avui a Configuració.
+• Widgets per a la pantalla d'inici, amb l'hora que toca.
+• Els dies amb més d'una memòria lliure, tries quina celebres.
+• L'evangeli del dia a Laudes, si el vols.

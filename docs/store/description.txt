@@ -1,22 +1,30 @@
 La Litúrgia de les Hores en català, al mòbil, amb els textos del Centre de Pastoral Litúrgica.
 
-Obre l'app i ja hi és tot: el dia litúrgic, les set hores i les lectures de la missa. Un toc i reses.
+Obre l'app i ja hi és tot: el dia litúrgic, les set hores i les lectures de la missa. Un toc i reses. I si no pots llegir, escolta-la.
 
 CADA DIA, A L'INICI
 • El dia litúrgic amb el seu color, la celebració, la setmana i el saltiri.
 • Les set hores: Ofici de lectura, Laudes, Tèrcia, Sexta, Nona, Vespres i Completes. L'hora que toca ara surt marcada.
 • Les lectures de la missa: primera lectura, salm, segona lectura i evangeli.
-• La vida del sant, els dies que en tenen.
+• La vida del sant, els dies que en tenen. Si n'hi ha més d'una memòria lliure, tries quina celebres.
+• Widgets per a la pantalla d'inici, amb l'hora que toca.
+
+ESCOLTA LA PREGÀRIA
+• Les hores i les lectures de la missa, llegides en veu alta a dos cors.
+• La pantalla segueix la veu, i tries la part i la velocitat.
+• També amb la pantalla bloquejada, o al cotxe.
+• Sense connexió, si baixes l'àudio del dia a Configuració.
 
 PENSADA PER RESAR
 • Els textos complets, els mateixos dels llibres de la CPL.
-• Sense connexió: un cop instal·lada, no necessita internet.
+• Sense connexió: un cop instal·lada, els textos no necessiten internet.
 • La pantalla no s'apaga mentre reses.
 • La mida de la lletra i el mode fosc, a mà des de la mateixa pregària.
-• Els himnes, també en llatí si ho prefereixes.
+• Els himnes, també en llatí si ho prefereixes, i l'evangeli del dia a Laudes, si el vols.
 
 EL TEU CALENDARI
-• Tria la diòcesi i el lloc: les celebracions pròpies i la dedicació de la catedral surten com toca.
+• Tria la diòcesi i el lloc, o deixa que la trobi la ubicació: les celebracions pròpies i la dedicació de la catedral surten com toca.
+• Cada mes pintat amb el temps litúrgic, i tot l'any litúrgic d'un cop d'ull.
 • Ves a qualsevol dia, enrere o endavant.
 • Memòries lliures, primeres vespres, missa vespertina, Rams, Vetlla Pasqual: cada dia, com és.
 

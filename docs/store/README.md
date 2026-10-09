@@ -19,10 +19,15 @@ something explained, that goes in the notes for the reviewer, which are not part
 | `keywords.txt` | Keywords | — | 100 |
 | `promotional.txt` | Promotional text | — | 170 |
 | `description.txt` | Description | Full description | 4 000 |
-| `release-notes.txt` | What's New | What's new | 4 000 |
+| `release-notes.txt` | What's New | What's new | 500 |
 
 Apple counts characters, not bytes: `wc -c` on a file with accents reads more than the limit and
 still fits.
+
+The notes are one text for both stores, so they keep to the smaller limit: Apple takes 4 000, but
+Google Play refuses the whole release over 500 (the Publish workflow cuts what it sends there at
+500). And they never name the other platform: Apple rejects a listing that mentions Android, so
+something only for Android (Android Auto, a crash that only happened there) stays out of them.
 
 ## The name
 
