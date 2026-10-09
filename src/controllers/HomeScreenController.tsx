@@ -15,6 +15,8 @@ import * as CalendarStore from './calendarStore';
 import { followSystemAppearance } from './appearanceSettings';
 import { useTheme } from '../theme';
 import HeaderButton from '../components/HeaderButton';
+import TourTarget from '../components/TourTarget';
+import { maybeStartTour } from './tourController';
 import HomeScreen from '../views/home/HomeScreen';
 import LatePrayerDialog from '../views/home/LatePrayerDialog';
 import WhatsNewSheet from '../views/home/WhatsNewSheet';
@@ -204,24 +206,35 @@ export default function HomeScreenController({ navigation, route }: { navigation
     };
   }, [navigation, load]);
 
+  // --- The tour of what is new: once, when the home has nothing else to say ---------------
+  useEffect(() => {
+    if (status === 'ready' && !latePrayerVisible && !whatsNewPending && !dioceseOffer) {
+      maybeStartTour().catch(() => undefined);
+    }
+  }, [status, latePrayerVisible, whatsNewPending, dioceseOffer]);
+
   // --- Top bar: calendar on the left, settings on the right, as always -------------------
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <HeaderButton
-          icon="calendar"
-          accessibilityLabel="Calendari"
-          testID="calendar-button"
-          onPress={() => navigation.navigate('Calendar')}
-        />
+        <TourTarget id="calendar-button">
+          <HeaderButton
+            icon="calendar"
+            accessibilityLabel="Calendari"
+            testID="calendar-button"
+            onPress={() => navigation.navigate('Calendar')}
+          />
+        </TourTarget>
       ),
       headerRight: () => (
-        <HeaderButton
-          icon="settings"
-          accessibilityLabel="Configuració"
-          testID="settings-button"
-          onPress={() => navigation.navigate('Settings')}
-        />
+        <TourTarget id="settings-button">
+          <HeaderButton
+            icon="settings"
+            accessibilityLabel="Configuració"
+            testID="settings-button"
+            onPress={() => navigation.navigate('Settings')}
+          />
+        </TourTarget>
       ),
     });
   }, [navigation]);

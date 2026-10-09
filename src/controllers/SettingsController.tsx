@@ -28,6 +28,8 @@ import { obtainPlaceOptions, PlaceOptions, resolvePlace } from '../services/cale
 import { dayAudioLabels } from '../view-models/speech/dayAudioLabels';
 import { refreshListenAvailability, useListenAvailability } from './listenController';
 import { checkDayAudio, downloadDayAudio, useDayAudio } from './dayAudioController';
+import { navigationRef } from './navigationRef';
+import { startTour } from './tourController';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
 // (SettingsService). The language of the texts, the Latin hymns, the diocese and the place change
@@ -275,6 +277,11 @@ export default function SettingsController() {
           askAgainOnTheNextOpening().catch(() => undefined);
         }}
         onPrivacy={() => setPrivacyVisible(true)}
+        onShowTour={() => {
+          // The tour starts on the home, where its first steps are
+          if (navigationRef.isReady()) navigationRef.navigate('Home' as never);
+          startTour();
+        }}
         dayAudio={
           listenAvailability.enabled
             ? dayAudioLabels(dayAudio.day === today ? dayAudio.phase : 'idle', dayAudio.progress)

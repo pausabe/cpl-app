@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import HoursLiturgyPrayerScreen from '../views/hours-liturgy/HoursLiturgyPrayerScreen';
 import MassLiturgyPrayerScreen from '../views/mass-liturgy/MassLiturgyPrayerScreen';
 import HeaderButton from '../components/HeaderButton';
+import TourTarget from '../components/TourTarget';
 import TextSettingsSheet from '../components/TextSettingsSheet';
 import SettingsService from '../services/SettingsService';
 import { getSnapshot, updateSettings, useLiturgy } from './liturgyStore';
@@ -56,13 +57,15 @@ function useHeaderButtons(navigation: any, onListen: () => void, listenDimmed: b
     navigation.setOptions({
       headerRight: () => (
         <View style={styles.headerButtons}>
-          <HeaderButton
-            icon="headphones"
-            accessibilityLabel="Escolta la pregària"
-            testID="listen-button"
-            dimmed={listenDimmed}
-            onPress={() => listen.current()}
-          />
+          <TourTarget id="listen-button">
+            <HeaderButton
+              icon="headphones"
+              accessibilityLabel="Escolta la pregària"
+              testID="listen-button"
+              dimmed={listenDimmed}
+              onPress={() => listen.current()}
+            />
+          </TourTarget>
           <HeaderButton
             text="Aa"
             accessibilityLabel="Mida del text i tema"
@@ -114,16 +117,18 @@ function useListening(hour: string, title: string) {
   const follow = useMemo(() => (paragraph >= 0 ? { paragraph, strophe } : null), [paragraph, strophe]);
   const playing = state.phase === 'playing' || state.phase === 'preparing' || state.phase === 'waiting';
   const bar = active ? (
-    <ListenBar
-      playing={playing}
-      title={labels.part}
-      subtitle={labels.subtitle}
-      progress={labels.progress}
-      onToggle={Listen.toggle}
-      onNext={Listen.nextPart}
-      onOpen={() => setSheetOpen(true)}
-      onClose={Listen.stop}
-    />
+    <TourTarget id="listen-bar">
+      <ListenBar
+        playing={playing}
+        title={labels.part}
+        subtitle={labels.subtitle}
+        progress={labels.progress}
+        onToggle={Listen.toggle}
+        onNext={Listen.nextPart}
+        onOpen={() => setSheetOpen(true)}
+        onClose={Listen.stop}
+      />
+    </TourTarget>
   ) : null;
   const parts = Listen.partsOf(state.pieces);
   const currentPart = [...parts].reverse().find((p) => p.index <= state.index)?.index ?? -1;

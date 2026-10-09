@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Platform } from 'react-native';
-import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreenController from './HomeScreenController';
 import { HoursPrayerController, MassPrayerController } from './PrayerController';
@@ -8,6 +8,8 @@ import SettingsController from './SettingsController';
 import CalendarController from './CalendarController';
 import AppThemeProvider from './AppThemeProvider';
 import { headerOptions, navigationTheme, useTheme } from '../theme';
+import { navigationRef } from './navigationRef';
+import TourLayer from './TourLayer';
 
 // One stack, no tabs: the home has everything of every day, and each hour, each reading, the
 // calendar and the settings open over it. Back always returns to the home. The message and the
@@ -20,12 +22,14 @@ const Stack = createNativeStackNavigator();
 
 // The navigator from outside the screens. The tests go back through it: the back arrow is the
 // system's own now, and it is not drawn by JavaScript.
-export const navigationRef = createNavigationContainerRef();
+export { navigationRef };
 
 export default function NavigationController() {
   return (
     <AppThemeProvider>
-      <Navigator />
+      <TourLayer>
+        <Navigator />
+      </TourLayer>
     </AppThemeProvider>
   );
 }

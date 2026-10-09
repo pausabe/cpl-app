@@ -3,6 +3,9 @@ jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
 
+// The tour of what is new would come up over the home of every test: only the tests of the tour start it
+globalThis.__CPL_NO_TOUR__ = true;
+
 // The app's Logger prints every step to console.log; keep test output readable.
 jest.spyOn(console, 'log').mockImplementation(() => {});
 

@@ -21,6 +21,7 @@ import {
 } from '../../view-models/notices';
 import { TechnicalData, technicalReport, versionLines } from '../../view-models/technicalData';
 import { DAY_AUDIO_HELP, type DayAudioLabels } from '../../view-models/speech/dayAudioLabels';
+import TourTarget from '../../components/TourTarget';
 
 // Configuració: the options, in groups. Everything comes from its controller
 // (Controllers/SettingsController), which also saves the changes.
@@ -64,6 +65,8 @@ export interface SettingsScreenProps {
   onLaudesGospelChange: (enabled: boolean) => void;
   onAskAgainForTheDatabase: () => void;
   onPrivacy: () => void;
+  // The tour of what is new, again
+  onShowTour: () => void;
   // Today's audio on the phone beforehand, to pray with no network; null while it cannot be heard
   dayAudio: DayAudioLabels | null;
   onDownloadDayAudio: () => void;
@@ -196,7 +199,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               {groupLabel('Calendari')}
               <Card radius={theme.radius.tile}>
                 {pickerRow('Diòcesi', values.diocese, () => setSheet('diocese'))}
-                {props.dioceses.length > 1 ? locationRow() : null}
+                {props.dioceses.length > 1 ? <TourTarget id="settings-location">{locationRow()}</TourTarget> : null}
                 {props.places.length > 1 ? (
                   <>
                     {divider}
@@ -212,14 +215,16 @@ export default function SettingsScreen(props: SettingsScreenProps) {
 
               {groupLabel('Laudes')}
               <Card radius={theme.radius.tile}>
-                <SwitchRow
-                  label="Evangeli del dia"
-                  caption="L’Evangeli de la missa, després del responsori breu."
-                  labelSize={17}
-                  value={values.laudesGospel}
-                  onValueChange={props.onLaudesGospelChange}
-                  style={[styles.switchRow, styles.tallSwitchRow]}
-                />
+                <TourTarget id="settings-laudes-gospel">
+                  <SwitchRow
+                    label="Evangeli del dia"
+                    caption="L’Evangeli de la missa, després del responsori breu."
+                    labelSize={17}
+                    value={values.laudesGospel}
+                    onValueChange={props.onLaudesGospelChange}
+                    style={[styles.switchRow, styles.tallSwitchRow]}
+                  />
+                </TourTarget>
               </Card>
 
               {groupLabel('Missa')}
@@ -236,50 +241,52 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               {props.dayAudio ? (
                 <>
                   {groupLabel('Escoltar la pregària')}
-                  <Card radius={theme.radius.tile}>
-                    <View style={styles.block}>
-                      <Text style={[styles.rowLabel, { color: colors.text }]}>{"Àudio d'avui"}</Text>
-                      <Text style={[styles.help, { color: colors.text3 }]}>{DAY_AUDIO_HELP}</Text>
-                      {props.dayAudio.progress !== null ? (
-                        <View style={[styles.track, { backgroundColor: colors.chipBackground }]}>
-                          <View
-                            style={[
-                              styles.fill,
-                              {
-                                backgroundColor: colors.accentFill,
-                                width: `${Math.round(props.dayAudio.progress * 100)}%`,
-                              },
-                            ]}
-                          />
-                        </View>
-                      ) : null}
-                      {props.dayAudio.status ? (
-                        <Text
-                          testID="day-audio-status"
-                          accessibilityLiveRegion="polite"
-                          style={[styles.dayAudioStatus, { color: colors.text2 }]}
+                  <TourTarget id="settings-day-audio">
+                    <Card radius={theme.radius.tile}>
+                      <View style={styles.block}>
+                        <Text style={[styles.rowLabel, { color: colors.text }]}>{"Àudio d'avui"}</Text>
+                        <Text style={[styles.help, { color: colors.text3 }]}>{DAY_AUDIO_HELP}</Text>
+                        {props.dayAudio.progress !== null ? (
+                          <View style={[styles.track, { backgroundColor: colors.chipBackground }]}>
+                            <View
+                              style={[
+                                styles.fill,
+                                {
+                                  backgroundColor: colors.accentFill,
+                                  width: `${Math.round(props.dayAudio.progress * 100)}%`,
+                                },
+                              ]}
+                            />
+                          </View>
+                        ) : null}
+                        {props.dayAudio.status ? (
+                          <Text
+                            testID="day-audio-status"
+                            accessibilityLiveRegion="polite"
+                            style={[styles.dayAudioStatus, { color: colors.text2 }]}
+                          >
+                            {props.dayAudio.status}
+                          </Text>
+                        ) : null}
+                      </View>
+                      {props.dayAudio.action ? (
+                        <Pressable
+                          testID="download-day-audio"
+                          accessibilityRole="button"
+                          onPress={props.onDownloadDayAudio}
+                          style={({ pressed }) => [
+                            styles.locationRow,
+                            { minHeight: theme.touch.min },
+                            pressed ? { backgroundColor: colors.chipBackground } : null,
+                          ]}
                         >
-                          {props.dayAudio.status}
-                        </Text>
+                          <Text style={[styles.locationLabel, { color: colors.accentText }]}>
+                            {props.dayAudio.action}
+                          </Text>
+                        </Pressable>
                       ) : null}
-                    </View>
-                    {props.dayAudio.action ? (
-                      <Pressable
-                        testID="download-day-audio"
-                        accessibilityRole="button"
-                        onPress={props.onDownloadDayAudio}
-                        style={({ pressed }) => [
-                          styles.locationRow,
-                          { minHeight: theme.touch.min },
-                          pressed ? { backgroundColor: colors.chipBackground } : null,
-                        ]}
-                      >
-                        <Text style={[styles.locationLabel, { color: colors.accentText }]}>
-                          {props.dayAudio.action}
-                        </Text>
-                      </Pressable>
-                    ) : null}
-                  </Card>
+                    </Card>
+                  </TourTarget>
                 </>
               ) : null}
             </View>
@@ -294,6 +301,14 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               style={[styles.footerText, { color: colors.text3 }]}
             >
               {APPROVAL}
+            </Text>
+            <Text
+              testID="show-tour"
+              accessibilityRole="link"
+              onPress={props.onShowTour}
+              style={[styles.footerText, styles.link, { color: colors.text2 }]}
+            >
+              Mostra les novetats
             </Text>
             <Text
               accessibilityRole="link"

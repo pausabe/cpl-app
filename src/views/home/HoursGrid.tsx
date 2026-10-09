@@ -4,6 +4,7 @@ import { fitLabel, useTheme } from '../../theme';
 import HourIcon from '../../components/HourIcon';
 import { HourTile } from '../../view-models/hours';
 import SectionLabel from './SectionLabel';
+import TourTarget from '../../components/TourTarget';
 
 // The seven hours in three rows (Ofici de lectura · Laudes / Tèrcia · Sexta · Nona / Vespres ·
 // Completes). The one of now is filled, and says "Ara" next to the name when there is room for
@@ -32,7 +33,12 @@ export default function HoursGrid({ hours, onOpen }: HoursGridProps) {
           <View key={index} style={styles.row}>
             {row.map((key) => {
               const tile = byKey.get(key);
-              return tile ? <Tile key={key} tile={tile} compact={row.length === 3} onOpen={onOpen} /> : null;
+              return tile ? (
+                // The tour of what is new opens Lauds from here (view-models/tour)
+                <TourTarget key={key} id={`hour-${key}`} style={styles.slot}>
+                  <Tile tile={tile} compact={row.length === 3} onOpen={onOpen} />
+                </TourTarget>
+              ) : null;
             })}
           </View>
         ))}
@@ -147,6 +153,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     minHeight: MIN_TILE_HEIGHT,
+  },
+  slot: {
+    flex: 1,
   },
   tile: {
     flex: 1,
