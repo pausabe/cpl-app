@@ -89,7 +89,7 @@ describe("today's audio, from Configuració", () => {
     await DayAudio.downloadDayAudio('2026-10-09');
 
     expect(DayAudio.getDayAudio().phase).toBe('partial');
-    expect(dayAudioLabels('partial', 1).status).toMatch(/veu del telèfon/);
+    expect(dayAudioLabels('partial', 1).status).toMatch(/se saltarà/);
   });
 
   test('a day cpl-api does not know yet, no network, or a limit: it says so and can be tried again', async () => {

@@ -29,14 +29,14 @@ jest.mock('expo-file-system', () => require('../helpers/fakeFileSystem'));
 jest.mock('../../src/components/measureInWindow', () => ({
   measureInWindow: async () => ({ x: 20, y: 120, width: 160, height: 56 }),
 }));
-// No network: the voice of the phone reads, which is enough for the tour
+// cpl-api, here: every piece is a second of silence, which is enough for the tour
 jest.mock('../../src/services/audio/pieceClient', () => {
   const actual = jest.requireActual('../../src/services/audio/pieceClient');
+  const { FRAME_SECONDS, silence } = jest.requireActual('../../src/services/audio/mp3');
+  const second = () => silence(1).slice(0, Math.round(1 / FRAME_SECONDS) * 144);
   return {
     ...actual,
-    fetchPieces: jest.fn(async () => {
-      throw new actual.AudioNetworkError('offline');
-    }),
+    fetchPieces: jest.fn(async (batch) => ({ found: new Map(batch.map((p) => [p.key, second()])), missing: [] })),
   };
 });
 
@@ -49,7 +49,8 @@ import { currentStep, nextStep, resetTour } from '../../src/controllers/tourCont
 import { TOUR_VERSION, tourButtons, tourSteps } from '../../src/view-models/tour';
 import { getListenState, stop } from '../../src/controllers/listenController';
 
-const spoken = jest.requireMock('expo-speech').__spoken;
+const fakeAudio = jest.requireMock('expo-audio');
+const heard = () => fakeAudio.__players.some((player) => player.playing);
 
 const NOW = new Date(2026, 9, 9, 8, 0, 0);
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
@@ -64,7 +65,6 @@ beforeEach(async () => {
   await AsyncStorage.setItem('DioceseOfferSeen', 'true');
   resetTour();
   globalThis.__CPL_NO_TOUR__ = false;
-  spoken.length = 0;
 });
 afterEach(() => {
   globalThis.__CPL_NO_TOUR__ = true;
@@ -123,14 +123,14 @@ test('once, by itself, through the real app: the calendar, Configuració, Lauds 
   next();
 
   await findText('Això és tot');
-  expect(spoken).toEqual([]);
+  expect(heard()).toBe(false);
   next();
   await waitFor(() => expect(screen.queryByTestId('tour')).toBeNull());
   expect(await AsyncStorage.getItem(`tourSeen_${TOUR_VERSION}`)).toBe('true');
   // And it goes away with the tour
   expect(getListenState().phase).toBe('idle');
   expect(screen.queryByTestId('listen-bar')).toBeNull();
-  expect(spoken).toEqual([]);
+  expect(heard()).toBe(false);
 });
 
 test('▶ touched during the tour is heard, and the end of the tour leaves it playing', async () => {
@@ -147,7 +147,7 @@ test('▶ touched during the tour is heard, and the end of the tour leaves it pl
   await findText(/La pantalla va marcant el que es diu/);
 
   fireEvent.press(screen.getByTestId('listen-toggle'));
-  await waitFor(() => expect(spoken.length).toBeGreaterThan(0), { timeout: 15000 });
+  await waitFor(() => expect(heard()).toBe(true), { timeout: 15000 });
 
   fireEvent.press(screen.getByTestId('tour-leave'));
   await waitFor(() => expect(screen.queryByTestId('tour')).toBeNull());

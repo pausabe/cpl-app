@@ -19,8 +19,6 @@ interface ListenSheetProps {
   // 0 to 1
   progress: number;
   playing: boolean;
-  // Why the phone's own voice is reading, if it is
-  notice: string | null;
   // The parts of the hour, and which one is being said
   parts: { index: number; title: string }[];
   currentPart: number;
@@ -38,7 +36,7 @@ interface ListenSheetProps {
 }
 
 export default function ListenSheet(props: ListenSheetProps) {
-  const { visible, onClose, hour, part, time, progress, playing, notice, parts, currentPart, speed } = props;
+  const { visible, onClose, hour, part, time, progress, playing, parts, currentPart, speed } = props;
   const theme = useTheme();
   const { colors } = theme;
   const control = (name: 'previous' | 'next', label: string, onPress: () => void) => (
@@ -102,7 +100,6 @@ export default function ListenSheet(props: ListenSheetProps) {
           </Pressable>
           {control('next', 'Part següent', props.onNext)}
         </View>
-        {notice ? <Text style={[styles.notice, { color: colors.text2 }]}>{notice}</Text> : null}
         {parts.length > 1 ? (
           <>
             <Text accessibilityRole="header" style={[styles.label, { color: colors.text }]}>
@@ -204,10 +201,6 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  notice: {
-    fontSize: 14.5,
-    textAlign: 'center',
   },
   label: {
     fontSize: 17,

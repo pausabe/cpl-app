@@ -86,6 +86,7 @@ function useHeaderButtons(navigation: any, onListen: () => void, listenDimmed: b
 function useListening(hour: string, title: string) {
   const state = Listen.useListen();
   const availability = Listen.useListenAvailability();
+  const problem = Listen.useListenProblem();
   const [sheetOpen, setSheetOpen] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   const active = state.phase !== 'idle';
@@ -142,7 +143,6 @@ function useListening(hour: string, title: string) {
       time={labels.time}
       progress={labels.progress}
       playing={playing}
-      notice={state.notice}
       parts={parts}
       currentPart={currentPart}
       speed={state.speed}
@@ -160,12 +160,21 @@ function useListening(hour: string, title: string) {
       }}
     />
   );
+  // Not yet, or not now: why it cannot be heard
   const notice = (
-    <ListenUnavailableDialog
-      visible={unavailable}
-      message={availability.message}
-      onDismiss={() => setUnavailable(false)}
-    />
+    <>
+      <ListenUnavailableDialog
+        visible={unavailable}
+        message={availability.message}
+        onDismiss={() => setUnavailable(false)}
+      />
+      <ListenUnavailableDialog
+        visible={problem?.hour === hour}
+        message={problem?.message ?? null}
+        onDismiss={Listen.dismissListenProblem}
+        testID="listen-problem"
+      />
+    </>
   );
   return { onListen, bar, sheet, notice, follow, dimmed: !availability.enabled && !active };
 }

@@ -4,7 +4,7 @@ import { APP_KEY, callApi } from '../cplApi';
 // Whether the prayer can be heard: cpl-api says it (cpl-cloud, audio_config), so that it can be
 // turned on when the audio is ready and off if something goes wrong, without a new app. The phone
 // asks a few times a day at most and keeps the answer; with no answer yet (no network the first
-// time) it is as if it could: the phone's own voice reads it then.
+// time) it is as if it could: what is on the phone plays, and otherwise the headphones say why not.
 export interface AudioStatus {
   enabled: boolean;
   // What to say when it is off, if cpl-api wants to say something of its own

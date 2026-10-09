@@ -9,7 +9,7 @@ import { pieceStore } from './listenController';
 // readings. It goes on if Configuració is left, and Configuració says how it is going or how it went.
 
 // «idle»: not downloaded, or some of it went to make room for other pieces; «partial»: downloaded,
-// but cpl-api did not have every piece yet (those, the phone's own voice); «notReady»: cpl-api does
+// but cpl-api did not have every piece yet (those are left out when it is heard); «notReady»: cpl-api does
 // not know that day's pieces yet
 export type { DayAudioPhase };
 

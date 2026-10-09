@@ -12,7 +12,6 @@ import {
   type HourFile,
   type ScriptPiece,
 } from '../services/audio/hourAudio';
-import { readWithDeviceVoice, type DeviceReading } from '../services/audio/deviceVoice';
 import { STATUS_MAX_AGE, fetchAudioStatus, savedAudioStatus } from '../services/audio/audioStatus';
 import { forgetChangedPieces } from '../services/audio/audioChanges';
 import { attachToCar, detachFromCar, hasCarSession, updateCar } from '../services/audio/carAudio';
@@ -23,8 +22,11 @@ import type { SpeechPiece } from '../view-models/speech/script';
 //
 // It plays one MP3 for the hour (services/audio): what is on the phone plays at once; what is not,
 // is downloaded in the order it is said, and it starts as soon as the beginning is here, the file
-// growing while the rest arrives. With no network, past a limit of cpl-api or with pieces that do
-// not exist, it goes on with the phone's own voice from where it was, and says so.
+// growing while the rest arrives. When the audio cannot be had (no network, a limit of cpl-api, a
+// full phone) it says so and stops: there is no phone's own voice any more. Pau tried it with no
+// network and heard nothing at all, on iPhone or Android (the phones rarely have a Catalan voice),
+// and he preferred a clear word to a poor voice (9 October 2026). A piece cpl-api does not have is
+// left out, and the hour goes on without it.
 
 export type ListenPhase = 'idle' | 'preparing' | 'playing' | 'paused' | 'waiting' | 'finished';
 // The pace, as a percentage of the normal one, in steps of 5, kept for the next time. Pau found the
@@ -48,9 +50,6 @@ export interface ListenState {
   seconds: number;
   // How much of the hour is on the phone, 0 to 1, while it is being downloaded
   progress: number;
-  mode: 'audio' | 'device';
-  // Why the phone's own voice is reading, in a sentence
-  notice: string | null;
   // Percentage of the normal pace
   speed: number;
 }
@@ -64,20 +63,46 @@ const IDLE: ListenState = {
   position: 0,
   seconds: 0,
   progress: 0,
-  mode: 'audio',
-  notice: null,
   speed: 100,
 };
 
 // It starts as soon as these many pieces from the beginning are here (or all of them, if fewer)
 const START_PIECES = 10;
 
-export const NOTICES = {
-  offline: 'Sense connexió: ho llegeix la veu del telèfon.',
-  limited: "Ara no es pot baixar l'àudio: ho llegeix la veu del telèfon.",
-  missing: "Aquesta hora encara no té tot l'àudio: ho llegeix la veu del telèfon.",
-  noSpace: "El mòbil no té prou espai lliure per a l'àudio: ho llegeix la veu del telèfon.",
+// What the screen of the hour says when it cannot be heard (a dialog over it). The phone's own voice
+// read it before, and with no Catalan voice installed it was silence (Pau, 9 October 2026).
+export const PROBLEMS = {
+  offline:
+    "No hi ha connexió, i l'àudio d'aquesta pregària no és al mòbil.\n\nSi saps que estaràs sense connexió, baixa't abans l'àudio d'avui a Configuració.",
+  lost: "S'ha perdut la connexió, i la resta de l'àudio d'aquesta pregària no és al mòbil.",
+  limited: "Ara no es pot baixar l'àudio. Torna-ho a provar d'aquí a una estona.",
+  noSpace: "El mòbil no té prou espai lliure per a l'àudio.",
+  missing: "Aquesta pregària encara no té l'àudio preparat.",
 };
+
+export interface ListenProblem {
+  hour: string;
+  message: string;
+}
+
+const problemListeners = new Set<() => void>();
+let problem: ListenProblem | null = null;
+
+function setProblem(next: ListenProblem | null) {
+  if (next === problem) return;
+  problem = next;
+  problemListeners.forEach((listener) => listener());
+}
+
+export const getListenProblem = () => problem;
+export function subscribeListenProblem(listener: () => void) {
+  problemListeners.add(listener);
+  return () => {
+    problemListeners.delete(listener);
+  };
+}
+export const useListenProblem = () => useSyncExternalStore(subscribeListenProblem, getListenProblem, getListenProblem);
+export const dismissListenProblem = () => setProblem(null);
 
 // --- The store the screens read ---------------------------------------------------------------
 
@@ -102,7 +127,7 @@ export const useListen = () => useSyncExternalStore(subscribeListen, getListenSt
 // --- Whether it can be heard ----------------------------------------------------------------
 
 // cpl-api says whether the prayer can be heard (services/audio/audioStatus); until it has said
-// anything, it can (with no network, the phone's own voice reads it)
+// anything, it can
 export interface ListenAvailability {
   enabled: boolean;
   message: string | null;
@@ -148,7 +173,8 @@ interface Session {
   pieces: ScriptPiece[];
   abort: AbortController;
   file: HourFile | null;
-  device: DeviceReading | null;
+  // Why the rest will not come (no network, a limit): when what is here runs out, it says so and stops
+  cutShort: string | null;
   // Opened without playing (the tour of what is new): it gets ready, and waits for ▶
   held: boolean;
   // One change of the file at a time: the batches of pieces arrive one after the other
@@ -193,6 +219,7 @@ export function resetListen(testStore?: PieceStore) {
   state = IDLE;
   availability = { enabled: true, message: null };
   lastCheck = -Infinity;
+  problem = null;
 }
 
 // Where each part of the hour starts (the titles the reader says), for jumping from part to part
@@ -286,7 +313,7 @@ function remoteSkip(status: AudioStatus): 'next' | 'previous' | null {
 }
 
 function onStatus(status: AudioStatus) {
-  if (!session || state.mode !== 'audio' || !session.file) return;
+  if (!session || !session.file) return;
   // With the app's own media session the jumps come as jumps (carController), not as 10 seconds
   const skip = hasCarSession() ? null : remoteSkip(status);
   if (skip) {
@@ -308,9 +335,11 @@ function onStatus(status: AudioStatus) {
   }
   set({ position: status.currentTime, index });
   if (status.didJustFinish) {
-    // The end of what is here, not of the hour: it waits for the rest
-    if (session.file.count < session.pieces.length) set({ phase: 'waiting' });
-    else finish(session);
+    // The end of what is here, not of the hour: it waits for the rest, unless it will not come
+    if (session.file.count < session.pieces.length) {
+      if (session.cutShort) giveUp(session.cutShort);
+      else set({ phase: 'waiting' });
+    } else finish(session);
   }
 }
 
@@ -338,7 +367,7 @@ async function grow(current: Session) {
   try {
     file = await writeHourFile(current.pieces, ready, pieceStore());
   } catch (error) {
-    if (error instanceof StorageFullError) return startDevice(state.index, NOTICES.noSpace);
+    if (error instanceof StorageFullError) return giveUp(PROBLEMS.noSpace);
     throw error;
   }
   if (current !== session) return forgetHourFile(file.uri);
@@ -352,7 +381,7 @@ async function startAudio(current: Session) {
   try {
     file = await writeHourFile(current.pieces, ready, pieceStore());
   } catch (error) {
-    if (error instanceof StorageFullError) return startDevice(0, NOTICES.noSpace);
+    if (error instanceof StorageFullError) return giveUp(PROBLEMS.noSpace);
     throw error;
   }
   if (current !== session) return forgetHourFile(file.uri);
@@ -363,24 +392,19 @@ async function startAudio(current: Session) {
   if (!held) lockScreen(true);
 }
 
-function startDevice(from: number, notice: string) {
-  if (!session) return;
-  player?.pause();
-  lockScreen(false);
-  session.device?.stop();
-  // Held, the phone's voice waits for ▶ too
-  if (session.held) return set({ mode: 'device', notice, phase: 'paused', index: from });
-  set({ mode: 'device', notice, phase: 'playing', index: from });
-  const current = session;
-  current.device = readWithDeviceVoice(
-    current.pieces.map((p, i) => ({ text: p.text, pause: p.pause, male: state.pieces[i]?.voice.includes('Enric') })),
-    from,
-    {
-      rate: rateOf(state.speed),
-      onPiece: (index) => current === session && set({ index }),
-      onDone: () => current === session && finish(current),
-    },
-  );
+// The audio will not come: the screen says why, and the player goes away
+function giveUp(message: string) {
+  const { hour } = state;
+  if (!session || !hour) return;
+  stop();
+  setProblem({ hour, message });
+}
+
+// The pieces cpl-api does not have are left out of the hour (and of what the screen follows)
+function leaveOut(current: Session, missing: Set<string>) {
+  const keep = current.pieces.map((p) => !missing.has(p.key) || pieceStore().has(p.key));
+  current.pieces = current.pieces.filter((_, i) => keep[i]);
+  set({ pieces: state.pieces.filter((_, i) => keep[i]) });
 }
 
 // --- What the screens can do ----------------------------------------------------------------
@@ -393,11 +417,12 @@ export async function listen(hour: string, title: string, pieces: SpeechPiece[],
     pieces: script,
     abort: new AbortController(),
     file: null,
-    device: null,
+    cutShort: null,
     held,
     queue: Promise.resolve(),
   };
   session = current;
+  setProblem(null);
   set({ ...IDLE, speed: state.speed, phase: held ? 'paused' : 'preparing', hour, title, pieces });
 
   let started = false;
@@ -406,7 +431,8 @@ export async function listen(hour: string, title: string, pieces: SpeechPiece[],
     inTurn(current, async () => {
       if (current !== session) return;
       if (started) return grow(current);
-      if (readyFromStart(script, pieceStore()) >= Math.min(START_PIECES, script.length)) {
+      const pieces = current.pieces;
+      if (pieces.length && readyFromStart(pieces, pieceStore()) >= Math.min(START_PIECES, pieces.length)) {
         started = true;
         await startAudio(current);
       }
@@ -423,17 +449,20 @@ export async function listen(hour: string, title: string, pieces: SpeechPiece[],
   });
   await advance();
   if (current !== session) return;
-  if (readyFromStart(script, pieceStore()) === script.length) return;
-  // Something will not come: from where it is, the phone's own voice
-  if (state.mode === 'device') return;
-  const notice = download.noSpace
-    ? NOTICES.noSpace
-    : download.offline
-      ? NOTICES.offline
-      : download.limited
-        ? NOTICES.limited
-        : NOTICES.missing;
-  startDevice(started ? state.index : 0, notice);
+  const cut = download.offline || download.limited || download.noSpace;
+  // What cpl-api does not have is left out, and the hour goes on without it
+  if (!cut && download.missing.length) {
+    leaveOut(current, new Set(download.missing));
+    if (!current.pieces.length) return giveUp(PROBLEMS.missing);
+    await advance();
+    if (current !== session) return;
+  }
+  if (readyFromStart(current.pieces, pieceStore()) === current.pieces.length) return;
+  const reason = download.noSpace ? PROBLEMS.noSpace : download.limited ? PROBLEMS.limited : PROBLEMS.offline;
+  // Nothing to play: it says so at once. Otherwise what is here plays, and then it says so.
+  if (!started) return giveUp(reason);
+  current.cutShort = download.offline ? PROBLEMS.lost : reason;
+  if (state.phase === 'waiting') giveUp(current.cutShort);
 }
 
 export function toggle() {
@@ -443,19 +472,10 @@ export function toggle() {
   // Held, ▶ is the first time it plays: at once if the beginning is here, or as soon as it is
   if (session.held) {
     session.held = false;
-    if (state.mode === 'device') return startDevice(state.index, state.notice ?? NOTICES.offline);
     if (!player || !session.file) return set({ phase: 'preparing' });
     player.play();
     set({ phase: 'playing' });
     lockScreen(true);
-    return;
-  }
-  if (state.mode === 'device') {
-    if (state.phase === 'playing') {
-      session.device?.stop();
-      session.device = null;
-      set({ phase: 'paused' });
-    } else startDevice(state.phase === 'finished' ? 0 : state.index, state.notice ?? NOTICES.offline);
     return;
   }
   if (!player || !session.file) return;
@@ -475,10 +495,6 @@ export function toggle() {
 export function jump(index: number) {
   if (!session) return;
   const target = Math.max(0, Math.min(index, session.pieces.length - 1));
-  if (state.mode === 'device') {
-    startDevice(target, state.notice ?? NOTICES.offline);
-    return;
-  }
   const file = session.file;
   if (!player || !file || target >= file.count) return;
   ownSeekUntil = Date.now() + 1500;
@@ -498,7 +514,7 @@ export function previousPart() {
   const current = [...starts].reverse().find((i) => i <= state.index) ?? 0;
   const before = [...starts].reverse().find((i) => i < current) ?? 0;
   const file = session?.file;
-  const into = state.mode === 'audio' && file ? state.position - (file.starts[current] ?? 0) : 0;
+  const into = file ? state.position - (file.starts[current] ?? 0) : 0;
   jump(into > 3 ? current : before);
 }
 
@@ -506,9 +522,7 @@ export function setSpeed(percent: number) {
   const speed = Math.max(MIN_SPEED, Math.min(MAX_SPEED, Math.round(percent / SPEED_STEP) * SPEED_STEP));
   set({ speed });
   AsyncStorage.setItem(SPEED_KEY, String(speed)).catch(() => undefined);
-  if (state.mode === 'device') {
-    if (state.phase === 'playing') startDevice(state.index, state.notice ?? NOTICES.offline);
-  } else player?.setPlaybackRate(rateOf(speed));
+  player?.setPlaybackRate(rateOf(speed));
 }
 
 // The pace chosen last time
@@ -532,6 +546,7 @@ export function partsOf(pieces: SpeechPiece[]): { index: number; title: string }
 // Laudes would go on reading Completes)
 export function leftHour(hour: string) {
   if (state.hour === hour) stop();
+  if (problem?.hour === hour) setProblem(null);
 }
 
 // The hour heard to the end: the player says so for a moment and goes away by itself (Pau asked for
@@ -554,7 +569,6 @@ export function stop() {
   const current = session;
   session = null;
   current.abort.abort();
-  current.device?.stop();
   player?.pause();
   lockScreen(false);
   forgetHourFile(current.file?.uri ?? null);

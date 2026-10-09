@@ -26,7 +26,7 @@ export function dayAudioLabels(phase: DayAudioPhase, progress: number): DayAudio
     case 'partial':
       return {
         action: again,
-        status: 'Ja és al mòbil, menys algun tros que encara no està preparat: aquell el llegirà la veu del telèfon.',
+        status: 'Ja és al mòbil, menys algun tros que encara no està preparat: aquell se saltarà.',
         progress: null,
       };
     case 'offline':

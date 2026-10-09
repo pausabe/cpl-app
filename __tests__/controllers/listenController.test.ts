@@ -1,6 +1,7 @@
 // The prayer read aloud, as the player sees it: it plays at once what the phone has, starts with the
-// beginning when the network is slow and grows the file as the rest arrives, and goes on with the
-// phone's own voice, saying so, when there is no network or cpl-api has reached a limit.
+// beginning when the network is slow and grows the file as the rest arrives, leaves out what cpl-api
+// does not have, and says why it cannot be heard when there is no network or cpl-api has reached a
+// limit (at once if there is nothing to play, at the end of what has arrived otherwise).
 jest.mock('expo-file-system', () => require('../helpers/fakeFileSystem'));
 // A build with the key of the app, which does ask cpl-api whether the prayer can be heard
 jest.mock('../../src/services/cplApi', () => ({ ...jest.requireActual('../../src/services/cplApi'), APP_KEY: 'test' }));
@@ -17,7 +18,6 @@ import type { SpeechPiece } from '../../src/view-models/speech/script';
 
 const { Directory } = jest.requireMock('expo-file-system');
 const fakeAudio = jest.requireMock('expo-audio');
-const fakeSpeech = jest.requireMock('expo-speech');
 const fetchMock = fetchPieces as jest.Mock;
 
 const key = (n: number) => String(n).padStart(24, '0');
@@ -48,7 +48,6 @@ beforeEach(() => {
   store = filePieceStore(new Directory(`mem:/document/listen-${folder++}`));
   Listen.resetListen(store);
   fetchMock.mockReset();
-  fakeSpeech.__spoken.length = 0;
 });
 
 test('an hour the phone already has plays at once, with the part on the lock screen', async () => {
@@ -60,7 +59,6 @@ test('an hour the phone already has plays at once, with the part on the lock scr
   expect(fetchMock).not.toHaveBeenCalled();
   const state = Listen.getListenState();
   expect(state.phase).toBe('playing');
-  expect(state.mode).toBe('audio');
   expect(state.seconds).toBeCloseTo(12 * 1.488, 0);
   expect(player().calls.map((c: unknown[]) => c[0])).toEqual(['replace', 'rate', 'play']);
   expect(player().playbackRate).toBe(Listen.NORMAL_RATE);
@@ -102,33 +100,126 @@ test('with a slow network it starts with the beginning and the file grows as the
   await flush();
   expect(player().source).not.toBe(firstFile);
   expect(Listen.getListenState().seconds).toBeCloseTo(45 * 1.488, 0);
-  expect(Listen.getListenState().mode).toBe('audio');
 });
 
-test('with no network and an hour not on the phone, the phone’s own voice reads it, and says so', async () => {
-  fetchMock.mockRejectedValue(new AudioNetworkError('offline'));
-  // What the player says while the phone reads (once it has read it all, it goes away)
-  const seen: { mode: string; notice: string | null }[] = [];
-  const unsubscribe = Listen.subscribeListen(() => {
-    const { mode, notice } = Listen.getListenState();
-    seen.push({ mode, notice });
-  });
+// The network tried again, as it is when there is none
+async function listenWithTimers(...args: Parameters<typeof Listen.listen>) {
   jest.useFakeTimers();
-  const listening = Listen.listen('Completes', 'Completes', script(6));
+  const listening = Listen.listen(...args);
   await jest.runAllTimersAsync();
   await listening;
   jest.useRealTimers();
-  unsubscribe();
+}
 
-  expect(seen).toContainEqual({ mode: 'device', notice: Listen.NOTICES.offline });
-  await flush();
-  expect(fakeSpeech.__spoken[0]).toMatchObject({ text: 'Part 0.', voice: 'ca-montse' });
+test('with no network and an hour not on the phone, it says so at once, and leaving the hour puts it away', async () => {
+  fetchMock.mockRejectedValue(new AudioNetworkError('offline'));
+  await listenWithTimers('Completes', 'Completes', script(6));
+
+  expect(Listen.getListenState().phase).toBe('idle');
+  expect(Listen.getListenProblem()).toEqual({ hour: 'Completes', message: Listen.PROBLEMS.offline });
+  expect(Listen.PROBLEMS.offline).toMatch(/Configuració/);
+
+  Listen.leftHour('Laudes');
+  expect(Listen.getListenProblem()).not.toBeNull();
+  Listen.leftHour('Completes');
+  expect(Listen.getListenProblem()).toBeNull();
 });
 
 test('past a limit of cpl-api, the same, with its own reason', async () => {
   fetchMock.mockRejectedValue(new AudioLimitError('limit'));
   await Listen.listen('Tèrcia', 'Tèrcia', script(3));
-  expect(Listen.getListenState()).toMatchObject({ mode: 'device', notice: Listen.NOTICES.limited });
+  expect(Listen.getListenState().phase).toBe('idle');
+  expect(Listen.getListenProblem()).toEqual({ hour: 'Tèrcia', message: Listen.PROBLEMS.limited });
+});
+
+test('the network lost halfway: what has arrived plays, and at its end it says so', async () => {
+  // The first 30 pieces come; the rest, never
+  fetchMock.mockImplementation(async (batch: { key: string }[]) => {
+    if (batch[0].key !== key(0)) throw new AudioNetworkError('offline');
+    return { found: new Map(batch.map((p) => [p.key, second()])), missing: [] };
+  });
+  await listenWithTimers('Vespres', 'Vespres', script(45));
+
+  expect(Listen.getListenState().phase).toBe('playing');
+  expect(Listen.getListenProblem()).toBeNull();
+
+  player().emit({ currentTime: Listen.getListenState().seconds, playing: false, didJustFinish: true });
+  expect(Listen.getListenState().phase).toBe('idle');
+  expect(Listen.getListenProblem()).toEqual({ hour: 'Vespres', message: Listen.PROBLEMS.lost });
+});
+
+test('lost while it was already waiting for the rest: it says so then', async () => {
+  let fail: () => void = () => undefined;
+  fetchMock.mockImplementation(async (batch: { key: string }[]) => {
+    if (batch[0].key !== key(0)) {
+      await new Promise<void>((resolve) => (fail = resolve));
+      throw new AudioNetworkError('offline');
+    }
+    return { found: new Map(batch.map((p) => [p.key, second()])), missing: [] };
+  });
+  jest.useFakeTimers();
+  const listening = Listen.listen('Vespres', 'Vespres', script(45));
+  for (let i = 0; i < 20 && Listen.getListenState().phase !== 'playing'; i++) await flush();
+  player().emit({ currentTime: Listen.getListenState().seconds, playing: false, didJustFinish: true });
+  expect(Listen.getListenState().phase).toBe('waiting');
+
+  // The retries fail too
+  fail();
+  for (let i = 0; i < 3; i++) {
+    await flush();
+    fail();
+    await jest.runAllTimersAsync();
+  }
+  await listening;
+  jest.useRealTimers();
+  expect(Listen.getListenState().phase).toBe('idle');
+  expect(Listen.getListenProblem()).toEqual({ hour: 'Vespres', message: Listen.PROBLEMS.lost });
+});
+
+test('a piece cpl-api does not have is left out, and the hour goes on without it', async () => {
+  const pieces = script(12);
+  fetchMock.mockImplementation(async (batch: { key: string }[]) => ({
+    found: new Map(batch.filter((p) => p.key !== key(3)).map((p) => [p.key, second()])),
+    missing: batch.some((p) => p.key === key(3)) ? [key(3)] : [],
+  }));
+
+  await Listen.listen('Laudes', 'Laudes', pieces);
+  await flush();
+
+  const state = Listen.getListenState();
+  expect(state.phase).toBe('playing');
+  expect(state.pieces.map((p) => p.key)).toEqual(pieces.map((p) => p.key).filter((k) => k !== key(3)));
+  expect(state.seconds).toBeCloseTo(11 * 1.488, 0);
+  expect(Listen.getListenProblem()).toBeNull();
+  // And to the end of the hour, not waiting for it
+  jest.useFakeTimers();
+  player().emit({ currentTime: state.seconds, playing: false, didJustFinish: true });
+  expect(Listen.getListenState().phase).toBe('finished');
+  Listen.stop();
+  jest.runAllTimers();
+  jest.useRealTimers();
+});
+
+test('an hour cpl-api has none of: it says it is not ready', async () => {
+  fetchMock.mockImplementation(async (batch: { key: string }[]) => ({
+    found: new Map(),
+    missing: batch.map((p) => p.key),
+  }));
+  await Listen.listen('Nona', 'Nona', script(4));
+  expect(Listen.getListenState().phase).toBe('idle');
+  expect(Listen.getListenProblem()).toEqual({ hour: 'Nona', message: Listen.PROBLEMS.missing });
+});
+
+test('listening again puts the notice of before away', async () => {
+  fetchMock.mockRejectedValue(new AudioLimitError('limit'));
+  await Listen.listen('Tèrcia', 'Tèrcia', script(3));
+  expect(Listen.getListenProblem()).not.toBeNull();
+
+  const pieces = script(6);
+  for (const p of pieces) store.write(p.key, second());
+  await Listen.listen('Tèrcia', 'Tèrcia', pieces);
+  expect(Listen.getListenProblem()).toBeNull();
+  expect(Listen.getListenState().phase).toBe('playing');
 });
 
 test('stopping lets everything go: the lock screen and the file of the hour', async () => {
@@ -218,7 +309,7 @@ describe('whether it can be heard', () => {
     expect(ask).toHaveBeenCalledTimes(1);
   });
 
-  test('with no answer yet (no network), it can: the phone’s own voice reads then', async () => {
+  test('with no answer yet (no network), it can: what is on the phone plays', async () => {
     await AsyncStorage.clear();
     jest.spyOn(global, 'fetch').mockRejectedValue(new Error('offline'));
     await Listen.refreshListenAvailability(2_000_000);
@@ -246,7 +337,7 @@ describe('opened held (the tour of what is new): nothing is heard until ▶', ()
 
     await Listen.listen('Laudes', 'Laudes', pieces, { held: true });
 
-    expect(Listen.getListenState()).toMatchObject({ phase: 'paused', mode: 'audio' });
+    expect(Listen.getListenState()).toMatchObject({ phase: 'paused' });
     expect(Listen.isHeld()).toBe(true);
     expect(player().calls.map((c: unknown[]) => c[0])).toEqual(['replace', 'rate']);
     expect(player().playing).toBe(false);
@@ -282,21 +373,11 @@ describe('opened held (the tour of what is new): nothing is heard until ▶', ()
     expect(player().playing).toBe(true);
   });
 
-  test('with no network, the phone’s voice waits too, and reads once ▶ is touched', async () => {
+  test('with no network, it says so all the same', async () => {
     fetchMock.mockRejectedValue(new AudioNetworkError('offline'));
-    jest.useFakeTimers();
-    const listening = Listen.listen('Completes', 'Completes', script(6), { held: true });
-    await jest.runAllTimersAsync();
-    await listening;
+    await listenWithTimers('Completes', 'Completes', script(6), { held: true });
 
-    expect(Listen.getListenState()).toMatchObject({ phase: 'paused', mode: 'device', notice: Listen.NOTICES.offline });
-    expect(fakeSpeech.__spoken).toEqual([]);
-
-    Listen.toggle();
-    await flush();
-    expect(Listen.getListenState().phase).toBe('playing');
-    expect(fakeSpeech.__spoken[0]).toMatchObject({ text: 'Part 0.' });
-    Listen.stop();
-    jest.useRealTimers();
+    expect(Listen.getListenState().phase).toBe('idle');
+    expect(Listen.getListenProblem()).toEqual({ hour: 'Completes', message: Listen.PROBLEMS.offline });
   });
 });

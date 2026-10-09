@@ -4,25 +4,27 @@ import { useTheme } from '../theme';
 import Dialog from './Dialog';
 import ActionButton from './ActionButton';
 
-// The headphones while the prayer cannot be heard yet: what they say instead of failing
+// The headphones while the prayer cannot be heard yet, or this one cannot be heard now (no
+// connection, and its audio is not on the phone): what they say instead of failing
 export const LISTEN_SOON = "Aviat podràs escoltar la pregària des d'aquí.";
 
 interface ListenUnavailableDialogProps {
   visible: boolean;
   message: string | null;
   onDismiss: () => void;
+  testID?: string;
 }
 
-export default function ListenUnavailableDialog({ visible, message, onDismiss }: ListenUnavailableDialogProps) {
+export default function ListenUnavailableDialog({
+  visible,
+  message,
+  onDismiss,
+  testID = 'listen-unavailable',
+}: ListenUnavailableDialogProps) {
   const theme = useTheme();
   const { colors } = theme;
   return (
-    <Dialog
-      visible={visible}
-      onDismiss={onDismiss}
-      accessibilityLabel="Escoltar la pregària"
-      testID="listen-unavailable"
-    >
+    <Dialog visible={visible} onDismiss={onDismiss} accessibilityLabel="Escoltar la pregària" testID={testID}>
       <Text
         accessibilityRole="header"
         style={[styles.title, { color: colors.text, fontFamily: theme.fonts.serifSemiBold }]}

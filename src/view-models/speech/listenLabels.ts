@@ -1,5 +1,5 @@
 // What the player says of the hour being read aloud: the part being said, how far it is, and what it
-// is doing when it is not simply playing (getting the audio, waiting for the rest, the phone's voice).
+// is doing when it is not simply playing (getting the audio, waiting for the rest).
 
 export interface ListenProgress {
   phase: 'idle' | 'preparing' | 'playing' | 'paused' | 'waiting' | 'finished';
@@ -7,7 +7,6 @@ export interface ListenProgress {
   position: number;
   seconds: number;
   progress: number;
-  mode: 'audio' | 'device';
   index: number;
   pieces: { kind: string; text: string }[];
 }
@@ -41,10 +40,6 @@ export function listenLabels(s: ListenProgress): ListenLabels {
     return { part, subtitle: `Preparant l'àudio… ${Math.round(s.progress * 100)} %`, time, progress: s.progress };
   }
   if (s.phase === 'waiting') return { part, subtitle: "Esperant la resta de l'àudio…", time, progress: s.progress };
-  if (s.mode === 'device') {
-    const progress = s.pieces.length ? s.index / s.pieces.length : 0;
-    return { part, subtitle: `${s.title} · veu del telèfon`, time: '', progress };
-  }
   if (s.phase === 'finished') return { part, subtitle: `${s.title} · acabat`, time, progress: 1 };
   return {
     part,

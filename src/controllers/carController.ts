@@ -243,8 +243,8 @@ export function wireCar() {
   Listen.subscribeListen(rememberWhereItIs);
   let lastPhase = '';
   Listen.subscribeListen(() => {
-    const { phase, mode, hour, notice } = Listen.getListenState();
-    const now = `${hour} ${phase} ${mode}${notice ? ` (${notice})` : ''}`;
+    const { phase, hour } = Listen.getListenState();
+    const now = `${hour} ${phase}`;
     if (now === lastPhase) return;
     lastPhase = now;
     Logger.log(Logger.LogKeys.Car, 'listen', now);

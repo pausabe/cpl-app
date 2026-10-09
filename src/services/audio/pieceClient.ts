@@ -20,8 +20,8 @@ export interface FetchedPieces {
   missing: string[];
 }
 
-// cpl-api has reached one of its limits for today or this month: nothing is paid for, the phone
-// reads with its own voice instead
+// cpl-api has reached one of its limits for today or this month: nothing is paid for, and the
+// headphones say it cannot be heard now
 export class AudioLimitError extends Error {}
 // No network, or a network too slow to answer
 export class AudioNetworkError extends Error {}

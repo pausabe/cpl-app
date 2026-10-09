@@ -7,7 +7,7 @@ import { Directory, File, Paths } from 'expo-file-system';
 //
 // The phone's own space comes first: the pieces never leave it with less than FREE_SPACE_FLOOR free.
 // On a full phone the oldest pieces make room for the new ones, and if there is still no room (or the
-// system refuses to write) the hour is read with the phone's own voice (StorageFullError).
+// system refuses to write) the headphones say there is no room for it (StorageFullError).
 export const MAX_STORED_BYTES = 150 * 1024 * 1024;
 export const FREE_SPACE_FLOOR = 200 * 1024 * 1024;
 
