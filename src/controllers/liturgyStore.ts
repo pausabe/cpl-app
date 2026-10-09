@@ -9,6 +9,7 @@ import MassLiturgy from '../models/MassLiturgy';
 import type { DayMark } from '../services/liturgicalYearService';
 
 export type DayPreview = DataService.DayPreview;
+export type WidgetDayData = DataService.WidgetDayData;
 export type { DayMark };
 
 // The seam between the screens and the rest of the app.
@@ -99,6 +100,13 @@ function inTurn<T>(task: () => Promise<T>): Promise<T> {
 // it. Null when, by its turn, the calendar no longer wants it (the reader touched another day).
 export function previewDay(date: Date, stillWanted: () => boolean = () => true): Promise<DayPreview | null> {
   return inTurn(() => (stillWanted() ? DataService.obtainDayPreview(date) : Promise.resolve(null)));
+}
+
+// Another day for the widgets of the home screen (controllers/widgetController), without changing
+// the one shown. Each day waits for its turn on its own, so that a reload or the calendar asked for
+// in the middle does not wait for all of them.
+export function widgetDay(date: Date): Promise<WidgetDayData> {
+  return inTurn(() => DataService.obtainWidgetDay(date));
 }
 
 // The colour, the rank and the season of every day of a year, for the calendar

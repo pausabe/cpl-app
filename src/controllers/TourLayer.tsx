@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import TourOverlay from '../components/TourOverlay';
+import WidgetPreview from '../components/WidgetPreview';
+import { pinWidget } from '../services/widgetService';
+import { HOUR_NAMES, bandAt, shortDate, widgetBands } from '../view-models/widgets';
 import { TourContext, type TourRect, type TourRegistry, type TourTargetHandle } from '../components/TourTarget';
 import { tourButtons } from '../view-models/tour';
 import { currentRoute, finishTour, nextStep, useTour, wireTour } from './tourController';
@@ -82,6 +85,12 @@ export default function TourLayer({ children }: { children: React.ReactNode }) {
   }, [step]);
 
   const buttons = tour && step ? tourButtons(step, tour.index, tour.steps.length) : null;
+  const illustration = step?.illustration === 'widget' ? <WidgetOfNow /> : null;
+  // The system asks whether to add it; whatever the answer, the tour goes on
+  const action =
+    step?.action?.does === 'pin-widget'
+      ? { label: step.action.label, onPress: () => pinWidget('ara').finally(nextStep) }
+      : null;
   return (
     <TourContext.Provider value={registry}>
       <View style={styles.app}>
@@ -96,11 +105,21 @@ export default function TourLayer({ children }: { children: React.ReactNode }) {
             onPrimary={nextStep}
             secondary={buttons.secondary}
             onSecondary={finishTour}
+            illustration={illustration}
+            action={action}
           />
         ) : null}
       </View>
     </TourContext.Provider>
   );
+}
+
+// The widget as it is at this moment, with the hour it would show now
+function WidgetOfNow() {
+  const now = new Date();
+  const band = bandAt(widgetBands(), now.getHours());
+  const day = band.yesterday ? new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1) : now;
+  return <WidgetPreview hour={band.hour} name={HOUR_NAMES[band.hour]} date={shortDate(day)} now={band.now} />;
 }
 
 const styles = StyleSheet.create({

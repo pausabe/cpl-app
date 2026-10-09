@@ -35,6 +35,9 @@ import { buildMass, massChoiceToStore, MassChoice, MassScreenType, resolveMassCh
 import { DioceseOfferTexts, dioceseOfferTexts, latePrayerTexts, LocationStatus } from '../view-models/notices';
 import SettingsService, { DioceseName } from '../services/SettingsService';
 import { autoselectDiocese, shouldOfferAutoselection } from './dioceseAutoselection';
+import { scheduleWidgetRefresh } from './widgetController';
+import { initialWidgetLink, linkedScreen, onWidgetLink, openedFromWidgetRecently } from './widgetLinks';
+import { dateOfDay, type WidgetLink } from '../view-models/widgets';
 
 // The home. It loads the day when the app opens and when the day changes, and keeps doing what
 // it always did: coming back to the app on another day loads today's liturgy, between midnight
@@ -127,6 +130,15 @@ export default function HomeScreenController({ navigation, route }: { navigation
   const [loadedHere, setLoadedHere] = useState(false);
   const started = useRef(false);
 
+  // The screen a widget opened, over the home with the day of the link loaded
+  const openLinked = useCallback(
+    (link: WidgetLink) => {
+      const screen = linkedScreen(link);
+      if (screen) navigation.navigate(screen.name, screen.params);
+    },
+    [navigation],
+  );
+
   const load = useCallback(async (date: Date, databaseAsset?: unknown): Promise<boolean> => {
     try {
       await LiturgyStore.reload(date, databaseAsset);
@@ -154,9 +166,14 @@ export default function HomeScreenController({ navigation, route }: { navigation
     (async () => {
       // Before the first load, which copies the database
       const openedBefore = await wasOpenedBefore();
-      const loaded = await load(new Date(), databaseAssets[0]);
-      const late = loaded && isLatePrayer();
+      // A widget opened it: the day the widget showed, and its hour or its readings straight away.
+      // From midnight to 2 h that is yesterday's Completes, so there is nothing to ask.
+      const link = await initialWidgetLink();
+      const linkedDay = link && link.kind !== 'today' ? link : null;
+      const loaded = await load(linkedDay ? dateOfDay(linkedDay.day) : new Date(), databaseAssets[0]);
+      const late = loaded && !linkedDay && isLatePrayer();
       setLatePrayerVisible(late);
+      if (loaded && linkedDay) openLinked(linkedDay);
       if (loaded && SHOW_WHATS_NEW && !(await StorageService.getData(WHATS_NEW_SEEN_KEY))) {
         // Only to whoever knew the old home
         if (openedBefore) setWhatsNewPending(true);
@@ -187,7 +204,8 @@ export default function HomeScreenController({ navigation, route }: { navigation
   // --- Coming back to the app on another day, and the system switching light / dark ---------
   useEffect(() => {
     const appState = AppState.addEventListener('change', async (next) => {
-      if (next !== 'active' || !LiturgyStore.isLoaded()) return;
+      // A widget brought it back: the link loads its own day (below)
+      if (next !== 'active' || !LiturgyStore.isLoaded() || openedFromWidgetRecently()) return;
       const now = new Date();
       if (!DateManagement.datesAreTheEqual(now, LiturgyStore.lastRefreshDate())) {
         navigation.popToTop();
@@ -200,18 +218,34 @@ export default function HomeScreenController({ navigation, route }: { navigation
         Logger.logError(Logger.LogKeys.HomeScreenController, 'followSystemAppearance', error),
       );
     });
+    // A widget touched with the app open: whatever was open goes, and the day of the link comes
+    const offLinks = onWidgetLink(async (link) => {
+      if (!LiturgyStore.isLoaded()) return;
+      if (navigation.canGoBack()) navigation.popToTop();
+      setLatePrayerVisible(false);
+      const date = link.kind === 'today' ? new Date() : dateOfDay(link.day);
+      if (!DateManagement.datesAreTheEqual(date, LiturgyStore.currentDate())) {
+        if (!(await load(date))) return;
+      }
+      if (link.kind !== 'today') openLinked(link);
+    });
     return () => {
       appState.remove();
       appearance.remove();
+      offLinks();
     };
-  }, [navigation, load]);
+  }, [navigation, load, openLinked]);
 
   // --- The tour of what is new: once, when the home has nothing else to say ---------------
+  // and is in sight: not over the hour a widget has just opened, but when coming back from it
   useEffect(() => {
-    if (status === 'ready' && !latePrayerVisible && !whatsNewPending && !dioceseOffer) {
-      maybeStartTour().catch(() => undefined);
-    }
-  }, [status, latePrayerVisible, whatsNewPending, dioceseOffer]);
+    if (status !== 'ready' || latePrayerVisible || whatsNewPending || dioceseOffer) return;
+    const start = () => {
+      if (navigation.isFocused()) maybeStartTour().catch(() => undefined);
+    };
+    start();
+    return navigation.addListener('focus', start);
+  }, [status, latePrayerVisible, whatsNewPending, dioceseOffer, navigation]);
 
   // --- Top bar: calendar on the left, settings on the right, as always -------------------
   useLayoutEffect(() => {
@@ -315,9 +349,13 @@ export default function HomeScreenController({ navigation, route }: { navigation
   }, [chosenInCalendar]);
 
   // The colours of the year of the day shown, asked for after every load (one query, in the queue
-  // after the load), so that the calendar opens painted
+  // after the load), so that the calendar opens painted. And the days to come for the widgets of
+  // the home screen, which are worked out again only when something they show has changed.
   useEffect(() => {
-    if (status === 'ready' && loadedHere) CalendarStore.prefetchShownYear();
+    if (status === 'ready' && loadedHere) {
+      CalendarStore.prefetchShownYear();
+      scheduleWidgetRefresh();
+    }
   }, [snapshot.revision, status, loadedHere]);
 
   const onOptionalMemoryChange = async (enabled: boolean) => {

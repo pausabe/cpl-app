@@ -23,6 +23,7 @@ export const LogKeys = {
   NavigationController: { name: 'NavigationController', enabled: true },
   DeviceLocationService: { name: 'DeviceLocationService', enabled: true },
   Car: { name: 'Car', enabled: true },
+  Widgets: { name: 'Widgets', enabled: true },
 };
 
 export type LogKey = { name: string; enabled: boolean };

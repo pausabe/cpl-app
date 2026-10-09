@@ -87,6 +87,30 @@ test('the steps: without the voice (cpl-cloud has it off) there is nothing about
   });
 });
 
+test('the widgets of the home screen, before the end: how to put one there, or a button that does it', () => {
+  const widgetsOf = (widgets) => tourSteps({ audio: true, widgets }).find((s) => s.id === 'widgets');
+  // In the tests and on the web there are none
+  expect(tourSteps({ audio: true }).map((s) => s.id)).not.toContain('widgets');
+  expect(
+    tourSteps({ audio: false, widgets: { platform: 'ios', canPin: false } })
+      .map((s) => s.id)
+      .slice(-2),
+  ).toEqual(['widgets', 'end']);
+
+  const ios = widgetsOf({ platform: 'ios', canPin: false });
+  expect(ios).toMatchObject({ route: null, target: null, illustration: 'widget', advance: 'next' });
+  expect(ios.text).toMatch(/toca «Edita» o «\+» i busca la CPL/);
+  expect(ios.action).toBeUndefined();
+
+  const android = widgetsOf({ platform: 'android', canPin: true });
+  expect(android.action).toEqual({ label: 'Posa-la a l’inici', does: 'pin-widget' });
+  expect(android.text).not.toMatch(/Mantén premut/);
+  // A launcher that cannot: by hand
+  const byHand = widgetsOf({ platform: 'android', canPin: false });
+  expect(byHand.action).toBeUndefined();
+  expect(byHand.text).toMatch(/toca «Widgets» i busca la CPL/);
+});
+
 test('once, by itself, through the real app: the calendar, Configuració, Lauds and the headphones', async () => {
   render(<App />);
 

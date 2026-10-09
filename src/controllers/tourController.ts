@@ -1,9 +1,11 @@
 import { useSyncExternalStore } from 'react';
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IS_TEST_BUILD } from '../services/cplApi';
 import { TOUR_VERSION, tourSteps, type TourRoute, type TourStep } from '../view-models/tour';
 import { navigationRef } from './navigationRef';
 import * as Listen from './listenController';
+import { canPinWidget, hasWidgets } from '../services/widgetService';
 
 // The tour of what is new (view-models/tour): which step it is on, and what makes it go on. A step
 // that says «toca'l» goes on when the app gets to the screen it opens or when the voice starts; one
@@ -63,7 +65,10 @@ function goTo(step: TourStep) {
 }
 
 export function startTour() {
-  state = { steps: tourSteps({ audio: Listen.getListenAvailability().enabled }), index: 0 };
+  const widgets = hasWidgets()
+    ? { platform: Platform.OS === 'ios' ? ('ios' as const) : ('android' as const), canPin: canPinWidget() }
+    : null;
+  state = { steps: tourSteps({ audio: Listen.getListenAvailability().enabled, widgets }), index: 0 };
   changed();
 }
 
@@ -71,6 +76,9 @@ export function startTour() {
 // be tried out (Maestro, the captures), where it would cover everything
 export async function maybeStartTour() {
   if (state || IS_TEST_BUILD || (globalThis as { __CPL_NO_TOUR__?: boolean }).__CPL_NO_TOUR__) return;
+  // Only from the home: a widget may have opened an hour over it at once
+  const route = currentRoute();
+  if (route && route !== 'Home') return;
   try {
     if (await AsyncStorage.getItem(SEEN_KEY)) return;
   } catch {

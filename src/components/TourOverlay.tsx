@@ -20,6 +20,10 @@ interface TourOverlayProps {
   // Leaving the tour (the last step has nothing to leave)
   secondary: string | null;
   onSecondary: () => void;
+  // A drawing over the words (the widget of the home screen)
+  illustration?: React.ReactNode;
+  // A button of the step besides the one that goes on («Posa-la a l’inici»)
+  action?: { label: string; onPress: () => void } | null;
 }
 
 const MARGIN = 16;
@@ -35,6 +39,8 @@ export default function TourOverlay({
   onPrimary,
   secondary,
   onSecondary,
+  illustration,
+  action,
 }: TourOverlayProps) {
   const theme = useTheme();
   const { colors } = theme;
@@ -58,7 +64,9 @@ export default function TourOverlay({
           {title}
         </Text>
       ) : null}
+      {illustration}
       <Text style={[styles.text, { color: colors.text }]}>{text}</Text>
+      {action ? <ActionButton testID="tour-action" label={action.label} onPress={action.onPress} /> : null}
       <View style={styles.buttons}>
         {secondary ? (
           <Pressable

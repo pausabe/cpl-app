@@ -120,6 +120,42 @@ export async function obtainDayPreview(date: Date): Promise<DayPreview> {
   return { day: dayInformation.today, celebration, settings };
 }
 
+// Another day, for the widgets of the home screen: what the home would show of it, worked out as a
+// reload would, with its first Vespers and its Mass. Nothing of the day being shown changes. The
+// settings are those of the day shown, except the optional memorial, as in obtainDayPreview.
+export interface WidgetDayData {
+  day: LiturgyDayInformation;
+  celebration: CelebrationInformation;
+  settings: Settings;
+  vespersTitle: string;
+  mass: MassLiturgy;
+}
+
+export async function obtainWidgetDay(date: Date): Promise<WidgetDayData> {
+  const settings: Settings = {
+    ...current.settings,
+    optionalFestivityEnabled: await determineOptionalFestivityEnabled(date),
+  };
+  const day = await obtainCurrentLiturgyDayInformation(date, settings);
+  const tomorrow = await obtainCurrentLiturgyDayInformation(day.tomorrow.date, settings);
+  const todayMasters = await obtainLiturgyMasters(day, settings);
+  const tomorrowMasters = await obtainLiturgyMasters(tomorrow, settings);
+  const hours = await obtainHoursLiturgy(todayMasters, tomorrowMasters, day, settings);
+  const mass = await obtainMassLiturgy(
+    day,
+    hours.todayCelebrationInformation,
+    hours.tomorrowCelebrationInformation,
+    settings,
+  );
+  return {
+    day,
+    celebration: obtainCurrentCelebrationInformation(hours),
+    settings,
+    vespersTitle: hours.vespers?.title ?? '',
+    mass,
+  };
+}
+
 // The colour, the rank and the season of every day of a year, in the place of the day shown
 export function obtainYearMarks(year: number): Promise<DayMark[]> {
   return LiturgicalYearService.obtainYearMarks(year, current.settings);

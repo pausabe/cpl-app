@@ -3,12 +3,16 @@
 // doing what they say (opening the calendar, Configuració, Lauds, the headphones), which is the
 // point of a tour. Pau asked for it on 9 October 2026, for what 9.1 and 9.2 never showed: the
 // diocese found with the location, the new calendar, the Gospel at Lauds and listening to the prayer.
+// The same day he asked for one more, the widgets of the home screen, which live outside the app:
+// the step draws one, and on Android it can put it there.
 
 // Once per version of the tour: a new one is shown again to everybody
 export const TOUR_VERSION = '9.3';
 
 export type TourRoute = 'Home' | 'Calendar' | 'Settings' | 'LHDisplay';
 export type TourEvent = 'listen-opened';
+// Something a step can do besides going on: put a widget on the home screen (Android)
+export type TourAction = 'pin-widget';
 
 export interface TourStep {
   id: string;
@@ -22,6 +26,10 @@ export interface TourStep {
   advance: 'next' | { route: TourRoute } | { event: TourEvent };
   // Only while the prayer can be heard (cpl-cloud can turn it off)
   needsAudio?: boolean;
+  // A drawing in the bubble: the widget «L’hora d’ara»
+  illustration?: 'widget';
+  // A button of its own, besides «Següent»
+  action?: { label: string; does: TourAction };
 }
 
 const STEPS: TourStep[] = [
@@ -102,6 +110,7 @@ const STEPS: TourStep[] = [
     advance: 'next',
     needsAudio: true,
   },
+  // widgetsStep goes here
   {
     id: 'end',
     route: null,
@@ -112,8 +121,43 @@ const STEPS: TourStep[] = [
   },
 ];
 
-export function tourSteps({ audio }: { audio: boolean }): TourStep[] {
-  return STEPS.filter((step) => audio || !step.needsAudio);
+export interface TourWidgets {
+  platform: 'ios' | 'android';
+  // Whether the launcher lets the app put a widget there with one touch
+  canPin: boolean;
+}
+
+const WIDGETS_WHAT =
+  'Ara pots tenir la CPL a la pantalla d’inici del mòbil, amb l’hora que toca resar: un toc i s’obre.';
+
+// How to put one there by hand, in the words of each system: iOS 17 has «+», later ones «Edita»
+function widgetsStep({ platform, canPin }: TourWidgets): TourStep {
+  const how =
+    platform === 'ios'
+      ? ' Mantén premut un espai buit de la pantalla d’inici, toca «Edita» o «+» i busca la CPL.'
+      : canPin
+        ? ''
+        : ' Mantén premut un espai buit de la pantalla d’inici, toca «Widgets» i busca la CPL.';
+  // A card wherever the tour is: over Lauds, whose player may be playing and must go on
+  return {
+    id: 'widgets',
+    route: null,
+    target: null,
+    title: 'A la pantalla d’inici',
+    text: WIDGETS_WHAT + how,
+    advance: 'next',
+    illustration: 'widget',
+    ...(platform === 'android' && canPin
+      ? { action: { label: 'Posa-la a l’inici', does: 'pin-widget' as const } }
+      : {}),
+  };
+}
+
+// Without widgets (the web, the tests), no step about them
+export function tourSteps({ audio, widgets = null }: { audio: boolean; widgets?: TourWidgets | null }): TourStep[] {
+  const steps = STEPS.filter((step) => audio || !step.needsAudio);
+  if (!widgets) return steps;
+  return [...steps.slice(0, -1), widgetsStep(widgets), steps[steps.length - 1]];
 }
 
 // What the bubble of a step says on its buttons
