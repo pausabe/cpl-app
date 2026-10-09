@@ -23,6 +23,7 @@ import {
 import type Invitation from '../../models/hours-liturgy/Invitation';
 import type { Psalm, ShortReading, ShortResponsory } from '../../models/liturgy-masters/CommonParts';
 import type { Settings } from '../../models/Settings';
+import type { DiesIraeChoice } from './specific-hour-liturgy/hourProps';
 
 // The pieces the hours have in common.
 //
@@ -36,6 +37,46 @@ const OPENING_GLORIA =
   'Glòria al Pare i al Fill\ni a l’Esperit Sant.\nCom era al principi, ara i sempre\ni pels segles dels segles. Amén.';
 const INVITATORY_GLORIA =
   'Glòria al Pare i al Fill    \ni a l’Esperit Sant.\nCom era al principi, ara i sempre    \ni pels segles dels segles. Amén.';
+
+const HYMN_OPTIONS = [
+  { value: 'dia', label: 'Himne del dia' },
+  { value: 'dies-irae', label: 'Dies iræ' },
+];
+
+// Whether the hour says the Dies iræ: offered (DiesIraeService) and chosen
+export function saysDiesIrae(diesIraeAnthem: string | undefined, diesIrae: DiesIraeChoice | undefined): boolean {
+  return Boolean(diesIraeAnthem) && diesIrae?.chosen === true;
+}
+
+// The hymn of the hour. In the last week of Ordinary Time it may be the Dies iræ instead, «si es
+// vol»: two chips to choose, as with the Marian antiphon of Compline.
+export function hymn(
+  styles: PrayerTextStyles,
+  anthem: string,
+  diesIraeAnthem: string | undefined,
+  diesIrae: DiesIraeChoice | undefined,
+) {
+  if (!diesIraeAnthem || !diesIrae) {
+    return (
+      <Text selectable={true} style={styles.black}>
+        {rs(anthem)}
+      </Text>
+    );
+  }
+  return (
+    <View>
+      <ChoiceChips
+        accessibilityLabel="Himne"
+        options={HYMN_OPTIONS}
+        value={diesIrae.chosen ? 'dies-irae' : 'dia'}
+        onChange={(value) => diesIrae.onChange(value === 'dies-irae')}
+      />
+      <Text selectable={true} style={styles.black}>
+        {rs(diesIrae.chosen ? diesIraeAnthem : anthem)}
+      </Text>
+    </View>
+  );
+}
 
 // The line between two parts of the hour, and the title of the next one
 export function section(title: ReactNode, content: ReactNode) {

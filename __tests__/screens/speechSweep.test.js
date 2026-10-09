@@ -1,6 +1,6 @@
 // The audio the voice will need, day by day: every hour and the Mass readings opened as a user would
-// (with and without the invitatory, every Marian antiphon, «Continua amb…», the evening Mass, the
-// Easter Vigil), for the settings that change the text (the invitatory psalm, the Marian antiphon,
+// (with and without the invitatory, every Marian antiphon, the Dies iræ of the last week of Ordinary
+// Time, «Continua amb…», the evening Mass, the Easter Vigil), for the settings that change the text (the invitatory psalm, the Marian antiphon,
 // the Latin hymns, the optional memorial) and for every diocese on the days its text is not
 // Barcelona's. It writes, as JSON lines, the pieces each day needs: scripts/speechSweep.mjs runs it
 // in parallel and joins them for the generator (scripts/audio/).
@@ -84,6 +84,9 @@ async function massPieces(day, profile, into) {
   }
 }
 
+// The chip of the Dies iræ, instead of the hymn of the day
+const DIES_IRAE = /^\s*Dies iræ\s*$/;
+
 async function dayPieces(day, profile, into, everyAntiphon) {
   for (const hour of HOURS) {
     await loadDay(day, profile);
@@ -91,6 +94,10 @@ async function dayPieces(day, profile, into, everyAntiphon) {
     pieces(hour, into);
     if ((hour === 'Laudes' || hour === 'Ofici') && has(/Començar amb/)) {
       await press(/Començar amb/);
+      pieces(hour, into);
+    }
+    if (has(DIES_IRAE)) {
+      await press(DIES_IRAE);
       pieces(hour, into);
     }
     if (hour === 'Completes' && everyAntiphon) {

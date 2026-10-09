@@ -15,6 +15,7 @@ import { SpecificLiturgyTimeType } from '../../../services/celebrationTimeEnums'
 import { prayerTextStyles, useTheme } from '../../../theme';
 import {
   antiphonedPsalm,
+  hymn,
   intercessions,
   invitatoryOrOpening,
   psalmody,
@@ -42,6 +43,7 @@ export default function LaudesComponent({
   titles,
   onInvitationPsalmChange,
   gospel = null,
+  diesIrae,
 }: LaudesProps) {
   const styles = prayerTextStyles(useTheme());
   const invitatory = useInvitatory(settings, titles, onInvitationPsalmChange);
@@ -62,12 +64,7 @@ export default function LaudesComponent({
             invitatory,
             alwaysInvitatory: today.specificLiturgyTime === SpecificLiturgyTimeType.EasterSunday,
           })}
-          {section(
-            'HIMNE',
-            <Text selectable={true} style={styles.black}>
-              {rs(laudes.anthem)}
-            </Text>,
-          )}
+          {section('HIMNE', hymn(styles, laudes.anthem, laudes.diesIraeAnthem, diesIrae))}
           {section('SALMÒDIA', psalmody(styles, [laudes.firstPsalm, laudes.secondPsalm, laudes.thirdPsalm]))}
           {section('LECTURA BREU', shortReading(styles, laudes.shortReading))}
           {section('RESPONSORI BREU', shortResponsory(laudes.shortResponsory))}

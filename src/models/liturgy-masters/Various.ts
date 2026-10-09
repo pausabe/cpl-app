@@ -1,3 +1,38 @@
+// The Dies iræ that may be said instead of the hymn of the day in the last week of Ordinary Time,
+// for one hour: the Latin text and the Catalan one
+export interface DiesIraeHymn {
+  latin: string;
+  catalan: string;
+}
+
+export interface DiesIraeHymns {
+  office: DiesIraeHymn | null;
+  laudes: DiesIraeHymn | null;
+  vespers: DiesIraeHymn | null;
+}
+
+const NO_DIES_IRAE: DiesIraeHymns = { office: null, laudes: null, vespers: null };
+
+// The rows of the Dies iræ came after the bishops, so they are found by their name and not by their
+// place: «Himne Dies iræ, Laudes (setmana XXXIV)», the Latin one first and the Catalan one after, as
+// with the other hymns of the table. A database without them (all of them before 2026) has none.
+function diesIraeHymns(databaseTable: { concepte?: string; oracio: string }[]): DiesIraeHymns {
+  const plain = (text: string) =>
+    text
+      .toLowerCase()
+      .replace(/æ/g, 'ae')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  const ofHour = (hour: string): DiesIraeHymn | null => {
+    const rows = databaseTable.filter((row) => {
+      const name = plain(row.concepte ?? '');
+      return name.includes('dies irae') && name.includes(hour);
+    });
+    return rows.length >= 2 ? { latin: rows[0].oracio, catalan: rows[1].oracio } : null;
+  };
+  return { office: ofHour('ofici'), laudes: ofHour('laudes'), vespers: ofHour('vespres') };
+}
+
 export default class Various {
   static masterName: string = 'diversos';
 
@@ -55,8 +90,10 @@ export default class Various {
       this.andorraBishop = databaseTable[49].oracio;
       this.mallorcaBishop = databaseTable[50].oracio;
       this.menorcaBishop = databaseTable[51].oracio;
+      this.diesIrae = diesIraeHymns(databaseTable);
     }
   }
+  diesIrae: DiesIraeHymns = NO_DIES_IRAE;
   psalm94: string;
   teDeumLatinAnthem: string;
   teDeumCatalanAnthem: string;

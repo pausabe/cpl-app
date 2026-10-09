@@ -14,6 +14,7 @@ import {
 import { prayerTextStyles, useTheme } from '../../../theme';
 import {
   antiphonedPsalm,
+  hymn,
   intercessions,
   opening,
   psalmody,
@@ -24,7 +25,7 @@ import {
 import type { HourProps } from './hourProps';
 
 // Vespers. Gets the hours of the day (hours) and the day (today) through props.
-export default function VespersComponent({ hours, today }: HourProps) {
+export default function VespersComponent({ hours, today, diesIrae }: HourProps) {
   const styles = prayerTextStyles(useTheme());
 
   // Everything the hour shows goes through the flow, which sews the paragraphs that follow one
@@ -37,12 +38,7 @@ export default function VespersComponent({ hours, today }: HourProps) {
       return (
         <>
           {opening(styles, today.specificLiturgyTime)}
-          {section(
-            'HIMNE',
-            <Text selectable={true} style={styles.black}>
-              {rs(vespers.anthem)}
-            </Text>,
-          )}
+          {section('HIMNE', hymn(styles, vespers.anthem, vespers.diesIraeAnthem, diesIrae))}
           {section('SALMÒDIA', psalmody(styles, [vespers.firstPsalm, vespers.secondPsalm, vespers.thirdPsalm]))}
           {section('LECTURA BREU', shortReading(styles, vespers.shortReading))}
           {section('RESPONSORI BREU', shortResponsory(vespers.shortResponsory))}

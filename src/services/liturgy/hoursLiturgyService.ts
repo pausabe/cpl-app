@@ -8,6 +8,7 @@ import * as LaudesService from './laudesService';
 import * as VespersService from './vespersService';
 import * as HoursService from './hoursService';
 import * as NightPrayerService from './nightPrayerService';
+import * as DiesIraeService from './diesIraeService';
 import * as CelebrationInformationService from './celebrationInformationService';
 import { Settings } from '../../models/Settings';
 import LiturgyDayInformation from '../../models/LiturgyDayInformation';
@@ -86,6 +87,18 @@ export async function obtainHoursLiturgy(
     liturgyDayInformation.today,
     settings,
   );
+  const vespersCelebration = celebrationVespersUsed(
+    hoursLiturgy.todayCelebrationInformation,
+    hoursLiturgy.tomorrowCelebrationInformation,
+    hoursLiturgy.vespersOptions,
+  );
+  DiesIraeService.offerDiesIrae(
+    hoursLiturgy,
+    todayLiturgyMasters,
+    liturgyDayInformation.today,
+    settings,
+    StringManagement.hasLiturgyContent(vespersCelebration.anthem),
+  );
   return hoursLiturgy;
 }
 
@@ -102,14 +115,7 @@ export function getVespersWithLowerPrecedence(
      Therefore, in these cases, Vespers Without Celebration will actually be empty and the merge will actually do nothing.
     */
 
-  if (
-    tomorrowIsMoreImportant(
-      todayCelebrationInformation.precedence,
-      tomorrowCelebrationInformation.precedence,
-      vespersOptions.todaySecondVespersWithCelebration,
-      vespersOptions.tomorrowFirstVespersWithCelebration,
-    )
-  ) {
+  if (comeFromTomorrow(todayCelebrationInformation, tomorrowCelebrationInformation, vespersOptions)) {
     return VespersService.mergeVespersWithCelebration(
       liturgyMasters,
       liturgyDayInformation.tomorrow,
@@ -126,6 +132,30 @@ export function getVespersWithLowerPrecedence(
       vespersOptions.todaySecondVespersWithCelebration,
     );
   }
+}
+
+// The Vespers of a celebration said this evening: tomorrow's first ones, or today's second ones
+function celebrationVespersUsed(
+  todayCelebrationInformation: CelebrationInformation,
+  tomorrowCelebrationInformation: CelebrationInformation,
+  vespersOptions: VespersOptions,
+): Vespers {
+  return comeFromTomorrow(todayCelebrationInformation, tomorrowCelebrationInformation, vespersOptions)
+    ? vespersOptions.tomorrowFirstVespersWithCelebration
+    : vespersOptions.todaySecondVespersWithCelebration;
+}
+
+function comeFromTomorrow(
+  todayCelebrationInformation: CelebrationInformation,
+  tomorrowCelebrationInformation: CelebrationInformation,
+  vespersOptions: VespersOptions,
+): boolean {
+  return tomorrowIsMoreImportant(
+    todayCelebrationInformation.precedence,
+    tomorrowCelebrationInformation.precedence,
+    vespersOptions.todaySecondVespersWithCelebration,
+    vespersOptions.tomorrowFirstVespersWithCelebration,
+  );
 }
 
 function tomorrowIsMoreImportant(

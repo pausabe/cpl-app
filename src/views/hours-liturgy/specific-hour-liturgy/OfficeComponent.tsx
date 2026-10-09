@@ -14,7 +14,15 @@ import {
 } from '../../../utils/prayerText';
 import { SpecificLiturgyTimeType } from '../../../services/celebrationTimeEnums';
 import { PrayerTextStyles, prayerTextStyles, useTheme } from '../../../theme';
-import { antiphonedPsalm, invitatoryOrOpening, psalmody, section, useInvitatory } from '../hourBlocks';
+import {
+  antiphonedPsalm,
+  hymn,
+  invitatoryOrOpening,
+  psalmody,
+  saysDiesIrae,
+  section,
+  useInvitatory,
+} from '../hourBlocks';
 import type Office from '../../../models/hours-liturgy/Office';
 import type { Psalm, ReadingOfTheOffice } from '../../../models/liturgy-masters/CommonParts';
 import type { InvitatoryHourProps } from './hourProps';
@@ -28,6 +36,7 @@ export default function OfficeComponent({
   settings,
   titles,
   onInvitationPsalmChange,
+  diesIrae,
 }: InvitatoryHourProps) {
   const styles = prayerTextStyles(useTheme());
   const invitatory = useInvitatory(settings, titles, onInvitationPsalmChange);
@@ -92,13 +101,15 @@ export default function OfficeComponent({
             alwaysInvitatory: false,
           })}
           {section(
-            <>
-              {'HIMNE'}
-              {nightHymn ? ' (nit)' : ' (dia)'}
-            </>,
-            <Text selectable={true} style={styles.black}>
-              {rs(office.anthem)}
-            </Text>,
+            saysDiesIrae(office.diesIraeAnthem, diesIrae) ? (
+              'HIMNE'
+            ) : (
+              <>
+                {'HIMNE'}
+                {nightHymn ? ' (nit)' : ' (dia)'}
+              </>
+            ),
+            hymn(styles, office.anthem, office.diesIraeAnthem, diesIrae),
           )}
           {section('SALMÒDIA', psalmody(styles, [office.firstPsalm, office.secondPsalm, office.thirdPsalm]))}
           {section(

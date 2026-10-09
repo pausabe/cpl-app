@@ -77,6 +77,8 @@ const defaultSettings = {
   darkMode: DarkModeOption.System,
   showVideos: 'false',
   laudesGospel: 'false',
+  // The Dies iræ instead of the hymn of the day, in the last week of Ordinary Time
+  diesIrae: 'false',
   edicio: DEFAULT_EDITION,
 };
 
@@ -172,6 +174,10 @@ export default class SettingsService {
     return storedValue('laudesGospel');
   }
 
+  static getSettingDiesIrae(): Promise<string> {
+    return storedValue('diesIrae');
+  }
+
   static setSettingUseLatin(value: string): Promise<void> {
     return storeIfValid('useLatin', value, isBoolean);
   }
@@ -229,5 +235,9 @@ export default class SettingsService {
 
   static setSettingLaudesGospel(value: string): Promise<void> {
     return storeIfValid('laudesGospel', value, isBoolean);
+  }
+
+  static setSettingDiesIrae(value: string): Promise<void> {
+    return storeIfValid('diesIrae', value, isBoolean);
   }
 }

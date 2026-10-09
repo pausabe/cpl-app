@@ -27,8 +27,8 @@ interface HoursLiturgyPrayerScreenProps extends HourProps {
 
 // One hour of the Liturgy of the Hours. Everything comes through props from its controller
 // (Controllers/PrayerController): the hours of the day (hours), the day (today), the settings, the
-// Gospel Lauds takes when it is asked to (laudesGospel) and what to do when the user picks another
-// invitatory psalm or Marian antiphon. When the home says something under the name of the hour
+// Gospel Lauds takes when it is asked to (laudesGospel), whether the Dies iræ is chosen (diesIrae)
+// and what to do when the user picks another invitatory psalm or Marian antiphon. When the home says something under the name of the hour
 // (celebration: the first Vespers of tomorrow's feast), it goes on top, whole, as the heading of
 // the prayer.
 export default function HoursLiturgyPrayerScreen(props: HoursLiturgyPrayerScreenProps) {
@@ -82,19 +82,24 @@ function Hour({
   today,
   settings,
   laudesGospel,
+  diesIrae,
   onInvitationPsalmChange,
   onVirginAntiphonChange,
 }: HoursLiturgyPrayerScreenProps) {
   const theme = useTheme();
   const common = { hours, today, settings };
+  // The three hours that may say the Dies iræ
+  const withDiesIrae = { ...common, diesIrae };
   switch (type) {
     case 'Ofici':
-      return <OfficeComponent {...common} titles={titlesOf(hours)} onInvitationPsalmChange={onInvitationPsalmChange} />;
+      return (
+        <OfficeComponent {...withDiesIrae} titles={titlesOf(hours)} onInvitationPsalmChange={onInvitationPsalmChange} />
+      );
 
     case 'Laudes':
       return (
         <LaudesComponent
-          {...common}
+          {...withDiesIrae}
           titles={titlesOf(hours)}
           onInvitationPsalmChange={onInvitationPsalmChange}
           gospel={laudesGospel}
@@ -102,7 +107,7 @@ function Hour({
       );
 
     case 'Vespres':
-      return <VespersComponent {...common} />;
+      return <VespersComponent {...withDiesIrae} />;
 
     case 'Tèrcia':
       return <HoursComponent {...common} minorHourName={type} minorHour={hours.hours.thirdHour} />;

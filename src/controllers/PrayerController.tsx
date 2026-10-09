@@ -20,6 +20,7 @@ import { speechScript } from '../view-models/speech/script';
 import { listenLabels } from '../view-models/speech/listenLabels';
 import { laudesGospel } from '../view-models/laudesGospel';
 import type { SpeechParagraph } from '../view-models/speech/paragraph';
+import type { DiesIraeChoice } from '../views/hours-liturgy/specific-hour-liturgy/hourProps';
 
 // The prayer (LHDisplay) and the readings (LDDisplay): they get the day's data from here. In the top
 // bar, the headphones read the prayer aloud (listenController) and the "Aa" button opens the sheet
@@ -199,6 +200,18 @@ function chooseVirginAntiphon(antiphon: string) {
   SettingsService.setSettingVirginAntiphon(antiphon);
 }
 
+// The Dies iræ chosen instead of the hymn of the day, in the last week of Ordinary Time: read when
+// the prayer opens, as a switch, and kept for the next hour when it is chosen
+function useDiesIrae(): DiesIraeChoice {
+  const stored = useSwitchSetting(SettingsService.getSettingDiesIrae);
+  const [chosen, setChosen] = useState<boolean | null>(null);
+  const onChange = useCallback((on: boolean) => {
+    setChosen(on);
+    SettingsService.setSettingDiesIrae(on ? 'true' : 'false');
+  }, []);
+  return { chosen: chosen ?? stored, onChange };
+}
+
 // A setting that is on or off, read when the prayer opens: it changes nothing else, so it does not
 // go through the loaded settings (and the liturgy is not loaded again when it changes)
 function useSwitchSetting(read: () => Promise<string>): boolean {
@@ -219,6 +232,7 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
   const sheet = useHeaderButtons(navigation, listening.onListen, listening.dimmed);
   const sink = useSpeechSink(route.params.type);
   const withGospel = useSwitchSetting(SettingsService.getSettingLaudesGospel);
+  const diesIrae = useDiesIrae();
   const gospel =
     withGospel && route.params.type === 'Laudes'
       ? laudesGospel({ today: day.today, tomorrow: day.tomorrow, gospel: mass.today.gospel })
@@ -234,6 +248,7 @@ export function HoursPrayerController({ route, navigation }: { route: { params: 
             today={day.today}
             settings={settings}
             laudesGospel={gospel}
+            diesIrae={diesIrae}
             onInvitationPsalmChange={chooseInvitationPsalm}
             onVirginAntiphonChange={chooseVirginAntiphon}
           />
