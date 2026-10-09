@@ -147,6 +147,7 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [SA-36](#sa-36) | 2026-10-06 | saints-app | **codi** | No — va al git | `6be00a8d8` |
 | [APP-002](#app-002) | 2026-10-07 | cpl-app | codi (iOS, «Aa») | No — va al git | `37871d3`, a `master` i a `catalan-migration` |
 | [APP-003](#app-003) | 2026-10-08 | cpl-app + cpl-cloud | **funció nova** (escoltar la pregària) | No — va al git; l'àudio viu a R2 | cpl-app `7c8f283`…`e25b1f0` a `master` · cpl-cloud `4ae8d03`, `3796d4a` |
+| [SA-37](#sa-37) | 2026-10-09 | eines + saints-app | merge de `dev` (textos del 8-10: el Pilar) i 8 caselles de la D-022 fora | Es regenera: `decided-cells.json`, el mapa | el que afegeix la fitxa · saints-app `becbde0f2`, `1d20f78e9` |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2586,7 +2587,7 @@ el castellà; els pocs dies que discrepen, el català diu el mateix que el caste
 |---|---|---|
 | Vespres del divendres III, 1a antífona | «El Senyor és gran… més gran que tots els déus» (32) | 5 de gener i diumenge II després de Nadal: «…més excels que tota la creació» (10) |
 | Vespres del divendres III, 3a antífona | «Tots els pobles, Senyor, vindran a fer-vos homenatge» (96) | Epifania: «Tots els pobles que heu creat…» (10) |
-| Primeres vespres del dissabte IV: himne, 3 antífones, lectura breu (2Pe 1,19-21), introducció i resposta de les pregàries (8) | Les del dissabte IV (56) | El 12 d'octubre: eprex fa servir aquestes caselles per al Pilar ([T25](https://trello.com/c/FXmXIE2q) al tauler) |
+| Primeres vespres del dissabte IV: himne, 3 antífones, lectura breu (2Pe 1,19-21), introducció i resposta de les pregàries (8) | Les del dissabte IV (56) | El 12 d'octubre: eprex fa servir aquestes caselles per al Pilar ([T25](https://trello.com/c/FXmXIE2q) al tauler). **Tretes el 9-10** ([SA-37](#sa-37)): el Pilar ja té caselles pròpies i el join les escriu sol |
 | Laudes del diumenge IV, 1a antífona | «Enaltiu el Senyor, perdura eternament el seu amor, al·leluia» (56) | Els dilluns IV, sense al·leluia (30) |
 | Ofici del diumenge IV, 2a antífona | «Pobles, beneïu el nostre Déu, que ens preserva la vida, al·leluia» (65) | Dimarts de Pasqua: «que m'ha preservat» (10) |
 | Laudes del dissabte III, pregàries | La CPL en té tres, com el llatí; el castellà n'afegeix una (la concepció per obra de l'Esperit Sant). La de la creu va a la seva casella i la del castellà queda buida per decisió | `lib/preces-alignment.js`; `preces-alignment.test.js` (4 de 4) |
@@ -2958,6 +2959,41 @@ trobar-la, mostraven NO_LITURGICAL_DATA.
 | Comprovat a l'app | No: només vitest. No s'ha provat a l'iPhone |
 | Commit | `6be00a8d8` (branca `catalan-language-support-dev`) |
 | Pendent | L'ofici propi d'aquests dies: [T26](https://trello.com/c/Ud5nxZXj) |
+
+<a id="sa-37"></a>
+## SA-37
+
+**`dev` del 8 d'octubre a la branca catalana: les Vespres del Pilar, pròpies** · 9 d'octubre de 2026
+
+Merge d'`origin/dev` a `catalan-language-support-dev`: els textos del 2-10 (vespre), del 6-10 i del 8-10 (#1764).
+El del 8-10 dona al Pilar les seves Vespres ([T25](https://trello.com/c/FXmXIE2q)): 16 camps nous a
+`our_lady_of_the_pillar__ANY`, sense camps `_PrimerasVisperas`. Ja no comparteix caselles amb les primeres vespres
+del dissabte IV, i les 8 caselles que la [D-022](#d-022) havia decidit per això surten de `decided-cells.json`.
+
+| | |
+|---|---|
+| Conflictes del merge | `package.json` i `bun.lock`: `dev` puja litcal a la 2.4.6 i la branca porta el litcal català empaquetat (2.5.0-catalan.1). Es queda el català: de la 2.4.5 a la 2.4.6 només canvia el calendari dels Estats Units. `bun.lock`, sencer el de la branca |
+| Sonda | Tot el rang, des de zero, i al mapa només els **53 dies** que toquen els textos nous: el Pilar (7, els anys que no cau en dissabte ni en diumenge), els Àngels Custodis i els Arcàngels a les hores menors, i la Sexta i la Nona dels dissabtes XXVI i XXX (amb les memòries que hi cauen). La resta de dies que la sonda veu diferents es queden com eren, i es diu per què a sota |
+| Base | `cpl-app.fixed.db` feta de la **publicació 6** (la 5 ja no hi és). Canvia 3 textos que no tenen res a veure amb el Pilar: l'oració 303 sense el salt de línia final i les lectures de la missa del dilluns després de l'Epifania (1516-1518, 1899-1901), amb la resposta a la cita com en castellà ([D-017](#d-017)) |
+| Join | Caselles que passen a pendents: `oraciones_finales/241`. Deixen de ser-ho: `oraciones_finales/1256`. Cap més |
+| Exportació | 28 claus noves i 3 canviades. Totes comparades amb el castellà de la casella. Les Completes només hi canviaven l'ordre d'una clau i s'han desfet. Esborrades a mà (l'exportació no esborra): `cantico_evangelico_antifonas/2070` i `responsorios/19508`-`19513`, que duien el text català del Pilar sobre un castellà que no és el seu i que ja no fa servir cap entrada. Una segona passada: 0 noves i 0 canviades |
+| Efecte | El 12-10-2026, les Vespres del Pilar completes. En total, de 436.415 a **436.313** textos-dia i **224** dies sencers, igual: el Pilar en guanya 42, i els Àngels Custodis (−51) i els Arcàngels (−93) en perden perquè les seves hores menors ara tenen menys camps. Els Arcàngels es queden al 97%, amb els mateixos 4 conflictes |
+| Tests | `make tests`: 1.099 bé i 3 saltats. Set suites de pantalles fallaven per temps amb la màquina carregada (càrrega 115) i passen totes soles |
+| Commit | merge `becbde0f2` i textos `1d20f78e9` (saints-app); el que afegeix la fitxa (cpl-app) |
+
+**Es queden com eren, a l'espera:**
+
+| Dies | Per què | Què cal |
+|---|---|---|
+| Sant Jaume, Vespres del 24 i el 25-7 (20 dies) | Des dels textos del 2-10 al vespre, `dev` torna a tenir el responsori com abans del 30-9: a les primeres vespres li falta el primer verset (18664) i a les segones el 20230 hi surt dues vegades. Amb el mapa nou, el join deixaria sant Jaume sense responsori en català | Que en Fernando ho torni a arreglar (targeta nova al tauler). Llavors, sondejar aquests dies |
+| Fidels Difunts, missa (10 dies) | `dev` hi posa ara l'aclamació «Venid a mí todos los que estáis cansados» (`lecturas_texto/6027`), la mateixa de 43 dies més. cpl-app el 2-11 en diu una altra, i la casella passaria a conflicte: els 43 dies es quedarien sense aclamació en català | Decisió d'en Pau, una per una ([D-010](#d-010)) |
+| 136 dies de celebracions catalanes (sant Ramon de Penyafort, la Mercè, santa Eulàlia, Claret…) | Des de la [SA-36](#sa-36) hi resen la fèria i la sonda ja ho veu; el mapa encara no, perquè és del 2-10 | Una passada a part, mirant-ne l'efecte al join |
+
+**Trobat de passada, per a en Fernando:** els dissabtes XXVI i XXX, a Tèrcia, `dev` apunta a l'oració 1256, i la
+resta de dissabtes de la setmana II a la 1237. El castellà de la 1256 és una altra oració («Nos sentimos culpables,
+Señor…»); l'italià i el català hi diuen la de Tèrcia. El pròxim, el dissabte 31-10-2026. I els Àngels Custodis (memòria)
+tenen ara hores menors pròpies amb l'oració del dia (`oraciones_finales/241`), quan cpl-app hi resa la de la fèria, com
+diu l'OGLH 236: la 241 queda pendent i sense català fins que es decideixi qui té raó.
 
 # Canvis a saints-app
 
