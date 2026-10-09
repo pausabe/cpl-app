@@ -83,3 +83,22 @@ test('a day left before its turn is not worked out', async () => {
   expect(state.calls).toEqual([1, 5]);
   expect(state.pending).toHaveLength(0);
 });
+
+test('a day that cannot be worked out is reported, and the next ones go on', async () => {
+  const AsyncStorage = require('@react-native-async-storage/async-storage');
+  await AsyncStorage.clear();
+  state.revision = 3;
+  state.calls = [];
+  LiturgyStore.previewDay.mockImplementationOnce(async () => {
+    throw new Error('database is locked');
+  });
+  CalendarStore.needPreviews(september(10, 11));
+  await new Promise((resolve) => setImmediate(resolve));
+  await finishOne();
+
+  expect(state.calls).toEqual([11]);
+  // The card of the 10th stays waiting: it waits on the phone to reach cpl-cloud (services/health)
+  await new Promise((resolve) => setImmediate(resolve));
+  const problems = JSON.parse((await AsyncStorage.getItem('HealthProblems')) ?? '[]');
+  expect(problems).toEqual([expect.objectContaining({ place: 'calendar-day', message: 'database is locked' })]);
+});

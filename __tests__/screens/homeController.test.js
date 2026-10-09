@@ -19,7 +19,7 @@ jest.mock('react-native-webview', () => {
 import React from 'react';
 import { AppState } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { render, screen, act } from '@testing-library/react-native';
+import { render, screen, act, waitFor } from '@testing-library/react-native';
 import App from '../../App';
 import * as DataService from '../../src/services/dataService';
 
@@ -55,6 +55,12 @@ test('if the liturgy cannot be loaded, it says so instead of leaving the home bl
   await openAt(new Date(2026, 8, 21, 10, 0));
   expect(await screen.findByText(/Ha sorgit un error inesperat/, {}, { timeout: 15000 })).toBeTruthy();
   expect(screen.queryByTestId('day-card')).toBeNull();
+  // And it waits on the phone to reach cpl-cloud, where Pau sees it (services/health)
+  await waitFor(async () =>
+    expect(JSON.parse((await AsyncStorage.getItem('HealthProblems')) ?? '[]')).toEqual([
+      expect.objectContaining({ kind: 'handled', place: 'home-load', message: 'database closed' }),
+    ]),
+  );
 });
 
 test('on the hour, «Ara» moves to the next hour', async () => {

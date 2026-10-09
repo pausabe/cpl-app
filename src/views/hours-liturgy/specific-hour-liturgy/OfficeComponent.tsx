@@ -135,6 +135,7 @@ export default function OfficeComponent({
       );
     } catch (error) {
       Logger.logError(Logger.LogKeys.Screens, 'remder', error as Error);
+      Logger.reportProblem('prayer-office', error);
       return null;
     }
   }
@@ -220,6 +221,7 @@ function readings(styles: PrayerTextStyles, office: Office) {
     );
   } catch (error) {
     Logger.logError(Logger.LogKeys.Screens, 'readings', error as Error);
+    Logger.reportProblem('prayer-office', error);
     return null;
   }
 }

@@ -7,6 +7,7 @@ import { vespersSubtitle } from '../view-models/hours';
 import { buildMass } from '../view-models/mass';
 import { WIDGET_DAYS, WidgetDay, buildWidgetDay, buildWidgetPayload, isoDate } from '../view-models/widgets';
 import * as Logger from '../utils/logger';
+import { reportProblem } from '../services/health/problems';
 
 // The words of the days to come for the widgets of the home screen (view-models/widgets): from
 // yesterday, which they show from midnight to 2 h, to two weeks ahead, in the place and with the
@@ -71,7 +72,10 @@ export async function refreshWidgets(now: Date = new Date()): Promise<void> {
     writeWidgetPayload(JSON.stringify(buildWidgetPayload(days, now)));
     lastKey = key;
   })()
-    .catch((error) => Logger.logError(Logger.LogKeys.Widgets, 'refreshWidgets', error as Error))
+    .catch((error) => {
+      Logger.logError(Logger.LogKeys.Widgets, 'refreshWidgets', error as Error);
+      reportProblem('widgets', error);
+    })
     .finally(() => {
       running = null;
     });

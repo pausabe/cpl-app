@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system/legacy';
 import * as SQLite from 'expo-sqlite';
 import * as Logger from '../utils/logger';
+import { reportProblem } from './health/problems';
 import { Asset } from 'expo-asset';
 import { FileSystemService } from './FileSystemService';
 import SettingsService, { DEFAULT_EDITION } from './SettingsService';
@@ -117,6 +118,9 @@ async function openBundledAfterFailure(failedName: string, error: unknown) {
     throw error;
   }
   Logger.logError(Logger.LogKeys.DatabaseManagerService, 'openDatabase', error as Error);
+  // A publication that passed every check and still does not open: the phones go back to the one
+  // inside the app, and download it again at the next check
+  reportProblem('database-open', error);
   await FileSystem.deleteAsync(`${DATABASE_DIRECTORY}${failedName}`, { idempotent: true });
   await placeBundledDatabase(bundledName);
   return connectTo(bundledName);

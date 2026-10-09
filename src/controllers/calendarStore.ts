@@ -2,6 +2,7 @@ import { useSyncExternalStore } from 'react';
 import * as LiturgyStore from './liturgyStore';
 import type { DayMark } from './liturgyStore';
 import * as Logger from '../utils/logger';
+import { reportProblem } from '../services/health/problems';
 import { buildDayCard, DayCard } from '../view-models/dayCard';
 import { dateOfIso, DayMarks, isoDate } from '../view-models/calendar';
 
@@ -105,6 +106,7 @@ export function needYears(years: number[]): void {
       .catch((error) => {
         current.years.delete(year);
         Logger.logError(Logger.LogKeys.Calendar, 'needYears', error);
+        reportProblem('calendar-year', error);
       });
   }
 }
@@ -146,6 +148,8 @@ async function workOut(): Promise<void> {
         current.days.delete(key);
         current.failed.add(key);
         Logger.logError(Logger.LogKeys.Calendar, 'needPreviews', error);
+        // The card of that day stays waiting: whoever touched it sees nothing come
+        reportProblem('calendar-day', error);
       }
     }
   } finally {

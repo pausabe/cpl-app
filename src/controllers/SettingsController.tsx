@@ -30,6 +30,7 @@ import { refreshListenAvailability, useListenAvailability } from './listenContro
 import { checkDayAudio, downloadDayAudio, useDayAudio } from './dayAudioController';
 import { navigationRef } from './navigationRef';
 import { startTour } from './tourController';
+import { reportProblem } from '../services/health/problems';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
 // (SettingsService). The language of the texts, the Latin hymns, the diocese and the place change
@@ -153,7 +154,13 @@ export default function SettingsController() {
     };
   }, []);
 
-  const reloadLiturgy = () => LiturgyStore.reload(LiturgyStore.currentDate());
+  // A setting that does not get applied leaves the home with the day of before: reported, and thrown
+  // again as it always was
+  const reloadLiturgy = () =>
+    LiturgyStore.reload(LiturgyStore.currentDate()).catch((error) => {
+      reportProblem('settings-reload', error);
+      throw error;
+    });
   const change = (changes: Partial<OtherValues>) =>
     setOthers((current) => (current ? { ...current, ...changes } : current));
 

@@ -69,6 +69,7 @@ export default function HoursComponent({ today, minorHour }: MinorHourProps) {
       );
     } catch (error) {
       Logger.logError(Logger.LogKeys.Screens, 'render', error as Error);
+      Logger.reportProblem('prayer-minor', error);
       return null;
     }
   }

@@ -10,6 +10,7 @@ import {
 } from '../services/audio/carAudio';
 import type { SpeechPiece } from '../view-models/speech/script';
 import * as Logger from '../utils/logger';
+import { reportProblem } from '../services/health/problems';
 import * as Listen from './listenController';
 
 // Android Auto: choosing an hour of today in the car, with the phone in a pocket and maybe the app
@@ -233,7 +234,10 @@ export function wireCar() {
   });
   onCar('onCarPlay', ({ id }) => {
     Logger.log(Logger.LogKeys.Car, 'onCarPlay', id);
-    playFromCar(id).catch((error) => Logger.logError(Logger.LogKeys.Car, 'onCarPlay', error));
+    playFromCar(id).catch((error) => {
+      Logger.logError(Logger.LogKeys.Car, 'onCarPlay', error);
+      reportProblem('car', error);
+    });
   });
   onCar('onCarConnected', () => {
     Logger.log(Logger.LogKeys.Car, 'onCarConnected', 'the car is here');

@@ -24,6 +24,7 @@ import DioceseSheet from '../views/home/DioceseSheet';
 import WebSheet from '../components/WebSheet';
 import MessageSheet, { MessageFields, MessageStatus } from '../components/MessageSheet';
 import { emailLooksRight, sendMessage } from '../services/messageService';
+import { reportProblem } from '../services/health/problems';
 import { PRIVACY_URL } from './SettingsController';
 import CarScriptPreparer from './CarScriptPreparer';
 import { wasOpenedBefore } from './firstRun';
@@ -149,6 +150,8 @@ export default function HomeScreenController({ navigation, route }: { navigation
       return true;
     } catch (error) {
       Logger.logError(Logger.LogKeys.HomeScreenController, 'load', error as Error);
+      // «Ha sorgit un error inesperat…»: whoever sees it is left with no liturgy at all
+      reportProblem('home-load', error);
       setStatus('error');
       return false;
     }
@@ -159,6 +162,7 @@ export default function HomeScreenController({ navigation, route }: { navigation
     if (started.current) return;
     if (databaseAssetsError) {
       started.current = true;
+      reportProblem('home-assets', databaseAssetsError);
       setStatus('error');
       SplashScreen.hideAsync().catch(() => undefined);
       return;

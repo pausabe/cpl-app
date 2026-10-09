@@ -78,6 +78,7 @@ export default function VespersComponent({ hours, today, diesIrae }: HourProps) 
       );
     } catch (error) {
       Logger.logError(Logger.LogKeys.Screens, 'render', error as Error);
+      Logger.reportProblem('prayer-vespers', error);
       return null;
     }
   }

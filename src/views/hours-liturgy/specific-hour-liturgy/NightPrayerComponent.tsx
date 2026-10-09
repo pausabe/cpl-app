@@ -63,6 +63,7 @@ export default function NightPrayerComponent({ hours, today, settings, onVirginA
       const nightPrayer = hours.nightPrayer;
       if (nightPrayer === null) {
         Logger.logError(Logger.LogKeys.Screens, 'render', new Error('wierd error.......'));
+        Logger.reportProblem('prayer-night', new Error('There is no night prayer for the day'));
         return null;
       }
       const onlyForThoseNotAtTheVigil =
@@ -149,6 +150,7 @@ export default function NightPrayerComponent({ hours, today, settings, onVirginA
       );
     } catch (error) {
       Logger.logError(Logger.LogKeys.Screens, 'render', error as Error);
+      Logger.reportProblem('prayer-night', error);
       return null;
     }
   }

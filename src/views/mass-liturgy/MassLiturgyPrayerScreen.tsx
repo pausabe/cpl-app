@@ -90,6 +90,7 @@ export default function MassLiturgyPrayerScreen({
       );
     } catch (error) {
       Logger.logError(Logger.LogKeys.Screens, 'render', error as Error);
+      Logger.reportProblem('prayer-mass', error);
       return null;
     }
   }

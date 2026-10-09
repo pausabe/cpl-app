@@ -105,6 +105,7 @@ export default function LaudesComponent({
       );
     } catch (error) {
       Logger.logError(Logger.LogKeys.Screens, 'render', error as Error);
+      Logger.reportProblem('prayer-laudes', error);
       return null;
     }
   }
