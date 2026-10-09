@@ -108,13 +108,14 @@ test('Sunday: four readings, which on a narrow phone get smaller before breaking
   expect(screen.getByText('Evangeli').props.numberOfLines).toBe(1);
   // A chip narrower than its widest word: the word smaller, not broken (components/FitLabel)
   const chip = screen.getByRole('button', { name: 'Segona lectura' });
-  const layout = (testID, width) =>
+  const layout = (testID, width, height) =>
     fireEvent(within(chip).getByTestId(testID, { includeHiddenElements: true }), 'layout', {
-      nativeEvent: { layout: { x: 0, y: 0, width, height: 34 } },
+      nativeEvent: { layout: { x: 0, y: 0, width, height } },
     });
-  layout('fit-label-needed', 60);
-  layout('fit-label-room', 54);
-  expect(styleOf(screen.getByText('Segona lectura')).fontSize).toBeCloseTo(14.5 * 0.9);
+  layout('fit-label-line', 110, 17);
+  layout('fit-label-word', 60, 17);
+  layout('fit-label-room', 54, 34);
+  expect(styleOf(screen.getByText('Segona lectura')).fontSize).toBeCloseTo(14.5 * 0.9 * 0.98);
 });
 
 test('an optional memorial: the switch makes it celebrated, and it is remembered for the day', async () => {
