@@ -1,0 +1,21 @@
+// Selecting the prayer on Android without Android's own text code closing the app (see
+// SelectionGuard.kt). It takes React Native's renderer to know when new texts are on the screen.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'cpl.textselection'
+version = '1.0.0'
+
+android {
+  namespace "expo.modules.cpltextselection"
+  defaultConfig {
+    versionCode 1
+    versionName "1.0.0"
+  }
+}
+
+dependencies {
+  implementation "com.facebook.react:react-android"
+}
