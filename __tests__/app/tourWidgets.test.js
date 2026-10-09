@@ -62,11 +62,7 @@ afterEach(() => {
 
 test('the widget of now in the bubble, and «Posa-la a l’inici» asks the system to put it there', async () => {
   render(<App />);
-  await screen.findByText(
-    "Hi ha unes quantes coses noves a l'app. Te les ensenyem en un minut?",
-    {},
-    { timeout: 15000 },
-  );
+  await screen.findByText('Hi ha tres coses noves a l’app. Te les ensenyem? Són tres passos.', {}, { timeout: 15000 });
   // Straight to the step of the widgets: the others are tried in tour.test.js
   while (currentStep()?.id !== 'widgets') act(() => nextStep());
 
@@ -80,7 +76,8 @@ test('the widget of now in the bubble, and «Posa-la a l’inici» asks the syst
   expect(within(preview).getByText('ARA', hidden)).toBeTruthy();
   expect(within(preview).getByText('Divendres 9 oct.', hidden)).toBeTruthy();
 
+  // The last step: it closes the tour, whatever the system answers
   fireEvent.press(screen.getByTestId('tour-action'));
   await waitFor(() => expect(pinWidget).toHaveBeenCalledWith('ara'));
-  await screen.findByText('Això és tot', {}, { timeout: 15000 });
+  await waitFor(() => expect(screen.queryByTestId('tour')).toBeNull());
 });

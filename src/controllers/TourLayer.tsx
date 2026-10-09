@@ -96,7 +96,7 @@ export default function TourLayer({ children }: { children: React.ReactNode }) {
     return () => sub.remove();
   }, [shown]);
 
-  const buttons = tour && step ? tourButtons(step, tour.index, tour.steps.length) : null;
+  const buttons = tour && step ? tourButtons(tour.index, tour.steps.length) : null;
   const illustration = step?.illustration === 'widget' ? <WidgetOfNow /> : null;
   // The system asks whether to add it; whatever the answer, the tour goes on
   const action =
@@ -110,8 +110,13 @@ export default function TourLayer({ children }: { children: React.ReactNode }) {
         {shown && step && buttons ? (
           <TourOverlay
             rect={step.target ? rect : null}
+            holeTouchable={!!step.endsWhen}
+            isNew={step.isNew}
             title={step.title}
             text={step.text}
+            detail={step.detail}
+            footnote={step.footnote}
+            items={step.items}
             progress={buttons.progress}
             primary={buttons.primary}
             onPrimary={nextStep}

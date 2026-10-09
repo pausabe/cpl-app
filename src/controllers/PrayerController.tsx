@@ -15,7 +15,7 @@ import ListenSheet from '../components/ListenSheet';
 import ListenUnavailableDialog from '../components/ListenUnavailableDialog';
 import { clearScreenSpeech, getScreenSpeech, setScreenSpeech } from './speechStore';
 import * as Listen from './listenController';
-import { holdsListening } from './tourController';
+import { maybeShowListenHint } from './tourController';
 import { speechScript } from '../view-models/speech/script';
 import { listenLabels } from '../view-models/speech/listenLabels';
 import { laudesGospel } from '../view-models/laudesGospel';
@@ -92,7 +92,11 @@ function useListening(hour: string, title: string) {
   const [unavailable, setUnavailable] = useState(false);
   const active = state.phase !== 'idle';
   useEffect(() => {
-    Listen.refreshListenAvailability();
+    // Once it is known whether the voice is there: the headphones pointed at, the first time
+    // after the tour of what is new told about them (tourController)
+    Listen.refreshListenAvailability()
+      .catch(() => undefined)
+      .then(maybeShowListenHint);
     Listen.loadSpeed();
     // Leaving the prayer stops it: otherwise Laudes would open reading Completes
     return () => Listen.leftHour(hour);
@@ -110,7 +114,7 @@ function useListening(hour: string, title: string) {
     const speech = getScreenSpeech();
     if (!speech || speech.hour !== hour) return;
     const pieces = speechScript(hour, speech.paragraphs, getSnapshot().ourFather);
-    if (pieces.length) Listen.listen(hour, title, pieces, { held: holdsListening() });
+    if (pieces.length) Listen.listen(hour, title, pieces);
   };
   const labels = listenLabels(state);
   // The paragraph and strophe being read, for the screen to mark them and keep them in sight

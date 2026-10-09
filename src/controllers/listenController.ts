@@ -175,8 +175,6 @@ interface Session {
   file: HourFile | null;
   // Why the rest will not come (no network, a limit): when what is here runs out, it says so and stops
   cutShort: string | null;
-  // Opened without playing (the tour of what is new): it gets ready, and waits for ▶
-  held: boolean;
   // One change of the file at a time: the batches of pieces arrive one after the other
   queue: Promise<unknown>;
 }
@@ -386,10 +384,9 @@ async function startAudio(current: Session) {
   }
   if (current !== session) return forgetHourFile(file.uri);
   await loadArtwork();
-  const held = current.held;
-  await load(file, 0, !held);
-  set({ phase: held ? 'paused' : 'playing', index: 0, position: 0 });
-  if (!held) lockScreen(true);
+  await load(file, 0, true);
+  set({ phase: 'playing', index: 0, position: 0 });
+  lockScreen(true);
 }
 
 // The audio will not come: the screen says why, and the player goes away
@@ -409,8 +406,7 @@ function leaveOut(current: Session, missing: Set<string>) {
 
 // --- What the screens can do ----------------------------------------------------------------
 
-// With `held`, the player opens paused and nothing is heard until ▶ (the tour of what is new)
-export async function listen(hour: string, title: string, pieces: SpeechPiece[], { held = false } = {}) {
+export async function listen(hour: string, title: string, pieces: SpeechPiece[]) {
   stop();
   const script: ScriptPiece[] = pieces.map(({ key, voice, text, pause }) => ({ key, voice, text, pause }));
   const current: Session = {
@@ -418,12 +414,11 @@ export async function listen(hour: string, title: string, pieces: SpeechPiece[],
     abort: new AbortController(),
     file: null,
     cutShort: null,
-    held,
     queue: Promise.resolve(),
   };
   session = current;
   setProblem(null);
-  set({ ...IDLE, speed: state.speed, phase: held ? 'paused' : 'preparing', hour, title, pieces });
+  set({ ...IDLE, speed: state.speed, phase: 'preparing', hour, title, pieces });
 
   let started = false;
   // Starts when the beginning is here; once started, the file grows with what has arrived
@@ -469,15 +464,6 @@ export function toggle() {
   if (!session) return;
   // Before it has started, the button is there to give up
   if (state.phase === 'preparing') return stop();
-  // Held, ▶ is the first time it plays: at once if the beginning is here, or as soon as it is
-  if (session.held) {
-    session.held = false;
-    if (!player || !session.file) return set({ phase: 'preparing' });
-    player.play();
-    set({ phase: 'playing' });
-    lockScreen(true);
-    return;
-  }
   if (!player || !session.file) return;
   if (state.phase === 'playing' || state.phase === 'waiting') {
     player.pause();
@@ -560,9 +546,6 @@ function finish(finished: Session) {
     if (session === finished && state.phase === 'finished') stop();
   }, CLOSE_AFTER_FINISHING_MS);
 }
-
-// Opened held and still waiting for ▶
-export const isHeld = () => session?.held ?? false;
 
 export function stop() {
   if (!session) return;

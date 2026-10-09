@@ -29,21 +29,21 @@ export default function HoursGrid({ hours, onOpen }: HoursGridProps) {
   return (
     <View style={styles.section}>
       <SectionLabel>Litúrgia de les Hores</SectionLabel>
-      <View style={styles.grid}>
+      {/* The tour of what is new points at the hours to talk about listening (view-models/tour) */}
+      <TourTarget id="hours" style={styles.grid}>
         {ROWS.map((row, index) => (
           <View key={index} style={styles.row}>
             {row.map((key) => {
               const tile = byKey.get(key);
               return tile ? (
-                // The tour of what is new opens Lauds from here (view-models/tour)
-                <TourTarget key={key} id={`hour-${key}`} style={styles.slot}>
+                <View key={key} style={styles.slot}>
                   <Tile tile={tile} compact={row.length === 3} onOpen={onOpen} />
-                </TourTarget>
+                </View>
               ) : null;
             })}
           </View>
         ))}
-      </View>
+      </TourTarget>
     </View>
   );
 }

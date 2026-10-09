@@ -358,3 +358,30 @@ test('while the prayer cannot be heard (cpl-api has it off), there is nothing to
   expect(screen.queryByRole('header', { name: 'Escoltar la pregària' })).toBeNull();
   jest.restoreAllMocks();
 });
+
+test('what the tour of what is new leaves out says «Nou» until it is touched, and it stays touched', async () => {
+  await AsyncStorage.multiRemove(['newSeen_location', 'newSeen_laudes-gospel', 'newSeen_day-audio']);
+  const download = jest.spyOn(DayAudio, 'downloadDayAudio').mockResolvedValue(undefined);
+  await open();
+
+  for (const id of ['use-my-location-new', 'laudes-gospel-new', 'day-audio-new'])
+    expect(await screen.findByTestId(id)).toBeTruthy();
+  expect(screen.getByRole('switch', { name: LAUDES_GOSPEL }).props.accessibilityHint).toBe('Nou');
+
+  await act(async () => {
+    fireEvent.press(screen.getByRole('switch', { name: LAUDES_GOSPEL }));
+  });
+  expect(screen.queryByTestId('laudes-gospel-new')).toBeNull();
+  fireEvent.press(screen.getByRole('button', { name: "Baixa l'àudio d'avui" }));
+  expect(screen.queryByTestId('day-audio-new')).toBeNull();
+  // The location not yet
+  expect(screen.getByTestId('use-my-location-new')).toBeTruthy();
+
+  // Opened again, only what has not been touched
+  screen.unmount();
+  await open();
+  expect(await screen.findByTestId('use-my-location-new')).toBeTruthy();
+  expect(screen.queryByTestId('laudes-gospel-new')).toBeNull();
+  expect(screen.queryByTestId('day-audio-new')).toBeNull();
+  download.mockRestore();
+});

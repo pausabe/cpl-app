@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleProp, StyleSheet, Switch, Text, View, ViewStyle } from 'react-native';
 import { useTheme } from '../theme';
+import NewBadge from './NewBadge';
 
 // A setting that is on or off, with a line that says what it does. The whole row can be
 // touched, not only the switch. The screen reader hears the line with the name, always: as a
@@ -13,6 +14,8 @@ interface SwitchRowProps {
   style?: StyleProp<ViewStyle>;
   labelWeight?: '400' | '600';
   labelSize?: number;
+  // «Nou» next to the name (controllers/newBadges)
+  isNew?: boolean;
   testID?: string;
 }
 
@@ -24,6 +27,7 @@ export default function SwitchRow({
   style,
   labelWeight = '400',
   labelSize = 16,
+  isNew = false,
   testID,
 }: SwitchRowProps) {
   const theme = useTheme();
@@ -34,13 +38,17 @@ export default function SwitchRow({
       accessibilityRole="switch"
       accessibilityState={{ checked: value }}
       accessibilityLabel={caption ? `${label}. ${caption}` : label}
+      accessibilityHint={isNew ? 'Nou' : undefined}
       onPress={() => onValueChange(!value)}
       style={[styles.row, { minHeight: theme.touch.comfortable }, style]}
     >
       <View style={styles.texts}>
-        <Text style={[styles.label, { color: colors.text, fontWeight: labelWeight, fontSize: labelSize }]}>
-          {label}
-        </Text>
+        <View style={styles.labelLine}>
+          <Text style={[styles.label, { color: colors.text, fontWeight: labelWeight, fontSize: labelSize }]}>
+            {label}
+          </Text>
+          {isNew ? <NewBadge testID={testID ? `${testID}-new` : undefined} /> : null}
+        </View>
         {caption ? <Text style={[styles.caption, { color: colors.text2 }]}>{caption}</Text> : null}
       </View>
       <Switch
@@ -67,7 +75,16 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 1,
   },
+  labelLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    columnGap: 10,
+    rowGap: 2,
+  },
+  // A long name wraps inside the line, and «Nou» goes under it if it does not fit
   label: {
+    flexShrink: 1,
     fontSize: 16,
   },
   caption: {

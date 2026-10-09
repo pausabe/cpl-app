@@ -267,14 +267,12 @@ export default function HomeScreenController({ navigation, route }: { navigation
         </TourTarget>
       ),
       headerRight: () => (
-        <TourTarget id="settings-button">
-          <HeaderButton
-            icon="settings"
-            accessibilityLabel="Configuració"
-            testID="settings-button"
-            onPress={() => navigation.navigate('Settings')}
-          />
-        </TourTarget>
+        <HeaderButton
+          icon="settings"
+          accessibilityLabel="Configuració"
+          testID="settings-button"
+          onPress={() => navigation.navigate('Settings')}
+        />
       ),
     });
   }, [navigation]);

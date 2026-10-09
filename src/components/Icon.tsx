@@ -15,6 +15,7 @@ export type IconName =
   | 'check'
   | 'close'
   | 'headphones'
+  | 'widget'
   | 'play'
   | 'pause'
   | 'next'
@@ -102,6 +103,14 @@ export default function Icon({ name, size = 24, color, strokeWidth }: IconProps)
       return (
         <Svg {...common} strokeWidth={strokeWidth ?? 2.2}>
           <Path d="M6 6l12 12M18 6L6 18" />
+        </Svg>
+      );
+    // A phone with a widget on its screen
+    case 'widget':
+      return (
+        <Svg {...common} strokeWidth={strokeWidth ?? 1.8}>
+          <Rect x="6" y="2.5" width="12" height="19" rx="2.5" />
+          <Rect x="8.5" y="6" width="7" height="7" rx="1.8" />
         </Svg>
       );
     case 'headphones':

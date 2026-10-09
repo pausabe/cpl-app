@@ -30,6 +30,7 @@ import { refreshListenAvailability, useListenAvailability } from './listenContro
 import { checkDayAudio, downloadDayAudio, useDayAudio } from './dayAudioController';
 import { navigationRef } from './navigationRef';
 import { backTo, startTour } from './tourController';
+import { useNewBadges } from './newBadges';
 import { reportProblem } from '../services/health/problems';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
@@ -116,6 +117,8 @@ export default function SettingsController() {
   // The code this phone sends today so that it can be counted once, and nothing else about it
   const [usage, setUsage] = useState<{ device: string; madeOn: string } | null>(null);
   const [privacyVisible, setPrivacyVisible] = useState(false);
+  // «Nou» next to what the tour of what is new leaves out, until it is touched
+  const { isNew, seen } = useNewBadges();
   // How the last search for the diocese went, so that the screen can say so
   const [locationStatus, setLocationStatus] = useState<LocationStatus>('idle');
   useEffect(() => {
@@ -184,6 +187,7 @@ export default function SettingsController() {
   // Once out to the phone's own settings, whatever they do there is theirs: the refusal is
   // forgotten so that coming back and pressing again asks for the position, not for the settings.
   const openPhoneSettings = () => {
+    seen('location');
     Linking.openSettings().catch(() => undefined);
     setLocationStatus('idle');
   };
@@ -191,6 +195,7 @@ export default function SettingsController() {
   // Looking for the diocese where the phone is. When it finds one the row above changes, which
   // says it better than any message; every other outcome leaves the setting alone and is told.
   const useMyLocation = async () => {
+    seen('location');
     setLocationStatus('locating');
     const outcome = await autoselectDiocese();
     if (outcome.kind !== 'saved') {
@@ -245,6 +250,7 @@ export default function SettingsController() {
         locationStatus={locationStatus}
         onUseMyLocation={useMyLocation}
         onOpenPhoneSettings={openPhoneSettings}
+        newBadges={{ location: isNew('location'), laudesGospel: isNew('laudes-gospel'), dayAudio: isNew('day-audio') }}
         info={info}
         onTextSizeChange={textSettings.onTextSizeChange}
         onDarkModeChange={textSettings.onDarkModeChange}
@@ -277,6 +283,7 @@ export default function SettingsController() {
           await SettingsService.setSettingShowVideos(enabled ? 'true' : 'false');
         }}
         onLaudesGospelChange={async (enabled) => {
+          seen('laudes-gospel');
           change({ laudesGospel: enabled });
           await SettingsService.setSettingLaudesGospel(enabled ? 'true' : 'false');
         }}
@@ -295,6 +302,7 @@ export default function SettingsController() {
             : null
         }
         onDownloadDayAudio={() => {
+          seen('day-audio');
           downloadDayAudio(today).catch(() => undefined);
         }}
       />

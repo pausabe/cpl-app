@@ -32,6 +32,11 @@ export interface Palette {
   backdrop: string;
   // Behind the piece of the prayer being read aloud
   listenHighlight: string;
+  // The ring of the hole of the tour of what is new: light, so that it is seen over the dimmed
+  // screen and over the top bar, which is as dark as the accent
+  tourRing: string;
+  // Behind «Nou», next to something new
+  newBadge: string;
 }
 
 export const palettes: Record<ColorSchemeName, Palette> = {
@@ -57,6 +62,8 @@ export const palettes: Record<ColorSchemeName, Palette> = {
     rubric: '#B3261E',
     backdrop: 'rgba(0,0,0,0.42)',
     listenHighlight: 'rgba(0,123,128,0.12)',
+    tourRing: '#8FDCD6',
+    newBadge: 'rgba(0,123,128,0.12)',
   },
   dark: {
     header: '#006064',
@@ -80,6 +87,8 @@ export const palettes: Record<ColorSchemeName, Palette> = {
     rubric: '#F28B82',
     backdrop: 'rgba(0,0,0,0.55)',
     listenHighlight: 'rgba(127,209,204,0.16)',
+    tourRing: '#7FD1CC',
+    newBadge: 'rgba(127,209,204,0.16)',
   },
 };
 

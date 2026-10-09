@@ -21,7 +21,7 @@ import {
 } from '../../view-models/notices';
 import { TechnicalData, technicalReport, versionLines } from '../../view-models/technicalData';
 import { DAY_AUDIO_HELP, type DayAudioLabels } from '../../view-models/speech/dayAudioLabels';
-import TourTarget from '../../components/TourTarget';
+import NewBadge from '../../components/NewBadge';
 
 // Configuració: the options, in groups. Everything comes from its controller
 // (Controllers/SettingsController), which also saves the changes.
@@ -70,6 +70,8 @@ export interface SettingsScreenProps {
   // Today's audio on the phone beforehand, to pray with no network; null while it cannot be heard
   dayAudio: DayAudioLabels | null;
   onDownloadDayAudio: () => void;
+  // «Nou» next to what is new, until it is touched (controllers/newBadges)
+  newBadges?: { location: boolean; laudesGospel: boolean; dayAudio: boolean };
 }
 
 const APPROVAL =
@@ -131,6 +133,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={denied ? OPEN_PHONE_SETTINGS : 'Fes servir la meva ubicació per triar la diòcesi'}
+          accessibilityHint={props.newBadges?.location ? 'Nou' : undefined}
           accessibilityState={{ disabled: locating, busy: locating }}
           disabled={locating}
           onPress={denied ? props.onOpenPhoneSettings : props.onUseMyLocation}
@@ -141,7 +144,10 @@ export default function SettingsScreen(props: SettingsScreenProps) {
             pressed ? { backgroundColor: colors.chipBackground } : null,
           ]}
         >
-          <Text style={[styles.locationLabel, { color: locating ? colors.text3 : colors.accentText }]}>{label}</Text>
+          <View style={styles.labelLine}>
+            <Text style={[styles.locationLabel, { color: locating ? colors.text3 : colors.accentText }]}>{label}</Text>
+            {props.newBadges?.location ? <NewBadge testID="use-my-location-new" /> : null}
+          </View>
         </Pressable>
         {notice ? <Text style={[styles.locationNotice, { color: colors.text3 }]}>{notice}</Text> : null}
       </View>
@@ -199,7 +205,7 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               {groupLabel('Calendari')}
               <Card radius={theme.radius.tile}>
                 {pickerRow('Diòcesi', values.diocese, () => setSheet('diocese'))}
-                {props.dioceses.length > 1 ? <TourTarget id="settings-location">{locationRow()}</TourTarget> : null}
+                {props.dioceses.length > 1 ? locationRow() : null}
                 {props.places.length > 1 ? (
                   <>
                     {divider}
@@ -215,16 +221,16 @@ export default function SettingsScreen(props: SettingsScreenProps) {
 
               {groupLabel('Laudes')}
               <Card radius={theme.radius.tile}>
-                <TourTarget id="settings-laudes-gospel">
-                  <SwitchRow
-                    label="Evangeli del dia"
-                    caption="L’Evangeli de la missa, després del responsori breu."
-                    labelSize={17}
-                    value={values.laudesGospel}
-                    onValueChange={props.onLaudesGospelChange}
-                    style={[styles.switchRow, styles.tallSwitchRow]}
-                  />
-                </TourTarget>
+                <SwitchRow
+                  testID="laudes-gospel"
+                  label="Evangeli del dia"
+                  caption="L’Evangeli de la missa, després del responsori breu."
+                  labelSize={17}
+                  isNew={props.newBadges?.laudesGospel}
+                  value={values.laudesGospel}
+                  onValueChange={props.onLaudesGospelChange}
+                  style={[styles.switchRow, styles.tallSwitchRow]}
+                />
               </Card>
 
               {groupLabel('Missa')}
@@ -241,52 +247,53 @@ export default function SettingsScreen(props: SettingsScreenProps) {
               {props.dayAudio ? (
                 <>
                   {groupLabel('Escoltar la pregària')}
-                  <TourTarget id="settings-day-audio">
-                    <Card radius={theme.radius.tile}>
-                      <View style={styles.block}>
+                  <Card radius={theme.radius.tile}>
+                    <View style={styles.block}>
+                      <View style={styles.labelLine}>
                         <Text style={[styles.rowLabel, { color: colors.text }]}>{"Àudio d'avui"}</Text>
-                        <Text style={[styles.help, { color: colors.text3 }]}>{DAY_AUDIO_HELP}</Text>
-                        {props.dayAudio.progress !== null ? (
-                          <View style={[styles.track, { backgroundColor: colors.chipBackground }]}>
-                            <View
-                              style={[
-                                styles.fill,
-                                {
-                                  backgroundColor: colors.accentFill,
-                                  width: `${Math.round(props.dayAudio.progress * 100)}%`,
-                                },
-                              ]}
-                            />
-                          </View>
-                        ) : null}
-                        {props.dayAudio.status ? (
-                          <Text
-                            testID="day-audio-status"
-                            accessibilityLiveRegion="polite"
-                            style={[styles.dayAudioStatus, { color: colors.text2 }]}
-                          >
-                            {props.dayAudio.status}
-                          </Text>
-                        ) : null}
+                        {props.newBadges?.dayAudio ? <NewBadge testID="day-audio-new" /> : null}
                       </View>
-                      {props.dayAudio.action ? (
-                        <Pressable
-                          testID="download-day-audio"
-                          accessibilityRole="button"
-                          onPress={props.onDownloadDayAudio}
-                          style={({ pressed }) => [
-                            styles.locationRow,
-                            { minHeight: theme.touch.min },
-                            pressed ? { backgroundColor: colors.chipBackground } : null,
-                          ]}
-                        >
-                          <Text style={[styles.locationLabel, { color: colors.accentText }]}>
-                            {props.dayAudio.action}
-                          </Text>
-                        </Pressable>
+                      <Text style={[styles.help, { color: colors.text3 }]}>{DAY_AUDIO_HELP}</Text>
+                      {props.dayAudio.progress !== null ? (
+                        <View style={[styles.track, { backgroundColor: colors.chipBackground }]}>
+                          <View
+                            style={[
+                              styles.fill,
+                              {
+                                backgroundColor: colors.accentFill,
+                                width: `${Math.round(props.dayAudio.progress * 100)}%`,
+                              },
+                            ]}
+                          />
+                        </View>
                       ) : null}
-                    </Card>
-                  </TourTarget>
+                      {props.dayAudio.status ? (
+                        <Text
+                          testID="day-audio-status"
+                          accessibilityLiveRegion="polite"
+                          style={[styles.dayAudioStatus, { color: colors.text2 }]}
+                        >
+                          {props.dayAudio.status}
+                        </Text>
+                      ) : null}
+                    </View>
+                    {props.dayAudio.action ? (
+                      <Pressable
+                        testID="download-day-audio"
+                        accessibilityRole="button"
+                        onPress={props.onDownloadDayAudio}
+                        style={({ pressed }) => [
+                          styles.locationRow,
+                          { minHeight: theme.touch.min },
+                          pressed ? { backgroundColor: colors.chipBackground } : null,
+                        ]}
+                      >
+                        <Text style={[styles.locationLabel, { color: colors.accentText }]}>
+                          {props.dayAudio.action}
+                        </Text>
+                      </Pressable>
+                    ) : null}
+                  </Card>
                 </>
               ) : null}
             </View>
@@ -475,6 +482,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 16,
     paddingRight: 12,
+  },
+  // A name and «Nou» beside it, if it fits
+  labelLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    columnGap: 10,
+    rowGap: 2,
   },
   locationLabel: {
     fontSize: 16,
