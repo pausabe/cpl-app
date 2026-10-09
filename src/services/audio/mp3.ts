@@ -44,9 +44,9 @@ const SAMPLE_RATES: Record<number, number[]> = {
   0: [11025, 12000, 8000], // MPEG-2.5
 };
 
-// How long an MP3 lasts, frame by frame. Bytes that are not a frame (a tag) are skipped.
-export function mp3Seconds(bytes: Uint8Array): number {
-  let seconds = 0;
+// Where each frame starts and how long it lasts. Bytes that are not a frame (a tag) are skipped.
+function frames(bytes: Uint8Array): { at: number; seconds: number }[] {
+  const out: { at: number; seconds: number }[] = [];
   let i = 0;
   while (i + 4 <= bytes.length) {
     if (bytes[i] !== 0xff || (bytes[i + 1] & 0xe0) !== 0xe0) {
@@ -66,10 +66,29 @@ export function mp3Seconds(bytes: Uint8Array): number {
     const rate = SAMPLE_RATES[version][rateIndex];
     const samples = version === 3 ? 1152 : 576;
     const length = Math.floor(((samples / 8) * kbps * 1000) / rate) + padding;
-    seconds += samples / rate;
+    out.push({ at: i, seconds: samples / rate });
     i += length;
   }
-  return seconds;
+  return out;
+}
+
+// How long an MP3 lasts, frame by frame
+export function mp3Seconds(bytes: Uint8Array): number {
+  return frames(bytes).reduce((sum, f) => sum + f.seconds, 0);
+}
+
+// Azure ends every piece with 0.8 to 1 s of silence (and starts it with 0.15 to 0.25 s), on top of
+// the pause of the script: from one voice to the next it was a second and a half, and Pau found it
+// slow (9 October 2026). This much of the end goes; what is left of it is still silence.
+export const TAIL_TRIM_SECONDS = 0.45;
+
+export function trimTail(bytes: Uint8Array, seconds = TAIL_TRIM_SECONDS): Uint8Array {
+  const all = frames(bytes);
+  const drop = Math.round(seconds / FRAME_SECONDS);
+  // A piece too short to be sure of that much silence at its end (1.4 s) stays whole: even
+  // «Al·leluia.» is longer
+  if (all.length <= drop * 3) return bytes;
+  return bytes.subarray(0, all[all.length - drop].at);
 }
 
 export function silence(seconds: number): Uint8Array {
@@ -93,19 +112,20 @@ export interface JoinedHour {
 }
 
 export function joinHour(pieces: HourPiece[]): JoinedHour {
+  const audios = pieces.map((p) => trimTail(p.audio));
   const pauses = pieces.map((p) => silence(p.pause));
-  const size = pieces.reduce((sum, p, i) => sum + p.audio.length + pauses[i].length, 0);
+  const size = audios.reduce((sum, audio, i) => sum + audio.length + pauses[i].length, 0);
   const bytes = new Uint8Array(size);
   const starts: number[] = [];
   let at = 0;
   let seconds = 0;
-  pieces.forEach((piece, i) => {
+  audios.forEach((audio, i) => {
     starts.push(seconds);
-    bytes.set(piece.audio, at);
-    at += piece.audio.length;
+    bytes.set(audio, at);
+    at += audio.length;
     bytes.set(pauses[i], at);
     at += pauses[i].length;
-    seconds += mp3Seconds(piece.audio) + (pauses[i].length / SILENCE_FRAME.length) * FRAME_SECONDS;
+    seconds += mp3Seconds(audio) + (pauses[i].length / SILENCE_FRAME.length) * FRAME_SECONDS;
   });
   return { bytes, starts, seconds };
 }

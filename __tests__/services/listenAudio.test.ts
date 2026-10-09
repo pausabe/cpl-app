@@ -3,7 +3,15 @@
 // there is no network or cpl-api has reached a limit.
 jest.mock('expo-file-system', () => require('../helpers/fakeFileSystem'));
 
-import { FRAME_SECONDS, SILENCE_FRAME, joinHour, mp3Seconds, silence } from '../../src/services/audio/mp3';
+import {
+  FRAME_SECONDS,
+  SILENCE_FRAME,
+  TAIL_TRIM_SECONDS,
+  joinHour,
+  mp3Seconds,
+  silence,
+  trimTail,
+} from '../../src/services/audio/mp3';
 import { AudioLimitError, AudioNetworkError, unpackPieces } from '../../src/services/audio/pieceClient';
 import { downloadPieces, readyFromStart } from '../../src/services/audio/hourAudio';
 import {
@@ -50,6 +58,17 @@ describe('the MP3 of an hour', () => {
     expect([...SILENCE_FRAME.slice(0, 4)]).toEqual([0xff, 0xf3, 0x64, 0xc4]);
     expect(SILENCE_FRAME[4]).toBe(0);
     expect(mp3Seconds(silence(0.7))).toBeCloseTo(0.696, 2);
+  });
+
+  test('the silence Azure leaves at the end of a piece is shortened; a very short piece stays whole', () => {
+    const long = audio(150);
+    expect(mp3Seconds(trimTail(long))).toBeCloseTo(150 * FRAME_SECONDS - TAIL_TRIM_SECONDS, 1);
+    expect(trimTail(audio(50))).toEqual(audio(50));
+    const joined = joinHour([
+      { audio: long, pause: 0.35 },
+      { audio: audio(50), pause: 0 },
+    ]);
+    expect(joined.starts[1]).toBeCloseTo(150 * FRAME_SECONDS - TAIL_TRIM_SECONDS + 0.35, 1);
   });
 
   test('joins the pieces with their silences and says where each one starts', () => {
