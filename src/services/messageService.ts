@@ -2,6 +2,7 @@ import * as Device from 'expo-device';
 import SettingsService from './SettingsService';
 import { appVersion, callApi, phonePlatform } from './cplApi';
 import { openedDatabaseVersion } from './databaseManagerService';
+import { isGooglePlayRobot } from './googlePlayRobot';
 import { currentIdentifier } from './usageService';
 
 // A message to the CPL from the app (Missatge, on the home), instead of the form of its website.
@@ -27,6 +28,9 @@ export function emailLooksRight(email: string): boolean {
 }
 
 export async function sendMessage(draft: MessageDraft): Promise<SendOutcome> {
+  // What Google Play's robot writes is nobody's: it goes nowhere, and the robot sees the thanks as
+  // anyone would, so that its report shows no error
+  if (isGooglePlayRobot()) return 'sent';
   const body: Record<string, string | number> = { text: draft.text.trim() };
   if (draft.name.trim()) body.name = draft.name.trim();
   if (draft.email.trim()) body.email = draft.email.trim();

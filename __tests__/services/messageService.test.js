@@ -3,6 +3,8 @@
 jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.2.4' }));
 jest.mock('expo-device', () => ({ osVersion: '26.0' }));
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
+let mockRobot = false;
+jest.mock('../../src/services/googlePlayRobot', () => ({ isGooglePlayRobot: () => mockRobot }));
 
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const { emailLooksRight, sendMessage } = require('../../src/services/messageService');
@@ -14,6 +16,7 @@ const sent = () => JSON.parse(global.fetch.mock.calls[0][1].body);
 beforeEach(async () => {
   await AsyncStorage.clear();
   jest.restoreAllMocks();
+  mockRobot = false;
 });
 
 test('sends the words, and the name and the email only if there are any', async () => {
@@ -38,6 +41,15 @@ test('says why it could not: no network, too many today, or refused', async () =
   expect(await sendMessage({ text: 'Hola', name: '', email: '' })).toBe('refused');
   answer(503);
   expect(await sendMessage({ text: 'Hola', name: '', email: '' })).toBe('offline');
+});
+
+test("what Google Play's robot writes goes nowhere, and the robot sees the thanks", async () => {
+  answer(201);
+  mockRobot = true;
+
+  expect(await sendMessage({ text: 'hhkthk', name: 'mpeits', email: 'robot@exemple.cat' })).toBe('sent');
+
+  expect(global.fetch).not.toHaveBeenCalled();
 });
 
 test('an email is optional, but if there is one it has to look like one', () => {

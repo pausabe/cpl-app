@@ -4,6 +4,7 @@ import * as StorageService from './storage/storageService';
 import StorageKeys from './storage/storageKeys';
 import SettingsService, { DioceseName } from './SettingsService';
 import { APP_KEY, IS_TEST_BUILD, appVersion, callApi, phonePlatform } from './cplApi';
+import { isGooglePlayRobot } from './googlePlayRobot';
 
 // How many people use the app.
 //
@@ -96,7 +97,7 @@ export async function countOpen(): Promise<void> {
   await StorageService.storeData(StorageKeys.UsageOpens, Math.min(opens + 1, MAX_OPENS));
 }
 
-export type UsageReportResult = 'reported' | 'nothing-to-say' | 'no-key' | 'test-build' | 'failed';
+export type UsageReportResult = 'reported' | 'nothing-to-say' | 'no-key' | 'test-build' | 'robot' | 'failed';
 
 export async function reportUsage(version: number | null = null): Promise<UsageReportResult> {
   if (!APP_KEY) {
@@ -106,6 +107,10 @@ export async function reportUsage(version: number | null = null): Promise<UsageR
   // tests leave no trace in the count
   if (IS_TEST_BUILD) {
     return 'test-build';
+  }
+  // Nor does Google Play's robot, which is no person either
+  if (isGooglePlayRobot()) {
+    return 'robot';
   }
   // Once a day is enough, and it is half the requests: the openings add up and the ones that
   // happen after today's report go with tomorrow's

@@ -7,13 +7,20 @@ jest.mock('expo-device', () => ({ osVersion: '18.6.2' }));
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
 
-function loadService({ appKey = 'the-app-key', testBuild = false, version = '9.0.0', system = '18.6.2' } = {}) {
+function loadService({
+  appKey = 'the-app-key',
+  testBuild = false,
+  robot = false,
+  version = '9.0.0',
+  system = '18.6.2',
+} = {}) {
   let service;
   jest.isolateModules(() => {
     process.env.EXPO_PUBLIC_CPL_APP_KEY = appKey;
     process.env.EXPO_PUBLIC_CPL_TEST_BUILD = testBuild ? '1' : '';
     jest.doMock('expo-application', () => ({ nativeApplicationVersion: version }));
     jest.doMock('expo-device', () => ({ osVersion: system }));
+    jest.doMock('../../src/services/googlePlayRobot', () => ({ isGooglePlayRobot: () => robot }));
     service = require('../../src/services/usageService');
   });
   return service;
@@ -153,6 +160,17 @@ test('a copy built to be tried out leaves no trace in the count', async () => {
 
   expect(global.fetch).not.toHaveBeenCalled();
   // Not even an identifier: nothing of these tests is left behind on the phone
+  await expect(service.currentIdentifier()).resolves.toBeNull();
+});
+
+test("Google Play's robot is no person: it is not counted either", async () => {
+  const service = loadService({ robot: true });
+  await service.countOpen();
+
+  await expect(service.reportUsage()).resolves.toBe('robot');
+
+  expect(global.fetch).not.toHaveBeenCalled();
+  // Without an identifier it is no phone of the count, not even a new one
   await expect(service.currentIdentifier()).resolves.toBeNull();
 });
 

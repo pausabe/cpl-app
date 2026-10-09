@@ -1,0 +1,16 @@
+// Whether the app runs on a phone of Google's test lab (see CplTestLabModule.kt)
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'cpl.testlab'
+version = '1.0.0'
+
+android {
+  namespace "expo.modules.cpltestlab"
+  defaultConfig {
+    versionCode 1
+    versionName "1.0.0"
+  }
+}
