@@ -3,11 +3,16 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useDatabaseUpdates } from './src/services/databaseUpdateService';
 import NavigationController from './src/controllers/NavigationController';
 import { useAppFonts } from './src/theme/fonts';
+import { wireCar } from './src/controllers/carController';
 
 // The splash stays until the home has the day drawn: HomeScreenController hides it. Without this
 // it went away at once, and for a moment the home showed empty and light, even in dark mode.
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 SplashScreen.setOptions({ duration: 250, fade: true });
+
+// Android Auto may wake the app up with no screen, to play an hour chosen in the car: it is listened
+// to from the first moment
+wireCar();
 
 export default function App() {
   // The texts come from the publishing website; the code, from the stores

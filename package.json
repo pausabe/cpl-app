@@ -4,7 +4,8 @@
     "prepare": "git config core.hooksPath .githooks || true",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "test:e2e": "maestro test .maestro/"
+    "test:e2e": "maestro test .maestro/",
+    "postinstall": "patch-package"
   },
   "jest": {
     "preset": "jest-expo",
@@ -70,10 +71,18 @@
     "eslint-config-prettier": "^10.1.8",
     "jest": "^29.4.0",
     "jest-expo": "~57.0.5",
+    "patch-package": "^8.0.1",
     "prettier": "^3.9.8",
     "react-test-renderer": "19.2.3",
     "typescript": "~6.0.3"
   },
   "name": "cpl-app",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "expo": {
+    "autolinking": {
+      "buildFromSource": [
+        "expo-audio"
+      ]
+    }
+  }
 }

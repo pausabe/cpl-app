@@ -15,6 +15,7 @@ import {
 import { readWithDeviceVoice, type DeviceReading } from '../services/audio/deviceVoice';
 import { STATUS_MAX_AGE, fetchAudioStatus, savedAudioStatus } from '../services/audio/audioStatus';
 import { forgetChangedPieces } from '../services/audio/audioChanges';
+import { attachToCar, detachFromCar, hasCarSession, updateCar } from '../services/audio/carAudio';
 import type { SpeechPiece } from '../view-models/speech/script';
 
 // The prayer read aloud: one hour at a time, for the whole app, so that it goes on when the screen
@@ -230,8 +231,19 @@ function partTitle(index: number): string {
   return titled ? titled.text.replace(/\.$/, '') : state.title;
 }
 
+// On Android, the app's own media session (services/audio/carAudio): the same for the lock screen,
+// the notification and Android Auto, with ⏮ ⏭ that tell the app to jump a part
+function carArtist() {
+  return `${state.title} · CPL`;
+}
+
 function lockScreen(active: boolean) {
   if (!player) return;
+  if (hasCarSession()) {
+    if (active) attachToCar(player, partTitle(state.index), carArtist(), artwork || null);
+    else detachFromCar();
+    return;
+  }
   try {
     if (active) {
       player.setActiveForLockScreen(true, metadata(state.index), { showSeekForward: true, showSeekBackward: true });
@@ -273,7 +285,8 @@ function remoteSkip(status: AudioStatus): 'next' | 'previous' | null {
 
 function onStatus(status: AudioStatus) {
   if (!session || state.mode !== 'audio' || !session.file) return;
-  const skip = remoteSkip(status);
+  // With the app's own media session the jumps come as jumps (carController), not as 10 seconds
+  const skip = hasCarSession() ? null : remoteSkip(status);
   if (skip) {
     set({ position: lastPosition, index: indexAt(lastPosition) });
     if (skip === 'next') nextPart();
@@ -282,10 +295,13 @@ function onStatus(status: AudioStatus) {
   }
   const index = indexAt(status.currentTime);
   if (index !== state.index && player) {
-    try {
-      player.updateLockScreenMetadata(metadata(index));
-    } catch {
-      // The lock screen keeps the title it had
+    if (hasCarSession()) updateCar(partTitle(index), carArtist(), artwork || null);
+    else {
+      try {
+        player.updateLockScreenMetadata(metadata(index));
+      } catch {
+        // The lock screen keeps the title it had
+      }
     }
   }
   set({ position: status.currentTime, index });

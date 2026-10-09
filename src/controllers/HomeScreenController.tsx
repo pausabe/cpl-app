@@ -23,6 +23,7 @@ import WebSheet from '../components/WebSheet';
 import MessageSheet, { MessageFields, MessageStatus } from '../components/MessageSheet';
 import { emailLooksRight, sendMessage } from '../services/messageService';
 import { PRIVACY_URL } from './SettingsController';
+import CarScriptPreparer from './CarScriptPreparer';
 import { wasOpenedBefore } from './firstRun';
 import LoadError from '../views/home/LoadError';
 import { buildDayCard } from '../view-models/dayCard';
@@ -400,6 +401,7 @@ export default function HomeScreenController({ navigation, route }: { navigation
         onDonation={onDonation}
         update={appUpdate ? { onOpen: appUpdate.open, onDismiss: appUpdate.dismiss } : null}
       />
+      <CarScriptPreparer />
       <MessageSheet
         visible={webPage === 'message'}
         onClose={closeMessage}

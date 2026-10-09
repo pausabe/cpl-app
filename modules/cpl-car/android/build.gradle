@@ -1,0 +1,27 @@
+// Android Auto and the controls of the lock screen and the notification for the prayer read aloud
+// (see CarSession.kt). It plays with the player of expo-audio, which it takes from the app.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'cpl.car'
+version = '1.0.0'
+
+android {
+  namespace "expo.modules.cplcar"
+  defaultConfig {
+    versionCode 1
+    versionName "1.0.0"
+  }
+}
+
+dependencies {
+  implementation project(':expo-audio')
+  // To wake the app's JavaScript up when Android Auto opens it closed (ReactApplication.reactHost)
+  implementation "com.facebook.react:react-android"
+  // The same Media3 as expo-audio
+  implementation "androidx.media3:media3-session:1.9.0"
+  implementation "androidx.media3:media3-common:1.9.0"
+  implementation "androidx.media3:media3-exoplayer:1.9.0"
+}

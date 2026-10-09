@@ -1,0 +1,62 @@
+diff --git a/node_modules/expo-audio/ios/MediaController.swift b/node_modules/expo-audio/ios/MediaController.swift
+index e977f57..474c897 100644
+--- a/node_modules/expo-audio/ios/MediaController.swift
++++ b/node_modules/expo-audio/ios/MediaController.swift
+@@ -303,12 +303,38 @@ class MediaController {
+       return .success
+     }
+ 
++    // cpl-app: the lock screen and CarPlay show ⏮ ⏭ (previous and next track) instead of the
++    // «10 seconds» arrows. They still jump 10 seconds, which the app reads as «the part before» or
++    // «the next part» (controllers/listenController.ts, remoteSkip). The targets are closures, which
++    // removeTarget(self) does not remove: they go first, or a second hour would jump twice.
++    remoteCommandCenter.nextTrackCommand.removeTarget(nil)
++    remoteCommandCenter.previousTrackCommand.removeTarget(nil)
++    remoteCommandCenter.nextTrackCommand.addTarget { [weak self] _ in
++      guard let player = self?.activePlayer else {
++        return .commandFailed
++      }
++      let seekTime = player.ref.currentTime() + CMTime(seconds: 10.0, preferredTimescale: 1)
++      player.ref.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero)
++      return .success
++    }
++
++    remoteCommandCenter.previousTrackCommand.addTarget { [weak self] _ in
++      guard let player = self?.activePlayer else {
++        return .commandFailed
++      }
++      let seekTime = player.ref.currentTime() - CMTime(seconds: 10.0, preferredTimescale: 1)
++      player.ref.seek(to: seekTime, toleranceBefore: .zero, toleranceAfter: .zero)
++      return .success
++    }
++
+     remoteCommandCenter.playCommand.isEnabled = true
+     remoteCommandCenter.pauseCommand.isEnabled = true
+     remoteCommandCenter.togglePlayPauseCommand.isEnabled = true
+     remoteCommandCenter.changePlaybackPositionCommand.isEnabled = !isLiveStream
+-    remoteCommandCenter.skipForwardCommand.isEnabled = options?.showSeekForward ?? false
+-    remoteCommandCenter.skipBackwardCommand.isEnabled = options?.showSeekBackward ?? false
++    remoteCommandCenter.skipForwardCommand.isEnabled = false
++    remoteCommandCenter.skipBackwardCommand.isEnabled = false
++    remoteCommandCenter.nextTrackCommand.isEnabled = options?.showSeekForward ?? false
++    remoteCommandCenter.previousTrackCommand.isEnabled = options?.showSeekBackward ?? false
+   }
+ 
+   private func disableRemoteCommands() {
+@@ -318,6 +344,8 @@ class MediaController {
+     remoteCommandCenter.changePlaybackPositionCommand.isEnabled = false
+     remoteCommandCenter.skipForwardCommand.isEnabled = false
+     remoteCommandCenter.skipBackwardCommand.isEnabled = false
++    remoteCommandCenter.nextTrackCommand.isEnabled = false
++    remoteCommandCenter.previousTrackCommand.isEnabled = false
+ 
+     // Remove event targets
+     remoteCommandCenter.playCommand.removeTarget(self)
+@@ -326,5 +354,7 @@ class MediaController {
+     remoteCommandCenter.changePlaybackPositionCommand.removeTarget(self)
+     remoteCommandCenter.skipForwardCommand.removeTarget(self)
+     remoteCommandCenter.skipBackwardCommand.removeTarget(self)
++    remoteCommandCenter.nextTrackCommand.removeTarget(nil)
++    remoteCommandCenter.previousTrackCommand.removeTarget(nil)
+   }
+ }

@@ -46,3 +46,7 @@ __tests__/golden/
 # Carpetes natives que genera `expo prebuild` / `expo run`: es refan a cada compilació
 /android
 /ios
+
+# The native module of the car (modules/cpl-car), compiled by Gradle
+modules/*/android/build/
+modules/*/android/.cxx/
