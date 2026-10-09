@@ -1,7 +1,13 @@
 // Settings: the groups, the current values, and each change saved where it has always been
 // and applied. With the real liturgy, so that the changes that reload it are real too.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
-jest.mock('expo-application', () => ({ nativeApplicationVersion: '9.0.0', nativeBuildVersion: '90' }));
+jest.mock('expo-application', () => ({
+  nativeApplicationVersion: '9.0.0',
+  nativeBuildVersion: '90',
+  // Installed long ago, as whoever updates the app
+  getInstallationTimeAsync: jest.fn(() => Promise.resolve(new Date('2025-06-01T10:00:00Z'))),
+  __installedLongAgo: new Date('2025-06-01T10:00:00Z'),
+}));
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn(() => Promise.resolve()) }));
 // Where the phone is comes from the phone: here it is said outright.
 jest.mock('../../src/services/deviceLocationService', () => ({ currentPosition: jest.fn() }));
@@ -22,6 +28,7 @@ import * as LiturgyStore from '../../src/controllers/liturgyStore';
 import SettingsController, { publicationLine } from '../../src/controllers/SettingsController';
 import { currentPosition } from '../../src/services/deviceLocationService';
 import * as Clipboard from 'expo-clipboard';
+import * as ExpoApplication from 'expo-application';
 import AppThemeProvider from '../../src/controllers/AppThemeProvider';
 import { loadDay } from '../helpers/liturgyDay';
 import { METRICS, styleOf } from '../helpers/renderWithTheme';
@@ -359,7 +366,7 @@ test('while the prayer cannot be heard (cpl-api has it off), there is nothing to
   jest.restoreAllMocks();
 });
 
-const NEW_KEYS = ['newSeen_location', 'newSeen_laudes-gospel', 'newSeen_day-audio', 'newShownSince'];
+const NEW_KEYS = ['newSeen_location', 'newSeen_laudes-gospel', 'newSeen_day-audio'];
 
 test('what the tour of what is new leaves out says «Nou» until it is touched, and it stays touched', async () => {
   await AsyncStorage.multiRemove(NEW_KEYS);
@@ -388,14 +395,27 @@ test('what the tour of what is new leaves out says «Nou» until it is touched, 
   download.mockRestore();
 });
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+const START = Date.now();
+
+// The app installed on day 0; Configuració opened on the day given. Undone with what it returns.
+function installedOnDayZero() {
+  const now = jest.spyOn(Date, 'now');
+  ExpoApplication.getInstallationTimeAsync.mockResolvedValue(new Date(START));
+  return () => {
+    now.mockRestore();
+    ExpoApplication.getInstallationTimeAsync.mockResolvedValue(ExpoApplication.__installedLongAgo);
+  };
+}
+
+async function openOn(day) {
+  Date.now.mockReturnValue(START + day * DAY_MS);
+  await open();
+}
+
 test('what is never touched stops saying «Nou» two weeks after it was first seen, not after the install', async () => {
   await AsyncStorage.multiRemove(NEW_KEYS);
-  const start = Date.now();
-  const now = jest.spyOn(Date, 'now');
-  const openOn = async (day) => {
-    now.mockReturnValue(start + day * 24 * 60 * 60 * 1000);
-    await open();
-  };
+  const undo = installedOnDayZero();
 
   // Configuració first opened a month after the install: the two weeks start now
   await openOn(30);
@@ -411,5 +431,32 @@ test('what is never touched stops saying «Nou» two weeks after it was first se
   await waitFor(() => expect(screen.queryByTestId('use-my-location-new')).toBeNull());
   expect(screen.queryByTestId('laudes-gospel-new')).toBeNull();
   expect(screen.getByRole('switch', { name: LAUDES_GOSPEL }).props.accessibilityHint).toBeUndefined();
-  now.mockRestore();
+  undo();
+});
+
+test('to whoever got the app less than two weeks before, nothing says «Nou», not even later', async () => {
+  await AsyncStorage.multiRemove(NEW_KEYS);
+  const undo = installedOnDayZero();
+
+  await openOn(3);
+  await waitFor(async () => expect(await AsyncStorage.getItem('newSeen_location')).toBe('true'));
+  for (const id of ['use-my-location-new', 'laudes-gospel-new', 'day-audio-new'])
+    expect(screen.queryByTestId(id)).toBeNull();
+  expect(screen.getByRole('switch', { name: LAUDES_GOSPEL }).props.accessibilityHint).toBeUndefined();
+  screen.unmount();
+
+  // Two weeks later they have had it long enough, but it was not new to them
+  await openOn(20);
+  await screen.findByRole('switch', { name: LAUDES_GOSPEL });
+  await act(async () => {});
+  for (const id of ['use-my-location-new', 'laudes-gospel-new', 'day-audio-new'])
+    expect(screen.queryByTestId(id)).toBeNull();
+  undo();
+});
+
+test('when the phone does not say when the app was installed, «Nou» is shown, as to whoever updates', async () => {
+  await AsyncStorage.multiRemove(NEW_KEYS);
+  ExpoApplication.getInstallationTimeAsync.mockRejectedValueOnce(new Error('unknown'));
+  await open();
+  expect(await screen.findByTestId('use-my-location-new')).toBeTruthy();
 });
