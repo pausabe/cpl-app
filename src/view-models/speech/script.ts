@@ -59,6 +59,9 @@ export const PAUSES = {
   reading: 2.5,
   half: 0.35,
   end: 1.3,
+  // After «Aquí es poden afegir altres intencions.»: a breath to ask for whatever one wants, before
+  // the presider closes the intercessions (Pau, 9 October 2026)
+  intentions: 10,
 };
 
 const SECTION_NAMES: Record<string, string> = {
@@ -301,6 +304,13 @@ class Builder {
       } else {
         this.say('lector', whole, PAUSES.title, 'títol');
       }
+      return;
+    }
+
+    // The rubric of the intercessions that leaves room for one's own: the reader says it, and then
+    // there is a silence for them
+    if (this.section === 'PREGÀRIES' && whole.trim().startsWith('Aquí es poden afegir')) {
+      this.say('lector', whole.trim(), PAUSES.intentions, 'intencions');
       return;
     }
 

@@ -149,6 +149,7 @@ test('the intercessions: the presider the first part, the people the second, and
     ['cor2', 'segona part.'],
     ['president', 'Una altra intenció,'],
     ['cor2', 'la seva segona part.'],
+    ['lector', 'Aquí es poden afegir altres intencions.'],
     ['cor2', 'Pare nostre, que esteu en el cel: sigui santificat el vostre nom;'],
   ]);
 });
@@ -201,6 +202,22 @@ test('the Passion in three voices: the chronicler, Christ and the others, withou
     ['president', '«Deixeu-la estar».'],
     ['lector', 'I se n’anà.'],
   ]);
+});
+
+test('after the intercessions, the reader leaves room for one’s own: ten seconds of silence', () => {
+  const pieces = speechScript(
+    'Laudes',
+    [
+      [R('PREGÀRIES')],
+      [T('Pregària per l’Església.\n— Escolteu-nos, Senyor.')],
+      [R('Aquí es poden afegir altres intencions.', true)],
+      [T('Part final de les pregàries.')],
+    ],
+    OUR_FATHER,
+  );
+  const room = pieces.find((p) => p.kind === 'intencions');
+  expect(room).toMatchObject({ role: 'lector', text: 'Aquí es poden afegir altres intencions.', pause: 10 });
+  expect(pieces[pieces.length - 1].text).toBe('Part final de les pregàries.');
 });
 
 test('a response inside a canticle is said by the people, without its «R.»', () => {
