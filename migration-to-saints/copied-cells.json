@@ -15,6 +15,7 @@
     "salmos_textos/12009": { "from": "salmos_textos/3419", "because": "Salm 127, Nona" },
     "himnos/961": { "from": "himnos/3677", "because": "L'himne de l'Ofici de la Mare de Déu del Roser (7-10). eprex hi té un himne propi en castellà («Siempre es hora de la gracia») que l'edició catalana no té, i cpl-app hi resa el del dia de la setmana; hi va el de l'Ofici del Comú de la Mare de Déu de cpl-app («Aquell que terra i mar i estels…»). En Pau, el 6-10-2026: «endavant»." },
     "lecturas_referencia/329": { "from": "lecturas_referencia/53", "because": "Lc 1,26-38, l'evangeli propi del Roser: el castellà de les dues caselles és el mateix. En Pau, el 6-10-2026: «endavant»." },
-    "lecturas_texto/408": { "from": "lecturas_texto/3511", "because": "El Magnificat, salm de la missa pròpia del Roser (7-10): el castellà de les dues caselles és el mateix text. La font és el del dissabte de la setmana 12 dels anys senars, amb el text de la CPL. En Pau, el 6-10-2026: «endavant amb tot»." }
+    "lecturas_texto/408": { "from": "lecturas_texto/3511", "because": "El Magnificat, salm de la missa pròpia del Roser (7-10): el castellà de les dues caselles és el mateix text. La font és el del dissabte de la setmana 12 dels anys senars, amb el text de la CPL. En Pau, el 6-10-2026: «endavant amb tot»." },
+    "oraciones_finales/241": { "from": "oraciones_finales/132", "because": "L'oració dels Àngels Custodis (2-10) a Tèrcia, Sexta i Nona. Des del 8-10 eprex hi posa la pròpia, i cpl-app hi resa la de la fèria (OGLH 236). En Pau, el 9-10-2026: seguir eprex. Hi va la de Laudes de la CPL: el castellà de les dues caselles és la mateixa oració amb una altra traducció." }
   }
 }

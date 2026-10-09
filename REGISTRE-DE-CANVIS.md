@@ -148,6 +148,8 @@ la fitxa amb la prova; el tauler diu qui té la pilota.
 | [APP-002](#app-002) | 2026-10-07 | cpl-app | codi (iOS, «Aa») | No — va al git | `37871d3`, a `master` i a `catalan-migration` |
 | [APP-003](#app-003) | 2026-10-08 | cpl-app + cpl-cloud | **funció nova** (escoltar la pregària) | No — va al git; l'àudio viu a R2 | cpl-app `7c8f283`…`e25b1f0` a `master` · cpl-cloud `4ae8d03`, `3796d4a` |
 | [SA-37](#sa-37) | 2026-10-09 | eines + saints-app | merge de `dev` (textos del 8-10: el Pilar) i 8 caselles de la D-022 fora | Es regenera: `decided-cells.json`, el mapa | el que afegeix la fitxa · saints-app `becbde0f2`, `1d20f78e9` |
+| [D-023](#d-023) | 2026-10-09 | eines + saints-app | **decisió d'en Pau** (2 caselles: seguir eprex) | Es regenera: `decided-cells.json`, `copied-cells.json` | el que afegeix la fitxa |
+| [MIGRA-027](#migra-027) | 2026-10-09 | eines | codi | No — va al git | el que afegeix la fitxa |
 
 **Errors de cpl-app trobats fins ara: 5.** Dos són de dades i tres de codi. Per llistar-los des
 del git en qualsevol moment:
@@ -2986,14 +2988,50 @@ del dissabte IV, i les 8 caselles que la [D-022](#d-022) havia decidit per això
 | Dies | Per què | Què cal |
 |---|---|---|
 | Sant Jaume, Vespres del 24 i el 25-7 (20 dies) | Des dels textos del 2-10 al vespre, `dev` torna a tenir el responsori com abans del 30-9: a les primeres vespres li falta el primer verset (18664) i a les segones el 20230 hi surt dues vegades. Amb el mapa nou, el join deixaria sant Jaume sense responsori en català | Que en Fernando ho torni a arreglar (targeta nova al tauler). Llavors, sondejar aquests dies |
-| Fidels Difunts, missa (10 dies) | `dev` hi posa ara l'aclamació «Venid a mí todos los que estáis cansados» (`lecturas_texto/6027`), la mateixa de 43 dies més. cpl-app el 2-11 en diu una altra, i la casella passaria a conflicte: els 43 dies es quedarien sense aclamació en català | Decisió d'en Pau, una per una ([D-010](#d-010)) |
-| 136 dies de celebracions catalanes (sant Ramon de Penyafort, la Mercè, santa Eulàlia, Claret…) | Des de la [SA-36](#sa-36) hi resen la fèria i la sonda ja ho veu; el mapa encara no, perquè és del 2-10 | Una passada a part, mirant-ne l'efecte al join |
+| Fidels Difunts, missa (10 dies) | `dev` hi posa ara l'aclamació «Venid a mí todos los que estáis cansados» (`lecturas_texto/6027`), la mateixa de 43 dies més. cpl-app el 2-11 en diu una altra, i la casella passaria a conflicte: els 43 dies es quedarien sense aclamació en català | **Resolt el 9-10**: seguir eprex ([D-023](#d-023)) |
+| 136 dies de celebracions catalanes (sant Ramon de Penyafort, la Mercè, santa Eulàlia, Claret…) | Des de la [SA-36](#sa-36) hi resen la fèria i la sonda ja ho veu; el mapa encara no, perquè és del 2-10 | **Resolt el 9-10** ([MIGRA-027](#migra-027)): ficats al mapa, el join ja no els observa |
 
 **Trobat de passada, per a en Fernando:** els dissabtes XXVI i XXX, a Tèrcia, `dev` apunta a l'oració 1256, i la
 resta de dissabtes de la setmana II a la 1237. El castellà de la 1256 és una altra oració («Nos sentimos culpables,
 Señor…»); l'italià i el català hi diuen la de Tèrcia. El pròxim, el dissabte 31-10-2026. I els Àngels Custodis (memòria)
 tenen ara hores menors pròpies amb l'oració del dia (`oraciones_finales/241`), quan cpl-app hi resa la de la fèria, com
-diu l'OGLH 236: la 241 queda pendent i sense català fins que es decideixi qui té raó.
+diu l'OGLH 236: la 241 queda pendent i sense català fins que es decideixi qui té raó. **Decidit el 9-10**: seguir eprex ([D-023](#d-023)).
+
+<a id="d-023"></a>
+## D-023
+
+**Dues caselles noves d'en Fernando del 8-10: se segueix eprex** · 9 d'octubre de 2026
+
+En Pau, el 9-10: «seguir eprex» a les dues.
+
+| Casella | Què hi va | Per què |
+|---|---|---|
+| Aclamació de l'evangeli, `lecturas_texto/6027` | «Veniu a mi tots els qui esteu cansats i afeixugats; jo us faré reposar, diu el Senyor», el text dels 33 dies majoritaris (`decided-cells.json`, `take` 2018-07-06) | Des del 8-10 eprex la posa també als Fidels Difunts, on cpl-app en diu una altra. Sense decidir, la casella quedava retinguda i 43 dies es quedaven sense aclamació. El 2-11 el català dirà el mateix que el castellà |
+| Oració dels Àngels Custodis a Tèrcia, Sexta i Nona, `oraciones_finales/241` | L'oració pròpia de la CPL, la de Laudes («Oh Déu, vós, amb una providència inefable…»), copiada de la `132` (`copied-cells.json`) | Des del 8-10 eprex hi posa la pròpia; cpl-app hi resa la de la fèria (OGLH 236). El castellà de la 132 i de la 241 és la mateixa oració amb una altra traducció |
+
+| | |
+|---|---|
+| Efecte | Els 10 dies dels Fidels Difunts entren al mapa. La 241 i la 903 (l'oració de sant Pere Claver, de la [MIGRA-027](#migra-027)) s'exporten: 2 claus noves |
+| Commit | el que afegeix la fitxa · saints-app `1a802ce90` |
+
+<a id="migra-027"></a>
+## MIGRA-027
+
+**Des de la SA-36, el join hauria posat el text de 136 celebracions a les caselles de la fèria** · 9 d'octubre de 2026
+
+Abans de la [SA-36](#sa-36), un dia amb una celebració que l'índex no té donava ERR-004 i la sonda el marcava sense
+entrada. Ara l'app hi resa la fèria i la sonda en mesura les caselles. cpl-app, en canvi, hi resa la celebració (sant
+Ramon de Penyafort, la Mercè, santa Eulàlia, Claret, les Témpores…), i el join n'hauria pres el text per a les caselles
+de la fèria: **unes 1.200 caselles** passaven a retingudes i perdien el català els altres dies. No va arribar a
+escriure's: es va veure en ficar els 136 dies al mapa, abans d'exportar.
+
+| | |
+|---|---|
+| Correcció | `join-content.test.js`: si ni la celebració del manifest ni la que diu l'app tenen entrada a l'índex d'aquella hora, el dia no s'observa (`fellBackToFeria`). Dijous Sant continua: el manifest diu `thursday_of_the_lords_supper`, però l'app diu `holy_thursday`, que sí que hi és. I les primeres vespres de l'endemà ja s'han decidit abans, amb `appShowsTomorrowsVespers` |
+| Comprovat | Amb el mapa sencer de la sonda (llevat de sant Jaume, [T28](https://trello.com/c/4CDsVSvE)), el join surt igual que amb el mapa vell, excepte sant Pere Claver: des del 8-10 l'índex el té (`peter_claver_priest__ANY`, posat amb els sants dels Estats Units), i hi entra la seva oració (`oraciones_finales/903`; en castellà hi diu «US memorial», però a Espanya no es celebra i no es veu). Els seus tres himnes (2209-2211) no tenen text en cap llengua i queden pendents |
+| Tests | `first-vespers.test.js`, `copied-cells.test.js`, `export-held.test.js`, `held-resolution.test.js`: 35 de 35. Sense test propi: la prova és el join sencer |
+| Efecte | El mapa ja és el de la sonda per a tots els dies menys els 20 de sant Jaume. 436.401 textos-dia i 224 dies sencers |
+| Pendent | Sant Pere Claver (9-9, calendaris catalans): l'entrada nova no té himnes. El pròxim, el 9-9-2027 |
 
 # Canvis a saints-app
 

@@ -318,7 +318,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
         return {};
       }
     })();
-    const cellMapUse = { fromMap: 0, fromIndex: 0, noEntry: 0 };
+    const cellMapUse = { fromMap: 0, fromIndex: 0, noEntry: 0, fellBackToFeria: 0 };
 
     // The probe reports cells as "table/id"; observeHour wants the plain id per field and
     // already knows the table. A field landing in an unexpected table would mean the two
@@ -859,6 +859,21 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
           }
           observedFirstVespers++;
         }
+        // Since SA-36 a day whose celebration is not in the index prays the weekday
+        // (findDayEntry falls back to the feria), so the probe measures the feria's cells
+        // while cpl-app prays the celebration. Observing it would file the celebration's
+        // texts under the feria's cells and hold some 1,200 of them (MIGRA-027). Holy
+        // Thursday also lacks the manifest's key, but the app's own id has one: that is
+        // how the two are told apart. Tomorrow's First Vespers were settled just above.
+        const appLitcalId = cellMap[dateStr] && cellMap[dateStr].litcalId;
+        if (
+          probed && !probed.__noEntry && !key &&
+          !(hour === 'Vespers' && vespersFromTomorrow) &&
+          !(appLitcalId && keysByPrefixByHour[hour].get(appLitcalId))
+        ) {
+          cellMapUse.fellBackToFeria++;
+          continue;
+        }
         if (probed && probed.__noEntry) {
           // The app shows nothing here (no entry in the shared index): observing anything
           // would attribute cpl-app's text to a cell nobody reads.
@@ -1071,7 +1086,7 @@ describe('Content join: cpl-app -> saints-app commons/ca', () => {
     console.log(`Hours: ${HOURS_TO_RUN.join(', ')}. Processed ${processed} dates.`);
     console.log(
       `Caselles: ${cellMapUse.fromMap} hores des del mapa mesurat, ${cellMapUse.fromIndex} des de l'índex, ` +
-        `${cellMapUse.noEntry} saltades (l'app no hi mostra res).`
+        `${cellMapUse.noEntry} saltades (l'app no hi mostra res), ${cellMapUse.fellBackToFeria} saltades perquè l'app hi resa la fèria (la celebració no és a l'índex).`
     );
     if (antiphonWithheld) {
       console.log(
