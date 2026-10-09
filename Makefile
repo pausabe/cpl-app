@@ -243,12 +243,15 @@ ios-app:
 # not have on this Mac, and iOS does not allow replacing it. This one is cpl.cpl.dev («CPL 9»),
 # signed with Joan's team (N65TK8GHAL). It needs Xcode 26.4 or later (Swift 6.3, for Expo 57).
 # The identifier is given to prebuild (plugins/withBundleIdentifier.js), so that the widgets follow
-# it: cpl.cpl.dev.widgets, and the group they share with the app, group.cpl.cpl.dev, which Xcode
-# registers in that team the first time (-allowProvisioningUpdates).
+# it. Without the widgets by default: they share with the app a group of apps, group.cpl.cpl.dev,
+# which Xcode does not register from the command line, and the team has no such group yet (9 October
+# 2026). Once it exists on developer.apple.com, assigned to cpl.cpl.dev and cpl.cpl.dev.widgets,
+# make ios-device WIDGETS=1 builds them too. The widgets are tried in TestFlight.
+WIDGETS ?= 0
 ios-device:
 	@test -n "$(IPHONE)" || (echo "No iPhone connected (xcrun devicectl list devices)" && exit 1)
 	xcrun devicectl device info details --device $(IPHONE) > /dev/null
-	CPL_IOS_BUNDLE_IDENTIFIER=cpl.cpl.dev npx expo prebuild -p ios --clean
+	CPL_IOS_WIDGETS=$(WIDGETS) CPL_IOS_BUNDLE_IDENTIFIER=cpl.cpl.dev npx expo prebuild -p ios --clean
 	plutil -replace CFBundleDisplayName -string "CPL 9" ios/CPL/Info.plist
 	xcodebuild -workspace ios/CPL.xcworkspace -scheme CPL -configuration Release \
 		-destination id=$(IPHONE) -derivedDataPath ios/build \
