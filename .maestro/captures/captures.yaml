@@ -1,5 +1,5 @@
 appId: cpl.cpl
-name: "The eight screenshots the stores show"
+name: "The screenshots the stores show"
 ---
 # The screenshots of the App Store and of Google Play, taken from the app itself. It is not a
 # test: nothing is asserted beyond what has to be on screen before pressing the shutter, and a
@@ -60,6 +60,24 @@ name: "The eight screenshots the stores show"
 - assertVisible: "Mida 3 de 10"
 - takeScreenshot: 03-lletra
 - tapOn: "Fet"
+
+# 9 and 10. Lauds read aloud: the strophe being said marked on the screen and the small player at
+# the foot, once it says how far it is; then its sheet, with the parts and the pace
+- tapOn: "Escolta la pregària"
+- extendedWaitUntil:
+    visible: ".* de [0-9]+:[0-9]+"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 8000
+- takeScreenshot: 09-escoltar
+- tapOn:
+    id: "listen-open"
+- extendedWaitUntil:
+    visible: "Velocitat"
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: 10-reproductor
+- tapOn: "Atura"
 - runFlow: ../subflows/enrere.yaml
 - extendedWaitUntil:
     visible: "Missatge"
@@ -71,6 +89,24 @@ name: "The eight screenshots the stores show"
     visible: "EVANGELI.*"
     timeout: 15000
 - takeScreenshot: 04-evangeli
+- runFlow: ../subflows/enrere.yaml
+- extendedWaitUntil:
+    visible: "Missatge"
+    timeout: 15000
+
+# 12 and 11. Configuració: the diocese found with the location, and today's audio on the phone
+- tapOn: "Configuració"
+- assertVisible: "Mida del text"
+- scrollUntilVisible:
+    element: "Fes servir la meva ubicació.*"
+    direction: DOWN
+- takeScreenshot: 12-diocesi
+- scrollUntilVisible:
+    element: "Baixa l'àudio d'avui"
+    direction: DOWN
+    centerElement: true
+- waitForAnimationToEnd
+- takeScreenshot: 11-audio-avui
 - runFlow: ../subflows/enrere.yaml
 - extendedWaitUntil:
     visible: "Missatge"
@@ -90,3 +126,14 @@ name: "The eight screenshots the stores show"
     visible: "HIMNE.*"
     timeout: 15000
 - takeScreenshot: 05-completes-fosc
+
+# 13. Compline read aloud, in the dark
+- tapOn: "Escolta la pregària"
+- extendedWaitUntil:
+    visible: ".* de [0-9]+:[0-9]+"
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 8000
+- takeScreenshot: 13-escoltar-fosc
+- tapOn:
+    id: "listen-close"

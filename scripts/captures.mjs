@@ -44,6 +44,13 @@ const SHOTS = [
   { file: '08-any-liturgic', caption: "Tot l'any litúrgic, d'un cop d'ull", theme: LIGHT },
   { file: '05-completes-fosc', caption: 'De nit, sense enlluernar', theme: DARK },
   { file: '06-inici-fosc', caption: "El mode fosc, a tota l'app", theme: DARK },
+  // What came with 9.2 and 9.3: the prayer read aloud above all. More than the eight Google Play
+  // takes: Pau chooses (9 October 2026).
+  { file: '09-escoltar', caption: 'Escolta la pregària, a dos cors', theme: LIGHT },
+  { file: '10-reproductor', caption: 'Al teu ritme: tria la part i la velocitat', theme: LIGHT },
+  { file: '11-audio-avui', caption: "L'àudio d'avui, també sense connexió", theme: LIGHT },
+  { file: '12-diocesi', caption: 'La teva diòcesi, trobada sola', theme: LIGHT },
+  { file: '13-escoltar-fosc', caption: 'Per resar a les fosques, o al cotxe', theme: DARK },
 ];
 
 const TARGETS = {
@@ -132,11 +139,16 @@ function prepareSimulator(name) {
   return device.udid;
 }
 
-// The first emulator or phone on adb, the same one `make android-app` installs on
+// The emulator: the one ANDROID_SERIAL says, or the first emulator on adb, and only without any a
+// phone. A phone plugged in to charge is somebody's phone, not a device for screenshots.
 function prepareAndroid() {
   const adb = join(process.env.ANDROID_HOME ?? join(process.env.HOME, 'Library/Android/sdk'), 'platform-tools/adb');
   const lines = capture(adb, ['devices']).split('\n').slice(1);
-  const device = lines.map((line) => line.split('\t')).find((parts) => parts[1]?.trim() === 'device');
+  const ready = lines.map((line) => line.split('\t')).filter((parts) => parts[1]?.trim() === 'device');
+  const device =
+    ready.find((parts) => parts[0] === process.env.ANDROID_SERIAL) ??
+    ready.find((parts) => parts[0].startsWith('emulator-')) ??
+    ready[0];
   if (!device) {
     fail('No Android emulator or phone connected (adb devices).');
   }
