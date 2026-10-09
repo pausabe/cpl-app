@@ -1,5 +1,5 @@
-// The icon of the app, the logotype of the splash and the two pictures Google Play asks for,
-// all from the same drawing.
+// The icon of the app, the logotype of the splash, the two pictures Google Play asks for and the
+// icon of Android's notification, all from the same drawing.
 //
 //     node scripts/makeIcons.mjs
 //
@@ -121,6 +121,44 @@ svg { width: ${drawn}px; height: auto; display: block; }
 p { font-family: "Literata", Georgia, serif; font-weight: 600; font-size: ${Math.round(height * 0.11)}px; }
 </style>${MARK}${caption ? `<p>${caption}</p>` : ''}`;
 }
+
+// The small icon of the notification Android shows while an hour is read aloud (modules/cpl-car),
+// which is also the one in the status bar. Without it Media3 puts a music note there. Android reads
+// only its shape and paints it in its own colour, so it is the paths of cplMark.svg as they are, in
+// white, as a vector: a 24 dp square with 1 dp of margin on each side, as Material asks for
+// notification icons. No Chrome needed: the paths are copied, not drawn.
+const DRAWABLE = join(ROOT, 'modules', 'cpl-car', 'android', 'src', 'main', 'res', 'drawable');
+
+function notificationIcon() {
+  const [, , width, height] = MARK.match(/viewBox="([^"]+)"/)[1]
+    .split(/\s+/)
+    .map(Number);
+  // The mark is wider than tall: its width decides the size
+  const side = (width * 24) / 22;
+  const round = (n) => Number(n.toFixed(3));
+  const paths = [...MARK.matchAll(/<path d="([^"]+)"(?: transform="translate\(([^ )]+) ([^)]+)\)")?\s*\/>/g)].map(
+    ([, d, x = '0', y = '0']) =>
+      `    <group android:translateX="${x}" android:translateY="${y}">\n` +
+      `      <path android:fillColor="#FFFFFFFF" android:pathData="${d}" />\n` +
+      `    </group>`,
+  );
+  return `<?xml version="1.0" encoding="utf-8"?>
+<!-- Made by scripts/makeIcons.mjs from src/assets/icon/cplMark.svg -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="24dp"
+  android:height="24dp"
+  android:viewportWidth="${round(side)}"
+  android:viewportHeight="${round(side)}">
+  <group android:translateX="${round((side - width) / 2)}" android:translateY="${round((side - height) / 2)}">
+${paths.join('\n')}
+  </group>
+</vector>
+`;
+}
+
+mkdirSync(DRAWABLE, { recursive: true });
+writeFileSync(join(DRAWABLE, 'cpl_notification_icon.xml'), notificationIcon());
+console.log('modules/cpl-car/android/src/main/res/drawable/cpl_notification_icon.xml  24 dp');
 
 const browser = chrome();
 mkdirSync(STORE, { recursive: true });

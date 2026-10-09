@@ -12,7 +12,10 @@ import androidx.media3.session.MediaSession
 class CarMediaService : MediaLibraryService() {
   override fun onCreate() {
     super.onCreate()
-    setMediaNotificationProvider(DefaultMediaNotificationProvider.Builder(this).build())
+    // The CPL in the status bar and at the top of the notification, not Media3's music note
+    setMediaNotificationProvider(
+      DefaultMediaNotificationProvider.Builder(this).build().apply { setSmallIcon(R.drawable.cpl_notification_icon) }
+    )
     addSession(CarSession.ensure(this))
   }
 

@@ -76,14 +76,21 @@ class CplCarModule : Module() {
     Uri.parse("android.resource://${context.packageName}/mipmap/ic_launcher")
   )
 
-  // The CPL icon the app keeps as a file, read once
+  // The CPL icon of the app, read once. While developing it is a file (downloaded from Metro); in a
+  // release build expo-asset gives only the name of the drawable React Native put it in
+  // («src_assets_icon_icon»), and reading that as a file left the notification without the icon.
   private fun artworkOf(file: String?): ByteArray? {
     if (file == null) return null
     if (file == artworkUri) return artwork
     artworkUri = file
     artwork = try {
-      val path = Uri.parse(file).path ?: file
-      File(path).readBytes()
+      if (!file.contains(':') && !file.startsWith("/")) {
+        val id = context.resources.getIdentifier(file, "drawable", context.packageName)
+        context.resources.openRawResource(id).use { it.readBytes() }
+      } else {
+        val path = Uri.parse(file).path ?: file
+        File(path).readBytes()
+      }
     } catch (e: Exception) {
       null
     }
