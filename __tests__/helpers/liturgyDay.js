@@ -4,6 +4,7 @@
 const AsyncStorage = require('@react-native-async-storage/async-storage');
 const DataService = require('../../src/services/dataService');
 const StorageKeys = require('../../src/services/storage/storageKeys').default;
+const { NOT_CELEBRATED, optionalMemorialToStore } = require('../../src/services/liturgy/optionalMemorialsService');
 
 // Setting combinations a real user can pick in the Settings screen. Values are the strings
 // SettingsService stores. Between them they cover every option that changes the texts.
@@ -23,11 +24,18 @@ const PROFILES = {
   tortosa: { diocesis: 'Tortosa', lloc: 'Diòcesi' },
 };
 
-async function applyProfile(profile, date) {
+// memorial: on a day with more than one optional memorial, the one chosen in the sheet (its row in
+// santsMemories), or null for the weekday, saved as the home saves them
+async function applyProfile(profile, date, memorial) {
   await AsyncStorage.clear();
   const { optionalFestivity, ...settings } = profile;
   for (const [key, value] of Object.entries(settings)) await AsyncStorage.setItem(key, value);
-  if (optionalFestivity) {
+  if (memorial !== undefined) {
+    await AsyncStorage.setItem(
+      StorageKeys.OptionalFestivity,
+      memorial === null ? NOT_CELEBRATED : optionalMemorialToStore(date, memorial),
+    );
+  } else if (optionalFestivity) {
     // Same format HomeScreen writes when the "memòria lliure" switch is turned on.
     await AsyncStorage.setItem(
       StorageKeys.OptionalFestivity,
@@ -49,10 +57,10 @@ function currentState() {
   );
 }
 
-async function loadDay(isoDate, profileName = 'barcelona') {
+async function loadDay(isoDate, profileName = 'barcelona', { memorial } = {}) {
   const [y, m, d] = isoDate.split('-').map(Number);
   const date = new Date(y, m - 1, d);
-  await applyProfile(PROFILES[profileName], date);
+  await applyProfile(PROFILES[profileName], date, memorial);
   await DataService.reloadAllData(date, null);
   return currentState();
 }

@@ -840,14 +840,21 @@ async function obtainSaintsMemories(
             liturgyDayInformation.today.date,
             liturgyDayInformation.today.movedDay.originDateShortDatabaseCode,
           );
-          const row = await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
-            SaintsMemories.masterName,
-            day,
-            settings.dioceseCode,
-            settings.prayingPlace,
-            settings.dioceseName,
-            liturgyDayInformation.today.genericLiturgyTime,
-          );
+          const chosen = await chosenOptionalMemorial(liturgyDayInformation.today, day, settings);
+          const row =
+            chosen !== undefined
+              ? await DatabaseDataService.obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
+                  SaintsMemories.masterName,
+                  chosen,
+                )
+              : await DatabaseDataService.obtainSolemnitiesAndMemoriesAsync(
+                  SaintsMemories.masterName,
+                  day,
+                  settings.dioceseCode,
+                  settings.prayingPlace,
+                  settings.dioceseName,
+                  liturgyDayInformation.today.genericLiturgyTime,
+                );
           const saintsMemories = new SaintsMemories(row);
           saintsMemories.commonOffices = await obtainCommonOffices(saintsMemories.celebration.category);
           return saintsMemories;
@@ -863,6 +870,27 @@ async function obtainSaintsMemories(
       }
     }
   }, new SaintsMemories());
+}
+
+// The optional memorial chosen among those of the day (the sheet of the home), when the memorial is
+// celebrated and it is one the day offers in the place: its row. Undefined otherwise, and then the
+// day has the one the app has always offered, which is also the one of a memorial turned on before
+// there was a choice (the date alone).
+async function chosenOptionalMemorial(
+  day: LiturgySpecificDayInformation,
+  dateString: string,
+  settings: Settings,
+): Promise<number | undefined> {
+  const chosen = settings.optionalMemorialId;
+  if (chosen === undefined || !settings.optionalFestivityEnabled) return undefined;
+  if (day.celebrationType !== CelebrationType.OptionalMemory) return undefined;
+  const options = await DatabaseDataService.obtainOptionalMemorialsAsync(
+    dateString,
+    settings.dioceseName,
+    settings.prayingPlace,
+    day.genericLiturgyTime,
+  );
+  return options.some((row) => Number(row.id) === chosen) ? chosen : undefined;
 }
 
 async function obtainSpecialDaysParts(liturgyDayInformation: LiturgyDayInformation): Promise<SpecialDaysParts> {
@@ -902,7 +930,7 @@ async function obtainCommonOffices(category: string): Promise<CommonOffice> {
 /*
   Return id of #santsMemories or #santsSolemnitats or -1 if there isn't there
 */
-function obtainSaintsMemoriesOrSolemnitiesMasterIdentifier(
+export function obtainSaintsMemoriesOrSolemnitiesMasterIdentifier(
   liturgyDateInformation: LiturgySpecificDayInformation,
   settings: Settings,
 ) {

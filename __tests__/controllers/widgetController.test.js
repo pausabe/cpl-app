@@ -39,11 +39,12 @@ test('fifteen days, from yesterday, with what the home says of each one', async 
     }),
   );
   const byDate = Object.fromEntries(payload.days.map((day) => [day.date, day]));
+  // Two optional memorials, none chosen: what the home says
   expect(byDate['2026-10-09']).toMatchObject({
     dateText: 'Divendres, 9 d’octubre',
     title: "Setmana XXVII de durant l'any",
     color: 'V',
-    celebration: { type: 'Memòria lliure', short: 'Sants Dionís', muted: true },
+    celebration: { type: 'Dues memòries lliures', title: 'Avui es resa la fèria', muted: false },
     gospel: { caption: 'Evangeli · Lc 11,15-26', opens: 'Evangeli' },
   });
   // Saturday: the first Vespers of Sunday under «Vespres»
@@ -75,4 +76,23 @@ test('only again when something they show has changed: the day, or an optional m
   await refreshWidgets(new Date(2026, 9, 10, 7, 0));
   expect(writeWidgetPayload).toHaveBeenCalledTimes(3);
   expect(written().days[0].date).toBe('2026-10-09');
+});
+
+test('the other memorial of the day, chosen in the sheet of the home, is the one they show', async () => {
+  await loadDay('2026-10-09');
+  await refreshWidgets(new Date(2026, 9, 9, 8, 0));
+  // As the sheet saves Sant Joan Leonardi
+  await AsyncStorage.setItem(StorageKeys.OptionalFestivity, '9:9:2026:382');
+  await refreshWidgets(new Date(2026, 9, 9, 8, 5));
+  expect(writeWidgetPayload).toHaveBeenCalledTimes(2);
+  const today = written().days.find((day) => day.date === '2026-10-09');
+  expect(today.celebration).toEqual({
+    type: 'Dues memòries lliures',
+    title: 'Sant Joan Leonardi, prevere',
+    short: 'Sant Joan Leonardi',
+    muted: false,
+  });
+  // Only that day: a week later the two of that day, none chosen
+  const later = written().days.find((day) => day.date === '2026-10-16');
+  expect(later.celebration).toMatchObject({ type: 'Dues memòries lliures', title: 'Avui es resa la fèria' });
 });

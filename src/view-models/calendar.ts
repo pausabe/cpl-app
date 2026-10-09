@@ -181,6 +181,21 @@ export interface PreviewCard {
 
 export function previewCard(date: Date, mark: DayMarkInput | undefined, card: DayCard | undefined): PreviewCard {
   const dateText = longDate(date);
+  // A day with more than one optional memorial is, as the year already says, «Memòria lliure»: the
+  // one chosen or, in grey, their names, which a calendar says better than «Avui es resa la fèria»
+  // of a day that may not be today
+  const memorials = card?.celebration?.memorials;
+  if (card && memorials) {
+    return {
+      dateText,
+      colorCode: card.colorCode,
+      title: card.title,
+      typeLabel: memorials.memorialLabel,
+      celebrationTitle: memorials.celebrated ? (card.celebration?.title ?? null) : memorials.names,
+      muted: !memorials.celebrated,
+      waiting: false,
+    };
+  }
   if (card) {
     return {
       dateText,

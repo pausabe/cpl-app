@@ -10,6 +10,7 @@ import HoursGrid from './HoursGrid';
 import MassBlock from './MassBlock';
 import HomeFooter from './HomeFooter';
 import DescriptionSheet from './DescriptionSheet';
+import MemorialSheet from './MemorialSheet';
 import EdgeFade from '../../components/EdgeFade';
 import UpdateNotice from '../../components/UpdateNotice';
 import { APP_UPDATE } from '../../view-models/notices';
@@ -29,6 +30,8 @@ export interface HomeScreenProps {
   onOpenReading: (opens: MassScreenType) => void;
   onMassChoice: (choice: MassChoice) => void;
   onOptionalMemoryChange: (enabled: boolean) => void;
+  // On a day with more than one optional memorial: the one chosen, or null for the weekday
+  onOptionalMemorialChoice: (memorialId: number | null) => void;
   onMessage: () => void;
   onDonation: () => void;
   // A newer app in the store: a card above the day
@@ -39,12 +42,16 @@ export default function HomeScreen(props: HomeScreenProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const [descriptionOpen, setDescriptionOpen] = useState(false);
+  // The day whose memorials are being chosen: the sheet stays while one is chosen, which changes the
+  // saint, but not on another day
+  const [memorialsOf, setMemorialsOf] = useState<string | null>(null);
   // What the bottom bar covers: the scroll leaves that much room at its end
   const [footerHeight, setFooterHeight] = useState(FADE_HEIGHT + 52 + insets.bottom);
   const onFooterLayout = (event: LayoutChangeEvent) => setFooterHeight(Math.ceil(event.nativeEvent.layout.height));
 
   // Another day, another saint: the sheet does not stay open
   useEffect(() => setDescriptionOpen(false), [props.day.dateText, props.day.celebration?.title]);
+  const memorials = props.day.celebration?.memorials;
 
   return (
     <View testID="home" style={[styles.screen, { backgroundColor: theme.colors.homeBackground }]}>
@@ -67,6 +74,7 @@ export default function HomeScreen(props: HomeScreenProps) {
           <DayCard
             day={props.day}
             onOptionalMemoryChange={props.onOptionalMemoryChange}
+            onChooseMemorial={() => setMemorialsOf(props.day.dateText)}
             onReadMore={() => setDescriptionOpen(true)}
           />
           <HoursGrid hours={props.hours} onOpen={props.onOpenHour} />
@@ -80,6 +88,16 @@ export default function HomeScreen(props: HomeScreenProps) {
           <HomeFooter onMessage={props.onMessage} onDonation={props.onDonation} />
         </View>
       </View>
+      {memorials ? (
+        <MemorialSheet
+          key={props.day.dateText}
+          sheet={memorials.sheet}
+          colorCode={props.day.colorCode}
+          visible={memorialsOf === props.day.dateText}
+          onChoose={props.onOptionalMemorialChoice}
+          onClose={() => setMemorialsOf(null)}
+        />
+      ) : null}
       {props.day.celebration?.description ? (
         <DescriptionSheet
           celebration={props.day.celebration}

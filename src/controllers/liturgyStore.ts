@@ -6,6 +6,7 @@ import LiturgyDayInformation from '../models/LiturgyDayInformation';
 import CelebrationInformation from '../models/hours-liturgy/CelebrationInformation';
 import HoursLiturgy from '../models/hours-liturgy/HoursLiturgy';
 import MassLiturgy from '../models/MassLiturgy';
+import { OptionalMemorials } from '../models/OptionalMemorials';
 import type { DayMark } from '../services/liturgicalYearService';
 
 export type DayPreview = DataService.DayPreview;
@@ -31,6 +32,8 @@ export interface LiturgySnapshot {
   mass: MassLiturgy;
   // For the voice, which says «Pare nostre.» whole
   ourFather: string;
+  // The optional memorials of the day, to choose one when there is more than one
+  optionalMemorials: OptionalMemorials;
 }
 
 type Listener = () => void;
@@ -50,6 +53,7 @@ function take(): LiturgySnapshot {
     hours: current.hoursLiturgy,
     mass: current.massLiturgy,
     ourFather: current.ourFatherPrayer,
+    optionalMemorials: current.optionalMemorials,
   };
 }
 

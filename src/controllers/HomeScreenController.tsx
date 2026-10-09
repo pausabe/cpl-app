@@ -38,12 +38,14 @@ import { autoselectDiocese, shouldOfferAutoselection } from './dioceseAutoselect
 import { scheduleWidgetRefresh } from './widgetController';
 import { initialWidgetLink, linkedScreen, onWidgetLink, openedFromWidgetRecently } from './widgetLinks';
 import { dateOfDay, type WidgetLink } from '../view-models/widgets';
+import { NOT_CELEBRATED, optionalMemorialToStore } from '../services/liturgy/optionalMemorialsService';
 
 // The home. It loads the day when the app opens and when the day changes, and keeps doing what
 // it always did: coming back to the app on another day loads today's liturgy, between midnight
 // and 3 h it asks whether yesterday's is wanted, the calendar (a screen of its own) changes the
-// day, and the switch of an optional memorial is remembered for the day. It builds what the home
-// shows (ViewModels) and gives it to the view (Views/Home/HomeScreen), which only draws.
+// day, and the switch of an optional memorial, or the memorial chosen among several, is remembered
+// for the day. It builds what the home shows (ViewModels) and gives it to the view
+// (Views/Home/HomeScreen), which only draws.
 
 const LOAD_ERROR_MESSAGE =
   "Ha sorgit un error inesperat i no és possible obrir l'aplicació de manera normal.\nProva de desinstal·lar l'aplicació i a tornar-la a instal·lar i si el problema persisteix, posa't en contacte amb cpl@cpl.es\nDisculpa les molèsties.";
@@ -321,9 +323,9 @@ export default function HomeScreenController({ navigation, route }: { navigation
   // --- What the home shows -------------------------------------------------------------------
   const model = useMemo(() => {
     if (status !== 'ready' || !today) return null;
-    const { day, celebration, settings, hours, mass } = snapshot;
+    const { day, celebration, settings, hours, mass, optionalMemorials } = snapshot;
     return {
-      day: buildDayCard(day.today, celebration, settings),
+      day: buildDayCard(day.today, celebration, settings, optionalMemorials),
       hours: buildHours({
         vespersTitle: hours.vespers?.title,
         specificLiturgyTime: day.today.specificLiturgyTime,
@@ -362,9 +364,20 @@ export default function HomeScreenController({ navigation, route }: { navigation
     if (!today) return;
     await StorageService.storeData(
       StorageKeys.OptionalFestivity,
-      enabled ? DateManagement.getDateKeyToBeStored(today) : 'none',
+      enabled ? optionalMemorialToStore(today) : NOT_CELEBRATED,
     );
     LiturgyStore.updateSettings({ optionalFestivityEnabled: enabled });
+    await load(today);
+  };
+
+  // One of several, from the sheet: its texts for the whole day, as the switch does with one. The
+  // weekday puts it away.
+  const onOptionalMemorialChoice = async (memorialId: number | null) => {
+    if (!today) return;
+    await StorageService.storeData(
+      StorageKeys.OptionalFestivity,
+      memorialId === null ? NOT_CELEBRATED : optionalMemorialToStore(today, memorialId),
+    );
     await load(today);
   };
 
@@ -448,6 +461,7 @@ export default function HomeScreenController({ navigation, route }: { navigation
         onOpenReading={onOpenReading}
         onMassChoice={onMassChoice}
         onOptionalMemoryChange={onOptionalMemoryChange}
+        onOptionalMemorialChoice={onOptionalMemorialChoice}
         onMessage={() => setWebPage('message')}
         onDonation={onDonation}
         update={appUpdate ? { onOpen: appUpdate.open, onDismiss: appUpdate.dismiss } : null}

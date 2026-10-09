@@ -23,12 +23,17 @@ const dateOf = (iso) => {
 // The card the home shows now, of the day loaded
 function homeCard() {
   const current = DataService.currentLiturgy();
-  return buildDayCard(current.liturgyDayInformation.today, current.celebrationInformation, current.settings);
+  return buildDayCard(
+    current.liturgyDayInformation.today,
+    current.celebrationInformation,
+    current.settings,
+    current.optionalMemorials,
+  );
 }
 
 async function previewCardOf(iso) {
   const preview = await DataService.obtainDayPreview(dateOf(iso));
-  return buildDayCard(preview.day, preview.celebration, preview.settings);
+  return buildDayCard(preview.day, preview.celebration, preview.settings, preview.optionalMemorials);
 }
 
 describe('the marks of a year', () => {
@@ -176,7 +181,9 @@ describe('a day worked out for the calendar', () => {
     const different = [];
     for (const mark of await DataService.obtainYearMarks(2026)) {
       const card = await previewCardOf(mark.date);
-      const said = card.celebration?.typeLabel ?? null;
+      // A day with more than one optional memorial says how many («Dues memòries lliures»), and
+      // what each one is
+      const said = card.celebration?.memorials?.memorialLabel ?? card.celebration?.typeLabel ?? null;
       if (rankLabel(mark) !== said) different.push(mark.date);
     }
     expect(different).toEqual([]);

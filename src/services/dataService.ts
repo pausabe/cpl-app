@@ -28,6 +28,8 @@ import * as CelebrationHoursLiturgyService from './liturgy/celebrationHoursLitur
 import * as CelebrationInformationService from './liturgy/celebrationInformationService';
 import * as LiturgicalYearService from './liturgicalYearService';
 import { DayMark } from './liturgicalYearService';
+import * as OptionalMemorialsService from './liturgy/optionalMemorialsService';
+import { NO_OPTIONAL_MEMORIALS, OptionalMemorials } from '../models/OptionalMemorials';
 
 // The liturgy of the day being shown, with the settings it was loaded with. Only the services and
 // the store (controllers/liturgyStore) read it: the screens get it from the store, as props.
@@ -42,6 +44,8 @@ export interface CurrentLiturgy {
   massLiturgy: MassLiturgy;
   // The Lord's Prayer whole: the hours show only «Pare nostre.», and the voice says all of it
   ourFatherPrayer: string;
+  // The optional memorials of the day in the place, to choose one when there is more than one
+  optionalMemorials: OptionalMemorials;
 }
 
 const current: CurrentLiturgy = {
@@ -53,6 +57,7 @@ const current: CurrentLiturgy = {
   hoursLiturgy: new HoursLiturgy(),
   massLiturgy: new MassLiturgy(),
   ourFatherPrayer: '',
+  optionalMemorials: NO_OPTIONAL_MEMORIALS,
 };
 
 // Every reload replaces its parts, one after the other; nobody else can. The settings can be
@@ -88,6 +93,10 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
     current.hoursLiturgy.tomorrowCelebrationInformation,
     current.settings,
   );
+  current.optionalMemorials = await OptionalMemorialsService.obtainOptionalMemorials(
+    current.liturgyDayInformation.today,
+    current.settings,
+  );
   Logger.log(
     Logger.LogKeys.FileSystemService,
     'reloadAllData',
@@ -104,20 +113,29 @@ export interface DayPreview {
   day: LiturgySpecificDayInformation;
   celebration: CelebrationInformation;
   settings: Settings;
+  optionalMemorials: OptionalMemorials;
 }
 
 export async function obtainDayPreview(date: Date): Promise<DayPreview> {
-  const settings: Settings = {
-    ...current.settings,
-    optionalFestivityEnabled: await determineOptionalFestivityEnabled(date),
-  };
+  const settings = await settingsForAnotherDay(date);
   const dayInformation = await obtainCurrentLiturgyDayInformation(date, settings);
   const masters = await obtainLiturgyMasters(dayInformation, settings);
   const celebration = CelebrationInformationService.obtainCelebrationInformation(
     dayInformation.today,
     CelebrationHoursLiturgyService.obtainDayCelebrationInformation(masters, dayInformation.today, settings),
   );
-  return { day: dayInformation.today, celebration, settings };
+  const optionalMemorials = await OptionalMemorialsService.obtainOptionalMemorials(dayInformation.today, settings);
+  return { day: dayInformation.today, celebration, settings, optionalMemorials };
+}
+
+// The settings of the day shown for another day: all the same but the optional memorial, which
+// is that of the other day
+async function settingsForAnotherDay(date: Date): Promise<Settings> {
+  const stored = await determineOptionalMemorial(date);
+  const settings: Settings = { ...current.settings, optionalFestivityEnabled: stored.enabled };
+  delete settings.optionalMemorialId;
+  if (stored.memorialId !== undefined) settings.optionalMemorialId = stored.memorialId;
+  return settings;
 }
 
 // Another day, for the widgets of the home screen: what the home would show of it, worked out as a
@@ -129,13 +147,11 @@ export interface WidgetDayData {
   settings: Settings;
   vespersTitle: string;
   mass: MassLiturgy;
+  optionalMemorials: OptionalMemorials;
 }
 
 export async function obtainWidgetDay(date: Date): Promise<WidgetDayData> {
-  const settings: Settings = {
-    ...current.settings,
-    optionalFestivityEnabled: await determineOptionalFestivityEnabled(date),
-  };
+  const settings = await settingsForAnotherDay(date);
   const day = await obtainCurrentLiturgyDayInformation(date, settings);
   const tomorrow = await obtainCurrentLiturgyDayInformation(day.tomorrow.date, settings);
   const todayMasters = await obtainLiturgyMasters(day, settings);
@@ -153,6 +169,7 @@ export async function obtainWidgetDay(date: Date): Promise<WidgetDayData> {
     settings,
     vespersTitle: hours.vespers?.title ?? '',
     mass,
+    optionalMemorials: await OptionalMemorialsService.obtainOptionalMemorials(day.today, settings),
   };
 }
 
@@ -191,7 +208,10 @@ async function obtainCurrentSettings(date: Date): Promise<Settings> {
   currentSettings.darkModeEnabled = determineDarkModeIsEnabled(await SettingsService.getSettingDarkMode());
   currentSettings.invitationPsalmOption = await SettingsService.getSettingInvitationPsalm();
   currentSettings.virginAntiphonOption = await SettingsService.getSettingVirginAntiphon();
-  currentSettings.optionalFestivityEnabled = await determineOptionalFestivityEnabled(date);
+  const optionalMemorial = await determineOptionalMemorial(date);
+  currentSettings.optionalFestivityEnabled = optionalMemorial.enabled;
+  // Only when one was chosen among several: otherwise the settings are as they always were
+  if (optionalMemorial.memorialId !== undefined) currentSettings.optionalMemorialId = optionalMemorial.memorialId;
   return currentSettings;
 }
 
@@ -211,20 +231,10 @@ function determineDarkModeIsEnabled(darkModeConfiguration: string): boolean {
   return currentDarkModeEnabled;
 }
 
-async function determineOptionalFestivityEnabled(date: Date): Promise<boolean> {
-  let optionalFestivityEnabled = false;
-  const optionalFestivityDate = (await StorageService.getData(StorageKeys.OptionalFestivity)) as string;
-  if (optionalFestivityDate && optionalFestivityDate !== 'none') {
-    // 'none' if from the code before the refactor, legacy
-    let dateArray = optionalFestivityDate.split(':');
-    if (dateArray.length === 3) {
-      optionalFestivityEnabled =
-        parseInt(dateArray[0]) === date.getDate() &&
-        parseInt(dateArray[1]) === date.getMonth() &&
-        parseInt(dateArray[2]) === date.getFullYear();
-    }
-  }
-  return optionalFestivityEnabled;
+// Whether the optional memorial of a day is celebrated, and which one when one of several was chosen
+async function determineOptionalMemorial(date: Date): Promise<OptionalMemorialsService.StoredOptionalMemorial> {
+  const stored = (await StorageService.getData(StorageKeys.OptionalFestivity)) as string;
+  return OptionalMemorialsService.readStoredOptionalMemorial(stored, date);
 }
 
 async function obtainCurrentDatabaseInformation(): Promise<DatabaseInformation> {

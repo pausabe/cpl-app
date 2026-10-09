@@ -154,6 +154,62 @@ export async function obtainSolemnitiesAndMemoriesAsync(
   return result[index];
 }
 
+// The optional memorials a place can choose from on a day, rows of santsMemories: those of the day
+// for everywhere ('-') and for the place, as far as the place goes. A diocese has its own rows, a
+// city those of its diocese too, and a cathedral those of its city and of its diocese (as the
+// calendars of litcal go: diocese → city → cathedral). A saint with rows at more than one of these
+// counts once, with the row of the most concrete. And a saint the place keeps on another day, with
+// a row of its own there, is not one of them here: Tortosa prays Sant Ildefons on 18 January, so on
+// the 23rd it has only Sant Francesc Gil; Tarragona, Sant Joan Eudes on 18 August, the day before
+// Sant Magí. Other rows of a place are one more option (Lleida, Beat Francesc Castelló on 28
+// September, with Sant Venceslau and Sant Llorenç Ruiz).
+//
+// Checked against litcal (cpl-cloud's calendar/out/expected.json, litcal e580b03): from 2027 to
+// 2100, in the 37 places, these are litcal's optional memorials on every day with the letter L,
+// but for Sant Jordi in Menorca, which has no texts. In the order of the table.
+export async function obtainOptionalMemorialsAsync(
+  dateString: string,
+  dioceseName: string,
+  prayingPlace: string,
+  genericLiturgyTime: string,
+): Promise<DatabaseRow[]> {
+  const levels = placeLevels(dateString, dioceseName, prayingPlace);
+  const codes = ['-', ...levels.keys()].map((code) => `'${code}'`).join(', ');
+  const ofTheDay: DatabaseRow[] = await executeQueryAsync(
+    `SELECT id, Diocesis, nomMemoria, infoMemoria FROM santsMemories WHERE Diocesis IN (${codes}) AND dia = '${dateString}' AND Temps = '${genericLiturgyTime}' ORDER BY id`,
+  );
+  const elsewhere: DatabaseRow[] = await executeQueryAsync(
+    `SELECT Diocesis, nomMemoria FROM santsMemories WHERE Diocesis IN (${codes}) AND Diocesis <> '-' AND dia <> '${dateString}'`,
+  );
+  const level = (row: DatabaseRow) => levels.get(row.Diocesis) ?? 0;
+  const saint = (row: DatabaseRow) => String(row.nomMemoria ?? '').trim();
+  const bySaint = new Map<string, DatabaseRow>();
+  for (const row of ofTheDay) {
+    const known = bySaint.get(saint(row));
+    if (!known || level(row) > level(known)) bySaint.set(saint(row), row);
+  }
+  return [...bySaint.values()]
+    .filter((row) => !elsewhere.some((other) => saint(other) === saint(row) && level(other) > level(row)))
+    .sort((a, b) => Number(a.id) - Number(b.id));
+}
+
+// The codes of the rows of a place in the tables of saints, with how concrete each one is: 1 the
+// diocese, 2 the city, 3 the cathedral. Andorra has those of Urgell, as obtainSolemnitiesAndMemoriesAsync
+// does, but on 8 September.
+function placeLevels(dateString: string, dioceseName: string, prayingPlace: string): Map<string, number> {
+  if (dioceseName === DioceseName.Andorra) {
+    if (dateString === '08-sep') return new Map([[DioceseCode.Andorra as string, 1]]);
+    dioceseName = DioceseName.Urgell;
+  }
+  const places = [PrayingPlace.Diocese, PrayingPlace.City, PrayingPlace.Cathedral];
+  const levels = new Map<string, number>();
+  for (const [index, place] of places.entries()) {
+    if (index > Math.max(places.indexOf(prayingPlace as PrayingPlace), 0)) break;
+    levels.set(DatabaseHelper.getDioceseCodeFromDioceseName(dioceseName, place), index + 1);
+  }
+  return levels;
+}
+
 export async function obtainSolemnitiesAndMemoriesWhenThereIsSomeMemoryOrSolemnityKnownAsync(
   masterCode: string,
   masterIdentifier: number,

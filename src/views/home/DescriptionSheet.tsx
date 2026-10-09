@@ -21,7 +21,10 @@ export default function DescriptionSheet({ celebration, colorCode, visible, onCl
   const accent = theme.liturgical(colorCode).accent;
   return (
     <BottomSheet visible={visible} onClose={onClose} accessibilityLabel={celebration.title} testID="description-sheet">
-      <Text style={[styles.type, { color: accent }]}>{celebration.typeLabel}</Text>
+      {/* On a day with more than one, what the one chosen is: «Memòria lliure» */}
+      <Text style={[styles.type, { color: accent }]}>
+        {celebration.memorials?.memorialLabel ?? celebration.typeLabel}
+      </Text>
       <Text
         accessibilityRole="header"
         style={[styles.title, { color: colors.text, fontFamily: theme.fonts.serifSemiBold }]}

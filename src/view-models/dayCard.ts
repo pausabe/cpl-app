@@ -1,7 +1,7 @@
 import { CelebrationType } from '../services/databaseEnums';
 import { GenericLiturgyTimeType, SpecificLiturgyTimeType } from '../services/celebrationTimeEnums';
 import { hasContent, hasVisibleText } from './content';
-import { longDate, ofName, romanize, weekdayName } from './catalanText';
+import { longDate, lowerFirst, ofName, romanize, singleLine, weekdayName } from './catalanText';
 
 // The day card at the top of the home: where, when, what is celebrated and the colour.
 //
@@ -29,11 +29,50 @@ export interface PlaceAndOptionsInput {
   optionalFestivityEnabled: boolean;
 }
 
+// The optional memorials of the day in the place (models/OptionalMemorials): with more than one,
+// the card offers to choose instead of the switch
+export interface MemorialsInput {
+  options: { id: number; title: string; description: string }[];
+  // The one prayed, or null for the weekday
+  chosen: number | null;
+}
+
 export type ColorCode = 'R' | 'V' | 'M' | 'B';
 
 export interface OptionalMemory {
   enabled: boolean;
   caption: string;
+}
+
+// A day with more than one optional memorial: the card says what is prayed, and a row opens the
+// sheet to choose one of them or the weekday («Què celebres avui?»)
+export interface MemorialChoice {
+  // What each of them is, over the story of the one chosen: «Memòria lliure»
+  memorialLabel: string;
+  // Whether one of them is celebrated; if not, the weekday
+  celebrated: boolean;
+  // The first line of the row: «Celebrar una memòria», or «Canviar» once one is chosen
+  action: string;
+  // The second line, the names short: «Sants Dionís i companys o sant Joan Leonardi»
+  names: string;
+  sheet: MemorialSheet;
+}
+
+export interface MemorialSheet {
+  title: string;
+  // «Divendres, 9 d’octubre · dues memòries lliures»
+  subtitle: string;
+  // The weekday first, and then each memorial in the order of the table
+  options: MemorialOption[];
+}
+
+export interface MemorialOption {
+  // The row of the memorial, or null for the weekday
+  id: number | null;
+  title: string;
+  // The weekday in its week, or the story of the saint (the sheet shows its beginning)
+  subtitle: string;
+  selected: boolean;
 }
 
 // A celebration with a rank ("Festa", "Memòria lliure"…): the card says it under a line, apart
@@ -45,6 +84,8 @@ export interface Celebration {
   muted: boolean;
   description: string | null;
   optionalMemory: OptionalMemory | null;
+  // Only on a day with more than one optional memorial, which has this instead of the switch
+  memorials?: MemorialChoice;
 }
 
 export interface DayCard {
@@ -135,6 +176,58 @@ export function optionalMemoryCaption(enabled: boolean): string {
   return enabled ? 'Avui es resa la memòria.' : 'Si no l’actives, avui es resa la fèria.';
 }
 
+// What the card of a day with more than one optional memorial says when none is chosen
+export const WEEKDAY_PRAYED = 'Avui es resa la fèria';
+
+// Two or more, in words, as the card says them of memòries (feminine)
+const COUNT_WORDS: Record<number, string> = { 2: 'Dues', 3: 'Tres', 4: 'Quatre', 5: 'Cinc', 6: 'Sis' };
+
+// «Dues memòries lliures»; in Lent, where they are commemorations, «Dues commemoracions»
+export function memorialsLabel(count: number, genericLiturgyTime: string): string {
+  const number = COUNT_WORDS[count] ?? String(count);
+  return `${number} ${genericLiturgyTime === GenericLiturgyTimeType.Lent ? 'commemoracions' : 'memòries lliures'}`;
+}
+
+// The name of a memorial without what each saint was, where there is little room: «Sants Dionís,
+// bisbe, i companys, màrtirs» → «Sants Dionís i companys». It only leaves out, never writes: the
+// pieces between commas that begin in lower case (bisbe, màrtirs, verge i doctora de l’Església),
+// but those that are another name or join one («i companys», «i Tomàs More», «beat Àngel…»).
+const SAINT_WORD = /^(sant|santa|sants|santes|beat|beata|beats|beates) /i;
+
+const startsUpperCase = (text: string) => text.charAt(0) !== text.charAt(0).toLowerCase();
+
+export function shortMemorialName(title: string): string {
+  const [first, ...rest] = title.trim().split(', ');
+  let name = first;
+  for (const part of rest) {
+    if (part.startsWith('i ')) name += ` ${part}`;
+    else if (startsUpperCase(part) || SAINT_WORD.test(part)) name += `, ${part}`;
+  }
+  return name;
+}
+
+// «Sants Dionís i companys o sant Joan Leonardi»: in a sentence, «sant» goes in lower case after
+// the first name
+export function memorialNames(titles: string[]): string {
+  const names = titles.map((title, index) => {
+    const name = shortMemorialName(title);
+    return index > 0 && SAINT_WORD.test(name) ? lowerFirst(name) : name;
+  });
+  if (names.length < 2) return names.join('');
+  return `${names.slice(0, -1).join(', ')} o ${names[names.length - 1]}`;
+}
+
+// The weekday a memorial can be left for, in its week: «Divendres de la setmana XXVII de durant
+// l'any»; in Christmas time, which has no weeks, «Dimarts del temps de Nadal»
+export function weekdayOfTheSeason(day: DayInput): string {
+  const weekday = weekdayName(day.date.getDay());
+  if (day.genericLiturgyTime === GenericLiturgyTimeType.Christmas) {
+    return `${weekday} del ${lowerFirst(seasonTitle(day.genericLiturgyTime))}`;
+  }
+  if (validNumber(day.week)) return `${weekday} de la ${lowerFirst(weekOfSeason(day) as string)}`;
+  return weekText(day) ?? seasonDayTitle(day);
+}
+
 // The season as the title of the day: "Temps de Pasqua", not "Pasqua", which on its own reads as
 // Easter Day
 export function seasonTitle(genericLiturgyTime: string): string {
@@ -176,7 +269,11 @@ function buildCelebration(
   celebration: CelebrationInput,
   typeLabel: string,
   settings: PlaceAndOptionsInput,
+  memorials: MemorialsInput | undefined,
 ): Celebration {
+  if (day.celebrationType === CelebrationType.OptionalMemory && memorials && memorials.options.length > 1) {
+    return buildMemorialChoice(day, celebration, typeLabel, memorials);
+  }
   const optional = isOptionalMemory(day.celebrationType);
   const enabled = !!settings.optionalFestivityEnabled;
   return {
@@ -185,6 +282,47 @@ function buildCelebration(
     muted: optional && !enabled,
     description: hasContent(celebration.description) ? celebration.description : null,
     optionalMemory: optional ? { enabled, caption: optionalMemoryCaption(enabled) } : null,
+  };
+}
+
+// A day with more than one optional memorial: what is prayed, the weekday or the memorial chosen,
+// and the choice. «Llegeix-ne més» is the story of the one chosen.
+function buildMemorialChoice(
+  day: DayInput,
+  celebration: CelebrationInput,
+  memorialLabel: string,
+  { options, chosen }: MemorialsInput,
+): Celebration {
+  const label = memorialsLabel(options.length, day.genericLiturgyTime);
+  const prayed = chosen === null ? null : options.find((option) => option.id === chosen);
+  // A memorial celebrated that is not among them would be the one the hours have
+  const title = chosen === null ? WEEKDAY_PRAYED : (prayed?.title ?? celebration.title);
+  const description = chosen === null ? null : (prayed?.description ?? celebration.description);
+  return {
+    typeLabel: label,
+    title,
+    muted: false,
+    description: hasContent(description) ? description : null,
+    optionalMemory: null,
+    memorials: {
+      memorialLabel,
+      celebrated: chosen !== null,
+      action: chosen === null ? 'Celebrar una memòria' : 'Canviar',
+      names: memorialNames(options.map((option) => option.title)),
+      sheet: {
+        title: 'Què celebres avui?',
+        subtitle: `${longDate(day.date)} · ${lowerFirst(label)}`,
+        options: [
+          { id: null, title: 'Fèria', subtitle: weekdayOfTheSeason(day), selected: chosen === null },
+          ...options.map((option) => ({
+            id: option.id,
+            title: option.title,
+            subtitle: hasVisibleText(option.description) ? singleLine(option.description) : '',
+            selected: option.id === chosen,
+          })),
+        ],
+      },
+    },
   };
 }
 
@@ -233,7 +371,12 @@ function seasonDayName(day: DayInput): string | null {
   return null;
 }
 
-export function buildDayCard(day: DayInput, celebration: CelebrationInput, settings: PlaceAndOptionsInput): DayCard {
+export function buildDayCard(
+  day: DayInput,
+  celebration: CelebrationInput,
+  settings: PlaceAndOptionsInput,
+  memorials?: MemorialsInput,
+): DayCard {
   const hasTitle = hasContent(celebration.title);
   const typeLabel = hasTitle ? celebrationTypeLabel(day.celebrationType, day.genericLiturgyTime) : null;
   // A day of the season with a name of its own and no rank (Palm Sunday, the Triduum, the days
@@ -261,6 +404,6 @@ export function buildDayCard(day: DayInput, celebration: CelebrationInput, setti
     colorName: COLOR_NAMES[code],
     title,
     meta,
-    celebration: typeLabel ? buildCelebration(day, celebration, typeLabel, settings) : null,
+    celebration: typeLabel ? buildCelebration(day, celebration, typeLabel, settings, memorials) : null,
   };
 }

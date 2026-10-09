@@ -1,6 +1,7 @@
 import {
   calendarMonth,
   dateOfIso,
+  dayInput,
   DayMarkInput,
   DayMarks,
   dayLabel,
@@ -19,6 +20,7 @@ import {
   shiftMonth,
   WEEKDAY_INITIALS,
 } from '../../src/view-models/calendar';
+import { buildDayCard } from '../../src/view-models/dayCard';
 
 const today = new Date(2026, 8, 22, 10, 30);
 
@@ -232,6 +234,36 @@ describe('the card of the day touched', () => {
       celebrationTitle: null,
       muted: false,
       waiting: false,
+    });
+  });
+
+  test('two optional memorials: «Memòria lliure» as the year says, and their names, or the one chosen', () => {
+    const friday = mark('2026-10-09', { letter: 'L' });
+    const options = [
+      { id: 381, title: 'Sants Dionís, bisbe, i companys, màrtirs', description: '-' },
+      { id: 382, title: 'Sant Joan Leonardi, prevere', description: '-' },
+    ];
+    const cardOf = (chosen: number | null) =>
+      buildDayCard(
+        { ...dayInput(new Date(2026, 9, 9), friday), weekCycle: '3' },
+        { title: chosen === 382 ? options[1].title : options[0].title, description: '-' },
+        { dioceseName: 'Barcelona', prayingPlace: 'Diòcesi', optionalFestivityEnabled: chosen !== null },
+        { options, chosen },
+      );
+    const waiting = previewCard(new Date(2026, 9, 9), friday, undefined);
+    const none = previewCard(new Date(2026, 9, 9), friday, cardOf(null));
+    // Nothing jumps when the day is worked out: the same type, in grey
+    expect([none.typeLabel, none.muted]).toEqual([waiting.typeLabel, waiting.muted]);
+    expect(none).toMatchObject({
+      typeLabel: 'Memòria lliure',
+      celebrationTitle: 'Sants Dionís i companys o sant Joan Leonardi',
+      muted: true,
+      waiting: false,
+    });
+    expect(previewCard(new Date(2026, 9, 9), friday, cardOf(382))).toMatchObject({
+      typeLabel: 'Memòria lliure',
+      celebrationTitle: 'Sant Joan Leonardi, prevere',
+      muted: false,
     });
   });
 });

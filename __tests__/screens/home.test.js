@@ -142,6 +142,86 @@ test('an optional memorial: the switch makes it celebrated, and it is remembered
   expect(styleOf(screen.getByText('Sants Cosme i Damià, màrtirs')).color).toBe('#182322');
 });
 
+test('two optional memorials: the weekday is prayed until one is chosen in the sheet, for the day', async () => {
+  await openAt(new Date(2026, 9, 9, 8, 0));
+  const card = within(screen.getByTestId('day-celebration'));
+  expect(card.getByText('Dues memòries lliures')).toBeTruthy();
+  expect(card.getByText('Avui es resa la fèria')).toBeTruthy();
+  // Instead of the switch, a row that opens the sheet; nothing to read about the weekday
+  expect(screen.queryByRole('switch')).toBeNull();
+  expect(screen.queryByRole('button', { name: 'Llegeix-ne més' })).toBeNull();
+  const row = screen.getByRole('button', {
+    name: 'Celebrar una memòria. Sants Dionís i companys o sant Joan Leonardi',
+  });
+  expect(styleOf(row).minHeight).toBeGreaterThanOrEqual(48);
+  expect(styleOf(row).backgroundColor).toBe('#FFFFFF');
+
+  fireEvent.press(row);
+  const sheet = within(await screen.findByTestId('memorials-sheet'));
+  expect(sheet.getByRole('header', { name: 'Què celebres avui?' })).toBeTruthy();
+  expect(sheet.getByText('Divendres, 9 d’octubre · dues memòries lliures')).toBeTruthy();
+  expect(sheet.getAllByRole('radio').map((radio) => radio.props.accessibilityLabel)).toEqual([
+    'Fèria',
+    'Sants Dionís, bisbe, i companys, màrtirs',
+    'Sant Joan Leonardi, prevere',
+  ]);
+  const radio = (name) => within(screen.getByTestId('memorials-sheet')).getByRole('radio', { name });
+  expect(radio('Fèria').props.accessibilityState).toMatchObject({ checked: true, selected: true });
+  expect(radio('Fèria').props.accessibilityHint).toBe("Divendres de la setmana XXVII de durant l'any");
+  // The beginning of the story, in two lines at most
+  expect(sheet.getByText(/^Nasqué a Lucca \(Toscana\)/).props.numberOfLines).toBe(2);
+
+  fireEvent.press(radio('Sant Joan Leonardi, prevere'));
+  // At once in the sheet, and the day loaded again with him, as the switch does
+  expect(radio('Sant Joan Leonardi, prevere').props.accessibilityState.checked).toBe(true);
+  await waitFor(() =>
+    expect(DataService.currentLiturgy().celebrationInformation.title).toBe('Sant Joan Leonardi, prevere'),
+  );
+  expect(await AsyncStorage.getItem('lliureDate')).toBe('9:9:2026:382');
+  await waitFor(() => expect(radio('Sant Joan Leonardi, prevere').props.accessibilityState.checked).toBe(true));
+  expect(radio('Fèria').props.accessibilityState.checked).toBe(false);
+
+  fireEvent.press(within(screen.getByTestId('memorials-sheet')).getByRole('button', { name: 'Fet' }));
+  await waitFor(() => expect(screen.queryByTestId('memorials-sheet')).toBeNull());
+  const chosen = within(screen.getByTestId('day-celebration'));
+  expect(chosen.getByText('Sant Joan Leonardi, prevere')).toBeTruthy();
+  expect(chosen.getByText('Dues memòries lliures')).toBeTruthy();
+  expect(screen.getByRole('button', { name: 'Canviar. Sants Dionís i companys o sant Joan Leonardi' })).toBeTruthy();
+
+  // His story, as any saint's
+  fireEvent.press(screen.getByRole('button', { name: 'Llegeix-ne més' }));
+  const story = within(await screen.findByTestId('description-sheet'));
+  expect(story.getByText('Memòria lliure')).toBeTruthy();
+  fireEvent.press(story.getByRole('button', { name: 'Tanca' }));
+  await waitFor(() => expect(screen.queryByTestId('description-sheet')).toBeNull());
+
+  // And back to the weekday
+  fireEvent.press(screen.getByRole('button', { name: 'Canviar. Sants Dionís i companys o sant Joan Leonardi' }));
+  await screen.findByTestId('memorials-sheet');
+  fireEvent.press(radio('Fèria'));
+  await findText('Avui es resa la fèria');
+  expect(await AsyncStorage.getItem('lliureDate')).toBe('none');
+  expect(DataService.currentLiturgy().settings.optionalFestivityEnabled).toBe(false);
+});
+
+test('the memorial chosen is remembered for its day, and the switch of before still means the first', async () => {
+  await openAt(new Date(2026, 9, 9, 8, 0), { lliureDate: '9:9:2026' });
+  expect(
+    within(screen.getByTestId('day-celebration')).getByText('Sants Dionís, bisbe, i companys, màrtirs'),
+  ).toBeTruthy();
+  expect(screen.getByRole('button', { name: /^Canviar\./ })).toBeTruthy();
+  fireEvent.press(screen.getByRole('button', { name: /^Canviar\./ }));
+  const sheet = within(await screen.findByTestId('memorials-sheet'));
+  expect(
+    sheet.getByRole('radio', { name: 'Sants Dionís, bisbe, i companys, màrtirs' }).props.accessibilityState.checked,
+  ).toBe(true);
+});
+
+test('in dark mode the row of the memorials is on the dark surface', async () => {
+  await openAt(new Date(2026, 9, 9, 8, 0), { darkMode: 'Activat' });
+  expect(styleOf(screen.getByRole('button', { name: /^Celebrar una memòria\./ })).backgroundColor).toBe('#18201F');
+});
+
 test('first Vespers and the evening Mass: at 19 h, the evening one is the chosen one', async () => {
   await openAt(new Date(2026, 9, 31, 19, 0));
   expect(screen.getByText('Memòria de Santa Maria en dissabte')).toBeTruthy();
