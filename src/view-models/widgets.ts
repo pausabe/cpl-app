@@ -1,4 +1,4 @@
-import { DayCard, ColorCode } from './dayCard';
+import { DayCard, ColorCode, shortMemorialName } from './dayCard';
 import { HourKey, currentHour } from './hours';
 import { MassBlock, MassScreenType } from './mass';
 import { weekdayName } from './catalanText';
@@ -143,10 +143,11 @@ export function inlineDate(date: Date): string {
   return `${WEEKDAY_ABBREVIATIONS[date.getDay()]} ${date.getDate()}`;
 }
 
-// «Santa Teresa de Jesús, verge i doctora de l’Església» → «Santa Teresa de Jesús»
+// «Santa Teresa de Jesús, verge i doctora de l’Església» → «Santa Teresa de Jesús», and «Sants Dionís,
+// bisbe, i companys, màrtirs» → «Sants Dionís i companys»: the same short name as the day card, which
+// leaves out what each saint was but never another name
 export function shortCelebration(title: string): string {
-  const comma = title.indexOf(', ');
-  return comma > 0 ? title.slice(0, comma) : title;
+  return shortMemorialName(title);
 }
 
 export interface WidgetDayInput {

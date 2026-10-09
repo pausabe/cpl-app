@@ -64,6 +64,8 @@ test('the dates where there is little room', () => {
 test('the name of a celebration up to its first comma', () => {
   expect(shortCelebration('Santa Teresa de Jesús, verge i doctora de l’Església')).toBe('Santa Teresa de Jesús');
   expect(shortCelebration('Nadal')).toBe('Nadal');
+  // The same short name as the day card: «i companys» is part of the name
+  expect(shortCelebration('Sants Dionís, bisbe, i companys, màrtirs')).toBe('Sants Dionís i companys');
 });
 
 const card: DayCard = {

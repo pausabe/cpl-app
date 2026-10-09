@@ -71,7 +71,7 @@ test('only again when something they show has changed: the day, or an optional m
   await refreshWidgets(new Date(2026, 9, 9, 13, 5));
   expect(writeWidgetPayload).toHaveBeenCalledTimes(2);
   const today = written().days.find((day) => day.date === '2026-10-09');
-  expect(today.celebration).toMatchObject({ short: 'Sants Dionís', muted: false });
+  expect(today.celebration).toMatchObject({ short: 'Sants Dionís i companys', muted: false });
 
   await refreshWidgets(new Date(2026, 9, 10, 7, 0));
   expect(writeWidgetPayload).toHaveBeenCalledTimes(3);
