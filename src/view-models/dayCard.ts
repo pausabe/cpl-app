@@ -109,6 +109,9 @@ export function colorCode(code: unknown): ColorCode {
   return typeof code === 'string' && code in COLOR_NAMES ? (code as ColorCode) : 'V';
 }
 
+const isColorCode = (code: unknown): code is ColorCode =>
+  typeof code === 'string' && Object.prototype.hasOwnProperty.call(COLOR_NAMES, code);
+
 const isOptionalMemory = (type: string) =>
   type === CelebrationType.OptionalMemory || type === CelebrationType.OptionalVirginMemory;
 
@@ -371,11 +374,22 @@ function seasonDayName(day: DayInput): string | null {
   return null;
 }
 
+// Whether the card shows an optional memorial (or Saint Mary on Saturday) as celebrated: the switch
+// turned on, or one of several chosen
+function celebratesOptionalMemorial(celebration: Celebration | null): boolean {
+  if (!celebration) return false;
+  return celebration.memorials ? celebration.memorials.celebrated : !!celebration.optionalMemory?.enabled;
+}
+
+// memorialColor is the colour litcal gives the optional memorial celebrated, when the database says
+// it (services/liturgy/memorialColorService): a martyr is red on a green weekday. It colours the card
+// only when the card shows that memorial celebrated; every other day has the colour of the day.
 export function buildDayCard(
   day: DayInput,
   celebration: CelebrationInput,
   settings: PlaceAndOptionsInput,
   memorials?: MemorialsInput,
+  memorialColor: string | null = null,
 ): DayCard {
   const hasTitle = hasContent(celebration.title);
   const typeLabel = hasTitle ? celebrationTypeLabel(day.celebrationType, day.genericLiturgyTime) : null;
@@ -396,7 +410,9 @@ export function buildDayCard(
     .filter(Boolean)
     .join(' · ');
 
-  const code = colorCode(day.liturgyColor);
+  const built = typeLabel ? buildCelebration(day, celebration, typeLabel, settings, memorials) : null;
+  const code =
+    celebratesOptionalMemorial(built) && isColorCode(memorialColor) ? memorialColor : colorCode(day.liturgyColor);
   return {
     place: `${settings.dioceseName} (${settings.prayingPlace})`,
     dateText: longDate(day.date),
@@ -404,6 +420,6 @@ export function buildDayCard(
     colorName: COLOR_NAMES[code],
     title,
     meta,
-    celebration: typeLabel ? buildCelebration(day, celebration, typeLabel, settings, memorials) : null,
+    celebration: built,
   };
 }

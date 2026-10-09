@@ -34,6 +34,8 @@ export interface LiturgySnapshot {
   ourFather: string;
   // The optional memorials of the day, to choose one when there is more than one
   optionalMemorials: OptionalMemorials;
+  // The colour of the optional memorial celebrated, when the database says it
+  memorialColor: string | null;
 }
 
 type Listener = () => void;
@@ -54,6 +56,7 @@ function take(): LiturgySnapshot {
     mass: current.massLiturgy,
     ourFather: current.ourFatherPrayer,
     optionalMemorials: current.optionalMemorials,
+    memorialColor: current.memorialColor,
   };
 }
 

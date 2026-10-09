@@ -73,9 +73,9 @@ export function prepare(): void {
   asked = newAsked(snapshot.revision);
   const previews: Record<string, DayCard> = {};
   if (LiturgyStore.isLoaded()) {
-    const { day, celebration, settings, optionalMemorials } = snapshot;
+    const { day, celebration, settings, optionalMemorials, memorialColor } = snapshot;
     const key = isoDate(day.today.date);
-    previews[key] = buildDayCard(day.today, celebration, settings, optionalMemorials);
+    previews[key] = buildDayCard(day.today, celebration, settings, optionalMemorials, memorialColor);
     asked.days.add(key);
     asked.letters.set(key, day.today.celebrationType);
   }
@@ -140,7 +140,13 @@ async function workOut(): Promise<void> {
         change({
           previews: {
             ...data.previews,
-            [key]: buildDayCard(preview.day, preview.celebration, preview.settings, preview.optionalMemorials),
+            [key]: buildDayCard(
+              preview.day,
+              preview.celebration,
+              preview.settings,
+              preview.optionalMemorials,
+              preview.memorialColor,
+            ),
           },
           ...(mark && mark.letter !== letter ? { marks: { ...data.marks, [key]: { ...mark, letter } } } : {}),
         });

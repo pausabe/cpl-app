@@ -29,6 +29,7 @@ import * as CelebrationInformationService from './liturgy/celebrationInformation
 import * as LiturgicalYearService from './liturgicalYearService';
 import { DayMark } from './liturgicalYearService';
 import * as OptionalMemorialsService from './liturgy/optionalMemorialsService';
+import * as MemorialColorService from './liturgy/memorialColorService';
 import { NO_OPTIONAL_MEMORIALS, OptionalMemorials } from '../models/OptionalMemorials';
 
 // The liturgy of the day being shown, with the settings it was loaded with. Only the services and
@@ -46,6 +47,9 @@ export interface CurrentLiturgy {
   ourFatherPrayer: string;
   // The optional memorials of the day in the place, to choose one when there is more than one
   optionalMemorials: OptionalMemorials;
+  // The colour of the optional memorial celebrated, from litcal, when the database says it; null
+  // otherwise, and then the day has its own (liturgy/memorialColorService)
+  memorialColor: string | null;
 }
 
 const current: CurrentLiturgy = {
@@ -58,6 +62,7 @@ const current: CurrentLiturgy = {
   massLiturgy: new MassLiturgy(),
   ourFatherPrayer: '',
   optionalMemorials: NO_OPTIONAL_MEMORIALS,
+  memorialColor: null,
 };
 
 // Every reload replaces its parts, one after the other; nobody else can. The settings can be
@@ -97,6 +102,11 @@ export async function reloadAllData(date: Date, databaseAsset: Asset) {
     current.liturgyDayInformation.today,
     current.settings,
   );
+  current.memorialColor = await MemorialColorService.obtainCelebratedMemorialColor(
+    current.liturgyDayInformation.today,
+    current.settings,
+    todayLiturgyMasters.saintsMemories?.id,
+  );
   Logger.log(
     Logger.LogKeys.FileSystemService,
     'reloadAllData',
@@ -114,6 +124,7 @@ export interface DayPreview {
   celebration: CelebrationInformation;
   settings: Settings;
   optionalMemorials: OptionalMemorials;
+  memorialColor: string | null;
 }
 
 export async function obtainDayPreview(date: Date): Promise<DayPreview> {
@@ -125,7 +136,12 @@ export async function obtainDayPreview(date: Date): Promise<DayPreview> {
     CelebrationHoursLiturgyService.obtainDayCelebrationInformation(masters, dayInformation.today, settings),
   );
   const optionalMemorials = await OptionalMemorialsService.obtainOptionalMemorials(dayInformation.today, settings);
-  return { day: dayInformation.today, celebration, settings, optionalMemorials };
+  const memorialColor = await MemorialColorService.obtainCelebratedMemorialColor(
+    dayInformation.today,
+    settings,
+    masters.saintsMemories?.id,
+  );
+  return { day: dayInformation.today, celebration, settings, optionalMemorials, memorialColor };
 }
 
 // The settings of the day shown for another day: all the same but the optional memorial, which
@@ -148,6 +164,7 @@ export interface WidgetDayData {
   vespersTitle: string;
   mass: MassLiturgy;
   optionalMemorials: OptionalMemorials;
+  memorialColor: string | null;
 }
 
 export async function obtainWidgetDay(date: Date): Promise<WidgetDayData> {
@@ -170,6 +187,11 @@ export async function obtainWidgetDay(date: Date): Promise<WidgetDayData> {
     vespersTitle: hours.vespers?.title ?? '',
     mass,
     optionalMemorials: await OptionalMemorialsService.obtainOptionalMemorials(day.today, settings),
+    memorialColor: await MemorialColorService.obtainCelebratedMemorialColor(
+      day.today,
+      settings,
+      todayMasters.saintsMemories?.id,
+    ),
   };
 }
 

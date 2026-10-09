@@ -47,7 +47,7 @@ export async function widgetDays(today: Date): Promise<WidgetDay[]> {
       days.push(
         buildWidgetDay({
           date,
-          card: buildDayCard(day, data.celebration, data.settings, data.optionalMemorials),
+          card: buildDayCard(day, data.celebration, data.settings, data.optionalMemorials, data.memorialColor),
           vespers: vespersSubtitle(data.vespersTitle, day.specificLiturgyTime),
           mass: buildMass({ today: day, tomorrow, mass: data.mass, choice: 'normal' }),
         }),

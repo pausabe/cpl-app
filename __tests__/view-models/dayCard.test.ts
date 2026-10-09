@@ -453,3 +453,55 @@ describe('a day with more than one optional memorial', () => {
     );
   });
 });
+
+// The colour litcal gives the memorial celebrated (_celebration_colors), when the database has it: a
+// martyr is red on a green weekday
+describe('the colour of an optional memorial celebrated', () => {
+  const friday = day({ date: new Date(2026, 9, 9), celebrationType: 'L', week: '27', weekCycle: '3' });
+  const DIONIS = { id: 381, title: 'Sants Dionís, bisbe, i companys, màrtirs', description: '-' };
+  const LEONARDI = { id: 382, title: 'Sant Joan Leonardi, prevere', description: '-' };
+  const both = (chosen: number | null): MemorialsInput => ({ options: [DIONIS, LEONARDI], chosen });
+  const celebrating = { ...barcelona, optionalFestivityEnabled: true };
+  const colorOf = (card: { colorCode: string; colorName: string }) => [card.colorCode, card.colorName];
+
+  test('one of several chosen: its colour, on the card and in its name', () => {
+    expect(colorOf(buildDayCard(friday, DIONIS, celebrating, both(381), 'R'))).toEqual(['R', 'Vermell']);
+    expect(colorOf(buildDayCard(friday, LEONARDI, celebrating, both(382), 'B'))).toEqual(['B', 'Blanc']);
+  });
+
+  test('the weekday chosen: the colour of the day', () => {
+    expect(colorOf(buildDayCard(friday, DIONIS, barcelona, both(null), 'R'))).toEqual(['V', 'Verd']);
+  });
+
+  test('the switch: on, the colour of the memorial; off, that of the day', () => {
+    const saturday = day({ date: new Date(2026, 9, 31), celebrationType: 'V' });
+    const mary = { title: 'Memòria de Santa Maria en dissabte', description: '-' };
+    expect(buildDayCard(saturday, mary, celebrating, undefined, 'B').colorCode).toBe('B');
+    expect(buildDayCard(saturday, mary, barcelona, undefined, 'B').colorCode).toBe('V');
+    const september = { ...friday, date: new Date(2026, 8, 26) };
+    const cosmas = { title: 'Sants Cosme i Damià, màrtirs', description: '-' };
+    const one = { options: [{ id: 367, ...cosmas }], chosen: 367 };
+    expect(buildDayCard(september, cosmas, celebrating, one, 'R').colorCode).toBe('R');
+    expect(buildDayCard(september, cosmas, barcelona, { ...one, chosen: null }, 'R').colorCode).toBe('V');
+  });
+
+  test('without a colour, or with one the app does not know, the colour of the day', () => {
+    expect(buildDayCard(friday, DIONIS, celebrating, both(381)).colorCode).toBe('V');
+    expect(buildDayCard(friday, DIONIS, celebrating, both(381), null).colorCode).toBe('V');
+    expect(buildDayCard(friday, DIONIS, celebrating, both(381), 'X').colorCode).toBe('V');
+    expect(buildDayCard(friday, DIONIS, celebrating, both(381), 'constructor').colorCode).toBe('V');
+  });
+
+  test('nothing else takes it: an obligatory memorial, a feast, a weekday', () => {
+    const obligatory = day({ celebrationType: 'M', liturgyColor: 'R' });
+    expect(buildDayCard(obligatory, DIONIS, celebrating, undefined, 'B').colorCode).toBe('R');
+    const feast = day({ celebrationType: 'F', liturgyColor: 'R' });
+    const matthew = { title: 'Sant Mateu, apòstol i evangelista', description: '-' };
+    expect(buildDayCard(feast, matthew, celebrating, undefined, 'B').colorCode).toBe('R');
+    expect(buildDayCard(day(), noCelebration, celebrating, undefined, 'R').colorCode).toBe('V');
+  });
+
+  test('a memorial without texts in the place is a weekday, with the colour of the day', () => {
+    expect(buildDayCard(friday, noCelebration, celebrating, undefined, 'R').colorCode).toBe('V');
+  });
+});

@@ -327,9 +327,9 @@ export default function HomeScreenController({ navigation, route }: { navigation
   // --- What the home shows -------------------------------------------------------------------
   const model = useMemo(() => {
     if (status !== 'ready' || !today) return null;
-    const { day, celebration, settings, hours, mass, optionalMemorials } = snapshot;
+    const { day, celebration, settings, hours, mass, optionalMemorials, memorialColor } = snapshot;
     return {
-      day: buildDayCard(day.today, celebration, settings, optionalMemorials),
+      day: buildDayCard(day.today, celebration, settings, optionalMemorials, memorialColor),
       hours: buildHours({
         vespersTitle: hours.vespers?.title,
         specificLiturgyTime: day.today.specificLiturgyTime,
