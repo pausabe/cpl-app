@@ -13,14 +13,14 @@ function open(props = {}) {
   return handlers;
 }
 
-test('the words, the name and the email, with what goes with them and the privacy policy', () => {
+test('the words, the name and the email, and the privacy policy', () => {
   const { onChange, onPrivacy, onClose } = open({ fields: { text: 'Hola', name: '', email: '' } });
   const sheet = screen.getByTestId('message-sheet');
   expect(within(sheet).getByRole('header', { name: 'Missatge' })).toBeTruthy();
   fireEvent.changeText(screen.getByLabelText('Correu (opcional)'), 'maria@exemple.cat');
   expect(onChange).toHaveBeenCalledWith({ text: 'Hola', name: '', email: 'maria@exemple.cat' });
   expect(screen.getByText('Sense correu no et podrem respondre.')).toBeTruthy();
-  expect(screen.getByText(/la versió de l'app i del sistema, la diòcesi/)).toBeTruthy();
+  expect(screen.queryByText(/la versió de l'app i del sistema/)).toBeNull();
   fireEvent.press(screen.getByRole('link', { name: 'Política de privacitat' }));
   expect(onPrivacy).toHaveBeenCalled();
   fireEvent.press(screen.getByTestId('message-sheet-close'));

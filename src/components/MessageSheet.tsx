@@ -6,7 +6,8 @@ import BottomSheet from './BottomSheet';
 
 // Missatge: a few words to the CPL, written here and sent to the publishing website, where Pau and
 // the CPL read and answer them. The name and the email are optional; without an email there is no
-// answer, and it says so. It says too what goes with the message (the versions, the diocese).
+// answer, and it says so. The versions and the diocese go with it (services/messageService) without
+// a word about it on the form: Pau preferred it so (9 October 2026); the privacy policy is a touch away.
 
 export type MessageStatus = 'idle' | 'sending' | 'sent' | 'offline' | 'tooMany' | 'refused' | 'badEmail';
 
@@ -151,13 +152,12 @@ export default function MessageSheet({
             disabled={sending || !fields.text.trim()}
             onPress={onSend}
           />
-          <Text style={[styles.help, { color: colors.text3 }]}>
-            {
-              "Amb el missatge s'hi afegeixen la versió de l'app i del sistema, la diòcesi i la publicació dels textos, per entendre millor els errors. "
-            }
-            <Text accessibilityRole="link" onPress={onPrivacy} style={[styles.link, { color: colors.text2 }]}>
-              Política de privacitat
-            </Text>
+          <Text
+            accessibilityRole="link"
+            onPress={onPrivacy}
+            style={[styles.help, styles.link, { color: colors.text2 }]}
+          >
+            Política de privacitat
           </Text>
         </ScrollView>
       )}
