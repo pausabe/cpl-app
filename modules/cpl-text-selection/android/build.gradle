@@ -1,5 +1,6 @@
-// Selecting the prayer on Android without Android's own text code closing the app (see
-// SelectionGuard.kt). It takes React Native's renderer to know when new texts are on the screen.
+// Selecting the prayer on Android without Android's own text code closing the app or moving the
+// screen under the finger (see SelectionGuard.kt and FocusInPlace.kt). It takes React Native's
+// renderer to know when new texts are on the screen, and its scroll views.
 plugins {
   id 'com.android.library'
   id 'expo-module-gradle-plugin'

@@ -30,20 +30,29 @@ import java.util.WeakHashMap
 //    IllegalArgumentException; Android 11 puts them in order first). On those versions the texts get
 //    the classifier that does nothing, which Android itself checks for and skips: the selection and
 //    its «Copia» are the same, and nothing is suggested for an address in the prayer.
+//
+// It also keeps the screen still when a finger gives the text the focus, which made the first long
+// press on a text select the wrong words (FocusInPlace).
 internal class SelectionGuard : View.OnTouchListener, View.OnLongClickListener {
   // Where the finger went down: Android decides whether a long press is inside the selection with
   // that point, so this does too. Nothing while no finger is down, as in a long press of TalkBack.
   private var downX = Float.NaN
   private var downY = Float.NaN
 
-  // It only looks: the touch always goes on to the text
+  // It never takes the touch: it always goes on to the text
   override fun onTouch(view: View, event: MotionEvent): Boolean {
     when (event.actionMasked) {
       MotionEvent.ACTION_DOWN -> {
         downX = event.x
         downY = event.y
       }
-      MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+      MotionEvent.ACTION_UP -> {
+        // The end of a tap, which gives the text the focus right after this (View.onTouchEvent)
+        if (FocusInPlace.isOn(view, event)) FocusInPlace.give(view)
+        downX = Float.NaN
+        downY = Float.NaN
+      }
+      MotionEvent.ACTION_CANCEL -> {
         downX = Float.NaN
         downY = Float.NaN
       }
@@ -55,6 +64,8 @@ internal class SelectionGuard : View.OnTouchListener, View.OnLongClickListener {
   override fun onLongClick(view: View): Boolean {
     val text = view as? TextView ?: return false
     if (!text.isTextSelectable || downX.isNaN() || downY.isNaN()) return false
+    // Android gives it the focus to select, right after this (Editor.checkField)
+    FocusInPlace.give(text)
     val start = minOf(text.selectionStart, text.selectionEnd)
     val end = maxOf(text.selectionStart, text.selectionEnd)
     if (start < 0 || start == end) return false
