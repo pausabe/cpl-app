@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- «Avui»: the day on its liturgical colour and, on the right, the hour to pray now. Made four
+     rows tall, it becomes «Les hores» (WidgetViews.build). It is its own preview in the list of
+     widgets. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@android:id/background"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/cw_widget_day_v"
+  android:baselineAligned="false"
+  android:clipToOutline="true"
+  android:orientation="horizontal"
+  android:paddingStart="16dp"
+  android:paddingTop="12dp"
+  android:paddingEnd="12dp"
+  android:paddingBottom="12dp">
+
+  <!-- 180 and 146 of the 364 points of the iPhone, so that it stretches the same -->
+  <include
+    layout="@layout/cw_day"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_marginTop="4dp"
+    android:layout_weight="55" />
+
+  <LinearLayout
+    android:id="@+id/cw_now_tile"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_weight="45"
+    android:background="@drawable/cw_now_tile"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <ImageView
+        android:id="@+id/cw_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentStart="true"
+        android:importantForAccessibility="no"
+        android:src="@drawable/cw_hour_laudes"
+        android:tint="@color/cw_on_accent" />
+
+      <TextView
+        android:id="@+id/cw_now"
+        style="@style/CplWidgetText.Now"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text="@string/cw_now" />
+    </RelativeLayout>
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      tools:ignore="NestedWeights,UselessLeaf" />
+
+    <TextView
+      android:id="@+id/cw_name"
+      style="@style/CplWidgetText.Name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/cw_hour_laudes"
+      android:textSize="23sp" />
+
+    <TextView
+      android:id="@+id/cw_vespers"
+      style="@style/CplWidgetText.OnAccent.Subtitle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="3dp"
+      android:visibility="gone" />
+  </LinearLayout>
+</LinearLayout>

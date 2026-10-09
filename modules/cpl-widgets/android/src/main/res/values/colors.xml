@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The app's colours (src/theme/colors.ts), light; the dark ones are in values-night, and the
+     launcher picks them by itself. __tests__/theme/widgetColors.test.js compares both files with
+     colors.ts: keep them #RRGGBB, one per line. -->
+<resources>
+  <color name="cw_home_background">#E7F2F1</color>
+  <color name="cw_surface">#FFFFFF</color>
+  <color name="cw_border">#D3E3E1</color>
+  <color name="cw_text">#182322</color>
+  <color name="cw_text2">#475756</color>
+  <color name="cw_text3">#5A6B6A</color>
+  <color name="cw_accent_fill">#007B80</color>
+  <color name="cw_on_accent">#FFFFFF</color>
+  <color name="cw_accent_text">#00696D</color>
+  <color name="cw_rubric">#B3261E</color>
+  <!-- The colour of the day: the soft tint behind it and the accent of its label -->
+  <color name="cw_tint_r">#F8E7E5</color>
+  <color name="cw_accent_r">#B3261E</color>
+  <color name="cw_tint_v">#DDEEDA</color>
+  <color name="cw_accent_v">#2E6B30</color>
+  <color name="cw_tint_m">#EFE8F4</color>
+  <color name="cw_accent_m">#6A3D9A</color>
+  <color name="cw_tint_b">#F7F1E3</color>
+  <color name="cw_accent_b">#7A5F14</color>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- «L’hora d’ara», 2 × 2. updatePeriodMillis is only a safety net: the hour changes with an
+     alarm (Widgets.kt). minWidth and minHeight are for launchers before Android 12, 70 dp a cell
+     less 30. -->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+  android:description="@string/cw_ara_description"
+  android:initialLayout="@layout/cw_loading"
+  android:minWidth="110dp"
+  android:minHeight="110dp"
+  android:minResizeWidth="110dp"
+  android:minResizeHeight="110dp"
+  android:previewImage="@drawable/cw_preview_ara"
+  android:previewLayout="@layout/cw_ara"
+  android:resizeMode="horizontal|vertical"
+  android:targetCellWidth="2"
+  android:targetCellHeight="2"
+  android:updatePeriodMillis="1800000"
+  android:widgetCategory="home_screen" />

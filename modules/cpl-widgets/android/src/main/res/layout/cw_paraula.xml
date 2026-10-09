@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- «La Paraula d'avui»: the phrase of the Gospel of the day. It is its own preview in the list of
+     widgets; on the home screen, WidgetViews.paraula sets every text. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@android:id/background"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/cw_widget_surface"
+  android:clipToOutline="true"
+  android:orientation="vertical"
+  android:paddingStart="18dp"
+  android:paddingTop="15dp"
+  android:paddingEnd="18dp"
+  android:paddingBottom="15dp">
+
+  <TextView
+    android:id="@+id/cw_caption"
+    style="@style/CplWidgetText.Caption"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/cw_sample_caption" />
+
+  <TextView
+    android:id="@+id/cw_phrase"
+    style="@style/CplWidgetText.Phrase"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp"
+    android:text="@string/cw_sample_phrase" />
+
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    tools:ignore="UselessLeaf" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+      android:id="@+id/cw_footer_date"
+      style="@style/CplWidgetText.Footer"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/cw_sample_date" />
+
+    <TextView
+      style="@style/CplWidgetText.Footer"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="@string/cw_app" />
+  </LinearLayout>
+</LinearLayout>

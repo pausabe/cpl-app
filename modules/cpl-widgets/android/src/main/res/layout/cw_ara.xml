@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- «L'hora d'ara»: the hour to pray now, on the teal of the app. It is its own preview in the list
+     of widgets; on the home screen, WidgetViews.ara sets every text. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@android:id/background"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/cw_widget_accent"
+  android:clipToOutline="true"
+  android:orientation="vertical"
+  android:padding="15dp">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+      android:id="@+id/cw_icon"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_alignParentStart="true"
+      android:importantForAccessibility="no"
+      android:src="@drawable/cw_hour_laudes"
+      android:tint="@color/cw_on_accent" />
+
+    <TextView
+      android:id="@+id/cw_now"
+      style="@style/CplWidgetText.Now"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      android:text="@string/cw_now" />
+  </RelativeLayout>
+
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    tools:ignore="UselessLeaf" />
+
+  <TextView
+    android:id="@+id/cw_name"
+    style="@style/CplWidgetText.Name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/cw_hour_laudes"
+    android:textSize="30sp" />
+
+  <TextView
+    android:id="@+id/cw_short_date"
+    style="@style/CplWidgetText.OnAccent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp"
+    android:text="@string/cw_sample_short_date" />
+
+  <!-- The day, or the first Vespers of a feast at Vespers, whiter -->
+  <TextView
+    android:id="@+id/cw_what"
+    style="@style/CplWidgetText.OnAccent.Day"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:text="@string/cw_sample_title" />
+
+  <TextView
+    android:id="@+id/cw_what_vespers"
+    style="@style/CplWidgetText.OnAccent.Vespers"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:visibility="gone" />
+</LinearLayout>

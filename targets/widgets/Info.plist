@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Written by hand: @bacons/apple-targets only writes this file when it is missing. Xcode adds the
+  rest (identifier, versions, display name) from the build settings of the target.
+  The fonts are the app's, linked into this folder (expo-target.config.js); their PostScript names
+  are Literata-SemiBold and Literata-Italic.
+-->
+<plist version="1.0">
+<dict>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.widgetkit-extension</string>
+	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Literata-SemiBold.ttf</string>
+		<string>Literata-Italic.ttf</string>
+	</array>
+</dict>
+</plist>

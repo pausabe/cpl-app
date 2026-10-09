@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The day, as on the card of the home: the date, its name in the season, and its celebration or,
+     without one, the year and the week of the psalter. In «Avui» and «Les hores». -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/cw_day"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
+
+  <TextView
+    android:id="@+id/cw_date"
+    style="@style/CplWidgetText.Date"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/cw_sample_date" />
+
+  <TextView
+    android:id="@+id/cw_title"
+    style="@style/CplWidgetText.Title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:text="@string/cw_sample_title" />
+
+  <LinearLayout
+    android:id="@+id/cw_celebration"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- A hairline in the colour of the text, faint -->
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="6dp"
+      android:alpha="0.14"
+      android:background="@color/cw_text" />
+
+    <TextView
+      android:id="@+id/cw_celebration_type"
+      style="@style/CplWidgetText.CelebrationType"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/cw_sample_celebration_type" />
+
+    <TextView
+      android:id="@+id/cw_celebration_title"
+      style="@style/CplWidgetText.Celebration"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="1dp"
+      android:text="@string/cw_sample_celebration" />
+  </LinearLayout>
+
+  <!-- In «Avui», what pushes the year and the week to the bottom -->
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    tools:ignore="UselessLeaf" />
+
+  <TextView
+    android:id="@+id/cw_meta"
+    style="@style/CplWidgetText.Meta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:text="@string/cw_sample_meta"
+    android:visibility="gone" />
+</LinearLayout>

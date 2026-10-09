@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The first row of «Les hores» in the list of widgets: Laudes is the hour now -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:baselineAligned="false"
+  android:orientation="horizontal">
+
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@drawable/cw_tile"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <ImageView
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/cw_hour_ofici" />
+
+    <TextView
+      style="@style/CplWidgetText.Tile"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="@string/cw_hour_ofici" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="7dp"
+    android:layout_weight="1"
+    android:background="@drawable/cw_tile_now"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <ImageView
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/cw_hour_laudes"
+      android:tint="@color/cw_on_accent" />
+
+    <TextView
+      style="@style/CplWidgetText.Tile.Now"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="@string/cw_hour_laudes" />
+  </LinearLayout>
+</LinearLayout>

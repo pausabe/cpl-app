@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The texts of the widgets. A widget cannot use the fonts of the app: serif bold where the iPhone
+     has Literata SemiBold, serif italic for the Gospel, the system sans for the rest. WidgetText.kt
+     measures with the same fonts, sizes and spacings: a change here is a change there. -->
+<resources>
+  <style name="CplWidgetText" parent="">
+    <item name="android:textColor">@color/cw_text</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:breakStrategy">simple</item>
+    <item name="android:hyphenationFrequency">none</item>
+  </style>
+
+  <!-- The name of the hour on the teal: «Laudes» -->
+  <style name="CplWidgetText.Name">
+    <item name="android:fontFamily">serif</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/cw_on_accent</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:lineSpacingMultiplier">0.85</item>
+  </style>
+  <!-- «ARA» -->
+  <style name="CplWidgetText.Now">
+    <item name="android:textSize">11sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:letterSpacing">0.08</item>
+    <item name="android:textColor">@color/cw_on_accent</item>
+    <item name="android:alpha">0.82</item>
+    <item name="android:maxLines">1</item>
+  </style>
+  <!-- Under the name, on the teal: the date, and the day or the vespers -->
+  <style name="CplWidgetText.OnAccent">
+    <item name="android:textSize">12.5sp</item>
+    <item name="android:textColor">@color/cw_on_accent</item>
+    <item name="android:alpha">0.92</item>
+    <item name="android:maxLines">1</item>
+  </style>
+  <style name="CplWidgetText.OnAccent.Day">
+    <item name="android:textSize">12sp</item>
+    <item name="android:alpha">0.78</item>
+    <item name="android:maxLines">2</item>
+  </style>
+  <style name="CplWidgetText.OnAccent.Vespers">
+    <item name="android:textSize">12sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:alpha">1</item>
+    <item name="android:maxLines">2</item>
+  </style>
+  <style name="CplWidgetText.OnAccent.Subtitle">
+    <item name="android:textSize">11.5sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:alpha">1</item>
+  </style>
+
+  <!-- The day, as on the card of the home -->
+  <style name="CplWidgetText.Date">
+    <item name="android:textSize">12.5sp</item>
+    <item name="android:textColor">@color/cw_text2</item>
+    <item name="android:maxLines">1</item>
+  </style>
+  <style name="CplWidgetText.Title">
+    <item name="android:fontFamily">serif</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:lineSpacingMultiplier">0.9</item>
+  </style>
+  <style name="CplWidgetText.CelebrationType">
+    <item name="android:textSize">10.5sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:letterSpacing">0.07</item>
+    <item name="android:textColor">@color/cw_text3</item>
+    <item name="android:maxLines">1</item>
+  </style>
+  <style name="CplWidgetText.Celebration">
+    <item name="android:textSize">13sp</item>
+    <item name="android:textColor">@color/cw_text3</item>
+    <item name="android:maxLines">2</item>
+  </style>
+  <style name="CplWidgetText.Meta">
+    <item name="android:textSize">12sp</item>
+    <item name="android:textColor">@color/cw_text2</item>
+    <item name="android:maxLines">1</item>
+  </style>
+
+  <!-- The tiles of the hours -->
+  <style name="CplWidgetText.Tile">
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:maxLines">1</item>
+  </style>
+  <style name="CplWidgetText.Tile.Compact">
+    <item name="android:textSize">13sp</item>
+  </style>
+  <style name="CplWidgetText.Tile.Now">
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/cw_on_accent</item>
+  </style>
+  <style name="CplWidgetText.TileSubtitle">
+    <item name="android:textSize">10.5sp</item>
+    <item name="android:textColor">@color/cw_rubric</item>
+    <item name="android:maxLines">1</item>
+  </style>
+
+  <!-- La Paraula d'avui -->
+  <style name="CplWidgetText.Caption">
+    <item name="android:textSize">10.5sp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:letterSpacing">0.08</item>
+    <item name="android:textColor">@color/cw_rubric</item>
+    <item name="android:maxLines">1</item>
+  </style>
+  <style name="CplWidgetText.Phrase">
+    <item name="android:fontFamily">serif</item>
+    <item name="android:textStyle">italic</item>
+    <item name="android:textSize">17sp</item>
+    <item name="android:maxLines">4</item>
+    <item name="android:lineSpacingMultiplier">0.97</item>
+  </style>
+  <style name="CplWidgetText.Footer">
+    <item name="android:textSize">11.5sp</item>
+    <item name="android:textColor">@color/cw_text3</item>
+    <item name="android:maxLines">1</item>
+  </style>
+</resources>

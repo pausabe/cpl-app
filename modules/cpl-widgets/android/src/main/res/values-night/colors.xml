@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The dark colours of src/theme/colors.ts (see values/colors.xml) -->
+<resources>
+  <color name="cw_home_background">#0E1413</color>
+  <color name="cw_surface">#18201F</color>
+  <color name="cw_border">#2A3534</color>
+  <color name="cw_text">#E6ECEB</color>
+  <color name="cw_text2">#B3C0BE</color>
+  <color name="cw_text3">#93A3A1</color>
+  <color name="cw_accent_fill">#1F7F7B</color>
+  <color name="cw_on_accent">#FFFFFF</color>
+  <color name="cw_accent_text">#7FD1CC</color>
+  <color name="cw_rubric">#F28B82</color>
+  <color name="cw_tint_r">#2A1917</color>
+  <color name="cw_accent_r">#F28B82</color>
+  <color name="cw_tint_v">#16241A</color>
+  <color name="cw_accent_v">#8CC98F</color>
+  <color name="cw_tint_m">#221B2B</color>
+  <color name="cw_accent_m">#C9A7EB</color>
+  <color name="cw_tint_b">#26221A</color>
+  <color name="cw_accent_b">#E3C877</color>
+</resources>

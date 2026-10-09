@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- «La Paraula d’avui» for launchers before Android 12, which cannot show the previewLayout: a sketch
+     of the widget in its own colours -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="340dp"
+  android:height="160dp"
+  android:viewportWidth="340"
+  android:viewportHeight="160">
+  <path
+    android:fillColor="@color/cw_surface"
+    android:pathData="M22,0h296a22,22 0,0 1,22,22v116a22,22 0,0 1,-22,22h-296a22,22 0,0 1,-22,-22v-116a22,22 0,0 1,22,-22z" />
+  <path
+    android:fillColor="@color/cw_rubric"
+    android:pathData="M21.5,17h121a3.5,3.5 0,0 1,3.5,3.5v0a3.5,3.5 0,0 1,-3.5,3.5h-121a3.5,3.5 0,0 1,-3.5,-3.5v-0a3.5,3.5 0,0 1,3.5,-3.5z" />
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M23,36h282a5,5 0,0 1,5,5v3a5,5 0,0 1,-5,5h-282a5,5 0,0 1,-5,-5v-3a5,5 0,0 1,5,-5z" />
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M23,57h292a5,5 0,0 1,5,5v3a5,5 0,0 1,-5,5h-292a5,5 0,0 1,-5,-5v-3a5,5 0,0 1,5,-5z" />
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M23,78h176a5,5 0,0 1,5,5v3a5,5 0,0 1,-5,5h-176a5,5 0,0 1,-5,-5v-3a5,5 0,0 1,5,-5z" />
+  <path
+    android:fillColor="@color/cw_text3"
+    android:fillAlpha="0.8"
+    android:pathData="M22,136h96a4,4 0,0 1,4,4v0a4,4 0,0 1,-4,4h-96a4,4 0,0 1,-4,-4v-0a4,4 0,0 1,4,-4z" />
+  <path
+    android:fillColor="@color/cw_text3"
+    android:fillAlpha="0.8"
+    android:pathData="M300,136h18a4,4 0,0 1,4,4v0a4,4 0,0 1,-4,4h-18a4,4 0,0 1,-4,-4v-0a4,4 0,0 1,4,-4z" />
+</vector>

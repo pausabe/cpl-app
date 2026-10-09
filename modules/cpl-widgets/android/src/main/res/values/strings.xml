@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What the widgets say, in Catalan, the language of the app -->
+<resources>
+  <!-- Their names and descriptions in the list of widgets of the launcher -->
+  <string name="cw_ara_label">L’hora d’ara</string>
+  <string name="cw_ara_description">L’hora que toca resar. Un toc i s’obre.</string>
+  <string name="cw_avui_label">Avui</string>
+  <string name="cw_avui_description">El dia i l’hora d’ara.</string>
+  <string name="cw_hores_label">Les hores</string>
+  <string name="cw_hores_description">Les set hores del dia. Cada una s’obre amb un toc.</string>
+  <string name="cw_paraula_label">La Paraula d’avui</string>
+  <string name="cw_paraula_description">La frase de l’Evangeli del dia.</string>
+
+  <!-- The hours, when the app has not written their names (HOUR_NAMES in widgets.ts) -->
+  <string name="cw_hour_ofici">Ofici de lectura</string>
+  <string name="cw_hour_laudes">Laudes</string>
+  <string name="cw_hour_tercia">Tèrcia</string>
+  <string name="cw_hour_sexta">Sexta</string>
+  <string name="cw_hour_nona">Nona</string>
+  <string name="cw_hour_vespres">Vespres</string>
+  <string name="cw_hour_completes">Completes</string>
+
+  <string name="cw_now">Ara</string>
+  <string name="cw_gospel">Evangeli</string>
+  <string name="cw_gospel_missing">Obre la CPL per veure l’Evangeli d’avui.</string>
+  <string name="cw_app">CPL</string>
+
+  <!-- What TalkBack says on a touch: «Laudes, ara», «Evangeli d’avui: …» -->
+  <string name="cw_hour_now">%1$s, ara</string>
+  <string name="cw_gospel_label">Evangeli d’avui: %1$s</string>
+
+  <!-- The dates of the days the app has not written: «Divendres, 9 d’octubre», «Divendres 9 oct.»
+       (catalanText.ts and widgets.ts). Sunday first, as in Calendar. -->
+  <string-array name="cw_weekdays">
+    <item>Diumenge</item>
+    <item>Dilluns</item>
+    <item>Dimarts</item>
+    <item>Dimecres</item>
+    <item>Dijous</item>
+    <item>Divendres</item>
+    <item>Dissabte</item>
+  </string-array>
+  <string-array name="cw_months">
+    <item>gener</item>
+    <item>febrer</item>
+    <item>març</item>
+    <item>abril</item>
+    <item>maig</item>
+    <item>juny</item>
+    <item>juliol</item>
+    <item>agost</item>
+    <item>setembre</item>
+    <item>octubre</item>
+    <item>novembre</item>
+    <item>desembre</item>
+  </string-array>
+  <string-array name="cw_short_months">
+    <item>gen.</item>
+    <item>febr.</item>
+    <item>març</item>
+    <item>abr.</item>
+    <item>maig</item>
+    <item>juny</item>
+    <item>jul.</item>
+    <item>ag.</item>
+    <item>set.</item>
+    <item>oct.</item>
+    <item>nov.</item>
+    <item>des.</item>
+  </string-array>
+
+  <!-- The day the launcher shows in its list of widgets (the layouts are their own preview): Laudes
+       of Friday 9 October 2026, as in the proposal Pau approved -->
+  <string name="cw_sample_date">Divendres, 9 d’octubre</string>
+  <string name="cw_sample_short_date">Divendres 9 oct.</string>
+  <string name="cw_sample_title">Setmana XXVII de durant l\'any</string>
+  <string name="cw_sample_meta">Any A · Setmana III del salteri</string>
+  <string name="cw_sample_celebration_type">MEMÒRIA LLIURE</string>
+  <string name="cw_sample_celebration">Sants Dionís, bisbe, i companys, màrtirs</string>
+  <string name="cw_sample_caption">EVANGELI · LC 11,15-26</string>
+  <string name="cw_sample_phrase">«Si jo trec els dimonis pel poder de Déu, és que el Regne de Déu ja és aquí amb vosaltres»</string>
+</resources>

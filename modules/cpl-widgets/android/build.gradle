@@ -1,0 +1,17 @@
+// The widgets of the home screen (see Widgets.kt): classic RemoteViews and XML layouts, with
+// nothing but the Android SDK, so that they build and draw the same on every launcher.
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'cpl.widgets'
+version = '1.0.0'
+
+android {
+  namespace "expo.modules.cplwidgets"
+  defaultConfig {
+    versionCode 1
+    versionName "1.0.0"
+  }
+}

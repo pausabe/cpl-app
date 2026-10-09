@@ -3,6 +3,7 @@
     "name": "CPL",
     "description": "This application helps up to pray with biblical texts that the Lord Jesus himself used to pray. Currently it is only available in Catalan.",
     "slug": "CPLApp",
+    "scheme": "cpl",
     "version": "9.3.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon/icon.png",
@@ -35,7 +36,9 @@
       "permissions": []
     },
     "plugins": [
+      "./plugins/withBundleIdentifier",
       "./plugins/withIosSceneLifecycle",
+      "./plugins/withWidgets",
       "expo-asset",
       "expo-font",
       [

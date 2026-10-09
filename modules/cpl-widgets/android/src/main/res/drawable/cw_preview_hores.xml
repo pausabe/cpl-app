@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- «Les hores» for launchers before Android 12, which cannot show the previewLayout: a sketch
+     of the widget in its own colours -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="340dp"
+  android:height="360dp"
+  android:viewportWidth="340"
+  android:viewportHeight="360">
+  <path
+    android:fillColor="@color/cw_home_background"
+    android:pathData="M22,0h296a22,22 0,0 1,22,22v316a22,22 0,0 1,-22,22h-296a22,22 0,0 1,-22,-22v-316a22,22 0,0 1,22,-22z" />
+  <path
+    android:fillColor="@color/cw_tint_v"
+    android:pathData="M28,12h284a16,16 0,0 1,16,16v80a16,16 0,0 1,-16,16h-284a16,16 0,0 1,-16,-16v-80a16,16 0,0 1,16,-16z" />
+  <path
+    android:fillColor="@color/cw_text2"
+    android:fillAlpha="0.8"
+    android:pathData="M31,25h159.4a4,4 0,0 1,4,4v0a4,4 0,0 1,-4,4h-159.4a4,4 0,0 1,-4,-4v-0a4,4 0,0 1,4,-4z" />
+  <path
+    android:fillColor="@color/cw_text"
+    android:pathData="M31,41h240.4a4,4 0,0 1,4,4v5a4,4 0,0 1,-4,4h-240.4a4,4 0,0 1,-4,-4v-5a4,4 0,0 1,4,-4z" />
+  <path
+    android:fillColor="@color/cw_text"
+    android:pathData="M31,59h154a4,4 0,0 1,4,4v5a4,4 0,0 1,-4,4h-154a4,4 0,0 1,-4,-4v-5a4,4 0,0 1,4,-4z" />
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.14"
+    android:pathData="M27,83h270v1h-270z" />
+  <path
+    android:fillColor="@color/cw_accent_v"
+    android:pathData="M30.5,92h106.4a3.5,3.5 0,0 1,3.5,3.5v0a3.5,3.5 0,0 1,-3.5,3.5h-106.4a3.5,3.5 0,0 1,-3.5,-3.5v-0a3.5,3.5 0,0 1,3.5,-3.5z" />
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.8"
+    android:pathData="M31.5,106h234a4.5,4.5 0,0 1,4.5,4.5v0a4.5,4.5 0,0 1,-4.5,4.5h-234a4.5,4.5 0,0 1,-4.5,-4.5v-0a4.5,4.5 0,0 1,4.5,-4.5z" />
+  <path
+    android:fillColor="@color/cw_border"
+    android:pathData="M25,134h128.5a13,13 0,0 1,13,13v40.67a13,13 0,0 1,-13,13h-128.5a13,13 0,0 1,-13,-13v-40.67a13,13 0,0 1,13,-13z" />
+  <path
+    android:fillColor="@color/cw_surface"
+    android:pathData="M25,135h128.5a12,12 0,0 1,12,12v40.67a12,12 0,0 1,-12,12h-128.5a12,12 0,0 1,-12,-12v-40.67a12,12 0,0 1,12,-12z" />
+  <group
+    android:scaleX="0.92"
+    android:scaleY="0.92"
+    android:translateX="22"
+    android:translateY="156.33">
+    <path
+      android:pathData="M12,7.5C10.4,5.9 8,5 3,5v13c5,0 7.4,0.9 9,2.5 1.6,-1.6 4,-2.5 9,-2.5V5c-5,0 -7.4,0.9 -9,2.5zM12,7.5V20"
+      android:strokeWidth="1.7"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+  </group>
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M57,162.33h85.79a5,5 0,0 1,5,5v0a5,5 0,0 1,-5,5h-85.79a5,5 0,0 1,-5,-5v-0a5,5 0,0 1,5,-5z" />
+  <path
+    android:fillColor="@color/cw_accent_fill"
+    android:pathData="M186.5,134h128.5a13,13 0,0 1,13,13v40.67a13,13 0,0 1,-13,13h-128.5a13,13 0,0 1,-13,-13v-40.67a13,13 0,0 1,13,-13z" />
+  <group
+    android:scaleX="0.92"
+    android:scaleY="0.92"
+    android:translateX="183.5"
+    android:translateY="156.33">
+    <path
+      android:pathData="M3,19A9,9 0,0 1,3.142,17.408M3.874,15.13A9,9 0,0 1,4.687,13.754M6.328,12.013A9,9 0,0 1,7.653,11.12M9.883,10.253A9,9 0,0 1,11.463,10.016M13.85,10.192A9,9 0,0 1,15.378,10.658M17.457,11.843A9,9 0,0 1,18.637,12.921M20.004,14.885A9,9 0,0 1,20.606,16.365M20.996,18.726A9,9 0,0 1,21,19"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_on_accent"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:pathData="M1.5,19h21"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_on_accent"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:fillColor="@color/cw_on_accent"
+      android:pathData="M1.2,16.2a2.4,2.4 0,1 0,4.8,0a2.4,2.4 0,1 0,-4.8,0z" />
+  </group>
+  <path
+    android:fillColor="@color/cw_on_accent"
+    android:fillAlpha="0.85"
+    android:pathData="M218.5,162.33h51.8a5,5 0,0 1,5,5v0a5,5 0,0 1,-5,5h-51.8a5,5 0,0 1,-5,-5v-0a5,5 0,0 1,5,-5z" />
+  <path
+    android:fillColor="@color/cw_border"
+    android:pathData="M25,207.67h74.67a13,13 0,0 1,13,13v40.67a13,13 0,0 1,-13,13h-74.67a13,13 0,0 1,-13,-13v-40.67a13,13 0,0 1,13,-13z" />
+  <path
+    android:fillColor="@color/cw_surface"
+    android:pathData="M25,208.67h74.67a12,12 0,0 1,12,12v40.67a12,12 0,0 1,-12,12h-74.67a12,12 0,0 1,-12,-12v-40.67a12,12 0,0 1,12,-12z" />
+  <group
+    android:scaleX="0.79"
+    android:scaleY="0.79"
+    android:translateX="31.71"
+    android:translateY="231.5">
+    <path
+      android:pathData="M3,19A9,9 0,0 1,3.142,17.408M3.874,15.13A9,9 0,0 1,4.687,13.754M6.328,12.013A9,9 0,0 1,7.653,11.12M9.883,10.253A9,9 0,0 1,11.463,10.016M13.85,10.192A9,9 0,0 1,15.378,10.658M17.457,11.843A9,9 0,0 1,18.637,12.921M20.004,14.885A9,9 0,0 1,20.606,16.365M20.996,18.726A9,9 0,0 1,21,19"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:pathData="M1.5,19h21"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:fillColor="@color/cw_accent_text"
+      android:pathData="M3.2,12.6a2.4,2.4 0,1 0,4.8,0a2.4,2.4 0,1 0,-4.8,0z" />
+  </group>
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M61.21,236.5h27.24a4.5,4.5 0,0 1,4.5,4.5v0a4.5,4.5 0,0 1,-4.5,4.5h-27.24a4.5,4.5 0,0 1,-4.5,-4.5v-0a4.5,4.5 0,0 1,4.5,-4.5z" />
+  <path
+    android:fillColor="@color/cw_border"
+    android:pathData="M132.67,207.67h74.67a13,13 0,0 1,13,13v40.67a13,13 0,0 1,-13,13h-74.67a13,13 0,0 1,-13,-13v-40.67a13,13 0,0 1,13,-13z" />
+  <path
+    android:fillColor="@color/cw_surface"
+    android:pathData="M132.67,208.67h74.67a12,12 0,0 1,12,12v40.67a12,12 0,0 1,-12,12h-74.67a12,12 0,0 1,-12,-12v-40.67a12,12 0,0 1,12,-12z" />
+  <group
+    android:scaleX="0.79"
+    android:scaleY="0.79"
+    android:translateX="139.38"
+    android:translateY="231.5">
+    <path
+      android:pathData="M3,19A9,9 0,0 1,3.142,17.408M3.874,15.13A9,9 0,0 1,4.687,13.754M6.328,12.013A9,9 0,0 1,7.653,11.12M9.883,10.253A9,9 0,0 1,11.463,10.016M13.85,10.192A9,9 0,0 1,15.378,10.658M17.457,11.843A9,9 0,0 1,18.637,12.921M20.004,14.885A9,9 0,0 1,20.606,16.365M20.996,18.726A9,9 0,0 1,21,19"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:pathData="M1.5,19h21"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:fillColor="@color/cw_accent_text"
+      android:pathData="M9.6,10a2.4,2.4 0,1 0,4.8,0a2.4,2.4 0,1 0,-4.8,0z" />
+  </group>
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M168.88,236.5h27.24a4.5,4.5 0,0 1,4.5,4.5v0a4.5,4.5 0,0 1,-4.5,4.5h-27.24a4.5,4.5 0,0 1,-4.5,-4.5v-0a4.5,4.5 0,0 1,4.5,-4.5z" />
+  <path
+    android:fillColor="@color/cw_border"
+    android:pathData="M240.33,207.67h74.67a13,13 0,0 1,13,13v40.67a13,13 0,0 1,-13,13h-74.67a13,13 0,0 1,-13,-13v-40.67a13,13 0,0 1,13,-13z" />
+  <path
+    android:fillColor="@color/cw_surface"
+    android:pathData="M240.33,208.67h74.67a12,12 0,0 1,12,12v40.67a12,12 0,0 1,-12,12h-74.67a12,12 0,0 1,-12,-12v-40.67a12,12 0,0 1,12,-12z" />
+  <group
+    android:scaleX="0.79"
+    android:scaleY="0.79"
+    android:translateX="247.05"
+    android:translateY="231.5">
+    <path
+      android:pathData="M3,19A9,9 0,0 1,3.142,17.408M3.874,15.13A9,9 0,0 1,4.687,13.754M6.328,12.013A9,9 0,0 1,7.653,11.12M9.883,10.253A9,9 0,0 1,11.463,10.016M13.85,10.192A9,9 0,0 1,15.378,10.658M17.457,11.843A9,9 0,0 1,18.637,12.921M20.004,14.885A9,9 0,0 1,20.606,16.365M20.996,18.726A9,9 0,0 1,21,19"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:pathData="M1.5,19h21"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:fillColor="@color/cw_accent_text"
+      android:pathData="M16,12.6a2.4,2.4 0,1 0,4.8,0a2.4,2.4 0,1 0,-4.8,0z" />
+  </group>
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M276.55,236.5h27.24a4.5,4.5 0,0 1,4.5,4.5v0a4.5,4.5 0,0 1,-4.5,4.5h-27.24a4.5,4.5 0,0 1,-4.5,-4.5v-0a4.5,4.5 0,0 1,4.5,-4.5z" />
+  <path
+    android:fillColor="@color/cw_border"
+    android:pathData="M25,281.33h128.5a13,13 0,0 1,13,13v40.67a13,13 0,0 1,-13,13h-128.5a13,13 0,0 1,-13,-13v-40.67a13,13 0,0 1,13,-13z" />
+  <path
+    android:fillColor="@color/cw_surface"
+    android:pathData="M25,282.33h128.5a12,12 0,0 1,12,12v40.67a12,12 0,0 1,-12,12h-128.5a12,12 0,0 1,-12,-12v-40.67a12,12 0,0 1,12,-12z" />
+  <group
+    android:scaleX="0.92"
+    android:scaleY="0.92"
+    android:translateX="22"
+    android:translateY="303.67">
+    <path
+      android:pathData="M3,19A9,9 0,0 1,3.142,17.408M3.874,15.13A9,9 0,0 1,4.687,13.754M6.328,12.013A9,9 0,0 1,7.653,11.12M9.883,10.253A9,9 0,0 1,11.463,10.016M13.85,10.192A9,9 0,0 1,15.378,10.658M17.457,11.843A9,9 0,0 1,18.637,12.921M20.004,14.885A9,9 0,0 1,20.606,16.365M20.996,18.726A9,9 0,0 1,21,19"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:pathData="M1.5,19h21"
+      android:strokeWidth="1.6"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+    <path
+      android:fillColor="@color/cw_accent_text"
+      android:pathData="M18,16.2a2.4,2.4 0,1 0,4.8,0a2.4,2.4 0,1 0,-4.8,0z" />
+  </group>
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M57,309.67h51.8a5,5 0,0 1,5,5v0a5,5 0,0 1,-5,5h-51.8a5,5 0,0 1,-5,-5v-0a5,5 0,0 1,5,-5z" />
+  <path
+    android:fillColor="@color/cw_border"
+    android:pathData="M186.5,281.33h128.5a13,13 0,0 1,13,13v40.67a13,13 0,0 1,-13,13h-128.5a13,13 0,0 1,-13,-13v-40.67a13,13 0,0 1,13,-13z" />
+  <path
+    android:fillColor="@color/cw_surface"
+    android:pathData="M186.5,282.33h128.5a12,12 0,0 1,12,12v40.67a12,12 0,0 1,-12,12h-128.5a12,12 0,0 1,-12,-12v-40.67a12,12 0,0 1,12,-12z" />
+  <group
+    android:scaleX="0.92"
+    android:scaleY="0.92"
+    android:translateX="183.5"
+    android:translateY="303.67">
+    <path
+      android:pathData="M19.5,14.2A7.5,7.5 0,1 1,9.8,4.5a6,6 0,0 0,9.7,9.7z"
+      android:strokeWidth="1.7"
+      android:strokeColor="@color/cw_accent_text"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+  </group>
+  <path
+    android:fillColor="@color/cw_text"
+    android:fillAlpha="0.85"
+    android:pathData="M218.5,309.67h51.8a5,5 0,0 1,5,5v0a5,5 0,0 1,-5,5h-51.8a5,5 0,0 1,-5,-5v-0a5,5 0,0 1,5,-5z" />
+</vector>

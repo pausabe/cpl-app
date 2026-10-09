@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The first row of «Les hores»: the Office of Readings and Laudes -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:baselineAligned="false"
+  android:orientation="horizontal">
+
+  <LinearLayout
+    android:id="@+id/cw_tile_ofici"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@drawable/cw_tile"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <ImageView
+      android:id="@+id/cw_tile_ofici_icon"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/cw_hour_ofici" />
+
+    <TextView
+      android:id="@+id/cw_tile_ofici_label"
+      style="@style/CplWidgetText.Tile"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="@string/cw_hour_ofici" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/cw_tile_laudes"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="7dp"
+    android:layout_weight="1"
+    android:background="@drawable/cw_tile"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <ImageView
+      android:id="@+id/cw_tile_laudes_icon"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/cw_hour_laudes" />
+
+    <TextView
+      android:id="@+id/cw_tile_laudes_label"
+      style="@style/CplWidgetText.Tile"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="@string/cw_hour_laudes" />
+  </LinearLayout>
+</LinearLayout>

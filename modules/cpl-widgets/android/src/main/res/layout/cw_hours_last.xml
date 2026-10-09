@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The last row of «Les hores»: Vespers, with the title of the first Vespers of a feast under it,
+     and Completes -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:baselineAligned="false"
+  android:orientation="horizontal">
+
+  <LinearLayout
+    android:id="@+id/cw_tile_vespres"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:background="@drawable/cw_tile"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <ImageView
+      android:id="@+id/cw_tile_vespres_icon"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/cw_hour_vespres" />
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/cw_tile_vespres_label"
+        style="@style/CplWidgetText.Tile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cw_hour_vespres" />
+
+      <TextView
+        android:id="@+id/cw_tile_vespres_subtitle"
+        style="@style/CplWidgetText.TileSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    </LinearLayout>
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/cw_tile_completes"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_marginStart="7dp"
+    android:layout_weight="1"
+    android:background="@drawable/cw_tile"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+
+    <ImageView
+      android:id="@+id/cw_tile_completes_icon"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:importantForAccessibility="no"
+      android:src="@drawable/cw_hour_completes" />
+
+    <TextView
+      android:id="@+id/cw_tile_completes_label"
+      style="@style/CplWidgetText.Tile"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:text="@string/cw_hour_completes" />
+  </LinearLayout>
+</LinearLayout>
