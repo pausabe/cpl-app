@@ -239,6 +239,20 @@ jobs:
           VERSION: ${{ needs.checks.outputs.version }}
         run: node scripts/setBuildVersion.mjs "$BUILD" "$VERSION"
 
+      # The widgets of the home screen are an extension with an identifier and a profile of their
+      # own (targets/widgets, docs/publishing.md). Until the store's team has them, the app is built
+      # without them, as it was before.
+      - name: With the widgets or without them
+        env:
+          IOS_WIDGETS_PROVISIONING_PROFILE: ${{ secrets.IOS_WIDGETS_PROVISIONING_PROFILE }}
+        run: |
+          if [ -n "$IOS_WIDGETS_PROVISIONING_PROFILE" ]; then
+            echo "CPL_IOS_WIDGETS=1" >> "$GITHUB_ENV"
+          else
+            echo "CPL_IOS_WIDGETS=0" >> "$GITHUB_ENV"
+            echo "::warning::No IOS_WIDGETS_PROVISIONING_PROFILE: the iPhone app goes without its widgets"
+          fi
+
       # The pods are installed apart because prebuild, told not to install, skips them too, and
       # without them there is no workspace to build and expo-modules-jsi is left half generated.
       - name: Make the iOS project
@@ -254,6 +268,7 @@ jobs:
           IOS_CERTIFICATE: ${{ secrets.IOS_CERTIFICATE }}
           IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
           IOS_PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          IOS_WIDGETS_PROVISIONING_PROFILE: ${{ secrets.IOS_WIDGETS_PROVISIONING_PROFILE }}
         run: |
           set -euo pipefail
           KEYCHAIN="$RUNNER_TEMP/signing.keychain-db"
@@ -283,11 +298,24 @@ jobs:
           echo "name=$NAME" >> "$GITHUB_OUTPUT"
           echo "Profile: $NAME"
 
+          if [ "$CPL_IOS_WIDGETS" = "1" ]; then
+            WIDGETS_PROFILE="$RUNNER_TEMP/widgets.mobileprovision"
+            echo "$IOS_WIDGETS_PROVISIONING_PROFILE" | base64 -d > "$WIDGETS_PROFILE"
+            WIDGETS_UUID=$(security cms -D -i "$WIDGETS_PROFILE" | plutil -extract UUID raw -)
+            WIDGETS_NAME=$(security cms -D -i "$WIDGETS_PROFILE" | plutil -extract Name raw -)
+            cp "$WIDGETS_PROFILE" "$HOME/Library/MobileDevice/Provisioning Profiles/$WIDGETS_UUID.mobileprovision"
+            echo "widgets_uuid=$WIDGETS_UUID" >> "$GITHUB_OUTPUT"
+            echo "widgets_name=$WIDGETS_NAME" >> "$GITHUB_OUTPUT"
+            echo "Profile of the widgets: $WIDGETS_NAME"
+          fi
+
       - name: Tell the project what to sign with
         env:
           IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
           IOS_PROFILE_NAME: ${{ steps.signing.outputs.name }}
           IOS_PROFILE_UUID: ${{ steps.signing.outputs.uuid }}
+          IOS_WIDGETS_PROFILE_NAME: ${{ steps.signing.outputs.widgets_name }}
+          IOS_WIDGETS_PROFILE_UUID: ${{ steps.signing.outputs.widgets_uuid }}
           IOS_BUNDLE_IDENTIFIER: ${{ env.BUNDLE_IDENTIFIER }}
         run: node scripts/patchIosSigning.mjs
 
@@ -307,8 +335,13 @@ jobs:
       - name: Make the file the store takes
         env:
           IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+          WIDGETS_PROFILE_NAME: ${{ steps.signing.outputs.widgets_name }}
         run: |
           set -euo pipefail
+          WIDGETS_ENTRY=""
+          if [ -n "$WIDGETS_PROFILE_NAME" ]; then
+            WIDGETS_ENTRY="<key>${{ env.BUNDLE_IDENTIFIER }}.widgets</key><string>$WIDGETS_PROFILE_NAME</string>"
+          fi
           cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -320,6 +353,7 @@ jobs:
             <key>provisioningProfiles</key>
             <dict>
               <key>${{ env.BUNDLE_IDENTIFIER }}</key><string>${{ steps.signing.outputs.name }}</string>
+              $WIDGETS_ENTRY
             </dict>
             <key>uploadSymbols</key><true/>
           </dict>

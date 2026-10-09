@@ -116,6 +116,7 @@ curl -s "https://api.telegram.org/bot<token>/getUpdates" | grep -o '"chat":{"id"
 | `IOS_CERTIFICATE`               | The distribution certificate with its private key, in base64 |
 | `IOS_CERTIFICATE_PASSWORD`      | The password given when exporting it                       |
 | `IOS_PROVISIONING_PROFILE`      | The App Store profile of `cpl.cpl`, in base64               |
+| `IOS_WIDGETS_PROVISIONING_PROFILE` | The App Store profile of `cpl.cpl.widgets`, in base64 (optional: without it the iPhone app goes without widgets) |
 | `APP_STORE_CONNECT_KEY_ID`      | The identifier of the App Store Connect key                 |
 | `APP_STORE_CONNECT_ISSUER_ID`   | The issuer identifier, the same for every key of the team    |
 | `APP_STORE_CONNECT_KEY`         | The `.p8` of that key, in base64                            |
@@ -141,6 +142,32 @@ base64 -i AuthKey_XXXXXXXX.p8 | gh secret set APP_STORE_CONNECT_KEY --repo pausa
 
 Certificates and profiles expire, the certificate after a year: when a run stops signing, that is
 the first thing to look at.
+
+### The widgets of the iPhone
+
+The widgets of the home screen and the lock screen are an extension of the app (`targets/widgets`)
+with an identifier of their own, `cpl.cpl.widgets`. The app leaves for them the words of the days to
+come in a group of apps, `group.cpl.cpl`, that both of them have to have. Until the secret
+`IOS_WIDGETS_PROVISIONING_PROFILE` exists, the workflow builds the iPhone app without them
+(`CPL_IOS_WIDGETS=0`), as it was before. To put them in, once, on developer.apple.com, in the team
+of the store:
+
+1. Identifiers → + → **App Groups** → `group.cpl.cpl`.
+2. Identifiers → `cpl.cpl` → **App Groups** on → Configure → `group.cpl.cpl` → Save. The profile of
+   the app stops being valid.
+3. Identifiers → + → **App IDs** → App, explicit Bundle ID `cpl.cpl.widgets`, with **App Groups**
+   → `group.cpl.cpl`.
+4. Profiles → the App Store profile of `cpl.cpl` → Edit → Save, download it, and put it again in
+   `IOS_PROVISIONING_PROFILE`.
+5. Profiles → + → **App Store Connect** → `cpl.cpl.widgets`, the same certificate, and into the new
+   secret:
+
+```sh
+base64 -i widgets.mobileprovision | gh secret set IOS_WIDGETS_PROVISIONING_PROFILE --repo pausabe/cpl-app
+```
+
+If step 4 is forgotten, the archive fails saying that the profile of `cpl.cpl` does not include
+the App Groups entitlement.
 
 ## Why TestFlight does not ask about encryption
 
