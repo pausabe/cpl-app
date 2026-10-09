@@ -165,8 +165,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 8,
   },
+  // Growing from the width of the name, never from nothing: from a width of 0 (flex: 1), iOS fitted
+  // «Vespres» and «Completes» to it and left them tiny (9.2.4, Pau's iPhone)
   labels: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
     minWidth: 0,
   },
   compactLabels: {
