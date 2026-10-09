@@ -2,8 +2,10 @@
 // (with and without the invitatory, every Marian antiphon, the Dies iræ of the last week of Ordinary
 // Time, «Continua amb…», the evening Mass, the Easter Vigil), for the settings that change the text (the invitatory psalm, the Marian antiphon,
 // the Latin hymns, the optional memorial) and for every diocese on the days its text is not
-// Barcelona's. It writes, as JSON lines, the pieces each day needs: scripts/speechSweep.mjs runs it
-// in parallel and joins them for the generator (scripts/audio/).
+// Barcelona's. On a day with more than one optional memorial, each of them too, chosen as the sheet
+// of the home («Què celebres avui?») chooses it, in every place that offers it. It writes, as JSON
+// lines, the pieces each day needs: scripts/speechSweep.mjs runs it in parallel and joins them for
+// the generator (scripts/audio/).
 //
 // It only runs when SPEECH_SWEEP_OUT is set: SPEECH_SWEEP_FROM (2026-10-08) and SPEECH_SWEEP_DAYS.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
@@ -50,10 +52,10 @@ function fingerprint() {
     .digest('hex');
 }
 
-async function massPieces(day, profile, into) {
+async function massPieces(day, profile, into, choice) {
   const { massLiturgy: mass, liturgyDayInformation: info } = DataService.currentLiturgy();
   const chain = async (type, vespers, second) => {
-    await loadDay(day, profile);
+    await loadDay(day, profile, choice);
     await openMass(type, vespers, second);
     pieces('Missa', into);
     for (let steps = 0; has(/^Continua amb/) && steps < 6; steps++) {
@@ -77,7 +79,7 @@ async function massPieces(day, profile, into) {
     if (info.today.specificLiturgyTime === SpecificLiturgyTimeType.PalmSunday) await chain('Rams', vespers, second);
     await chain('1Lect', vespers, second);
     for (const type of ['Salm', ...(second ? ['2Lect'] : []), 'Evangeli']) {
-      await loadDay(day, profile);
+      await loadDay(day, profile, choice);
       await openMass(type, vespers, second);
       pieces('Missa', into);
     }
@@ -87,9 +89,9 @@ async function massPieces(day, profile, into) {
 // The chip of the Dies iræ, instead of the hymn of the day
 const DIES_IRAE = /^\s*Dies iræ\s*$/;
 
-async function dayPieces(day, profile, into, everyAntiphon) {
+async function dayPieces(day, profile, into, everyAntiphon, choice = {}) {
   for (const hour of HOURS) {
-    await loadDay(day, profile);
+    await loadDay(day, profile, choice);
     await openHour(hour);
     pieces(hour, into);
     if ((hour === 'Laudes' || hour === 'Ofici') && has(/Començar amb/)) {
@@ -109,8 +111,16 @@ async function dayPieces(day, profile, into, everyAntiphon) {
       }
     }
   }
+  await loadDay(day, profile, choice);
+  await massPieces(day, profile, into, choice);
+}
+
+// The ways a day is prayed in a place: as it opens and, on a day with more than one optional
+// memorial, with each of them, as the sheet of the home saves it (liturgyDay.loadDay)
+async function choicesOf(day, profile) {
   await loadDay(day, profile);
-  await massPieces(day, profile, into);
+  const { options } = DataService.currentLiturgy().optionalMemorials;
+  return [{}, ...(options.length > 1 ? options.map((option) => ({ memorial: option.id })) : [])];
 }
 
 (OUT ? test : test.skip)(
@@ -125,15 +135,21 @@ async function dayPieces(day, profile, into, everyAntiphon) {
       const errors = [];
       const drawn = new Set();
       for (const profile of [...FULL_PROFILES, ...OTHER_PROFILES]) {
-        try {
-          await loadDay(day, profile);
-          const print = `${fingerprint()}`;
-          if (!FULL_PROFILES.includes(profile) && drawn.has(print)) continue;
-          drawn.add(print);
-          // Every Marian antiphon once a week is enough: they are always the same five
-          await dayPieces(day, profile, needed, profile === 'barcelona' && date.getDay() === 0);
-        } catch (error) {
-          errors.push(`${profile}: ${error && error.message}`);
+        // A day that cannot be loaded says so below, once
+        const choices = await choicesOf(day, profile).catch(() => [{}]);
+        for (const choice of choices) {
+          const chosen = choice.memorial !== undefined;
+          try {
+            await loadDay(day, profile, choice);
+            const print = `${fingerprint()}`;
+            // The settings of every day are drawn always; a memorial or another place, when new
+            if ((chosen || !FULL_PROFILES.includes(profile)) && drawn.has(print)) continue;
+            drawn.add(print);
+            // Every Marian antiphon once a week is enough: they are always the same five
+            await dayPieces(day, profile, needed, profile === 'barcelona' && date.getDay() === 0, choice);
+          } catch (error) {
+            errors.push(`${profile}${chosen ? ` (${choice.memorial})` : ''}: ${error && error.message}`);
+          }
         }
       }
       const pieces = [...needed].map(([key, p]) => ({ key, voice: p.voice, text: p.text }));

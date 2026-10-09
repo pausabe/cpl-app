@@ -64,7 +64,7 @@ writeFileSync(out, JSON.stringify({ litcal: reports[0]?.litcal, differences }, n
 // The same difference in several places and days is one line
 const lines = new Map();
 for (const d of differences) {
-  const key = `${d.letter} ${d.ids.join('+') || '—'} → «${d.shown}»`;
+  const key = `${d.letter}${d.kind === 'options' ? ' (options)' : ''} ${d.ids.join('+') || '—'} → «${d.shown}»`;
   const line = lines.get(key) ?? { cells: 0, columns: new Set(), dates: new Set() };
   line.cells++;
   line.columns.add(d.column);

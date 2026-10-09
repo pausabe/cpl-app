@@ -1,6 +1,7 @@
 // Every day and every place of the calendar table that cpl-cloud's process X writes from litcal
 // (calendar/, `npm run write`), loaded the way the app loads it: the celebration the app shows has to
-// be the one litcal chose. For the years nobody has checked by hand yet, this is the only check.
+// be the one litcal chose, and on a day with optional memorials the app has to offer litcal's, all of
+// them and no other. For the years nobody has checked by hand yet, this is the only check.
 //
 // It runs only when it is given the database and what to expect, both written by process X:
 //
@@ -13,6 +14,7 @@ jest.mock('../../src/services/databaseManagerService', () => require('../helpers
 
 const fs = require('fs');
 const { PROFILES, loadDay } = require('../helpers/liturgyDay');
+const DataService = require('../../src/services/dataService');
 
 const EXPECTED = process.env.LITCAL_EXPECTED;
 const describeWhenGiven = EXPECTED ? describe : describe.skip;
@@ -56,10 +58,20 @@ function mismatch(group, titles, saintTitles, shown) {
   return saintTitles.has(shown) && !allowed.includes(shown) ? [] : null;
 }
 
+// On a day with optional memorials, the ones the app offers (the sheet of the home, or the switch with
+// one) have to be litcal's, all of them and no other: nothing when they are, and litcal's when not
+function optionsMismatch(group, titles, offered) {
+  const { expectation, letter } = group;
+  if (letter !== 'L' || expectation.kind !== 'saint') return null;
+  const named = expectation.ids.map((id) => (titles[id] ?? []).map((title) => title.trim()));
+  const all = offered.length === named.length && named.every((names) => names.some((name) => offered.includes(name)));
+  return all ? null : named.map((names) => names[0] ?? '?');
+}
+
 function summary(differences) {
   const groups = new Map();
   for (const d of differences) {
-    const key = `${d.column} ${d.letter} ${d.ids.join('+')} → «${d.shown}»`;
+    const key = `${d.column} ${d.letter}${d.kind === 'options' ? ' (options)' : ''} ${d.ids.join('+')} → «${d.shown}»`;
     groups.set(key, [...(groups.get(key) ?? []), d.date]);
   }
   return [...groups]
@@ -97,7 +109,21 @@ describeWhenGiven('the table process X writes from litcal', () => {
             if (columns && !columns.includes(column)) continue;
             const state = await loadDay(date, profileName(column));
             const shown = (state.celebration.title ?? '').trim();
+            const offered = DataService.currentLiturgy().optionalMemorials.options.map((option) => option.title.trim());
             const wanted = mismatch(group, titles, saintTitles, shown);
+            const options = optionsMismatch(group, titles, offered);
+            if (options) {
+              found.push({
+                date,
+                column,
+                letter: group.letter,
+                kind: 'options',
+                ids: group.expectation.ids,
+                wanted: options,
+                shown: offered.join(' | '),
+                type: state.dayInformation.today.celebrationType,
+              });
+            }
             if (!wanted) continue;
             found.push({
               date,
