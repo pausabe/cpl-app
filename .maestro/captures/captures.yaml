@@ -65,7 +65,7 @@ name: "The screenshots the stores show"
 # the foot, once it says how far it is; then its sheet, with the parts and the pace
 - tapOn: "Escolta la pregària"
 - extendedWaitUntil:
-    visible: ".* de [0-9]+:[0-9]+"
+    visible: ".* de [0-9]+:[0-9]+.*"
     timeout: 60000
 - waitForAnimationToEnd:
     timeout: 8000
@@ -130,7 +130,7 @@ name: "The screenshots the stores show"
 # 13. Compline read aloud, in the dark
 - tapOn: "Escolta la pregària"
 - extendedWaitUntil:
-    visible: ".* de [0-9]+:[0-9]+"
+    visible: ".* de [0-9]+:[0-9]+.*"
     timeout: 60000
 - waitForAnimationToEnd:
     timeout: 8000
