@@ -238,3 +238,65 @@ test('an hour heard to the end says so for a moment, and the player goes away by
   expect(Listen.getListenState().phase).toBe('idle');
   jest.useRealTimers();
 });
+
+describe('opened held (the tour of what is new): nothing is heard until ▶', () => {
+  test('an hour the phone has: ready and paused, off the lock screen; ▶ plays it', async () => {
+    const pieces = script(12);
+    for (const p of pieces) store.write(p.key, second());
+
+    await Listen.listen('Laudes', 'Laudes', pieces, { held: true });
+
+    expect(Listen.getListenState()).toMatchObject({ phase: 'paused', mode: 'audio' });
+    expect(Listen.isHeld()).toBe(true);
+    expect(player().calls.map((c: unknown[]) => c[0])).toEqual(['replace', 'rate']);
+    expect(player().playing).toBe(false);
+    expect(player().lockScreen).toBeNull();
+
+    Listen.toggle();
+
+    expect(Listen.getListenState().phase).toBe('playing');
+    expect(Listen.isHeld()).toBe(false);
+    expect(player().playing).toBe(true);
+    expect(player().lockScreen).toMatchObject({ title: 'Part 0', albumTitle: 'Laudes' });
+  });
+
+  test('▶ before the beginning is here: it plays as soon as it is', async () => {
+    const pieces = script(15);
+    let release: () => void = () => undefined;
+    fetchMock.mockImplementation(async (batch: { key: string }[]) => {
+      await new Promise<void>((resolve) => (release = resolve));
+      return { found: new Map(batch.map((p) => [p.key, second()])), missing: [] };
+    });
+
+    const listening = Listen.listen('Vespres', 'Vespres', pieces, { held: true });
+    await flush();
+    expect(Listen.getListenState().phase).toBe('paused');
+
+    Listen.toggle();
+    expect(Listen.getListenState().phase).toBe('preparing');
+
+    release();
+    await listening;
+    await flush();
+    expect(Listen.getListenState().phase).toBe('playing');
+    expect(player().playing).toBe(true);
+  });
+
+  test('with no network, the phone’s voice waits too, and reads once ▶ is touched', async () => {
+    fetchMock.mockRejectedValue(new AudioNetworkError('offline'));
+    jest.useFakeTimers();
+    const listening = Listen.listen('Completes', 'Completes', script(6), { held: true });
+    await jest.runAllTimersAsync();
+    await listening;
+
+    expect(Listen.getListenState()).toMatchObject({ phase: 'paused', mode: 'device', notice: Listen.NOTICES.offline });
+    expect(fakeSpeech.__spoken).toEqual([]);
+
+    Listen.toggle();
+    await flush();
+    expect(Listen.getListenState().phase).toBe('playing');
+    expect(fakeSpeech.__spoken[0]).toMatchObject({ text: 'Part 0.' });
+    Listen.stop();
+    jest.useRealTimers();
+  });
+});

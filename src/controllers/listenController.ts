@@ -149,6 +149,8 @@ interface Session {
   abort: AbortController;
   file: HourFile | null;
   device: DeviceReading | null;
+  // Opened without playing (the tour of what is new): it gets ready, and waits for ▶
+  held: boolean;
   // One change of the file at a time: the batches of pieces arrive one after the other
   queue: Promise<unknown>;
 }
@@ -355,9 +357,10 @@ async function startAudio(current: Session) {
   }
   if (current !== session) return forgetHourFile(file.uri);
   await loadArtwork();
-  await load(file, 0, true);
-  set({ phase: 'playing', index: 0, position: 0 });
-  lockScreen(true);
+  const held = current.held;
+  await load(file, 0, !held);
+  set({ phase: held ? 'paused' : 'playing', index: 0, position: 0 });
+  if (!held) lockScreen(true);
 }
 
 function startDevice(from: number, notice: string) {
@@ -365,6 +368,8 @@ function startDevice(from: number, notice: string) {
   player?.pause();
   lockScreen(false);
   session.device?.stop();
+  // Held, the phone's voice waits for ▶ too
+  if (session.held) return set({ mode: 'device', notice, phase: 'paused', index: from });
   set({ mode: 'device', notice, phase: 'playing', index: from });
   const current = session;
   current.device = readWithDeviceVoice(
@@ -380,7 +385,8 @@ function startDevice(from: number, notice: string) {
 
 // --- What the screens can do ----------------------------------------------------------------
 
-export async function listen(hour: string, title: string, pieces: SpeechPiece[]) {
+// With `held`, the player opens paused and nothing is heard until ▶ (the tour of what is new)
+export async function listen(hour: string, title: string, pieces: SpeechPiece[], { held = false } = {}) {
   stop();
   const script: ScriptPiece[] = pieces.map(({ key, voice, text, pause }) => ({ key, voice, text, pause }));
   const current: Session = {
@@ -388,10 +394,11 @@ export async function listen(hour: string, title: string, pieces: SpeechPiece[])
     abort: new AbortController(),
     file: null,
     device: null,
+    held,
     queue: Promise.resolve(),
   };
   session = current;
-  set({ ...IDLE, speed: state.speed, phase: 'preparing', hour, title, pieces });
+  set({ ...IDLE, speed: state.speed, phase: held ? 'paused' : 'preparing', hour, title, pieces });
 
   let started = false;
   // Starts when the beginning is here; once started, the file grows with what has arrived
@@ -433,6 +440,16 @@ export function toggle() {
   if (!session) return;
   // Before it has started, the button is there to give up
   if (state.phase === 'preparing') return stop();
+  // Held, ▶ is the first time it plays: at once if the beginning is here, or as soon as it is
+  if (session.held) {
+    session.held = false;
+    if (state.mode === 'device') return startDevice(state.index, state.notice ?? NOTICES.offline);
+    if (!player || !session.file) return set({ phase: 'preparing' });
+    player.play();
+    set({ phase: 'playing' });
+    lockScreen(true);
+    return;
+  }
   if (state.mode === 'device') {
     if (state.phase === 'playing') {
       session.device?.stop();
@@ -528,6 +545,9 @@ function finish(finished: Session) {
     if (session === finished && state.phase === 'finished') stop();
   }, CLOSE_AFTER_FINISHING_MS);
 }
+
+// Opened held and still waiting for ▶
+export const isHeld = () => session?.held ?? false;
 
 export function stop() {
   if (!session) return;

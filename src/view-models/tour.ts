@@ -8,7 +8,7 @@
 export const TOUR_VERSION = '9.3';
 
 export type TourRoute = 'Home' | 'Calendar' | 'Settings' | 'LHDisplay';
-export type TourEvent = 'listen-started';
+export type TourEvent = 'listen-opened';
 
 export interface TourStep {
   id: string;
@@ -89,15 +89,16 @@ const STEPS: TourStep[] = [
     id: 'listen-button',
     route: 'LHDisplay',
     target: 'listen-button',
-    text: 'Toca els auriculars: la pregària es llegeix en veu alta, a dos cors.',
-    advance: { event: 'listen-started' },
+    text: 'Toca els auriculars per obrir el reproductor.',
+    advance: { event: 'listen-opened' },
     needsAudio: true,
   },
   {
     id: 'listen-bar',
     route: 'LHDisplay',
     target: 'listen-bar',
-    text: 'La pantalla va marcant el que es diu, i sona també amb el mòbil bloquejat i al cotxe. Tocant el reproductor tries la part i la velocitat; amb la creu, s’atura.',
+    // It opens paused (tourController): nothing is heard unless the play button is touched
+    text: 'Amb el botó de reproduir, la pregària es llegeix en veu alta, a dos cors. La pantalla va marcant el que es diu, i sona també amb el mòbil bloquejat i al cotxe. Tocant el reproductor tries la part i la velocitat; amb la creu, es tanca.',
     advance: 'next',
     needsAudio: true,
   },

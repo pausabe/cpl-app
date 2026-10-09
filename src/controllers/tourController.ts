@@ -10,6 +10,9 @@ import * as Listen from './listenController';
 // that says «Següent», with the button; and when the next one is on another screen the app can go
 // to by itself (the home, Configuració), it goes there. It is shown once per version of the tour,
 // when the home has nothing else to say; Configuració can show it again.
+//
+// The headphones, while it is on, open the player paused: nothing is heard unless ▶ is touched, and
+// the player it opened goes away with it (Pau did not want Lauds left playing, 9 October 2026).
 
 export interface TourState {
   steps: TourStep[];
@@ -36,6 +39,8 @@ export function subscribeTour(listener: Listener) {
 export const useTour = () => useSyncExternalStore(subscribeTour, getTour, getTour);
 
 export const currentStep = (): TourStep | null => (state ? state.steps[state.index] : null);
+
+export const holdsListening = () => state !== null;
 
 export function currentRoute(): string | null {
   try {
@@ -78,6 +83,7 @@ export function finishTour() {
   if (!state) return;
   state = null;
   changed();
+  if (Listen.isHeld()) Listen.stop();
   AsyncStorage.setItem(SEEN_KEY, 'true').catch(() => undefined);
 }
 
@@ -108,7 +114,7 @@ function onListen() {
     step &&
     typeof step.advance === 'object' &&
     'event' in step.advance &&
-    step.advance.event === 'listen-started' &&
+    step.advance.event === 'listen-opened' &&
     Listen.getListenState().phase !== 'idle'
   ) {
     nextStep();

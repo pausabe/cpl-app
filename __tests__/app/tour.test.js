@@ -1,6 +1,7 @@
 // The tour of what is new, over the whole app: it starts by itself once, it points at the real
 // buttons, it goes on when they are touched (the calendar, Configuració, Lauds, the headphones) or
-// with «Següent», it takes the app to the screen of the next step, and it does not come back.
+// with «Següent», it takes the app to the screen of the next step, and it does not come back. The
+// headphones open the player paused: nothing is heard unless ▶ is touched.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('expo-asset', () => {
   const assets = [{ localUri: 'file:///bundle/cpl-app.db' }];
@@ -44,9 +45,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
 import App from '../../App';
 import { navigationRef } from '../../src/controllers/NavigationController';
-import { resetTour } from '../../src/controllers/tourController';
+import { currentStep, nextStep, resetTour } from '../../src/controllers/tourController';
 import { TOUR_VERSION, tourButtons, tourSteps } from '../../src/view-models/tour';
-import { stop } from '../../src/controllers/listenController';
+import { getListenState, stop } from '../../src/controllers/listenController';
+
+const spoken = jest.requireMock('expo-speech').__spoken;
 
 const NOW = new Date(2026, 9, 9, 8, 0, 0);
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
@@ -61,6 +64,7 @@ beforeEach(async () => {
   await AsyncStorage.setItem('DioceseOfferSeen', 'true');
   resetTour();
   globalThis.__CPL_NO_TOUR__ = false;
+  spoken.length = 0;
 });
 afterEach(() => {
   globalThis.__CPL_NO_TOUR__ = true;
@@ -113,12 +117,42 @@ test('once, by itself, through the real app: the calendar, Configuració, Lauds 
   await findText(/Toca els auriculars/);
   fireEvent.press(screen.getByTestId('listen-button'));
   await findText(/La pantalla va marcant el que es diu/);
+  // The player is there, paused, and nothing is heard
+  expect(screen.getByTestId('listen-bar')).toBeTruthy();
+  expect(getListenState().phase).toBe('paused');
   next();
 
   await findText('Això és tot');
+  expect(spoken).toEqual([]);
   next();
   await waitFor(() => expect(screen.queryByTestId('tour')).toBeNull());
   expect(await AsyncStorage.getItem(`tourSeen_${TOUR_VERSION}`)).toBe('true');
+  // And it goes away with the tour
+  expect(getListenState().phase).toBe('idle');
+  expect(screen.queryByTestId('listen-bar')).toBeNull();
+  expect(spoken).toEqual([]);
+});
+
+test('▶ touched during the tour is heard, and the end of the tour leaves it playing', async () => {
+  render(<App />);
+  await findText("Hi ha unes quantes coses noves a l'app. Te les ensenyem en un minut?");
+  // Straight to Lauds
+  act(() => {
+    while (currentStep()?.id !== 'laudes') nextStep();
+  });
+  await findText('I la novetat més gran: escoltar la pregària. Obre Laudes.');
+  fireEvent.press(screen.getByTestId('hour-laudes'));
+  await findText(/Toca els auriculars/);
+  fireEvent.press(screen.getByTestId('listen-button'));
+  await findText(/La pantalla va marcant el que es diu/);
+
+  fireEvent.press(screen.getByTestId('listen-toggle'));
+  await waitFor(() => expect(spoken.length).toBeGreaterThan(0), { timeout: 15000 });
+
+  fireEvent.press(screen.getByTestId('tour-leave'));
+  await waitFor(() => expect(screen.queryByTestId('tour')).toBeNull());
+  expect(getListenState().phase).toBe('playing');
+  expect(screen.getByTestId('listen-bar')).toBeTruthy();
 });
 
 test('«Ara no» puts it away for good; Configuració shows it again', async () => {
