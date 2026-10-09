@@ -20,7 +20,11 @@
       "userInterfaceStyle": "automatic",
       "infoPlist": {
         "CADisableMinimumFrameDurationOnPhone": true,
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "CFBundleDevelopmentRegion": "ca",
+        "CFBundleLocalizations": [
+          "ca"
+        ]
       }
     },
     "android": {
