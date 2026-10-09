@@ -359,8 +359,10 @@ test('while the prayer cannot be heard (cpl-api has it off), there is nothing to
   jest.restoreAllMocks();
 });
 
+const NEW_KEYS = ['newSeen_location', 'newSeen_laudes-gospel', 'newSeen_day-audio', 'newShownSince'];
+
 test('what the tour of what is new leaves out says «Nou» until it is touched, and it stays touched', async () => {
-  await AsyncStorage.multiRemove(['newSeen_location', 'newSeen_laudes-gospel', 'newSeen_day-audio']);
+  await AsyncStorage.multiRemove(NEW_KEYS);
   const download = jest.spyOn(DayAudio, 'downloadDayAudio').mockResolvedValue(undefined);
   await open();
 
@@ -384,4 +386,30 @@ test('what the tour of what is new leaves out says «Nou» until it is touched, 
   expect(screen.queryByTestId('laudes-gospel-new')).toBeNull();
   expect(screen.queryByTestId('day-audio-new')).toBeNull();
   download.mockRestore();
+});
+
+test('what is never touched stops saying «Nou» two weeks after it was first seen, not after the install', async () => {
+  await AsyncStorage.multiRemove(NEW_KEYS);
+  const start = Date.now();
+  const now = jest.spyOn(Date, 'now');
+  const openOn = async (day) => {
+    now.mockReturnValue(start + day * 24 * 60 * 60 * 1000);
+    await open();
+  };
+
+  // Configuració first opened a month after the install: the two weeks start now
+  await openOn(30);
+  expect(await screen.findByTestId('use-my-location-new')).toBeTruthy();
+  screen.unmount();
+
+  await openOn(43);
+  expect(await screen.findByTestId('use-my-location-new')).toBeTruthy();
+  expect(screen.getByTestId('laudes-gospel-new')).toBeTruthy();
+  screen.unmount();
+
+  await openOn(45);
+  await waitFor(() => expect(screen.queryByTestId('use-my-location-new')).toBeNull());
+  expect(screen.queryByTestId('laudes-gospel-new')).toBeNull();
+  expect(screen.getByRole('switch', { name: LAUDES_GOSPEL }).props.accessibilityHint).toBeUndefined();
+  now.mockRestore();
 });
