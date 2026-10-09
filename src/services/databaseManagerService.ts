@@ -59,6 +59,16 @@ export async function currentDatabaseVersion(edition?: string): Promise<number> 
 // carry it, and going back to the edition inside the app has to copy it again
 let bundledAsset: Asset | undefined;
 
+// The file the connection is open on
+let openedName: string | null = null;
+
+// Every reload comes here (a setting changed, another day), and the file open stays open: only a
+// database downloaded meanwhile, or another edition, opens another one. Opening the same file again
+// gives a second handle on the same connection, and on Android expo-sqlite (57) closes that
+// connection as soon as the garbage collector takes any of its handles, whatever the others are
+// doing: from then on every query failed, and the next reload (a memorial switched on, a day chosen
+// in the calendar) left the app broken until it was closed. The 8.x, with expo-sqlite 14, counted
+// the handles before closing.
 export async function openDatabase(databaseAsset?: Asset) {
   if (databaseAsset) bundledAsset = databaseAsset;
   await createDirectory();
@@ -67,17 +77,36 @@ export async function openDatabase(databaseAsset?: Asset) {
   if (!(await databaseExists(databaseName))) {
     throw 'There is no database to open';
   }
-  Logger.log(Logger.LogKeys.DatabaseManagerService, 'openDatabase', `Opening database '${databaseName}'`);
+  const previous = CPLDataBase;
+  let name = databaseName;
   try {
-    CPLDataBase = await SQLite.openDatabaseAsync(databaseName);
+    CPLDataBase = await connectTo(databaseName);
     const parsed = parseDatabaseFileName(databaseName);
     openedVersion = parsed?.version ?? null;
     openedEdition = parsed?.edition ?? null;
   } catch (error) {
     CPLDataBase = await openBundledAfterFailure(databaseName, error);
+    name = databaseFileName(bundledDatabase.compat, bundledDatabase.version, bundledEdition);
     openedVersion = bundledDatabase.version;
     openedEdition = bundledEdition;
   }
+  openedName = name;
+  // Closed before its file goes, and only once nothing uses it: the reloads and the queries of the
+  // calendar wait for each other (liturgyStore)
+  if (previous !== undefined && previous !== CPLDataBase) {
+    await previous.closeAsync().catch((error) => {
+      Logger.logError(Logger.LogKeys.DatabaseManagerService, 'openDatabase', error as Error);
+    });
+  }
+  await deleteEveryDatabaseBut(name);
+}
+
+async function connectTo(databaseName: string): Promise<SQLite.SQLiteDatabase> {
+  if (CPLDataBase !== undefined && databaseName === openedName) {
+    return CPLDataBase;
+  }
+  Logger.log(Logger.LogKeys.DatabaseManagerService, 'openDatabase', `Opening database '${databaseName}'`);
+  return SQLite.openDatabaseAsync(databaseName);
 }
 
 // A downloaded database that does not open would leave the app with no liturgy at all, so it is
@@ -90,7 +119,7 @@ async function openBundledAfterFailure(failedName: string, error: unknown) {
   Logger.logError(Logger.LogKeys.DatabaseManagerService, 'openDatabase', error as Error);
   await FileSystem.deleteAsync(`${DATABASE_DIRECTORY}${failedName}`, { idempotent: true });
   await placeBundledDatabase(bundledName);
-  return SQLite.openDatabaseAsync(bundledName);
+  return connectTo(bundledName);
 }
 
 // The rows a query gives. Asked before the database is open, it fails at once (it used to wait
@@ -161,7 +190,6 @@ async function chooseDatabase(): Promise<string> {
     'chooseDatabase',
     `Using '${chosen.name}' (inside the app: v${bundledDatabase.version}, downloaded: ${found}${missing})`,
   );
-  await deleteEveryDatabaseBut(chosen.name);
   return chosen.name;
 }
 

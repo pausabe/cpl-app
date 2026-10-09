@@ -74,10 +74,10 @@ export function publish(): void {
 
 // Loads the liturgy of a day, with the saved settings, and tells the screens.
 //
-// One reload at a time: each one opens the database again, and two at once (two settings
-// changed one after the other) make the second one fail halfway with the database closed
-// under it, which used to leave the home blank. A reload asked for while another is running
-// waits for it.
+// One reload at a time: a reload can change the database (one downloaded meanwhile, another
+// edition) and close the old one, and two at once (two settings changed one after the other)
+// made the second one fail halfway with the database closed under it, which used to leave the
+// home blank. A reload asked for while another is running waits for it.
 let queue: Promise<unknown> = Promise.resolve();
 
 export function reload(date: Date, databaseAsset?: unknown): Promise<void> {
@@ -87,7 +87,7 @@ export function reload(date: Date, databaseAsset?: unknown): Promise<void> {
   });
 }
 
-// The queries of the calendar wait for their turn too: a reload opens the database again under
+// The queries of the calendar wait for their turn too: a reload can close the database under
 // them
 function inTurn<T>(task: () => Promise<T>): Promise<T> {
   const run = queue.then(task);

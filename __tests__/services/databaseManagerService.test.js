@@ -22,14 +22,43 @@ jest.mock('expo-file-system/legacy', () => {
     }),
   };
 });
-jest.mock('expo-sqlite', () => ({
-  openDatabaseAsync: jest.fn(async (name) => ({ name, getAllAsync: jest.fn(async () => [{ ok: 1 }]) })),
-}));
+// As expo-sqlite 57 does on Android: opening a file that is open already gives another handle on the
+// same native connection, and when the garbage collector takes any of the handles, that connection
+// is closed for all of them, whatever the others are doing.
+jest.mock('expo-sqlite', () => {
+  const handles = [];
+  const connections = new Map();
+  return {
+    __handles: handles,
+    // What the garbage collector does with every handle nobody holds any more
+    __collect: (kept) => {
+      for (const handle of handles) {
+        if (handle !== kept) connections.get(handle.name).closed = true;
+      }
+    },
+    openDatabaseAsync: jest.fn(async (name) => {
+      if (!connections.has(name) || connections.get(name).closed) connections.set(name, { closed: false });
+      const connection = connections.get(name);
+      const handle = {
+        name,
+        getAllAsync: jest.fn(async () => {
+          if (connection.closed) throw new Error('java.lang.NullPointerException');
+          return [{ ok: 1 }];
+        }),
+        closeAsync: jest.fn(async () => {
+          connection.closed = true;
+        }),
+      };
+      handles.push(handle);
+      return handle;
+    }),
+  };
+});
 
-const AsyncStorage = require('@react-native-async-storage/async-storage');
-const FileSystem = require('expo-file-system/legacy');
-const SQLite = require('expo-sqlite');
-const DatabaseManagerService = require('../../src/services/databaseManagerService');
+let AsyncStorage;
+let FileSystem;
+let SQLite;
+let DatabaseManagerService;
 const bundled = require('../../src/assets/db/cpl-app.db.json');
 
 const DIRECTORY = 'file:///docs/SQLite/';
@@ -37,9 +66,13 @@ const BUNDLED_NAME = `cpl-${bundled.compat}-v${bundled.version}.db`;
 const asset = { localUri: 'file:///bundle/cpl-app.db' };
 const downloaded = (version, compat = bundled.compat) => `${DIRECTORY}cpl-${compat}-v${version}.db`;
 
+// Every test starts as a phone that has just opened the app: nothing open yet
 beforeEach(async () => {
-  FileSystem.__files.clear();
-  jest.clearAllMocks();
+  jest.resetModules();
+  AsyncStorage = require('@react-native-async-storage/async-storage');
+  FileSystem = require('expo-file-system/legacy');
+  SQLite = require('expo-sqlite');
+  DatabaseManagerService = require('../../src/services/databaseManagerService');
   await AsyncStorage.clear();
 });
 
@@ -108,6 +141,60 @@ test('if the downloaded database does not open, the app goes back to the one it 
 
   expect(SQLite.openDatabaseAsync).toHaveBeenLastCalledWith(BUNDLED_NAME);
   expect([...FileSystem.__files]).toEqual([`${DIRECTORY}${BUNDLED_NAME}`]);
+});
+
+describe('the reloads', () => {
+  // Every setting changed and every day chosen in the calendar reloads the day, and each reload
+  // used to open the database again. On Android, the first handle the garbage collector took
+  // closed the connection under the app: the next reload (a memorial switched on, next Sunday
+  // chosen in the calendar) failed until the app was closed and opened again.
+  test('the file open is not opened again, so no handle of it is left for the garbage collector', async () => {
+    FileSystem.__files.add(`${DIRECTORY}${BUNDLED_NAME}`);
+    await DatabaseManagerService.openDatabase(asset);
+    await DatabaseManagerService.openDatabase();
+    await DatabaseManagerService.openDatabase();
+
+    SQLite.__collect(SQLite.__handles[SQLite.__handles.length - 1]);
+
+    await expect(DatabaseManagerService.executeQueryAsync('SELECT 1')).resolves.toEqual([{ ok: 1 }]);
+    expect(SQLite.openDatabaseAsync).toHaveBeenCalledTimes(1);
+  });
+
+  test('a database downloaded meanwhile is opened, and the old one is closed before its file goes', async () => {
+    FileSystem.__files.add(`${DIRECTORY}${BUNDLED_NAME}`);
+    await DatabaseManagerService.openDatabase(asset);
+    const old = SQLite.__handles[0];
+    FileSystem.deleteAsync.mockImplementation(async (path) => {
+      if (path === `${DIRECTORY}${BUNDLED_NAME}`) expect(old.closeAsync).toHaveBeenCalled();
+      FileSystem.__files.delete(path);
+    });
+
+    FileSystem.__files.add(downloaded(bundled.version + 1));
+    await DatabaseManagerService.openDatabase();
+    SQLite.__collect(SQLite.__handles[SQLite.__handles.length - 1]);
+
+    expect(SQLite.openDatabaseAsync).toHaveBeenLastCalledWith(`cpl-${bundled.compat}-v${bundled.version + 1}.db`);
+    expect(DatabaseManagerService.openedDatabaseVersion()).toBe(bundled.version + 1);
+    expect([...FileSystem.__files]).toEqual([downloaded(bundled.version + 1)]);
+    await expect(DatabaseManagerService.executeQueryAsync('SELECT 1')).resolves.toEqual([{ ok: 1 }]);
+  });
+
+  test('if the database downloaded meanwhile does not open, the one open stays open', async () => {
+    FileSystem.__files.add(`${DIRECTORY}${BUNDLED_NAME}`);
+    await DatabaseManagerService.openDatabase(asset);
+    FileSystem.__files.add(downloaded(bundled.version + 1));
+    SQLite.openDatabaseAsync.mockImplementationOnce(async () => {
+      throw new Error('file is not a database');
+    });
+
+    await DatabaseManagerService.openDatabase();
+    SQLite.__collect(SQLite.__handles[SQLite.__handles.length - 1]);
+
+    expect(SQLite.__handles).toHaveLength(1);
+    expect(SQLite.__handles[0].closeAsync).not.toHaveBeenCalled();
+    expect([...FileSystem.__files]).toEqual([`${DIRECTORY}${BUNDLED_NAME}`]);
+    await expect(DatabaseManagerService.executeQueryAsync('SELECT 1')).resolves.toEqual([{ ok: 1 }]);
+  });
 });
 
 test('currentDatabaseVersion is the newest one the app can read', async () => {
