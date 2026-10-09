@@ -55,10 +55,17 @@ export function currentRoute(): string | null {
 // The screens the tour can go back to by itself: they need nothing to open
 const REACHABLE: TourRoute[] = ['Home', 'Settings', 'Calendar'];
 
+// To a screen of the stack it goes back, closing what is over it: a plain navigate opens a second
+// home over the calendar (React Navigation 7), and back then went through every screen of the tour
+// again (Pau, 9 October 2026)
+export function backTo(route: TourRoute) {
+  navigationRef.navigate(route, undefined, { pop: true });
+}
+
 function goTo(step: TourStep) {
   if (!step.route || currentRoute() === step.route || !REACHABLE.includes(step.route)) return;
   try {
-    navigationRef.navigate(step.route as never);
+    backTo(step.route);
   } catch {
     // It waits on the screen it is
   }

@@ -29,7 +29,7 @@ import { dayAudioLabels } from '../view-models/speech/dayAudioLabels';
 import { refreshListenAvailability, useListenAvailability } from './listenController';
 import { checkDayAudio, downloadDayAudio, useDayAudio } from './dayAudioController';
 import { navigationRef } from './navigationRef';
-import { startTour } from './tourController';
+import { backTo, startTour } from './tourController';
 import { reportProblem } from '../services/health/problems';
 
 // Configuració. Reads the saved settings, and saves each change where it has always been saved
@@ -285,8 +285,8 @@ export default function SettingsController() {
         }}
         onPrivacy={() => setPrivacyVisible(true)}
         onShowTour={() => {
-          // The tour starts on the home, where its first steps are
-          if (navigationRef.isReady()) navigationRef.navigate('Home' as never);
+          // The tour starts on the home, where its first steps are: back to it, not a new one
+          if (navigationRef.isReady()) backTo('Home');
           startTour();
         }}
         dayAudio={

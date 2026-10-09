@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { BackHandler, StyleSheet, View } from 'react-native';
 import TourOverlay from '../components/TourOverlay';
 import WidgetPreview from '../components/WidgetPreview';
 import { pinWidget } from '../services/widgetService';
@@ -84,6 +84,18 @@ export default function TourLayer({ children }: { children: React.ReactNode }) {
     };
   }, [step]);
 
+  // Android's back, with the tour over the screen, leaves the tour, as it closes a dialog. It went
+  // back under it instead, and the tour waited unseen for a screen that was no longer there.
+  const shown = !!step && ready;
+  useEffect(() => {
+    if (!shown) return;
+    const sub = BackHandler.addEventListener('hardwareBackPress', () => {
+      finishTour();
+      return true;
+    });
+    return () => sub.remove();
+  }, [shown]);
+
   const buttons = tour && step ? tourButtons(step, tour.index, tour.steps.length) : null;
   const illustration = step?.illustration === 'widget' ? <WidgetOfNow /> : null;
   // The system asks whether to add it; whatever the answer, the tour goes on
@@ -95,7 +107,7 @@ export default function TourLayer({ children }: { children: React.ReactNode }) {
     <TourContext.Provider value={registry}>
       <View style={styles.app}>
         {children}
-        {step && buttons && ready ? (
+        {shown && step && buttons ? (
           <TourOverlay
             rect={step.target ? rect : null}
             title={step.title}

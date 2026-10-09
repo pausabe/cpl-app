@@ -1,7 +1,8 @@
 // The tour of what is new, over the whole app: it starts by itself once, it points at the real
 // buttons, it goes on when they are touched (the calendar, Configuració, Lauds, the headphones) or
-// with «Següent», it takes the app to the screen of the next step, and it does not come back. The
-// headphones open the player paused: nothing is heard unless ▶ is touched.
+// with «Següent», it takes the app back to the screen of the next step (back, not a new one over
+// the stack), and it does not come back. The headphones open the player paused: nothing is heard
+// unless ▶ is touched.
 jest.mock('../../src/services/databaseManagerService', () => require('../helpers/mockDatabaseManager'));
 jest.mock('expo-asset', () => {
   const assets = [{ localUri: 'file:///bundle/cpl-app.db' }];
@@ -42,6 +43,7 @@ jest.mock('../../src/services/audio/pieceClient', () => {
 
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BackHandler } from 'react-native';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react-native';
 import App from '../../App';
 import { navigationRef } from '../../src/controllers/NavigationController';
@@ -55,6 +57,7 @@ const heard = () => fakeAudio.__players.some((player) => player.playing);
 const NOW = new Date(2026, 9, 9, 8, 0, 0);
 const findText = (text) => screen.findByText(text, {}, { timeout: 15000 });
 const route = () => navigationRef.getCurrentRoute()?.name;
+const stack = () => navigationRef.getRootState().routes.map((r) => r.name);
 const next = () => fireEvent.press(screen.getByTestId('tour-next'));
 
 beforeEach(async () => {
@@ -124,9 +127,9 @@ test('once, by itself, through the real app: the calendar, Configuració, Lauds 
   expect(route()).toBe('Calendar');
   next();
 
-  // Back to the home by itself, where Configuració is
+  // Back to the home by itself, where Configuració is: the same home, with nothing over it
   await findText('A Configuració també hi ha coses noves. Toca-la.');
-  expect(route()).toBe('Home');
+  expect(stack()).toEqual(['Home']);
   fireEvent.press(screen.getByTestId('settings-button'));
   await findText('La diòcesi es pot triar sola, amb la ubicació del mòbil.');
   next();
@@ -136,11 +139,13 @@ test('once, by itself, through the real app: the calendar, Configuració, Lauds 
   next();
 
   await findText('I la novetat més gran: escoltar la pregària. Obre Laudes.');
-  expect(route()).toBe('Home');
+  expect(stack()).toEqual(['Home']);
   fireEvent.press(screen.getByTestId('hour-laudes'));
   await findText(/Toca els auriculars/);
   fireEvent.press(screen.getByTestId('listen-button'));
   await findText(/La pantalla va marcant el que es diu/);
+  // Back from Lauds is the home, as when it is opened by hand
+  expect(stack()).toEqual(['Home', 'LHDisplay']);
   // The player is there, paused, and nothing is heard
   expect(screen.getByTestId('listen-bar')).toBeTruthy();
   expect(getListenState().phase).toBe('paused');
@@ -200,5 +205,32 @@ test('«Ara no» puts it away for good; Configuració shows it again', async () 
   fireEvent.press(screen.getByTestId('settings-button'));
   fireEvent.press(await screen.findByTestId('show-tour', {}, { timeout: 15000 }));
   await findText("Hi ha unes quantes coses noves a l'app. Te les ensenyem en un minut?");
-  expect(route()).toBe('Home');
+  // Back to the home, without Configuració under it
+  expect(stack()).toEqual(['Home']);
+});
+
+test('Android’s back leaves the tour, as it closes a dialog, and the screen stays', async () => {
+  const handlers = [];
+  const listen = jest.spyOn(BackHandler, 'addEventListener').mockImplementation((event, handler) => {
+    handlers.push(handler);
+    return { remove: () => handlers.splice(handlers.indexOf(handler), 1) };
+  });
+  try {
+    render(<App />);
+    await findText("Hi ha unes quantes coses noves a l'app. Te les ensenyem en un minut?");
+    next();
+    fireEvent.press(await screen.findByTestId('calendar-button'));
+    await findText(/Cada mes amb el color del seu temps/);
+
+    let handled;
+    act(() => {
+      handled = handlers[handlers.length - 1]();
+    });
+    expect(handled).toBe(true);
+    await waitFor(() => expect(screen.queryByTestId('tour')).toBeNull());
+    expect(route()).toBe('Calendar');
+    expect(await AsyncStorage.getItem(`tourSeen_${TOUR_VERSION}`)).toBe('true');
+  } finally {
+    listen.mockRestore();
+  }
 });
