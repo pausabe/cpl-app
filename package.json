@@ -17,7 +17,11 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/__tests__/helpers/"
+      "/__tests__/helpers/",
+      "<rootDir>/.claude/"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/.claude/"
     ],
     "globalSetup": "./__tests__/helpers/globalSetup.js",
     "moduleNameMapper": {

@@ -50,3 +50,6 @@ __tests__/golden/
 # The native module of the car (modules/cpl-car), compiled by Gradle
 modules/*/android/build/
 modules/*/android/.cxx/
+
+# The copies of the repository Claude Code's agents work in
+/.claude/worktrees/
