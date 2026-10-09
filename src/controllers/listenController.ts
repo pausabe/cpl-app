@@ -292,10 +292,7 @@ function onStatus(status: AudioStatus) {
   if (status.didJustFinish) {
     // The end of what is here, not of the hour: it waits for the rest
     if (session.file.count < session.pieces.length) set({ phase: 'waiting' });
-    else {
-      set({ phase: 'finished' });
-      lockScreen(false);
-    }
+    else finish(session);
   }
 }
 
@@ -360,7 +357,7 @@ function startDevice(from: number, notice: string) {
     {
       rate: rateOf(state.speed),
       onPiece: (index) => current === session && set({ index }),
-      onDone: () => current === session && set({ phase: 'finished' }),
+      onDone: () => current === session && finish(current),
     },
   );
 }
@@ -502,6 +499,18 @@ export function partsOf(pieces: SpeechPiece[]): { index: number; title: string }
 // Laudes would go on reading Completes)
 export function leftHour(hour: string) {
   if (state.hour === hour) stop();
+}
+
+// The hour heard to the end: the player says so for a moment and goes away by itself (Pau asked for
+// it on 9 October 2026: once Lauds are over there is nothing left to do with it)
+export const CLOSE_AFTER_FINISHING_MS = 3000;
+
+function finish(finished: Session) {
+  set({ phase: 'finished' });
+  lockScreen(false);
+  setTimeout(() => {
+    if (session === finished && state.phase === 'finished') stop();
+  }, CLOSE_AFTER_FINISHING_MS);
 }
 
 export function stop() {

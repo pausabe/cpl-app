@@ -107,15 +107,20 @@ test('with a slow network it starts with the beginning and the file grows as the
 
 test('with no network and an hour not on the phone, the phone’s own voice reads it, and says so', async () => {
   fetchMock.mockRejectedValue(new AudioNetworkError('offline'));
+  // What the player says while the phone reads (once it has read it all, it goes away)
+  const seen: { mode: string; notice: string | null }[] = [];
+  const unsubscribe = Listen.subscribeListen(() => {
+    const { mode, notice } = Listen.getListenState();
+    seen.push({ mode, notice });
+  });
   jest.useFakeTimers();
   const listening = Listen.listen('Completes', 'Completes', script(6));
   await jest.runAllTimersAsync();
   await listening;
   jest.useRealTimers();
+  unsubscribe();
 
-  const state = Listen.getListenState();
-  expect(state.mode).toBe('device');
-  expect(state.notice).toBe(Listen.NOTICES.offline);
+  expect(seen).toContainEqual({ mode: 'device', notice: Listen.NOTICES.offline });
   await flush();
   expect(fakeSpeech.__spoken[0]).toMatchObject({ text: 'Part 0.', voice: 'ca-montse' });
 });
@@ -219,4 +224,17 @@ describe('whether it can be heard', () => {
     await Listen.refreshListenAvailability(2_000_000);
     expect(Listen.getListenAvailability().enabled).toBe(true);
   });
+});
+
+test('an hour heard to the end says so for a moment, and the player goes away by itself', async () => {
+  jest.useFakeTimers();
+  const pieces = script(3);
+  for (const p of pieces) store.write(p.key, second());
+  await Listen.listen('Laudes', 'Laudes', pieces);
+
+  player().emit({ currentTime: 4.4, playing: false, didJustFinish: true });
+  expect(Listen.getListenState().phase).toBe('finished');
+  jest.advanceTimersByTime(Listen.CLOSE_AFTER_FINISHING_MS);
+  expect(Listen.getListenState().phase).toBe('idle');
+  jest.useRealTimers();
 });
